@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class Bookshelf {
     
     @SidedProxy(serverSide = Constants.PROXY_COMMON, clientSide = Constants.PROXY_CLIENT)
-    public static net.darkhax.bookshelf.common.CommonProxy proxy;
+    public static net.darkhax.bookshelf.common.ProxyCommon proxy;
     
     @Mod.Instance(Constants.MOD_ID)
     public static Bookshelf instance;
