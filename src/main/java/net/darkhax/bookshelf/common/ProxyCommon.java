@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf.common;
 
-public class CommonProxy {
+public class ProxyCommon {
     
     /**
      * A sided version of the preInit event. This method allows for code to be executed

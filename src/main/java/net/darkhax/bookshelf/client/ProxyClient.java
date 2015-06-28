@@ -1,8 +1,8 @@
 package net.darkhax.bookshelf.client;
 
-import net.darkhax.bookshelf.common.CommonProxy;
+import net.darkhax.bookshelf.common.ProxyCommon;
 
-public class ClientProxy extends CommonProxy {
+public class ProxyClient extends ProxyCommon {
     
     @Override
     public void preInit () {
