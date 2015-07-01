@@ -1,10 +1,11 @@
 /*******************************************************************************************************************
  * Copyright: SanAndreasP
+ * 
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
- *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *            http://creativecommons.org/licenses/by-nc-sa/4.0/
  *                
- * Changes: -The addition of documentation to all methods.
- *          -Layout of methods has been rearranged. 
+ * Changes: -The addition of new java documentation.
+ *          -Reformat to project specifics
  *******************************************************************************************************************/
 package net.darkhax.bookshelf.asm;
 

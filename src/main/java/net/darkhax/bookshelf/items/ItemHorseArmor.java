@@ -3,8 +3,8 @@ package net.darkhax.bookshelf.items;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class ItemHorseArmor extends Item {
     
@@ -37,7 +37,7 @@ public abstract class ItemHorseArmor extends Item {
      * @return String: A string based representation of the armor texture resource location.
      *         EG: testmod:textures/entity/horse/armor/horse_armor_test.png
      */
-    //@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public abstract String getArmorTexture (EntityHorse horse, ItemStack stack);
     
     @SideOnly(Side.CLIENT)

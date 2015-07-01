@@ -1,15 +1,17 @@
 package net.darkhax.bookshelf;
 
+import net.darkhax.bookshelf.items.ItemHorseArmor;
+import net.darkhax.bookshelf.items.ItemTest;
 import net.darkhax.bookshelf.util.Constants;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION)
-// , guiFactory = Constants.FACTORY)
 public class Bookshelf {
     
     @SidedProxy(serverSide = Constants.PROXY_COMMON, clientSide = Constants.PROXY_CLIENT)
@@ -22,6 +24,8 @@ public class Bookshelf {
     public void preInit (FMLPreInitializationEvent event) {
     
         proxy.preInit();
+        
+        GameRegistry.registerItem(new ItemTest(), "testmail");
     }
     
     @EventHandler
