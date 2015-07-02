@@ -55,7 +55,8 @@ public class EntityHorseTransformer implements IClassTransformer {
         transformUpdateHorseSlots(ASMHelper.getMethodFromClass(horseClass, updateHorseSlots, "()V"));
         transformEntityInit(ASMHelper.getMethodFromClass(horseClass, entityInit, "()V"));
         transformIsValidArmor(ASMHelper.getMethodFromClass(horseClass, isArmorItem, "(Lnet/minecraft/item/Item;)Z"));
-        //transformInteract(ASMHelper.getMethodFromClass(horseClass, interact, "(Lnet/minecraft/entity/player/EntityPlayer;)Z"));
+        // transformInteract(ASMHelper.getMethodFromClass(horseClass, interact,
+        // "(Lnet/minecraft/entity/player/EntityPlayer;)Z"));
         
         try {
             
@@ -70,8 +71,10 @@ public class EntityHorseTransformer implements IClassTransformer {
     }
     
     /**
-     * Injects a new method into the EntityHorse class. This new method allows for the retrieval of a custom armor item that is stored on bit 23 of the DataWatcher.
-     * @param horseClass: A ClassNode representation of the EntityHorse class. 
+     * Injects a new method into the EntityHorse class. This new method allows for the
+     * retrieval of a custom armor item that is stored on bit 23 of the DataWatcher.
+     * 
+     * @param horseClass: A ClassNode representation of the EntityHorse class.
      */
     private static void injectGetCustomBookshelfArmor (ClassNode horseClass) {
     
@@ -96,8 +99,10 @@ public class EntityHorseTransformer implements IClassTransformer {
     }
     
     /**
-     * Injects a new method into the EntityHorse class. This new method allows for the setting of a custom armor item which is stored on bit 23 of the DataWatcher. 
-     * @param horseClass: A ClassNode representation of the EntityHorse class. 
+     * Injects a new method into the EntityHorse class. This new method allows for the setting
+     * of a custom armor item which is stored on bit 23 of the DataWatcher.
+     * 
+     * @param horseClass: A ClassNode representation of the EntityHorse class.
      */
     private static void injectSetCustomBoookhelfArmor (ClassNode horseClass) {
     
@@ -139,8 +144,12 @@ public class EntityHorseTransformer implements IClassTransformer {
     }
     
     /**
-     * Transforms the getTotalArmorValue method to take custom armor items into consideration. This is done by checking if the item stored within he 23rd bit of the data watcher is an instance of Bookshelf's implementation of ItemHorseArmor, if it is, the value returned by the item's getArmorValue method will be returned by this method. 
-     * @param method: Instance of a MethodNode representation of the getTotalArmorValue method. 
+     * Transforms the getTotalArmorValue method to take custom armor items into consideration.
+     * This is done by checking if the item stored within he 23rd bit of the data watcher is an
+     * instance of Bookshelf's implementation of ItemHorseArmor, if it is, the value returned
+     * by the item's getArmorValue method will be returned by this method.
+     * 
+     * @param method: Instance of a MethodNode representation of the getTotalArmorValue method.
      */
     private static void transformGetTotalArmorValue (MethodNode method) {
     
@@ -180,8 +189,10 @@ public class EntityHorseTransformer implements IClassTransformer {
     }
     
     /**
-     * Transforms the onInventoryChanged method to take custom armor items into consideration when updating the inventory. 
-     * @param method: Instance of a MethodNode representation of the onInventoryChanged method. 
+     * Transforms the onInventoryChanged method to take custom armor items into consideration
+     * when updating the inventory.
+     * 
+     * @param method: Instance of a MethodNode representation of the onInventoryChanged method.
      */
     private static void transformOnInventoryChanged (MethodNode method) {
     
@@ -222,7 +233,7 @@ public class EntityHorseTransformer implements IClassTransformer {
         newInstr.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, "net/minecraft/entity/passive/EntityHorse", "getCustomBookshelfArmor", "()Lnet/minecraft/item/ItemStack;", false));
         newInstr.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "net/minecraft/item/ItemStack", isItemEqual, "(Lnet/minecraft/item/ItemStack;)Z", false));
         newInstr.add(new JumpInsnNode(Opcodes.IFNE, l9));
-       
+        
         newInstr.add(new LabelNode());
         newInstr.add(new VarInsnNode(Opcodes.ALOAD, 0));
         newInstr.add(new LdcInsnNode("mob.horse.armor"));
@@ -235,8 +246,13 @@ public class EntityHorseTransformer implements IClassTransformer {
     }
     
     /**
-     * Transforms the setHorseTexturePaths method to take our custom armor item into consideration. If the horse has a custom armor item in it's inventory and that item is an instance of our ItemHorseArmor implementation, the item's getArmorTexture method will me used for the armor texture path. 
-     * @param method: Instance of a MethodNode representation of the setHorseTexturePaths method. 
+     * Transforms the setHorseTexturePaths method to take our custom armor item into
+     * consideration. If the horse has a custom armor item in it's inventory and that item is
+     * an instance of our ItemHorseArmor implementation, the item's getArmorTexture method will
+     * me used for the armor texture path.
+     * 
+     * @param method: Instance of a MethodNode representation of the setHorseTexturePaths
+     *            method.
      */
     private static void transformSetHorseTexturePaths (MethodNode method) {
     
@@ -260,7 +276,7 @@ public class EntityHorseTransformer implements IClassTransformer {
         newInstr.add(new VarInsnNode(Opcodes.ALOAD, 4));
         newInstr.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "net/minecraft/item/ItemStack", getItem, "()Lnet/minecraft/item/Item;", false));
         newInstr.add(new TypeInsnNode(Opcodes.INSTANCEOF, "net/darkhax/bookshelf/items/ItemHorseArmor"));
-       
+        
         LabelNode l19 = new LabelNode();
         newInstr.add(new JumpInsnNode(Opcodes.IFEQ, l19));
         
@@ -300,8 +316,11 @@ public class EntityHorseTransformer implements IClassTransformer {
     }
     
     /**
-     * Transforms the updateHorseSlots method to take custom armor items into consideration. When an item is set to the armor slot, it will also be stored under our data bit in the data watcher.
-     * @param method: Instance of a MethodNode representation of the updateHorseSlots method. 
+     * Transforms the updateHorseSlots method to take custom armor items into consideration.
+     * When an item is set to the armor slot, it will also be stored under our data bit in the
+     * data watcher.
+     * 
+     * @param method: Instance of a MethodNode representation of the updateHorseSlots method.
      */
     private static void transformUpdateHorseSlots (MethodNode method) {
     
@@ -326,8 +345,10 @@ public class EntityHorseTransformer implements IClassTransformer {
     }
     
     /**
-     * Transforms the entityInit method to designate the 23rd bit within the DataWatcher to store an ItemStack. This storage is used by our custom methods. 
-     * @param method: Instance of a MethodNode representation of the entityInit method. 
+     * Transforms the entityInit method to designate the 23rd bit within the DataWatcher to
+     * store an ItemStack. This storage is used by our custom methods.
+     * 
+     * @param method: Instance of a MethodNode representation of the entityInit method.
      */
     private static void transformEntityInit (MethodNode method) {
     
@@ -357,8 +378,10 @@ public class EntityHorseTransformer implements IClassTransformer {
     }
     
     /**
-     * Transforms the isValidArmor method to accept items which use our implementation of ItemHorseArmor as a valid horse armor item.
-     * @param method: Instance of a MethodNode representation of the isValidArmor method. 
+     * Transforms the isValidArmor method to accept items which use our implementation of
+     * ItemHorseArmor as a valid horse armor item.
+     * 
+     * @param method: Instance of a MethodNode representation of the isValidArmor method.
      */
     private static void transformIsValidArmor (MethodNode method) {
     
@@ -410,13 +433,13 @@ public class EntityHorseTransformer implements IClassTransformer {
         newInstr.add(new VarInsnNode(Opcodes.ALOAD, 2));
         newInstr.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "net/minecraft/item/ItemStack", getItem, "()Lnet/minecraft/item/Item;", false));
         newInstr.add(new TypeInsnNode(Opcodes.INSTANCEOF, "net/darkhax/bookshelf/items/ItemHorseArmor"));
-       
+        
         LabelNode l8 = new LabelNode();
         newInstr.add(new JumpInsnNode(Opcodes.IFEQ, l8));
         newInstr.add(new InsnNode(Opcodes.ICONST_4));
         newInstr.add(new VarInsnNode(Opcodes.ISTORE, 4));
         newInstr.add(l8);
-       
+        
         newInstr.add(new FrameNode(Opcodes.F_SAME, 0, null, 0, null));
         
         method.instructions.insert(node, newInstr);
