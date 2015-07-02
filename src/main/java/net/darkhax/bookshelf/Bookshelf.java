@@ -1,15 +1,14 @@
 package net.darkhax.bookshelf;
 
-import net.darkhax.bookshelf.items.ItemHorseArmor;
-import net.darkhax.bookshelf.items.ItemTest;
+import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.util.Constants;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION)
 public class Bookshelf {
@@ -25,7 +24,7 @@ public class Bookshelf {
     
         proxy.preInit();
         
-        GameRegistry.registerItem(new ItemTest(), "testmail");
+        MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
     }
     
     @EventHandler

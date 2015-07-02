@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.items;
 
+import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -41,5 +42,5 @@ public abstract class ItemHorseArmor extends Item {
     public abstract String getArmorTexture (EntityHorse horse, ItemStack stack);
     
     @SideOnly(Side.CLIENT)
-    public abstract void onArmorRendering ();
+    public abstract void onArmorRendering (EntityHorse entity, ItemStack stack, RendererLivingEntity renderer, double posX, double posY, double posZ, int flag);
 }
