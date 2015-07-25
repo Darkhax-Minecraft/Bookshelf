@@ -1,5 +1,7 @@
 package net.darkhax.bookshelf.util;
 
+import java.util.Random;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,4 +13,5 @@ public class Constants {
     public static final String PROXY_CLIENT = "net.darkhax.bookshelf.client.ProxyClient";
     public static final String PROXY_COMMON = "net.darkhax.bookshelf.common.ProxyCommon";
     public static final Logger LOG = LogManager.getLogger(MOD_NAME);
+    public static final Random RANDOM = new Random();
 }

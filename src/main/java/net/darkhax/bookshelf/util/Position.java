@@ -1,9 +1,14 @@
 package net.darkhax.bookshelf.util;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 
 public class Position {
     
@@ -19,8 +24,8 @@ public class Position {
     /**
      * Creates an instance of Position using a NBTTagCompound.
      * 
-     * @param nbt: A NBTTagCompound containing the required information to create a
-     *            Position instance.
+     * @param nbt: A NBTTagCompound containing the required information to create a Position
+     *            instance.
      */
     public Position(NBTTagCompound nbt) {
     
@@ -28,8 +33,8 @@ public class Position {
     }
     
     /**
-     * Creates an instance of a Position using an entity. Positions are grabbed from the
-     * entity object provided.
+     * Creates an instance of a Position using an entity. Positions are grabbed from the entity
+     * object provided.
      * 
      * @param entity: Instance of any minecraft entity.
      */
@@ -39,8 +44,8 @@ public class Position {
     }
     
     /**
-     * Creates an instance of a Position using three integer coordinates. Should be used if
-     * you don't care about precision.
+     * Creates an instance of a Position using three integer coordinates. Should be used if you
+     * don't care about precision.
      * 
      * @param x: The X position to store.
      * @param y: The Y position to store.
@@ -57,8 +62,8 @@ public class Position {
      * Moves the position of this instance to the North by the specified distance.
      * 
      * @param distance: The distance to move the position by.
-     * @return Position: A new Position instance, which has been translated north by
-     *         the specified distance.
+     * @return Position: A new Position instance, which has been translated north by the
+     *         specified distance.
      */
     public void translateNorth (int distance) {
     
@@ -113,6 +118,18 @@ public class Position {
     public void translateDown (int distance) {
     
         this.translate(0, -distance, 0);
+    }
+    
+    /**
+     * Provides a way to translate a Position by using an EnumFacing. Particularly useful when
+     * you don't necessarily know the direction.
+     * 
+     * @param facing: The EnumFacing to translate by.
+     * @param distance: The distance to translate in a particular direction.
+     */
+    public void translate (EnumFacing facing, int distance) {
+    
+        this.translate(facing.getFrontOffsetX() * distance, facing.getFrontOffsetY() * distance, facing.getFrontOffsetZ() * distance);
     }
     
     /**
@@ -194,6 +211,93 @@ public class Position {
         player.setPositionAndUpdate(positionX, positionY, positionZ);
     }
     
+    /**
+     * Retrieves the Block at this position within the world.
+     * 
+     * @param world: The world to grab the Block from.
+     * @return Block: The Block which is found at this current position. May be null, or
+     *         reference Air.
+     */
+    public Block getBlockAtPosition (World world) {
+    
+        return world.getBlock(this.positionX, this.positionY, this.positionZ);
+    }
+    
+    /**
+     * Retrieves the meta value of the Block at this position within the world.
+     * 
+     * @param world: The world to grab the meta value from.
+     * @return int: The int representation of the meta at the current position. May be 0 if no
+     *         block is found.
+     */
+    public int getMetaAtPosition (World world) {
+    
+        return world.getBlockMetadata(this.positionX, this.positionY, this.positionZ);
+    }
+    
+    /**
+     * Retrieves the TileEntity at the current position within the world.
+     * 
+     * @param world: The world to grab the TileEntity from.
+     * @return TileEntity: The TileEntity at the current position. This may be null.
+     */
+    public TileEntity getTileEntityAtPosition (World world) {
+    
+        return world.getTileEntity(this.positionX, this.positionY, this.positionZ);
+    }
+    
+    /**
+     * Retrieves the BiomeGenBase atht he current position within the world.
+     * 
+     * @param world: The world to grab the BiomeGenBase from.
+     * @return BiomeGenBase: The biome in place at the current position.
+     */
+    public BiomeGenBase getBiomeAtPosition (World world) {
+    
+        return world.getBiomeGenForCoords(this.positionX, this.positionZ);
+    }
+    
+    /**
+     * Sets the block at the current position to air.
+     * 
+     * @param world: The world to set the block within.
+     */
+    public void setBlockToAir (World world) {
+    
+        world.setBlockToAir(this.positionX, this.positionY, this.positionZ);
+    }
+    
+    /**
+     * Updates all neighbor positions that a change has occurred within this position.
+     * 
+     * @param world: The world to update positions within.
+     */
+    public void updateNeighborPositions (World world) {
+    
+        world.notifyBlocksOfNeighborChange(this.positionX, this.positionY, this.positionZ, this.getBlockAtPosition(world));
+    }
+    
+    /**
+     * Updates the metadata of the block at the current position.
+     * 
+     * @param world: The world to update the block in.
+     * @param meta: The meta value to assign the block at this position.
+     */
+    public void updateMetaData (World world, int meta) {
+    
+        world.setBlockMetadataWithNotify(this.positionX, this.positionY, this.positionZ, meta, 2);
+    }
+    
+    /**
+     * Simple way to create a basic copy of the current Position.
+     * 
+     * @return Position: A basic clone of the current Position.
+     */
+    public Position copy () {
+    
+        return new Position(this.positionX, this.positionY, this.positionZ);
+    }
+    
     @Override
     public boolean equals (Object obj) {
     
@@ -209,6 +313,6 @@ public class Position {
     @Override
     public String toString () {
     
-        return String.format("X:% Y:% Z:%", this.positionX, this.positionY, this.positionZ);
+        return "X: " + this.positionX + " Y: " + this.positionY + " Z: " + this.positionZ;
     }
 }
