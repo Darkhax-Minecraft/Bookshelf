@@ -32,7 +32,7 @@ public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
     @Override
     public void injectData (Map<String, Object> data) {
     
-        // ASMHelper.isMCP = (Boolean) data.get("runtimeDeobfuscationEnabled");
+        ASMHelper.isMCP = (Boolean) data.get("runtimeDeobfuscationEnabled");
     }
     
     @Override
