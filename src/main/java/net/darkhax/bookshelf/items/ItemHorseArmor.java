@@ -41,6 +41,19 @@ public abstract class ItemHorseArmor extends Item {
     @SideOnly(Side.CLIENT)
     public abstract String getArmorTexture (EntityHorse horse, ItemStack stack);
     
+    /**
+     * Provides a way to handle custom rendering when a horse is wearing this piece of horse
+     * armor. The parameters are based on those supplied by the RenderLivingEvent.
+     * 
+     * @param entity: Instance of the EntityHorse wearing our custom armor.
+     * @param stack: Instance of the ItemStack in the horses custom armor slot.
+     * @param renderer: Instance of the RendererLivingEntity for rendering purposes.
+     * @param posX: The entities x position.
+     * @param posY: The Entity's y position.
+     * @param posZ: The Entity's Z position.
+     * @param flag: A flag which can be used to check what rendering stage is being used. 0:pre
+     *            1:post 2:special-pre 3:special-post
+     */
     @SideOnly(Side.CLIENT)
     public abstract void onArmorRendering (EntityHorse entity, ItemStack stack, RendererLivingEntity renderer, double posX, double posY, double posZ, int flag);
 }
