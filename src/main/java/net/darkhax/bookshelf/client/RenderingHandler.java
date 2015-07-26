@@ -16,15 +16,21 @@ public class RenderingHandler {
     }
     
     @SubscribeEvent
-    public void onEntityRender (RenderLivingEvent.Specials event) {
+    public void onEntityRender (RenderLivingEvent.Post event) {
     
         triggerRenderHook(event, 1);
     }
     
     @SubscribeEvent
-    public void onEntityRender (RenderLivingEvent.Post event) {
+    public void onEntityRender (RenderLivingEvent.Specials.Pre event) {
     
         triggerRenderHook(event, 2);
+    }
+    
+    @SubscribeEvent
+    public void onEntityRender (RenderLivingEvent.Specials.Post event) {
+    
+        triggerRenderHook(event, 3);
     }
     
     /**
@@ -33,8 +39,8 @@ public class RenderingHandler {
      * 
      * @param event: The event containing all the data we need to check if we should call the
      *            hook, and provide the hook with.
-     * @param flag: An integer which represents the rendering stage. 0 = pre, 1 = specials, 2 =
-     *            post.
+     * @param flag: An integer which represents the rendering stage. 0:pre 1:post 2:special-pre
+     *            3:special-post
      */
     public void triggerRenderHook (RenderLivingEvent event, int flag) {
     
