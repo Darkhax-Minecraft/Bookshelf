@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -23,16 +23,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class Utilities {
-    
-    /**
-     * Retrieves an instance of the player from the client side. This code only exists in
-     * client side code and can not be used in server side code.
-     */
-    @SideOnly(Side.CLIENT)
-    public static EntityPlayer thePlayer () {
-    
-        return Minecraft.getMinecraft().thePlayer;
-    }
     
     /**
      * This method can be used to round a double to a certain amount of places.
@@ -79,54 +69,22 @@ public class Utilities {
         return list;
     }
     
-    // TODO add docs
-    public static MovingObjectPosition rayTrace (World world, EntityPlayer player, int length) {
+    /**
+     * Creates a MovingObjectPosition based on where a player is looking.
+     * 
+     * @param player: The player to get the looking position of.
+     * @param length: The distance to go outwards from the player, the maximum "reach". Default
+     *            reach is 4.5D.
+     * @return MovingObjectPosition: A MovingObjectPosition containing the exact location where
+     *         the player is looking.
+     */
+    public static MovingObjectPosition rayTrace (EntityPlayer player, double length) {
     
         Vec3 vec1 = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         Vec3 vec2 = player.getLookVec();
         Vec3 vec3 = vec1.addVector(vec2.xCoord * length, vec2.yCoord * length, vec2.zCoord * length);
         
-        return world.rayTraceBlocks(vec1, vec3);
-    }
-    
-    public static void sendPlayerToPosition (EntityPlayer player, MovingObjectPosition position) {
-    
-        if ((position != null) && (position.typeOfHit == MovingObjectType.BLOCK)) {
-            
-            Position pos = new Position(position);
-            
-            switch (position.sideHit) {
-            
-                case 0:
-                    pos.translateDown(1);
-                    break;
-                
-                case 1:
-                    pos.translateUp(1);
-                    break;
-                
-                case 2:
-                    pos.translateNorth(1);
-                    break;
-                
-                case 3:
-                    pos.translateSouth(1);
-                    break;
-                
-                case 4:
-                    pos.translateWest(1);
-                    break;
-                
-                case 5:
-                    pos.translateEast(1);
-                    break;
-                
-                default:
-                    pos.translateUp(1);
-            }
-            
-            pos.sendEntityToPosition(player);
-        }
+        return player.worldObj.rayTraceBlocks(vec1, vec3);
     }
     
     /**
@@ -146,7 +104,7 @@ public class Utilities {
      * 
      * @param stack: ItemStack having a tag set on it.
      */
-    public static NBTTagCompound prepareStackTag (ItemStack stack) {
+    public static NBTTagCompound preparedataTag (ItemStack stack) {
     
         if (!stack.hasTagCompound())
             stack.setTagCompound(new NBTTagCompound());
@@ -155,64 +113,55 @@ public class Utilities {
     }
     
     /**
-     * Adds a value to the stack's tag.
+     * Sets an unknown data type to an NBTTagCompound. If the type of the data can not be
+     * identified, and exception will be thrown. Current supported data types include String,
+     * Integer, Float, Boolean, Double, Long, Short, Byte, ItemStack, Entity and Position.
      * 
-     * @param stack: Stack being used.
-     * @param tagName: Name of the tag.
-     * @param value: Value being set, supports most data types that nbt supports.
+     * @param dataTag: An NBTTagCompound to write this unknown data to.
+     * @param tagName: The name to save this unknown data under.
+     * @param value: The unknown data you wish to write to the dataTag.
      */
-    public static void prepareStackNBT (ItemStack stack, String tagName, Object value) {
+    public static void setGenericNBTValue (NBTTagCompound dataTag, String tagName, Object value) {
     
-        prepareStackTag(stack);
-        NBTTagCompound stackTag = stack.stackTagCompound;
+        if (value instanceof String)
+            dataTag.setString(tagName, (String) value);
         
-        if (value instanceof String) {
+        else if (value instanceof Integer)
+            dataTag.setInteger(tagName, (Integer) value);
+        
+        else if (value instanceof Float)
+            dataTag.setFloat(tagName, (Float) value);
+        
+        else if (value instanceof Boolean)
+            dataTag.setBoolean(tagName, (Boolean) value);
+        
+        else if (value instanceof Double)
+            dataTag.setDouble(tagName, (Double) value);
+        
+        else if (value instanceof Long)
+            dataTag.setLong(tagName, (Long) value);
+        
+        else if (value instanceof Short)
+            dataTag.setShort(tagName, (Short) value);
+        
+        else if (value instanceof Byte)
+            dataTag.setByte(tagName, (Byte) value);
+        
+        else if (value instanceof ItemStack)
+            dataTag.setTag(tagName, ((ItemStack) value).writeToNBT(new NBTTagCompound()));
+        
+        else if (value instanceof Position)
+            dataTag.setTag(tagName, ((Position) value).write(new NBTTagCompound()));
+        
+        else if (value instanceof Entity) {
             
-            stackTag.setString(tagName, (String) value);
-            return;
+            NBTTagCompound newTag = new NBTTagCompound();
+            ((Entity) value).writeToNBT(newTag);
+            dataTag.setTag(tagName, newTag);
         }
         
-        if (value instanceof Integer) {
-            
-            stackTag.setInteger(tagName, (Integer) value);
-            return;
-        }
-        
-        if (value instanceof Float) {
-            
-            stackTag.setFloat(tagName, (Float) value);
-            return;
-        }
-        
-        if (value instanceof Boolean) {
-            
-            stackTag.setBoolean(tagName, (Boolean) value);
-            return;
-        }
-        
-        if (value instanceof Double) {
-            
-            stackTag.setDouble(tagName, (Double) value);
-            return;
-        }
-        
-        if (value instanceof Long) {
-            
-            stackTag.setLong(tagName, (Long) value);
-            return;
-        }
-        
-        if (value instanceof Short) {
-            
-            stackTag.setShort(tagName, (Short) value);
-            return;
-        }
-        
-        if (value instanceof Byte) {
-            
-            stackTag.setByte(tagName, (Byte) value);
-            return;
-        }
+        else
+            throw new UnsupportedTypeException(value);
     }
     
     /**
@@ -239,6 +188,16 @@ public class Utilities {
         horse.getDataWatcher().updateObject(23, stack);
     }
     
+    /**
+     * Retrieves an instance of EntityPlayer based on a UUID. For this to work, the player must
+     * currently be online, and within the world.
+     * 
+     * @param world: The world in which the target player resides.
+     * @param playerID: A unique identifier associated with the target player.
+     * @return EntityPlayer: If the target player is online and within the targeted world,
+     *         their EntityPlayer instance will be returned. If the player is not found, null
+     *         will be returned.
+     */
     public static EntityPlayer getPlayerFromUUID (World world, UUID playerID) {
     
         for (Object playerEntry : world.playerEntities) {
@@ -253,5 +212,30 @@ public class Utilities {
         }
         
         return null;
+    }
+    
+    /**
+     * Retrieves an instance of the player from the client side. This code only exists in
+     * client side code and can not be used in server side code.
+     */
+    @SideOnly(Side.CLIENT)
+    public static EntityPlayer thePlayer () {
+    
+        return Minecraft.getMinecraft().thePlayer;
+    }
+    
+    public static class UnsupportedTypeException extends RuntimeException {
+        
+        /**
+         * An exception that is thrown when an unsupported Object type is being worked with.
+         * Used when working with generic Object Types. This exception will print the class,
+         * and the toString() for unknown data type.
+         * 
+         * @param data: The unsupported type.
+         */
+        public UnsupportedTypeException(Object data) {
+        
+            super("The data type of " + data.getClass().toString() + " is currently not supported." + Constants.NEW_LINE + "Raw Data: " + data.toString());
+        }
     }
 }

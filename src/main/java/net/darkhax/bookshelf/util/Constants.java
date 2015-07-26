@@ -14,4 +14,6 @@ public class Constants {
     public static final String PROXY_COMMON = "net.darkhax.bookshelf.common.ProxyCommon";
     public static final Logger LOG = LogManager.getLogger(MOD_NAME);
     public static final Random RANDOM = new Random();
+    
+    public static final String NEW_LINE = System.getProperty("line.separator");
 }
