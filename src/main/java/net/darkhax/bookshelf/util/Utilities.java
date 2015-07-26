@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -212,6 +213,30 @@ public class Utilities {
             stackTag.setByte(tagName, (Byte) value);
             return;
         }
+    }
+    
+    /**
+     * Retrieves the ItemStack placed in an EntityHorse's custom armor inventory slot.
+     * 
+     * @param horse: An instance of the EntityHorse to grab the armor ItemStack from.
+     * @return ItemStack: The ItemStack in the horses custom armor slot. This ItemStack maybe
+     *         null, and won't always be an instance of ItemHorseArmor.
+     */
+    public static ItemStack getCustomHorseArmor (EntityHorse horse) {
+    
+        return horse.getDataWatcher().getWatchableObjectItemStack(23);
+    }
+    
+    /**
+     * Allows for a custom ItemStack to be set to an EntityHorse's custom armor inventory slot.
+     * 
+     * @param horse: An instance of the EntityHorse to set the ItemStack to.
+     * @param stack: An ItemStack you want to set to an EntityHorse's custom armor inventory
+     *            slot.
+     */
+    public static void setCustomHorseArmor (EntityHorse horse, ItemStack stack) {
+    
+        horse.getDataWatcher().updateObject(23, stack);
     }
     
     public static EntityPlayer getPlayerFromUUID (World world, UUID playerID) {
