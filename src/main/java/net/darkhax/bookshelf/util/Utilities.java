@@ -124,7 +124,7 @@ public class Utilities {
                     pos.translateUp(1);
             }
             
-            pos.sendPlayerToPos(player);
+            pos.sendEntityToPosition(player);
         }
     }
     
