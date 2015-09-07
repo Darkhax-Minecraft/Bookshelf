@@ -430,6 +430,12 @@ public final class Position implements Comparable<Position>, Serializable {
     }
     
     @Override
+    public Object clone () {
+    
+        return new Position(x, y, z);
+    }
+    
+    @Override
     public boolean equals (Object compared) {
     
         if (!(compared instanceof Position))
