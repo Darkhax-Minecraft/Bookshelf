@@ -13,6 +13,7 @@ public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass () {
     
+        ASMHelper.isASMEnabled = true;
         Constants.LOG.info("Starting to apply transformations");
         return new String[] { EntityHorseTransformer.class.getName() };
     }

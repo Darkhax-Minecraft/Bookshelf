@@ -1,6 +1,8 @@
 package net.darkhax.bookshelf.handler;
 
+import net.darkhax.bookshelf.asm.ASMHelper;
 import net.darkhax.bookshelf.items.ItemHorseArmor;
+import net.darkhax.bookshelf.util.Constants;
 import net.darkhax.bookshelf.util.Utilities;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.item.ItemStack;
@@ -12,7 +14,10 @@ public class ForgeEventHandler {
     @SubscribeEvent
     public void onEntityUpdate (LivingUpdateEvent event) {
     
-        if (event.entity instanceof EntityHorse) {
+        if (!ASMHelper.isASMEnabled)
+            Constants.LOG.warn("The ASM has not been initialized, there is an error with your setup!");
+        
+        else if (event.entity instanceof EntityHorse) {
             
             EntityHorse horse = (EntityHorse) event.entity;
             ItemStack customArmor = Utilities.getCustomHorseArmor(horse);

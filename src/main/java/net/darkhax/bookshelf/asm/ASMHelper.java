@@ -24,6 +24,7 @@ import org.objectweb.asm.tree.MethodNode;
 public final class ASMHelper {
     
     public static boolean isMCP = true;
+    public static boolean isASMEnabled = false;
     
     /**
      * Provides an easy way to retrieve an appropriate mapping, based on if the environement is
