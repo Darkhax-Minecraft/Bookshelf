@@ -6,15 +6,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.IFluidBlock;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.text.WordUtils;
@@ -212,6 +219,58 @@ public class Utilities {
         }
         
         return null;
+    }
+    
+    /**
+     * Checks if a block is a fluid or not.
+     * 
+     * @param block: An instance of the block being checked.
+     * @return boolean: If the block is a fluid, true will be returned. If not, false will be
+     *         returned.
+     */
+    public static boolean isFluid (Block block) {
+    
+        return (block == Blocks.lava || block == Blocks.water || block instanceof IFluidBlock);
+    }
+    
+    /**
+     * A simple check to make sure that an EntityPlayer actually exists.
+     * 
+     * @param player: The instance of EntityPlayer to check.
+     * @return boolean: If the player exists true will be returned. If they don't false will be
+     *         returned.
+     */
+    public static boolean isPlayerReal (EntityPlayer player) {
+    
+        if (player == null || player.worldObj == null || player.getClass() != EntityPlayerMP.class)
+            return false;
+        
+        return MinecraftServer.getServer().getConfigurationManager().playerEntityList.contains(player);
+    }
+    
+    /**
+     * Sets the lore for an ItemStack. This will override any existing lore on that item.
+     * 
+     * @param stack: An instance of an ItemStack to write the lore to.
+     * @param lore: An array containing the lore to write. Each line is a new entry.
+     * @return ItemStack: The same instance of ItemStack that was passed to this method.
+     */
+    public static ItemStack setLore (ItemStack stack, String[] lore) {
+    
+        preparedataTag(stack);
+        NBTTagCompound tag = stack.getTagCompound();
+        NBTTagList loreList = new NBTTagList();
+        
+        if (!tag.hasKey("display", 10))
+            tag.setTag("display", new NBTTagCompound());
+        
+        for (String line : lore)
+            loreList.appendTag(new NBTTagString(line));
+        
+        tag.getCompoundTag("display").setTag("Lore", loreList);
+        stack.setTagCompound(tag);
+        
+        return stack;
     }
     
     /**
