@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,7 +25,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @param pos: A MovingObjectPosition containing block coordinates.
      */
     public Position(MovingObjectPosition pos) {
-    
+        
         this(pos.blockX, pos.blockY, pos.blockZ);
     }
     
@@ -34,7 +35,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @param entity: An Entity containing position coordinates.
      */
     public Position(Entity entity) {
-    
+        
         this((int) entity.posX, (int) entity.posY, (int) entity.posZ);
     }
     
@@ -44,7 +45,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @param tag: An NBTTagCompound which contains coordinate data.
      */
     public Position(NBTTagCompound tag) {
-    
+        
         this(tag.getInteger("positionX"), tag.getInteger("positionY"), tag.getInteger("positionZ"));
     }
     
@@ -57,8 +58,18 @@ public final class Position implements Comparable<Position>, Serializable {
      *             IOException causes.
      */
     public Position(DataInputStream inputStream) throws IOException {
-    
+        
         this(inputStream.readInt(), inputStream.readInt(), inputStream.readInt());
+    }
+    
+    /**
+     * Constructs a Position from a ByteBuf. Useful for reading from a network.
+     * 
+     * @param buf: The ByteBuf to read the data from.
+     */
+    public Position(ByteBuf buf) {
+        
+        this(buf.readInt(), buf.readInt(), buf.readInt());
     }
     
     /**
@@ -69,7 +80,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @param z: The Z coordinate for this Position.
      */
     public Position(int x, int y, int z) {
-    
+        
         this.x = x;
         this.y = y;
         this.z = z;
@@ -81,7 +92,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return int: The X coordinate.
      */
     public int getX () {
-    
+        
         return x;
     }
     
@@ -91,7 +102,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return int: The Y coordinate.
      */
     public int getY () {
-    
+        
         return y;
     }
     
@@ -101,7 +112,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return int: The Z coordinate.
      */
     public int getZ () {
-    
+        
         return z;
     }
     
@@ -114,7 +125,7 @@ public final class Position implements Comparable<Position>, Serializable {
      *             IOException causes.
      */
     public void write (DataOutputStream dataStream) throws IOException {
-    
+        
         dataStream.writeInt(x);
         dataStream.writeInt(y);
         dataStream.writeInt(z);
@@ -126,11 +137,23 @@ public final class Position implements Comparable<Position>, Serializable {
      * @param tag: The NBTTagCompound to write the coordinates to.
      */
     public NBTTagCompound write (NBTTagCompound tag) {
-    
+        
         tag.setInteger("positionX", x);
         tag.setInteger("positionY", y);
         tag.setInteger("positionZ", z);
         return tag;
+    }
+    
+    /**
+     * Writes the coordinates to a ByteBuf. Useful for sending a Position through a packet.
+     * 
+     * @param buf: The ByteBuf to write this data to.
+     */
+    public void write (ByteBuf buf) {
+        
+        buf.writeInt(x);
+        buf.writeInt(y);
+        buf.writeInt(z);
     }
     
     /**
@@ -142,7 +165,7 @@ public final class Position implements Comparable<Position>, Serializable {
      *         the specified direction.
      */
     public Position offset (int direction) {
-    
+        
         return offset(direction, 1);
     }
     
@@ -157,9 +180,9 @@ public final class Position implements Comparable<Position>, Serializable {
      *         amount of blocks in the specified direction.
      */
     public Position offset (int direction, int amount) {
-    
-        switch (direction) {
         
+        switch (direction) {
+            
             case 0:
                 return translateDown(amount);
             case 1:
@@ -188,7 +211,7 @@ public final class Position implements Comparable<Position>, Serializable {
      *         Position, translated along all axis using the specified distances.
      */
     public Position translate (int x, int y, int z) {
-    
+        
         return new Position(this.x + x, this.y + y, this.z + z);
     }
     
@@ -198,7 +221,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return Position: A new Position that has been translated upwards by one block.
      */
     public Position translateUp () {
-    
+        
         return new Position(x, y + 1, z);
     }
     
@@ -211,7 +234,7 @@ public final class Position implements Comparable<Position>, Serializable {
      *         amount of blocks.
      */
     public Position translateUp (int distance) {
-    
+        
         return new Position(x, y + distance, z);
     }
     
@@ -221,7 +244,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return Position: A new Position that has been translated downwards by one block.
      */
     public Position translateDown () {
-    
+        
         return new Position(x, y - 1, z);
     }
     
@@ -234,7 +257,7 @@ public final class Position implements Comparable<Position>, Serializable {
      *         amount of blocks.
      */
     public Position translateDown (int distance) {
-    
+        
         return new Position(x, y - distance, z);
     }
     
@@ -244,7 +267,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return Position: A new Position that has been translated downwards by one block.
      */
     public Position translateNorth () {
-    
+        
         return new Position(x, y, z - 1);
     }
     
@@ -256,7 +279,7 @@ public final class Position implements Comparable<Position>, Serializable {
      *         of blocks.
      */
     public Position translateNorth (int distance) {
-    
+        
         return new Position(x, y, z - distance);
     }
     
@@ -266,7 +289,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return Position: A new Position that has been translated south by one block.
      */
     public Position translateSouth () {
-    
+        
         return new Position(x, y, z + 1);
     }
     
@@ -278,7 +301,7 @@ public final class Position implements Comparable<Position>, Serializable {
      *         of blocks.
      */
     public Position translateSouth (int distance) {
-    
+        
         return new Position(x, y, z + distance);
     }
     
@@ -288,7 +311,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return Position: A new Position that has been translated west by one block.
      */
     public Position translateWest () {
-    
+        
         return new Position(x - 1, y, z);
     }
     
@@ -300,7 +323,7 @@ public final class Position implements Comparable<Position>, Serializable {
      *         of blocks.
      */
     public Position translateWest (int distance) {
-    
+        
         return new Position(x - distance, y, z);
     }
     
@@ -310,7 +333,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return Position: A new Position that has been translated east by one block.
      */
     public Position translateEast () {
-    
+        
         return new Position(x + 1, y, z);
     }
     
@@ -322,7 +345,7 @@ public final class Position implements Comparable<Position>, Serializable {
      *         of blocks.
      */
     public Position translateEast (int distance) {
-    
+        
         return new Position(x + distance, y, z);
     }
     
@@ -333,7 +356,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return double: The distance between this position and the provided positon.
      */
     public double getDistance (Position pos) {
-    
+        
         return getDistance(pos.x, pos.y, pos.z);
     }
     
@@ -346,7 +369,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return double: The distance between this position and the provided set of coordinates.
      */
     public double getDistance (int x, int y, int z) {
-    
+        
         int distanceX = this.x - x;
         int distanceY = this.y - y;
         int distanceZ = this.z - z;
@@ -361,7 +384,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return boolean: true if there is a block, false if there is not.
      */
     public boolean isBlockAtPosition (World world) {
-    
+        
         return getBlockAtPosition(world) != null;
     }
     
@@ -372,7 +395,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return Block: The Block that is found at this Position.
      */
     public Block getBlockAtPosition (World world) {
-    
+        
         return world.getBlock(x, y, z);
     }
     
@@ -383,7 +406,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @param block: The Block that you wish tho place at this Position.
      */
     public void setBlockAtPosition (World world, Block block) {
-    
+        
         world.setBlock(x, y, z, block);
     }
     
@@ -393,7 +416,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @param world: An instance of the world to replace the Block in.
      */
     public void setBlockAtPositionToAir (World world) {
-    
+        
         world.setBlockToAir(x, y, z);
     }
     
@@ -404,7 +427,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return int: An integer which represents the meta damage of the Block at this position.
      */
     public int getMetaAtPosition (World world) {
-    
+        
         return world.getBlockMetadata(x, y, z);
     }
     
@@ -415,7 +438,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @param meta: The desired meta value for the Block at this Position.
      */
     public void setMetaAtPosition (World world, int meta) {
-    
+        
         world.setBlockMetadataWithNotify(x, y, z, meta, 2);
     }
     
@@ -425,41 +448,41 @@ public final class Position implements Comparable<Position>, Serializable {
      * @param entity: The EntityLivingBase you wish to send to this position.
      */
     public void sendEntityToPosition (EntityLivingBase entity) {
-    
+        
         entity.setPositionAndUpdate(x, y, z);
     }
     
     @Override
     public Object clone () {
-    
+        
         return new Position(x, y, z);
     }
     
     @Override
     public boolean equals (Object compared) {
-    
+        
         if (!(compared instanceof Position))
             return false;
-        
+            
         Position p = (Position) compared;
         return x == p.x && y == p.y && z == p.z;
     }
     
     @Override
     public int hashCode () {
-    
+        
         return (y & 0xff) | ((x & 0x7fff) << 8) | ((z & 0x7fff) << 24) | ((x < 0) ? 0x0080000000 : 0) | ((z < 0) ? 0x0000008000 : 0);
     }
     
     @Override
     public int compareTo (Position pos) {
-    
+        
         return (y == pos.y) ? (z == pos.z) ? x - pos.x : z - pos.z : y - pos.y;
     }
     
     @Override
     public String toString () {
-    
+        
         return "X: " + x + " Y:" + y + " Z:" + z;
     }
 }
