@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.client;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.darkhax.bookshelf.asm.ASMHelper;
 import net.darkhax.bookshelf.items.ItemHorseArmor;
 import net.darkhax.bookshelf.util.Constants;
@@ -7,31 +8,30 @@ import net.darkhax.bookshelf.util.Utilities;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderLivingEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class RenderingHandler {
     
     @SubscribeEvent
     public void onEntityRender (RenderLivingEvent.Pre event) {
-    
+        
         triggerRenderHook(event, 0);
     }
     
     @SubscribeEvent
     public void onEntityRender (RenderLivingEvent.Post event) {
-    
+        
         triggerRenderHook(event, 1);
     }
     
     @SubscribeEvent
     public void onEntityRender (RenderLivingEvent.Specials.Pre event) {
-    
+        
         triggerRenderHook(event, 2);
     }
     
     @SubscribeEvent
     public void onEntityRender (RenderLivingEvent.Specials.Post event) {
-    
+        
         triggerRenderHook(event, 3);
     }
     
@@ -45,10 +45,10 @@ public class RenderingHandler {
      *            3:special-post
      */
     public void triggerRenderHook (RenderLivingEvent event, int flag) {
-    
+        
         if (!ASMHelper.isASMEnabled)
             Constants.LOG.warn("The ASM has not been initialized, there is an error with your setup!");
-        
+            
         else if (event.entity instanceof EntityHorse) {
             
             EntityHorse horse = (EntityHorse) event.entity;

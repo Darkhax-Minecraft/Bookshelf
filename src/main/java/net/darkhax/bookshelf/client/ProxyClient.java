@@ -7,7 +7,7 @@ public class ProxyClient extends ProxyCommon {
     
     @Override
     public void preInit () {
-    
+        
         MinecraftForge.EVENT_BUS.register(new RenderingHandler());
     }
     

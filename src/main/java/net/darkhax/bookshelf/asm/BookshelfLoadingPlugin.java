@@ -2,8 +2,8 @@ package net.darkhax.bookshelf.asm;
 
 import java.util.Map;
 
-import net.darkhax.bookshelf.util.Constants;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import net.darkhax.bookshelf.util.Constants;
 
 @IFMLLoadingPlugin.SortingIndex(1001)
 @IFMLLoadingPlugin.TransformerExclusions("net.darkhax.bookshelf.asm")
@@ -12,7 +12,7 @@ public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
     
     @Override
     public String[] getASMTransformerClass () {
-    
+        
         ASMHelper.isASMEnabled = true;
         Constants.LOG.info("Starting to apply transformations");
         return new String[] { EntityHorseTransformer.class.getName() };
@@ -20,25 +20,25 @@ public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
     
     @Override
     public String getModContainerClass () {
-    
+        
         return null;
     }
     
     @Override
     public String getSetupClass () {
-    
+        
         return null;
     }
     
     @Override
     public void injectData (Map<String, Object> data) {
-    
+        
         ASMHelper.isMCP = (Boolean) data.get("runtimeDeobfuscationEnabled");
     }
     
     @Override
     public String getAccessTransformerClass () {
-    
+        
         return null;
     }
 }

@@ -12,8 +12,6 @@
  *******************************************************************************************************************/
 package net.darkhax.bookshelf.asm;
 
-import net.minecraft.launchwrapper.IClassTransformer;
-
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
@@ -33,19 +31,21 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import net.minecraft.launchwrapper.IClassTransformer;
+
 public class EntityHorseTransformer implements IClassTransformer {
     
     @Override
     public byte[] transform (String name, String transformedName, byte[] bytes) {
-    
+        
         if (transformedName.equals("net.minecraft.entity.passive.EntityHorse"))
             return transformHorse(bytes);
-        
+            
         return bytes;
     }
     
     private static byte[] transformHorse (byte[] bytes) {
-    
+        
         ClassNode horseClass = ASMHelper.createClassFromByteArray(bytes);
         
         injectGetCustomBookshelfArmor(horseClass);
@@ -64,7 +64,7 @@ public class EntityHorseTransformer implements IClassTransformer {
         }
         
         catch (ASMHelper.MethodNotFoundException e) {
-            
+        
         }
         
         return ASMHelper.createByteArrayFromClass(horseClass, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
@@ -77,7 +77,7 @@ public class EntityHorseTransformer implements IClassTransformer {
      * @param horseClass: A ClassNode representation of the EntityHorse class.
      */
     private static void injectGetCustomBookshelfArmor (ClassNode horseClass) {
-    
+        
         MethodNode newMethod = new MethodNode(Opcodes.ACC_PRIVATE, "getCustomBookshelfArmor", "()Lnet/minecraft/item/ItemStack;", null, null);
         newMethod.visitCode();
         
@@ -105,7 +105,7 @@ public class EntityHorseTransformer implements IClassTransformer {
      * @param horseClass: A ClassNode representation of the EntityHorse class.
      */
     private static void injectSetCustomBoookhelfArmor (ClassNode horseClass) {
-    
+        
         MethodNode newMethod = new MethodNode(Opcodes.ACC_PRIVATE, "setCustomBookshelfArmor", "(Lnet/minecraft/item/ItemStack;)V", null, null);
         newMethod.visitCode();
         
@@ -152,7 +152,7 @@ public class EntityHorseTransformer implements IClassTransformer {
      * @param method: Instance of a MethodNode representation of the getTotalArmorValue method.
      */
     private static void transformGetTotalArmorValue (MethodNode method) {
-    
+        
         InsnList needle = new InsnList();
         needle.add(new LabelNode());
         needle.add(new LineNumberNode(-1, new LabelNode()));
@@ -195,7 +195,7 @@ public class EntityHorseTransformer implements IClassTransformer {
      * @param method: Instance of a MethodNode representation of the onInventoryChanged method.
      */
     private static void transformOnInventoryChanged (MethodNode method) {
-    
+        
         InsnList needle = new InsnList();
         needle.add(new VarInsnNode(Opcodes.ALOAD, 0));
         needle.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "net/minecraft/entity/passive/EntityHorse", isHorseSaddled, "()Z", false));
@@ -255,7 +255,7 @@ public class EntityHorseTransformer implements IClassTransformer {
      *            method.
      */
     private static void transformSetHorseTexturePaths (MethodNode method) {
-    
+        
         InsnList needle = new InsnList();
         needle.add(new VarInsnNode(Opcodes.ALOAD, 0));
         needle.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "net/minecraft/entity/passive/EntityHorse", getHorseArmorIndexSynced, "()I", false));
@@ -323,7 +323,7 @@ public class EntityHorseTransformer implements IClassTransformer {
      * @param method: Instance of a MethodNode representation of the updateHorseSlots method.
      */
     private static void transformUpdateHorseSlots (MethodNode method) {
-    
+        
         InsnList needle = new InsnList();
         needle.add(new VarInsnNode(Opcodes.ALOAD, 0));
         needle.add(new VarInsnNode(Opcodes.ALOAD, 0));
@@ -351,7 +351,7 @@ public class EntityHorseTransformer implements IClassTransformer {
      * @param method: Instance of a MethodNode representation of the entityInit method.
      */
     private static void transformEntityInit (MethodNode method) {
-    
+        
         InsnList needle = new InsnList();
         needle.add(new VarInsnNode(Opcodes.ALOAD, 0));
         needle.add(new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/entity/passive/EntityHorse", dataWatcher, "Lnet/minecraft/entity/DataWatcher;"));
@@ -384,7 +384,7 @@ public class EntityHorseTransformer implements IClassTransformer {
      * @param method: Instance of a MethodNode representation of the isValidArmor method.
      */
     private static void transformIsValidArmor (MethodNode method) {
-    
+        
         InsnList needle = new InsnList();
         needle.add(new VarInsnNode(Opcodes.ALOAD, 0));
         needle.add(new FieldInsnNode(Opcodes.GETSTATIC, "net/minecraft/init/Items", iron_horse_armor, "Lnet/minecraft/item/Item;"));
@@ -413,7 +413,7 @@ public class EntityHorseTransformer implements IClassTransformer {
      * @param method
      */
     private static void transformInteract (MethodNode method) {
-    
+        
         InsnList needle = new InsnList();
         needle.add(new FieldInsnNode(Opcodes.GETSTATIC, "net/minecraft/init/Items", diamond_horse_armor, "Lnet/minecraft/item/Item;"));
         needle.add(new JumpInsnNode(Opcodes.IF_ACMPNE, new LabelNode()));

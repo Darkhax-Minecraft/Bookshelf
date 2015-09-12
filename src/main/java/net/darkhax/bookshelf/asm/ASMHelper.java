@@ -35,7 +35,7 @@ public final class ASMHelper {
      * @return String: The most appropriate mapping for this environment.
      */
     public static String getAppropriateMapping (String mcp, String srg) {
-    
+        
         return (isMCP) ? mcp : srg;
     }
     
@@ -48,7 +48,7 @@ public final class ASMHelper {
      * @return byte[]: A byte array representation of the ClassNode.
      */
     public static byte[] createByteArrayFromClass (ClassNode classNode, int flags) {
-    
+        
         ClassWriter classWriter = new ClassWriter(flags);
         classNode.accept(classWriter);
         return classWriter.toByteArray();
@@ -62,7 +62,7 @@ public final class ASMHelper {
      * @return ClassNode: A ClassNode representation of the class, built from the byte array.
      */
     public static ClassNode createClassFromByteArray (byte[] classBytes) {
-    
+        
         ClassNode classNode = new ClassNode();
         ClassReader classReader = new ClassReader(classBytes);
         classReader.accept(classNode, ClassReader.EXPAND_FRAMES);
@@ -78,11 +78,11 @@ public final class ASMHelper {
      * @return boolean: True if the method is found, false if it is not.
      */
     public static boolean hasClassMethodName (ClassNode classNode, String methodName) {
-    
+        
         for (MethodNode method : classNode.methods)
             if (methodName.equals(method.name))
                 return true;
-        
+                
         return false;
     }
     
@@ -98,11 +98,11 @@ public final class ASMHelper {
      *         not be found, a MethodNotFoundException will be thrown and the game will stop.
      */
     public static MethodNode getMethodFromClass (ClassNode classNode, String methodName, String descriptor) {
-    
+        
         for (MethodNode mnode : classNode.methods)
             if (methodName.equals(mnode.name) && descriptor.equals(mnode.desc))
                 return mnode;
-        
+                
         throw new MethodNotFoundException(methodName, descriptor);
     }
     
@@ -117,12 +117,12 @@ public final class ASMHelper {
      *         instructions. (the needle)
      */
     public static AbstractInsnNode findFirstNodeFromNeedle (InsnList haystack, InsnList needle) {
-    
+        
         List<AbstractInsnNode> ret = InstructionComparator.insnListFindStart(haystack, needle);
         
         if (ret.size() != 1)
             throw new InvalidNeedleException(ret.size());
-        
+            
         return ret.get(0);
     }
     
@@ -137,12 +137,12 @@ public final class ASMHelper {
      *         instructions. (the needle)
      */
     public static AbstractInsnNode findLastNodeFromNeedle (InsnList haystack, InsnList needle) {
-    
+        
         List<AbstractInsnNode> ret = InstructionComparator.insnListFindEnd(haystack, needle);
         
         if (ret.size() != 1)
             throw new InvalidNeedleException(ret.size());
-        
+            
         return ret.get(0);
     }
     
@@ -156,14 +156,14 @@ public final class ASMHelper {
      *            instruction list.
      */
     public static void removeNeedleFromHaystack (InsnList haystack, InsnList needle) {
-    
+        
         int firstInd = haystack.indexOf(findFirstNodeFromNeedle(haystack, needle));
         int lastInd = haystack.indexOf(findLastNodeFromNeedle(haystack, needle));
         List<AbstractInsnNode> realNeedle = new ArrayList<>();
         
         for (int i = firstInd; i <= lastInd; i++)
             realNeedle.add(haystack.get(i));
-        
+            
         for (AbstractInsnNode node : realNeedle)
             haystack.remove(node);
     }
@@ -178,7 +178,7 @@ public final class ASMHelper {
          * @param count: The amount of the specified needle which was found.
          */
         public InvalidNeedleException(int count) {
-        
+            
             super(count > 1 ? "More than one instance of the needle have been found!" : count < 1 ? "The needle was not found" : "There is a glitch in the matrix");
         }
     }
@@ -193,7 +193,7 @@ public final class ASMHelper {
          * @param methodDesc: The descriptor for the method being looked for.
          */
         public MethodNotFoundException(String methodName, String methodDesc) {
-        
+            
             super("Attempt to find a method has failed. Method: " + methodName + " Descriptor: " + methodDesc);
         }
     }

@@ -12,7 +12,7 @@ public class Tuple {
      * @param secondObj: The second object in the pair.
      */
     public Tuple(Object firstObj, Object secondObj) {
-    
+        
         this.firstObject = firstObj;
         this.secondObject = secondObj;
     }
@@ -23,7 +23,7 @@ public class Tuple {
      * @return Object: The first object stored in the Tuple instance.
      */
     public Object getFirstObject () {
-    
+        
         return this.firstObject;
     }
     
@@ -33,7 +33,7 @@ public class Tuple {
      * @return Object: The second object stored in the Tuple instance.
      */
     public Object getSecondObject () {
-    
+        
         return this.secondObject;
     }
 }

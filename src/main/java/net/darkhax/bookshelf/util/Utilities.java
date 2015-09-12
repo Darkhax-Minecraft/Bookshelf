@@ -6,6 +6,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -13,6 +18,7 @@ import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -22,12 +28,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
-
-import org.apache.commons.lang3.SystemUtils;
-import org.apache.commons.lang3.text.WordUtils;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class Utilities {
     
@@ -40,7 +40,7 @@ public class Utilities {
      *         specified.
      */
     public static double round (double value, int places) {
-    
+        
         if (value >= 0 && places > 0) {
             
             BigDecimal bd = new BigDecimal(value);
@@ -70,7 +70,7 @@ public class Utilities {
      *         wrapped to the ideal line length and then added.
      */
     public static List<String> wrapStringToList (String string, int lnLength, boolean wrapLongWords, List<String> list) {
-    
+        
         String strings[] = WordUtils.wrap(string, lnLength, null, wrapLongWords).split(SystemUtils.LINE_SEPARATOR);
         list.addAll(Arrays.asList(strings));
         return list;
@@ -86,7 +86,7 @@ public class Utilities {
      *         the player is looking.
      */
     public static MovingObjectPosition rayTrace (EntityPlayer player, double length) {
-    
+        
         Vec3 vec1 = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         Vec3 vec2 = player.getLookVec();
         Vec3 vec3 = vec1.addVector(vec2.xCoord * length, vec2.yCoord * length, vec2.zCoord * length);
@@ -102,7 +102,7 @@ public class Utilities {
      * @param max: The maximum value which can be returned by this method.
      */
     public static int nextIntInclusive (int min, int max) {
-    
+        
         return Constants.RANDOM.nextInt(max - min + 1) + min;
     }
     
@@ -112,10 +112,10 @@ public class Utilities {
      * @param stack: ItemStack having a tag set on it.
      */
     public static NBTTagCompound preparedataTag (ItemStack stack) {
-    
+        
         if (!stack.hasTagCompound())
             stack.setTagCompound(new NBTTagCompound());
-        
+            
         return stack.getTagCompound();
     }
     
@@ -129,37 +129,37 @@ public class Utilities {
      * @param value: The unknown data you wish to write to the dataTag.
      */
     public static void setGenericNBTValue (NBTTagCompound dataTag, String tagName, Object value) {
-    
+        
         if (value instanceof String)
             dataTag.setString(tagName, (String) value);
-        
+            
         else if (value instanceof Integer)
             dataTag.setInteger(tagName, (Integer) value);
-        
+            
         else if (value instanceof Float)
             dataTag.setFloat(tagName, (Float) value);
-        
+            
         else if (value instanceof Boolean)
             dataTag.setBoolean(tagName, (Boolean) value);
-        
+            
         else if (value instanceof Double)
             dataTag.setDouble(tagName, (Double) value);
-        
+            
         else if (value instanceof Long)
             dataTag.setLong(tagName, (Long) value);
-        
+            
         else if (value instanceof Short)
             dataTag.setShort(tagName, (Short) value);
-        
+            
         else if (value instanceof Byte)
             dataTag.setByte(tagName, (Byte) value);
-        
+            
         else if (value instanceof ItemStack)
             dataTag.setTag(tagName, ((ItemStack) value).writeToNBT(new NBTTagCompound()));
-        
+            
         else if (value instanceof Position)
             dataTag.setTag(tagName, ((Position) value).write(new NBTTagCompound()));
-        
+            
         else if (value instanceof Entity) {
             
             NBTTagCompound newTag = new NBTTagCompound();
@@ -179,7 +179,7 @@ public class Utilities {
      *         null, and won't always be an instance of ItemHorseArmor.
      */
     public static ItemStack getCustomHorseArmor (EntityHorse horse) {
-    
+        
         return horse.getDataWatcher().getWatchableObjectItemStack(23);
     }
     
@@ -191,7 +191,7 @@ public class Utilities {
      *            slot.
      */
     public static void setCustomHorseArmor (EntityHorse horse, ItemStack stack) {
-    
+        
         horse.getDataWatcher().updateObject(23, stack);
     }
     
@@ -206,7 +206,7 @@ public class Utilities {
      *         will be returned.
      */
     public static EntityPlayer getPlayerFromUUID (World world, UUID playerID) {
-    
+        
         for (Object playerEntry : world.playerEntities) {
             
             if (playerEntry instanceof EntityPlayer) {
@@ -229,7 +229,7 @@ public class Utilities {
      *         returned.
      */
     public static boolean isFluid (Block block) {
-    
+        
         return (block == Blocks.lava || block == Blocks.water || block instanceof IFluidBlock);
     }
     
@@ -241,10 +241,10 @@ public class Utilities {
      *         returned.
      */
     public static boolean isPlayerReal (EntityPlayer player) {
-    
+        
         if (player == null || player.worldObj == null || player.getClass() != EntityPlayerMP.class)
             return false;
-        
+            
         return MinecraftServer.getServer().getConfigurationManager().playerEntityList.contains(player);
     }
     
@@ -256,21 +256,65 @@ public class Utilities {
      * @return ItemStack: The same instance of ItemStack that was passed to this method.
      */
     public static ItemStack setLore (ItemStack stack, String[] lore) {
-    
+        
         preparedataTag(stack);
         NBTTagCompound tag = stack.getTagCompound();
         NBTTagList loreList = new NBTTagList();
         
         if (!tag.hasKey("display", 10))
             tag.setTag("display", new NBTTagCompound());
-        
+            
         for (String line : lore)
             loreList.appendTag(new NBTTagString(line));
-        
+            
         tag.getCompoundTag("display").setTag("Lore", loreList);
         stack.setTagCompound(tag);
         
         return stack;
+    }
+    
+    public static NBTTagCompound writeInventoryToNBT (NBTTagCompound tag, InventoryBasic inventory) {
+        
+        if (inventory.hasCustomInventoryName())
+            tag.setString("CustomName", inventory.getInventoryName());
+            
+        NBTTagList nbttaglist = new NBTTagList();
+        
+        for (int slotCount = 0; slotCount < inventory.getSizeInventory(); slotCount++) {
+            
+            ItemStack stackInSlot = inventory.getStackInSlot(slotCount);
+            
+            if (stackInSlot != null) {
+                
+                NBTTagCompound itemTag = new NBTTagCompound();
+                itemTag.setByte("Slot", (byte) slotCount);
+                stackInSlot.writeToNBT(itemTag);
+                nbttaglist.appendTag(itemTag);
+            }
+        }
+        
+        tag.setTag("Items", nbttaglist);
+        
+        return tag;
+    }
+    
+    public static NBTTagCompound readInventoryFromNBT (NBTTagCompound tag, InventoryBasic inventory) {
+        
+        if (tag.hasKey("CustomName", 8))
+            inventory.func_110133_a(tag.getString("CustomName"));
+            
+        NBTTagList items = tag.getTagList("Items", 10);
+        
+        for (int storedCount = 0; storedCount < items.tagCount(); storedCount++) {
+            
+            NBTTagCompound itemTag = items.getCompoundTagAt(storedCount);
+            int slotCount = itemTag.getByte("Slot") & 0xFF;
+            
+            if ((slotCount >= 0) && (slotCount < inventory.getSizeInventory()))
+                inventory.setInventorySlotContents(slotCount, ItemStack.loadItemStackFromNBT(itemTag));
+        }
+        
+        return tag;
     }
     
     /**
@@ -279,7 +323,7 @@ public class Utilities {
      */
     @SideOnly(Side.CLIENT)
     public static EntityPlayer thePlayer () {
-    
+        
         return Minecraft.getMinecraft().thePlayer;
     }
     
@@ -293,7 +337,7 @@ public class Utilities {
          * @param data: The unsupported type.
          */
         public UnsupportedTypeException(Object data) {
-        
+            
             super("The data type of " + data.getClass().toString() + " is currently not supported." + Constants.NEW_LINE + "Raw Data: " + data.toString());
         }
     }
