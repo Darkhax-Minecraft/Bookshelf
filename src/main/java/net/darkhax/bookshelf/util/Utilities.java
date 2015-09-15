@@ -28,6 +28,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class Utilities {
     
@@ -315,6 +316,26 @@ public class Utilities {
         }
         
         return tag;
+    }
+    
+    /**
+     * Retrieves the color associated with an ItemStack. This method will check the
+     * OreDictionary for all items that match with a dye item. The color of that dye will be
+     * returned. This is currently only for dyes.
+     * 
+     * @param stack: The ItemStack to check for the color.
+     * @return int: An Integer based representation of a color. Java's Color can be used to
+     *         convert these back into their primary components.
+     */
+    public static int getItemColor (ItemStack stack) {
+        
+        if (stack != null && stack.getIconIndex() != null)
+            for (EnumVanillaColors color : EnumVanillaColors.values())
+                for (ItemStack oreStack : OreDictionary.getOres(color.colorName))
+                    if (oreStack.isItemEqual(stack))
+                        return color.colorObj.getRGB();
+                        
+        return -1337;
     }
     
     /**
