@@ -23,7 +23,6 @@ public class Bookshelf {
     public void preInit (FMLPreInitializationEvent event) {
         
         proxy.preInit();
-        
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
     }
     
