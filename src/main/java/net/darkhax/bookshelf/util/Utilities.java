@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.util;
 
+import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Arrays;
@@ -336,6 +337,13 @@ public class Utilities {
                         return color.colorObj.getRGB();
                         
         return -1337;
+    }
+    
+    public static void renderColor (int colorVal) {
+        
+        Color color = new Color(colorVal);
+        
+        System.out.println("Color: " + ((float) color.getRed() / 255f) + " " + ((float) color.getGreen() / 255f) + " " + ((float) color.getBlue() / 255f) + " " + 1.0F);
     }
     
     /**
