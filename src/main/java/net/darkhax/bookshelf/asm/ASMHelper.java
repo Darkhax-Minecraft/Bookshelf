@@ -19,6 +19,8 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.LabelNode;
+import org.objectweb.asm.tree.LineNumberNode;
 import org.objectweb.asm.tree.MethodNode;
 
 public final class ASMHelper {
@@ -159,13 +161,26 @@ public final class ASMHelper {
         
         int firstInd = haystack.indexOf(findFirstNodeFromNeedle(haystack, needle));
         int lastInd = haystack.indexOf(findLastNodeFromNeedle(haystack, needle));
-        List<AbstractInsnNode> realNeedle = new ArrayList<>();
+        List<AbstractInsnNode> realNeedle = new ArrayList<AbstractInsnNode>();
         
         for (int i = firstInd; i <= lastInd; i++)
             realNeedle.add(haystack.get(i));
             
         for (AbstractInsnNode node : realNeedle)
             haystack.remove(node);
+    }
+    
+    /**
+     * Checks if an instruction can be ignored. While this typically isn't needed, there may be
+     * some cases where you want to ignore LabelNodes and LineNumberNodes. This method will
+     * help with that.
+     * 
+     * @param insn: The AbstractInsnNode to check against.
+     * @return boolean: True if it okay to ignore this instruction, false if it not okay.
+     */
+    public static boolean canIgnoreInstruction (AbstractInsnNode insn) {
+        
+        return (insn instanceof LabelNode || insn instanceof LineNumberNode);
     }
     
     public static class InvalidNeedleException extends RuntimeException {
