@@ -9,10 +9,12 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.text.WordUtils;
+import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityHorse;
@@ -174,30 +176,6 @@ public class Utilities {
     }
     
     /**
-     * Retrieves the ItemStack placed in an EntityHorse's custom armor inventory slot.
-     * 
-     * @param horse: An instance of the EntityHorse to grab the armor ItemStack from.
-     * @return ItemStack: The ItemStack in the horses custom armor slot. This ItemStack maybe
-     *         null, and won't always be an instance of ItemHorseArmor.
-     */
-    public static ItemStack getCustomHorseArmor (EntityHorse horse) {
-        
-        return horse.getDataWatcher().getWatchableObjectItemStack(23);
-    }
-    
-    /**
-     * Allows for a custom ItemStack to be set to an EntityHorse's custom armor inventory slot.
-     * 
-     * @param horse: An instance of the EntityHorse to set the ItemStack to.
-     * @param stack: An ItemStack you want to set to an EntityHorse's custom armor inventory
-     *            slot.
-     */
-    public static void setCustomHorseArmor (EntityHorse horse, ItemStack stack) {
-        
-        horse.getDataWatcher().updateObject(23, stack);
-    }
-    
-    /**
      * Retrieves an instance of EntityPlayer based on a UUID. For this to work, the player must
      * currently be online, and within the world.
      * 
@@ -320,6 +298,18 @@ public class Utilities {
     }
     
     /**
+     * A method which handles the calculating of percentages. While this isn't a particularly
+     * difficult piece of code, it has been added for the sake of simplicity.
+     * 
+     * @param percent: The percent chance that this method should return true. 1.00 = 100%
+     * @return boolean: Returns are randomly true or false, based on the suplied percentage.
+     */
+    public static boolean tryPercentage (double percent) {
+        
+        return Math.random() < percent;
+    }
+    
+    /**
      * Retrieves the color associated with an ItemStack. This method will check the
      * OreDictionary for all items that match with a dye item. The color of that dye will be
      * returned. This is currently only for dyes.
@@ -328,7 +318,7 @@ public class Utilities {
      * @return int: An Integer based representation of a color. Java's Color can be used to
      *         convert these back into their primary components.
      */
-    public static int getItemColor (ItemStack stack) {
+    public static int getDyeColor (ItemStack stack) {
         
         if (stack != null && stack.getIconIndex() != null)
             for (EnumVanillaColors color : EnumVanillaColors.values())
@@ -339,11 +329,90 @@ public class Utilities {
         return -1337;
     }
     
+    /**
+     * Attempts to harvest blocks in an AOE based effect around where the player is looking.
+     * This effect is designed to be used in conjunction with a tool, and should be used as
+     * such.
+     * 
+     * @param player: The player who is attempting to harvest the block.
+     * @param materials: An array of valid material types that this effect will be able to
+     *            break.
+     * @param layers: The amount of layers to break. Each layer adds one more out in every
+     *            direction. For example 1 will break a 3x3 area, 2 will break a 5x5 area and 3
+     *            will break a 9x9 area.
+     */
+    public static void tryAOEHarvest (EntityPlayer player, Material[] materials, int layers) {
+        
+        ItemStack stack = player.getHeldItem();
+        
+        if (stack != null) {
+            
+            preparedataTag(stack);
+            MovingObjectPosition lookPos = rayTrace(player, 4.5d);
+            
+            if (lookPos != null && player instanceof EntityPlayerMP) {
+                
+                EntityPlayerMP playerMP = (EntityPlayerMP) player;
+                NBTTagCompound dataTag = stack.stackTagCompound;
+                
+                int x = lookPos.blockX;
+                int y = lookPos.blockY;
+                int z = lookPos.blockZ;
+                
+                if (!dataTag.hasKey("bookshelfBreaking") || !dataTag.getBoolean("bookshelfBreaking")) {
+                    
+                    dataTag.setBoolean("bookshelfBreaking", true);
+                    int rangeX = layers;
+                    int rangeY = layers;
+                    int rangeZ = layers;
+                    
+                    switch (lookPos.sideHit) {
+                        
+                        case 1:
+                            rangeY = 0;
+                            break;
+                            
+                        case 3:
+                            rangeZ = 0;
+                            break;
+                            
+                        case 5:
+                            rangeX = 0;
+                            break;
+                    }
+                    
+                    for (int posX = x - rangeX; posX <= x + rangeX; posX++) {
+                        
+                        for (int posY = y - rangeY; posY <= y + rangeY; posY++) {
+                            
+                            for (int posZ = z - rangeZ; posZ <= z + rangeZ; posZ++) {
+                                
+                                Block block = playerMP.worldObj.getBlock(posX, posY, posZ);
+                                
+                                for (Material mat : materials)
+                                    if (block != null && mat == block.getMaterial() && block.getPlayerRelativeBlockHardness(playerMP, playerMP.worldObj, x, posY, z) > 0)
+                                        playerMP.theItemInWorldManager.tryHarvestBlock(posX, posY, posZ);
+                            }
+                        }
+                    }
+                    
+                    dataTag.setBoolean("bookshelfBreaking", false);
+                }
+            }
+        }
+    }
+    
+    /**
+     * A wrapper for glColor3f. This wrapper takes an integer and splits it up into it's RGB
+     * components. This method primarily exists to reduce the complexity required to use the
+     * glColor3f method through ASM.
+     * 
+     * @param colorVal: A single integer which represents the RGB compoinents of a color.
+     */
     public static void renderColor (int colorVal) {
         
         Color color = new Color(colorVal);
-        
-        System.out.println("Color: " + ((float) color.getRed() / 255f) + " " + ((float) color.getGreen() / 255f) + " " + ((float) color.getBlue() / 255f) + " " + 1.0F);
+        GL11.glColor3f(((float) color.getRed() / 255f), ((float) color.getGreen() / 255f), ((float) color.getBlue() / 255f));
     }
     
     /**
@@ -369,5 +438,70 @@ public class Utilities {
             
             super("The data type of " + data.getClass().toString() + " is currently not supported." + Constants.NEW_LINE + "Raw Data: " + data.toString());
         }
+    }
+    
+    // Special ASM Methods
+    
+    /**
+     * Retrieves the ItemStack placed in an EntityHorse's custom armor inventory slot.
+     * 
+     * @param horse: An instance of the EntityHorse to grab the armor ItemStack from.
+     * @return ItemStack: The ItemStack in the horses custom armor slot. This ItemStack maybe
+     *         null, and won't always be an instance of ItemHorseArmor.
+     */
+    public static ItemStack getCustomHorseArmor (EntityHorse horse) {
+        
+        return horse.getDataWatcher().getWatchableObjectItemStack(23);
+    }
+    
+    /**
+     * Allows for a custom ItemStack to be set to an EntityHorse's custom armor inventory slot.
+     * 
+     * @param horse: An instance of the EntityHorse to set the ItemStack to.
+     * @param stack: An ItemStack you want to set to an EntityHorse's custom armor inventory
+     *            slot.
+     */
+    public static void setCustomHorseArmor (EntityHorse horse, ItemStack stack) {
+        
+        horse.getDataWatcher().updateObject(23, stack);
+    }
+    
+    /**
+     * Retrieves the custom color of an ItemStack. This will only retrieve color data that has
+     * been set through this mod. If no valid color can be found, white will be used.
+     * 
+     * @param stack: The ItemStack to check the color of.
+     * @return int: A numeric representation of the color, that can be broken down into RGB
+     *         components.
+     */
+    public static int getItemColgor (ItemStack stack) {
+        
+        return stack.getTagCompound().hasKey("bookshelfColor") ? stack.getTagCompound().getInteger("bookshelfColor") : 16777215;
+    }
+    
+    /**
+     * Sets a color to an ItemStack. This color will override any color value provided by the
+     * getColorFromItemStack method.
+     * 
+     * @param stack: The ItemStack to change the color of.
+     * @param color: A numeric representation of the color, that can be broken down into RGB
+     *            components.
+     */
+    public static void setItemColor (ItemStack stack, int color) {
+        
+        preparedataTag(stack);
+        stack.getTagCompound().setInteger("bookshelfColor", color);
+    }
+    
+    /**
+     * Removes all color data associated with an ItemStack. This only works for custom NBT
+     * colors set by this mod.
+     * 
+     * @param stack: The ItemStack to remove the color from.
+     */
+    public static void removeItemColor (ItemStack stack) {
+        
+        preparedataTag(stack);
+        stack.getTagCompound().removeTag("bookshelfColor");
     }
 }
