@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -327,6 +328,28 @@ public class Utilities {
                         return color.colorObj.getRGB();
                         
         return -1337;
+    }
+    
+    /**
+     * A blend between the itemRegistry.getObject and bockRegistry.getObject methods. Used for
+     * grabbing something from an ID, when you have no clue what it might be.
+     * 
+     * @param name: The ID of the thing you're looking for. Domains are often preferred.
+     * @return Object: Hopefully the thing you're looking for.
+     */
+    public Object getThingByName (String name) {
+        
+        Object thing = Item.itemRegistry.getObject(name);
+        
+        if (thing != null)
+            return thing;
+            
+        thing = Block.blockRegistry.getObject(name);
+        
+        if (thing != null)
+            return thing;
+            
+        return null;
     }
     
     /**
