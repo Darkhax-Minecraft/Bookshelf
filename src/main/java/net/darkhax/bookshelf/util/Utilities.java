@@ -337,7 +337,7 @@ public class Utilities {
      * @param name: The ID of the thing you're looking for. Domains are often preferred.
      * @return Object: Hopefully the thing you're looking for.
      */
-    public Object getThingByName (String name) {
+    public static Object getThingByName (String name) {
         
         Object thing = Item.itemRegistry.getObject(name);
         
