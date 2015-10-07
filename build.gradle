@@ -55,3 +55,25 @@ processResources {
         exclude 'mcmod.info'
     }
 }
+
+task deobfJar(type: Jar) {
+
+   from sourceSets.main.output
+   classifier = 'deobf'
+}
+
+artifacts {
+
+   archives deobfJar
+}
+
+uploadArchives {
+
+   repositories {
+   
+       mavenDeployer {
+       
+           repository(url: "file:///var/www/html/maven")
+       }
+   }
+}
