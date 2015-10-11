@@ -1,24 +1,24 @@
 buildscript {
 
     repositories {
-    
+
         mavenCentral()
-        
+
         maven {
-        
+
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        
+
         maven {
-        
+
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
     }
-    
+
     dependencies {
-    
+
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
 }
@@ -35,45 +35,61 @@ minecraft {
     runDir = "eclipse"
 }
 
-dependencies {
+task buildInfo() {
+    def cmd = "git rev-parse --short HEAD"
+    def proc = cmd.execute()
+    proc.waitFor()
+    if (proc.exitValue() == 0) {
+        ext.revision = "DEV." + proc.text.trim()
+    } else {
+        ext.revision = "GITBORK"
+    }
 
+    if (System.getenv().BUILD_NUMBER != null) {
+        ext.buildNum = "${System.getenv().BUILD_NUMBER}"
+    } else {
+        ext.buildNum = "${project.buildInfo.revision}"
+    }
 }
 
-processResources {
+ext.artifact_version = 'NFG'
+if (System.getenv().ARTIFACT_VERSION == null) {
+    artifact_version = "${version}.${project.buildInfo.buildNum}"
+}
 
-    inputs.property "version", project.version
+if (System.getenv().ARTIFACT_VERSION != null) {
+    artifact_version = "${system.getenv().ARTIFACT_VERSION}"
+}
+
+version = "1.7.10-${artifact_version}"
+
+processResources {
+    inputs.property "version", project.artifact_version
     inputs.property "mcversion", project.minecraft.version
 
     from(sourceSets.main.resources.srcDirs) {
-    
         include 'mcmod.info'
-        expand 'version': project.version, 'mcversion': project.minecraft.version
+        expand 'version': project.artifact_version, 'mcversion': project.minecraft.version
     }
 
     from(sourceSets.main.resources.srcDirs) {
-    
         exclude 'mcmod.info'
     }
 }
 
 task deobfJar(type: Jar) {
-
-   from sourceSets.main.output
-   classifier = 'deobf'
+    from sourceSets.main.output
+    classifier = 'deobf'
 }
 
 artifacts {
-
-   archives deobfJar
+    archives deobfJar
 }
 
 uploadArchives {
-
-   repositories {
-   
-       mavenDeployer {
-       
-           repository(url: "file:///var/www/html/maven")
-       }
-   }
+    repositories {
+        mavenDeployer {
+            repository(url: "file:///var/www/html/maven")
+        }
+    }
 }
