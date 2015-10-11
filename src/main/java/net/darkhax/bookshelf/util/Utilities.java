@@ -320,7 +320,7 @@ public class Utilities {
      */
     public static String writeStackToString (ItemStack stack) {
         
-        return Item.itemRegistry.getNameForObject(stack.getItem()) + "|" + stack.getItemDamage();
+        return Item.itemRegistry.getNameForObject(stack.getItem()) + "#" + stack.getItemDamage();
     }
     
     /**
@@ -333,7 +333,7 @@ public class Utilities {
      */
     public static ItemStack createStackFromString (String stackString) {
         
-        String[] parts = stackString.split("|");
+        String[] parts = stackString.split("#");
         Object contents = getThingByName(parts[0]);
         return (contents instanceof Item) ? new ItemStack((Item) contents, 1, Integer.parseInt(parts[1])) : new ItemStack((Block) contents, 1, Integer.parseInt(parts[1]));
     }
