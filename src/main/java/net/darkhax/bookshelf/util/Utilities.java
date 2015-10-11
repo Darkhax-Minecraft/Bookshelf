@@ -382,6 +382,18 @@ public class Utilities {
     }
     
     /**
+     * Checks if an ItemStack is valid. A valid ItemStack is one that is not null, and has an
+     * Item.
+     * 
+     * @param stack: The ItemStack to check.
+     * @return boolean: True if the stack is valid, false if it is not.
+     */
+    public static boolean isValidStack (ItemStack stack) {
+        
+        return (stack != null && stack.getItem() != null);
+    }
+    
+    /**
      * Attempts to harvest blocks in an AOE based effect around where the player is looking.
      * This effect is designed to be used in conjunction with a tool, and should be used as
      * such.
