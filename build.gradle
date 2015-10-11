@@ -25,7 +25,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.0.0"
+version = "1.0"
 group = "net.darkhax.bookshelf"
 archivesBaseName = "Bookshelf"
 
