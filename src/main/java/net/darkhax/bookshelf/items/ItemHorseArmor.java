@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 
 public abstract class ItemHorseArmor extends Item {
     
@@ -27,6 +28,17 @@ public abstract class ItemHorseArmor extends Item {
      * @param stack: An instance of the ItemStack currently in the horse's armor slot.
      */
     public abstract void onHorseUpdate (EntityHorse horse, ItemStack stack);
+    
+    /**
+     * Called when a horse wearing this piece of armor has been hurt.
+     * 
+     * @param horse: An instance of the horse which is currently wearing this piece of armor.
+     * @param stack: An instance of the ItemStack currently in the horse's armor slot.
+     * @param source: The DamageSource which caused the horse to be hurt.
+     * @param damage: The amount of damage that the horse received.
+     * @return boolean: If true, the horse will not be hurt and the event will be canceled.
+     */
+    public abstract boolean onHorseDamaged (EntityHorse horse, ItemStack stack, DamageSource source, float damage);
     
     /**
      * Used to provide a resource path for the armor's texture. Textures follow the same rules
