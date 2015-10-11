@@ -311,6 +311,34 @@ public class Utilities {
     }
     
     /**
+     * Writes an ItemStack as a String. This method is intended for use in configuration files,
+     * and allows for a damage sensitive item to be represented as a String. The format looks
+     * like "itemid|damage". This method is not intended for actually saving an ItemStack.
+     * 
+     * @param stack: The instance of ItemStack to write.
+     * @return String: A string which can be used to represent a damage sensitive item.
+     */
+    public static String writeStackToString (ItemStack stack) {
+        
+        return Item.itemRegistry.getNameForObject(stack.getItem()) + "|" + stack.getItemDamage();
+    }
+    
+    /**
+     * Reads an ItemStack from a string This method is intended for use in reading information
+     * from a configuration file. The correct format is "itemid:damage". This method is
+     * intended for use with writeStackToString.
+     * 
+     * @param stackString: The string used to construct an ItemStack.
+     * @return ItemStack: An ItemStack representation of a damage sensitive item.
+     */
+    public static ItemStack createStackFromString (String stackString) {
+        
+        String[] parts = stackString.split("|");
+        Object contents = getThingByName(parts[0]);
+        return (contents instanceof Item) ? new ItemStack((Item) contents, 1, Integer.parseInt(parts[1])) : new ItemStack((Block) contents, 1, Integer.parseInt(parts[1]));
+    }
+    
+    /**
      * Retrieves the color associated with an ItemStack. This method will check the
      * OreDictionary for all items that match with a dye item. The color of that dye will be
      * returned. This is currently only for dyes.
