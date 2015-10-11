@@ -55,8 +55,6 @@ public class EntityHorseTransformer implements IClassTransformer {
         transformUpdateHorseSlots(ASMHelper.getMethodFromClass(horseClass, updateHorseSlots, "()V"));
         transformEntityInit(ASMHelper.getMethodFromClass(horseClass, entityInit, "()V"));
         transformIsValidArmor(ASMHelper.getMethodFromClass(horseClass, isArmorItem, "(Lnet/minecraft/item/Item;)Z"));
-        // transformInteract(ASMHelper.getMethodFromClass(horseClass, interact,
-        // "(Lnet/minecraft/entity/player/EntityPlayer;)Z"));
         
         try {
             
@@ -406,43 +404,6 @@ public class EntityHorseTransformer implements IClassTransformer {
         newInstr.add(new FrameNode(Opcodes.F_SAME, 0, null, 0, null));
         
         method.instructions.insertBefore(node, newInstr);
-    }
-    
-    /**
-     * 
-     * @param method
-     */
-    private static void transformInteract (MethodNode method) {
-        
-        InsnList needle = new InsnList();
-        needle.add(new FieldInsnNode(Opcodes.GETSTATIC, "net/minecraft/init/Items", diamond_horse_armor, "Lnet/minecraft/item/Item;"));
-        needle.add(new JumpInsnNode(Opcodes.IF_ACMPNE, new LabelNode()));
-        needle.add(new LabelNode());
-        
-        needle.add(new LineNumberNode(801, new LabelNode()));
-        needle.add(new InsnNode(Opcodes.ICONST_3));
-        needle.add(new VarInsnNode(Opcodes.ISTORE, 4));
-        
-        needle.add(new LabelNode());
-        needle.add(new LineNumberNode(804, new LabelNode()));
-        needle.add(new FrameNode(Opcodes.F_SAME, 0, null, 0, null));
-        
-        AbstractInsnNode node = ASMHelper.findLastNodeFromNeedle(method.instructions, needle);
-        
-        InsnList newInstr = new InsnList();
-        newInstr.add(new VarInsnNode(Opcodes.ALOAD, 2));
-        newInstr.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "net/minecraft/item/ItemStack", getItem, "()Lnet/minecraft/item/Item;", false));
-        newInstr.add(new TypeInsnNode(Opcodes.INSTANCEOF, "net/darkhax/bookshelf/items/ItemHorseArmor"));
-        
-        LabelNode l8 = new LabelNode();
-        newInstr.add(new JumpInsnNode(Opcodes.IFEQ, l8));
-        newInstr.add(new InsnNode(Opcodes.ICONST_4));
-        newInstr.add(new VarInsnNode(Opcodes.ISTORE, 4));
-        newInstr.add(l8);
-        
-        newInstr.add(new FrameNode(Opcodes.F_SAME, 0, null, 0, null));
-        
-        method.instructions.insert(node, newInstr);
     }
     
     // Fields
