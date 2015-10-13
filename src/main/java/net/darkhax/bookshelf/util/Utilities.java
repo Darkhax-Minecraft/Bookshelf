@@ -46,14 +46,7 @@ public class Utilities {
      */
     public static double round (double value, int places) {
         
-        if (value >= 0 && places > 0) {
-            
-            BigDecimal bd = new BigDecimal(value);
-            bd = bd.setScale(places, RoundingMode.HALF_UP);
-            return bd.doubleValue();
-        }
-        
-        return value;
+        return (value >= 0 && places > 0) ? new BigDecimal(value).setScale(places, RoundingMode.HALF_UP).doubleValue() : value;
     }
     
     /**
@@ -95,7 +88,6 @@ public class Utilities {
         Vec3 vec1 = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         Vec3 vec2 = player.getLookVec();
         Vec3 vec3 = vec1.addVector(vec2.xCoord * length, vec2.yCoord * length, vec2.zCoord * length);
-        
         return player.worldObj.rayTraceBlocks(vec1, vec3);
     }
     
@@ -351,7 +343,7 @@ public class Utilities {
     public static int getDyeColor (ItemStack stack) {
         
         if (stack != null && stack.getIconIndex() != null)
-            for (EnumVanillaColors color : EnumVanillaColors.values())
+            for (VanillaColors color : VanillaColors.values())
                 for (ItemStack oreStack : OreDictionary.getOres(color.colorName))
                     if (oreStack.isItemEqual(stack))
                         return color.colorObj.getRGB();
