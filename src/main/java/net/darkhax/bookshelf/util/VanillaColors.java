@@ -2,7 +2,7 @@ package net.darkhax.bookshelf.util;
 
 import java.awt.Color;
 
-public enum EnumVanillaColors {
+public enum VanillaColors {
     
     BLACK("dyeBlack", new Color(25, 25, 25)),
     RED("dyeRed", new Color(153, 51, 51)),
@@ -31,7 +31,15 @@ public enum EnumVanillaColors {
      */
     public Color colorObj;
     
-    EnumVanillaColors(String name, Color color) {
+    /**
+     * An Enumeration of all the vanilla Minecraft colors. Each color value is based on the
+     * color information provided by the Minecraft Wiki. This Enumeration also links each Color
+     * with it's oreDictionary dye counterpart.
+     * 
+     * @param name: The OreDictionary entry for the name of the associated dye.
+     * @param color: A Color object that represents the color of the entry.
+     */
+    VanillaColors(String name, Color color) {
         
         colorName = name;
         colorObj = color;
