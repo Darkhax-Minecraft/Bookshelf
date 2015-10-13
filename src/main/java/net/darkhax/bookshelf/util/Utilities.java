@@ -459,19 +459,6 @@ public class Utilities {
     }
     
     /**
-     * A wrapper for glColor3f. This wrapper takes an integer and splits it up into it's RGB
-     * components. This method primarily exists to reduce the complexity required to use the
-     * glColor3f method through ASM.
-     * 
-     * @param colorVal: A single integer which represents the RGB compoinents of a color.
-     */
-    public static void renderColor (int colorVal) {
-        
-        Color color = new Color(colorVal);
-        GL11.glColor3f(((float) color.getRed() / 255f), ((float) color.getGreen() / 255f), ((float) color.getBlue() / 255f));
-    }
-    
-    /**
      * Retrieves an instance of the player from the client side. This code only exists in
      * client side code and can not be used in server side code.
      */
@@ -479,6 +466,20 @@ public class Utilities {
     public static EntityPlayer thePlayer () {
         
         return Minecraft.getMinecraft().thePlayer;
+    }
+    
+    /**
+     * A wrapper for glColor3f. This wrapper takes an integer and splits it up into it's RGB
+     * components. This method primarily exists to reduce the complexity required to use the
+     * glColor3f method through ASM.
+     * 
+     * @param colorVal: A single integer which represents the RGB compoinents of a color.
+     */
+    @SideOnly(Side.CLIENT)
+    public static void renderColor (int colorVal) {
+        
+        Color color = new Color(colorVal);
+        GL11.glColor3f(((float) color.getRed() / 255f), ((float) color.getGreen() / 255f), ((float) color.getBlue() / 255f));
     }
     
     public static class UnsupportedTypeException extends RuntimeException {
