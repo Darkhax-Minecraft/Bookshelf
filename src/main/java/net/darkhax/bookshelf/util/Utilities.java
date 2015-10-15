@@ -13,9 +13,11 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.darkhax.bookshelf.event.ItemEnchantedEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,6 +33,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -497,7 +500,7 @@ public class Utilities {
         }
     }
     
-    // Special ASM Methods
+    // Hook methods
     
     /**
      * Retrieves the ItemStack placed in an EntityHorse's custom armor inventory slot.
@@ -560,5 +563,28 @@ public class Utilities {
         
         preparedataTag(stack);
         stack.getTagCompound().removeTag("bookshelfColor");
+    }
+    
+    /**
+     * A hook for triggering the ItemEnchantedEvent. This hook is only triggered from
+     * ContainerEnchantment, however it is possible to integrate this hook into other mods and
+     * enchanting methods.
+     * 
+     * @param player: The player that is enchanting the item.
+     * @param stack: The item that is being enchanted.
+     * @param levels: The amount of levels consumed by the enchantment.
+     * @param enchantments: A list of enchantments being added to the ItemStack.
+     * @return List<EnchantmentData>: A list of enchantments to add to the ItemStack.
+     */
+    public static List<EnchantmentData> onItemEnchanted (EntityPlayer player, ItemStack stack, int levels, List<EnchantmentData> enchantments) {
+        
+        if (enchantments != null) {
+            
+            ItemEnchantedEvent event = new ItemEnchantedEvent(player, stack, levels, enchantments);
+            MinecraftForge.EVENT_BUS.post(event);
+            return event.enchantments;
+        }
+        
+        return enchantments;
     }
 }

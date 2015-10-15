@@ -3,6 +3,9 @@ package net.darkhax.bookshelf.asm;
 import java.util.Map;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import net.darkhax.bookshelf.asm.transformers.ContainerEnchantmentTransformer;
+import net.darkhax.bookshelf.asm.transformers.EntityHorseTransformer;
+import net.darkhax.bookshelf.asm.transformers.ItemTransformer;
 import net.darkhax.bookshelf.util.Constants;
 
 @IFMLLoadingPlugin.SortingIndex(1001)
@@ -15,7 +18,7 @@ public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
         
         ASMHelper.isASMEnabled = true;
         Constants.LOG.info("Starting to apply transformations");
-        return new String[] { EntityHorseTransformer.class.getName(), ItemTransformer.class.getName() };
+        return new String[] { EntityHorseTransformer.class.getName(), ItemTransformer.class.getName(), ContainerEnchantmentTransformer.class.getName() };
     }
     
     @Override
