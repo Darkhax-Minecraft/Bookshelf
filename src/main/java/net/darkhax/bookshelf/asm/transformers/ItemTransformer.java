@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.asm;
+package net.darkhax.bookshelf.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.IFEQ;
@@ -16,6 +16,7 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import net.darkhax.bookshelf.asm.ASMHelper;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 public class ItemTransformer implements IClassTransformer {

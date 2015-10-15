@@ -10,7 +10,7 @@
  *          -Changed mappings of new methods and classes
  *          -Opcodes is now a static import
  *******************************************************************************************************************/
-package net.darkhax.bookshelf.asm;
+package net.darkhax.bookshelf.asm.transformers;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
@@ -31,6 +31,7 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import net.darkhax.bookshelf.asm.ASMHelper;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 public class EntityHorseTransformer implements IClassTransformer {
@@ -40,7 +41,6 @@ public class EntityHorseTransformer implements IClassTransformer {
         
         if (transformedName.equals("net.minecraft.entity.passive.EntityHorse"))
             return transformHorse(bytes);
-            
         return bytes;
     }
     
