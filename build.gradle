@@ -93,3 +93,10 @@ uploadArchives {
         }
     }
 }
+
+jar {
+    manifest {
+
+        attributes 'FMLCorePlugin': 'net.darkhax.bookshelf.asm.BookshelfLoadingPlugin', 'FMLCorePluginContainsFMLMod': 'true'
+    }
+}
