@@ -63,32 +63,31 @@ public class EntityHorseTransformer implements IClassTransformer {
     @Override
     public byte[] transform (String name, String transformedName, byte[] bytes) {
         
-        if (transformedName.equals("net.minecraft.entity.passive.EntityHorse"))
-            return transformHorse(bytes);
-        return bytes;
-    }
-    
-    private static byte[] transformHorse (byte[] bytes) {
-        
-        ClassNode horseClass = ASMHelper.createClassFromByteArray(bytes);
-        
-        injectGetCustomBookshelfArmor(horseClass);
-        injectSetCustomBoookhelfArmor(horseClass);
-        transformGetTotalArmorValue(ASMHelper.getMethodFromClass(horseClass, getTotalArmorValue, "()I"));
-        transformOnInventoryChanged(ASMHelper.getMethodFromClass(horseClass, onInventoryChanged, "(Lnet/minecraft/inventory/InventoryBasic;)V"));
-        transformUpdateHorseSlots(ASMHelper.getMethodFromClass(horseClass, updateHorseSlots, "()V"));
-        transformEntityInit(ASMHelper.getMethodFromClass(horseClass, entityInit, "()V"));
-        transformIsValidArmor(ASMHelper.getMethodFromClass(horseClass, isArmorItem, "(Lnet/minecraft/item/Item;)Z"));
-        
-        try {
+        if (transformedName.equals("net.minecraft.entity.passive.EntityHorse")) {
             
-            transformSetHorseTexturePaths(ASMHelper.getMethodFromClass(horseClass, setHorseTexturePaths, "()V"));
+            ClassNode horseClass = ASMHelper.createClassFromByteArray(bytes);
+            
+            injectGetCustomBookshelfArmor(horseClass);
+            injectSetCustomBoookhelfArmor(horseClass);
+            transformGetTotalArmorValue(ASMHelper.getMethodFromClass(horseClass, getTotalArmorValue, "()I"));
+            transformOnInventoryChanged(ASMHelper.getMethodFromClass(horseClass, onInventoryChanged, "(Lnet/minecraft/inventory/InventoryBasic;)V"));
+            transformUpdateHorseSlots(ASMHelper.getMethodFromClass(horseClass, updateHorseSlots, "()V"));
+            transformEntityInit(ASMHelper.getMethodFromClass(horseClass, entityInit, "()V"));
+            transformIsValidArmor(ASMHelper.getMethodFromClass(horseClass, isArmorItem, "(Lnet/minecraft/item/Item;)Z"));
+            
+            try {
+                
+                transformSetHorseTexturePaths(ASMHelper.getMethodFromClass(horseClass, setHorseTexturePaths, "()V"));
+            }
+            
+            catch (ASMHelper.MethodNotFoundException e) {
+            
+            }
+            
+            return ASMHelper.createByteArrayFromClass(horseClass, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
         }
-        catch (ASMHelper.MethodNotFoundException e) {
         
-        }
-        
-        return ASMHelper.createByteArrayFromClass(horseClass, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+        return bytes;
     }
     
     /**

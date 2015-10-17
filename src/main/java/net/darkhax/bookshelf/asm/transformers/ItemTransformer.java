@@ -29,26 +29,23 @@ public class ItemTransformer implements IClassTransformer {
     @Override
     public byte[] transform (String name, String transformedName, byte[] bytes) {
         
-        if (transformedName.equals("net.minecraft.item.Item"))
-            return transformItem(bytes);
+        if (transformedName.equals("net.minecraft.item.Item")) {
             
+            ClassNode itemClass = ASMHelper.createClassFromByteArray(bytes);
+            
+            try {
+                
+                transformGetColorFromItemStack(ASMHelper.getMethodFromClass(itemClass, getColorFromItemStack, "(Lnet/minecraft/item/ItemStack;I)I"));
+            }
+            
+            catch (ASMHelper.MethodNotFoundException e) {
+            
+            }
+            
+            return ASMHelper.createByteArrayFromClass(itemClass, ClassWriter.COMPUTE_MAXS);
+        }
+        
         return bytes;
-    }
-    
-    private static byte[] transformItem (byte[] bytes) {
-        
-        ClassNode itemClass = ASMHelper.createClassFromByteArray(bytes);
-        
-        try {
-            
-            transformGetColorFromItemStack(ASMHelper.getMethodFromClass(itemClass, getColorFromItemStack, "(Lnet/minecraft/item/ItemStack;I)I"));
-        }
-        
-        catch (ASMHelper.MethodNotFoundException e) {
-        
-        }
-        
-        return ASMHelper.createByteArrayFromClass(itemClass, ClassWriter.COMPUTE_MAXS);
     }
     
     /**
