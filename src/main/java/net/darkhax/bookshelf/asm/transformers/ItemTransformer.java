@@ -1,5 +1,10 @@
 package net.darkhax.bookshelf.asm.transformers;
 
+import static net.darkhax.bookshelf.asm.Mappings.getColorFromItemStack;
+import static net.darkhax.bookshelf.asm.Mappings.getInteger;
+import static net.darkhax.bookshelf.asm.Mappings.getTagCompound;
+import static net.darkhax.bookshelf.asm.Mappings.hasKey;
+import static net.darkhax.bookshelf.asm.Mappings.hasTagCompound;
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.IFEQ;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
@@ -81,10 +86,4 @@ public class ItemTransformer implements IClassTransformer {
         
         method.instructions.insert(method.instructions.get(0), insns);
     }
-    
-    private static String getInteger = ASMHelper.getAppropriateMapping("getInteger", "func_74762_e");
-    private static String hasKey = ASMHelper.getAppropriateMapping("hasKey", "func_74764_b");
-    private static String getTagCompound = ASMHelper.getAppropriateMapping("getTagCompound", "func_77978_p");
-    private static String hasTagCompound = ASMHelper.getAppropriateMapping("hasTagCompound", "func_77942_o");
-    private static String getColorFromItemStack = ASMHelper.getAppropriateMapping("getColorFromItemStack", "func_82790_a");
 }
