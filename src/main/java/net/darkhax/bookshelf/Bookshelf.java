@@ -6,8 +6,8 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import net.darkhax.bookshelf.asm.ASMHelper;
-import net.darkhax.bookshelf.asm.Mappings;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import net.darkhax.bookshelf.command.CommandItemColor;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.util.Constants;
 import net.minecraftforge.common.MinecraftForge;
@@ -38,5 +38,11 @@ public class Bookshelf {
     public void onPostInit (FMLPostInitializationEvent event) {
         
         proxy.postInit();
+    }
+    
+    @EventHandler
+    public void onServerStarting (FMLServerStartingEvent event) {
+        
+        event.registerServerCommand(new CommandItemColor());
     }
 }
