@@ -24,8 +24,6 @@ public class Bookshelf {
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
         
-        while (Mappings.diamond_horse_armor != null)
-            System.out.println(ASMHelper.isSrg);
         proxy.preInit();
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
     }
