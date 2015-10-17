@@ -1,25 +1,13 @@
 package net.darkhax.bookshelf.asm.transformers;
 
-import static net.darkhax.bookshelf.asm.Mappings.getColorFromItemStack;
-import static net.darkhax.bookshelf.asm.Mappings.getInteger;
-import static net.darkhax.bookshelf.asm.Mappings.getTagCompound;
-import static net.darkhax.bookshelf.asm.Mappings.hasKey;
-import static net.darkhax.bookshelf.asm.Mappings.hasTagCompound;
+import static net.darkhax.bookshelf.asm.Mappings.*;
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.IFEQ;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import static org.objectweb.asm.Opcodes.IRETURN;
 
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.JumpInsnNode;
-import org.objectweb.asm.tree.LabelNode;
-import org.objectweb.asm.tree.LdcInsnNode;
-import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.VarInsnNode;
+import org.objectweb.asm.tree.*;
 
 import net.darkhax.bookshelf.asm.ASMHelper;
 import net.minecraft.launchwrapper.IClassTransformer;
@@ -33,15 +21,9 @@ public class ItemTransformer implements IClassTransformer {
             
             ClassNode itemClass = ASMHelper.createClassFromByteArray(bytes);
             
-            try {
-                
+            if (ASMHelper.hasClassMethodName(itemClass, getColorFromItemStack))
                 transformGetColorFromItemStack(ASMHelper.getMethodFromClass(itemClass, getColorFromItemStack, "(Lnet/minecraft/item/ItemStack;I)I"));
-            }
-            
-            catch (ASMHelper.MethodNotFoundException e) {
-            
-            }
-            
+                
             return ASMHelper.createByteArrayFromClass(itemClass, ClassWriter.COMPUTE_MAXS);
         }
         

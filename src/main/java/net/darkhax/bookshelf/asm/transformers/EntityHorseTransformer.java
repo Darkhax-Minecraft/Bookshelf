@@ -12,48 +12,12 @@
  *******************************************************************************************************************/
 package net.darkhax.bookshelf.asm.transformers;
 
-import static net.darkhax.bookshelf.asm.Mappings.addObject;
-import static net.darkhax.bookshelf.asm.Mappings.armorValues;
-import static net.darkhax.bookshelf.asm.Mappings.dataWatcher;
-import static net.darkhax.bookshelf.asm.Mappings.entityInit;
-import static net.darkhax.bookshelf.asm.Mappings.getHorseArmorIndexSynced;
-import static net.darkhax.bookshelf.asm.Mappings.getItem;
-import static net.darkhax.bookshelf.asm.Mappings.getStackInSlot;
-import static net.darkhax.bookshelf.asm.Mappings.getTotalArmorValue;
-import static net.darkhax.bookshelf.asm.Mappings.getUnlocalizedName;
-import static net.darkhax.bookshelf.asm.Mappings.getWatchableObjectItemStack;
-import static net.darkhax.bookshelf.asm.Mappings.horseChest;
-import static net.darkhax.bookshelf.asm.Mappings.horseTextureArray;
-import static net.darkhax.bookshelf.asm.Mappings.iron_horse_armor;
-import static net.darkhax.bookshelf.asm.Mappings.isArmorItem;
-import static net.darkhax.bookshelf.asm.Mappings.isHorseSaddled;
-import static net.darkhax.bookshelf.asm.Mappings.isItemEqual;
-import static net.darkhax.bookshelf.asm.Mappings.onInventoryChanged;
-import static net.darkhax.bookshelf.asm.Mappings.playSound;
-import static net.darkhax.bookshelf.asm.Mappings.setHorseTexturePaths;
-import static net.darkhax.bookshelf.asm.Mappings.stick;
-import static net.darkhax.bookshelf.asm.Mappings.texturePrefix;
-import static net.darkhax.bookshelf.asm.Mappings.updateHorseSlots;
-import static net.darkhax.bookshelf.asm.Mappings.updateObject;
+import static net.darkhax.bookshelf.asm.Mappings.*;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldInsnNode;
-import org.objectweb.asm.tree.FrameNode;
-import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.IntInsnNode;
-import org.objectweb.asm.tree.JumpInsnNode;
-import org.objectweb.asm.tree.LabelNode;
-import org.objectweb.asm.tree.LdcInsnNode;
-import org.objectweb.asm.tree.LineNumberNode;
-import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.TypeInsnNode;
-import org.objectweb.asm.tree.VarInsnNode;
+import org.objectweb.asm.tree.*;
 
 import net.darkhax.bookshelf.asm.ASMHelper;
 import net.minecraft.launchwrapper.IClassTransformer;
@@ -75,15 +39,9 @@ public class EntityHorseTransformer implements IClassTransformer {
             transformEntityInit(ASMHelper.getMethodFromClass(horseClass, entityInit, "()V"));
             transformIsValidArmor(ASMHelper.getMethodFromClass(horseClass, isArmorItem, "(Lnet/minecraft/item/Item;)Z"));
             
-            try {
-                
+            if (ASMHelper.hasClassMethodName(horseClass, setHorseTexturePaths))
                 transformSetHorseTexturePaths(ASMHelper.getMethodFromClass(horseClass, setHorseTexturePaths, "()V"));
-            }
-            
-            catch (ASMHelper.MethodNotFoundException e) {
-            
-            }
-            
+                
             return ASMHelper.createByteArrayFromClass(horseClass, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
         }
         
