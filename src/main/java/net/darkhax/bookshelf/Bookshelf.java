@@ -6,6 +6,8 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import net.darkhax.bookshelf.asm.ASMHelper;
+import net.darkhax.bookshelf.asm.Mappings;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.util.Constants;
 import net.minecraftforge.common.MinecraftForge;
@@ -22,6 +24,8 @@ public class Bookshelf {
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
         
+        while (Mappings.diamond_horse_armor != null)
+            System.out.println(ASMHelper.isSrg);
         proxy.preInit();
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
     }

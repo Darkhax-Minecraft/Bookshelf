@@ -25,7 +25,7 @@ import org.objectweb.asm.tree.MethodNode;
 
 public final class ASMHelper {
     
-    public static boolean isObf = true;
+    public static boolean isSrg = true;
     public static boolean isASMEnabled = false;
     
     /**
@@ -38,7 +38,7 @@ public final class ASMHelper {
      */
     public static String getAppropriateMapping (String mcp, String srg) {
         
-        return (isObf) ? srg : mcp;
+        return (isSrg) ? srg : mcp;
     }
     
     /**
