@@ -49,7 +49,7 @@ public class ContainerEnchantmentTransformer implements IClassTransformer {
         newInsns.add(new VarInsnNode(Opcodes.ALOAD, 3));
         newInsns.add(new VarInsnNode(Opcodes.ILOAD, 2));
         newInsns.add(new VarInsnNode(Opcodes.ALOAD, 4));
-        newInsns.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "net/darkhax/bookshelf/util/Utilities", "onItemEnchanted", "(Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/item/ItemStack;ILjava/util/List;)Ljava/util/List;", false));
+        newInsns.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "net/darkhax/bookshelf/handler/BookshelfHooks", "onItemEnchanted", "(Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/item/ItemStack;ILjava/util/List;)Ljava/util/List;", false));
         newInsns.add(new VarInsnNode(Opcodes.ASTORE, 4));
         newInsns.add(exit);
         
