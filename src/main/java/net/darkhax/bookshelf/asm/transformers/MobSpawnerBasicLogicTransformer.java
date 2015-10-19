@@ -7,12 +7,10 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.*;
 
 import net.darkhax.bookshelf.asm.ASMHelper;
-import net.minecraft.launchwrapper.IClassTransformer;
 
-public class MobSpawnerBasicLogicTransformer implements IClassTransformer {
+public class MobSpawnerBasicLogicTransformer {
     
-    @Override
-    public byte[] transform (String name, String transformedName, byte[] bytes) {
+    public static byte[] transform (String name, String transformedName, byte[] bytes) {
         
         if (transformedName.equals("net.minecraft.tileentity.MobSpawnerBaseLogic")) {
             
@@ -25,7 +23,7 @@ public class MobSpawnerBasicLogicTransformer implements IClassTransformer {
     }
     
     // TODO Docs
-    private void transformMobSpawnerBaseLogic (MethodNode method) {
+    private static void transformMobSpawnerBaseLogic (MethodNode method) {
         
         InsnList needle = new InsnList();
         needle.add(new VarInsnNode(ALOAD, 11));

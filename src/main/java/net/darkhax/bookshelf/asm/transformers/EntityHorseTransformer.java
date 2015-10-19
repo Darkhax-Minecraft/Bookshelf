@@ -20,12 +20,10 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
 import net.darkhax.bookshelf.asm.ASMHelper;
-import net.minecraft.launchwrapper.IClassTransformer;
 
-public class EntityHorseTransformer implements IClassTransformer {
+public class EntityHorseTransformer {
     
-    @Override
-    public byte[] transform (String name, String transformedName, byte[] bytes) {
+    public static byte[] transform (String name, String transformedName, byte[] bytes) {
         
         if (transformedName.equals("net.minecraft.entity.passive.EntityHorse")) {
             

@@ -7,12 +7,10 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.*;
 
 import net.darkhax.bookshelf.asm.ASMHelper;
-import net.minecraft.launchwrapper.IClassTransformer;
 
-public class BlockPistonTransformer implements IClassTransformer {
+public class BlockPistonTransformer {
     
-    @Override
-    public byte[] transform (String name, String transformedName, byte[] bytes) {
+    public static byte[] transform (String name, String transformedName, byte[] bytes) {
         
         if (transformedName.equals("net.minecraft.block.BlockPistonBase")) {
             
@@ -25,7 +23,7 @@ public class BlockPistonTransformer implements IClassTransformer {
         return bytes;
     }
     
-    private void transformUpdatePistonStateExtend (MethodNode method) {
+    private static void transformUpdatePistonStateExtend (MethodNode method) {
         
         InsnList needle = new InsnList();
         needle.add(new VarInsnNode(ILOAD, 7));
@@ -53,7 +51,7 @@ public class BlockPistonTransformer implements IClassTransformer {
         method.instructions.insert(pointer, newInstr);
     }
     
-    private void transformUpdatePistonStateRetract (MethodNode method) {
+    private static void transformUpdatePistonStateRetract (MethodNode method) {
         
         InsnList needle = new InsnList();
         needle.add(new VarInsnNode(ILOAD, 7));
