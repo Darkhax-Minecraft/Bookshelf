@@ -6,9 +6,9 @@ import net.minecraftforge.event.entity.EntityEvent;
 
 @HasResult
 public class MobSpawnerSpawnEvent extends EntityEvent {
-
-    public MobSpawnerSpawnEvent (Entity entity) {
-
+    
+    public MobSpawnerSpawnEvent(Entity entity) {
+        
         super(entity);
     }
 }

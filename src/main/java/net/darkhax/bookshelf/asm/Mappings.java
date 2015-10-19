@@ -1,7 +1,7 @@
 package net.darkhax.bookshelf.asm;
 
 public class Mappings {
-
+    
     // Fields
     public static String rand;
     public static String enchantLevels;
@@ -14,7 +14,7 @@ public class Mappings {
     public static String iron_horse_armor;
     public static String diamond_horse_armor;
     public static String horseChest;
-
+    
     // Methods
     public static String buildEnchantmentList;
     public static String enchantItem;
@@ -42,9 +42,9 @@ public class Mappings {
     public static String updateSpawner;
     public static String updatePistonState;
     public static String canPushBlock;
-
-    public Mappings () {
-
+    
+    public Mappings() {
+        
         // Fields
         rand = ASMHelper.getAppropriateMapping("rand", "field_75169_l");
         enchantLevels = ASMHelper.getAppropriateMapping("enchantLevels", "field_75167_g");
@@ -57,7 +57,7 @@ public class Mappings {
         iron_horse_armor = ASMHelper.getAppropriateMapping("iron_horse_armor", "field_151138_bX");
         diamond_horse_armor = ASMHelper.getAppropriateMapping("diamond_horse_armor", "field_151125_bZ");
         horseChest = ASMHelper.getAppropriateMapping("horseChest", "field_110296_bG");
-
+        
         // Methods
         buildEnchantmentList = ASMHelper.getAppropriateMapping("buildEnchantmentList", "func_77513_b");
         enchantItem = ASMHelper.getAppropriateMapping("enchantItem", "func_75140_a");
