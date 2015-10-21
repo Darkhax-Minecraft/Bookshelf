@@ -589,6 +589,30 @@ public class Utilities {
     }
     
     /**
+     * Provides a way to access an NBTTagCompound that is very deep within another
+     * NBTTagCompound. This will allow you to use an array of strings which represent the
+     * different steps to get to the deep NBTTagCompound.
+     * 
+     * @param tag: An NBTTagCompound to search through.
+     * @param tags: An array containing the various steps to get to the desired deep
+     *            NBTTagCompound.
+     * @return NBTTagCompound: This method will return the deepest possible NBTTagCompound. In
+     *         some cases, this may be the tag you provide, or only a few steps deep, rather
+     *         than all of the way.
+     */
+    public static NBTTagCompound getDeepTagCompound (NBTTagCompound tag, String[] tags) {
+        
+        NBTTagCompound deepTag = tag;
+        
+        if (tag != null)
+            for (String tagName : tags)
+                if (deepTag.hasKey(tagName))
+                    deepTag = deepTag.getCompoundTag(tagName);
+                    
+        return deepTag;
+    }
+    
+    /**
      * Retrieves an instance of the player from the client side. This code only exists in
      * client side code and can not be used in server side code.
      */
