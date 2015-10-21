@@ -71,7 +71,7 @@ public class BookshelfHooks {
         if (block != null && block instanceof BlockPistonBase) {
             int meta = world.getBlockMetadata(x, y, z);
             boolean sticky = block == Blocks.sticky_piston;
-            PistonEvent.PistonPushBlock event = new PistonEvent.PistonPushBlock(block, world, x, y, z, meta, sticky, pushedBlock, EnumFacing.values()[meta & 7]);
+            PistonEvent.PistonPushEvent event = new PistonEvent.PistonPushEvent(block, world, x, y, z, meta, sticky, pushedBlock, EnumFacing.values()[meta & 7]);
             MinecraftForge.EVENT_BUS.post(event);
             Event.Result result = event.getResult();
             
@@ -79,5 +79,4 @@ public class BookshelfHooks {
         }
         return false;
     }
-    
 }
