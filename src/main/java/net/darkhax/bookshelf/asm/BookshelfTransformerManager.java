@@ -20,7 +20,7 @@ public class BookshelfTransformerManager implements IClassTransformer {
         if (transformedName.equals("net.minecraft.item.Item"))
             return ItemTransformer.transform(name, transformedName, classBytes);
             
-        if (transformedName.equals("net.minecraft.tileentity.MobSpawnerBaseLogic"))
+        if (transformedName.equals("DISABLED.net.minecraft.tileentity.MobSpawnerBaseLogic"))
             return MobSpawnerBasicLogicTransformer.transform(name, transformedName, classBytes);
             
         return classBytes;
