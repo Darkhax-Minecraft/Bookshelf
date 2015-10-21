@@ -342,7 +342,7 @@ public class Utilities {
      */
     public static int getDyeColor (ItemStack stack) {
         
-        if (stack != null && stack.getIconIndex() != null)
+        if (isValidStack(stack))
             for (VanillaColors color : VanillaColors.values())
                 for (ItemStack oreStack : OreDictionary.getOres(color.colorName))
                     if (oreStack.isItemEqual(stack))
