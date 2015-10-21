@@ -11,6 +11,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.text.WordUtils;
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -30,6 +31,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -610,6 +612,26 @@ public class Utilities {
                     deepTag = deepTag.getCompoundTag(tagName);
                     
         return deepTag;
+    }
+    
+    /**
+     * Lists of names for the vanilla villagers.
+     */
+    @SideOnly(Side.CLIENT)
+    private static String[] vanillaVillagers = { "farmer", "librarian", "priest", "blacksmith", "butcher" };
+    
+    /**
+     * Retrieves a unique string related to the texture name of a villager. This allows for
+     * villagers to be differentiated based on their profession rather than their ID.
+     * 
+     * @param id : The ID of the villager being looked up.
+     * @return String: The texture name, minus file path and extension.
+     */
+    @SideOnly(Side.CLIENT)
+    public static String getVillagerName (int id) {
+        
+        ResourceLocation skin = VillagerRegistry.getVillagerSkin(id, null);
+        return (id >= 0 && id <= 4) ? vanillaVillagers[id] : (skin != null) ? skin.getResourceDomain() + "." + skin.getResourcePath().substring(skin.getResourcePath().lastIndexOf("/") + 1, skin.getResourcePath().length() - 4) : "misingno";
     }
     
     /**
