@@ -543,6 +543,19 @@ public class Utilities {
     }
     
     /**
+     * Makes the first character of a string upper case. Useful for taking raw text data and
+     * turning it into part of a sentence or other display data.
+     * 
+     * @param text: The text to convert.
+     * @return String: The same string that was passed, however the first character has been
+     *         made upper case.
+     */
+    public static String makeUpperCased (String text) {
+        
+        return Character.toString(text.charAt(0)).toUpperCase() + text.substring(1);
+    }
+    
+    /**
      * Retrieves an instance of the player from the client side. This code only exists in
      * client side code and can not be used in server side code.
      */
