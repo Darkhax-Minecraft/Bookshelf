@@ -577,6 +577,18 @@ public class Utilities {
     }
     
     /**
+     * Checks if a specific player can sleep. For this to be true, a player must not already be
+     * in a bed, and the world time bust be greater than 12541, but less than 23458.
+     * 
+     * @param player: The player to check the sleepability of.
+     * @return boolean: True if the player can sleep, false if they can not.
+     */
+    public static boolean canPlayerSleep (EntityPlayer player) {
+        
+        return (!player.isPlayerSleeping() && player.isEntityAlive() && player.worldObj.getWorldTime() > 12541 && player.worldObj.getWorldTime() < 23458);
+    }
+    
+    /**
      * Retrieves an instance of the player from the client side. This code only exists in
      * client side code and can not be used in server side code.
      */
