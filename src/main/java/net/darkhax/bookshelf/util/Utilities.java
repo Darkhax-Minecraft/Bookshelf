@@ -412,6 +412,38 @@ public class Utilities {
     }
     
     /**
+     * Retrieves an array of ItemStack from an NBTTagCompound. This method is intended to be
+     * used with the NBT version of an IInventory and can be used when parsing things like
+     * TileEntity NBT data.
+     * 
+     * @param tag: The tag to retrieve all of the item data from.
+     * @param invSize: The projected size of the inventory stored to the tag. It is critical
+     *            that this never be smaller then the actual amount.
+     * @return ItemStack[]: An array of ItemStack stored on the NBTTagCompound.
+     */
+    public static ItemStack[] getStoredItems (NBTTagCompound tag, int invSize) {
+        
+        ItemStack[] inventory = null;
+        
+        if (tag.hasKey("Items")) {
+            
+            NBTTagList list = tag.getTagList("Items", 10);
+            inventory = new ItemStack[invSize];
+            
+            for (int i = 0; i < list.tagCount(); i++) {
+                
+                if (!(i > list.tagCount())) {
+                    
+                    NBTTagCompound currentTag = list.getCompoundTagAt(i);
+                    inventory[(int) currentTag.getByte("Slot")] = ItemStack.loadItemStackFromNBT(currentTag);
+                }
+            }
+        }
+        
+        return inventory;
+    }
+    
+    /**
      * Attempts to harvest blocks in an AOE based effect around where the player is looking.
      * This effect is designed to be used in conjunction with a tool, and should be used as
      * such.
