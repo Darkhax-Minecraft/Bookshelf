@@ -556,6 +556,27 @@ public class Utilities {
     }
     
     /**
+     * Provides a safe way to get a class by its name. This is essentially the same as
+     * Class.forName however it will handle any ClassNotFoundException automatically.
+     * 
+     * @param name: The name of the class you are trying to get. Example: java.lang.String
+     * @return Class: If a class could be found, it will be returned. Otherwise, null.
+     */
+    public static Class getClassFromString (String name) {
+        
+        try {
+            
+            return Class.forName(name);
+        }
+        
+        catch (ClassNotFoundException e) {
+            
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    /**
      * Retrieves an instance of the player from the client side. This code only exists in
      * client side code and can not be used in server side code.
      */
