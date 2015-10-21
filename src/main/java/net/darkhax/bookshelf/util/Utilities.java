@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.util;
 
 import java.awt.Color;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Arrays;
@@ -632,6 +633,40 @@ public class Utilities {
         
         ResourceLocation skin = VillagerRegistry.getVillagerSkin(id, null);
         return (id >= 0 && id <= 4) ? vanillaVillagers[id] : (skin != null) ? skin.getResourceDomain() + "." + skin.getResourcePath().substring(skin.getResourcePath().lastIndexOf("/") + 1, skin.getResourcePath().length() - 4) : "misingno";
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public static Field currentBlockDamage;
+    
+    /**
+     * A client sided method used to retrieve the progression of the block currently being
+     * mined by the player. This method is client side only, and refers to only the one
+     * instance of the player. Do not try to use this method to get data for multiple players,
+     * or for server sided things.
+     * 
+     * @return float: A float value representing how much time is left for the block being
+     *         broken to break. 0 = no damage has been done. 1 = the block is broken.
+     */
+    @SideOnly(Side.CLIENT)
+    public static float getBlockDamage () {
+        
+        if (currentBlockDamage == null)
+            return 0;
+            
+        try {
+            
+            return currentBlockDamage.getFloat(Minecraft.getMinecraft().playerController);
+        }
+        
+        catch (IllegalArgumentException e) {
+        
+        }
+        
+        catch (IllegalAccessException e) {
+        
+        }
+        
+        return 0;
     }
     
     /**
