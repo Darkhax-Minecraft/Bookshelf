@@ -530,6 +530,19 @@ public class Utilities {
     }
     
     /**
+     * Compares the class of an Object with another class. Useful for comparing a TileEntity or
+     * Item.
+     * 
+     * @param obj: The Object to compare.
+     * @param clazz: The class to compare the Object to.
+     * @return boolean: True if the Object is of the same class as the one provided.
+     */
+    public static boolean compareObjectToClass (Object obj, Class clazz) {
+        
+        return compareClasses(obj.getClass(), clazz);
+    }
+    
+    /**
      * Retrieves an instance of the player from the client side. This code only exists in
      * client side code and can not be used in server side code.
      */
