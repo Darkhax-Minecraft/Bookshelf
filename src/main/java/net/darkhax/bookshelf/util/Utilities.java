@@ -517,6 +517,19 @@ public class Utilities {
     }
     
     /**
+     * A basic check to see if two classes are the same. For the classes to be the same,
+     * neither can be null, and they must share the same name.
+     * 
+     * @param class1: The first class to compare.
+     * @param class2: The second class to compare.
+     * @return boolean: True if neither class is null, and both share the same name.
+     */
+    public static boolean compareClasses (Class class1, Class class2) {
+        
+        return (class1 != null && class2 != null && class1.getName().equalsIgnoreCase(class2.getName()));
+    }
+    
+    /**
      * Retrieves an instance of the player from the client side. This code only exists in
      * client side code and can not be used in server side code.
      */
