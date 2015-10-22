@@ -8,3 +8,5 @@
 /build
 /.gradle
 /eclipse
+
+secret.properties

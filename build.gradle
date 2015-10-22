@@ -1,38 +1,31 @@
 buildscript {
-
     repositories {
-
         mavenCentral()
-
         maven {
-
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-
         maven {
-
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
     }
-
     dependencies {
-
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
+		classpath "com.matthewprenger:CurseGradle:1.0.3-SNAPSHOT"
     }
 }
 
-apply plugin: 'forge'
+apply plugin: "forge"
+apply plugin: "com.matthewprenger.cursegradle"
 
 version = "1.1"
 group = "net.darkhax.bookshelf"
 archivesBaseName = "Bookshelf"
 
 minecraft {
-
     version = "1.7.10-10.13.4.1517-1.7.10"
-    runDir = "eclipse"
+    runDir = "run"
 }
 
 task buildInfo() {
@@ -52,7 +45,11 @@ task buildInfo() {
     }
 }
 
-ext.artifact_version = 'NFG'
+import groovy.json.JsonSlurper
+ext.versionFile = file "versions.json"
+project.ext.versions = new JsonSlurper().parseText versionFile.text
+
+ext.artifact_version = "NFG"
 if (System.getenv().ARTIFACT_VERSION == null) {
     artifact_version = "${version}.${project.buildInfo.buildNum}"
 }
@@ -68,18 +65,18 @@ processResources {
     inputs.property "mcversion", project.minecraft.version
 
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        expand 'version': project.artifact_version, 'mcversion': project.minecraft.version
+        include "mcmod.info"
+        expand "version": project.artifact_version, "mcversion": project.minecraft.version
     }
 
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+        exclude "mcmod.info"
     }
 }
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
-    classifier = 'deobf'
+    classifier = "deobf"
 }
 
 artifacts {
@@ -96,7 +93,34 @@ uploadArchives {
 
 jar {
     manifest {
+        attributes "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true"
+    }
+}
 
-        attributes 'FMLCorePlugin': 'net.darkhax.bookshelf.asm.BookshelfLoadingPlugin', 'FMLCorePluginContainsFMLMod': 'true'
+curseforge {
+    secretFile = file "secret.properties"
+    secretFile.withReader {
+        def prop = new Properties()
+        prop.load(it)
+        secret = new ConfigSlurper().parse prop
+    }
+
+    apiKey = secret.curseForgeApiKey
+
+    project {
+        id = secret.projectId
+    
+        releaseType = "release"
+        changelog = versions.versions[versions.newestVersion].join("\n")
+
+        addGameVersion "1.7.10"
+        
+        mainArtifact(jar) {
+            displayName = "Bookshelf ${artifact_version} for Minecraft 1.7.10"
+        }
+        
+        addArtifact(deobfJar) {
+            displayName = "Bookshelf ${artifact_version} for Minecraft 1.7.10 (Deobf)"
+        }
     }
 }
