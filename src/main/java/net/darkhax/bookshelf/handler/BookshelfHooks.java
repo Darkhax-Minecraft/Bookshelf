@@ -74,7 +74,7 @@ public class BookshelfHooks {
      */
     public static boolean onPistonExtend (int x, int y, int z, World world, Block block, int blockMetadata, int facing, boolean sticky) {
         
-        return MinecraftForge.EVENT_BUS.post(new PistonEvent.PistonExtendEvent(x, y, z, world, block, blockMetadata, sticky, EnumFacing.values()[facing]));
+        return !MinecraftForge.EVENT_BUS.post(new PistonEvent.PistonExtendEvent(x, y, z, world, block, blockMetadata, sticky, EnumFacing.values()[facing]));
     }
     
     /**
@@ -94,7 +94,7 @@ public class BookshelfHooks {
      */
     public static boolean onPistonRetract (int x, int y, int z, World world, Block block, int blockMetadata, int facing, boolean sticky) {
         
-        return MinecraftForge.EVENT_BUS.post(new PistonEvent.PistonRetractEvent(x, y, z, world, block, blockMetadata, sticky, EnumFacing.values()[facing]));
+        return !MinecraftForge.EVENT_BUS.post(new PistonEvent.PistonRetractEvent(x, y, z, world, block, blockMetadata, sticky, EnumFacing.values()[facing]));
     }
     
     // TODO fix this event and discuss documentation
