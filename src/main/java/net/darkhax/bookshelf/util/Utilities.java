@@ -112,7 +112,7 @@ public class Utilities {
      * 
      * @param stack: ItemStack having a tag set on it.
      */
-    public static NBTTagCompound preparedataTag (ItemStack stack) {
+    public static NBTTagCompound prepareDataTag (ItemStack stack) {
         
         if (!stack.hasTagCompound())
             stack.setTagCompound(new NBTTagCompound());
@@ -234,7 +234,7 @@ public class Utilities {
      */
     public static ItemStack setLore (ItemStack stack, String[] lore) {
         
-        preparedataTag(stack);
+        prepareDataTag(stack);
         NBTTagCompound tag = stack.getTagCompound();
         NBTTagList loreList = new NBTTagList();
         
@@ -402,7 +402,7 @@ public class Utilities {
      */
     public static Enchantment[] getEnchantmentsFromStack (ItemStack stack, boolean stored) {
         
-        preparedataTag(stack);
+        prepareDataTag(stack);
         String tagName = (stored) ? "StoredEnchantments" : "ench";
         NBTTagCompound tag = stack.stackTagCompound;
         NBTTagList list = tag.getTagList(tagName, 10);
@@ -464,7 +464,7 @@ public class Utilities {
         
         if (stack != null) {
             
-            preparedataTag(stack);
+            prepareDataTag(stack);
             MovingObjectPosition lookPos = rayTrace(player, 4.5d);
             
             if (lookPos != null && player instanceof EntityPlayerMP) {
@@ -757,7 +757,7 @@ public class Utilities {
      */
     public static void setItemColor (ItemStack stack, int color) {
         
-        preparedataTag(stack);
+        prepareDataTag(stack);
         stack.getTagCompound().setInteger("bookshelfColor", color);
     }
     
@@ -769,7 +769,7 @@ public class Utilities {
      */
     public static void removeItemColor (ItemStack stack) {
         
-        preparedataTag(stack);
+        prepareDataTag(stack);
         stack.getTagCompound().removeTag("bookshelfColor");
     }
 }
