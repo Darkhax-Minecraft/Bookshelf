@@ -742,7 +742,7 @@ public class Utilities {
      * @return int: A numeric representation of the color, that can be broken down into RGB
      *         components.
      */
-    public static int getItemColgor (ItemStack stack) {
+    public static int getItemColor (ItemStack stack) {
         
         return stack.getTagCompound().hasKey("bookshelfColor") ? stack.getTagCompound().getInteger("bookshelfColor") : 16777215;
     }
