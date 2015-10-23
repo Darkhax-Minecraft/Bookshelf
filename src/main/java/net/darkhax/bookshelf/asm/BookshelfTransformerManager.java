@@ -1,6 +1,9 @@
 package net.darkhax.bookshelf.asm;
 
-import net.darkhax.bookshelf.asm.transformers.*;
+import net.darkhax.bookshelf.asm.transformers.ContainerEnchantmentTransformer;
+import net.darkhax.bookshelf.asm.transformers.EntityHorseTransformer;
+import net.darkhax.bookshelf.asm.transformers.ItemTransformer;
+import net.darkhax.bookshelf.asm.transformers.MobSpawnerBasicLogicTransformer;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 public class BookshelfTransformerManager implements IClassTransformer {
@@ -10,9 +13,6 @@ public class BookshelfTransformerManager implements IClassTransformer {
         
         if (transformedName.equals("net.minecraft.entity.passive.EntityHorse"))
             return EntityHorseTransformer.transform(name, transformedName, classBytes);
-            
-        if (transformedName.equals("net.minecraft.block.BlockPistonBase"))
-            return BlockPistonTransformer.transform(name, transformedName, classBytes);
             
         if (transformedName.equals("net.minecraft.inventory.ContainerEnchantment"))
             return ContainerEnchantmentTransformer.transform(name, transformedName, classBytes);
