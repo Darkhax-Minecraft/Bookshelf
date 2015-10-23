@@ -1,7 +1,5 @@
 package net.darkhax.bookshelf.common;
 
-import net.minecraft.entity.player.EntityPlayer;
-
 public class ProxyCommon {
     
     /**
@@ -26,9 +24,5 @@ public class ProxyCommon {
      */
     public void postInit () {
     
-    }
-
-    public EntityPlayer getClientPlayer() {
-        return null;
     }
 }

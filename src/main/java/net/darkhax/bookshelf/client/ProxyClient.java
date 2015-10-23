@@ -3,9 +3,7 @@ package net.darkhax.bookshelf.client;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.darkhax.bookshelf.common.ProxyCommon;
 import net.darkhax.bookshelf.util.Utilities;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ProxyClient extends ProxyCommon {
@@ -25,10 +23,5 @@ public class ProxyClient extends ProxyCommon {
     @Override
     public void postInit () {
     
-    }
-
-    @Override
-    public EntityPlayer getClientPlayer() {
-        return Minecraft.getMinecraft().thePlayer;
     }
 }
