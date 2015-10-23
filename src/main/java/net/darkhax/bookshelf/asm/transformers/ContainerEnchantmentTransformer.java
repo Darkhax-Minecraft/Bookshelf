@@ -17,7 +17,7 @@ public class ContainerEnchantmentTransformer {
         
         ClassNode itemStackClass = ASMHelper.createClassFromByteArray(bytes);
         transformEnchantItem(ASMHelper.getMethodFromClass(itemStackClass, enchantItem, "(Lnet/minecraft/entity/player/EntityPlayer;I)Z"));
-        return ASMHelper.createByteArrayFromClass(itemStackClass, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+        return ASMHelper.createByteArrayFromClass(itemStackClass, ClassWriter.COMPUTE_MAXS);
     }
     
     private static void transformEnchantItem (MethodNode method) {
