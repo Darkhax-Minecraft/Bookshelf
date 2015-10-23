@@ -11,7 +11,7 @@ import org.objectweb.asm.tree.*;
 
 import net.darkhax.bookshelf.asm.ASMHelper;
 
-public class ItemTransformer {
+public class ItemColorTransformer {
     
     public static byte[] transform (String name, String transformedName, byte[] bytes) {
         
