@@ -20,6 +20,12 @@ public class ContainerEnchantmentTransformer {
         return ASMHelper.createByteArrayFromClass(itemStackClass, ClassWriter.COMPUTE_MAXS);
     }
     
+    /**
+     * Transforms the enchantItem method within EnchantmentTransformer to trigger the
+     * ItemEnchantedEvent.
+     * 
+     * @param method: A MethodNode that represents the enchantItem method.
+     */
     private static void transformEnchantItem (MethodNode method) {
         
         InsnList needle = new InsnList();
