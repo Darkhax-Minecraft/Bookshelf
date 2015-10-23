@@ -684,7 +684,7 @@ public class Utilities {
      * client side code and can not be used in server side code.
      */
     @SideOnly(Side.CLIENT)
-    public static EntityPlayer thePlayer () {
+    public static EntityPlayer getClientPlayer () {
         
         return Minecraft.getMinecraft().thePlayer;
     }

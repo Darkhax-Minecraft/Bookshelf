@@ -14,7 +14,7 @@ public abstract class AbstractMessage<M extends AbstractMessage> implements IMes
     public IMessage onMessage (M message, MessageContext ctx) {
         
         if (ctx.side.isClient())
-            handleClientMessage(message, Utilities.thePlayer());
+            handleClientMessage(message, Utilities.getClientPlayer());
             
         else
             handleServerMessage(message, ctx.getServerHandler().playerEntity);
