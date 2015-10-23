@@ -213,11 +213,14 @@ public final class InstructionComparator {
     }
     
     /**
-     * compares two integer instructions, to see if they match or not.
+     * Checks if two IntInsnNodes are the same. For them to be the same, the operand for the
+     * instructions must be the same. They will also be considered the same, if either operand
+     * is -1.
      * 
-     * @param node1: The first integer instruction.
-     * @param node2: The second integer instruction.
-     * @return boolean: True if the instructions match, false if the do not.
+     * @param node1: The first IntInsnNode to compare.
+     * @param node2: The second IntInsnNode to compare.
+     * @return boolean: True if the instructions share the same operand, or if either operand
+     *         is -1.
      */
     public static boolean intInsnEqual (IntInsnNode node1, IntInsnNode node2) {
         
@@ -226,11 +229,14 @@ public final class InstructionComparator {
     }
     
     /**
-     * Compares two load constant instructions, to see if they match or not.
+     * Checks if two LdcInsnNodes are the same. For them to be the same, the constant that is
+     * to be loaded onto the stack must be the same. They will also be considered the same, if
+     * either is loading a String object of ~.
      * 
-     * @param insn1: The first load constant instruction.
-     * @param insn2: The second load constant instruction.
-     * @return boolean: True if the instructions match, false if they do not.
+     * @param insn1: The first LdcInsnNode to compare.
+     * @param insn2: The second LdcInsnNode to compare.
+     * @return boolean: True if the instructions are loading the same constant, or if either is
+     *         loading "~".
      */
     public static boolean ldcInsnEqual (LdcInsnNode insn1, LdcInsnNode insn2) {
         
@@ -239,11 +245,13 @@ public final class InstructionComparator {
     }
     
     /**
-     * Compares two method instructions, to see if they match or not.
+     * Checks if two MethodInsnNodes are the same. For them to be considered the same, both
+     * instructions must share the same description, owner, and name..
      * 
-     * @param insn1: The first method instruction.
-     * @param insn2: The second method instruction.
-     * @return boolean: True if the instructions match, false if the do not.
+     * @param insn1: The first MethodInsNode to compare.
+     * @param insn2: The second MethodInsnNode to compare.
+     * @return boolean: True if the instructions share the same owner, the same name, and the
+     *         same description.
      */
     public static boolean methodInsnEqual (MethodInsnNode insn1, MethodInsnNode insn2) {
         
@@ -251,11 +259,14 @@ public final class InstructionComparator {
     }
     
     /**
-     * Compares two type instructions, to see if they match or not.
+     * Checks if two TypeInsnNodes are the same. For them to be considered the same, both
+     * instructions must share the same description. They will also be considered to be the
+     * same, if either has a description of ~.
      * 
-     * @param insn1: The first type instruction.
-     * @param insn2: The second type instruction.
-     * @return boolean: True if the instructions match, false if they do not.
+     * @param insn1: The first TypeInsnNode to compare.
+     * @param insn2: The second TypeInsnNode to compare.
+     * @return boolean: True if the instructions share the same description, or if either
+     *         description is ~.
      */
     public static boolean typeInsnEqual (TypeInsnNode insn1, TypeInsnNode insn2) {
         
@@ -264,11 +275,14 @@ public final class InstructionComparator {
     }
     
     /**
-     * Compares two variable instructions, to see if they match or not.
+     * Checks two VarInsnNodes to see if they are the same. For them to be the same, their
+     * variable index must be the same. They will also be considered the same if either one has
+     * an index of -1.
      * 
-     * @param insn1: The first variable instruction.
-     * @param insn2: The second variable instruction.
-     * @return boolean: True if the instructions match, false if the do not.
+     * @param insn1: The first VarInsnNode to compare.
+     * @param insn2: The second VarInsnNode to compare.
+     * @return boolean: True if the instructions share the same variable index, or if either
+     *         instruction has an index of -1.
      */
     public static boolean varInsnEqual (VarInsnNode insn1, VarInsnNode insn2) {
         
@@ -277,11 +291,13 @@ public final class InstructionComparator {
     }
     
     /**
-     * Compares two incremental integer instructions, to see if they match or not.
+     * Checks if two IincInsnNodes are the same. For them to be the same, they must share the
+     * same local variable index, and increment by the same amount.
      * 
-     * @param node1: The first incremental integer instruction.
-     * @param node2: The second incremental integer instruction.
-     * @return boolean: True if the instructions match, false if the don't.
+     * @param node1: The first IincInsnNode to compare.
+     * @param node2: The second IincInsnNode to compare.
+     * @return boolean: True if the instructions share the same local variable index, and
+     *         increment by the same amount.
      */
     public static boolean iincInsnEqual (IincInsnNode node1, IincInsnNode node2) {
         
@@ -289,23 +305,38 @@ public final class InstructionComparator {
     }
     
     /**
-     * Compares if two field instructions are equal.
+     * Checks if two FieldInsnNodes are the same. For them to be the same, the owner, name and
+     * description must be the same.
      * 
-     * @param insn1: The first instruction.
-     * @param insn2: The second instruction.
-     * @return boolean: True if the two instructions match, false if the do not.
+     * @param insn1: The first instruction to compare.
+     * @param insn2: The second instruction to compare.
+     * @return boolean: True if the instructions share the same owner, name and description.
      */
     public static boolean fieldInsnEqual (FieldInsnNode insn1, FieldInsnNode insn2) {
         
         return insn1.owner.equals(insn2.owner) && insn1.name.equals(insn2.name) && insn1.desc.equals(insn2.desc);
     }
     
-    // TODO: Needs documentation
     public static class InsnListSection {
         
+        /**
+         * The first instruction in a section.
+         */
         public AbstractInsnNode first;
+        
+        /**
+         * The last instruction in a section.
+         */
         public AbstractInsnNode last;
         
+        /**
+         * Creates an object which reflects the first and last instruction within a list of
+         * instructions.
+         * 
+         * @param haystack: The list of instructions to reflect.
+         * @param start: The index of the first instruction.
+         * @param end: The index of the last instruction.
+         */
         public InsnListSection(InsnList haystack, int start, int end) {
             
             this.first = haystack.get(start);
