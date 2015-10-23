@@ -616,6 +616,16 @@ public class Utilities {
     }
     
     /**
+     * Generates a random color as an integer, from Color and three random floats.
+     * 
+     * @return int: An integer based representation of a Color.
+     */
+    public static int getRandomColor () {
+        
+        return new Color(Constants.RANDOM.nextFloat(), Constants.RANDOM.nextFloat(), Constants.RANDOM.nextFloat()).getRGB();
+    }
+    
+    /**
      * Lists of names for the vanilla villagers.
      */
     @SideOnly(Side.CLIENT)
