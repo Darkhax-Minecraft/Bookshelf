@@ -7,7 +7,7 @@ public class ProxyCommon {
      * exclusively on the client or server side during the pre-initialization phase.
      */
     public void preInit () {
-    
+        FMLInterModComms.sendMessage("llibrary", "update-checker", "https://github.com/Darkhax-Minecraft/Bookshelf/raw/version/versions.json");
     }
     
     /**

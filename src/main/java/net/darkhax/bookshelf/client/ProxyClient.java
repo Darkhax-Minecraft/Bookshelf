@@ -11,6 +11,7 @@ public class ProxyClient extends ProxyCommon {
     @Override
     public void preInit () {
         
+        super.preInit();
         MinecraftForge.EVENT_BUS.register(new RenderingHandler());
         Utilities.currentBlockDamage = ReflectionHelper.findField(PlayerControllerMP.class, "g", "field_78770_f", "curBlockDamageMP");
     }
