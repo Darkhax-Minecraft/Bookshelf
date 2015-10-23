@@ -17,7 +17,14 @@ public class MobSpawnerBasicLogicTransformer {
         return ASMHelper.createByteArrayFromClass(itemClass, ClassWriter.COMPUTE_MAXS);
     }
     
-    // TODO Docs
+    // TODO Clean up these instructions
+    
+    /**
+     * Transforms the updateSpawner method to trigger an enchantment every time a spawner
+     * attempts to spawn an entity.
+     * 
+     * @param method: A MethodNode that reflects the updateSpawner method.
+     */
     private static void transformMobSpawnerBaseLogic (MethodNode method) {
         
         InsnList needle = new InsnList();
