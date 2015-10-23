@@ -15,17 +15,12 @@ public class ItemTransformer {
     
     public static byte[] transform (String name, String transformedName, byte[] bytes) {
         
-        if (transformedName.equals("net.minecraft.item.Item")) {
-            
-            ClassNode itemClass = ASMHelper.createClassFromByteArray(bytes);
-            
-            if (ASMHelper.hasClassMethodName(itemClass, getColorFromItemStack))
-                transformGetColorFromItemStack(ASMHelper.getMethodFromClass(itemClass, getColorFromItemStack, "(Lnet/minecraft/item/ItemStack;I)I"));
-                
-            return ASMHelper.createByteArrayFromClass(itemClass, ClassWriter.COMPUTE_MAXS);
-        }
+        ClassNode itemClass = ASMHelper.createClassFromByteArray(bytes);
         
-        return bytes;
+        if (ASMHelper.hasClassMethodName(itemClass, getColorFromItemStack))
+            transformGetColorFromItemStack(ASMHelper.getMethodFromClass(itemClass, getColorFromItemStack, "(Lnet/minecraft/item/ItemStack;I)I"));
+            
+        return ASMHelper.createByteArrayFromClass(itemClass, ClassWriter.COMPUTE_MAXS);
     }
     
     /**

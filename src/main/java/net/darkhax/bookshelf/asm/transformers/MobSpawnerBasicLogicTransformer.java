@@ -12,14 +12,9 @@ public class MobSpawnerBasicLogicTransformer {
     
     public static byte[] transform (String name, String transformedName, byte[] bytes) {
         
-        if (transformedName.equals("net.minecraft.tileentity.MobSpawnerBaseLogic")) {
-            
-            ClassNode itemClass = ASMHelper.createClassFromByteArray(bytes);
-            transformMobSpawnerBaseLogic(ASMHelper.getMethodFromClass(itemClass, updateSpawner, "()V"));
-            return ASMHelper.createByteArrayFromClass(itemClass, ClassWriter.COMPUTE_MAXS);
-        }
-        
-        return bytes;
+        ClassNode itemClass = ASMHelper.createClassFromByteArray(bytes);
+        transformMobSpawnerBaseLogic(ASMHelper.getMethodFromClass(itemClass, updateSpawner, "()V"));
+        return ASMHelper.createByteArrayFromClass(itemClass, ClassWriter.COMPUTE_MAXS);
     }
     
     // TODO Docs

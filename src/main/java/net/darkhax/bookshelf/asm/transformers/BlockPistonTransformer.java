@@ -12,15 +12,10 @@ public class BlockPistonTransformer {
     
     public static byte[] transform (String name, String transformedName, byte[] bytes) {
         
-        if (transformedName.equals("net.minecraft.block.BlockPistonBase")) {
-            
-            ClassNode itemClass = ASMHelper.createClassFromByteArray(bytes);
-            transformUpdatePistonStateExtend(ASMHelper.getMethodFromClass(itemClass, updatePistonState, "(Lnet/minecraft/world/World;III)V"));
-            transformUpdatePistonStateRetract(ASMHelper.getMethodFromClass(itemClass, updatePistonState, "(Lnet/minecraft/world/World;III)V"));
-            return ASMHelper.createByteArrayFromClass(itemClass, ClassWriter.COMPUTE_MAXS);
-        }
-        
-        return bytes;
+        ClassNode itemClass = ASMHelper.createClassFromByteArray(bytes);
+        transformUpdatePistonStateExtend(ASMHelper.getMethodFromClass(itemClass, updatePistonState, "(Lnet/minecraft/world/World;III)V"));
+        transformUpdatePistonStateRetract(ASMHelper.getMethodFromClass(itemClass, updatePistonState, "(Lnet/minecraft/world/World;III)V"));
+        return ASMHelper.createByteArrayFromClass(itemClass, ClassWriter.COMPUTE_MAXS);
     }
     
     private static void transformUpdatePistonStateExtend (MethodNode method) {

@@ -15,14 +15,9 @@ public class ContainerEnchantmentTransformer {
     
     public static byte[] transform (String name, String transformedName, byte[] bytes) {
         
-        if (transformedName.equals("net.minecraft.inventory.ContainerEnchantment")) {
-            
-            ClassNode itemStackClass = ASMHelper.createClassFromByteArray(bytes);
-            transformEnchantItem(ASMHelper.getMethodFromClass(itemStackClass, enchantItem, "(Lnet/minecraft/entity/player/EntityPlayer;I)Z"));
-            return ASMHelper.createByteArrayFromClass(itemStackClass, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-        }
-        
-        return bytes;
+        ClassNode itemStackClass = ASMHelper.createClassFromByteArray(bytes);
+        transformEnchantItem(ASMHelper.getMethodFromClass(itemStackClass, enchantItem, "(Lnet/minecraft/entity/player/EntityPlayer;I)Z"));
+        return ASMHelper.createByteArrayFromClass(itemStackClass, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
     }
     
     private static void transformEnchantItem (MethodNode method) {
