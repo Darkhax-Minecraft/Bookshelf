@@ -35,7 +35,7 @@ public class CommandItemColor extends CommandBase {
         int colorToApply = -1;
         
         if (params.length == 1)
-            colorToApply = (StringUtils.isNumeric(params[0])) ? Integer.parseInt(params[0]) : (params[0].startsWith("#") ? Color.decode(params[0]).getRGB() : (params[0].equalsIgnoreCase("remove") || params[0].equalsIgnoreCase("r")) ? -666 : -1);
+            colorToApply = (StringUtils.isNumeric(params[0])) ? Integer.parseInt(params[0]) : (params[0].startsWith("#") ? Color.decode(params[0]).getRGB() : (params[0].equalsIgnoreCase("remove") || params[0].equalsIgnoreCase("r")) ? -666 : (params[0].equalsIgnoreCase("random")) ? Utilities.getRandomColor() : -1);
             
         else if (params.length == 3 && areParamsRGB(params))
             colorToApply = new Color(Integer.parseInt(params[0]), Integer.parseInt(params[1]), Integer.parseInt(params[2])).getRGB();
