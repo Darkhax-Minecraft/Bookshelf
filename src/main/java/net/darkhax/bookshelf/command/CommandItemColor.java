@@ -5,6 +5,7 @@ import java.awt.Color;
 import org.apache.commons.lang3.StringUtils;
 
 import net.darkhax.bookshelf.util.Utilities;
+import net.darkhax.bookshelf.util.VanillaColor;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -37,6 +38,14 @@ public class CommandItemColor extends CommandBase {
         if (params.length == 1)
             colorToApply = (StringUtils.isNumeric(params[0])) ? Integer.parseInt(params[0]) : (params[0].startsWith("#") ? Color.decode(params[0]).getRGB() : (params[0].equalsIgnoreCase("remove") || params[0].equalsIgnoreCase("r")) ? -666 : (params[0].equalsIgnoreCase("random")) ? Utilities.getRandomColor() : -1);
             
+        if (params.length == 1 && colorToApply == -1) {
+            
+            VanillaColor namedColor = VanillaColor.getColorByName(params[0]);
+            
+            if (namedColor != null)
+                colorToApply = namedColor.color.getRGB();
+        }
+        
         else if (params.length == 3 && areParamsRGB(params))
             colorToApply = new Color(Integer.parseInt(params[0]), Integer.parseInt(params[1]), Integer.parseInt(params[2])).getRGB();
             
