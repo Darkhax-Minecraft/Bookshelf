@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.client;
 
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.darkhax.bookshelf.common.ProxyCommon;
 import net.darkhax.bookshelf.util.Utilities;
@@ -13,6 +14,7 @@ public class ProxyClient extends ProxyCommon {
         
         MinecraftForge.EVENT_BUS.register(new RenderingHandler());
         Utilities.currentBlockDamage = ReflectionHelper.findField(PlayerControllerMP.class, "g", "field_78770_f", "curBlockDamageMP");
+        FMLInterModComms.sendMessage("llibrary", "update-checker", "https://raw.githubusercontent.com/Darkhax-Minecraft/Bookshelf/master/versions.json");
     }
     
     @Override
