@@ -12,7 +12,7 @@ import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.util.Constants;
 import net.minecraftforge.common.MinecraftForge;
 
-@Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION + Constants.PATCH_VERSION)
+@Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION)
 public class Bookshelf {
 
     @SidedProxy(serverSide = Constants.PROXY_COMMON, clientSide = Constants.PROXY_CLIENT)
