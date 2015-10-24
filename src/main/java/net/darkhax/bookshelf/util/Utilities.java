@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +38,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -625,6 +627,33 @@ public class Utilities {
     public static int getRandomColor () {
         
         return new Color(Constants.RANDOM.nextFloat(), Constants.RANDOM.nextFloat(), Constants.RANDOM.nextFloat()).getRGB();
+    }
+    
+    /**
+     * A list of all biome IDs that have been found by the getAvailableBiomeID method. This is
+     * meant to keep track of biome IDs which have already been found, and prevents duplicate
+     * results. This array should only be accessed internally.
+     */
+    private static ArrayList<Integer> foundBiomes = new ArrayList();
+    
+    /**
+     * Attempts to find a biome ID which is vacant. There is no guarantee that other mods
+     * loaded after yours will not use the same ID, however it will prevent a great deal of
+     * issues, especially when the mod is first installed.
+     * 
+     * @return int: A biome ID which was not occupied at the time of the method being called.
+     */
+    public static int getAvailableBiomeID () {
+        
+        for (int possibleID = 0; possibleID < BiomeGenBase.getBiomeGenArray().length; possibleID++)
+            
+            if (BiomeGenBase.getBiome(possibleID) == null && !foundBiomes.contains(possibleID)) {
+                
+                foundBiomes.add(possibleID);
+                return possibleID;
+            }
+            
+        throw new RuntimeException("An attempt to find an available biome ID was made, however no IDs are available.");
     }
     
     /**
