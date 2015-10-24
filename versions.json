@@ -19,9 +19,6 @@
             "Added ItemEnchantedEvent",
             "Added new color command",
             "Cleaned up several areas of the code, should give very minor performance increases"
-        ],
-        "1.1.0": [
-            "Testing curse push"
         ]
     }
 }

@@ -35,9 +35,7 @@ minecraft {
 }
 
 ext.versionFile = file "versions.json"
-project.ext.jsonSluper = new JsonSlurper();
-project.ext.jsonOutput = new JsonOutput();
-project.ext.versions = jsonSluper.parseText versionFile.text
+project.ext.versions = new JsonSlurper().parseText versionFile.text
 
 processResources {
     inputs.property "version", project.version
@@ -75,8 +73,6 @@ String getVersionFromJava(File file) {
     if (System.getenv().containsKey("BUILD_NUMBER")) {
         patch = System.getenv("BUILD_NUMBER");
     }
-
-    ext.pmr = "$projNumber.$major.$revision";
 
     return "1.7.10-$projNumber.$major.$revision.$patch";
 }
@@ -122,15 +118,13 @@ jar {
 
 task getChangelog() {
 
-    def proc = "git log --pretty=format:%s%n%H -1".execute();
+    def proc = "git log --pretty=format:%H -1".execute();
     proc.waitFor();
     def message = "${proc.in.text}"
     if (message.toLowerCase().contains("#release")) {
-        versions.newestVersion = "${pmr}"
-        versionFile.text = jsonOutput.prettyPrint(jsonOutput.toJson(versions))
         project.ext.release = true;
     } else {
-        project.ext.changelog = message;
+        project.ext.changelog = message + "\nhttps://github.com/Darkhax-Minecraft/Bookshelf/commits/master";
         project.ext.release = false;
     }
 
