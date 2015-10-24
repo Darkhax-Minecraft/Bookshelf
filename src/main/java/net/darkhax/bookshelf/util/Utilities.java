@@ -45,6 +45,21 @@ import net.minecraftforge.oredict.OreDictionary;
 public class Utilities {
     
     /**
+     * Lists of names for the vanilla villagers.
+     */
+    private static String[] vanillaVillagers = { "farmer", "librarian", "priest", "blacksmith", "butcher" };
+    
+    /**
+     * A list of all biome IDs that have been found by the getAvailableBiomeID method. This is
+     * meant to keep track of biome IDs which have already been found, and prevents duplicate
+     * results. This array should only be accessed internally.
+     */
+    private static ArrayList<Integer> foundBiomes = new ArrayList();
+    
+    @SideOnly(Side.CLIENT)
+    public static Field currentBlockDamage;
+    
+    /**
      * This method can be used to round a double to a certain amount of places.
      * 
      * @param value: The double being round.
@@ -652,13 +667,6 @@ public class Utilities {
     }
     
     /**
-     * A list of all biome IDs that have been found by the getAvailableBiomeID method. This is
-     * meant to keep track of biome IDs which have already been found, and prevents duplicate
-     * results. This array should only be accessed internally.
-     */
-    private static ArrayList<Integer> foundBiomes = new ArrayList();
-    
-    /**
      * Attempts to find a biome ID which is vacant. There is no guarantee that other mods
      * loaded after yours will not use the same ID, however it will prevent a great deal of
      * issues, especially when the mod is first installed.
@@ -679,9 +687,67 @@ public class Utilities {
     }
     
     /**
-     * Lists of names for the vanilla villagers.
+     * Retrieves the ItemStack placed in an EntityHorse's custom armor inventory slot.
+     * 
+     * @param horse: An instance of the EntityHorse to grab the armor ItemStack from.
+     * @return ItemStack: The ItemStack in the horses custom armor slot. This ItemStack maybe
+     *         null, and won't always be an instance of ItemHorseArmor.
      */
-    private static String[] vanillaVillagers = { "farmer", "librarian", "priest", "blacksmith", "butcher" };
+    public static ItemStack getCustomHorseArmor (EntityHorse horse) {
+        
+        return horse.getDataWatcher().getWatchableObjectItemStack(23);
+    }
+    
+    /**
+     * Allows for a custom ItemStack to be set to an EntityHorse's custom armor inventory slot.
+     * 
+     * @param horse: An instance of the EntityHorse to set the ItemStack to.
+     * @param stack: An ItemStack you want to set to an EntityHorse's custom armor inventory
+     *            slot.
+     */
+    public static void setCustomHorseArmor (EntityHorse horse, ItemStack stack) {
+        
+        horse.getDataWatcher().updateObject(23, stack);
+    }
+    
+    /**
+     * Retrieves the custom color of an ItemStack. This will only retrieve color data that has
+     * been set through this mod. If no valid color can be found, white will be used.
+     * 
+     * @param stack: The ItemStack to check the color of.
+     * @return int: A numeric representation of the color, that can be broken down into RGB
+     *         components.
+     */
+    public static int getItemColor (ItemStack stack) {
+        
+        return stack.getTagCompound().hasKey("bookshelfColor") ? stack.getTagCompound().getInteger("bookshelfColor") : 16777215;
+    }
+    
+    /**
+     * Sets a color to an ItemStack. This color will override any color value provided by the
+     * getColorFromItemStack method.
+     * 
+     * @param stack: The ItemStack to change the color of.
+     * @param color: A numeric representation of the color, that can be broken down into RGB
+     *            components.
+     */
+    public static void setItemColor (ItemStack stack, int color) {
+        
+        prepareDataTag(stack);
+        stack.getTagCompound().setInteger("bookshelfColor", color);
+    }
+    
+    /**
+     * Removes all color data associated with an ItemStack. This only works for custom NBT
+     * colors set by this mod.
+     * 
+     * @param stack: The ItemStack to remove the color from.
+     */
+    public static void removeItemColor (ItemStack stack) {
+        
+        prepareDataTag(stack);
+        stack.getTagCompound().removeTag("bookshelfColor");
+    }
     
     /**
      * Retrieves a unique string related to the texture name of a villager. This allows for
@@ -696,9 +762,6 @@ public class Utilities {
         ResourceLocation skin = VillagerRegistry.getVillagerSkin(id, null);
         return (id >= 0 && id <= 4) ? vanillaVillagers[id] : (skin != null) ? skin.getResourceDomain() + "." + skin.getResourcePath().substring(skin.getResourcePath().lastIndexOf("/") + 1, skin.getResourcePath().length() - 4) : "misingno";
     }
-    
-    @SideOnly(Side.CLIENT)
-    public static Field currentBlockDamage;
     
     /**
      * A client sided method used to retrieve the progression of the block currently being
@@ -798,70 +861,5 @@ public class Utilities {
             
             super("The data type of " + data.getClass().toString() + " is currently not supported." + Constants.NEW_LINE + "Raw Data: " + data.toString());
         }
-    }
-    
-    // Hook methods
-    
-    /**
-     * Retrieves the ItemStack placed in an EntityHorse's custom armor inventory slot.
-     * 
-     * @param horse: An instance of the EntityHorse to grab the armor ItemStack from.
-     * @return ItemStack: The ItemStack in the horses custom armor slot. This ItemStack maybe
-     *         null, and won't always be an instance of ItemHorseArmor.
-     */
-    public static ItemStack getCustomHorseArmor (EntityHorse horse) {
-        
-        return horse.getDataWatcher().getWatchableObjectItemStack(23);
-    }
-    
-    /**
-     * Allows for a custom ItemStack to be set to an EntityHorse's custom armor inventory slot.
-     * 
-     * @param horse: An instance of the EntityHorse to set the ItemStack to.
-     * @param stack: An ItemStack you want to set to an EntityHorse's custom armor inventory
-     *            slot.
-     */
-    public static void setCustomHorseArmor (EntityHorse horse, ItemStack stack) {
-        
-        horse.getDataWatcher().updateObject(23, stack);
-    }
-    
-    /**
-     * Retrieves the custom color of an ItemStack. This will only retrieve color data that has
-     * been set through this mod. If no valid color can be found, white will be used.
-     * 
-     * @param stack: The ItemStack to check the color of.
-     * @return int: A numeric representation of the color, that can be broken down into RGB
-     *         components.
-     */
-    public static int getItemColor (ItemStack stack) {
-        
-        return stack.getTagCompound().hasKey("bookshelfColor") ? stack.getTagCompound().getInteger("bookshelfColor") : 16777215;
-    }
-    
-    /**
-     * Sets a color to an ItemStack. This color will override any color value provided by the
-     * getColorFromItemStack method.
-     * 
-     * @param stack: The ItemStack to change the color of.
-     * @param color: A numeric representation of the color, that can be broken down into RGB
-     *            components.
-     */
-    public static void setItemColor (ItemStack stack, int color) {
-        
-        prepareDataTag(stack);
-        stack.getTagCompound().setInteger("bookshelfColor", color);
-    }
-    
-    /**
-     * Removes all color data associated with an ItemStack. This only works for custom NBT
-     * colors set by this mod.
-     * 
-     * @param stack: The ItemStack to remove the color from.
-     */
-    public static void removeItemColor (ItemStack stack) {
-        
-        prepareDataTag(stack);
-        stack.getTagCompound().removeTag("bookshelfColor");
     }
 }
