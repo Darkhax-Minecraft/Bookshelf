@@ -347,10 +347,10 @@ public class Utilities {
     public static int getDyeColor (ItemStack stack) {
         
         if (isValidStack(stack))
-            for (VanillaColors color : VanillaColors.values())
-                for (ItemStack oreStack : OreDictionary.getOres(color.colorName))
+            for (VanillaColor color : VanillaColor.values())
+                for (ItemStack oreStack : OreDictionary.getOres(color.getDyeName()))
                     if (oreStack.isItemEqual(stack))
-                        return color.colorObj.getRGB();
+                        return color.color.getRGB();
                         
         return -1337;
     }
