@@ -32,7 +32,7 @@ public class ForgeEventHandler {
     }
     
     @SubscribeEvent
-    public void onentityHurt (LivingHurtEvent event) {
+    public void onEntityHurt (LivingHurtEvent event) {
         
         if (!ASMHelper.isASMEnabled)
             Constants.LOG.warn("The ASM has not been initialized, there is an error with your setup!");
