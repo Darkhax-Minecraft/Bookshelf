@@ -56,6 +56,10 @@ public class Utilities {
      */
     private static ArrayList<Integer> foundBiomes = new ArrayList();
     
+    /**
+     * A reference to the curBlockDamageMP method from the PlayerControllerMP class. Used by
+     * the getBlockDamage method to get the current client-side block damage amount.
+     */
     @SideOnly(Side.CLIENT)
     public static Field currentBlockDamage;
     
@@ -269,6 +273,14 @@ public class Utilities {
         return stack;
     }
     
+    /**
+     * Writes an inventory to an NBTTagCompound. Can be used to save an inventory in a
+     * TileEntity, or perhaps an ItemStack.
+     * 
+     * @param tag: The NBTTagCompound to write the inventory to.
+     * @param inventory: The inventory to write to the NBTTagCompound.
+     * @return NBTTagCompound: The same NBTTagCompound that was passed to this method.
+     */
     public static NBTTagCompound writeInventoryToNBT (NBTTagCompound tag, InventoryBasic inventory) {
         
         if (inventory.hasCustomInventoryName())
@@ -294,7 +306,16 @@ public class Utilities {
         return tag;
     }
     
-    public static NBTTagCompound readInventoryFromNBT (NBTTagCompound tag, InventoryBasic inventory) {
+    /**
+     * Reads an inventory from an NBTTagCompound. Can be used to load an Inventory from a
+     * TileEntity or perhaps an ItemStak.
+     * 
+     * @param tag: The NBTTagCompound to read the inventory data from.
+     * @param inventory: The inventory to set all of the inventory data to.
+     * @return InventoryBasic: The same instance of InventoryBasic that was passed to this
+     *         method.
+     */
+    public static InventoryBasic readInventoryFromNBT (NBTTagCompound tag, InventoryBasic inventory) {
         
         if (tag.hasKey("CustomName", 8))
             inventory.func_110133_a(tag.getString("CustomName"));
@@ -310,7 +331,7 @@ public class Utilities {
                 inventory.setInventorySlotContents(slotCount, ItemStack.loadItemStackFromNBT(itemTag));
         }
         
-        return tag;
+        return inventory;
     }
     
     /**
