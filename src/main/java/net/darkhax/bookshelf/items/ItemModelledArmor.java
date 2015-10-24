@@ -27,7 +27,7 @@ public abstract class ItemModelledArmor extends ItemArmor {
     @Override
     public String getArmorTexture (ItemStack stack, Entity entity, int slot, String type) {
         
-        return getModelTextureName(stack);
+        return getModelTextureName(stack) + ".png";
     }
     
     @Override
