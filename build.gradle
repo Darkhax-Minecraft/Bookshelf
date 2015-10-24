@@ -1,85 +1,105 @@
 buildscript {
-
     repositories {
-
         mavenCentral()
-
         maven {
-
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
 
         maven {
-
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
     }
 
     dependencies {
-
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
+        classpath "com.matthewprenger:CurseGradle:1.0.3-SNAPSHOT"
     }
+
 }
+import groovy.json.*
 
-apply plugin: 'forge'
+apply plugin: "forge"
+apply plugin: "com.matthewprenger.cursegradle"
 
-version = "1.1"
+project.ext.mcVersion = "1.7.10"
+
+version = getVersionFromJava(file("src/main/java/net/darkhax/bookshelf/util/Constants.java"))
 group = "net.darkhax.bookshelf"
 archivesBaseName = "Bookshelf"
 
 minecraft {
-
     version = "1.7.10-10.13.4.1517-1.7.10"
-    runDir = "eclipse"
+    runDir = "run"
 }
 
-task buildInfo() {
-    def cmd = "git rev-parse --short HEAD"
-    def proc = cmd.execute()
-    proc.waitFor()
-    if (proc.exitValue() == 0) {
-        ext.revision = "DEV." + proc.text.trim()
-    } else {
-        ext.revision = "GITBORK"
-    }
-
-    if (System.getenv().BUILD_NUMBER != null) {
-        ext.buildNum = "${System.getenv().BUILD_NUMBER}"
-    } else {
-        ext.buildNum = "${project.buildInfo.revision}"
-    }
-}
-
-ext.artifact_version = 'NFG'
-if (System.getenv().ARTIFACT_VERSION == null) {
-    artifact_version = "${version}.${project.buildInfo.buildNum}"
-}
-
-if (System.getenv().ARTIFACT_VERSION != null) {
-    artifact_version = "${system.getenv().ARTIFACT_VERSION}"
-}
-
-version = "1.7.10-${artifact_version}"
+ext.versionFile = file "versions.json"
+project.ext.jsonSluper = new JsonSlurper();
+project.ext.jsonOutput = new JsonOutput();
+project.ext.versions = jsonSluper.parseText versionFile.text
 
 processResources {
-    inputs.property "version", project.artifact_version
+    inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        expand 'version': project.artifact_version, 'mcversion': project.minecraft.version
+        include "mcmod.info"
+        expand "version": project.version, "mcversion": project.minecraft.version
     }
 
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+        exclude "mcmod.info"
     }
+}
+
+String getVersionFromJava(File file) {
+    String projNumber = "0";
+    String major = "0";
+    String revision = "0";
+    String patch = "0";
+    String prefix = "public static final String VERSION = \"";
+    file.eachLine { String s ->
+
+        s = s.trim();
+        if (s.startsWith(prefix)) {
+            s = s.substring(prefix.length(), s.length() - 2);
+            String[] pts = s.split("\\.");
+
+            projNumber = pts[0];
+            major = pts[1];
+            revision = pts[2];
+        }
+    }
+
+    if (System.getenv().containsKey("BUILD_NUMBER")) {
+        patch = System.getenv("BUILD_NUMBER");
+    }
+
+    ext.pmr = "$projNumber.$major.$revision";
+
+    return "1.7.10-$projNumber.$major.$revision.$patch";
+}
+
+task writeBuildNumber << {
+    def file = file("src/main/java/net/darkhax/bookshelf/util/Constants.java");
+    def bn = System.getenv("BUILD_NUMBER") ?: 0;
+    def outfile = "";
+    def ln = System.getProperty("line.separator")
+
+    file.eachLine { String s ->
+        if (s.contains("PATCH_VERSION") && s.contains("= \"0\"")) {
+            s = "    public static final String PATCH_VERSION = \"${bn}\";";
+        }
+        outfile += (s + ln);
+    }
+
+    file.write(outfile);
 }
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
-    classifier = 'deobf'
+    classifier = "deobf"
 }
 
 artifacts {
@@ -96,7 +116,46 @@ uploadArchives {
 
 jar {
     manifest {
+        attributes "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true"
+    }
+}
 
-        attributes 'FMLCorePlugin': 'net.darkhax.bookshelf.asm.BookshelfLoadingPlugin', 'FMLCorePluginContainsFMLMod': 'true'
+task getChangelog() {
+
+    def proc = "git log --pretty=format:%s%n%H -1".execute();
+    proc.waitFor();
+    def message = "${proc.in.text}"
+    if (message.toLowerCase().contains("#release")) {
+        versions.newestVersion = "${pmr}"
+        versionFile.text = jsonOutput.prettyPrint(jsonOutput.toJson(versions))
+        project.ext.release = true;
+    } else {
+        project.ext.changelog = message;
+        project.ext.release = false;
+    }
+
+}
+
+curseforge {
+    if (System.getenv("curseForgeApiKey")) {
+        apiKey = System.getenv("curseForgeApiKey")
+    }
+
+    project {
+        if (System.getenv("projectId")) {
+            id = System.getenv("projectId")
+        }
+
+        releaseType = release ? "release" : "beta"
+        changelog = project.release ? versions.versions[versions.newestVersion].join("\n") : project.changelog
+
+        addGameVersion project.mcVersion
+
+        mainArtifact(jar) {
+            displayName = "Bookshelf ${version} for Minecraft 1.7.10"
+        }
+        addArtifact(deobfJar) {
+            displayName = "Bookshelf ${version} for Minecraft 1.7.10 (Deobf)"
+        }
     }
 }
