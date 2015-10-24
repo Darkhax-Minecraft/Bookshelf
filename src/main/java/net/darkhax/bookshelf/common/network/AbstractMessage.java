@@ -27,7 +27,7 @@ public abstract class AbstractMessage<M extends AbstractMessage> implements IMes
      * provided message instance. Fields from the current class may not be reliable.
      * 
      * @param message: An instance of the message that has been sent to the client.
-     * @param player: An instance of the client side player, taken from the current Minecraft.
+     * @param player: An instance of the client side player, taken from the current Minecraft
      *            instance.
      */
     @SideOnly(Side.CLIENT)
