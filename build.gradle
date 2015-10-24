@@ -133,11 +133,15 @@ task getChangelog() {
 curseforge {
     if (System.getenv("curseForgeApiKey")) {
         apiKey = System.getenv("curseForgeApiKey")
+    } else {
+        apiKey = 0
     }
 
     project {
         if (System.getenv("projectId")) {
             id = System.getenv("projectId")
+        } else {
+            id = 0
         }
 
         releaseType = release ? "release" : "beta"
