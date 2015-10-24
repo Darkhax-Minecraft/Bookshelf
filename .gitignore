@@ -1,10 +1,11 @@
+#IntelliJ IDEA
 *.class
 *.iml
 *.ipr
 *.iws
-/output
+out/
 
 #ForgeGradle
-/build
-/.gradle
-/eclipse
+build/
+.gradle/
+run/

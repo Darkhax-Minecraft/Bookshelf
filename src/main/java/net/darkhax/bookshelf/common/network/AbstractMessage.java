@@ -27,7 +27,7 @@ public abstract class AbstractMessage<M extends AbstractMessage> implements IMes
      * provided message instance. Fields from the current class may not be reliable.
      * 
      * @param message: An instance of the message that has been sent to the client.
-     * @param player: An instance of the client side player, taken from the current Minecraft
+     * @param player: An instance of the client side player, taken from the current Minecraft.
      *            instance.
      */
     @SideOnly(Side.CLIENT)
@@ -37,10 +37,10 @@ public abstract class AbstractMessage<M extends AbstractMessage> implements IMes
      * Called when the message is received on the server side. Only use fields from the
      * provided message instance. Fields from the current class may not be reliable.
      * 
-     * @param message: An instance of the message that has been sent to the server.
+     * @param message: An instance of the message that has been sent to the server. This can
+     *               be a dedicated server, or an integrated server.
      * @param player: An instance of the player who sent the message to the server. Taken from
      *            ctx.getServerHandler().playerEntity.
      */
-    @SideOnly(Side.SERVER)
     public abstract void handleServerMessage (M message, EntityPlayer player);
 }
