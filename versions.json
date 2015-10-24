@@ -1,9 +1,9 @@
 {
     "iconUrl": "http://media-elerium.cursecdn.com/avatars/thumbnails/15/169/62/62/635617078813942671.png",
-    "newestVersion": "1.0.1",
+    "newestVersion": "1.1.0",
     "updateUrl": "http://minecraft.curseforge.com/projects/bookshelf/files",
     "versions": {
-        "1.0": [
+        "1.0.15": [
             "Added support for horse armor",
             "Added support for recoloring items",
             "Added support for disabled gui slots",
@@ -13,7 +13,7 @@
             "Added tools for working with ASM and byte code",
             "Added a large amount of utilities for things such as breaking blocks in an area of effect"
         ],
-        "1.1": [
+        "1.1.0": [
             "Fixed issue where ASM code wasn't enabled",
             "Fixed issue where mcp mappings were being used instead of srg",
             "Added ItemEnchantedEvent",
