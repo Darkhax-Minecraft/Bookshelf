@@ -630,6 +630,28 @@ public class Utilities {
     }
     
     /**
+     * A check to see if an entity is wearing a full suit of the armor. This check is based on
+     * the class names of armor.
+     * 
+     * @param living: The living entity to check the armor of.
+     * @param armorClass: The class of the armor to check against.
+     * @return boolean: True if every piece of armor the entity is wearing are the same class
+     *         as the provied armor class.
+     */
+    public static boolean isWearingFullSet (EntityLivingBase living, Class armorClass) {
+        
+        for (int armorSlot = 1; armorSlot <= 4; armorSlot++) {
+            
+            ItemStack armor = living.getEquipmentInSlot(armorSlot);
+            
+            if (armor == null || !armor.getItem().getClass().equals(armorClass))
+                return false;
+        }
+        
+        return true;
+    }
+    
+    /**
      * A list of all biome IDs that have been found by the getAvailableBiomeID method. This is
      * meant to keep track of biome IDs which have already been found, and prevents duplicate
      * results. This array should only be accessed internally.
