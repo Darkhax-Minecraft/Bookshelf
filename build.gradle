@@ -145,11 +145,7 @@ curseforge {
 
         addGameVersion project.mcVersion
 
-        mainArtifact(jar) {
-            displayName = "Bookshelf ${version} for Minecraft 1.7.10"
-        }
-        addArtifact(deobfJar) {
-            displayName = "Bookshelf ${version} for Minecraft 1.7.10 (Deobf)"
-        }
+        mainArtifact(jar)
+        addArtifact(deobfJar)
     }
 }
