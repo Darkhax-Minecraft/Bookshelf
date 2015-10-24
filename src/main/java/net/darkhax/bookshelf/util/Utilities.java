@@ -628,7 +628,6 @@ public class Utilities {
     /**
      * Lists of names for the vanilla villagers.
      */
-    @SideOnly(Side.CLIENT)
     private static String[] vanillaVillagers = { "farmer", "librarian", "priest", "blacksmith", "butcher" };
     
     /**
