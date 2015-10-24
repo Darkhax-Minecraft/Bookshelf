@@ -14,35 +14,35 @@ import net.minecraftforge.common.MinecraftForge;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION)
 public class Bookshelf {
-
+    
     @SidedProxy(serverSide = Constants.PROXY_COMMON, clientSide = Constants.PROXY_CLIENT)
     public static net.darkhax.bookshelf.common.ProxyCommon proxy;
-
+    
     @Mod.Instance(Constants.MOD_ID)
     public static Bookshelf instance;
-
+    
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
-
+        
         proxy.preInit();
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
     }
-
+    
     @EventHandler
     public void init (FMLInitializationEvent event) {
-
+        
         proxy.init();
     }
-
+    
     @EventHandler
     public void onPostInit (FMLPostInitializationEvent event) {
-
+        
         proxy.postInit();
     }
-
+    
     @EventHandler
     public void onServerStarting (FMLServerStartingEvent event) {
-
+        
         event.registerServerCommand(new CommandItemColor());
     }
 }
