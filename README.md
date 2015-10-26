@@ -15,12 +15,21 @@ This project relies on core mod functionality. All core mod features will only f
 Events
 ======
 [ItemEnchantedEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/event/ItemEnchantedEvent.java)  
-[MobSpawnerSpawnEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/event/MobSpawnerSpawnEvent.java)  
 
 Hooks
 =====
 [Horse Armor](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/items/ItemHorseArmor.java)  
-[Color any Item](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/util/Utilities.java#L737-L774)  
+[Color any Item](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/command/CommandItemColor.java)  
+
+Other Features
+==============
+[Modeled Armor](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/items/ItemModelledArmor.java)   
+[Simplified Messages](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/common/network/AbstractMessage.java)   
+[More Enchantment IDs](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/handler/EnchantmentListExpansionHandler.java)   
+[Position Object](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/util/Position.java)   
+[Vanilla Color Enum](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/util/VanillaColor.java)   
+[Assorted Utilities](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/util/Utilities.java)   
+
 
 Credits
 =======
