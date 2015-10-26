@@ -8,6 +8,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.darkhax.bookshelf.command.CommandItemColor;
+import net.darkhax.bookshelf.handler.EnchantmentListExpansionHandler;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.util.Constants;
 import net.minecraftforge.common.MinecraftForge;
@@ -26,6 +27,7 @@ public class Bookshelf {
         
         proxy.preInit();
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
+        new EnchantmentListExpansionHandler();
     }
     
     @EventHandler
