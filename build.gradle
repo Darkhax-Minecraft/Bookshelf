@@ -118,13 +118,16 @@ jar {
 
 task getChangelog() {
 
-    def proc = "git log --pretty=format:%H -1".execute();
+    def proc = "git log --pretty=format:%s -1".execute();
     proc.waitFor();
     def message = "${proc.in.text}"
+
     if (message.toLowerCase().contains("#release")) {
         project.ext.release = true;
     } else {
-        project.ext.changelog = message + "\nhttps://github.com/Darkhax-Minecraft/Bookshelf/commits/master";
+        proc = "git log --pretty=format:%H -1".execute();
+        proc.waitFor();
+        project.ext.changelog = "${proc.in.text}" + "\nhttps://github.com/Darkhax-Minecraft/Bookshelf/commits/master";
         project.ext.release = false;
     }
 

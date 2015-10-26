@@ -1,9 +1,9 @@
 {  
     "iconUrl":"http://media-elerium.cursecdn.com/avatars/thumbnails/15/169/62/62/635617078813942671.png",
-    "newestVersion":"1.1.0",
+    "newestVersion":"1.0.2.54",
     "updateUrl":"http://minecraft.curseforge.com/projects/bookshelf/files",
     "versions":{  
-        "1.0.2.53":[  
+        "1.0.2.54":[
             "Fixed ASM load time. Now several times faster!",
             "Fixed several typos in the code mappings.",
             "Fixed armor items not being colorable. Does not show when worn!",
