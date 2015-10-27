@@ -57,6 +57,13 @@ public class Utilities {
     private static ArrayList<Integer> foundBiomes = new ArrayList();
     
     /**
+     * A list of all enchantments that have been found by the getNextEnchantmentID method. This
+     * is meant to keep track of all enchantment IDs that have already been found, and prevent
+     * duplicate results. This should only be accessed internally.
+     */
+    private static ArrayList<Integer> foundEnchantments = new ArrayList();
+    
+    /**
      * A reference to the curBlockDamageMP method from the PlayerControllerMP class. Used by
      * the getBlockDamage method to get the current client-side block damage amount.
      */
@@ -690,7 +697,7 @@ public class Utilities {
     /**
      * Attempts to find a biome ID which is vacant. There is no guarantee that other mods
      * loaded after yours will not use the same ID, however it will prevent a great deal of
-     * issues, especially when the mod is first installed.
+     * issues.
      * 
      * @return int: A biome ID which was not occupied at the time of the method being called.
      */
@@ -705,6 +712,28 @@ public class Utilities {
             }
             
         throw new RuntimeException("An attempt to find an available biome ID was made, however no IDs are available.");
+    }
+    
+    /**
+     * Attempts to find an Enchantment ID which is vacant. There is no guarantee that other
+     * mods loaded after yours will not have the same ID, however it will prevent a great deal
+     * of issues.
+     * 
+     * @return int: An Enchantment ID which was not assigned at the time of the method being
+     *         called.
+     */
+    public static int getNextEnchantmentID () {
+        
+        for (int possibleID = 0; possibleID < Enchantment.enchantmentsList.length; possibleID++) {
+            
+            if (Enchantment.enchantmentsList[possibleID] == null && !foundBiomes.contains(possibleID)) {
+                
+                foundEnchantments.add(possibleID);
+                return possibleID;
+            }
+        }
+        
+        throw new RuntimeException("Anattempt to find an available enchantment ID was made, however no IDs are available.");
     }
     
     /**
