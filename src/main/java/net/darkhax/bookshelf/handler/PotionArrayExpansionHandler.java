@@ -8,7 +8,7 @@ import net.darkhax.bookshelf.util.Constants;
 import net.minecraft.potion.Potion;
 
 public class PotionArrayExpansionHandler {
-
+    
     Field potionTypes = null;
     Field modifiers = null;
     
