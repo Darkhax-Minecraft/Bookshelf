@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -56,4 +57,16 @@ public class RenderUtils {
         GL11.glColor3f(((float) color.getRed() / 255f), ((float) color.getGreen() / 255f), ((float) color.getBlue() / 255f));
     }
     
+    @SideOnly(Side.CLIENT)
+    public static void drawTextureModalRectSize (int posX, int posY, int u, int v, int width, int length, float size, float zLevel) {
+        
+        float f = 1 / size;
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV((double) (posX + 0), (double) (posY + length), (double) zLevel, (double) ((float) (u + 0) * f), (double) ((float) (v + length) * f));
+        tessellator.addVertexWithUV((double) (posX + width), (double) (posY + length), (double) zLevel, (double) ((float) (u + width) * f), (double) ((float) (v + length) * f));
+        tessellator.addVertexWithUV((double) (posX + width), (double) (posY + 0), (double) zLevel, (double) ((float) (u + width) * f), (double) ((float) (v + 0) * f));
+        tessellator.addVertexWithUV((double) (posX + 0), (double) (posY + 0), (double) zLevel, (double) ((float) (u) * f), (double) ((float) (v + 0) * f));
+        tessellator.draw();
+    }
 }
