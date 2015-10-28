@@ -12,9 +12,6 @@ import net.darkhax.bookshelf.handler.EnchantmentListExpansionHandler;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.handler.PotionArrayExpansionHandler;
 import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.util.MathsUtils;
-import net.darkhax.bookshelf.potion.PotionBase;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION)
@@ -33,11 +30,6 @@ public class Bookshelf {
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
         new EnchantmentListExpansionHandler();
         new PotionArrayExpansionHandler();
-        
-        ResourceLocation texture = new ResourceLocation("bookshelf:textures/inventory/test.png");
-        for (int id = 0; id <= 23; id++) {
-            new PotionBase(100 + id, false, MathsUtils.getRandomColor(), texture, id).setPotionName("It Watches");
-        }
     }
     
     @EventHandler
