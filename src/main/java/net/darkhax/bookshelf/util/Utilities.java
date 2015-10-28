@@ -733,7 +733,25 @@ public class Utilities {
             }
         }
         
-        throw new RuntimeException("Anattempt to find an available enchantment ID was made, however no IDs are available.");
+        throw new RuntimeException("An attempt to find an available enchantment ID was made, however no IDs are available.");
+    }
+    
+    /**
+     * Compares all ore dictionary names associated with an ItemStack, with the provided ore
+     * dictionary name.
+     * 
+     * @param stack: The ItemStack to compare against.
+     * @param oreName: The ore dictionary name to compare to.
+     * @return boolean: True if any of the ore dictionary entries for the provided stack match
+     *         the provided ore name.
+     */
+    public static boolean compareStackToOreName (ItemStack stack, String oreName) {
+        
+        for (int stackName : OreDictionary.getOreIDs(stack))
+            if (OreDictionary.getOreName(stackName).equalsIgnoreCase(oreName))
+                return true;
+                
+        return false;
     }
     
     /**
