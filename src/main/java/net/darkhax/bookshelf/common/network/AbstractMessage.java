@@ -5,7 +5,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.darkhax.bookshelf.util.Utilities;
+import net.darkhax.bookshelf.lib.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 
 public abstract class AbstractMessage<M extends AbstractMessage> implements IMessage, IMessageHandler<M, IMessage> {
@@ -14,7 +14,7 @@ public abstract class AbstractMessage<M extends AbstractMessage> implements IMes
     public IMessage onMessage (M message, MessageContext ctx) {
         
         if (ctx.side.isClient())
-            handleClientMessage(message, Utilities.getClientPlayer());
+            handleClientMessage(message, PlayerUtils.getClientPlayer());
             
         else
             handleServerMessage(message, ctx.getServerHandler().playerEntity);

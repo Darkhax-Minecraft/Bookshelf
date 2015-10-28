@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.util;
+package net.darkhax.bookshelf.lib;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

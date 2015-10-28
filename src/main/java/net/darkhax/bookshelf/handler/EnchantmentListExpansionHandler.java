@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import net.darkhax.bookshelf.util.Constants;
+import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.enchantment.Enchantment;
 
 public class EnchantmentListExpansionHandler {

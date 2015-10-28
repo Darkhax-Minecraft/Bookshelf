@@ -11,9 +11,9 @@ import net.darkhax.bookshelf.command.CommandItemColor;
 import net.darkhax.bookshelf.handler.EnchantmentListExpansionHandler;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.handler.PotionArrayExpansionHandler;
+import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.util.MathsUtils;
 import net.darkhax.bookshelf.potion.PotionBase;
-import net.darkhax.bookshelf.util.Constants;
-import net.darkhax.bookshelf.util.Utilities;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -36,7 +36,7 @@ public class Bookshelf {
         
         ResourceLocation texture = new ResourceLocation("bookshelf:textures/inventory/test.png");
         for (int id = 0; id <= 23; id++) {
-            new PotionBase(100 + id, false, Utilities.getRandomColor(), texture, id).setPotionName("It Watches");
+            new PotionBase(100 + id, false, MathsUtils.getRandomColor(), texture, id).setPotionName("It Watches");
         }
     }
     

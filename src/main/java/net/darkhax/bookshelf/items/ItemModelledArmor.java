@@ -2,7 +2,7 @@ package net.darkhax.bookshelf.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.darkhax.bookshelf.util.Utilities;
+import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -35,7 +35,7 @@ public abstract class ItemModelledArmor extends ItemArmor {
     public ModelBiped getArmorModel (EntityLivingBase entityLiving, ItemStack stack, int armorSlot) {
         
         ModelBiped armorModel = getArmorModel(stack);
-        Utilities.synArmorModelToEntity(armorModel, armorSlot, entityLiving);
+        RenderUtils.synArmorModelToEntity(armorModel, armorSlot, entityLiving);
         return armorModel;
     }
     

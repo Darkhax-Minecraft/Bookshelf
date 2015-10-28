@@ -4,8 +4,9 @@ import java.awt.Color;
 
 import org.apache.commons.lang3.StringUtils;
 
-import net.darkhax.bookshelf.util.Utilities;
-import net.darkhax.bookshelf.util.VanillaColor;
+import net.darkhax.bookshelf.lib.VanillaColor;
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.lib.util.MathsUtils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -36,7 +37,7 @@ public class CommandItemColor extends CommandBase {
         int colorToApply = -1;
         
         if (params.length == 1)
-            colorToApply = (StringUtils.isNumeric(params[0])) ? Integer.parseInt(params[0]) : (params[0].startsWith("#") ? Color.decode(params[0]).getRGB() : (params[0].equalsIgnoreCase("remove") || params[0].equalsIgnoreCase("r")) ? -666 : (params[0].equalsIgnoreCase("random")) ? Utilities.getRandomColor() : -1);
+            colorToApply = (StringUtils.isNumeric(params[0])) ? Integer.parseInt(params[0]) : (params[0].startsWith("#") ? Color.decode(params[0]).getRGB() : (params[0].equalsIgnoreCase("remove") || params[0].equalsIgnoreCase("r")) ? -666 : (params[0].equalsIgnoreCase("random")) ? MathsUtils.getRandomColor() : -1);
             
         if (params.length == 1 && colorToApply == -1) {
             
@@ -54,13 +55,13 @@ public class CommandItemColor extends CommandBase {
             
         else if (colorToApply == -666) {
             
-            Utilities.removeItemColor(player.getHeldItem());
+            ItemStackUtils.removeItemColor(player.getHeldItem());
             sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + StatCollector.translateToLocal("command.bookshelf.color.remove")));
         }
         
         else {
             
-            Utilities.setItemColor(player.getHeldItem(), colorToApply);
+            ItemStackUtils.setItemColor(player.getHeldItem(), colorToApply);
             sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + StatCollector.translateToLocal("command.bookshelf.color.success")));
         }
     }

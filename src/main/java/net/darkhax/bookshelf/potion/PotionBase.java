@@ -2,7 +2,7 @@ package net.darkhax.bookshelf.potion;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.darkhax.bookshelf.util.Utilities;
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -38,7 +38,7 @@ public class PotionBase extends Potion {
             mc.currentScreen.drawTexturedModalRect(x + 6, y + 7, 238, 19, 18, 18);
         }
         
-        else if (Utilities.isValidStack(this.iconStack)) {
+        else if (ItemStackUtils.isValidStack(this.iconStack)) {
             
             Minecraft.getMinecraft().renderEngine.bindTexture(Minecraft.getMinecraft().renderEngine.getResourceLocation(1));
             mc.currentScreen.drawTexturedModelRectFromIcon(x + 8, y + 8, this.iconStack.getIconIndex(), 16, 16);
