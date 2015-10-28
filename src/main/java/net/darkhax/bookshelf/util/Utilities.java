@@ -755,6 +755,24 @@ public class Utilities {
     }
     
     /**
+     * Compares all applicable ore dictionary names for two item stacks, to see if either have
+     * a name in common.
+     * 
+     * @param firstStack: The first ItemStack to compare.
+     * @param secondStack: The second ItemStack to compare.
+     * @return boolean: True, if any of the ore dictionary names for either stack are the same.
+     */
+    public static boolean doStacksShareOreName (ItemStack firstStack, ItemStack secondStack) {
+        
+        for (int firstName : OreDictionary.getOreIDs(firstStack))
+            for (int secondName : OreDictionary.getOreIDs(secondStack))
+                if (firstName == secondName)
+                    return true;
+                    
+        return false;
+    }
+    
+    /**
      * Retrieves the ItemStack placed in an EntityHorse's custom armor inventory slot.
      * 
      * @param horse: An instance of the EntityHorse to grab the armor ItemStack from.
