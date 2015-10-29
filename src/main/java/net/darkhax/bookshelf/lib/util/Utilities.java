@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
+import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -188,6 +189,30 @@ public class Utilities {
     public static void setCustomHorseArmor (EntityHorse horse, ItemStack stack) {
         
         horse.getDataWatcher().updateObject(23, stack);
+    }
+    
+    /**
+     * Retrieves the name of the mod that added the item to the game.
+     * 
+     * @param item: The Item to get the mod name from.
+     * @return String: The name of the mod which added the provided item to the game.
+     */
+    public static String getModName (Item item) {
+        
+        String itemID = GameData.getItemRegistry().getNameForObject(item);
+        return itemID.substring(0, itemID.indexOf(':'));
+    }
+    
+    /**
+     * Retrieves the name of the mod that added the block to the game.
+     * 
+     * @param block: The Block to get the mod name from.
+     * @return String: The name of the mod which added the provided block.
+     */
+    public static String getModName (Block block) {
+        
+        String blockID = GameData.getBlockRegistry().getNameForObject(block);
+        return GameData.blockRegistry.getNameForObject(block).substring(0, blockID.indexOf(':'));
     }
     
     /**
