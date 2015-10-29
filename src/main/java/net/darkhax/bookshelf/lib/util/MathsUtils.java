@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -27,6 +28,13 @@ public class MathsUtils {
      * results. This array should only be accessed internally.
      */
     static ArrayList<Integer> foundBiomes = new ArrayList();
+    
+    /**
+     * A list of all potion IDs that have been found by the getNextPotionID method. This is
+     * meant to keep track of potion IDs which have already been found, and prevents duplicate
+     * results. This array should only be accessed internally.
+     */
+    static ArrayList<Integer> foundPotions = new ArrayList();
     
     /**
      * This method can be used to round a double to a certain amount of places.
@@ -132,5 +140,26 @@ public class MathsUtils {
         }
         
         throw new RuntimeException("An attempt to find an available enchantment ID was made, however no IDs are available.");
+    }
+    
+    /**
+     * Attempts to find a Potion ID which is vacant. There is no guarantee that other mods
+     * loaded after yours will not have the same ID, however it will prevent a great deal of
+     * issues.
+     * 
+     * @return int: A Potion ID which was not assigned at the time of the method being called.
+     */
+    public static int getNextPotionID () {
+        
+        for (int possibleID = 0; possibleID < Potion.potionTypes.length; possibleID++) {
+            
+            if (Potion.potionTypes[possibleID] == null && !foundPotions.contains(possibleID)) {
+                
+                foundPotions.add(possibleID);
+                return possibleID;
+            }
+        }
+        
+        throw new RuntimeException("An attempt to find an available potion ID was made, however no IDs are available.");
     }
 }
