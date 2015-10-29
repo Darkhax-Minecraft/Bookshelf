@@ -132,7 +132,7 @@ public class MathsUtils {
         
         for (int possibleID = 0; possibleID < Enchantment.enchantmentsList.length; possibleID++) {
             
-            if (Enchantment.enchantmentsList[possibleID] == null && !foundBiomes.contains(possibleID)) {
+            if (Enchantment.enchantmentsList[possibleID] == null && !foundEnchantments.contains(possibleID)) {
                 
                 foundEnchantments.add(possibleID);
                 return possibleID;
