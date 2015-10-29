@@ -212,7 +212,7 @@ public class Utilities {
     public static String getModName (Block block) {
         
         String blockID = GameData.getBlockRegistry().getNameForObject(block);
-        return GameData.blockRegistry.getNameForObject(block).substring(0, blockID.indexOf(':'));
+        return blockID.substring(0, blockID.indexOf(':'));
     }
     
     /**
