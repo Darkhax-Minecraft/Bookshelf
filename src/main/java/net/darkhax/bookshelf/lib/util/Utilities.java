@@ -11,6 +11,7 @@ import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.init.Blocks;
@@ -213,6 +214,19 @@ public class Utilities {
         
         String blockID = GameData.getBlockRegistry().getNameForObject(block);
         return blockID.substring(0, blockID.indexOf(':'));
+    }
+    
+    /**
+     * A safe way to grab an enchantment by its numeric ID. This is to help prevent crashes
+     * when working with ids above the default maximum.
+     * 
+     * @param id: The ID of the enchantment you wish to grab.
+     * @return Enchantment: The enchantment that is assigned to the provided ID. Id the ID is
+     *         invalid, or the enchantment does not exist, you will get null.
+     */
+    public static Enchantment getEnchantment (int id) {
+        
+        return (id >= 0 && id <= Enchantment.enchantmentsList.length) ? Enchantment.enchantmentsList[id] : null;
     }
     
     /**
