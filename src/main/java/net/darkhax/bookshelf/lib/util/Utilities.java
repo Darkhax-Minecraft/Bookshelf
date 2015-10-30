@@ -257,7 +257,7 @@ public class Utilities {
      * @return List<Enchantment>: A list of all the enchantments that were found in the
      *         enchantment list.
      */
-    public List<Enchantment> getAvailableEnchantments () {
+    public static List<Enchantment> getAvailableEnchantments () {
         
         if (availableEnchantments == null)
             updateAvailableEnchantments();
