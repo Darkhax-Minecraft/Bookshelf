@@ -7,60 +7,62 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 public abstract class AbstractTileEntity extends TileEntity {
-
+    
     @Override
     public Packet getDescriptionPacket () {
-
+        
         NBTTagCompound nbtTag = new NBTTagCompound();
         saveClientDataToNBT(nbtTag);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbtTag);
     }
-
+    
     @Override
     public void onDataPacket (NetworkManager manager, S35PacketUpdateTileEntity packet) {
-
+        
         loadClientDataFromNBT(packet.func_148857_g());
     }
-
+    
     @Override
     public void readFromNBT (NBTTagCompound nbtTag) {
-
+        
         super.readFromNBT(nbtTag);
         loadFromNBT(nbtTag);
     }
-
+    
     @Override
     public void writeToNBT (NBTTagCompound nbtTag) {
-
+        
         super.writeToNBT(nbtTag);
         saveToNBT(nbtTag);
     }
-
+    
     /**
-     * Load NBT data from a tag. This can be called on a dedicated server, or an integrated server.
+     * Load NBT data from a tag. This can be called on a dedicated server, or an integrated
+     * server.
      *
      * @param nbtTag: The NBT tag to read the data from.
      */
-    public abstract void loadFromNBT(NBTTagCompound nbtTag);
-
+    public abstract void loadFromNBT (NBTTagCompound nbtTag);
+    
     /**
-     * Write NBT data to a tag. This can be called on a dedicated server, or an integrated server.
+     * Write NBT data to a tag. This can be called on a dedicated server, or an integrated
+     * server.
      *
      * @param nbtTag: The NBT tag to write data to.
      */
-    public abstract void saveToNBT(NBTTagCompound nbtTag);
-
+    public abstract void saveToNBT (NBTTagCompound nbtTag);
+    
     /**
      * Load NBT data from a tag. This can be called on a client.
      *
      * @param nbtTag: The NBT tag to read the data from.
      */
-    public abstract void loadClientDataFromNBT(NBTTagCompound nbtTag);
-
+    public abstract void loadClientDataFromNBT (NBTTagCompound nbtTag);
+    
     /**
      * Write NBT data to a tag. This can be called on a client.
      *
      * @param nbtTag: The NBT tag to write data to.
      */
-    public abstract void saveClientDataToNBT(NBTTagCompound nbtTag);
+    public abstract void saveClientDataToNBT (NBTTagCompound nbtTag);
 }
