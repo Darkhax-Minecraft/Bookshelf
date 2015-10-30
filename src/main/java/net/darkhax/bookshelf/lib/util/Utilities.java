@@ -7,10 +7,14 @@ import java.util.List;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.darkhax.bookshelf.common.network.AbstractMessage;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
@@ -263,6 +267,19 @@ public class Utilities {
             updateAvailableEnchantments();
             
         return availableEnchantments;
+    }
+    
+    /**
+     * Registers an AbstractMessage to your SimpleNetworkWrapper.
+     * 
+     * @param network: The SimpleNetworkWrapper to register to.
+     * @param clazz: The class of your AbstractMessage.
+     * @param id: And ID for your AbstractMessage.
+     * @param side: The side to send these messages towards.
+     */
+    public static <T extends AbstractMessage<T> & IMessageHandler<T, IMessage>> void registerMessage (SimpleNetworkWrapper network, Class<T> clazz, int id, Side side) {
+        
+        network.registerMessage(clazz, clazz, id, side);
     }
     
     /**
