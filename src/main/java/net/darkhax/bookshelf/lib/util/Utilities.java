@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.lib.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,9 +24,15 @@ import net.minecraftforge.fluids.IFluidBlock;
 public class Utilities {
     
     /**
-     * Lists of names for the vanilla villagers.
+     * Array of names for the vanilla villagers.
      */
     private static String[] vanillaVillagers = { "farmer", "librarian", "priest", "blacksmith", "butcher" };
+    
+    /**
+     * A List of all available enchantments. Needs to occasionally be updated using
+     * updateAvailableEnchantments.
+     */
+    private static List<Enchantment> availableEnchantments;
     
     /**
      * This method will take a string and break it down into multiple lines based on a provided
@@ -227,6 +234,35 @@ public class Utilities {
     public static Enchantment getEnchantment (int id) {
         
         return (id >= 0 && id <= Enchantment.enchantmentsList.length) ? Enchantment.enchantmentsList[id] : null;
+    }
+    
+    /**
+     * Updates the available enchantment array to contain all current enchantments.
+     */
+    public static void updateAvailableEnchantments () {
+        
+        List<Enchantment> foundEnchantments = new ArrayList<Enchantment>();
+        
+        for (Enchantment enchantment : Enchantment.enchantmentsList)
+            if (enchantment != null)
+                foundEnchantments.add(enchantment);
+                
+        availableEnchantments = foundEnchantments;
+    }
+    
+    /**
+     * Provides a list of all enchantments that are currently available. If the list has not
+     * yet been initialized, this will do it automatically.
+     * 
+     * @return List<Enchantment>: A list of all the enchantments that were found in the
+     *         enchantment list.
+     */
+    public List<Enchantment> getAvailableEnchantments () {
+        
+        if (availableEnchantments == null)
+            updateAvailableEnchantments();
+            
+        return availableEnchantments;
     }
     
     /**
