@@ -7,14 +7,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-@SuppressWarnings("deprecation")
 public class SkullUtils {
     
     /**
-     * Create a skull from the player instance.
+     * Create a skull from an instance of EntityPlayer.
      *
-     * @param player: The player to use the skin from.
-     * @return ItemStack: An itemstack with the skull.
+     * @param player: The EntityPlayer to use the skin from.
+     * @return ItemStack: An ItemStack containing a skull that represents the passed player.
      */
     public static ItemStack createSkull (EntityPlayer player) {
         
@@ -22,43 +21,32 @@ public class SkullUtils {
     }
     
     /**
-     * Create a skull from the player UUID.
-     *
-     * @param uuid: The player's UUID.
-     * @return ItemStack: An itemstack with the skull.
+     * Creates a skull using a players UUID.
+     * 
+     * @param uuid: The UUID of the player to base the skull on.
+     * @return ItemStack: An ItemStack containing a skull which represents the owner of the
+     *         passed UUID.
      */
     public static ItemStack createSkull (UUID uuid) {
         
-        ItemStack stack = new ItemStack(Items.skull, 1, 3);
-        
-        NBTTagCompound tagCompound = stack.getTagCompound();
-        if (tagCompound == null)
-            tagCompound = new NBTTagCompound();
-            
-        tagCompound.setString("SkullOwner", uuid.toString());
-        stack.setTagCompound(tagCompound);
-        
-        return stack;
+        return createSkull(uuid.toString());
     }
     
     /**
-     * Deprecated, use UUIDs instead!
-     *
-     * @param username: The username of the player to use the skin from.
-     * @return ItemStack: An itemstack with the skull.
+     * Creates a skull that represents a player. This method can use plain text usernames, or
+     * player UUID. It is recomended to use the UUID over the username, unless you are 100%
+     * certain that the username will never change.
+     * 
+     * @param owner: The owner of the skull being created. Can be a username of a UUID.
+     * @return ItemStack: An ItemStack containing a skull which represents the passed owner
+     *         name.
      */
-    @Deprecated
-    public static ItemStack createSkullFromUsername (String username) {
+    public static ItemStack createSkull (String owner) {
         
         ItemStack stack = new ItemStack(Items.skull, 1, 3);
-        
-        NBTTagCompound tagCompound = stack.getTagCompound();
-        if (tagCompound == null)
-            tagCompound = new NBTTagCompound();
-            
-        tagCompound.setString("SkullOwner", username);
-        stack.setTagCompound(tagCompound);
-        
+        ItemStackUtils.prepareDataTag(stack);
+        stack.getTagCompound().setString("SkullOwner", owner);
+        NBTTagCompound tagCompound = stack.getTagCompound();       
         return stack;
     }
     
@@ -97,13 +85,9 @@ public class SkullUtils {
         return new ItemStack[] { getAlexSkull(), getArrowDownSkull(), getArrowLeftSkull(), getArrowRightSkull(), getArrowUpSkull(), getBlazeSkull(), getCactusSkull(), getCakeSkull(), getCaveSpiderSkull(), getChickenSkull(), getBrownCoconutSkull(), getGreenCoconutSkull(), getCowSkull(), getEndermanSkull(), getExclamationSkull(), getGhastSkull(), getIronGolemSkull(), getHerobrineSkull(), getMagmaCubeSkull(), getMelonSkull(), getMooshroomCowSkull(), getOakLogSkull(), getOcelotSkull(), getPigSkull(), getPigmanSkull(), getGreenPresentSkull(), getRedPresentSkull(), getQuestionSkull(), getSheepSkull(), getSlimeSkull(), getSpiderSkull(), getSquidSkull(), getTNTSkullWithText(), getTNTSkullWithoutText(), getVillagerSkull() };
     }
     
-    /**
-     * Deprecated, use one of the getters below.
-     */
-    @Deprecated
     public static ItemStack createMojangSkull (String mojangSkullType) {
         
-        return createSkullFromUsername("MHF_" + mojangSkullType);
+        return createSkull("MHF_" + mojangSkullType);
     }
     
     public static ItemStack getCowSkull () {
