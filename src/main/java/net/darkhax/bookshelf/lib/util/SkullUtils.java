@@ -55,45 +55,6 @@ public class SkullUtils {
     }
     
     /**
-     * Creates an array of ItemStacks containing MHF Skulls.
-     * 
-     * @return ItemStack[]: An array of ItemStack containing every skull from the MHFAccount
-     *         enum.
-     */
-    public static ItemStack[] getMHFSkulls () {
-        
-        int counter = 0;
-        ItemStack[] MHFSkulls = new ItemStack[MHFAccount.values().length];
-        
-        for (MHFAccount account : MHFAccount.values()) {
-            
-            MHFSkulls[counter] = createSkull(account);
-            counter++;
-        }
-        
-        return MHFSkulls;
-    }
-    
-    /**
-     * Creates an array of ItemStacks containing the skulls of players from the Player enum.
-     * 
-     * @return ItemStack[]: An array of ItemStacks containing the skulls of known players.
-     */
-    public static ItemStack[] getPlayerSkulls () {
-        
-        int counter = 0;
-        ItemStack[] playerSkulls = new ItemStack[Player.values().length];
-        
-        for (Player player : Player.values()) {
-            
-            playerSkulls[counter] = createSkull(player);
-            counter++;
-        }
-        
-        return playerSkulls;
-    }
-    
-    /**
      * Creates a skull that represents a player. This method can use plain text usernames, or
      * player UUID. It is recomended to use the UUID over the username, unless you are 100%
      * certain that the username will never change.
@@ -159,6 +120,45 @@ public class SkullUtils {
     public static ItemStack getSkeletonSkull () {
         
         return new ItemStack(Items.skull, 1, 0);
+    }
+    
+    /**
+     * Creates an array of ItemStacks containing MHF Skulls.
+     * 
+     * @return ItemStack[]: An array of ItemStack containing every skull from the MHFAccount
+     *         enum.
+     */
+    public static ItemStack[] getMHFSkulls () {
+        
+        int counter = 0;
+        ItemStack[] MHFSkulls = new ItemStack[MHFAccount.values().length];
+        
+        for (MHFAccount account : MHFAccount.values()) {
+            
+            MHFSkulls[counter] = createSkull(account);
+            counter++;
+        }
+        
+        return MHFSkulls;
+    }
+    
+    /**
+     * Creates an array of ItemStacks containing the skulls of players from the Player enum.
+     * 
+     * @return ItemStack[]: An array of ItemStacks containing the skulls of known players.
+     */
+    public static ItemStack[] getPlayerSkulls () {
+        
+        int counter = 0;
+        ItemStack[] playerSkulls = new ItemStack[Player.values().length];
+        
+        for (Player player : Player.values()) {
+            
+            playerSkulls[counter] = createSkull(player);
+            counter++;
+        }
+        
+        return playerSkulls;
     }
     
     public static enum MHFAccount {
