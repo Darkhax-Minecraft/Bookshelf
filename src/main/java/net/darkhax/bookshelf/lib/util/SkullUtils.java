@@ -261,7 +261,12 @@ public class SkullUtils {
         CHICKENBONES("ChickenBones", "93417060-56f9-4cd5-8fd6-b73cb39ef2a3"),
         CYANIDEX("CyanideX", "54972f65-b920-4a60-b539-dc443c16cd29"),
         VIKESTEP("VikeStep", "6ef1716c-d032-4d6a-bb96-ee78caca9737"),
-        MEGALOLOFU("megaloloful", "51ee67f8-57fa-4d88-81b1-e91b73048e60");
+        MEGALOLOFU("megaloloful", "51ee67f8-57fa-4d88-81b1-e91b73048e60"),
+        BLORPH("Blorph", "6c25e5b2-e8d4-4b64-b5c1-fb7f84cce66c"),
+        MR_TOOTS("Mr_Toots", "61daa8b8-0ac0-4efa-a17e-1860e7c7db00"),
+        VICTORIOUS("victorious3", "b027a4f4-d480-426c-84a3-a9cb029f4b72"),
+        SHADOWCLAIMER("ShadowClaimer", "52ff0245-4926-4d8f-92e6-332645a9c392"),
+        TEDYHERE("TedyHere", "99598e23-9e10-4bf6-af80-fdcda4b80f27");
         
         /**
          * The last known username tied to the account.
