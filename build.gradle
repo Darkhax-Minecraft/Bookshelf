@@ -163,10 +163,10 @@ curseforge {
 
         addGameVersion project.mcVersion
 
-        mainArtifact jar
+        mainArtifact (jar)
 
-        addArtifact deobfJar
-        addArtifact sourceJar
-        addArtifact javadocJar
+        addArtifact (deobfJar)
+        addArtifact (sourceJar)
+        addArtifact (javadocJar)
     }
 }
