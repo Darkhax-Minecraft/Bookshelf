@@ -1,10 +1,5 @@
 package net.darkhax.bookshelf.lib.util;
 
-import java.lang.reflect.Field;
-import java.util.UUID;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -13,8 +8,14 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.lang.reflect.Field;
+import java.util.UUID;
 
 public class PlayerUtils {
     
@@ -61,11 +62,12 @@ public class PlayerUtils {
             if (lookPos != null && player instanceof EntityPlayerMP) {
                 
                 EntityPlayerMP playerMP = (EntityPlayerMP) player;
-                NBTTagCompound dataTag = stack.stackTagCompound;
-                
-                int x = lookPos.blockX;
-                int y = lookPos.blockY;
-                int z = lookPos.blockZ;
+                NBTTagCompound dataTag = stack.getTagCompound();
+
+                BlockPos pos = lookPos.getBlockPos();
+                int x = pos.getX();
+                int y = pos.getY();
+                int z = pos.getZ();
                 
                 if (!dataTag.hasKey("bookshelfBreaking") || !dataTag.getBoolean("bookshelfBreaking")) {
                     
@@ -76,15 +78,15 @@ public class PlayerUtils {
                     
                     switch (lookPos.sideHit) {
                         
-                        case 1:
+                        case UP:
                             rangeY = 0;
                             break;
                             
-                        case 3:
+                        case SOUTH:
                             rangeZ = 0;
                             break;
                             
-                        case 5:
+                        case EAST:
                             rangeX = 0;
                             break;
                     }
@@ -94,12 +96,14 @@ public class PlayerUtils {
                         for (int posY = y - rangeY; posY <= y + rangeY; posY++) {
                             
                             for (int posZ = z - rangeZ; posZ <= z + rangeZ; posZ++) {
-                                
-                                Block block = playerMP.worldObj.getBlock(posX, posY, posZ);
+
+                                BlockPos blockPos = new BlockPos(posX, posY, posZ);
+
+                                Block block = playerMP.worldObj.getBlockState(blockPos).getBlock();
                                 
                                 for (Material mat : materials)
-                                    if (block != null && mat == block.getMaterial() && block.getPlayerRelativeBlockHardness(playerMP, playerMP.worldObj, x, posY, z) > 0)
-                                        playerMP.theItemInWorldManager.tryHarvestBlock(posX, posY, posZ);
+                                    if (block != null && mat == block.getMaterial() && block.getPlayerRelativeBlockHardness(playerMP, playerMP.worldObj, new BlockPos(x, posY, z)) > 0)
+                                        playerMP.theItemInWorldManager.tryHarvestBlock(blockPos);
                             }
                         }
                     }

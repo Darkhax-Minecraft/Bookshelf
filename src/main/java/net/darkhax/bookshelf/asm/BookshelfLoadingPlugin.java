@@ -1,13 +1,13 @@
 package net.darkhax.bookshelf.asm;
 
-import java.util.Map;
-
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import net.darkhax.bookshelf.lib.Constants;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+
+import java.util.Map;
 
 @IFMLLoadingPlugin.SortingIndex(1001)
 @IFMLLoadingPlugin.TransformerExclusions("net.darkhax.bookshelf.asm")
-@IFMLLoadingPlugin.MCVersion("1.7.10")
+@IFMLLoadingPlugin.MCVersion("1.8")
 public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
     
     @Override

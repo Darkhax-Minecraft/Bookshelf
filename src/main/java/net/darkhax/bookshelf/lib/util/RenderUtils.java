@@ -1,15 +1,15 @@
 package net.darkhax.bookshelf.lib.util;
 
-import java.awt.Color;
-
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
 
 public class RenderUtils {
     
@@ -61,12 +61,13 @@ public class RenderUtils {
     public static void drawTextureModalRectSize (int posX, int posY, int u, int v, int width, int length, float size, float zLevel) {
         
         float f = 1 / size;
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double) (posX + 0), (double) (posY + length), (double) zLevel, (double) ((float) (u + 0) * f), (double) ((float) (v + length) * f));
-        tessellator.addVertexWithUV((double) (posX + width), (double) (posY + length), (double) zLevel, (double) ((float) (u + width) * f), (double) ((float) (v + length) * f));
-        tessellator.addVertexWithUV((double) (posX + width), (double) (posY + 0), (double) zLevel, (double) ((float) (u + width) * f), (double) ((float) (v + 0) * f));
-        tessellator.addVertexWithUV((double) (posX + 0), (double) (posY + 0), (double) zLevel, (double) ((float) (u) * f), (double) ((float) (v + 0) * f));
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer renderer = tessellator.getWorldRenderer();
+        renderer.startDrawingQuads();
+        renderer.addVertexWithUV((double) (posX + 0), (double) (posY + length), (double) zLevel, (double) ((float) (u + 0) * f), (double) ((float) (v + length) * f));
+        renderer.addVertexWithUV((double) (posX + width), (double) (posY + length), (double) zLevel, (double) ((float) (u + width) * f), (double) ((float) (v + length) * f));
+        renderer.addVertexWithUV((double) (posX + width), (double) (posY + 0), (double) zLevel, (double) ((float) (u + width) * f), (double) ((float) (v + 0) * f));
+        renderer.addVertexWithUV((double) (posX + 0), (double) (posY + 0), (double) zLevel, (double) ((float) (u) * f), (double) ((float) (v + 0) * f));
         tessellator.draw();
     }
 }

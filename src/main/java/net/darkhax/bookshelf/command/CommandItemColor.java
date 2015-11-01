@@ -1,24 +1,24 @@
 package net.darkhax.bookshelf.command;
 
-import java.awt.Color;
-
-import org.apache.commons.lang3.StringUtils;
-
 import net.darkhax.bookshelf.lib.VanillaColor;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.MathsUtils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import org.apache.commons.lang3.StringUtils;
+
+import java.awt.*;
 
 public class CommandItemColor extends CommandBase {
     
     @Override
-    public String getCommandName () {
+    public String getName () {
         
         return "color";
     }
@@ -30,7 +30,7 @@ public class CommandItemColor extends CommandBase {
     }
     
     @Override
-    public void processCommand (ICommandSender sender, String[] params) {
+    public void execute (ICommandSender sender, String[] params) throws WrongUsageException, PlayerNotFoundException {
         
         EntityPlayerMP player = getCommandSenderAsPlayer(sender);
         

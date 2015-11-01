@@ -1,19 +1,5 @@
 package net.darkhax.bookshelf.lib.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.apache.commons.lang3.SystemUtils;
-import org.apache.commons.lang3.text.WordUtils;
-
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.VillagerRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.darkhax.bookshelf.common.network.AbstractMessage;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -24,6 +10,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.GameData;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Utilities {
     
@@ -211,7 +209,7 @@ public class Utilities {
      */
     public static String getModName (Item item) {
         
-        String itemID = GameData.getItemRegistry().getNameForObject(item);
+        String itemID = (String) GameData.getItemRegistry().getNameForObject(item);
         return itemID.substring(0, itemID.indexOf(':'));
     }
     
@@ -223,27 +221,14 @@ public class Utilities {
      */
     public static String getModName (Block block) {
         
-        String blockID = GameData.getBlockRegistry().getNameForObject(block);
+        String blockID = (String) GameData.getBlockRegistry().getNameForObject(block);
         return blockID.substring(0, blockID.indexOf(':'));
-    }
-    
-    /**
-     * A safe way to grab an enchantment by its numeric ID. This is to help prevent crashes
-     * when working with ids above the default maximum.
-     * 
-     * @param id: The ID of the enchantment you wish to grab.
-     * @return Enchantment: The enchantment that is assigned to the provided ID. Id the ID is
-     *         invalid, or the enchantment does not exist, you will get null.
-     */
-    public static Enchantment getEnchantment (int id) {
-        
-        return (id >= 0 && id <= Enchantment.enchantmentsList.length) ? Enchantment.enchantmentsList[id] : null;
     }
     
     /**
      * Updates the available enchantment array to contain all current enchantments.
      */
-    public static void updateAvailableEnchantments () {
+    /*public static void updateAvailableEnchantments () {
         
         List<Enchantment> foundEnchantments = new ArrayList<Enchantment>();
         
@@ -252,7 +237,7 @@ public class Utilities {
                 foundEnchantments.add(enchantment);
                 
         availableEnchantments = foundEnchantments;
-    }
+    }*/ //TODO
     
     /**
      * Provides a list of all enchantments that are currently available. If the list has not
@@ -261,13 +246,13 @@ public class Utilities {
      * @return List<Enchantment>: A list of all the enchantments that were found in the
      *         enchantment list.
      */
-    public static List<Enchantment> getAvailableEnchantments () {
+    /*public static List<Enchantment> getAvailableEnchantments () {
         
         if (availableEnchantments == null)
             updateAvailableEnchantments();
             
         return availableEnchantments;
-    }
+    }*/ //TODO
     
     /**
      * Registers an AbstractMessage to your SimpleNetworkWrapper.
@@ -277,7 +262,7 @@ public class Utilities {
      * @param id: And ID for your AbstractMessage.
      * @param side: The side to send these messages towards.
      */
-    public static <T extends AbstractMessage<T> & IMessageHandler<T, IMessage>> void registerMessage (SimpleNetworkWrapper network, Class<T> clazz, int id, Side side) {
+    public static <T extends AbstractMessage<T> & IMessageHandler<T, IMessage> & IMessage> void registerMessage (SimpleNetworkWrapper network, Class<T> clazz, int id, Side side) {
         
         network.registerMessage(clazz, clazz, id, side);
     }

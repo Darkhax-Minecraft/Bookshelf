@@ -1,11 +1,11 @@
 package net.darkhax.bookshelf.handler;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.potion.Potion;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 public class PotionArrayExpansionHandler {
     

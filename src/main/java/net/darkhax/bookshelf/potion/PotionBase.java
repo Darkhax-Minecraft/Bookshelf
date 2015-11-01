@@ -1,14 +1,13 @@
 package net.darkhax.bookshelf.potion;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PotionBase extends Potion {
     
@@ -46,7 +45,7 @@ public class PotionBase extends Potion {
      */
     public PotionBase(int id, boolean isBad, int color, ResourceLocation icon) {
         
-        super(id, isBad, color);
+        super(id, icon, isBad, color);
         this.icon = icon;
     }
     
@@ -70,7 +69,7 @@ public class PotionBase extends Potion {
      */
     public PotionBase(int id, boolean isBad, int color, ResourceLocation iconMap, int iconIndex) {
         
-        super(id, isBad, color);
+        super(id, iconMap, isBad, color);
         this.iconMap = iconMap;
         this.setIconIndex(iconIndex % 8, iconIndex / 8);
     }
@@ -88,7 +87,7 @@ public class PotionBase extends Potion {
      */
     public PotionBase(int id, boolean isBad, int color, ItemStack iconStack) {
         
-        super(id, isBad, color);
+        super(id, new ResourceLocation(id + ""), isBad, color);
         this.iconStack = iconStack;
     }
     
@@ -104,7 +103,7 @@ public class PotionBase extends Potion {
      */
     public PotionBase(int id, boolean isBad, int color) {
         
-        super(id, isBad, color);
+        super(id, new ResourceLocation(id + ""), isBad, color);
     }
     
     @Override
@@ -117,11 +116,11 @@ public class PotionBase extends Potion {
             RenderUtils.drawTextureModalRectSize(x + 6, y + 7, 0, 0, 18, 18, 18, 1f);
         }
         
-        else if (ItemStackUtils.isValidStack(this.iconStack)) {
+        /*else if (ItemStackUtils.isValidStack(this.iconStack)) {
             
             Minecraft.getMinecraft().renderEngine.bindTexture(Minecraft.getMinecraft().renderEngine.getResourceLocation(1));
             mc.currentScreen.drawTexturedModelRectFromIcon(x + 8, y + 8, this.iconStack.getIconIndex(), 16, 16);
-        }
+        }*/ //TODO: Got removed in 1.8
         
         else if (this.iconMap != null) {
             

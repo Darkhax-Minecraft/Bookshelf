@@ -72,8 +72,8 @@ public class NBTUtils {
      */
     public static NBTTagCompound writeInventoryToNBT (NBTTagCompound tag, InventoryBasic inventory) {
         
-        if (inventory.hasCustomInventoryName())
-            tag.setString("CustomName", inventory.getInventoryName());
+        if (inventory.hasCustomName())
+            tag.setString("CustomName", inventory.getName());
             
         NBTTagList nbttaglist = new NBTTagList();
         
@@ -107,7 +107,7 @@ public class NBTUtils {
     public static InventoryBasic readInventoryFromNBT (NBTTagCompound tag, InventoryBasic inventory) {
         
         if (tag.hasKey("CustomName", 8))
-            inventory.func_110133_a(tag.getString("CustomName"));
+            inventory.setCustomName(tag.getString("CustomName"));
             
         NBTTagList items = tag.getTagList("Items", 10);
         
