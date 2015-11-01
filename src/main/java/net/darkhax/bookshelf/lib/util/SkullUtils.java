@@ -266,7 +266,9 @@ public class SkullUtils {
         MR_TOOTS("Mr_Toots", "61daa8b8-0ac0-4efa-a17e-1860e7c7db00"),
         VICTORIOUS("victorious3", "b027a4f4-d480-426c-84a3-a9cb029f4b72"),
         SHADOWCLAIMER("ShadowClaimer", "52ff0245-4926-4d8f-92e6-332645a9c392"),
-        TEDYHERE("TedyHere", "99598e23-9e10-4bf6-af80-fdcda4b80f27");
+        TEDYHERE("TedyHere", "99598e23-9e10-4bf6-af80-fdcda4b80f27"),
+        JARED11108("Jaredlll08", "3bf32666-f9ba-4060-af02-53bdb0df38fc"),
+        SANANDREASMC("sanandreasMC", "044d980d-5c2a-4030-95cf-cbfde69ea3cb");
         
         /**
          * The last known username tied to the account.
