@@ -42,6 +42,7 @@ public class Mappings {
     public static String updateSpawner;
     public static String updatePistonState;
     public static String canPushBlock;
+    public static String getLootingModifier;
     
     public Mappings() {
         
@@ -85,5 +86,6 @@ public class Mappings {
         updateSpawner = ASMHelper.getAppropriateMapping("updateSpawner", "func_98278_g");
         updatePistonState = ASMHelper.getAppropriateMapping("updatePistonState", "func_150078_e");
         canPushBlock = ASMHelper.getAppropriateMapping("canPushBlock", "");
+        getLootingModifier = ASMHelper.getAppropriateMapping("getLootingModifier", "func_77519_f");
     }
 }

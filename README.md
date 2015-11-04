@@ -15,6 +15,7 @@ This project relies on core mod functionality. All core mod features will only f
 Events
 ======
 [ItemEnchantedEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/event/ItemEnchantedEvent.java)  
+[LootingEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/event/LootingEvent.java)   
 
 Hooks
 =====
