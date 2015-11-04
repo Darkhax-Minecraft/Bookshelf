@@ -43,4 +43,18 @@ public class EntityUtils {
             entityToMove.motionZ = distanceZ / distance * force;
         }
     }
+    
+    /**
+     * Checks if two entities are close enough together.
+     * 
+     * @param firstEntity: The first entity to check.
+     * @param secondEntity: The second entity to check.
+     * @param maxDistance: The maximum distance that the entities can be apart.
+     * @return boolean: True if the distance between the entities are within range of the
+     *         maxDistance.
+     */
+    public static boolean areEntitiesCloseEnough (Entity firstEntity, Entity secondEntity, double maxDistance) {
+        
+        return getDistanceBetweenEntities(firstEntity, secondEntity) < (maxDistance * maxDistance);
+    }
 }
