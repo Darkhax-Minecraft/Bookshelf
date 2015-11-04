@@ -76,7 +76,7 @@ public enum VanillaParticle {
      * @param velocityY
      * @param velocityZ
      */
-    public static void spawnParticle(World world, VanillaParticle particle, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+    public static void spawnParticle (World world, VanillaParticle particle, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
         
         world.spawnParticle(particle.getParticleName(), x, y, z, velocityX, velocityY, velocityZ);
     }
