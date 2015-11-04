@@ -14,7 +14,7 @@ public class PotionArrayExpansionHandler {
     
     public PotionArrayExpansionHandler() {
         
-        if (Potion.potionTypes.length < 4096) {
+        if (Potion.potionTypes.length < 256) {
             
             Constants.LOG.info("Attempting to expand Potion Array to 256 spaces.");
             
