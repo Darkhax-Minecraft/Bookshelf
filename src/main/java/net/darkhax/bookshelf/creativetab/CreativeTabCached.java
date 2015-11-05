@@ -6,6 +6,7 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.darkhax.bookshelf.handler.BookshelfHooks;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
@@ -37,6 +38,9 @@ public abstract class CreativeTabCached extends CreativeTabs {
     @SideOnly(Side.CLIENT)
     public void displayAllReleventItems (List itemList) {
         
+        if (BookshelfHooks.onCreativeTabDisplayPre(this, itemList))
+            return;
+            
         if (this.cachedItems.isEmpty()) {
             
             System.out.println("Index");
@@ -61,5 +65,7 @@ public abstract class CreativeTabCached extends CreativeTabs {
                         
         if (this.func_111225_m() != null)
             this.addEnchantmentBooksToList(itemList, this.func_111225_m());
+            
+        BookshelfHooks.onCreativeTabDisplayPost(this, itemList);
     }
 }
