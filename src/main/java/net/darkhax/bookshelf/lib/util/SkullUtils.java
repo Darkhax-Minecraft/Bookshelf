@@ -40,7 +40,7 @@ public class SkullUtils {
      */
     public static ItemStack createSkull (MHFAccount account) {
         
-        return createSkull(account.UUID);
+        return createSkull(account.getMHFName());
     }
     
     /**
