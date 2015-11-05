@@ -25,6 +25,11 @@ public class CreativeTabsTransformer {
         return bytes;
     }
     
+    /**
+     * Adds in two new hook calls, before and after the relevant items are generated.
+     * 
+     * @param method: A MethodNode which reflects the displayAllReleventItems method.
+     */
     private static void transformDisplayAllReleventItems (MethodNode method) {
         
         InsnList preInsns = new InsnList();

@@ -35,11 +35,27 @@ public class BookshelfHooks {
         return enchantments;
     }
     
+    /**
+     * A hook for the CreativeTabEvent.pre. This method is called before the tab initializes
+     * its items.
+     * 
+     * @param tab: The tab being loaded.
+     * @param itemList: The list of items contained by the tab.
+     * @return boolean: Whether or not the event has been canceled. If it has, prevent further
+     *         entries from being added to the tab contents.
+     */
     public static boolean onCreativeTabDisplayPre (CreativeTabs tab, List itemList) {
         
         return MinecraftForge.EVENT_BUS.post(new CreativeTabEvent.Pre(tab, itemList));
     }
     
+    /**
+     * A hook for the CreativeTabEvent.post. This method is called after the tab has all of its
+     * normal items loaded.
+     * 
+     * @param tab: The tab being loaded.
+     * @param itemList: The list of items contained by the tab.
+     */
     public static void onCreativeTabDisplayPost (CreativeTabs tab, List itemList) {
         
         MinecraftForge.EVENT_BUS.post(new CreativeTabEvent.Post(tab, itemList));
