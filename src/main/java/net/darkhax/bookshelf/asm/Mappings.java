@@ -43,6 +43,9 @@ public class Mappings {
     public static String updatePistonState;
     public static String canPushBlock;
     public static String getLootingModifier;
+    public static String displayAllReleventItems;
+    public static String getRelevantEnchantmentTypes;
+    public static String addEnchantmentBooksToList;
     
     public Mappings() {
         
@@ -87,5 +90,8 @@ public class Mappings {
         updatePistonState = ASMHelper.getAppropriateMapping("updatePistonState", "func_150078_e");
         canPushBlock = ASMHelper.getAppropriateMapping("canPushBlock", "");
         getLootingModifier = ASMHelper.getAppropriateMapping("getLootingModifier", "func_77519_f");
+        displayAllReleventItems = ASMHelper.getAppropriateMapping("displayAllReleventItems", "func_78018_a");
+        getRelevantEnchantmentTypes = ASMHelper.getAppropriateMapping("func_111225_m", "func_111225_m");
+        addEnchantmentBooksToList = ASMHelper.getAppropriateMapping("addEnchantmentBooksToList", "func_92116_a");
     }
 }

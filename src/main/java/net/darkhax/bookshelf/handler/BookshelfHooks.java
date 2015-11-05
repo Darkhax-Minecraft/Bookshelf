@@ -2,7 +2,9 @@ package net.darkhax.bookshelf.handler;
 
 import java.util.List;
 
+import net.darkhax.bookshelf.event.CreativeTabEvent;
 import net.darkhax.bookshelf.event.ItemEnchantedEvent;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -31,5 +33,15 @@ public class BookshelfHooks {
         }
         
         return enchantments;
+    }
+    
+    public static boolean onCreativeTabDisplayPre (CreativeTabs tab, List itemList) {
+        
+        return MinecraftForge.EVENT_BUS.post(new CreativeTabEvent.Pre(tab, itemList));
+    }
+    
+    public static void onCreativeTabDisplayPost (CreativeTabs tab, List itemList) {
+        
+        MinecraftForge.EVENT_BUS.post(new CreativeTabEvent.Post(tab, itemList));
     }
 }

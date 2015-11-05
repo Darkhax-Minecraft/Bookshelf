@@ -2,15 +2,26 @@ package net.darkhax.bookshelf.handler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.darkhax.bookshelf.asm.ASMHelper;
+import net.darkhax.bookshelf.event.CreativeTabEvent;
 import net.darkhax.bookshelf.items.ItemHorseArmor;
 import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.util.SkullUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 public class ForgeEventHandler {
+    
+    @SubscribeEvent
+    public void post (CreativeTabEvent.Post event) {
+        
+        if (event.tab == CreativeTabs.tabDecorations)
+            for (ItemStack stack : SkullUtils.getMHFSkulls())
+                event.itemList.add(stack);
+    }
     
     @SubscribeEvent
     public void onEntityUpdate (LivingUpdateEvent event) {
