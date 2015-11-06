@@ -1,6 +1,5 @@
 package net.darkhax.bookshelf.client;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.darkhax.bookshelf.asm.ASMHelper;
 import net.darkhax.bookshelf.items.ItemHorseArmor;
 import net.darkhax.bookshelf.lib.Constants;
@@ -8,6 +7,7 @@ import net.darkhax.bookshelf.lib.util.Utilities;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class RenderingHandler {
     

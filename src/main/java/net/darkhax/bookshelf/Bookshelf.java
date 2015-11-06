@@ -1,18 +1,17 @@
 package net.darkhax.bookshelf;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.darkhax.bookshelf.command.CommandItemColor;
 import net.darkhax.bookshelf.handler.EnchantmentListExpansionHandler;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.handler.PotionArrayExpansionHandler;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION)
 public class Bookshelf {
@@ -23,7 +22,7 @@ public class Bookshelf {
     @Mod.Instance(Constants.MOD_ID)
     public static Bookshelf instance;
     
-    @EventHandler
+    @Mod.EventHandler
     public void preInit (FMLPreInitializationEvent event) {
         
         proxy.preInit();
@@ -32,19 +31,19 @@ public class Bookshelf {
         new PotionArrayExpansionHandler();
     }
     
-    @EventHandler
+    @Mod.EventHandler
     public void init (FMLInitializationEvent event) {
         
         proxy.init();
     }
     
-    @EventHandler
+    @Mod.EventHandler
     public void onPostInit (FMLPostInitializationEvent event) {
         
         proxy.postInit();
     }
     
-    @EventHandler
+    @Mod.EventHandler
     public void onServerStarting (FMLServerStartingEvent event) {
         
         event.registerServerCommand(new CommandItemColor());

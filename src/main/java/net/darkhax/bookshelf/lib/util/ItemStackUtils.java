@@ -2,7 +2,6 @@ package net.darkhax.bookshelf.lib.util;
 
 import net.darkhax.bookshelf.lib.VanillaColor;
 import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -122,11 +121,11 @@ public class ItemStackUtils {
      *            example, enchanted books.
      * @return Enchantment[]: An array of all the enchantments stored on the ItemStack.
      */
-    public static Enchantment[] getEnchantmentsFromStack (ItemStack stack, boolean stored) {
+    /*public static Enchantment[] getEnchantmentsFromStack (ItemStack stack, boolean stored) {
         
         prepareDataTag(stack);
         String tagName = (stored) ? "StoredEnchantments" : "ench";
-        NBTTagCompound tag = stack.stackTagCompound;
+        NBTTagCompound tag = stack.getTagCompound();
         NBTTagList list = tag.getTagList(tagName, 10);
         Enchantment[] ench = new Enchantment[list.tagCount()];
         
@@ -134,7 +133,7 @@ public class ItemStackUtils {
             ench[i] = Enchantment.enchantmentsList[list.getCompoundTagAt(i).getShort("id")];
             
         return ench;
-    }
+    }*/ //TODO
     
     /**
      * Compares all ore dictionary names associated with an ItemStack, with the provided ore

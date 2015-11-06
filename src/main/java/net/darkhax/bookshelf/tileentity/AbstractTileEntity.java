@@ -13,13 +13,13 @@ public abstract class AbstractTileEntity extends TileEntity {
         
         NBTTagCompound nbtTag = new NBTTagCompound();
         saveClientDataToNBT(nbtTag);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbtTag);
+        return new S35PacketUpdateTileEntity(pos, 0, nbtTag);
     }
     
     @Override
     public void onDataPacket (NetworkManager manager, S35PacketUpdateTileEntity packet) {
         
-        loadClientDataFromNBT(packet.func_148857_g());
+        loadClientDataFromNBT(packet.getNbtCompound());
     }
     
     @Override

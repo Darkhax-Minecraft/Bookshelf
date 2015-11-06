@@ -1,17 +1,16 @@
 package net.darkhax.bookshelf.lib.util;
 
-import java.awt.Color;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-
 import net.darkhax.bookshelf.lib.Constants;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.biome.BiomeGenBase;
+
+import java.awt.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 
 public class MathsUtils {
     
@@ -72,7 +71,7 @@ public class MathsUtils {
      */
     public static MovingObjectPosition rayTrace (EntityPlayer player, double length) {
         
-        Vec3 vec1 = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+        Vec3 vec1 = new Vec3(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         Vec3 vec2 = player.getLookVec();
         Vec3 vec3 = vec1.addVector(vec2.xCoord * length, vec2.yCoord * length, vec2.zCoord * length);
         return player.worldObj.rayTraceBlocks(vec1, vec3);
@@ -128,7 +127,7 @@ public class MathsUtils {
      * @return int: An Enchantment ID which was not assigned at the time of the method being
      *         called.
      */
-    public static int getNextEnchantmentID () {
+    /*public static int getNextEnchantmentID () {
         
         for (int possibleID = 0; possibleID < Enchantment.enchantmentsList.length; possibleID++) {
             
@@ -140,7 +139,7 @@ public class MathsUtils {
         }
         
         throw new RuntimeException("An attempt to find an available enchantment ID was made, however no IDs are available.");
-    }
+    }*/ //TODO
     
     /**
      * Attempts to find a Potion ID which is vacant. There is no guarantee that other mods

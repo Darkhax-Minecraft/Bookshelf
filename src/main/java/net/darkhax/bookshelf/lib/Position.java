@@ -1,20 +1,23 @@
 package net.darkhax.bookshelf.lib;
 
+import io.netty.buffer.ByteBuf;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
-
 public final class Position implements Comparable<Position>, Serializable {
-    
+
+    private final BlockPos blockPos;
     private final int x;
     private final int y;
     private final int z;
@@ -26,7 +29,7 @@ public final class Position implements Comparable<Position>, Serializable {
      */
     public Position(MovingObjectPosition pos) {
         
-        this(pos.blockX, pos.blockY, pos.blockZ);
+        this(pos.getBlockPos().getX(), pos.getBlockPos().getY(), pos.getBlockPos().getZ());
     }
     
     /**
@@ -80,7 +83,8 @@ public final class Position implements Comparable<Position>, Serializable {
      * @param z: The Z coordinate for this Position.
      */
     public Position(int x, int y, int z) {
-        
+
+        this.blockPos = new BlockPos(x, y, z);
         this.x = x;
         this.y = y;
         this.z = z;
@@ -396,7 +400,7 @@ public final class Position implements Comparable<Position>, Serializable {
      */
     public Block getBlockAtPosition (World world) {
         
-        return world.getBlock(x, y, z);
+        return world.getBlockState(blockPos).getBlock();
     }
     
     /**
@@ -407,7 +411,7 @@ public final class Position implements Comparable<Position>, Serializable {
      */
     public void setBlockAtPosition (World world, Block block) {
         
-        world.setBlock(x, y, z, block);
+        world.setBlockState(blockPos, block.getDefaultState());
     }
     
     /**
@@ -417,7 +421,7 @@ public final class Position implements Comparable<Position>, Serializable {
      */
     public void setBlockAtPositionToAir (World world) {
         
-        world.setBlockToAir(x, y, z);
+        world.setBlockToAir(blockPos);
     }
     
     /**
@@ -426,20 +430,20 @@ public final class Position implements Comparable<Position>, Serializable {
      * @param world: An instance of the world to grab the meta from.
      * @return int: An integer which represents the meta damage of the Block at this position.
      */
-    public int getMetaAtPosition (World world) {
+    public IBlockState getBlockStateAtPosition (World world) {
         
-        return world.getBlockMetadata(x, y, z);
+        return world.getBlockState(blockPos);
     }
     
     /**
      * Sets the meta value of a Block at this Position.
      * 
      * @param world: An instance of the world to set the meta within.
-     * @param meta: The desired meta value for the Block at this Position.
+     * @param state: The desired meta value for the Block at this Position.
      */
-    public void setMetaAtPosition (World world, int meta) {
+    public void setBlockStateAtPosition (World world, IBlockState state) {
         
-        world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+        world.setBlockState(blockPos, state);
     }
     
     /**
