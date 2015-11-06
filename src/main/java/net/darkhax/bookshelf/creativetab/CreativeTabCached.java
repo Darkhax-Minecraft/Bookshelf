@@ -43,7 +43,6 @@ public abstract class CreativeTabCached extends CreativeTabs {
             
         if (this.cachedItems.isEmpty()) {
             
-            System.out.println("Index");
             Iterator iterator = Item.itemRegistry.iterator();
             
             while (iterator.hasNext()) {
