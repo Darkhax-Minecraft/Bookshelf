@@ -16,20 +16,21 @@ Events
 ======
 [ItemEnchantedEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/event/ItemEnchantedEvent.java)  
 [LootingEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/event/LootingEvent.java)   
-
-Hooks
-=====
-[Horse Armor](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/items/ItemHorseArmor.java)  
-[Color any Item](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/command/CommandItemColor.java)  
+[CreativeTabEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/db7d1f6ab63826c13457a22ce6da19977c9b5372/src/main/java/net/darkhax/bookshelf/event/CreativeTabEvent.java)    
 
 Other Features
 ==============
+[Horse Armor](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/items/ItemHorseArmor.java)  
+[Color any Item](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/command/CommandItemColor.java)  
 [Modeled Armor](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/items/ItemModelledArmor.java)   
 [Simplified Messages](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/common/network/AbstractMessage.java)   
 [More Enchantment IDs](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/handler/EnchantmentListExpansionHandler.java)   
+[More Potion IDs](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/handler/PotionArrayExpansionHandler.java)    
+[Potion Base](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/potion/PotionBase.java)   
+[Cached Creative Tabs](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/creativetab/CreativeTabCached.java)    
 [Position Object](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/util/Position.java)   
 [Vanilla Color Enum](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/util/VanillaColor.java)   
-[Assorted Utilities](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/util/Utilities.java)   
+[Assorted Utilities](https://github.com/Darkhax-Minecraft/Bookshelf/tree/db7d1f6ab63826c13457a22ce6da19977c9b5372/src/main/java/net/darkhax/bookshelf/lib/util)   
 
 
 Credits
