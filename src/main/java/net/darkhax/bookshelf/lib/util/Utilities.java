@@ -22,6 +22,7 @@ import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -239,6 +240,19 @@ public class Utilities {
     public static Enchantment getEnchantment (int id) {
         
         return (id >= 0 && id <= Enchantment.enchantmentsList.length) ? Enchantment.enchantmentsList[id] : null;
+    }
+    
+    /**
+     * A safe way to grab a Potion by its numeric ID. This is to help prevent crashes when
+     * working with IDs above the default maximum.
+     * 
+     * @param id: The ID of the Potion you wish to grab.
+     * @return Potion: The Potion that was assigned the the passed ID. If it can't be found, is
+     *         null, or out of range, you will get null.
+     */
+    public static Potion getPotion (int id) {
+        
+        return (id >= 0 && id <= Potion.potionTypes.length) ? Potion.potionTypes[id] : null;
     }
     
     /**
