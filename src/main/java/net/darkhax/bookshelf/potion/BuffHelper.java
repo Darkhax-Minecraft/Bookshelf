@@ -23,6 +23,10 @@ public class BuffHelper {
      */
     private static BiMap<String, Buff> buffMap = HashBiMap.create();
     
+    /**
+     * Registers a Buff with the buffMap. 
+     * @param buff: The Buff to register.
+     */
     public static void registerBuff (Buff buff) {
         
         if (buffMap.containsKey(buff.getPotionName()))
@@ -31,64 +35,90 @@ public class BuffHelper {
         buffMap.put(buff.getPotionName(), buff);
     }
     
+    /**
+     * Attempts to retrieve a Buff by its name.
+     * @param name: The name of the buff you are looking for.
+     * @return Buff: The Buff, if its name was found. If not, null.
+     */
     public static Buff getBuffFromString (String name) {
         
-        try {
-            return buffMap.get(name);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return (buffMap.containsKey(name)) ? buffMap.get(name) : null;
     }
     
+    /**
+     * Retrieves a List of BuffEffects from a living Entity.
+     * @param entity: The entity to retrieve the effects from.
+     * @return List<BuffEffect>: A list of all BuffEffects applied to the entity passed.
+     */
     public static List<BuffEffect> getEntityEffects (EntityLivingBase entity) {
         
         List<BuffEffect> effects = new ArrayList<BuffEffect>();
         NBTTagList list = EntityProperties.getProperties(entity).getBuffs();
+        
         if (list != null) {
+            
             for (int i = 0; i < list.tagCount(); i++) {
+                
                 NBTTagCompound tag = list.getCompoundTagAt(i);
                 BuffEffect buff = BuffEffect.readFromNBT(tag);
                 effects.add(buff);
             }
         }
+        
         return effects;
     }
     
+    /**
+     * Retrieves a BuffEffect from the passed entity, that represents the passed Buff.
+     * @param entity: The entity to find the BuffEffect on.
+     * @param buff: The Buff you are looking for.
+     * @return BuffEffect: The BuffEffect you are looking for. Null if not found.
+     */
     public static BuffEffect getEntitybuff (EntityLivingBase entity, Buff buff) {
         
         if (hasBuff(entity, buff))
-            for (BuffEffect effect : getEntityEffects(entity)) {
-                if (effect.getBuff().equals(buff)) {
+            for (BuffEffect effect : getEntityEffects(entity))
+                if (effect.getBuff().equals(buff))
                     return effect;
-                }
-            }
             
         return null;
     }
     
+    /**
+     * Applies a Buff to an Entity.
+     * @param entity: The entity to give the buff to.
+     * @param effect: The effect to give to the entity.
+     * @return boolean: Whether or not it was applied successfully.
+     */
     public static boolean applyToEntity (EntityLivingBase entity, BuffEffect effect) {
         
         if (entity != null) {
+            
             EntityProperties entityProperties = EntityProperties.getProperties(entity);
             NBTTagList list = entityProperties.getBuffs();
+            
             if (hasBuff(entity, effect.getBuff())) {
+                
                 int toRemove = -1;
+                
                 for (int i = 0; i < getEntityEffects(entity).size(); i++) {
+                    
                     BuffEffect current = getEntityEffects(entity).get(i);
-                    if (current.getBuff().equals(effect.getBuff())) {
+                    
+                    if (current.getBuff().equals(effect.getBuff()))
                         toRemove = i;
-                    }
                 }
+                
                 list.removeTag(toRemove);
             }
+            
             NBTTagCompound buff = new NBTTagCompound();
             effect.writeToNBT(buff);
             list.appendTag(buff);
-            if (!entity.worldObj.isRemote) {
+            
+            if (!entity.worldObj.isRemote)
                 Bookshelf.network.sendToAllAround(new PacketSyncPlayerProperties(entityProperties), new TargetPoint(entity.worldObj.provider.dimensionId, entity.posX, entity.posY, entity.posZ, 128D));
-            }
+            
             EntityProperties.getProperties(entity).setBuffs(list);
             return true;
         }
