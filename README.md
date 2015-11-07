@@ -42,3 +42,4 @@ Credits
 [lclc98](https://twitter.com/lclc98)  
 [SanAndreasP](https://twitter.com/SanAndreasP)  
 [VikeStep](https://twitter.com/VikeStep)   
+[jaredlll08](https://twitter.com/jaredlll08)  
