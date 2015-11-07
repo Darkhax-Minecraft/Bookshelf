@@ -18,48 +18,47 @@ import net.darkhax.bookshelf.handler.EnchantmentListExpansionHandler;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.Utilities;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION)
 public class Bookshelf {
-
+    
     @SidedProxy(serverSide = Constants.PROXY_COMMON, clientSide = Constants.PROXY_CLIENT)
     public static ProxyCommon proxy;
-
+    
     @Mod.Instance(Constants.MOD_ID)
     public static Bookshelf instance;
-
+    
     public static SimpleNetworkWrapper network;
-
+    
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
-
+        
         network = NetworkRegistry.INSTANCE.newSimpleChannel("Bookshelf");
         Utilities.registerMessage(network, PacketBuffUpdate.class, 0, Side.CLIENT);
         Utilities.registerMessage(network, PacketSyncPlayerProperties.class, 1, Side.CLIENT);
-
+        
         proxy.preInit();
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
-
+        
         new EnchantmentListExpansionHandler();
     }
-
+    
     @EventHandler
     public void init (FMLInitializationEvent event) {
-
+        
         proxy.init();
     }
-
+    
     @EventHandler
     public void onPostInit (FMLPostInitializationEvent event) {
-
+        
         proxy.postInit();
     }
-
+    
     @EventHandler
     public void onServerStarting (FMLServerStartingEvent event) {
-
+        
         event.registerServerCommand(new CommandItemColor());
     }
 }

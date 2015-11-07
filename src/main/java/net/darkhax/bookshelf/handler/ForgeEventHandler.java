@@ -1,5 +1,7 @@
 package net.darkhax.bookshelf.handler;
 
+import java.util.List;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import net.darkhax.bookshelf.Bookshelf;
@@ -22,18 +24,16 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
-import java.util.List;
-
 public class ForgeEventHandler {
-
+    
     @SubscribeEvent
     public void post (CreativeTabEvent.Post event) {
-
+        
         if (event.tab == CreativeTabs.tabDecorations)
             for (ItemStack stack : SkullUtils.getMHFSkulls())
                 event.itemList.add(stack);
     }
-
+    
     @SubscribeEvent
     public void onEntityUpdate (LivingUpdateEvent event) {
         
@@ -71,24 +71,24 @@ public class ForgeEventHandler {
             }
         }
     }
-
+    
     @SubscribeEvent
     public void onEntityConstructing (EntityEvent.EntityConstructing event) {
-
+        
         if (event.entity instanceof EntityLivingBase && !EntityProperties.hasProperties((EntityLivingBase) event.entity))
             EntityProperties.setProperties((EntityLivingBase) event.entity);
     }
-
+    
     @SubscribeEvent
     public void onEntityJoinWorld (EntityJoinWorldEvent event) {
-
+        
         if (event.entity instanceof EntityLivingBase && !event.entity.worldObj.isRemote && EntityProperties.hasProperties((EntityLivingBase) event.entity))
             EntityProperties.getProperties((EntityLivingBase) event.entity).sync();
     }
-
+    
     @SubscribeEvent
     public void handleBuffEntity (LivingUpdateEvent e) {
-
+        
         EntityLivingBase entity = e.entityLiving;
         if (!entity.worldObj.isRemote) {
             List<BuffEffect> buffEffectList = BuffHelper.getEntityEffects(entity);

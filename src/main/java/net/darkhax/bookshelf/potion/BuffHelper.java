@@ -1,7 +1,11 @@
 package net.darkhax.bookshelf.potion;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.common.EntityProperties;
@@ -12,30 +16,28 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BuffHelper {
-
+    
     private static BiMap<String, Buff> buffMap = HashBiMap.create();
-
+    
     public static void registerBuff (Buff buff) {
-
+        
         buffMap.put(buff.getPotionName(), buff);
     }
-
+    
     public static Buff getBuffFromString (String name) {
-
+        
         try {
             return buffMap.get(name);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-
+    
     public static List<BuffEffect> getEntityEffects (EntityLivingBase entity) {
-
+        
         List<BuffEffect> effects = new ArrayList<BuffEffect>();
         NBTTagList list = EntityProperties.getProperties(entity).getBuffs();
         if (list != null) {
@@ -47,21 +49,21 @@ public class BuffHelper {
         }
         return effects;
     }
-
+    
     public static BuffEffect getEntitybuff (EntityLivingBase entity, Buff buff) {
-
+        
         if (hasBuff(entity, buff))
             for (BuffEffect effect : getEntityEffects(entity)) {
                 if (effect.getBuff().equals(buff)) {
                     return effect;
                 }
             }
-
+            
         return null;
     }
-
+    
     public static boolean applyToEntity (EntityLivingBase entity, BuffEffect effect) {
-
+        
         if (entity != null) {
             EntityProperties entityProperties = EntityProperties.getProperties(entity);
             NBTTagList list = entityProperties.getBuffs();
@@ -86,9 +88,9 @@ public class BuffHelper {
         }
         return false;
     }
-
+    
     public static boolean updateBuff (World world, EntityLivingBase entity, BuffEffect effect) {
-
+        
         if (entity != null && hasBuff(entity, effect.getBuff())) {
             NBTTagList list = EntityProperties.getProperties(entity).getBuffs();
             int count = 0;
@@ -101,9 +103,9 @@ public class BuffHelper {
                     else {
                         foundBuff = true;
                     }
-
+                    
                 }
-
+                
             }
             NBTTagCompound buff = new NBTTagCompound();
             effect.writeToNBT(buff);
@@ -120,21 +122,21 @@ public class BuffHelper {
         }
         return false;
     }
-
+    
     public static BiMap<String, Buff> getBuffMap () {
-
+        
         return buffMap;
     }
-
+    
     public static boolean hasBuff (EntityLivingBase entity, Buff buff) {
-
+        
         for (BuffEffect effect : getEntityEffects(entity)) {
             if (effect.getBuff().equals(buff)) {
                 return true;
             }
         }
-
+        
         return false;
     }
-
+    
 }
