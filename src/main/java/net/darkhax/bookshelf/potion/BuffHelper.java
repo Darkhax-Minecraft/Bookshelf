@@ -24,7 +24,18 @@ public class BuffHelper {
     private static BiMap<String, Buff> buffMap = HashBiMap.create();
     
     /**
-     * Registers a Buff with the buffMap. 
+     * Provides access to the buff registry.
+     * 
+     * @return BiMap<String, Buff>: The Buff map.
+     */
+    public static BiMap<String, Buff> getBuffMap () {
+        
+        return buffMap;
+    }
+    
+    /**
+     * Registers a Buff with the buffMap.
+     * 
      * @param buff: The Buff to register.
      */
     public static void registerBuff (Buff buff) {
@@ -37,6 +48,7 @@ public class BuffHelper {
     
     /**
      * Attempts to retrieve a Buff by its name.
+     * 
      * @param name: The name of the buff you are looking for.
      * @return Buff: The Buff, if its name was found. If not, null.
      */
@@ -47,6 +59,7 @@ public class BuffHelper {
     
     /**
      * Retrieves a List of BuffEffects from a living Entity.
+     * 
      * @param entity: The entity to retrieve the effects from.
      * @return List<BuffEffect>: A list of all BuffEffects applied to the entity passed.
      */
@@ -70,6 +83,7 @@ public class BuffHelper {
     
     /**
      * Retrieves a BuffEffect from the passed entity, that represents the passed Buff.
+     * 
      * @param entity: The entity to find the BuffEffect on.
      * @param buff: The Buff you are looking for.
      * @return BuffEffect: The BuffEffect you are looking for. Null if not found.
@@ -80,12 +94,13 @@ public class BuffHelper {
             for (BuffEffect effect : getEntityEffects(entity))
                 if (effect.getBuff().equals(buff))
                     return effect;
-            
+                    
         return null;
     }
     
     /**
      * Applies a Buff to an Entity.
+     * 
      * @param entity: The entity to give the buff to.
      * @param effect: The effect to give to the entity.
      * @return boolean: Whether or not it was applied successfully.
@@ -118,61 +133,71 @@ public class BuffHelper {
             
             if (!entity.worldObj.isRemote)
                 Bookshelf.network.sendToAllAround(new PacketSyncPlayerProperties(entityProperties), new TargetPoint(entity.worldObj.provider.dimensionId, entity.posX, entity.posY, entity.posZ, 128D));
-            
+                
             EntityProperties.getProperties(entity).setBuffs(list);
             return true;
         }
+        
         return false;
     }
     
-    public static boolean updateBuff (World world, EntityLivingBase entity, BuffEffect effect) {
+    /**
+     * Updates a BuffEffect on an entity.
+     * 
+     * @param world: The world the entity is in.
+     * @param entity: The Entity to update on.
+     * @param effect: The effect to update.
+     */
+    public static void updateBuff (World world, EntityLivingBase entity, BuffEffect effect) {
         
         if (entity != null && hasBuff(entity, effect.getBuff())) {
+            
             NBTTagList list = EntityProperties.getProperties(entity).getBuffs();
             int count = 0;
             boolean foundBuff = false;
+            
             for (BuffEffect buffE : getEntityEffects(entity)) {
+                
                 if (!foundBuff) {
-                    if (!buffE.getBuff().equals(effect.getBuff())) {
-                        count++;
-                    }
-                    else {
-                        foundBuff = true;
-                    }
                     
+                    if (!buffE.getBuff().equals(effect.getBuff()))
+                        count++;
+                        
+                    else
+                        foundBuff = true;
                 }
                 
             }
+            
             NBTTagCompound buff = new NBTTagCompound();
             effect.writeToNBT(buff);
-            if (!(effect.duration <= 0)) {
+            
+            if (!(effect.duration <= 0))
                 list.func_150304_a(count, buff);
-            }
-            else {
+                
+            else
                 list.removeTag(count);
-            }
-            if (!world.isRemote) {
+                
+            if (!world.isRemote)
                 Bookshelf.network.sendToAllAround(new PacketBuffUpdate(entity, effect), new TargetPoint(entity.worldObj.provider.dimensionId, entity.posX, entity.posY, entity.posZ, 128D));
-            }
+                
             EntityProperties.getProperties(entity).setBuffs(list);
         }
-        return false;
     }
     
-    public static BiMap<String, Buff> getBuffMap () {
-        
-        return buffMap;
-    }
-    
+    /**
+     * A check to see if an Entity has a certain buff.
+     * 
+     * @param entity: The entity to check.
+     * @param buff: The Buff to check for.
+     * @return boolean: Whether or not the entity has the Buff.
+     */
     public static boolean hasBuff (EntityLivingBase entity, Buff buff) {
         
-        for (BuffEffect effect : getEntityEffects(entity)) {
-            if (effect.getBuff().equals(buff)) {
+        for (BuffEffect effect : getEntityEffects(entity))
+            if (effect.getBuff().equals(buff))
                 return true;
-            }
-        }
-        
+                
         return false;
     }
-    
 }
