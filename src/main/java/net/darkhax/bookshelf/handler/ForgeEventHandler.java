@@ -27,7 +27,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 public class ForgeEventHandler {
     
     @SubscribeEvent
-    public void post (CreativeTabEvent.Post event) {
+    public void afterCreativeTabLoaded (CreativeTabEvent.Post event) {
         
         if (event.tab == CreativeTabs.tabDecorations)
             for (ItemStack stack : SkullUtils.getMHFSkulls())
