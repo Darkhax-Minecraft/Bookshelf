@@ -4,8 +4,10 @@ import java.util.List;
 
 import net.darkhax.bookshelf.event.CreativeTabEvent;
 import net.darkhax.bookshelf.event.ItemEnchantedEvent;
+import net.darkhax.bookshelf.event.PotionCuredEvent;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -59,5 +61,17 @@ public class BookshelfHooks {
     public static void onCreativeTabDisplayPost (CreativeTabs tab, List itemList) {
         
         MinecraftForge.EVENT_BUS.post(new CreativeTabEvent.Post(tab, itemList));
+    }
+    
+    /**
+     * A hook for when a cure item is applied to an entity.
+     * 
+     * @param entity: The Entity being cured.
+     * @param cureItem: The ItemStack being used to cure the entity.
+     * @return boolean: Whether or not the event has been canceled.
+     */
+    public static boolean onPotionsCured (EntityLivingBase entity, ItemStack cureItem) {
+        
+        return MinecraftForge.EVENT_BUS.post(new PotionCuredEvent(entity, cureItem));
     }
 }

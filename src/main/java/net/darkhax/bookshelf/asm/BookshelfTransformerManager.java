@@ -23,6 +23,9 @@ public class BookshelfTransformerManager implements IClassTransformer {
         if (transformedName.equals("net.minecraft.creativetab.CreativeTabs"))
             return CreativeTabsTransformer.transform(name, transformedName, classBytes);
             
+        if (transformedName.equals("net.minecraft.entity.EntityLivingBase"))
+            return EntityLivingBaseTransformer.transform(name, transformedName, classBytes);
+            
         return classBytes;
     }
 }
