@@ -1,9 +1,6 @@
 package net.darkhax.bookshelf.potion;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.StringUtils;
 
 public class BuffEffect {
