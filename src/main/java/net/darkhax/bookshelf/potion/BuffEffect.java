@@ -1,6 +1,10 @@
 package net.darkhax.bookshelf.potion;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.StringUtils;
 
 public class BuffEffect {
     
@@ -67,6 +71,16 @@ public class BuffEffect {
     public Buff getBuff () {
         
         return buff;
+    }
+    
+    /**
+     * Retrieves the duration as a string.
+     * 
+     * @return String: The duration in mm:ss format.
+     */
+    public String getDuration () {
+        
+        return StringUtils.ticksToElapsedTime(this.duration);
     }
     
     @Override
