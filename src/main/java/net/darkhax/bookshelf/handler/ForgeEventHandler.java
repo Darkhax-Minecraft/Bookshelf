@@ -51,6 +51,29 @@ public class ForgeEventHandler {
                 armor.onHorseUpdate(horse, customArmor);
             }
         }
+        
+        EntityLivingBase entity = event.entityLiving;
+        
+        if (!entity.worldObj.isRemote) {
+            
+            List<BuffEffect> buffEffectList = BuffHelper.getEntityEffects(entity);
+            
+            for (int i = 0; i < buffEffectList.size(); i++) {
+                
+                BuffEffect buff = buffEffectList.get(i);
+                
+                if (buff.getBuff().canUpdate())
+                    buff.getBuff().onBuffTick(entity.worldObj, entity, buff.duration, buff.power);
+                
+                buff.duration--;
+                
+                if (buff.duration <= 0)
+                    BuffHelper.getEntityEffects(entity).remove(i);
+                
+                BuffHelper.updateBuff(entity.worldObj, entity, buff);
+                Bookshelf.network.sendToAllAround(new PacketBuffUpdate(entity, buff), new NetworkRegistry.TargetPoint(entity.worldObj.provider.dimensionId, entity.posX, entity.posY, entity.posZ, 128D));
+            }
+        }
     }
     
     @SubscribeEvent
@@ -84,25 +107,5 @@ public class ForgeEventHandler {
         
         if (event.entity instanceof EntityLivingBase && !event.entity.worldObj.isRemote && EntityProperties.hasProperties((EntityLivingBase) event.entity))
             EntityProperties.getProperties((EntityLivingBase) event.entity).sync();
-    }
-    
-    @SubscribeEvent
-    public void handleBuffEntity (LivingUpdateEvent e) {
-        
-        EntityLivingBase entity = e.entityLiving;
-        if (!entity.worldObj.isRemote) {
-            List<BuffEffect> buffEffectList = BuffHelper.getEntityEffects(entity);
-            for (int i = 0; i < buffEffectList.size(); i++) {
-                BuffEffect buff = buffEffectList.get(i);
-                if (buff.getBuff().canUpdate())
-                    buff.getBuff().onBuffTick(entity.worldObj, entity, buff.duration, buff.power);
-                buff.duration--;
-                if (buff.duration <= 0) {
-                    BuffHelper.getEntityEffects(entity).remove(i);
-                }
-                BuffHelper.updateBuff(entity.worldObj, entity, buff);
-                Bookshelf.network.sendToAllAround(new PacketBuffUpdate(entity, buff), new NetworkRegistry.TargetPoint(entity.worldObj.provider.dimensionId, entity.posX, entity.posY, entity.posZ, 128D));
-            }
-        }
     }
 }
