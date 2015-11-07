@@ -18,10 +18,16 @@ import net.minecraft.world.World;
 
 public class BuffHelper {
     
+    /**
+     * A BiMap which stores every single Buff effect that has been registered.
+     */
     private static BiMap<String, Buff> buffMap = HashBiMap.create();
     
     public static void registerBuff (Buff buff) {
         
+        if (buffMap.containsKey(buff.getPotionName()))
+            throw new RuntimeException("An attempt was made to register a Potion with the name of " + buff.getPotionName() + " however it is already in use. " + buffMap.get(buff.getPotionName()).getClass().getName() + " " + buff.getClass().getName());
+            
         buffMap.put(buff.getPotionName(), buff);
     }
     
