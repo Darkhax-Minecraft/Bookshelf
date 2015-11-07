@@ -9,6 +9,7 @@ import net.darkhax.bookshelf.asm.ASMHelper;
 import net.darkhax.bookshelf.common.EntityProperties;
 import net.darkhax.bookshelf.common.network.packet.PacketBuffUpdate;
 import net.darkhax.bookshelf.event.CreativeTabEvent;
+import net.darkhax.bookshelf.event.PotionCuredEvent;
 import net.darkhax.bookshelf.items.ItemHorseArmor;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.SkullUtils;
@@ -25,6 +26,12 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 public class ForgeEventHandler {
+    
+    @SubscribeEvent
+    public void onPotionsCured (PotionCuredEvent event) {
+        
+        BuffHelper.cureBuffs(event.entityLiving, event.stack);
+    }
     
     @SubscribeEvent
     public void afterCreativeTabLoaded (CreativeTabEvent.Post event) {

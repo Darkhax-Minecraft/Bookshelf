@@ -12,6 +12,7 @@ import net.darkhax.bookshelf.common.EntityProperties;
 import net.darkhax.bookshelf.common.network.packet.PacketBuffUpdate;
 import net.darkhax.bookshelf.common.network.packet.PacketSyncPlayerProperties;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
@@ -199,5 +200,22 @@ public class BuffHelper {
                 return true;
                 
         return false;
+    }
+    
+    /**
+     * Attempts to cure all buff effects using the ItemStack passed.
+     * 
+     * @param entity: The entity trying to be cured.
+     * @param stack: The cure ItemStack being used.
+     */
+    public static void cureBuffs (EntityLivingBase entity, ItemStack stack) {
+        
+        List<BuffEffect> buffs = getEntityEffects(entity);
+        
+        for (BuffEffect effect : buffs)
+            if (effect.getBuff().shouldBeCured(entity, stack))
+                buffs.remove(effect);
+                
+        // TODO SYNC
     }
 }

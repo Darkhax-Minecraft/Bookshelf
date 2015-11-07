@@ -6,6 +6,7 @@ import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -172,6 +173,19 @@ public class Buff {
      */
     public void onBuffTick (World world, EntityLivingBase entity, int duration, int power) {
     
+    }
+    
+    /**
+     * A check to see whether or not this effect can be cured. By default, only milk can cure
+     * these effects.
+     * 
+     * @param entity: The entity being cured.
+     * @param stack: The ItemStack being used to cure the entity.
+     * @return boolean: Whether or not the cure was successful.
+     */
+    public boolean shouldBeCured (EntityLivingBase entity, ItemStack stack) {
+        
+        return (ItemStackUtils.isValidStack(stack) && stack.getItem() == Items.milk_bucket);
     }
     
     /**
