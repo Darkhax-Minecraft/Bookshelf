@@ -29,9 +29,9 @@ public class PacketSyncPlayerProperties extends AbstractMessage<PacketSyncPlayer
         this.entityId = buf.readInt();
         this.buffs = new NBTTagList();
         int size = buf.readInt();
-        for (int i = 0; i < size; i++) {
+        
+        for (int i = 0; i < size; i++)
             buffs.appendTag(ByteBufUtils.readTag(buf));
-        }
     }
     
     @Override
@@ -39,17 +39,18 @@ public class PacketSyncPlayerProperties extends AbstractMessage<PacketSyncPlayer
         
         buf.writeInt(entityId);
         buf.writeInt(buffs.tagCount());
-        for (int i = 0; i < buffs.tagCount(); i++) {
-            ByteBufUtils.writeTag(buf, buffs.getCompoundTagAt(i));
-        }
         
+        for (int i = 0; i < buffs.tagCount(); i++)
+            ByteBufUtils.writeTag(buf, buffs.getCompoundTagAt(i));
     }
     
     @Override
     public void handleClientMessage (PacketSyncPlayerProperties message, EntityPlayer player) {
         
         EntityLivingBase entity = (EntityLivingBase) player.worldObj.getEntityByID(message.entityId);
+        
         if (entity != null) {
+            
             EntityProperties props = EntityProperties.getProperties(entity);
             props.setBuffs(message.buffs);
         }

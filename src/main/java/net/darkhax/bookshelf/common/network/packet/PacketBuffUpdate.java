@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketBuffUpdate extends AbstractMessage<PacketBuffUpdate> {
+    
     public int entityID;
     public BuffEffect effect;
     
