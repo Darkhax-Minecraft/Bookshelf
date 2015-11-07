@@ -15,7 +15,6 @@ import net.darkhax.bookshelf.potion.BuffEffect;
 import net.darkhax.bookshelf.potion.BuffHelper;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -66,7 +65,7 @@ public class RenderingHandler {
                     if (!buff.shouldRenderInvText(buffEffect))
                         continue;
                         
-                    String s1 = I18n.format(buff.getPotionName(), new Object[0]);
+                    String s1 = buff.getTranslatedName();
                     
                     if (buffEffect.power > 1)
                         s1 += " " + StatCollector.translateToLocal("enchantment.level." + buffEffect.power);
