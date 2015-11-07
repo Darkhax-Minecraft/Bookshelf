@@ -109,7 +109,7 @@ public class BuffHelper {
             }
             NBTTagCompound buff = new NBTTagCompound();
             effect.writeToNBT(buff);
-            if (!(effect.getDuration() <= 0)) {
+            if (!(effect.duration <= 0)) {
                 list.func_150304_a(count, buff);
             }
             else {

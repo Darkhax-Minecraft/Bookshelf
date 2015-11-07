@@ -47,7 +47,7 @@ public class PacketBuffUpdate extends AbstractMessage<PacketBuffUpdate> {
         
         buf.writeInt(entityID);
         ByteBufUtils.writeUTF8String(buf, effect.getBuff().getPotionName());
-        buf.writeInt(effect.getDuration());
-        buf.writeInt(effect.getPower());
+        buf.writeInt(effect.duration);
+        buf.writeInt(effect.power);
     }
 }

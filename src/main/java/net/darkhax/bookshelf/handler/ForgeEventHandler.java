@@ -95,9 +95,9 @@ public class ForgeEventHandler {
             for (int i = 0; i < buffEffectList.size(); i++) {
                 BuffEffect buff = buffEffectList.get(i);
                 if (buff.getBuff().canUpdate())
-                    buff.getBuff().onBuffTick(entity.worldObj, entity, buff.getDuration(), buff.getPower());
-                buff.setDuration(buff.getDuration() - 1);
-                if (buff.getDuration() <= 0) {
+                    buff.getBuff().onBuffTick(entity.worldObj, entity, buff.duration, buff.power);
+                buff.duration--;
+                if (buff.duration <= 0) {
                     BuffHelper.getEntityEffects(entity).remove(i);
                 }
                 BuffHelper.updateBuff(entity.worldObj, entity, buff);

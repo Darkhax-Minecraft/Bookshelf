@@ -70,12 +70,12 @@ public class RenderingHandler {
                     if (!buff.shouldRenderInvText(buffEffect))
                         continue;
                     String s1 = I18n.format(buff.getPotionName(), new Object[0]);
-                    if (buffEffect.getPower() > 1) {
-                        s1 += " " + StatCollector.translateToLocal("enchantment.level." + buffEffect.getPower());
+                    if (buffEffect.power > 1) {
+                        s1 += " " + StatCollector.translateToLocal("enchantment.level." + buffEffect.power);
                     }
                     
                     fnt.drawStringWithShadow(s1, i + 10 + 18, j + 6, 16777215);
-                    fnt.drawStringWithShadow(StringUtils.ticksToElapsedTime(buffEffect.getDuration()), i + 10 + 18, j + 6 + 10, 8355711);
+                    fnt.drawStringWithShadow(StringUtils.ticksToElapsedTime(buffEffect.duration), i + 10 + 18, j + 6 + 10, 8355711);
                 }
             }
         }
