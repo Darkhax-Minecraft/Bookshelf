@@ -173,6 +173,19 @@ public class ItemStackUtils {
     }
     
     /**
+     * Checks to see if two ItemStacks are similar. A similar stack has the same item, and the
+     * same damage.
+     * 
+     * @param firstStack: The first stack to check.
+     * @param secondStack: The second stack to check.
+     * @return boolean: True if stacks are similar, and not null.
+     */
+    public static boolean areStacksSimilar (ItemStack firstStack, ItemStack secondStack) {
+        
+        return (isValidStack(firstStack) && isValidStack(secondStack) && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem());
+    }
+    
+    /**
      * Retrieves the custom color of an ItemStack. This will only retrieve color data that has
      * been set through this mod. If no valid color can be found, white will be used.
      * 
