@@ -209,13 +209,6 @@ public class BuffHelper {
      * @param stack: The cure ItemStack being used.
      */
     public static void cureBuffs (EntityLivingBase entity, ItemStack stack) {
-        
-        List<BuffEffect> buffs = getEntityEffects(entity);
-        
-        for (BuffEffect effect : buffs)
-            if (effect.getBuff().shouldBeCured(entity, stack))
-                buffs.remove(effect);
-                
-        // TODO SYNC
+    
     }
 }
