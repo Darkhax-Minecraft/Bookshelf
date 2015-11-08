@@ -2,6 +2,8 @@ package net.darkhax.bookshelf.common;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.common.network.packet.PacketSyncPlayerProperties;
+import net.darkhax.bookshelf.potion.BuffEffect;
+import net.darkhax.bookshelf.potion.BuffHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,11 +11,14 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EntityProperties implements IExtendedEntityProperties {
     
     public static final String PROP_NAME = "BookshelfData";
     public final EntityLivingBase entity;
-    private NBTTagList buffs = new NBTTagList();
+    private List<BuffEffect> buffs = new ArrayList<BuffEffect>();
     
     private EntityProperties(EntityLivingBase entity) {
         
@@ -24,7 +29,7 @@ public class EntityProperties implements IExtendedEntityProperties {
     public void saveNBTData (NBTTagCompound compound) {
         
         NBTTagCompound entityData = new NBTTagCompound();
-        entityData.setTag("BookshelfBuff", buffs);
+        entityData.setTag("BookshelfBuff", BuffHelper.writeNBT(buffs));
         compound.setTag(PROP_NAME, entityData);
     }
     
@@ -32,7 +37,7 @@ public class EntityProperties implements IExtendedEntityProperties {
     public void loadNBTData (NBTTagCompound compound) {
         
         NBTTagCompound playerData = compound.getCompoundTag(PROP_NAME);
-        this.buffs = playerData.getTagList("BookshelfBuff", 10);
+        this.buffs = BuffHelper.readNBT(playerData.getTagList("BookshelfBuff", 10));
     }
     
     @Override
@@ -87,7 +92,7 @@ public class EntityProperties implements IExtendedEntityProperties {
      * 
      * @return NBTTagList: A list of buffs in NBT.
      */
-    public NBTTagList getBuffs () {
+    public List<BuffEffect> getBuffs () {
         
         return buffs;
     }
@@ -97,7 +102,7 @@ public class EntityProperties implements IExtendedEntityProperties {
      * 
      * @param buffs: The list of buffs to set.
      */
-    public void setBuffs (NBTTagList buffs) {
+    public void setBuffs (List<BuffEffect> buffs) {
         
         this.buffs = buffs;
     }

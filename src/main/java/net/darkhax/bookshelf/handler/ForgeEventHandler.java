@@ -64,19 +64,14 @@ public class ForgeEventHandler {
         if (!entity.worldObj.isRemote) {
             
             List<BuffEffect> buffEffectList = BuffHelper.getEntityEffects(entity);
-            
-            for (int i = 0; i < buffEffectList.size(); i++) {
-                
-                BuffEffect buff = buffEffectList.get(i);
-                
+
+            for (BuffEffect buff : buffEffectList) {
+
                 if (buff.getBuff().canUpdate())
                     buff.getBuff().onBuffTick(entity.worldObj, entity, buff.duration, buff.power);
-                    
+
                 buff.duration--;
-                
-                if (buff.duration <= 0)
-                    BuffHelper.getEntityEffects(entity).remove(i);
-                    
+
                 BuffHelper.updateBuff(entity.worldObj, entity, buff);
                 Bookshelf.network.sendToAllAround(new PacketBuffUpdate(entity, buff), new NetworkRegistry.TargetPoint(entity.worldObj.provider.dimensionId, entity.posX, entity.posY, entity.posZ, 128D));
             }
