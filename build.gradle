@@ -106,6 +106,9 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 task deobfJar(type: Jar) {
     from sourceSets.main.output
     classifier = "deobf"
+    manifest {
+        attributes "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true", "FMLAT": "bookshelf_at.cfg"
+    }
 }
 
 artifacts {
@@ -124,7 +127,7 @@ uploadArchives {
 
 jar {
     manifest {
-        attributes "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true", 'FMLAT': 'bookshelf_at.cfg'
+        attributes "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true", "FMLAT": "bookshelf_at.cfg"
     }
 }
 
@@ -163,9 +166,9 @@ curseforge {
 
         addGameVersion project.mcVersion
 
-        mainArtifact (jar)
-        addArtifact (deobfJar)
-        addArtifact (sourcesJar)
-        addArtifact (javadocJar)
+        mainArtifact(jar)
+        addArtifact(deobfJar)
+        addArtifact(sourcesJar)
+        addArtifact(javadocJar)
     }
 }
