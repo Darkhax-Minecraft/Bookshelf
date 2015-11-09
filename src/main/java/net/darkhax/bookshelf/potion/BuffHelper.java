@@ -102,6 +102,7 @@ public class BuffHelper {
             if (hasBuff(entity, effect.getBuff())) {
                 
                 for (Iterator<BuffEffect> iterator = list.iterator(); iterator.hasNext();) {
+                    
                     BuffEffect current = iterator.next();
                     
                     if (current.getBuff().equals(effect.getBuff()))
@@ -109,6 +110,7 @@ public class BuffHelper {
                 }
                 
             }
+            
             list.add(effect);
             EntityProperties.getProperties(entity).setBuffs(list);
             
@@ -135,19 +137,17 @@ public class BuffHelper {
             List<BuffEffect> list = getEntityEffects(entity);
             
             for (Iterator<BuffEffect> iterator = list.iterator(); iterator.hasNext();) {
+                
                 BuffEffect buffE = iterator.next();
                 
-                if (buffE != null) {
-                    if (buffE.getBuff().equals(effect.getBuff())) {
+                if (buffE != null)
+                    if (buffE.getBuff().equals(effect.getBuff()))
                         iterator.remove();
-                        
-                    }
-                }
-            }
-            if (!(effect.duration <= 0)) {
-                list.add(effect);
             }
             
+            if (!(effect.duration <= 0))
+                list.add(effect);
+                
             EntityProperties.getProperties(entity).setBuffs(list);
             
             if (!world.isRemote)
@@ -183,6 +183,7 @@ public class BuffHelper {
         List<BuffEffect> buffs = getEntityEffects(entity);
         
         for (Iterator<BuffEffect> iterator = buffs.iterator(); iterator.hasNext();) {
+            
             BuffEffect effect = iterator.next();
             
             if (effect != null)
@@ -196,24 +197,40 @@ public class BuffHelper {
         properties.sync();
     }
     
+    /**
+     * Writes a list of BuffEffect to an NBTTagCompound.
+     * 
+     * @param buffs: A List of buffs to write to a tag.
+     * @return NBTTagList: An NBTTagList containing a list of tags, each containg buff data.
+     */
     public static NBTTagList writeNBT (List<BuffEffect> buffs) {
         
         NBTTagList nbtList = new NBTTagList();
         
         for (BuffEffect effect : buffs) {
+            
             NBTTagCompound buffNBT = new NBTTagCompound();
             effect.writeToNBT(buffNBT);
             nbtList.appendTag(buffNBT);
         }
+        
         return nbtList;
     }
     
+    /**
+     * Reads a list of BuffEffects from an NBTTagList.
+     * 
+     * @param list: The NBTTagList to read from.
+     * @return List<BuffEffect>: A list of BuffEffect that were stored in the NBTTagList.
+     */
     public static List<BuffEffect> readNBT (NBTTagList list) {
         
         List<BuffEffect> effects = new ArrayList<BuffEffect>();
         
         if (list != null) {
+            
             for (int i = 0; i < list.tagCount(); i++) {
+                
                 NBTTagCompound tag = list.getCompoundTagAt(i);
                 BuffEffect buff = BuffEffect.readFromNBT(tag);
                 effects.add(buff);
