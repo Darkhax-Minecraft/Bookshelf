@@ -14,7 +14,7 @@ import net.darkhax.bookshelf.command.CommandItemColor;
 import net.darkhax.bookshelf.common.ProxyCommon;
 import net.darkhax.bookshelf.common.network.packet.PacketBuffUpdate;
 import net.darkhax.bookshelf.common.network.packet.PacketSyncPlayerProperties;
-import net.darkhax.bookshelf.handler.EnchantmentListExpansionHandler;
+import net.darkhax.bookshelf.handler.ExpansionHandler;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.Utilities;
@@ -41,7 +41,8 @@ public class Bookshelf {
         proxy.preInit();
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
         
-        new EnchantmentListExpansionHandler();
+        ExpansionHandler.expandEnchantmentList();
+        ExpansionHandler.expandPotionArray();
     }
     
     @EventHandler
