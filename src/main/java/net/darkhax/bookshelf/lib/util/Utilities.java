@@ -298,20 +298,6 @@ public class Utilities {
     }
     
     /**
-     * Retrieves a unique string related to the texture name of a villager. This allows for
-     * villagers to be differentiated based on their profession rather than their ID.
-     *
-     * @param id : The ID of the villager being looked up.
-     * @return String: The texture name, minus file path and extension.
-     */
-    @SideOnly(Side.CLIENT)
-    public static String getVillagerName (int id) {
-        
-        ResourceLocation skin = VillagerRegistry.getVillagerSkin(id, null);
-        return (id >= 0 && id <= 4) ? vanillaVillagers[id] : (skin != null) ? skin.getResourceDomain() + "." + skin.getResourcePath().substring(skin.getResourcePath().lastIndexOf("/") + 1, skin.getResourcePath().length() - 4) : "misingno";
-    }
-    
-    /**
      * Spawns a particle into the world, in a basic ring pattern. The center of the ring is
      * focused around the provided XYZ coordinates.
      *
@@ -326,10 +312,45 @@ public class Utilities {
      * @param step: The distance in degrees, between each particle. The maximum is 2 * PI,
      *            which will create 1 particle per ring. 0.15 is a nice value.
      */
-    @SideOnly(Side.CLIENT)
     public static void spawnParticleRing (World world, String name, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
         
         for (double degree = 0.0d; degree < 2 * Math.PI; degree += step)
             world.spawnParticle(name, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
+    }
+    
+    /**
+     * Spawns a particle into the world, in a basic ring pattern. The center of the ring is
+     * focused around the provided XYZ coordinates.
+     *
+     * @param world: The world to spawn the particles in.
+     * @param name: The name of the particle to spawn. VanillaParticle has a list of these.
+     * @param percent: The percentage of the ring to render.
+     * @param x: The x position to spawn the particle around.
+     * @param y: The y position to spawn the particle around.
+     * @param z: The z position to spawn the particle around.
+     * @param velocityX: The velocity of the particle, in the x direction.
+     * @param velocityY: The velocity of the particle, in the y direction.
+     * @param velocityZ: The velocity of the particle, in the z direction.
+     * @param step: The distance in degrees, between each particle. The maximum is 2 * PI,
+     *            which will create 1 particle per ring. 0.15 is a nice value.
+     */
+    public static void spawnParticleRing (World world, String name, float percentage, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
+        
+        for (double degree = 0.0d; degree < (2 * Math.PI * percentage); degree += step)
+            world.spawnParticle(name, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
+    }
+    
+    /**
+     * Retrieves a unique string related to the texture name of a villager. This allows for
+     * villagers to be differentiated based on their profession rather than their ID.
+     *
+     * @param id : The ID of the villager being looked up.
+     * @return String: The texture name, minus file path and extension.
+     */
+    @SideOnly(Side.CLIENT)
+    public static String getVillagerName (int id) {
+        
+        ResourceLocation skin = VillagerRegistry.getVillagerSkin(id, null);
+        return (id >= 0 && id <= 4) ? vanillaVillagers[id] : (skin != null) ? skin.getResourceDomain() + "." + skin.getResourcePath().substring(skin.getResourcePath().lastIndexOf("/") + 1, skin.getResourcePath().length() - 4) : "misingno";
     }
 }
