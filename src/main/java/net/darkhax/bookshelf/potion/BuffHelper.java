@@ -2,10 +2,7 @@ package net.darkhax.bookshelf.potion;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.common.EntityProperties;
-import net.darkhax.bookshelf.common.network.packet.PacketBuffUpdate;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,16 +19,6 @@ public class BuffHelper {
      * A BiMap which stores every single Buff effect that has been registered.
      */
     private static BiMap<String, Buff> buffMap = HashBiMap.create();
-
-    /**
-     * Provides access to the buff registry.
-     *
-     * @return BiMap<String, Buff>: The Buff map.
-     */
-    public static BiMap<String, Buff> getBuffMap () {
-
-        return buffMap;
-    }
 
     /**
      * Registers a Buff with the buffMap.
@@ -75,49 +62,13 @@ public class BuffHelper {
      * @param buff:   The Buff you are looking for.
      * @return BuffEffect: The BuffEffect you are looking for. Null if not found.
      */
-    public static BuffEffect getEntitybuff (EntityLivingBase entity, Buff buff) {
+    public static BuffEffect getEntityBuffEffect (EntityLivingBase entity, Buff buff) {
 
-        if (hasBuff(entity, buff))
-            for (BuffEffect effect : getEntityEffects(entity))
-                if (effect.getBuff().equals(buff))
-                    return effect;
+        for (BuffEffect effect : getEntityEffects(entity))
+            if (effect.getBuff().equals(buff))
+                return effect;
 
         return null;
-    }
-
-    /**
-     * Applies a Buff to an Entity.
-     *
-     * @param entity: The entity to give the buff to.
-     * @param effect: The effect to give to the entity.
-     * @return boolean: Whether or not it was applied successfully.
-     */
-    public static boolean applyToEntity (EntityLivingBase entity, BuffEffect effect) {
-
-        if (entity != null) {
-
-            List<BuffEffect> list = getEntityEffects(entity);
-
-            if (hasBuff(entity, effect.getBuff())) {
-
-                for (Iterator<BuffEffect> iterator = list.iterator(); iterator.hasNext(); ) {
-                    BuffEffect current = iterator.next();
-
-                    if (current.getBuff().equals(effect.getBuff()))
-                        iterator.remove();
-                }
-
-            }
-            list.add(effect);
-            EntityProperties.getProperties(entity).setBuffs(list);
-
-            if (!entity.worldObj.isRemote)
-                EntityProperties.getProperties(entity).sync();
-
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -127,32 +78,31 @@ public class BuffHelper {
      * @param entity: The Entity to update on.
      * @param effect: The effect to update.
      */
-    public static void updateBuff (World world, EntityLivingBase entity, BuffEffect effect) {
+    public static boolean addOrUpdateBuff (World world, EntityLivingBase entity, BuffEffect effect) {
 
-        if (entity != null && hasBuff(entity, effect.getBuff())) {
+        if (entity != null) {
 
             List<BuffEffect> list = getEntityEffects(entity);
+            if (hasBuff(entity, effect.getBuff())) {
 
-            for (Iterator<BuffEffect> iterator = list.iterator(); iterator.hasNext(); ) {
-                BuffEffect buffE = iterator.next();
-
-                if (buffE != null) {
+                for (BuffEffect buffE : list) {
                     if (buffE.getBuff().equals(effect.getBuff())) {
-                        iterator.remove();
-
+                        list.remove(buffE);
+                        break;
                     }
                 }
             }
-            if (!(effect.duration <= 0)) {
-                list.add(effect);
+
+            list.add(effect);
+
+            if (!world.isRemote) {
+                EntityProperties.getProperties(entity).setBuffs(list).sync();
             }
 
-            EntityProperties.getProperties(entity).setBuffs(list);
-
-            if (!world.isRemote)
-                Bookshelf.network.sendToAllAround(new PacketBuffUpdate(entity, effect), new TargetPoint(entity.worldObj.provider.dimensionId, entity.posX, entity.posY, entity.posZ, 128D));
-
+            return true;
         }
+        return false;
+
     }
 
     /**
@@ -179,20 +129,17 @@ public class BuffHelper {
      */
     public static void cureBuffs (EntityLivingBase entity, ItemStack stack) {
 
-        List<BuffEffect> buffs = getEntityEffects(entity);
+        List<BuffEffect> list = getEntityEffects(entity);
 
-        for (Iterator<BuffEffect> iterator = buffs.iterator(); iterator.hasNext(); ) {
+        for (Iterator<BuffEffect> iterator = list.iterator(); iterator.hasNext(); ) {
             BuffEffect effect = iterator.next();
 
-            if (effect != null)
-                if (effect.getBuff().shouldBeCured(entity, stack))
-                    iterator.remove();
-
+            if (effect.getBuff().shouldBeCured(entity, stack)) {
+                iterator.remove();
+            }
         }
 
-        EntityProperties properties = EntityProperties.getProperties(entity);
-        properties.setBuffs(buffs);
-        properties.sync();
+         EntityProperties.getProperties(entity).setBuffs(list).sync();
     }
 
     public static NBTTagList writeNBT (List<BuffEffect> buffs) {

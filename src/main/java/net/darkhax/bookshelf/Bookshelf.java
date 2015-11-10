@@ -12,7 +12,6 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import net.darkhax.bookshelf.command.CommandItemColor;
 import net.darkhax.bookshelf.common.ProxyCommon;
-import net.darkhax.bookshelf.common.network.packet.PacketBuffUpdate;
 import net.darkhax.bookshelf.common.network.packet.PacketSyncPlayerProperties;
 import net.darkhax.bookshelf.handler.EnchantmentListExpansionHandler;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
@@ -35,8 +34,7 @@ public class Bookshelf {
     public void preInit (FMLPreInitializationEvent event) {
         
         network = NetworkRegistry.INSTANCE.newSimpleChannel("Bookshelf");
-        Utilities.registerMessage(network, PacketBuffUpdate.class, 0, Side.CLIENT);
-        Utilities.registerMessage(network, PacketSyncPlayerProperties.class, 1, Side.CLIENT);
+        Utilities.registerMessage(network, PacketSyncPlayerProperties.class, 0, Side.CLIENT);
         
         proxy.preInit();
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());

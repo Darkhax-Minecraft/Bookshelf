@@ -59,8 +59,7 @@ public class PacketSyncPlayerProperties extends AbstractMessage<PacketSyncPlayer
 
         if (entity != null) {
 
-            EntityProperties props = EntityProperties.getProperties(entity);
-            props.setBuffs(message.buffs);
+            EntityProperties.getProperties(entity).setBuffs(message.buffs);
         }
     }
 
