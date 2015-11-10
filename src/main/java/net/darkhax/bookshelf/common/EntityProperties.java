@@ -1,5 +1,8 @@
 package net.darkhax.bookshelf.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.common.network.packet.PacketSyncPlayerProperties;
 import net.darkhax.bookshelf.potion.BuffEffect;
@@ -9,9 +12,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class EntityProperties implements IExtendedEntityProperties {
 

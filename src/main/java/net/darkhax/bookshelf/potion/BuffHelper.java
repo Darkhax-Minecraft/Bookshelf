@@ -1,5 +1,9 @@
 package net.darkhax.bookshelf.potion;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.darkhax.bookshelf.common.EntityProperties;
@@ -8,10 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class BuffHelper {
 
@@ -59,7 +59,7 @@ public class BuffHelper {
      * Retrieves a BuffEffect from the passed entity, that represents the passed Buff.
      *
      * @param entity: The entity to find the BuffEffect on.
-     * @param buff:   The Buff you are looking for.
+     * @param buff: The Buff you are looking for.
      * @return BuffEffect: The BuffEffect you are looking for. Null if not found.
      */
     public static BuffEffect getEntityBuffEffect (EntityLivingBase entity, Buff buff) {
@@ -74,7 +74,7 @@ public class BuffHelper {
     /**
      * Updates a BuffEffect on an entity.
      *
-     * @param world:  The world the entity is in.
+     * @param world: The world the entity is in.
      * @param entity: The Entity to update on.
      * @param effect: The effect to update.
      */
@@ -109,7 +109,7 @@ public class BuffHelper {
      * A check to see if an Entity has a certain buff.
      *
      * @param entity: The entity to check.
-     * @param buff:   The Buff to check for.
+     * @param buff: The Buff to check for.
      * @return boolean: Whether or not the entity has the Buff.
      */
     public static boolean hasBuff (EntityLivingBase entity, Buff buff) {
@@ -125,7 +125,7 @@ public class BuffHelper {
      * Attempts to cure all buff effects using the ItemStack passed.
      *
      * @param entity: The entity trying to be cured.
-     * @param stack:  The cure ItemStack being used.
+     * @param stack: The cure ItemStack being used.
      */
     public static void cureBuffs (EntityLivingBase entity, ItemStack stack) {
 
@@ -142,6 +142,12 @@ public class BuffHelper {
          EntityProperties.getProperties(entity).setBuffs(list).sync();
     }
 
+    /**
+     * Writes a list of BuffEffect to an NBTTagCompound.
+     *
+     * @param buffs: A List of buffs to write to a tag.
+     * @return NBTTagList: An NBTTagList containing a list of tags, each containg buff data.
+     */
     public static NBTTagList writeNBT (List<BuffEffect> buffs) {
 
         NBTTagList nbtList = new NBTTagList();
@@ -154,12 +160,20 @@ public class BuffHelper {
         return nbtList;
     }
 
+    /**
+     * Reads a list of BuffEffects from an NBTTagList.
+     *
+     * @param list: The NBTTagList to read from.
+     * @return List<BuffEffect>: A list of BuffEffect that were stored in the NBTTagList.
+     */
     public static List<BuffEffect> readNBT (NBTTagList list) {
 
         List<BuffEffect> effects = new ArrayList<BuffEffect>();
 
         if (list != null) {
+
             for (int i = 0; i < list.tagCount(); i++) {
+
                 NBTTagCompound tag = list.getCompoundTagAt(i);
                 BuffEffect buff = BuffEffect.readFromNBT(tag);
                 effects.add(buff);

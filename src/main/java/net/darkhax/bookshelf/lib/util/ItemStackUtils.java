@@ -223,4 +223,18 @@ public class ItemStackUtils {
         prepareDataTag(stack);
         stack.getTagCompound().removeTag("bookshelfColor");
     }
+    
+    /**
+     * Writes an ItemStack as a sub NBTTagCompound on a larger NBTTagCompound.
+     * 
+     * @param stack: The ItemStack to write to the tag.
+     * @param tag: The NBTTagCompound to write the stack to.
+     * @param tagName: The name for this new NBTTagCompound entry.
+     */
+    public static void writeStackToTag (ItemStack stack, NBTTagCompound tag, String tagName) {
+        
+        NBTTagCompound stackTag = new NBTTagCompound();
+        stack.writeToNBT(stackTag);
+        tag.setTag(tagName, stackTag);
+    }
 }
