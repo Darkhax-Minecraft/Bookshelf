@@ -5,11 +5,13 @@ import java.util.List;
 import net.darkhax.bookshelf.event.CreativeTabEvent;
 import net.darkhax.bookshelf.event.ItemEnchantedEvent;
 import net.darkhax.bookshelf.event.PotionCuredEvent;
+import net.darkhax.bookshelf.lib.util.Utilities;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BookshelfHooks {
@@ -73,5 +75,18 @@ public class BookshelfHooks {
     public static boolean onPotionsCured (EntityLivingBase entity, ItemStack cureItem) {
         
         return MinecraftForge.EVENT_BUS.post(new PotionCuredEvent(entity, cureItem));
+    }
+    
+    /**
+     * A hook into the constructor of Potion. This hook is not publicly available, and is only
+     * used to prevent two or more Potions from using the same ID. This should prevent many
+     * unintended issues.
+     * 
+     * @param potion: The Potion that is being constructed.
+     */
+    public static void onPotionConstructed (Potion potion) {
+        
+        if (potion != null && Utilities.getPotion(potion.id) != null)
+            throw new IllegalArgumentException("Duplicate Potion id! " + potion.getClass().getName() + " and " + Utilities.getPotion(potion.id).getClass().getName() + " Potion ID:" + potion.id);
     }
 }

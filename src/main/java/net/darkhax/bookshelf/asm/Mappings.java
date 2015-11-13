@@ -14,6 +14,7 @@ public class Mappings {
     public static String iron_horse_armor;
     public static String diamond_horse_armor;
     public static String horseChest;
+    public static String potionID;
     
     // Methods
     public static String buildEnchantmentList;
@@ -61,6 +62,7 @@ public class Mappings {
         iron_horse_armor = ASMHelper.getAppropriateMapping("iron_horse_armor", "field_151138_bX");
         diamond_horse_armor = ASMHelper.getAppropriateMapping("diamond_horse_armor", "field_151125_bZ");
         horseChest = ASMHelper.getAppropriateMapping("horseChest", "field_110296_bG");
+        potionID = ASMHelper.getAppropriateMapping("id", "field_76415_H");
         
         // Methods
         buildEnchantmentList = ASMHelper.getAppropriateMapping("buildEnchantmentList", "func_77513_b");
