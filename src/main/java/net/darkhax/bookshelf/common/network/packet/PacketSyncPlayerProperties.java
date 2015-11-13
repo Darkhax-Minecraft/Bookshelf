@@ -1,16 +1,17 @@
 package net.darkhax.bookshelf.common.network.packet;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cpw.mods.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import net.darkhax.bookshelf.common.EntityProperties;
 import net.darkhax.bookshelf.common.network.AbstractMessage;
 import net.darkhax.bookshelf.potion.BuffEffect;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PacketSyncPlayerProperties extends AbstractMessage<PacketSyncPlayerProperties> {
 
@@ -55,11 +56,10 @@ public class PacketSyncPlayerProperties extends AbstractMessage<PacketSyncPlayer
     @Override
     public void handleClientMessage (PacketSyncPlayerProperties message, EntityPlayer player) {
 
-        EntityLivingBase entity = (EntityLivingBase) player.worldObj.getEntityByID(message.entityId);
+        Entity e = player.getEntityWorld().getEntityByID(message.entityId);
 
-        if (entity != null) {
-
-            EntityProperties.getProperties(entity).setBuffs(message.buffs);
+        if (e != null && e instanceof EntityLivingBase) {
+            EntityProperties.getProperties((EntityLivingBase) e).setBuffs(message.buffs);
         }
     }
 
