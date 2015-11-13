@@ -37,7 +37,7 @@ public class Utilities {
     /**
      * An array of all keys used in ChestGenHooks for the vanilla chests.
      */
-    public static String[] vanillaLootChests = new String[] {"dungeonChest", "bonusChest", "villageBlacksmith", "strongholdCrossing", "strongholdLibrary", "strongholdCorridor", "pyramidJungleDispenser", "pyramidJungleChest", "pyramidDesertyChest", "mineshaftCorridor"};
+    public static String[] vanillaLootChests = new String[] { "dungeonChest", "bonusChest", "villageBlacksmith", "strongholdCrossing", "strongholdLibrary", "strongholdCorridor", "pyramidJungleDispenser", "pyramidJungleChest", "pyramidDesertyChest", "mineshaftCorridor" };
     
     /**
      * A List of all available enchantments. Needs to occasionally be updated using

@@ -174,12 +174,12 @@ public class Buff {
     public void onBuffTick (World world, EntityLivingBase entity, int duration, int power) {
     
     }
-
-    //TODO Comment
+    
+    // TODO Comment
     public void onEffectEnded () {
-
+    
     }
-
+    
     /**
      * A check to see whether or not this effect can be cured. By default, only milk can cure
      * these effects.
