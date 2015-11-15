@@ -107,7 +107,7 @@ task deobfJar(type: Jar) {
     from sourceSets.main.output
     classifier = "deobf"
     manifest {
-        attributes "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true", "FMLAT": "bookshelf_at.cfg"
+        attributes "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true"
     }
 }
 
@@ -127,7 +127,7 @@ uploadArchives {
 
 jar {
     manifest {
-        attributes "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true", "FMLAT": "bookshelf_at.cfg"
+        attributes "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true"
     }
 }
 
