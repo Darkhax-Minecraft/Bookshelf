@@ -5,21 +5,24 @@ import java.util.Iterator;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.darkhax.bookshelf.asm.ASMHelper;
-import net.darkhax.bookshelf.items.ItemHorseArmor;
-import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.util.RestrictedUtils;
-import net.darkhax.bookshelf.lib.util.Utilities;
-import net.darkhax.bookshelf.potion.*;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
+import net.darkhax.bookshelf.asm.ASMHelper;
+import net.darkhax.bookshelf.items.ItemHorseArmor;
+import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.util.RestrictedUtils;
+import net.darkhax.bookshelf.lib.util.Utilities;
+import net.darkhax.bookshelf.potion.*;
 
 public class RenderingHandler {
     

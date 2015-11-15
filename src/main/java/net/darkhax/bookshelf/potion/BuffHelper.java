@@ -5,12 +5,13 @@ import java.util.*;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import net.darkhax.bookshelf.common.EntityProperties;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
+
+import net.darkhax.bookshelf.common.EntityProperties;
 
 public class BuffHelper {
     

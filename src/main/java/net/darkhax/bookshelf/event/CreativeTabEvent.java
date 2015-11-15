@@ -2,10 +2,11 @@ package net.darkhax.bookshelf.event;
 
 import java.util.List;
 
-import cpw.mods.fml.common.eventhandler.Cancelable;
-import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+
+import cpw.mods.fml.common.eventhandler.Cancelable;
+import cpw.mods.fml.common.eventhandler.Event;
 
 public class CreativeTabEvent extends Event {
     

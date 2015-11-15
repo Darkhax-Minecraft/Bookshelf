@@ -1,9 +1,5 @@
 package net.darkhax.bookshelf.potion;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
-import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
@@ -11,6 +7,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.lib.util.RenderUtils;
 
 public class Buff {
     

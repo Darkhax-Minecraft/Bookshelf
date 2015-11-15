@@ -3,15 +3,18 @@ package net.darkhax.bookshelf.common.network.packet;
 import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import io.netty.buffer.ByteBuf;
-import net.darkhax.bookshelf.common.EntityProperties;
-import net.darkhax.bookshelf.common.network.AbstractMessage;
-import net.darkhax.bookshelf.potion.BuffEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+
+import cpw.mods.fml.common.network.ByteBufUtils;
+
+import net.darkhax.bookshelf.common.EntityProperties;
+import net.darkhax.bookshelf.common.network.AbstractMessage;
+import net.darkhax.bookshelf.potion.BuffEffect;
+
+import io.netty.buffer.ByteBuf;
 
 public class PacketSyncPlayerProperties extends AbstractMessage<PacketSyncPlayerProperties> {
     

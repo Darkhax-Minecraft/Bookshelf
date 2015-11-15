@@ -1,5 +1,7 @@
 package net.darkhax.bookshelf;
 
+import net.minecraftforge.common.MinecraftForge;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -7,6 +9,7 @@ import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+
 import net.darkhax.bookshelf.command.CommandItemColor;
 import net.darkhax.bookshelf.common.ProxyCommon;
 import net.darkhax.bookshelf.common.network.packet.PacketSyncPlayerProperties;
@@ -14,7 +17,6 @@ import net.darkhax.bookshelf.handler.ExpansionHandler;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.Utilities;
-import net.minecraftforge.common.MinecraftForge;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION)
 public class Bookshelf {

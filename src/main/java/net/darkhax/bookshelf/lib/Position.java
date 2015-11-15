@@ -2,13 +2,14 @@ package net.darkhax.bookshelf.lib;
 
 import java.io.*;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+
+import io.netty.buffer.ByteBuf;
 
 public final class Position implements Comparable<Position>, Serializable {
     

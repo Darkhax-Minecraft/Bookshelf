@@ -1,7 +1,8 @@
 package net.darkhax.bookshelf.asm;
 
-import net.darkhax.bookshelf.asm.transformers.*;
 import net.minecraft.launchwrapper.IClassTransformer;
+
+import net.darkhax.bookshelf.asm.transformers.*;
 
 public class BookshelfTransformerManager implements IClassTransformer {
     

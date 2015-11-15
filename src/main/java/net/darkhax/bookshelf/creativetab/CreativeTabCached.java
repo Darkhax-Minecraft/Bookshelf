@@ -2,11 +2,13 @@ package net.darkhax.bookshelf.creativetab;
 
 import java.util.*;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.darkhax.bookshelf.handler.BookshelfHooks;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.darkhax.bookshelf.handler.BookshelfHooks;
 
 public abstract class CreativeTabCached extends CreativeTabs {
     

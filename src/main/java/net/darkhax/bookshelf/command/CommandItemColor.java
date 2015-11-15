@@ -4,12 +4,13 @@ import java.awt.Color;
 
 import org.apache.commons.lang3.StringUtils;
 
-import net.darkhax.bookshelf.lib.VanillaColor;
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
-import net.darkhax.bookshelf.lib.util.MathsUtils;
 import net.minecraft.command.*;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.*;
+
+import net.darkhax.bookshelf.lib.VanillaColor;
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.lib.util.MathsUtils;
 
 public class CommandItemColor extends CommandBase {
     

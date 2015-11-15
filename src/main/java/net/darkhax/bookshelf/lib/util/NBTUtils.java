@@ -1,12 +1,13 @@
 package net.darkhax.bookshelf.lib.util;
 
-import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.Position;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
+import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.Position;
 
 public class NBTUtils {
     

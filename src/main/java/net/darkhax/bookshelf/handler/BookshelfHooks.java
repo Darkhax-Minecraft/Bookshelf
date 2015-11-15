@@ -2,15 +2,17 @@ package net.darkhax.bookshelf.handler;
 
 import java.util.List;
 
-import net.darkhax.bookshelf.event.*;
-import net.darkhax.bookshelf.lib.util.Utilities;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+
 import net.minecraftforge.common.MinecraftForge;
+
+import net.darkhax.bookshelf.event.*;
+import net.darkhax.bookshelf.lib.util.Utilities;
 
 public class BookshelfHooks {
     

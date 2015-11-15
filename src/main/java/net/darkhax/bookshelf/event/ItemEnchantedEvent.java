@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
 public class ItemEnchantedEvent extends PlayerEvent {

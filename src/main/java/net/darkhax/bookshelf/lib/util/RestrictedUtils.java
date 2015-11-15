@@ -2,8 +2,9 @@ package net.darkhax.bookshelf.lib.util;
 
 import java.lang.reflect.Field;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.gui.inventory.GuiContainer;
+
+import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class RestrictedUtils {
     

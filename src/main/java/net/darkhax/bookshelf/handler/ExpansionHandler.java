@@ -3,10 +3,12 @@ package net.darkhax.bookshelf.handler;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.potion.Potion;
+
+import cpw.mods.fml.relauncher.ReflectionHelper;
+
+import net.darkhax.bookshelf.lib.Constants;
 
 public class ExpansionHandler {
     

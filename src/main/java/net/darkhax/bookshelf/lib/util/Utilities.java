@@ -5,12 +5,6 @@ import java.util.*;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
-import cpw.mods.fml.common.network.simpleimpl.*;
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.VillagerRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.darkhax.bookshelf.common.network.AbstractMessage;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,7 +15,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
 import net.minecraftforge.fluids.IFluidBlock;
+
+import cpw.mods.fml.common.network.simpleimpl.*;
+import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.common.registry.VillagerRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.darkhax.bookshelf.common.network.AbstractMessage;
 
 public class Utilities {
     
