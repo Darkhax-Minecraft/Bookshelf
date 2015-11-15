@@ -1,9 +1,6 @@
 package net.darkhax.bookshelf.asm.transformers;
 
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.ILOAD;
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.*;

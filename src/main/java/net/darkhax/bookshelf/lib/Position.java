@@ -1,9 +1,6 @@
 package net.darkhax.bookshelf.lib;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;

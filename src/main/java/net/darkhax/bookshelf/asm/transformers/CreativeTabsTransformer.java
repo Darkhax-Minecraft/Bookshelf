@@ -1,8 +1,6 @@
 package net.darkhax.bookshelf.asm.transformers;
 
-import static net.darkhax.bookshelf.asm.Mappings.addEnchantmentBooksToList;
-import static net.darkhax.bookshelf.asm.Mappings.displayAllReleventItems;
-import static net.darkhax.bookshelf.asm.Mappings.getRelevantEnchantmentTypes;
+import static net.darkhax.bookshelf.asm.Mappings.*;
 import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.ClassWriter;

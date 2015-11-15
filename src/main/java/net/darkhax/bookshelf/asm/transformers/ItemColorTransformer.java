@@ -1,10 +1,7 @@
 package net.darkhax.bookshelf.asm.transformers;
 
 import static net.darkhax.bookshelf.asm.Mappings.*;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.IFEQ;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.IRETURN;
+import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.*;

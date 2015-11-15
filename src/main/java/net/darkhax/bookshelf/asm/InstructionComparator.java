@@ -11,10 +11,7 @@ package net.darkhax.bookshelf.asm;
 
 import static org.objectweb.asm.tree.AbstractInsnNode.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import org.objectweb.asm.tree.*;
 

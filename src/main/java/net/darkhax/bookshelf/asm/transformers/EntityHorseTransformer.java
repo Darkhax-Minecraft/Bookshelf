@@ -14,9 +14,7 @@ package net.darkhax.bookshelf.asm.transformers;
 
 import static net.darkhax.bookshelf.asm.Mappings.*;
 
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.*;
 import org.objectweb.asm.tree.*;
 
 import net.darkhax.bookshelf.asm.ASMHelper;

@@ -2,9 +2,7 @@ package net.darkhax.bookshelf.handler;
 
 import java.util.List;
 
-import net.darkhax.bookshelf.event.CreativeTabEvent;
-import net.darkhax.bookshelf.event.ItemEnchantedEvent;
-import net.darkhax.bookshelf.event.PotionCuredEvent;
+import net.darkhax.bookshelf.event.*;
 import net.darkhax.bookshelf.lib.util.Utilities;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentData;
