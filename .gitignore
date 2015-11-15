@@ -9,3 +9,9 @@ out/
 build/
 .gradle/
 run/
+
+#Eclipse
+.classpath
+.metadata/
+.project
+.settings/
