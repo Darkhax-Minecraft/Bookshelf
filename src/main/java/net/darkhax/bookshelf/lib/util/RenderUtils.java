@@ -1,9 +1,11 @@
 package net.darkhax.bookshelf.lib.util;
 
 import java.awt.Color;
+import java.lang.reflect.Field;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,6 +15,18 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class RenderUtils {
+    
+    /**
+     * Access to the guiLeft field in GuiContainer. Used to get the starting X position of a
+     * GUI.
+     */
+    public static Field guiLeft = null;
+    
+    /**
+     * Access to the guiTop field in GuiContainer. Used to get the starting Y position of a
+     * GUI.
+     */
+    public static Field guiTop = null;
     
     /**
      * Synchronizes a ModelBiped to an EntityLivingBase. This method is intended for use in
@@ -69,5 +83,55 @@ public class RenderUtils {
         tessellator.addVertexWithUV((double) (posX + width), (double) (posY + 0), (double) zLevel, (double) ((float) (u + width) * f), (double) ((float) (v + 0) * f));
         tessellator.addVertexWithUV((double) (posX + 0), (double) (posY + 0), (double) zLevel, (double) ((float) (u) * f), (double) ((float) (v + 0) * f));
         tessellator.draw();
+    }
+    
+    /**
+     * Retrieves the starting X position of a Gui. This is handled through reflection. If the
+     * guiLeft field has not been made accessible, this method will do that.
+     * 
+     * @param gui: An instance of the GuiContainer to grab the guiLeft variable from.
+     * @return int: The staring X position of the passed Gui.
+     */
+    @SideOnly(Side.CLIENT)
+    public static int getGuiLeft (GuiContainer gui) {
+        
+        if (guiLeft == null)
+            return 0;
+            
+        try {
+            
+            return guiLeft.getInt(gui);
+        }
+        
+        catch (Exception exception) {
+            
+            exception.printStackTrace();
+            return 0;
+        }
+    }
+    
+    /**
+     * Retrieves the starting Y position of a Gui. This is handled through reflection. If the
+     * guiTop field has not been made accessible, this method will do that.
+     * 
+     * @param gui: An instance of the GuiContainer to grab the guiTop variable from.
+     * @return int: The starting Y position of the passed Gui.
+     */
+    @SideOnly(Side.CLIENT)
+    public static int getGuiTop (GuiContainer gui) {
+        
+        if (guiTop == null)
+            return 0;
+            
+        try {
+            
+            return guiTop.getInt(gui);
+        }
+        
+        catch (Exception exception) {
+            
+            exception.printStackTrace();
+            return 0;
+        }
     }
 }

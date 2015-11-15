@@ -20,7 +20,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.darkhax.bookshelf.asm.ASMHelper;
 import net.darkhax.bookshelf.items.ItemHorseArmor;
 import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.util.RestrictedUtils;
+import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 import net.darkhax.bookshelf.potion.*;
 
@@ -34,8 +34,8 @@ public class RenderingHandler {
         if (event.gui != null && event.gui instanceof InventoryEffectRenderer) {
             
             InventoryEffectRenderer gui = (InventoryEffectRenderer) event.gui;
-            int i = RestrictedUtils.getGuiLeft(gui) - 124;
-            int j = RestrictedUtils.getGuiTop(gui);
+            int i = RenderUtils.getGuiLeft(gui) - 124;
+            int j = RenderUtils.getGuiTop(gui);
             EntityPlayer player = gui.mc.thePlayer;
             Collection<BuffEffect> effects = BuffHelper.getEntityEffects(player);
             
