@@ -95,7 +95,7 @@ public class BookshelfHooks {
                 throw new IllegalArgumentException("Duplicate Potion id! " + potion.getClass().getName() + " and " + Utilities.getPotion(potion.id).getClass().getName() + " Potion ID:" + potion.id);
                 
             Constants.LOG.error("Duplicate Potion id! " + potion.getClass().getName() + " and " + Utilities.getPotion(potion.id).getClass().getName() + " Potion ID:" + potion.id);
-            Constants.LOG.error("We recommend the " + MathsUtils.getNextPotionID() + " as a replacement ID.");
+            Constants.LOG.error("We recommend " + MathsUtils.getNextPotionID() + " as a replacement ID.");
         }
     }
 }
