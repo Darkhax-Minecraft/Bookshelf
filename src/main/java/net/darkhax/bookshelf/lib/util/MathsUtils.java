@@ -154,7 +154,7 @@ public class MathsUtils {
         
         for (int possibleID = 0; possibleID < Potion.potionTypes.length; possibleID++) {
             
-            if (Potion.potionTypes[possibleID] == null && !foundPotions.contains(possibleID)) {
+            if (Potion.potionTypes[possibleID] == null && !foundPotions.contains(possibleID) && possibleID > 32) {
                 
                 foundPotions.add(possibleID);
                 return possibleID;
