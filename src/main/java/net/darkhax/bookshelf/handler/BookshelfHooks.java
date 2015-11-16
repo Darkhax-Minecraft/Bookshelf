@@ -11,7 +11,10 @@ import net.minecraft.potion.Potion;
 
 import net.minecraftforge.common.MinecraftForge;
 
+import net.darkhax.bookshelf.asm.ASMConfigs;
 import net.darkhax.bookshelf.event.*;
+import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.util.MathsUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 
 public class BookshelfHooks {
@@ -86,7 +89,13 @@ public class BookshelfHooks {
      */
     public static void onPotionConstructed (Potion potion) {
         
-        if (potion != null && Utilities.getPotion(potion.id) != null)
-            throw new IllegalArgumentException("Duplicate Potion id! " + potion.getClass().getName() + " and " + Utilities.getPotion(potion.id).getClass().getName() + " Potion ID:" + potion.id);
+        if (potion != null && Utilities.getPotion(potion.id) != null) {
+            
+            if (!ASMConfigs.catchPotionException)
+                throw new IllegalArgumentException("Duplicate Potion id! " + potion.getClass().getName() + " and " + Utilities.getPotion(potion.id).getClass().getName() + " Potion ID:" + potion.id);
+                
+            Constants.LOG.error("Duplicate Potion id! " + potion.getClass().getName() + " and " + Utilities.getPotion(potion.id).getClass().getName() + " Potion ID:" + potion.id);
+            Constants.LOG.error("We recommend the " + MathsUtils.getNextPotionID() + " as a replacement ID.");
+        }
     }
 }

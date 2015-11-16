@@ -5,16 +5,20 @@ import static org.objectweb.asm.Opcodes.*;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.*;
 
-import net.darkhax.bookshelf.asm.ASMHelper;
-import net.darkhax.bookshelf.asm.Mappings;
+import net.darkhax.bookshelf.asm.*;
 
 public class PotionTransformer {
     
     public static byte[] transform (String name, String transformedName, byte[] bytes) {
         
-        ClassNode potionClass = ASMHelper.createClassFromByteArray(bytes);
-        transformConstructor(ASMHelper.getMethodFromClass(potionClass, "<init>", "(IZI)V"));
-        return ASMHelper.createByteArrayFromClass(potionClass, ClassWriter.COMPUTE_MAXS);
+        if (ASMConfigs.catchPotionException) {
+            
+            ClassNode potionClass = ASMHelper.createClassFromByteArray(bytes);
+            transformConstructor(ASMHelper.getMethodFromClass(potionClass, "<init>", "(IZI)V"));
+            return ASMHelper.createByteArrayFromClass(potionClass, ClassWriter.COMPUTE_MAXS);
+        }
+        
+        return bytes;
     }
     
     /**
