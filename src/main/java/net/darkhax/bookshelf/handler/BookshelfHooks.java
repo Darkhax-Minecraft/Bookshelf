@@ -95,7 +95,16 @@ public class BookshelfHooks {
                 throw new IllegalArgumentException("Duplicate Potion id! " + potion.getClass().getName() + " and " + Utilities.getPotion(potion.id).getClass().getName() + " Potion ID:" + potion.id);
                 
             Constants.LOG.error("Duplicate Potion id! " + potion.getClass().getName() + " and " + Utilities.getPotion(potion.id).getClass().getName() + " Potion ID:" + potion.id);
-            Constants.LOG.error("We recommend " + MathsUtils.getNextPotionID() + " as a replacement ID.");
+            
+            try {
+                
+                Constants.LOG.error("We recommend " + MathsUtils.getNextPotionID() + " as a replacement ID.");
+            }
+            
+            catch (RuntimeException exception) {
+                
+                Constants.LOG.error("An attempt to recommend an available ID was made, however it seems there are no IDs left!");
+            }
         }
     }
 }
