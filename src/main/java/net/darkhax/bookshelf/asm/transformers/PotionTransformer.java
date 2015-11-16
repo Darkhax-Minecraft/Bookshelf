@@ -11,7 +11,7 @@ public class PotionTransformer {
     
     public static byte[] transform (String name, String transformedName, byte[] bytes) {
         
-        if (ASMConfigs.catchPotionException) {
+        if (ASMConfigs.potionDetectionEnabled) {
             
             ClassNode potionClass = ASMHelper.createClassFromByteArray(bytes);
             transformConstructor(ASMHelper.getMethodFromClass(potionClass, "<init>", "(IZI)V"));
