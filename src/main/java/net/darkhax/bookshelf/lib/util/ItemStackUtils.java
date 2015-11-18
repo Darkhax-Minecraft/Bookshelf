@@ -182,7 +182,7 @@ public class ItemStackUtils {
      */
     public static boolean areStacksSimilar (ItemStack firstStack, ItemStack secondStack) {
         
-        return (isValidStack(firstStack) && isValidStack(secondStack) && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem());
+        return (firstStack == null && secondStack == null) ? true : (isValidStack(firstStack) && isValidStack(secondStack) && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem());
     }
     
     /**
