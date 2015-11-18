@@ -51,10 +51,13 @@ public class BuffHelper {
         if (entity != null) {
             
             List<BuffEffect> list = getEntityEffects(entity);
+            
             if (hasBuff(entity, effect.getBuff())) {
                 
                 for (BuffEffect buffE : list) {
+                    
                     if (buffE.getBuff().equals(effect.getBuff())) {
+                        
                         list.remove(buffE);
                         break;
                     }
@@ -63,14 +66,13 @@ public class BuffHelper {
             
             list.add(effect);
             
-            if (!world.isRemote) {
+            if (!world.isRemote)
                 EntityProperties.getProperties(entity).setBuffs(list).sync();
-            }
-            
+                
             return true;
         }
-        return false;
         
+        return false;
     }
     
     /**
@@ -100,11 +102,11 @@ public class BuffHelper {
         List<BuffEffect> list = getEntityEffects(entity);
         
         for (Iterator<BuffEffect> iterator = list.iterator(); iterator.hasNext();) {
+            
             BuffEffect effect = iterator.next();
             
-            if (effect.getBuff().shouldBeCured(entity, stack)) {
+            if (effect.getBuff().shouldBeCured(entity, stack))
                 iterator.remove();
-            }
         }
         
         EntityProperties.getProperties(entity).setBuffs(list).sync();
@@ -121,10 +123,12 @@ public class BuffHelper {
         NBTTagList nbtList = new NBTTagList();
         
         for (BuffEffect effect : buffs) {
+            
             NBTTagCompound buffNBT = new NBTTagCompound();
             effect.writeToNBT(buffNBT);
             nbtList.appendTag(buffNBT);
         }
+        
         return nbtList;
     }
     
