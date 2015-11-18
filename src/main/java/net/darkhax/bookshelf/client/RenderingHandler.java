@@ -18,11 +18,11 @@ import net.minecraftforge.client.event.RenderLivingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import net.darkhax.bookshelf.asm.ASMHelper;
+import net.darkhax.bookshelf.buff.*;
 import net.darkhax.bookshelf.items.ItemHorseArmor;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
-import net.darkhax.bookshelf.potion.*;
 
 public class RenderingHandler {
     

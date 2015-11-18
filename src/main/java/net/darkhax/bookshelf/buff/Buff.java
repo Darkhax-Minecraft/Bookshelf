@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.potion;
+package net.darkhax.bookshelf.buff;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;

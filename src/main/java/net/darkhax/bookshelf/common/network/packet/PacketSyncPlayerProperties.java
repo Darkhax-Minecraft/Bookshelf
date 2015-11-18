@@ -10,9 +10,9 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 
+import net.darkhax.bookshelf.buff.BuffEffect;
 import net.darkhax.bookshelf.common.EntityProperties;
 import net.darkhax.bookshelf.common.network.AbstractMessage;
-import net.darkhax.bookshelf.potion.BuffEffect;
 
 import io.netty.buffer.ByteBuf;
 

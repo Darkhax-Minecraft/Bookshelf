@@ -11,9 +11,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
 import net.darkhax.bookshelf.Bookshelf;
+import net.darkhax.bookshelf.buff.BuffEffect;
+import net.darkhax.bookshelf.buff.BuffHelper;
 import net.darkhax.bookshelf.common.network.packet.PacketSyncPlayerProperties;
-import net.darkhax.bookshelf.potion.BuffEffect;
-import net.darkhax.bookshelf.potion.BuffHelper;
 
 public class EntityProperties implements IExtendedEntityProperties {
     

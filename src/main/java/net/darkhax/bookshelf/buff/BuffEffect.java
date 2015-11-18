@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.potion;
+package net.darkhax.bookshelf.buff;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StringUtils;

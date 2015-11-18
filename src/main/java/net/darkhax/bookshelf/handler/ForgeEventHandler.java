@@ -17,6 +17,8 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import net.darkhax.bookshelf.asm.ASMHelper;
+import net.darkhax.bookshelf.buff.BuffEffect;
+import net.darkhax.bookshelf.buff.BuffHelper;
 import net.darkhax.bookshelf.common.BookshelfRegistry;
 import net.darkhax.bookshelf.common.EntityProperties;
 import net.darkhax.bookshelf.event.CreativeTabEvent;
@@ -24,8 +26,6 @@ import net.darkhax.bookshelf.event.PotionCuredEvent;
 import net.darkhax.bookshelf.items.ItemHorseArmor;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.*;
-import net.darkhax.bookshelf.potion.BuffEffect;
-import net.darkhax.bookshelf.potion.BuffHelper;
 
 public class ForgeEventHandler {
     
