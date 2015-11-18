@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.item.ItemStack;
 
+import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -16,17 +17,41 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import net.darkhax.bookshelf.asm.ASMHelper;
+import net.darkhax.bookshelf.common.BookshelfRegistry;
 import net.darkhax.bookshelf.common.EntityProperties;
 import net.darkhax.bookshelf.event.CreativeTabEvent;
 import net.darkhax.bookshelf.event.PotionCuredEvent;
 import net.darkhax.bookshelf.items.ItemHorseArmor;
 import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.util.SkullUtils;
-import net.darkhax.bookshelf.lib.util.Utilities;
+import net.darkhax.bookshelf.lib.util.*;
 import net.darkhax.bookshelf.potion.BuffEffect;
 import net.darkhax.bookshelf.potion.BuffHelper;
 
 public class ForgeEventHandler {
+    
+    @SubscribeEvent
+    public void onAnvilUsed (AnvilUpdateEvent event) {
+        
+        for (BookshelfRegistry.AnvilRecipe recipe : BookshelfRegistry.getAnvilRecipes()) {
+            
+            if (recipe != null && ItemStackUtils.isValidStack(recipe.output) && ItemStackUtils.areStacksSimilarWithSize(event.left, recipe.inputLeft) && ItemStackUtils.areStacksSimilarWithSize(event.right, recipe.inputRight)) {
+                
+                event.cost = recipe.getExperienceCost(event.left, event.right, event.name);
+                event.materialCost = recipe.getMaterialCost(event.left, event.right, event.name);
+                
+                if (recipe.nameTaxt != null && !recipe.nameTaxt.isEmpty()) {
+                    
+                    if (recipe.nameTaxt.equalsIgnoreCase(event.name))
+                        event.output = recipe.getOutput(event.left, event.right, event.name);
+                        
+                    return;
+                }
+                
+                event.output = recipe.getOutput(event.left, event.right, event.name);
+                return;
+            }
+        }
+    }
     
     @SubscribeEvent
     public void onPotionsCured (PotionCuredEvent event) {
