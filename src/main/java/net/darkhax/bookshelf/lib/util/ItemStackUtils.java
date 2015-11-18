@@ -178,11 +178,24 @@ public class ItemStackUtils {
      * 
      * @param firstStack: The first stack to check.
      * @param secondStack: The second stack to check.
-     * @return boolean: True if stacks are similar, and not null.
+     * @return boolean: True if stacks are similar, or if both are null.
      */
     public static boolean areStacksSimilar (ItemStack firstStack, ItemStack secondStack) {
         
         return (firstStack == null && secondStack == null) ? true : (isValidStack(firstStack) && isValidStack(secondStack) && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem());
+    }
+    
+    /**
+     * Checks to see if two ItemStacks are similar. A similar stack has the same item, and the
+     * same damage and same size.
+     * 
+     * @param firstStack: The first stack to check.
+     * @param secondStack: The second stack to check.
+     * @return boolean: True if stacks are similar, or if both are null.
+     */
+    public static boolean areStacksSimilarWithSize (ItemStack firstStack, ItemStack secondStack) {
+        
+        return (firstStack == null && secondStack == null) ? true : (isValidStack(firstStack) && isValidStack(secondStack) && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem() && firstStack.stackSize == secondStack.stackSize);
     }
     
     /**
