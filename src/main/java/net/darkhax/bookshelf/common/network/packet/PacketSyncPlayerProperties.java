@@ -59,10 +59,12 @@ public class PacketSyncPlayerProperties extends AbstractMessage<PacketSyncPlayer
     @Override
     public void handleClientMessage (PacketSyncPlayerProperties message, EntityPlayer player) {
         
-        Entity e = player.getEntityWorld().getEntityByID(message.entityId);
-        
-        if (e != null && e instanceof EntityLivingBase) {
-            EntityProperties.getProperties((EntityLivingBase) e).setBuffs(message.buffs);
+        if (player != null && player.worldObj != null) {
+            
+            Entity entity = player.worldObj.getEntityByID(message.entityId);
+            
+            if (entity != null && entity instanceof EntityLivingBase)
+                EntityProperties.getProperties((EntityLivingBase) entity).setBuffs(message.buffs);
         }
     }
     
