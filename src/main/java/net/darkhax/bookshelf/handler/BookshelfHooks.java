@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.IChatComponent;
 
 import net.minecraftforge.common.MinecraftForge;
 
@@ -106,5 +107,12 @@ public class BookshelfHooks {
                 Constants.LOG.error("An attempt to recommend an available ID was made, however it seems there are no IDs left!");
             }
         }
+    }
+    
+    public static IChatComponent onDisconnectMessage(EntityPlayer player, IChatComponent message) {
+        
+        PlayerMessageEvent event = new PlayerMessageEvent(player, message, false);
+        MinecraftForge.EVENT_BUS.post(event);
+        return event.message;
     }
 }
