@@ -2,9 +2,6 @@ package net.darkhax.bookshelf.buff;
 
 import java.util.*;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,35 +11,6 @@ import net.minecraft.world.World;
 import net.darkhax.bookshelf.common.EntityProperties;
 
 public class BuffHelper {
-    
-    /**
-     * A BiMap which stores every single Buff effect that has been registered.
-     */
-    private static BiMap<String, Buff> buffMap = HashBiMap.create();
-    
-    /**
-     * Registers a Buff with the buffMap.
-     *
-     * @param buff: The Buff to register.
-     */
-    public static void registerBuff (Buff buff) {
-        
-        if (buffMap.containsKey(buff.getPotionName()))
-            throw new RuntimeException("An attempt was made to register a Potion with the name of " + buff.getPotionName() + " however it is already in use. " + buffMap.get(buff.getPotionName()).getClass().getName() + " " + buff.getClass().getName());
-            
-        buffMap.put(buff.getPotionName(), buff);
-    }
-    
-    /**
-     * Attempts to retrieve a Buff by its name.
-     *
-     * @param name: The name of the buff you are looking for.
-     * @return Buff: The Buff, if its name was found. If not, null.
-     */
-    public static Buff getBuffFromString (String name) {
-        
-        return (buffMap.containsKey(name)) ? buffMap.get(name) : null;
-    }
     
     /**
      * Retrieves a List of BuffEffects from a living Entity.

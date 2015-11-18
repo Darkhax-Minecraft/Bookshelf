@@ -3,6 +3,8 @@ package net.darkhax.bookshelf.buff;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StringUtils;
 
+import net.darkhax.bookshelf.common.BookshelfRegistry;
+
 public class BuffEffect {
     
     /**
@@ -57,7 +59,7 @@ public class BuffEffect {
     public static BuffEffect readFromNBT (NBTTagCompound nbt) {
         
         NBTTagCompound tag = nbt.getCompoundTag("BookshelfBuff");
-        return new BuffEffect(BuffHelper.getBuffFromString(tag.getString("buff")), tag.getInteger("duration"), tag.getInteger("power"));
+        return new BuffEffect(BookshelfRegistry.getBuffFromString(tag.getString("buff")), tag.getInteger("duration"), tag.getInteger("power"));
     }
     
     /**
