@@ -3,6 +3,7 @@
     "newestVersion":"1.0.2.56",
     "release":"1.0.2.56",
     "updateUrl":"http://minecraft.curseforge.com/projects/bookshelf/files",
+    "directUpdateUrl-1.7.10":"http://minecraft.curseforge.com/projects/bookshelf/files/2264080/download",
     "versions":{  
         "1.0.2.56":[
             "Fixed ASM load time. Now several times faster!",
