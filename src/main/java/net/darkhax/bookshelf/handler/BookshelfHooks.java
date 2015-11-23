@@ -1,13 +1,7 @@
 package net.darkhax.bookshelf.handler;
 
-import net.darkhax.bookshelf.asm.ASMConfigs;
-import net.darkhax.bookshelf.event.CreativeTabEvent;
-import net.darkhax.bookshelf.event.ItemEnchantedEvent;
-import net.darkhax.bookshelf.event.PotionCuredEvent;
-import net.darkhax.bookshelf.event.PotionEffectEvent;
-import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.util.MathsUtils;
-import net.darkhax.bookshelf.lib.util.Utilities;
+import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,9 +9,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+
 import net.minecraftforge.common.MinecraftForge;
 
-import java.util.List;
+import net.darkhax.bookshelf.asm.ASMConfigs;
+import net.darkhax.bookshelf.event.*;
+import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.util.MathsUtils;
+import net.darkhax.bookshelf.lib.util.Utilities;
 
 public class BookshelfHooks {
     
@@ -109,7 +108,7 @@ public class BookshelfHooks {
             }
         }
     }
-
+    
     /**
      * A hook to get data about potion effects on entities.
      *
@@ -117,10 +116,10 @@ public class BookshelfHooks {
      * @param entity: The entity with the potion effect.
      */
     public static void onNewPotionEffect (PotionEffect potion, EntityLivingBase entity) {
-
+        
         MinecraftForge.EVENT_BUS.post(new PotionEffectEvent.PotionEffectStartEvent(potion, entity));
     }
-
+    
     /**
      * A hook to get data about potion effects on entities.
      *
@@ -128,10 +127,10 @@ public class BookshelfHooks {
      * @param entity: The entity with the potion effect.
      */
     public static void onChangedPotionEffect (PotionEffect potion, EntityLivingBase entity) {
-
+        
         MinecraftForge.EVENT_BUS.post(new PotionEffectEvent.PotionEffectChangeEvent(potion, entity));
     }
-
+    
     /**
      * A hook to get data about potion effects on entities.
      *
@@ -139,7 +138,7 @@ public class BookshelfHooks {
      * @param entity: The entity with the potion effect.
      */
     public static void onFinishedPotionEffect (PotionEffect potion, EntityLivingBase entity) {
-
+        
         MinecraftForge.EVENT_BUS.post(new PotionEffectEvent.PotionEffectFinishEvent(potion, entity));
     }
 }
