@@ -16,8 +16,8 @@ buildscript {
         classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
         classpath "com.matthewprenger:CurseGradle:1.0.3-SNAPSHOT"
     }
-
 }
+
 import groovy.json.*
 
 apply plugin: "forge"
@@ -30,7 +30,7 @@ group = "net.darkhax.bookshelf"
 archivesBaseName = "Bookshelf"
 
 minecraft {
-    version = "1.7.10-10.13.4.1517-1.7.10"
+    version = "1.7.10-10.13.4.1558-1.7.10"
     runDir = "run"
     replace "${version}", project.version
 }

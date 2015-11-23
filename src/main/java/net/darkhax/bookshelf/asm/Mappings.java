@@ -47,6 +47,9 @@ public class Mappings {
     public static String displayAllReleventItems;
     public static String getRelevantEnchantmentTypes;
     public static String addEnchantmentBooksToList;
+    public static String onNewPotionEffect;
+    public static String onChangedPotionEffect;
+    public static String onFinishedPotionEffect;
     
     public Mappings() {
         
@@ -95,5 +98,8 @@ public class Mappings {
         displayAllReleventItems = ASMHelper.getAppropriateMapping("displayAllReleventItems", "func_78018_a");
         getRelevantEnchantmentTypes = ASMHelper.getAppropriateMapping("func_111225_m", "func_111225_m");
         addEnchantmentBooksToList = ASMHelper.getAppropriateMapping("addEnchantmentBooksToList", "func_92116_a");
+        onNewPotionEffect = ASMHelper.getAppropriateMapping("onNewPotionEffect", "func_70670_a");
+        onChangedPotionEffect = ASMHelper.getAppropriateMapping("onChangedPotionEffect", "func_70695_b");
+        onFinishedPotionEffect = ASMHelper.getAppropriateMapping("onFinishedPotionEffect", "func_70688_c");
     }
 }
