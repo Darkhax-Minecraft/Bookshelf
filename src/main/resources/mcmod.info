@@ -6,8 +6,9 @@
         "version": "${version}",
         "url": "http://minecraft.curseforge.com/projects/bookshelf",
         "authorList": [
-            "darkhax"
+            "darkhax",
+			"lclc98"
         ],
-        "credits": "ChickenBones, CyanideX, iLexiconn, lclc98, SanAndreasP, VikeStep, jaredlll08"
+        "credits": "ChickenBones, CyanideX, iLexiconn, SanAndreasP, VikeStep, jaredlll08"
     }
 ]
