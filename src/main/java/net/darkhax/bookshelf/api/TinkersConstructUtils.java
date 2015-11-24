@@ -1,11 +1,58 @@
 package net.darkhax.bookshelf.api;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.darkhax.bookshelf.lib.util.Utilities;
 
 public class TinkersConstructUtils {
+    
+    /**
+     * Access to the Tinkers Construct materials tab. This tab is used for ingots, patterns,
+     * books and other materials.
+     */
+    @SideOnly(Side.CLIENT)
+    public static CreativeTabs tabMaterials = Utilities.getTabFromLabel("TConstructMaterials");
+    
+    /**
+     * Access to the Tinkers Construct tools tab. This tab is used for all of the tools that
+     * can be created using the mod. Tools of new materials are automatically added here.
+     */
+    @SideOnly(Side.CLIENT)
+    public static CreativeTabs tabTools = Utilities.getTabFromLabel("TConstructTools");
+    
+    /**
+     * Access to the Tinkers Construct parts tab. This tab is used for all of the tool parts in
+     * the mod. Parts from new materials will be added automatically.
+     */
+    @SideOnly(Side.CLIENT)
+    public static CreativeTabs tabToolParts = Utilities.getTabFromLabel("TConstructParts");
+    
+    /**
+     * Access to the Tinkers Construct blocks tab. This tab is used for all of the various
+     * blocks added by the mod, including fluids and crafting stations.
+     */
+    @SideOnly(Side.CLIENT)
+    public static CreativeTabs tabBlocks = Utilities.getTabFromLabel("TConstructBlocks");
+    
+    /**
+     * Access to the Tinkers Construct equipables tab. This tab is used for items that can be
+     * equipped, such as the travelers armor.
+     */
+    @SideOnly(Side.CLIENT)
+    public static CreativeTabs tabEquipables = Utilities.getTabFromLabel("TConstructEquipables");
+    
+    /**
+     * Access to the Tinkers Construct weapons tab. This tab is primarily used for projectile
+     * based weapons.
+     */
+    @SideOnly(Side.CLIENT)
+    public static CreativeTabs tabWeaponry = Utilities.getTabFromLabel("TConstructWeaponry");
     
     /**
      * Adds a fluid to the list of valid smeltery fuels.
