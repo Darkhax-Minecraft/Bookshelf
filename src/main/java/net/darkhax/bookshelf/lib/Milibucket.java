@@ -4,6 +4,7 @@ public enum Milibucket {
     
     NUGGET(16),
     INGOT(144),
+    Bottle(333),
     BUCKET(1000),
     BLOCK(1296);
     
