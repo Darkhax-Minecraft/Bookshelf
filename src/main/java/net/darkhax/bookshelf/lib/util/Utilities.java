@@ -6,6 +6,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityHorse;
@@ -356,5 +357,23 @@ public class Utilities {
         
         ResourceLocation skin = VillagerRegistry.getVillagerSkin(id, null);
         return (id >= 0 && id <= 4) ? vanillaVillagers[id] : (skin != null) ? skin.getResourceDomain() + "." + skin.getResourcePath().substring(skin.getResourcePath().lastIndexOf("/") + 1, skin.getResourcePath().length() - 4) : "misingno";
+    }
+    
+    /**
+     * Searches through the array of CreativeTabs and finds the first tab with the same label
+     * as the one passed.
+     * 
+     * @param label: The label of the tab you are looking for.
+     * @return CreativeTabs: A CreativeTabs with the same label as the one passed. If this is
+     *         not found, you will get null.
+     */
+    @SideOnly(Side.CLIENT)
+    public static CreativeTabs getTabFromLabel (String label) {
+        
+        for (CreativeTabs tab : CreativeTabs.creativeTabArray)
+            if (tab.getTabLabel().equalsIgnoreCase(label))
+                return tab;
+                
+        return null;
     }
 }
