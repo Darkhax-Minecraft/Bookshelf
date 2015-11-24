@@ -80,25 +80,25 @@ public class RenderingHandler {
     @SubscribeEvent
     public void onEntityRender (RenderLivingEvent.Pre event) {
         
-        triggerRenderHook(event, 0);
+        triggerRenderHook(event, (byte) 0);
     }
     
     @SubscribeEvent
     public void onEntityRender (RenderLivingEvent.Post event) {
         
-        triggerRenderHook(event, 1);
+        triggerRenderHook(event, (byte) 1);
     }
     
     @SubscribeEvent
     public void onEntityRender (RenderLivingEvent.Specials.Pre event) {
         
-        triggerRenderHook(event, 2);
+        triggerRenderHook(event, (byte) 2);
     }
     
     @SubscribeEvent
     public void onEntityRender (RenderLivingEvent.Specials.Post event) {
         
-        triggerRenderHook(event, 3);
+        triggerRenderHook(event, (byte) 3);
     }
     
     /**
@@ -110,7 +110,7 @@ public class RenderingHandler {
      * @param flag: An integer which represents the rendering stage. 0:pre 1:post 2:special-pre
      *            3:special-post
      */
-    public void triggerRenderHook (RenderLivingEvent event, int flag) {
+    public void triggerRenderHook (RenderLivingEvent event, byte flag) {
         
         if (!ASMHelper.isASMEnabled)
             Constants.LOG.warn("The ASM has not been initialized, there is an error with your setup!");
@@ -123,7 +123,7 @@ public class RenderingHandler {
             if (customArmor != null && customArmor.getItem() instanceof ItemHorseArmor) {
                 
                 ItemHorseArmor armor = (ItemHorseArmor) customArmor.getItem();
-                armor.onArmorRendering(horse, customArmor, event.renderer, event.x, event.y, event.z, flag);
+                armor.onHorseRendered(horse, customArmor, event, flag);
             }
         }
     }

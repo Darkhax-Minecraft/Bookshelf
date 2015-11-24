@@ -1,10 +1,11 @@
 package net.darkhax.bookshelf.items;
 
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+
+import net.minecraftforge.client.event.RenderLivingEvent;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -55,18 +56,15 @@ public abstract class ItemHorseArmor extends Item {
     public abstract String getArmorTexture (EntityHorse horse, ItemStack stack);
     
     /**
-     * Provides a way to handle custom rendering when a horse is wearing this piece of horse
-     * armor. The parameters are based on those supplied by the RenderLivingEvent.
+     * Allows for special rendering code to be done, when a horse is rendered with this piece
+     * of armor on.
      * 
-     * @param entity: Instance of the EntityHorse wearing our custom armor.
-     * @param stack: Instance of the ItemStack in the horses custom armor slot.
-     * @param renderer: Instance of the RendererLivingEntity for rendering purposes.
-     * @param posX: The entities x position.
-     * @param posY: The Entity's y position.
-     * @param posZ: The Entity's Z position.
-     * @param flag: A flag which can be used to check what rendering stage is being used. 0:pre
-     *            1:post 2:special-pre 3:special-post
+     * @param horse: An instance of the EntityHorse that is wearing the armor.
+     * @param armorStack: An instance of the ItemStack which is in the armor slot.
+     * @param event: Access to the RenderLivingEvent being called.
+     * @param flag: A convenient flag which can be used to easily switch between the different
+     *            render events. 0:pre 1:post 2:special-pre 3:special-post
      */
     @SideOnly(Side.CLIENT)
-    public abstract void onArmorRendering (EntityHorse entity, ItemStack stack, RendererLivingEntity renderer, double posX, double posY, double posZ, int flag);
+    public abstract void onHorseRendered (EntityHorse horse, ItemStack armorStack, RenderLivingEvent event, byte flag);
 }
