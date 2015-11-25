@@ -73,7 +73,7 @@ public class MathsUtils {
      */
     public static MovingObjectPosition rayTrace (EntityPlayer player, double length) {
         
-        Vec3 vec1 = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+        Vec3 vec1 = new Vec3(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         Vec3 vec2 = player.getLookVec();
         Vec3 vec3 = vec1.addVector(vec2.xCoord * length, vec2.yCoord * length, vec2.zCoord * length);
         return player.worldObj.rayTraceBlocks(vec1, vec3);
