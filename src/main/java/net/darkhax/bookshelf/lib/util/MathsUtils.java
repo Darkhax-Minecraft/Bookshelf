@@ -21,21 +21,21 @@ public class MathsUtils {
      * is meant to keep track of all enchantment IDs that have already been found, and prevent
      * duplicate results. This should only be accessed internally.
      */
-    static ArrayList<Integer> foundEnchantments = new ArrayList();
+    static ArrayList<Integer> foundEnchantments = new ArrayList<Integer>();
     
     /**
      * A list of all biome IDs that have been found by the getAvailableBiomeID method. This is
      * meant to keep track of biome IDs which have already been found, and prevents duplicate
      * results. This array should only be accessed internally.
      */
-    static ArrayList<Integer> foundBiomes = new ArrayList();
+    static ArrayList<Integer> foundBiomes = new ArrayList<Integer>();
     
     /**
      * A list of all potion IDs that have been found by the getNextPotionID method. This is
      * meant to keep track of potion IDs which have already been found, and prevents duplicate
      * results. This array should only be accessed internally.
      */
-    static ArrayList<Integer> foundPotions = new ArrayList();
+    static ArrayList<Integer> foundPotions = new ArrayList<Integer>();
     
     /**
      * This method can be used to round a double to a certain amount of places.
