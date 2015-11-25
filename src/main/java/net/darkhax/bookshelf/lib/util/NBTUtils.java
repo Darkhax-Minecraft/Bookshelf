@@ -127,4 +127,16 @@ public class NBTUtils {
                     
         return deepTag;
     }
+    
+    public static void writeBlockPosToNBT(NBTTagCompound nbt, BlockPos pos) {
+        
+        nbt.setInteger("posX", pos.getX());
+        nbt.setInteger("posY", pos.getY());
+        nbt.setInteger("posZ", pos.getZ());
+    }
+    
+    public static BlockPos readBlockPosFromNBT(NBTTagCompound nbt) {
+        
+        return new BlockPos(nbt.getInteger("posX"), nbt.getInteger("posY"), nbt.getInteger("posZ"));
+    }
 }
