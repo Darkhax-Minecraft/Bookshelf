@@ -5,63 +5,11 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.BlockPos;
 
 import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.Position;
 
 public class NBTUtils {
-    
-    /**
-     * Sets an unknown data type to an NBTTagCompound. If the type of the data can not be
-     * identified, and exception will be thrown. Current supported data types include String,
-     * Integer, Float, Boolean, Double, Long, Short, Byte, ItemStack, Entity and Position.
-     * 
-     * @param dataTag: An NBTTagCompound to write this unknown data to.
-     * @param tagName: The name to save this unknown data under.
-     * @param value: The unknown data you wish to write to the dataTag.
-     */
-    public static void setGenericNBTValue (NBTTagCompound dataTag, String tagName, Object value) {
-        
-        if (value instanceof String)
-            dataTag.setString(tagName, (String) value);
-            
-        else if (value instanceof Integer)
-            dataTag.setInteger(tagName, (Integer) value);
-            
-        else if (value instanceof Float)
-            dataTag.setFloat(tagName, (Float) value);
-            
-        else if (value instanceof Boolean)
-            dataTag.setBoolean(tagName, (Boolean) value);
-            
-        else if (value instanceof Double)
-            dataTag.setDouble(tagName, (Double) value);
-            
-        else if (value instanceof Long)
-            dataTag.setLong(tagName, (Long) value);
-            
-        else if (value instanceof Short)
-            dataTag.setShort(tagName, (Short) value);
-            
-        else if (value instanceof Byte)
-            dataTag.setByte(tagName, (Byte) value);
-            
-        else if (value instanceof ItemStack)
-            dataTag.setTag(tagName, ((ItemStack) value).writeToNBT(new NBTTagCompound()));
-            
-        else if (value instanceof Position)
-            dataTag.setTag(tagName, ((Position) value).write(new NBTTagCompound()));
-            
-        else if (value instanceof Entity) {
-            
-            NBTTagCompound newTag = new NBTTagCompound();
-            ((Entity) value).writeToNBT(newTag);
-            dataTag.setTag(tagName, newTag);
-        }
-        
-        else
-            throw new RuntimeException("The data type of " + value.getClass().getName() + " is currently not supported." + Constants.NEW_LINE + "Raw Data: " + value.toString());
-    }
     
     /**
      * Writes an inventory to an NBTTagCompound. Can be used to save an inventory in a
@@ -73,8 +21,8 @@ public class NBTUtils {
      */
     public static NBTTagCompound writeInventoryToNBT (NBTTagCompound tag, InventoryBasic inventory) {
         
-        if (inventory.hasCustomInventoryName())
-            tag.setString("CustomName", inventory.getInventoryName());
+        if (inventory.hasCustomName())
+            tag.setString("CustomName", inventory.getCommandSenderName());
             
         NBTTagList nbttaglist = new NBTTagList();
         
@@ -108,7 +56,7 @@ public class NBTUtils {
     public static InventoryBasic readInventoryFromNBT (NBTTagCompound tag, InventoryBasic inventory) {
         
         if (tag.hasKey("CustomName", 8))
-            inventory.func_110133_a(tag.getString("CustomName"));
+            inventory.setCustomName(tag.getString("CustomName"));
             
         NBTTagList items = tag.getTagList("Items", 10);
         
@@ -179,5 +127,4 @@ public class NBTUtils {
                     
         return deepTag;
     }
-    
 }
