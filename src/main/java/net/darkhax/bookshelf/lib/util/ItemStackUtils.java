@@ -126,7 +126,7 @@ public class ItemStackUtils {
         
         prepareDataTag(stack);
         String tagName = (stored) ? "StoredEnchantments" : "ench";
-        NBTTagCompound tag = stack.getTagCompound()
+        NBTTagCompound tag = stack.getTagCompound();
         NBTTagList list = tag.getTagList(tagName, 10);
         Enchantment[] ench = new Enchantment[list.tagCount()];
         
