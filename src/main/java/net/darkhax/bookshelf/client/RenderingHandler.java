@@ -14,8 +14,7 @@ import net.minecraft.util.*;
 
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import net.darkhax.bookshelf.asm.ASMHelper;
 import net.darkhax.bookshelf.buff.*;

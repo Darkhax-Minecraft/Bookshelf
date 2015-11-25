@@ -5,8 +5,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 
 import net.minecraftforge.event.entity.living.LivingEvent;
-
-import cpw.mods.fml.common.eventhandler.Event.HasResult;
+import net.minecraftforge.fml.common.eventhandler.Event.HasResult;
 
 @HasResult
 public class LootingEvent extends LivingEvent {

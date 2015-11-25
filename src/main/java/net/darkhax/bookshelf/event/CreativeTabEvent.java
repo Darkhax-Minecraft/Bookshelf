@@ -5,8 +5,7 @@ import java.util.List;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
-import cpw.mods.fml.common.eventhandler.Cancelable;
-import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 public class CreativeTabEvent extends Event {
     

@@ -6,7 +6,7 @@ import java.lang.reflect.Modifier;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.potion.Potion;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import net.darkhax.bookshelf.lib.Constants;
 

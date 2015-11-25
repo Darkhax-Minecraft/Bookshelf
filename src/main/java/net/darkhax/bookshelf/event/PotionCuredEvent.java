@@ -4,8 +4,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
 import net.minecraftforge.event.entity.living.LivingEvent;
-
-import cpw.mods.fml.common.eventhandler.Cancelable;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 @Cancelable
 public class PotionCuredEvent extends LivingEvent {

@@ -3,8 +3,6 @@ package net.darkhax.bookshelf.event;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.PotionEffect;
 
-import cpw.mods.fml.common.eventhandler.Event;
-
 public class PotionEffectEvent extends Event {
     
     /**

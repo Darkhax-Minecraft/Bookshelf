@@ -18,12 +18,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import net.minecraftforge.fluids.IFluidBlock;
-
-import cpw.mods.fml.common.network.simpleimpl.*;
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.VillagerRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.network.simpleimpl.*;
+import net.minecraftforge.fml.common.registry.GameData;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.darkhax.bookshelf.common.network.AbstractMessage;
 

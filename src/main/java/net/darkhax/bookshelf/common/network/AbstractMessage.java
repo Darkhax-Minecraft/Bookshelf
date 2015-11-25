@@ -2,9 +2,10 @@ package net.darkhax.bookshelf.common.network;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-import cpw.mods.fml.common.network.simpleimpl.*;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.darkhax.bookshelf.lib.util.PlayerUtils;
 

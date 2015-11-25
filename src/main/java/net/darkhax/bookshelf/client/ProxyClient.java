@@ -4,9 +4,8 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import net.darkhax.bookshelf.common.ProxyCommon;
 import net.darkhax.bookshelf.lib.util.PlayerUtils;

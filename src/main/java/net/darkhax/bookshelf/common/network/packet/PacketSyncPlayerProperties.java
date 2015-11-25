@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import net.darkhax.bookshelf.buff.BuffEffect;
 import net.darkhax.bookshelf.common.EntityProperties;

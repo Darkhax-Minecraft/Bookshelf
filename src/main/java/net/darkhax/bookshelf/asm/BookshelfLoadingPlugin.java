@@ -2,7 +2,7 @@ package net.darkhax.bookshelf.asm;
 
 import java.util.Map;
 
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 import net.darkhax.bookshelf.lib.Constants;
 
