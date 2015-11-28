@@ -163,4 +163,29 @@ public class MathsUtils {
         
         throw new RuntimeException("An attempt to find an available potion ID was made, however no IDs are available.");
     }
+    
+    /**
+     * Calculates how many experience points are it would take to get to the specified level.
+     * 
+     * @param level: The level to calculate for.
+     * @return int: The amount of experience points required to go from level 0 to the
+     *         specified level.
+     */
+    public static int getExperienceFromLevel (int level) {
+        
+        return (int) ((level < 16) ? 17 * level : (level > 15 && level < 31) ? (1.5f * (float) (level * level) - 29.5f * level + 360) : (3.5f * (level * level) - 151.5f * level + 2220));
+    }
+    
+    /**
+     * Calculate the amount of experience to go from one level to another.
+     * 
+     * @param startingLevel: The level you are currently at.
+     * @param destinationLevel: The level you want to go to.
+     * @return int: The amount of experience points needed to go from the startingLevel to the
+     *         destinationLevel.
+     */
+    public static int getExperienceToLevel (int startingLevel, int destinationLevel) {
+        
+        return getExperienceFromLevel(destinationLevel) - getExperienceFromLevel(startingLevel);
+    }
 }
