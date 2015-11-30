@@ -4,6 +4,8 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 public class EnchantmentUtils {
     
@@ -90,6 +92,31 @@ public class EnchantmentUtils {
      */
     public static boolean isStackEnchanted (ItemStack stack) {
         
-        return ItemStackUtils.isValidStack(stack) && ItemStackUtils.getEnchantmentsFromStack(stack, (stack.getItem() instanceof ItemEnchantedBook)).length > 0;
+        return ItemStackUtils.isValidStack(stack) && EnchantmentUtils.getEnchantmentsFromStack(stack, (stack.getItem() instanceof ItemEnchantedBook)).length > 0;
+    }
+
+    /**
+     * Retrieves an array of all the enchantments placed on an ItemStack. This method can be
+     * used for regular items, along with enchanted books, which store enchantments under a
+     * different NBTTagCompound so that the enchantment's effects won't apply for that book.
+     * 
+     * @param stack: The ItemStack you wish to read the enchantments from.
+     * @param stored: Whether or not the stored enchantments should be read. Stored
+     *            enchantments are those which do not give the ItemStack special abilities. For
+     *            example, enchanted books.
+     * @return Enchantment[]: An array of all the enchantments stored on the ItemStack.
+     */
+    public static Enchantment[] getEnchantmentsFromStack (ItemStack stack, boolean stored) {
+        
+        ItemStackUtils.prepareDataTag(stack);
+        String tagName = (stored) ? "StoredEnchantments" : "ench";
+        NBTTagCompound tag = stack.stackTagCompound;
+        NBTTagList list = tag.getTagList(tagName, 10);
+        Enchantment[] ench = new Enchantment[list.tagCount()];
+        
+        for (int i = 0; i < list.tagCount(); i++)
+            ench[i] = Enchantment.enchantmentsList[list.getCompoundTagAt(i).getShort("id")];
+            
+        return ench;
     }
 }

@@ -1,7 +1,6 @@
 package net.darkhax.bookshelf.lib.util;
 
 import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
@@ -109,31 +108,6 @@ public class ItemStackUtils {
     public static boolean isValidStack (ItemStack stack) {
         
         return (stack != null && stack.getItem() != null);
-    }
-    
-    /**
-     * Retrieves an array of all the enchantments placed on an ItemStack. This method can be
-     * used for regular items, along with enchanted books, which store enchantments under a
-     * different NBTTagCompound so that the enchantment's effects won't apply for that book.
-     * 
-     * @param stack: The ItemStack you wish to read the enchantments from.
-     * @param stored: Whether or not the stored enchantments should be read. Stored
-     *            enchantments are those which do not give the ItemStack special abilities. For
-     *            example, enchanted books.
-     * @return Enchantment[]: An array of all the enchantments stored on the ItemStack.
-     */
-    public static Enchantment[] getEnchantmentsFromStack (ItemStack stack, boolean stored) {
-        
-        prepareDataTag(stack);
-        String tagName = (stored) ? "StoredEnchantments" : "ench";
-        NBTTagCompound tag = stack.stackTagCompound;
-        NBTTagList list = tag.getTagList(tagName, 10);
-        Enchantment[] ench = new Enchantment[list.tagCount()];
-        
-        for (int i = 0; i < list.tagCount(); i++)
-            ench[i] = Enchantment.enchantmentsList[list.getCompoundTagAt(i).getShort("id")];
-            
-        return ench;
     }
     
     /**
