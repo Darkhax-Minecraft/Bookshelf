@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.api;
+package net.darkhax.bookshelf.modutils;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
