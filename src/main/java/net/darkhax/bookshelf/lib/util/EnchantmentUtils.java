@@ -94,7 +94,7 @@ public class EnchantmentUtils {
         
         return ItemStackUtils.isValidStack(stack) && EnchantmentUtils.getEnchantmentsFromStack(stack, (stack.getItem() instanceof ItemEnchantedBook)).length > 0;
     }
-
+    
     /**
      * Retrieves an array of all the enchantments placed on an ItemStack. This method can be
      * used for regular items, along with enchanted books, which store enchantments under a
