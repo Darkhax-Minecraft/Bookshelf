@@ -116,7 +116,7 @@ public class BuffHelper {
      * Writes a list of BuffEffect to an NBTTagCompound.
      *
      * @param buffs: A List of buffs to write to a tag.
-     * @return NBTTagList: An NBTTagList containing a list of tags, each containg buff data.
+     * @return NBTTagList: An NBTTagList containing a list of tags, each contains buff data.
      */
     public static NBTTagList writeNBT (List<BuffEffect> buffs) {
         
