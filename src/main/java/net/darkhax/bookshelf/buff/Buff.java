@@ -156,7 +156,7 @@ public class Buff {
      * A check to see if this Buff should call the onBuffTick ever tick. By default, it is
      * false.
      * 
-     * @return bollean: Whether or not this buff should tick every tick.
+     * @return boolean: Whether or not this buff should tick every tick.
      */
     public boolean canUpdate () {
         
@@ -210,7 +210,7 @@ public class Buff {
     /**
      * Retrieves the statusIconIndex for this effect. Typically used for the iconMap.
      * 
-     * @return int: An integer, refering to the position of this Buff's texture on a 2D texture
+     * @return int: An integer, referring to the position of this Buff's texture on a 2D texture
      *         map.
      */
     public int getStatusIconIndex () {
