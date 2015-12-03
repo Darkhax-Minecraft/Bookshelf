@@ -8,12 +8,14 @@ import com.google.common.collect.Maps;
 public final class ReflectionUtils {
     
     /**
-     * A map of cached Methods, used to make reflection more efficient. The key is the class name, followed by the SRG method name and an underscore in between.
+     * A map of cached Methods, used to make reflection more efficient. The key is the class
+     * name, followed by the SRG method name and an underscore in between.
      */
     private static Map<String, Method> cachedMethods = Maps.newHashMap();
     
     /**
-     * A map of cached Fields, used to make reflection more efficient. Tke key is the class name, followed byt he SRG field name and an underscore in between.
+     * A map of cached Fields, used to make reflection more efficient. Tke key is the class
+     * name, followed byt he SRG field name and an underscore in between.
      */
     private static Map<String, Field> cachedFields = Maps.newHashMap();
     
@@ -183,7 +185,7 @@ public final class ReflectionUtils {
             
             catch (Throwable ex2) {
                 
-                throw new UnableToAccessFieldException(ex2);
+                throw new UnableToFindFieldException(ex2);
             }
         }
     }
@@ -261,13 +263,25 @@ public final class ReflectionUtils {
     
     public static class UnableToSetFieldException extends RuntimeException {
         
+        /**
+         * An exception thrown when an attempt is made to set a field via reflection, however
+         * the field could not be set.
+         * 
+         * @param exception: An instance of the exception being thrown.
+         */
         public UnableToSetFieldException(Throwable exception) {
+            
             super(exception);
         }
     }
     
     public static class UnableToGetFieldException extends RuntimeException {
         
+        /**
+         * An exception thrown when an attempt is made to retrieve a field via reflection.
+         * 
+         * @param exception: An instance of the exception being thrown.
+         */
         public UnableToGetFieldException(Throwable exception) {
             
             super(exception);
@@ -276,6 +290,11 @@ public final class ReflectionUtils {
     
     public static class UnableToInvokeMethodException extends RuntimeException {
         
+        /**
+         * An exception thrown when an attempt to invoke a method via reflection has failed.
+         * 
+         * @param exception: An instance of the exception being thrown.
+         */
         public UnableToInvokeMethodException(Throwable exception) {
             
             super(exception);
@@ -284,15 +303,27 @@ public final class ReflectionUtils {
     
     public static class UnableToFindMethodException extends RuntimeException {
         
+        /**
+         * An exception thrown when an attempt to look up a method is made, but it could not be
+         * found.
+         * 
+         * @param exception: An instance of the exception being thrown.
+         */
         public UnableToFindMethodException(Throwable exception) {
             
             super(exception);
         }
     }
     
-    public static class UnableToAccessFieldException extends RuntimeException {
+    public static class UnableToFindFieldException extends RuntimeException {
         
-        public UnableToAccessFieldException(Throwable exception) {
+        /**
+         * An exception thrown when an attempt to look up a field is made, but it could not be
+         * found.
+         * 
+         * @param exception: An instance of the exception being thrown.
+         */
+        public UnableToFindFieldException(Throwable exception) {
             
             super(exception);
         }
