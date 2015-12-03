@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.lib;
+package net.darkhax.bookshelf.lib.util;
 
 import java.io.*;
 import java.lang.management.ManagementFactory;
@@ -6,6 +6,8 @@ import java.util.*;
 import java.util.concurrent.RejectedExecutionException;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+
+import net.darkhax.bookshelf.lib.Constants;
 
 public final class MinecraftUtils {
     
