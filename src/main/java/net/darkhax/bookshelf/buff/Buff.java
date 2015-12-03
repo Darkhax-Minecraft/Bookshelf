@@ -210,8 +210,8 @@ public class Buff {
     /**
      * Retrieves the statusIconIndex for this effect. Typically used for the iconMap.
      * 
-     * @return int: An integer, referring to the position of this Buff's texture on a 2D texture
-     *         map.
+     * @return int: An integer, referring to the position of this Buff's texture on a 2D
+     *         texture map.
      */
     public int getStatusIconIndex () {
         
