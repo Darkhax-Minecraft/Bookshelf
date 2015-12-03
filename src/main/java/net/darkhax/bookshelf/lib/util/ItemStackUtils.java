@@ -224,4 +224,17 @@ public class ItemStackUtils {
         stack.writeToNBT(stackTag);
         tag.setTag(tagName, stackTag);
     }
+    
+    /**
+     * Safely decreases the amount of items held by an ItemStack.
+     * 
+     * @param stack: The ItemStack to decrease the size of.
+     * @param amount: The amount to decrease the stack size by.
+     * @return ItemStack: Null, if the stack size is smaller than 1.
+     */
+    public static ItemStack decreaseStackSize (ItemStack stack, int amount) {
+        
+        stack.stackSize -= amount;
+        return (stack.stackSize <= 0) ? null : stack;
+    }
 }
