@@ -5,11 +5,23 @@ import java.lang.management.ManagementFactory;
 import java.util.*;
 import java.util.concurrent.RejectedExecutionException;
 
+import org.lwjgl.opengl.Display;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 
 import net.darkhax.bookshelf.lib.Constants;
 
 public final class MinecraftUtils {
+    
+    /**
+     * Sets the title for the application window.
+     * 
+     * @param title: The new title for the application window.
+     */
+    public static void setAppTitle (String title) {
+        
+        Display.setTitle(title);
+    }
     
     /**
      * Shuts down the Minecraft application.
