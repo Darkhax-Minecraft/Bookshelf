@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.Position;
 
-public class NBTUtils {
+public final class NBTUtils {
     
     /**
      * Sets an unknown data type to an NBTTagCompound. If the type of the data can not be

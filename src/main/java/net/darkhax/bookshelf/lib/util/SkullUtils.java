@@ -7,7 +7,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class SkullUtils {
+public final class SkullUtils {
     
     /**
      * Create a skull from an instance of EntityPlayer.

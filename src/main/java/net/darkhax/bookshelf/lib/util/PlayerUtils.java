@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class PlayerUtils {
+public final class PlayerUtils {
     
     /**
      * A reference to the curBlockDamageMP method from the PlayerControllerMP class. Used by

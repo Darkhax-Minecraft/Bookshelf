@@ -9,7 +9,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import net.darkhax.bookshelf.lib.VanillaColor;
 
-public class ItemStackUtils {
+public final class ItemStackUtils {
     
     /**
      * Sets a stack compound to an ItemStack if it does not already have one.

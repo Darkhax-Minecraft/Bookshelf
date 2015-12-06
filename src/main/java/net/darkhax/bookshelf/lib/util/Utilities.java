@@ -27,7 +27,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.darkhax.bookshelf.common.network.AbstractMessage;
 
-public class Utilities {
+public final class Utilities {
     
     /**
      * Array of names for the vanilla villagers.

@@ -14,7 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class RenderUtils {
+public final class RenderUtils {
     
     /**
      * Access to the guiLeft field in GuiContainer. Used to get the starting X position of a

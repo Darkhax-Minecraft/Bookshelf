@@ -2,7 +2,7 @@ package net.darkhax.bookshelf.lib.util;
 
 import net.minecraft.entity.Entity;
 
-public class EntityUtils {
+public final class EntityUtils {
     
     /**
      * Calculates the distance between two entities. This is done by getting the square root of

@@ -14,7 +14,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 import net.darkhax.bookshelf.lib.Constants;
 
-public class MathsUtils {
+public final class MathsUtils {
     
     /**
      * A list of all enchantments that have been found by the getNextEnchantmentID method. This

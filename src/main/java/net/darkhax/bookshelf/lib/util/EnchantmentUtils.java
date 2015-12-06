@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-public class EnchantmentUtils {
+public final class EnchantmentUtils {
     
     /**
      * A check to see if an ItemStack can be enchanted. For this to be true, the ItemStack must
