@@ -237,4 +237,54 @@ public final class ItemStackUtils {
         stack.stackSize -= amount;
         return (stack.stackSize <= 0) ? null : stack;
     }
+    
+    /**
+     * Checks if two given ItemStack are equal. For them to be equal, both must be null, or
+     * both must have a null item, or both must share a damage value. If either stack has a
+     * wild card damage value, they will also be considered the same. If the checkNBT parameter
+     * is true, they will also need the same item nbt.
+     * 
+     * @param firstStack: The first ItemStack to compare.
+     * @param secondStack: The second ItemStack to compare.
+     * @param checkNBT: Should NBT be checked as well?
+     * @return boolean: Whether or not the items are close enough to be called the same.
+     */
+    public static boolean areStacksEqual (ItemStack firstStack, ItemStack secondStack, boolean checkNBT) {
+        
+        if (firstStack == null || secondStack == null)
+            return firstStack == secondStack;
+            
+        Item firstItem = firstStack.getItem();
+        Item secondItem = secondStack.getItem();
+        
+        if (firstItem == null || secondItem == null)
+            return firstItem == secondItem;
+            
+        if (firstItem == secondItem) {
+            
+            if (checkNBT && NBTUtils.NBT_COMPARATOR.compare(firstStack.getTagCompound(), secondStack.getTagCompound()) != 0)
+                return false;
+                
+            return firstStack.getItemDamage() == OreDictionary.WILDCARD_VALUE || secondStack.getItemDamage() == OreDictionary.WILDCARD_VALUE || firstStack.getItemDamage() == secondStack.getItemDamage();
+        }
+        
+        return false;
+    }
+    
+    /**
+     * A check to see if an ItemStack exists within an array of other ItemStack.
+     * 
+     * @param stack: The ItemStack you are searching for.
+     * @param checkNBT: Should the stacks need the same NBT for them to be the same?
+     * @param stacks: The array of ItemStack to search through.
+     * @return boolean: Whether or not the array contains the stack you are looking for.
+     */
+    public static boolean isStackInArray (ItemStack stack, boolean checkNBT, ItemStack... stacks) {
+        
+        for (ItemStack currentStack : stacks)
+            if (areStacksEqual(stack, currentStack, checkNBT))
+                return true;
+                
+        return false;
+    }
 }
