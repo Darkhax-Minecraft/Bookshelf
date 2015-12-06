@@ -163,4 +163,16 @@ public final class MathsUtils {
         
         throw new RuntimeException("An attempt to find an available potion ID was made, however no IDs are available.");
     }
+    
+    /**
+     * Gets the middle integer between two other integers. The order is not important.
+     * 
+     * @param first: The first integer.
+     * @param second: The second integer.
+     * @return int: The integer that is between the two provided integers.
+     */
+    public static int getAverage (int first, int second) {
+        
+        return Math.round((first + second) / 2.0F);
+    }
 }
