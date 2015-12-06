@@ -1,5 +1,7 @@
 package net.darkhax.bookshelf.lib.util;
 
+import java.util.Comparator;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
@@ -10,6 +12,24 @@ import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.Position;
 
 public final class NBTUtils {
+    
+    /**
+     * A Comparator used to compare NBTTagCompound.
+     */
+    public static final Comparator<NBTTagCompound> NBT_COMPARATOR = new Comparator<NBTTagCompound>() {
+        
+        @Override
+        public int compare (NBTTagCompound firstTag, NBTTagCompound secondTag) {
+            
+            if (firstTag != null && firstTag != secondTag)
+                return 1;
+                
+            else if (secondTag != null)
+                return -1;
+                
+            return 0;
+        }
+    };
     
     /**
      * Sets an unknown data type to an NBTTagCompound. If the type of the data can not be
