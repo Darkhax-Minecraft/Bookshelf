@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.handler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,7 +15,6 @@ import net.minecraftforge.common.MinecraftForge;
 
 import net.darkhax.bookshelf.asm.ASMConfigs;
 import net.darkhax.bookshelf.event.*;
-import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.MathsUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 
@@ -81,6 +81,8 @@ public class BookshelfHooks {
         return MinecraftForge.EVENT_BUS.post(new PotionCuredEvent(entity, cureItem));
     }
     
+    public static List<Potion> conflictingPotions = new ArrayList<Potion>();
+    
     /**
      * A hook into the constructor of Potion. This hook is not publicly available, and is only
      * used to prevent two or more Potions from using the same ID. This should prevent many
@@ -90,23 +92,8 @@ public class BookshelfHooks {
      */
     public static void onPotionConstructed (Potion potion) {
         
-        if (potion != null && Utilities.getPotion(potion.id) != null) {
-            
-            if (!ASMConfigs.catchPotionException)
-                throw new IllegalArgumentException("Duplicate Potion id! " + potion.getClass().getName() + " and " + Utilities.getPotion(potion.id).getClass().getName() + " Potion ID:" + potion.id);
-                
-            Constants.LOG.error("Duplicate Potion id! " + potion.getClass().getName() + " and " + Utilities.getPotion(potion.id).getClass().getName() + " Potion ID:" + potion.id);
-            
-            try {
-                
-                Constants.LOG.error("We recommend " + MathsUtils.getNextPotionID() + " as a replacement ID.");
-            }
-            
-            catch (RuntimeException exception) {
-                
-                Constants.LOG.error("An attempt to recommend an available ID was made, however it seems there are no IDs left!");
-            }
-        }
+        if (potion != null && Utilities.getPotion(potion.id) != null)
+            conflictingPotions.add(potion);
     }
     
     /**

@@ -27,6 +27,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.darkhax.bookshelf.common.network.AbstractMessage;
+import net.darkhax.bookshelf.handler.BookshelfHooks;
+import net.darkhax.bookshelf.lib.Constants;
 
 public final class Utilities {
     
@@ -405,5 +407,28 @@ public final class Utilities {
                 return tab;
                 
         return null;
+    }
+    
+    /**
+     * Checks the list of duplicate potion IDs, and recommends suggestions to the user based on
+     * what IDs are available. This will also crash the player, if the crash is not disabled in
+     * the config.
+     */
+    public static void checkDuplicatePotions () {
+        
+        if (!BookshelfHooks.conflictingPotions.isEmpty()) {
+            
+            Constants.LOG.error(BookshelfHooks.conflictingPotions.size() + " overlapping potions have been detected.");
+            
+            for (Potion potion : BookshelfHooks.conflictingPotions)
+                Constants.LOG.error("The " + potion.getName() + " from " + potion.getClass().getName() + " was registered using an overlapping ID. ID: " + potion.id);
+                
+            List<Integer> unused = new ArrayList<Integer>();
+            
+            for (Potion potion : Potion.potionTypes)
+                unused.add(potion.getId());
+                
+            Constants.LOG.error((unused.isEmpty()) ? "You have ran out of available potion IDs. This is a serious problem." : unused.toString());
+        }
     }
 }

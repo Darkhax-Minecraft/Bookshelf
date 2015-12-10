@@ -52,6 +52,7 @@ public class Bookshelf {
     public void onPostInit (FMLPostInitializationEvent event) {
         
         proxy.postInit();
+        Utilities.checkDuplicatePotions();
     }
     
     @EventHandler
