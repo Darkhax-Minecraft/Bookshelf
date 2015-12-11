@@ -13,10 +13,20 @@ import net.minecraft.potion.PotionEffect;
 
 import net.minecraftforge.common.MinecraftForge;
 
+import cpw.mods.fml.common.Loader;
+
 import net.darkhax.bookshelf.event.*;
+import net.darkhax.bookshelf.lib.Tuple;
 import net.darkhax.bookshelf.lib.util.Utilities;
 
 public class BookshelfHooks {
+    
+    /**
+     * A List used to cache information about potions registered with duplicate potion IDs. The
+     * List is storing a Tuple object to keep things simple. The first part of the tuple is a
+     * String of the mod loading the potion, and the second part is the numeric ID being used.
+     */
+    public static List<Tuple> conflictingPotions = new ArrayList<Tuple>();
     
     /**
      * A hook for triggering the ItemEnchantedEvent. This hook is only triggered from
@@ -79,8 +89,6 @@ public class BookshelfHooks {
         return MinecraftForge.EVENT_BUS.post(new PotionCuredEvent(entity, cureItem));
     }
     
-    public static List<Potion> conflictingPotions = new ArrayList<Potion>();
-    
     /**
      * A hook into the constructor of Potion. This hook is not publicly available, and is only
      * used to prevent two or more Potions from using the same ID. This should prevent many
@@ -90,8 +98,8 @@ public class BookshelfHooks {
      */
     public static void onPotionConstructed (Potion potion) {
         
-        if (potion != null && Utilities.getPotion(potion.id) != null)
-            conflictingPotions.add(potion);
+        if (potion != null && Utilities.getPotion(potion.id) != null && Loader.instance() != null && Loader.instance().activeModContainer() != null)
+            conflictingPotions.add(new Tuple(Loader.instance().activeModContainer().getName(), potion.getId()));
     }
     
     /**

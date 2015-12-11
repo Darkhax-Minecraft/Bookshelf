@@ -29,6 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.darkhax.bookshelf.common.network.AbstractMessage;
 import net.darkhax.bookshelf.handler.BookshelfHooks;
 import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.Tuple;
 
 public final class Utilities {
     
@@ -420,16 +421,26 @@ public final class Utilities {
             
             Constants.LOG.error(BookshelfHooks.conflictingPotions.size() + " overlapping potions have been detected.");
             
-            for (Potion potion : BookshelfHooks.conflictingPotions)
-                Constants.LOG.error("The " + potion.getName() + " from " + potion.getClass().getName() + " was registered using an overlapping ID. ID: " + potion.id);
+            for (Tuple tuple : BookshelfHooks.conflictingPotions) {
                 
+                final String modName = (String) tuple.getFirstObject();
+                final Potion potion = (Potion) tuple.getSecondObject();
+                Constants.LOG.error("The " + potion.getName() + " effect from " + modName + " is using an overlapping ID. ID: " + potion.id);
+            }
+            
+            int index = 1;
             List<Integer> unused = new ArrayList<Integer>();
             
-            for (int id = 0; id < Potion.potionTypes.length; id++)
-                if (Utilities.getPotion(id) == null)
-                    unused.add(id);
+            for (int id = 32; id < Potion.potionTypes.length; id++) {
+                
+                if (index <= BookshelfHooks.conflictingPotions.size() + 5 && Utilities.getPotion(id) == null) {
                     
-            Constants.LOG.error((unused.isEmpty()) ? "You have ran out of available potion IDs. This is a serious problem." : unused.toString());
+                    unused.add(id);
+                    index++;
+                }
+            }
+            
+            Constants.LOG.error((unused.isEmpty() || unused.size() < BookshelfHooks.conflictingPotions.size()) ? "You have ran out of available potion IDs. This is a serious problem." : "Here are a few recommended potion IDs which are not being used: " + unused.toString());
         }
     }
 }
