@@ -425,9 +425,10 @@ public final class Utilities {
                 
             List<Integer> unused = new ArrayList<Integer>();
             
-            for (Potion potion : Potion.potionTypes)
-                unused.add(potion.getId());
-                
+            for (int id = 0; id < Potion.potionTypes.length; id++)
+                if (Utilities.getPotion(id) == null)
+                    unused.add(id);
+                    
             Constants.LOG.error((unused.isEmpty()) ? "You have ran out of available potion IDs. This is a serious problem." : unused.toString());
         }
     }
