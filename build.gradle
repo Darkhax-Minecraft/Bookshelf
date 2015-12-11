@@ -14,7 +14,7 @@ buildscript {
 
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
-        classpath "com.matthewprenger:CurseGradle:1.0.3-SNAPSHOT"
+        classpath "com.matthewprenger:CurseGradle:1.0-SNAPSHOT"
     }
 }
 
@@ -148,6 +148,13 @@ task getChangelog() {
         project.ext.release = false;
     }
 
+}
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
 }
 
 curseforge {
