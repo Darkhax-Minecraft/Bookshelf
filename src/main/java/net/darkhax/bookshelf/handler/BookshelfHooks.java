@@ -13,9 +13,7 @@ import net.minecraft.potion.PotionEffect;
 
 import net.minecraftforge.common.MinecraftForge;
 
-import net.darkhax.bookshelf.asm.ASMConfigs;
 import net.darkhax.bookshelf.event.*;
-import net.darkhax.bookshelf.lib.util.MathsUtils;
 import net.darkhax.bookshelf.lib.util.Utilities;
 
 public class BookshelfHooks {
