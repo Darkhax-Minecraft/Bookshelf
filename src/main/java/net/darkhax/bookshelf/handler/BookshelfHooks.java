@@ -24,7 +24,7 @@ public class BookshelfHooks {
     /**
      * A List used to cache information about potions registered with duplicate potion IDs. The
      * List is storing a Tuple object to keep things simple. The first part of the tuple is a
-     * String of the mod loading the potion, and the second part is the numeric ID being used.
+     * String of the mod loading the potion, and the second part is the Potion being registered.
      */
     public static List<Tuple> conflictingPotions = new ArrayList<Tuple>();
     
@@ -99,7 +99,7 @@ public class BookshelfHooks {
     public static void onPotionConstructed (Potion potion) {
         
         if (potion != null && Utilities.getPotion(potion.id) != null && Loader.instance() != null && Loader.instance().activeModContainer() != null)
-            conflictingPotions.add(new Tuple(Loader.instance().activeModContainer().getName(), potion.getId()));
+            conflictingPotions.add(new Tuple(Loader.instance().activeModContainer().getName(), potion));
     }
     
     /**
