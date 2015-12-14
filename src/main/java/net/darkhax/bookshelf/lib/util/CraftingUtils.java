@@ -86,30 +86,39 @@ public class CraftingUtils {
         return shapedrecipes;
     }
     
-    public ShapelessRecipes addShapelessRecipe (ItemStack Output, Object... ingrediants) {
+    /**
+     * Creates a new ShapelessRecipe that can be used however you would like.
+     * 
+     * @param Output: The output for the recipe.
+     * @param ingrediants: The inputs for the recipe. Must be an ItemStack, Block or Item.
+     * @return ShapelessRecipe: An instance of a ShapelessRecipe that has not been registered
+     *         with a CraftingManager.
+     */
+    public static ShapelessRecipes getShapelessRecipe (ItemStack Output, Object... ingrediants) {
         
-        ArrayList arraylist = new ArrayList();
-        Object[] aobject = ingrediants;
-        int i = ingrediants.length;
+        ArrayList input = new ArrayList();
+        Object[] ingrediantArray = ingrediants;
+        int recipeLength = ingrediants.length;
         
-        for (int j = 0; j < i; ++j) {
-            Object object1 = aobject[j];
+        for (int j = 0; j < recipeLength; ++j) {
             
-            if (object1 instanceof ItemStack) {
-                arraylist.add(((ItemStack) object1).copy());
-            }
-            else if (object1 instanceof Item) {
-                arraylist.add(new ItemStack((Item) object1));
-            }
-            else {
-                if (!(object1 instanceof Block)) {
-                    throw new RuntimeException("Invalid shapeless recipy!");
-                }
+            Object ingrediant = ingrediantArray[j];
+            
+            if (ingrediant instanceof ItemStack)
+                input.add(((ItemStack) ingrediant).copy());
                 
-                arraylist.add(new ItemStack((Block) object1));
+            else if (ingrediant instanceof Item)
+                input.add(new ItemStack((Item) ingrediant));
+                
+            else {
+                
+                if (!(ingrediant instanceof Block))
+                    throw new RuntimeException("Invalid shapeless recipy!");
+                    
+                input.add(new ItemStack((Block) ingrediant));
             }
         }
         
-        return new ShapelessRecipes(Output, arraylist);
+        return new ShapelessRecipes(Output, input);
     }
 }
