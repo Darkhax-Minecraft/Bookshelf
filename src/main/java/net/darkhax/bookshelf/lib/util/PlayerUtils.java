@@ -35,8 +35,7 @@ public final class PlayerUtils {
     private static final Field slotPlayer = ReflectionHelper.findField(SlotCrafting.class, "thePlayer", "field_75238_b");
     
     /**
-     * A reference to the curBlockDamageMP method from the PlayerControllerMP class. Used by
-     * the getBlockDamage method to get the current client-side block damage amount.
+     * Access to the curBlockDamageMP field in the client-side PlayerControllerMP instance.
      */
     @SideOnly(Side.CLIENT)
     public static Field currentBlockDamage;
