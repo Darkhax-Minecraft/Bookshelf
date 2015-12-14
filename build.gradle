@@ -36,6 +36,23 @@ minecraft {
     replace '@MC_VERSION@', project.mcVersion
 }
 
+repositories {
+
+    maven {
+        name = "chickenbones"
+        url = "http://chickenbones.net/maven"
+    }
+}
+
+
+dependencies {
+
+    compile "codechicken:NotEnoughItems:1.7.10-1.0.5.118:dev"
+    compile "codechicken:CodeChickenLib:1.7.10-1.1.3.138:dev"
+    compile "codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev"
+}
+
+
 ext.versionFile = file "versions.json"
 project.ext.versions = new JsonSlurper().parseText versionFile.text
 
