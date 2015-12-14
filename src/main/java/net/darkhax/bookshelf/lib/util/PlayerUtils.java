@@ -8,16 +8,31 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.*;
 
 public final class PlayerUtils {
+    
+    /**
+     * Access to the eventHandler field in an InventoryCrafting instance.
+     */
+    private static final Field eventHandler = ReflectionHelper.findField(InventoryCrafting.class, "eventHandler", "field_70465_c");
+    
+    /**
+     * Access to the thePlayer field in a ContainerPlayer instance.
+     */
+    private static final Field containerPlayer = ReflectionHelper.findField(ContainerPlayer.class, "thePlayer", "field_82862_h");
+    
+    /**
+     * Access to the thePlayer field in a SlotCrafting instance.
+     */
+    private static final Field slotPlayer = ReflectionHelper.findField(SlotCrafting.class, "thePlayer", "field_75238_b");
     
     /**
      * A reference to the curBlockDamageMP method from the PlayerControllerMP class. Used by
@@ -147,6 +162,37 @@ public final class PlayerUtils {
                 if (player.getUniqueID().equals(playerID))
                     return player;
             }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Retrieves the player that is crafting in an InventoryCrafting. This is done through
+     * reflection. The first attempt will try to get the player from a ContainerPlayer, and the
+     * second attempt tries a ContainerWorkbench. If no player is found, null will be thrown.
+     * 
+     * @param inventory: An instance of the InventoryCrafting being used.
+     * @return EntityPlayer: The EntityPlayer that is using the InventoryCrafting. If none is
+     *         found, null will be returned.
+     */
+    public static EntityPlayer getPlayerFromCrafting (InventoryCrafting inventory) {
+        
+        try {
+            
+            Container container = (Container) eventHandler.get(inventory);
+            
+            if (container instanceof ContainerPlayer)
+                return (EntityPlayer) containerPlayer.get(container);
+                
+            else if (container instanceof ContainerWorkbench)
+                return (EntityPlayer) slotPlayer.get(container.getSlot(0));
+                
+        }
+        
+        catch (Exception e) {
+            
+            e.printStackTrace();
         }
         
         return null;
