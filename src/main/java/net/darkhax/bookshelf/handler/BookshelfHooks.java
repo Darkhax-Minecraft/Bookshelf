@@ -24,7 +24,8 @@ public class BookshelfHooks {
     /**
      * A List used to cache information about potions registered with duplicate potion IDs. The
      * List is storing a Tuple object to keep things simple. The first part of the tuple is a
-     * String of the mod loading the potion, and the second part is the Potion being registered.
+     * String of the mod loading the potion, and the second part is the Potion being
+     * registered.
      */
     public static List<Tuple> conflictingPotions = new ArrayList<Tuple>();
     
