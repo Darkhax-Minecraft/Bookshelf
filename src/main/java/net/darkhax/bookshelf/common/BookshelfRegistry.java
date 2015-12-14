@@ -1,7 +1,6 @@
 package net.darkhax.bookshelf.common;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -9,6 +8,7 @@ import com.google.common.collect.HashBiMap;
 import net.minecraft.item.ItemStack;
 
 import net.darkhax.bookshelf.buff.Buff;
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 
 public class BookshelfRegistry {
     
@@ -21,6 +21,13 @@ public class BookshelfRegistry {
      * A BiMap which stores every single Buff effect that has been registered.
      */
     public static BiMap<String, Buff> buffMap = HashBiMap.create();
+    
+    /**
+     * A HashMap that contains a list of descriptions for ingame items. The key is the
+     * ItemStack, while the ArrayList contains a bunch of localization keys for the
+     * descriptions of that item.
+     */
+    public static HashMap<ItemStack, ArrayList<String>> infoMap = new HashMap<ItemStack, ArrayList<String>>();
     
     /**
      * Adds a new AnvilRecipe to the registry. Inputs can be null.
@@ -106,6 +113,58 @@ public class BookshelfRegistry {
             throw new RuntimeException("An attempt was made to register a Potion with the name of " + buff.getPotionName() + " however it is already in use. " + buffMap.get(buff.getPotionName()).getClass().getName() + " " + buff.getClass().getName());
             
         buffMap.put(buff.getPotionName(), buff);
+    }
+    
+    /**
+     * Adds a location key to an ItemStack on the info map. If an entry for the ItemStack does
+     * not exist, one will be created.
+     * 
+     * @param stack: The ItemStack to add information for.
+     * @param locationKey: The location key used for translating the text.
+     */
+    public static void addInformation (ItemStack stack, String locationKey) {
+        
+        for (ItemStack keyStack : infoMap.keySet()) {
+            
+            if (ItemStackUtils.areStacksSimilar(keyStack, stack)) {
+                infoMap.get(keyStack).add(locationKey);
+                return;
+            }
+        }
+        
+        ArrayList infoKeys = new ArrayList<String>();
+        infoKeys.add(locationKey);
+        infoMap.put(stack, infoKeys);
+    }
+    
+    /**
+     * Checks to see if an ItemStack has any information registered.
+     * 
+     * @param stack: The ItemStack to check for.
+     * @return boolean: Whether or not the ItemStack has information about it.
+     */
+    public static boolean doesStackHaveDescription (ItemStack stack) {
+        
+        for (ItemStack keyStack : infoMap.keySet())
+            if (ItemStackUtils.areStacksSimilar(keyStack, stack))
+                return true;
+                
+        return false;
+    }
+    
+    /**
+     * Retrieves a list of description translation keys for an ItemStack.
+     * 
+     * @param stack: The ItemStack to grab keys for.
+     * @return ArrayList<String>: The array of description keys.
+     */
+    public static ArrayList<String> getDescriptionKeys (ItemStack stack) {
+        
+        for (ItemStack keyStack : infoMap.keySet())
+            if (ItemStackUtils.areStacksSimilar(keyStack, stack))
+                return infoMap.get(keyStack);
+                
+        return null;
     }
     
     public static class AnvilRecipe {
