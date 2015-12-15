@@ -5,6 +5,8 @@ import java.util.*;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import net.darkhax.bookshelf.buff.Buff;
@@ -116,24 +118,48 @@ public class BookshelfRegistry {
     }
     
     /**
-     * Adds a location key to an ItemStack on the info map. If an entry for the ItemStack does
-     * not exist, one will be created.
+     * Registers a localization key to an Item. This is used to provide information about that
+     * Item. If information already exists, yours will be appended to it.
+     * 
+     * @param item: The Item to add information for.
+     * @param localozationKey: The localization key used to retrieve the information.
+     */
+    public static void addInformation (Item item, String localizationKey) {
+        
+        addInformation(new ItemStack(item), localizationKey);
+    }
+    
+    /**
+     * Registers a localization key to a Block. This is used to provide information about that
+     * Item. If information already exists, yours will be appended to it.
+     * 
+     * @param Block: The Block to add information for.
+     * @param localozationKey: The localization key used to retrieve the information.
+     */
+    public static void addInformation (Block block, String localizationKey) {
+        
+        addInformation(new ItemStack(block), localizationKey);
+    }
+    
+    /**
+     * Registers a localization key to an ItemStack. This is used to provide information about
+     * that Item. If information already exists, yours will be appended to it.
      * 
      * @param stack: The ItemStack to add information for.
-     * @param locationKey: The location key used for translating the text.
+     * @param localozationKey: The localization key used to retrieve the information.
      */
-    public static void addInformation (ItemStack stack, String locationKey) {
+    public static void addInformation (ItemStack stack, String localizationKey) {
         
         for (ItemStack keyStack : infoMap.keySet()) {
             
             if (ItemStackUtils.areStacksSimilar(keyStack, stack)) {
-                infoMap.get(keyStack).add(locationKey);
+                infoMap.get(keyStack).add(localizationKey);
                 return;
             }
         }
         
         ArrayList infoKeys = new ArrayList<String>();
-        infoKeys.add(locationKey);
+        infoKeys.add(localizationKey);
         infoMap.put(stack, infoKeys);
     }
     
