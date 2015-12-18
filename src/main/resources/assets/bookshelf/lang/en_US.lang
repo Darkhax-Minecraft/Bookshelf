@@ -5,6 +5,9 @@ command.bookshelf.color.usage=/color This command will change the color of the h
 command.bookshelf.color.error=There was an error with your color, please make sure it was entered correctly. Hex entries must start with a # and RGB values can not be over 255. You must also have an item in your hand.
 command.bookshelf.color.success=The color was applied successfully.
 command.bookshelf.color.remove=All color data has been removed successfully.
+
+#GUI
+gui.bookshelf.nei.documentation=Information
  
 #Enchantment Level localization. Do not translate!
 enchantment.level.11=XI

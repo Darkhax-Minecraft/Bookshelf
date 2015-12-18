@@ -157,7 +157,7 @@ public class DescriptionHandler implements IUsageHandler, ICraftingHandler {
     @Override
     public String getRecipeName () {
         
-        return (ItemStackUtils.isValidStack(displayStack)) ? (displayStack.getDisplayName()) : StatCollector.translateToLocal("gui.bookshelf.nei.documentation");
+        return StatCollector.translateToLocal("gui.bookshelf.nei.documentation");
     }
     
     @Override
