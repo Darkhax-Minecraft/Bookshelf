@@ -122,15 +122,6 @@ public class EntityHorseTransformer {
      */
     private static void transformGetTotalArmorValue (MethodNode method) {
         
-        InsnList needle = new InsnList();
-        needle.add(new LabelNode());
-        needle.add(new LineNumberNode(-1, new LabelNode()));
-        needle.add(new FieldInsnNode(Opcodes.GETSTATIC, "net/minecraft/entity/passive/EntityHorse", armorValues, "[I"));
-        needle.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        needle.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "net/minecraft/entity/passive/EntityHorse", getHorseArmorIndexSynced, "()I", false));
-        
-        AbstractInsnNode pointer = ASMHelper.findFirstNodeFromNeedle(method.instructions, needle);
-        
         InsnList newInstr = new InsnList();
         
         newInstr.add(new LabelNode());
@@ -154,7 +145,7 @@ public class EntityHorseTransformer {
         newInstr.add(new InsnNode(Opcodes.IRETURN));
         newInstr.add(l2);
         
-        method.instructions.insertBefore(pointer, newInstr);
+        method.instructions.insertBefore(method.instructions.getFirst(), newInstr);
     }
     
     /**
