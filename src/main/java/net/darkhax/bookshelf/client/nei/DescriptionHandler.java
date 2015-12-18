@@ -70,6 +70,7 @@ public class DescriptionHandler implements IUsageHandler, ICraftingHandler {
                 pages = pageList.toArray(new String[pageList.size()]);
                 
             this.displayStack = stack.copy();
+            this.displayStack.stackSize = 1;
         }
     }
     
