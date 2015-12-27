@@ -1,5 +1,7 @@
 package net.darkhax.bookshelf.lib;
 
+import java.awt.Color;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -17,6 +19,11 @@ public class ColorObject {
     public ColorObject() {
         
         this(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+    
+    public ColorObject(Color color) {
+        
+        this(color.getRed(), color.getGreen(), color.getBlue());
     }
     
     /**
