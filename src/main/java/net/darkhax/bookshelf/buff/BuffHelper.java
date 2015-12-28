@@ -85,18 +85,21 @@ public class BuffHelper {
      * @param stack: The cure ItemStack being used.
      */
     public static void cureBuffs (EntityLivingBase entity, ItemStack stack) {
-        
-        List<BuffEffect> list = getEntityEffects(entity);
-        
-        for (Iterator<BuffEffect> iterator = list.iterator(); iterator.hasNext();) {
-            
-            BuffEffect effect = iterator.next();
-            
-            if (effect.getBuff().shouldBeCured(entity, stack))
-                iterator.remove();
+
+        if(!entity.worldObj.isRemote) {
+            List<BuffEffect> list = getEntityEffects(entity);
+
+            for (Iterator<BuffEffect> iterator = list.iterator(); iterator.hasNext(); )
+            {
+
+                BuffEffect effect = iterator.next();
+
+                if (effect.getBuff().shouldBeCured(entity, stack))
+                    iterator.remove();
+            }
+
+            EntityProperties.getProperties(entity).setBuffs(list).sync(true);
         }
-        
-        EntityProperties.getProperties(entity).setBuffs(list).sync();
     }
     
     /**

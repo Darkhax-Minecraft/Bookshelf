@@ -52,9 +52,10 @@ public class EntityProperties implements IExtendedEntityProperties {
     /**
      * Synchronizes the EntityProperties data.
      */
-    public void sync () {
+    public void sync (boolean forced) {
 
-        Bookshelf.network.sendToAll(new PacketSyncPlayerProperties(this));
+        if(!buffs.isEmpty() || forced)
+            Bookshelf.network.sendToAll(new PacketSyncPlayerProperties(this));
     }
 
     /**

@@ -137,6 +137,6 @@ public class ForgeEventHandler {
     public void onEntityJoinWorld (EntityJoinWorldEvent event) {
 
         if (event.entity instanceof EntityLivingBase && !event.entity.worldObj.isRemote && EntityProperties.hasProperties((EntityLivingBase) event.entity))
-            EntityProperties.getProperties((EntityLivingBase) event.entity).sync();
+            EntityProperties.getProperties((EntityLivingBase) event.entity).sync(false);
     }
 }
