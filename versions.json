@@ -1,10 +1,30 @@
-
 {
     "iconUrl": "http://media-elerium.cursecdn.com/avatars/thumbnails/15/169/62/62/635617078813942671.png",
-    "newestVersion": "1.0.3.138",
-    "release": "1.0.3.138",
+    "newestVersion": "1.0.4.172",
+    "release": "1.0.4.172",
     "updateUrl": "http://minecraft.curseforge.com/projects/bookshelf/files",
     "versions": {
+        "1.0.4.172": [
+            "Added Utility to grab EntityPlayer from CraftingInventory",
+            "Added Player specific Recipes",
+            "Added Crafting utilities",
+            "Added New NEI support and info GUI",
+            "Added ColorObject",
+            "Added Slider GUI component",
+            "Added Average calculation method",
+            "Added NBT comparator",
+            "Added Wrapped formatted text",
+            "Added More ItemStack utilities",
+            "Added Mutable Strings",
+            "Added App specific utilities",
+            "Added Reflection utilities",
+            "Fixed Horse Armor ASM conflicts",
+            "Fixed Networking issue which caused way too many packets to be sent",
+            "Fixed Documentation",
+            "Changed Duplicate potion ID code to be more informative",
+            "Changed Tinkers Construct utilities to be more accurate"
+
+        ],
         "1.0.3.138": [
             "Added Several dozen new utility methods",
             "Added Seperate classes for utility classes",
