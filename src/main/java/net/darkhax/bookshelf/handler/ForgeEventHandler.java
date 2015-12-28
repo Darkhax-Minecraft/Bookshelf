@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.handler;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -88,9 +89,9 @@ public class ForgeEventHandler {
         EntityLivingBase entity = event.entityLiving;
 
 
+        List<BuffEffect> destroyBuff = new ArrayList<BuffEffect>();
         List<BuffEffect> list = BuffHelper.getEntityEffects(entity);
-        for (Iterator<BuffEffect> iterator = list.iterator(); iterator.hasNext();) {
-            BuffEffect buff = iterator.next();
+        for (BuffEffect buff:list) {
             if (buff.getBuff().canUpdate())
                 buff.getBuff().onBuffTick(entity.worldObj, entity, buff.duration, buff.power);
 
@@ -99,10 +100,15 @@ public class ForgeEventHandler {
 
                 if (buff.duration <= 0) {
 
-                    buff.getBuff().onEffectEnded();
-                    EntityProperties.getProperties(entity).remove(buff, false);
-                    iterator.remove();
+                    destroyBuff.add(buff);
                 }
+            }
+        }
+
+        if(!destroyBuff.isEmpty()){
+            for (BuffEffect buff:destroyBuff) {
+                buff.getBuff().onEffectEnded();
+                EntityProperties.getProperties(entity).remove(buff, false);
             }
         }
     }
