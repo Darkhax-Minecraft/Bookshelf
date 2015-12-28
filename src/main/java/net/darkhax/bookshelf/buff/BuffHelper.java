@@ -46,28 +46,18 @@ public class BuffHelper {
      * @param entity: The Entity to update on.
      * @param effect: The effect to update.
      */
-    public static boolean addOrUpdateBuff (World world, EntityLivingBase entity, BuffEffect effect) {
+    public static boolean addBuff (World world, EntityLivingBase entity, BuffEffect effect) {
         
         if (entity != null) {
             
-            List<BuffEffect> list = getEntityEffects(entity);
-            
             if (hasBuff(entity, effect.getBuff())) {
-                
-                for (BuffEffect buffE : list) {
-                    
-                    if (buffE.getBuff().equals(effect.getBuff())) {
-                        
-                        list.remove(buffE);
-                        break;
-                    }
-                }
+
+                if (!world.isRemote)
+                    EntityProperties.getProperties(entity).remove(effect);
             }
             
-            list.add(effect);
-            
             if (!world.isRemote)
-                EntityProperties.getProperties(entity).setBuffs(list).sync();
+                EntityProperties.getProperties(entity).add(effect);
                 
             return true;
         }
