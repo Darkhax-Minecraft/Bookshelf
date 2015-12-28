@@ -1,7 +1,6 @@
 package net.darkhax.bookshelf.lib;
 
 import java.awt.Color;
-import java.nio.ByteBuffer;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

@@ -149,7 +149,7 @@ public class TinkersConstructUtils {
     }
     
     /**
-     * Associates an Item or Block with a Tinkers Construct material. This allows you to 
+     * Associates an Item or Block with a Tinkers Construct material. This allows you to
      * convert items to toolparts in the Part Builder dependant on value.
      * 
      * @param materialID: A numeric ID that represents the material you want to associate the
@@ -158,7 +158,7 @@ public class TinkersConstructUtils {
      * @param value: The value of the item being registered. Shards have a value of one.
      */
     public static void addPartBuilderMaterial (int materialID, ItemStack stack, int value) {
-
+        
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("MaterialId", materialID);
         tag.setTag("Item", stack.writeToNBT(new NBTTagCompound()));

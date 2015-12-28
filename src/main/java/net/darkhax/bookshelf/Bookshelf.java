@@ -1,7 +1,5 @@
 package net.darkhax.bookshelf;
 
-import net.darkhax.bookshelf.common.network.packet.PacketAddPlayerProperties;
-import net.darkhax.bookshelf.common.network.packet.PacketRemovePlayerProperties;
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.Mod;
@@ -14,7 +12,7 @@ import cpw.mods.fml.relauncher.Side;
 
 import net.darkhax.bookshelf.command.CommandItemColor;
 import net.darkhax.bookshelf.common.ProxyCommon;
-import net.darkhax.bookshelf.common.network.packet.PacketSyncPlayerProperties;
+import net.darkhax.bookshelf.common.network.packet.*;
 import net.darkhax.bookshelf.handler.ExpansionHandler;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.lib.Constants;
@@ -38,7 +36,7 @@ public class Bookshelf {
         Utilities.registerMessage(network, PacketSyncPlayerProperties.class, 0, Side.CLIENT);
         Utilities.registerMessage(network, PacketAddPlayerProperties.class, 1, Side.CLIENT);
         Utilities.registerMessage(network, PacketRemovePlayerProperties.class, 2, Side.CLIENT);
-
+        
         proxy.preInit();
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
         

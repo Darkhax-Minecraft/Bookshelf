@@ -1,7 +1,6 @@
 package net.darkhax.bookshelf.handler;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,119 +28,118 @@ import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.*;
 
 public class ForgeEventHandler {
-
+    
     @SubscribeEvent
     public void onAnvilUsed (AnvilUpdateEvent event) {
-
+        
         for (BookshelfRegistry.AnvilRecipe recipe : BookshelfRegistry.getAnvilRecipes()) {
-
+            
             if (recipe != null && ItemStackUtils.isValidStack(recipe.output) && ItemStackUtils.areStacksSimilarWithSize(event.left, recipe.inputLeft) && ItemStackUtils.areStacksSimilarWithSize(event.right, recipe.inputRight)) {
-
+                
                 event.cost = recipe.getExperienceCost(event.left, event.right, event.name);
                 event.materialCost = recipe.getMaterialCost(event.left, event.right, event.name);
-
+                
                 if (recipe.nameTaxt != null && !recipe.nameTaxt.isEmpty()) {
-
+                    
                     if (recipe.nameTaxt.equalsIgnoreCase(event.name))
                         event.output = recipe.getOutput(event.left, event.right, event.name);
-
+                        
                     return;
                 }
-
+                
                 event.output = recipe.getOutput(event.left, event.right, event.name);
                 return;
             }
         }
     }
-
+    
     @SubscribeEvent
     public void onPotionsCured (PotionCuredEvent event) {
-
+        
         BuffHelper.cureBuffs(event.entityLiving, event.stack);
     }
-
+    
     @SubscribeEvent
     public void afterCreativeTabLoaded (CreativeTabEvent.Post event) {
-
+        
         if (event.tab == CreativeTabs.tabDecorations)
             for (ItemStack stack : SkullUtils.getMHFSkulls())
                 event.itemList.add(stack);
     }
-
+    
     @SubscribeEvent
     public void onEntityUpdate (LivingUpdateEvent event) {
-
+        
         if (!ASMHelper.isASMEnabled)
             Constants.LOG.warn("The ASM has not been initialized, there is an error with your setup!");
-
+            
         else if (event.entity instanceof EntityHorse) {
-
+            
             EntityHorse horse = (EntityHorse) event.entity;
             ItemStack customArmor = Utilities.getCustomHorseArmor(horse);
-
+            
             if (customArmor != null && customArmor.getItem() instanceof ItemHorseArmor) {
-
+                
                 ItemHorseArmor armor = (ItemHorseArmor) customArmor.getItem();
                 armor.onHorseUpdate(horse, customArmor);
             }
         }
-
+        
         EntityLivingBase entity = event.entityLiving;
-
-
+        
         List<BuffEffect> destroyBuff = new ArrayList<BuffEffect>();
         List<BuffEffect> list = BuffHelper.getEntityEffects(entity);
-        for (BuffEffect buff:list) {
+        for (BuffEffect buff : list) {
             if (buff.getBuff().canUpdate())
                 buff.getBuff().onBuffTick(entity.worldObj, entity, buff.duration, buff.power);
-
+                
             buff.duration--;
             if (!entity.worldObj.isRemote) {
-
+                
                 if (buff.duration <= 0) {
-
+                    
                     destroyBuff.add(buff);
                 }
             }
         }
-
-        if(!destroyBuff.isEmpty()){
-            for (BuffEffect buff:destroyBuff) {
+        
+        if (!destroyBuff.isEmpty()) {
+            for (BuffEffect buff : destroyBuff) {
                 buff.getBuff().onEffectEnded();
                 EntityProperties.getProperties(entity).remove(buff, false);
             }
         }
     }
-
+    
     @SubscribeEvent
     public void onEntityHurt (LivingHurtEvent event) {
-
+        
         if (!ASMHelper.isASMEnabled)
             Constants.LOG.warn("The ASM has not been initialized, there is an error with your setup!");
-
+            
         else if (event.entity instanceof EntityHorse) {
-
+            
             EntityHorse horse = (EntityHorse) event.entity;
             ItemStack customArmor = Utilities.getCustomHorseArmor(horse);
-
+            
             if (customArmor != null && customArmor.getItem() instanceof ItemHorseArmor) {
-
+                
                 ItemHorseArmor armor = (ItemHorseArmor) customArmor.getItem();
                 event.setCanceled(armor.onHorseDamaged(horse, customArmor, event.source, event.ammount));
             }
         }
     }
-
+    
     @SubscribeEvent
     public void onEntityConstructing (EntityEvent.EntityConstructing event) {
-
+        
         if (event.entity instanceof EntityLivingBase && !EntityProperties.hasProperties((EntityLivingBase) event.entity))
             EntityProperties.setProperties((EntityLivingBase) event.entity);
     }
-
+    
     @SubscribeEvent
     public void onEntityJoinWorld (EntityJoinWorldEvent event) {
-
+        
         if (event.entity instanceof EntityLivingBase && !event.entity.worldObj.isRemote && EntityProperties.hasProperties((EntityLivingBase) event.entity))
             EntityProperties.getProperties((EntityLivingBase) event.entity).sync(false);
     }

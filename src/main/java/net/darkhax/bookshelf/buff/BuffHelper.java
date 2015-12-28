@@ -51,11 +51,11 @@ public class BuffHelper {
         if (entity != null && !world.isRemote) {
             
             if (hasBuff(entity, effect.getBuff())) {
-
+                
                 EntityProperties.getProperties(entity).remove(effect, false);
             }
             EntityProperties.getProperties(entity).add(effect, false);
-                
+            
             return true;
         }
         
@@ -85,19 +85,18 @@ public class BuffHelper {
      * @param stack: The cure ItemStack being used.
      */
     public static void cureBuffs (EntityLivingBase entity, ItemStack stack) {
-
-        if(!entity.worldObj.isRemote) {
+        
+        if (!entity.worldObj.isRemote) {
             List<BuffEffect> list = getEntityEffects(entity);
-
-            for (Iterator<BuffEffect> iterator = list.iterator(); iterator.hasNext(); )
-            {
-
+            
+            for (Iterator<BuffEffect> iterator = list.iterator(); iterator.hasNext();) {
+                
                 BuffEffect effect = iterator.next();
-
+                
                 if (effect.getBuff().shouldBeCured(entity, stack))
                     iterator.remove();
             }
-
+            
             EntityProperties.getProperties(entity).setBuffs(list).sync(true);
         }
     }
