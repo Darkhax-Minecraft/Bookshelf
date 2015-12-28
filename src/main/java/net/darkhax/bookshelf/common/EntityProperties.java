@@ -112,7 +112,7 @@ public class EntityProperties implements IExtendedEntityProperties {
         return this;
     }
 
-    public void remove(BuffEffect buff) {
+    public void remove(BuffEffect buff, boolean isRemote) {
 
         if(this.buffs != null){
             BuffEffect ef = null;
@@ -127,19 +127,22 @@ public class EntityProperties implements IExtendedEntityProperties {
             if(ef != null) {
 
                 buffs.remove(ef);
-                Bookshelf.network.sendToAll(new PacketRemovePlayerProperties(entity, buff));
+                if(!isRemote)
+                    Bookshelf.network.sendToAll(new PacketRemovePlayerProperties(entity, buff));
             }
         }
 
     }
 
-    public void add(BuffEffect buff)
+    public void add(BuffEffect buff, boolean isRemote)
     {
 
         if(buff != null){
 
             buffs.add(buff);
-            Bookshelf.network.sendToAll(new PacketAddPlayerProperties(entity, buff));
+
+            if(!isRemote)
+                Bookshelf.network.sendToAll(new PacketAddPlayerProperties(entity, buff));
         }
     }
 }

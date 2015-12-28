@@ -57,7 +57,7 @@ public class PacketAddPlayerProperties extends AbstractMessage<PacketAddPlayerPr
             Entity entity = player.worldObj.getEntityByID(message.entityId);
 
             if (entity != null && entity instanceof EntityLivingBase)
-                EntityProperties.getProperties((EntityLivingBase) entity).add(message.buffs);
+                EntityProperties.getProperties((EntityLivingBase) entity).add(message.buffs, true);
         }
     }
 

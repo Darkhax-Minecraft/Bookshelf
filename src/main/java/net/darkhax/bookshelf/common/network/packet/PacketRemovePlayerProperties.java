@@ -57,7 +57,7 @@ public class PacketRemovePlayerProperties extends AbstractMessage<PacketRemovePl
             Entity entity = player.worldObj.getEntityByID(message.entityId);
 
             if (entity != null && entity instanceof EntityLivingBase)
-                EntityProperties.getProperties((EntityLivingBase) entity).remove(message.buffs);
+                EntityProperties.getProperties((EntityLivingBase) entity).remove(message.buffs, true);
         }
     }
 

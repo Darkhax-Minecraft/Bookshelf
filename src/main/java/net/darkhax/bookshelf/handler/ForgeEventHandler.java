@@ -100,7 +100,7 @@ public class ForgeEventHandler {
                 if (buff.duration <= 0) {
 
                     buff.getBuff().onEffectEnded();
-                    EntityProperties.getProperties(entity).remove(buff);
+                    EntityProperties.getProperties(entity).remove(buff, false);
                     iterator.remove();
                 }
             }

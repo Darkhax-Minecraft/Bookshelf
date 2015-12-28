@@ -48,16 +48,13 @@ public class BuffHelper {
      */
     public static boolean addBuff (World world, EntityLivingBase entity, BuffEffect effect) {
         
-        if (entity != null) {
+        if (entity != null && !world.isRemote) {
             
             if (hasBuff(entity, effect.getBuff())) {
 
-                if (!world.isRemote)
-                    EntityProperties.getProperties(entity).remove(effect);
+                EntityProperties.getProperties(entity).remove(effect, false);
             }
-            
-            if (!world.isRemote)
-                EntityProperties.getProperties(entity).add(effect);
+            EntityProperties.getProperties(entity).add(effect, false);
                 
             return true;
         }
