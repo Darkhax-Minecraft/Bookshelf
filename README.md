@@ -17,6 +17,8 @@ Events
 [ItemEnchantedEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/event/ItemEnchantedEvent.java)  
 [LootingEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/event/LootingEvent.java)   
 [CreativeTabEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/db7d1f6ab63826c13457a22ce6da19977c9b5372/src/main/java/net/darkhax/bookshelf/event/CreativeTabEvent.java)    
+[PotionCuredEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/event/PotionCuredEvent.java)   
+[PotionEffectEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/event/PotionEffectEvent.java)   
 
 Other Features
 ==============
@@ -31,6 +33,7 @@ Other Features
 [Position Object](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/util/Position.java)   
 [Vanilla Color Enum](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/util/VanillaColor.java)   
 [Assorted Utilities](https://github.com/Darkhax-Minecraft/Bookshelf/tree/db7d1f6ab63826c13457a22ce6da19977c9b5372/src/main/java/net/darkhax/bookshelf/lib/util)   
+Much more!
 
 
 Credits
@@ -43,3 +46,4 @@ Credits
 [SanAndreasP](https://twitter.com/SanAndreasP)  
 [VikeStep](https://twitter.com/VikeStep)   
 [jaredlll08](https://twitter.com/jaredlll08)  
+[IAmOmicron](https://twitter.com/IAmOmicron)   
