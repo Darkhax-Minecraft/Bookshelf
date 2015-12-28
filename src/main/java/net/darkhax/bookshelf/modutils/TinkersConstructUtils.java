@@ -131,8 +131,8 @@ public class TinkersConstructUtils {
     }
     
     /**
-     * Associates an Item or Block with a Tinkers Construct material. This is used to add
-     * things like the shards in Tinkers Construct.
+     * Associates an Item or Block with a Tinkers Construct material. This associates items
+     * with the material that is required to repair your tool.
      * 
      * @param materialID: A numeric ID that represents the material you want to associate the
      *            Item or Block with.
@@ -146,6 +146,24 @@ public class TinkersConstructUtils {
         tag.setTag("Item", stack.writeToNBT(new NBTTagCompound()));
         tag.setInteger("Value", value);
         FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
+    }
+    
+    /**
+     * Associates an Item or Block with a Tinkers Construct material. This allows you to 
+     * convert items to toolparts in the Part Builder dependant on value.
+     * 
+     * @param materialID: A numeric ID that represents the material you want to associate the
+     *            Item or Block with.
+     * @param stack: An ItemStack containing the Item or Block you wish to associate.
+     * @param value: The value of the item being registered. Shards have a value of one.
+     */
+    public static void addPartBuilderMaterial (int materialID, ItemStack stack, int value) {
+
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("MaterialId", materialID);
+        tag.setTag("Item", stack.writeToNBT(new NBTTagCompound()));
+        tag.setInteger("Value", value);
+        FMLInterModComms.sendMessage("TConstruct", "addPartBuilderMaterial", tag);
     }
     
     /**
