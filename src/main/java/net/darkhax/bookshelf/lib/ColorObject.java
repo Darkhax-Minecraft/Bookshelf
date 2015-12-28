@@ -1,10 +1,13 @@
 package net.darkhax.bookshelf.lib;
 
 import java.awt.Color;
+import java.nio.ByteBuffer;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+
+import io.netty.buffer.ByteBuf;
 
 public class ColorObject {
     
@@ -21,6 +24,21 @@ public class ColorObject {
         this(1.0f, 1.0f, 1.0f, 1.0f);
     }
     
+    /**
+     * Constructs a new ColorObject from a ByteBuf.
+     * 
+     * @param buf: The ByteBuf to pull the data from.
+     */
+    public ColorObject(ByteBuf buf) {
+        
+        this(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat());
+    }
+    
+    /**
+     * Constructs a new ColorObject from an AWT Color.
+     * 
+     * @param color: The AWT Color to pull the RGB from.
+     */
     public ColorObject(Color color) {
         
         this(color.getRed(), color.getGreen(), color.getBlue());
@@ -311,6 +329,20 @@ public class ColorObject {
         
         stack.setTagCompound(writeToTag(stack.getTagCompound()));
         return stack;
+    }
+    
+    /**
+     * Writes the ColorObject to a ByteBuf. Useful when sending data through a packet, as it is
+     * more compact then a tag compound.
+     * 
+     * @param buf: The ByteBuf to write the ColorObject into.
+     */
+    public void writeToBuffer (ByteBuf buf) {
+        
+        buf.writeFloat(this.red);
+        buf.writeFloat(this.green);
+        buf.writeFloat(this.blue);
+        buf.writeFloat(this.alpha);
     }
     
     @Override
