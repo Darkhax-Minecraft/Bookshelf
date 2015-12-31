@@ -118,6 +118,18 @@ public class BookshelfRegistry {
     }
     
     /**
+     * Registers an Item into the information system. This will associate the item with the
+     * basic information localization key, which is info. followed by the unlocalized name of
+     * the item with the item. part cut off.
+     * 
+     * @param item: The Item to add the information for.
+     */
+    public static void addInformation (Item item) {
+        
+        addInformation(item, "info." + item.getUnlocalizedName().substring(5));
+    }
+    
+    /**
      * Registers a localization key to an Item. This is used to provide information about that
      * Item. If information already exists, yours will be appended to it.
      * 
@@ -127,6 +139,18 @@ public class BookshelfRegistry {
     public static void addInformation (Item item, String localizationKey) {
         
         addInformation(new ItemStack(item), localizationKey);
+    }
+    
+    /**
+     * Registers a Block into the information system. This will associate the block with a
+     * basic information localization key, which is info. followed by the unlocalized name of
+     * the block with the tile. part cut off.
+     * 
+     * @param block: The Block to add the information for.
+     */
+    public static void addInformation (Block block) {
+        
+        addInformation(block, "info." + block.getUnlocalizedName().substring(5));
     }
     
     /**
