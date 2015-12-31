@@ -397,6 +397,12 @@ public final class Utilities {
         return (id >= 0 && id <= 4) ? vanillaVillagers[id] : (skin != null) ? skin.getResourceDomain() + "." + skin.getResourcePath().substring(skin.getResourcePath().lastIndexOf("/") + 1, skin.getResourcePath().length() - 4) : "misingno";
     }
     
+    /**
+     * Generates rainbow text which adds a color before every non-space character.
+     * 
+     * @param text: The text to rainbowify.
+     * @return String: A string containing the converted text.
+     */
     public static String generateRainbowTest (String text) {
         
         String output = "";
