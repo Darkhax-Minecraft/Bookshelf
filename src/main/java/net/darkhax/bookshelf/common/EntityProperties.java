@@ -51,8 +51,9 @@ public class EntityProperties implements IExtendedEntityProperties {
      */
     public void sync (boolean forced) {
         
-        if (!buffs.isEmpty() || forced)
-            Bookshelf.network.sendToAll(new PacketSyncPlayerProperties(this));
+        //Disabled for BTM. lclc98's fix didn't work client side. 
+        //if (!buffs.isEmpty() || forced)
+        //    Bookshelf.network.sendToAll(new PacketSyncPlayerProperties(this));
     }
     
     /**
