@@ -44,6 +44,11 @@ public final class Utilities {
     public static String[] vanillaLootChests = new String[] { "dungeonChest", "bonusChest", "villageBlacksmith", "strongholdCrossing", "strongholdLibrary", "strongholdCorridor", "pyramidJungleDispenser", "pyramidJungleChest", "pyramidDesertyChest", "mineshaftCorridor" };
     
     /**
+     * An array of formatting codes used to create rainbow text.
+     */
+    public static String[] rainbowChars = new String[] { "4", "6", "e", "a", "9", "5" };
+    
+    /**
      * A List of all available enchantments. Needs to occasionally be updated using
      * updateAvailableEnchantments.
      */
@@ -390,6 +395,26 @@ public final class Utilities {
         
         ResourceLocation skin = VillagerRegistry.getVillagerSkin(id, null);
         return (id >= 0 && id <= 4) ? vanillaVillagers[id] : (skin != null) ? skin.getResourceDomain() + "." + skin.getResourcePath().substring(skin.getResourcePath().lastIndexOf("/") + 1, skin.getResourcePath().length() - 4) : "misingno";
+    }
+    
+    public static String generateRainbowTest (String text) {
+        
+        String output = "";
+        int offsetCount = 0;
+        
+        for (int index = 0; index < text.length(); index++) {
+            
+            if (text.charAt(index) == ' ') {
+                
+                output += " ";
+                offsetCount++;
+            }
+            
+            else
+                output += "§" + rainbowChars[index % rainbowChars.length - offsetCount] + text.charAt(index);
+        }
+        
+        return output + "§r";
     }
     
     /**
