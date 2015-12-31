@@ -398,32 +398,6 @@ public final class Utilities {
     }
     
     /**
-     * Generates rainbow text which adds a color before every non-space character.
-     * 
-     * @param text: The text to rainbowify.
-     * @return String: A string containing the converted text.
-     */
-    public static String generateRainbowTest (String text) {
-        
-        String output = "";
-        int offsetCount = 0;
-        
-        for (int index = 0; index < text.length(); index++) {
-            
-            if (text.charAt(index) == ' ') {
-                
-                output += " ";
-                offsetCount++;
-            }
-            
-            else
-                output += "§" + rainbowChars[index % rainbowChars.length - offsetCount] + text.charAt(index);
-        }
-        
-        return output + "§r";
-    }
-    
-    /**
      * Searches through the array of CreativeTabs and finds the first tab with the same label
      * as the one passed.
      * 
