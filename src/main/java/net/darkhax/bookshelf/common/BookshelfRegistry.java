@@ -8,19 +8,12 @@ import com.google.common.collect.HashBiMap;
 
 import net.minecraft.item.ItemStack;
 
-import net.darkhax.bookshelf.buff.Buff;
-
 public class BookshelfRegistry {
     
     /**
      * A List of all the anvil recipes that have been registered with Bookshelf.
      */
     private static final List<AnvilRecipe> anvilRecipes = new ArrayList<AnvilRecipe>();
-    
-    /**
-     * A BiMap which stores every single Buff effect that has been registered.
-     */
-    public static BiMap<String, Buff> buffMap = HashBiMap.create();
     
     /**
      * Adds a new AnvilRecipe to the registry. Inputs can be null.
@@ -82,30 +75,6 @@ public class BookshelfRegistry {
     public static List<AnvilRecipe> getAnvilRecipes () {
         
         return anvilRecipes;
-    }
-    
-    /**
-     * Attempts to retrieve a Buff by its name.
-     *
-     * @param name: The name of the buff you are looking for.
-     * @return Buff: The Buff, if its name was found. If not, null.
-     */
-    public static Buff getBuffFromString (String name) {
-        
-        return (buffMap.containsKey(name)) ? buffMap.get(name) : null;
-    }
-    
-    /**
-     * Registers a Buff with the buffMap.
-     *
-     * @param buff: The Buff to register.
-     */
-    public static void registerBuff (Buff buff) {
-        
-        if (buffMap.containsKey(buff.getPotionName()))
-            throw new RuntimeException("An attempt was made to register a Potion with the name of " + buff.getPotionName() + " however it is already in use. " + buffMap.get(buff.getPotionName()).getClass().getName() + " " + buff.getClass().getName());
-            
-        buffMap.put(buff.getPotionName(), buff);
     }
     
     public static class AnvilRecipe {
