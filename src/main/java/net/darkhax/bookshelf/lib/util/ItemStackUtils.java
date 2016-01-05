@@ -1,13 +1,13 @@
 package net.darkhax.bookshelf.lib.util;
 
+import net.darkhax.bookshelf.lib.VanillaColor;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.*;
-
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.oredict.OreDictionary;
-
-import net.darkhax.bookshelf.lib.VanillaColor;
 
 public final class ItemStackUtils {
     

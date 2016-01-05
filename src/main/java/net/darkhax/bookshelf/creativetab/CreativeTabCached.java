@@ -36,7 +36,7 @@ public abstract class CreativeTabCached extends CreativeTabs {
     @Override
     @SideOnly(Side.CLIENT)
     public void displayAllReleventItems (List itemList) {
-            
+        
         if (this.cachedItems.isEmpty()) {
             
             Iterator iterator = Item.itemRegistry.iterator();
@@ -59,6 +59,6 @@ public abstract class CreativeTabCached extends CreativeTabs {
                         item.getSubItems(item, this, itemList);
                         
         if (this.getRelevantEnchantmentTypes() != null)
-        	this.addEnchantmentBooksToList(itemList, this.getRelevantEnchantmentTypes());
+            this.addEnchantmentBooksToList(itemList, this.getRelevantEnchantmentTypes());
     }
 }

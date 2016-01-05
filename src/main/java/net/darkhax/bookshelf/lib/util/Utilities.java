@@ -1,33 +1,30 @@
 package net.darkhax.bookshelf.lib.util;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.darkhax.bookshelf.lib.Constants;
 
 public final class Utilities {
-	
+    
     /**
      * Array of names for the vanilla villagers.
      */
@@ -118,8 +115,8 @@ public final class Utilities {
      */
     public static Object getThingByName (String name) {
         
-    	ResourceLocation location = new ResourceLocation(name);
-    	
+        ResourceLocation location = new ResourceLocation(name);
+        
         Object thing = Item.itemRegistry.getObject(location);
         
         if (thing != null)

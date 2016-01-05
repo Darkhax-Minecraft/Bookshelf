@@ -2,13 +2,12 @@ package net.darkhax.bookshelf.lib.util;
 
 import java.util.Comparator;
 
+import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-
-import net.darkhax.bookshelf.lib.Constants;
 
 public final class NBTUtils {
     

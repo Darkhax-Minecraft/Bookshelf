@@ -3,9 +3,6 @@ package net.darkhax.bookshelf.common;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
 import net.minecraft.item.ItemStack;
 
 public class BookshelfRegistry {

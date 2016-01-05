@@ -1,21 +1,8 @@
 package net.darkhax.bookshelf.handler;
 
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.text.Utilities;
-
 import net.darkhax.bookshelf.common.BookshelfRegistry;
-import net.darkhax.bookshelf.lib.Constants;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.item.ItemStack;
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ForgeEventHandler {
