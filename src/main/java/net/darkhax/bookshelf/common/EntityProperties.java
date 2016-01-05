@@ -3,6 +3,7 @@ package net.darkhax.bookshelf.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,9 +52,8 @@ public class EntityProperties implements IExtendedEntityProperties {
      */
     public void sync (boolean forced) {
         
-        //Disabled for BTM. lclc98's fix didn't work client side. 
-        //if (!buffs.isEmpty() || forced)
-        //    Bookshelf.network.sendToAll(new PacketSyncPlayerProperties(this));
+        if (!buffs.isEmpty() || forced)
+            Bookshelf.network.sendToAllAround(new PacketSyncPlayerProperties(this), new NetworkRegistry.TargetPoint(entity.dimension, entity.posX, entity.posY, entity.posZ, 150D));
     }
     
     /**
@@ -127,7 +127,7 @@ public class EntityProperties implements IExtendedEntityProperties {
                 
                 buffs.remove(ef);
                 if (!isRemote)
-                    Bookshelf.network.sendToAll(new PacketRemovePlayerProperties(entity, buff));
+                    Bookshelf.network.sendToAllAround(new PacketRemovePlayerProperties(entity, buff), new NetworkRegistry.TargetPoint(entity.dimension, entity.posX, entity.posY, entity.posZ, 150D));
             }
         }
         
@@ -140,7 +140,7 @@ public class EntityProperties implements IExtendedEntityProperties {
             buffs.add(buff);
             
             if (!isRemote)
-                Bookshelf.network.sendToAll(new PacketAddPlayerProperties(entity, buff));
+                Bookshelf.network.sendToAllAround(new PacketAddPlayerProperties(entity, buff), new NetworkRegistry.TargetPoint(entity.dimension, entity.posX, entity.posY, entity.posZ, 150D));
         }
     }
 }

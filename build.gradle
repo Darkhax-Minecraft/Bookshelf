@@ -178,14 +178,14 @@ curseforge {
     if (System.getenv("curseForgeApiKey"))
         apiKey = System.getenv("curseForgeApiKey")
     else
-        apiKey = 0
+        apiKey = "0"
 
 
     project {
         if (System.getenv("projectId"))
             id = System.getenv("projectId")
         else
-            id = 0
+            id = "0"
 
         releaseType = project.release ? "release" : "beta"
         changelog = project.release ? versions.versions[versions.newestVersion].join("\n") : project.changelog
