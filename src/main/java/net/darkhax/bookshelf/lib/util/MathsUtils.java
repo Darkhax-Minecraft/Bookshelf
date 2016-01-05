@@ -3,16 +3,11 @@ package net.darkhax.bookshelf.lib.util;
 import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.biome.BiomeGenBase;
 
 import net.darkhax.bookshelf.lib.Constants;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 
 public final class MathsUtils {
     

@@ -9,9 +9,11 @@ public class ProxyClient extends ProxyCommon {
     
     @Override
     public void preInit () {
-    
-        // RenderUtils.guiLeft = ReflectionHelper.findField(GuiContainer.class, "i", "field_147003_i", "guiLeft");
-        // RenderUtils.guiTop = ReflectionHelper.findField(GuiContainer.class, "r", "field_147009_r", "guiTop");
+        
+        // RenderUtils.guiLeft = ReflectionHelper.findField(GuiContainer.class, "i",
+        // "field_147003_i", "guiLeft");
+        // RenderUtils.guiTop = ReflectionHelper.findField(GuiContainer.class, "r",
+        // "field_147009_r", "guiTop");
         PlayerUtils.currentBlockDamage = ReflectionHelper.findField(PlayerControllerMP.class, "g", "field_78770_f", "curBlockDamageMP");
     }
     
