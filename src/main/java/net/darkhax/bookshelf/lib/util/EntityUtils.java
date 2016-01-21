@@ -1,24 +1,69 @@
 package net.darkhax.bookshelf.lib.util;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Vec3;
 
 public final class EntityUtils {
     
     /**
-     * Calculates the distance between two entities. This is done by getting the square root of
-     * the entities positions.
+     * Calculates the distance between two entities.
      * 
      * @param firstEntity: The first entity to use.
      * @param secondEntity: The second entity to use.
      * @return double: The distance between the two entities passed.
      */
-    public static double getDistanceBetweenEntities (Entity firstEntity, Entity secondEntity) {
+    public static double getDistanceFromEntity (Entity firstEntity, Entity secondEntity) {
         
-        double distanceX = firstEntity.posX - secondEntity.posX;
-        double distanceY = firstEntity.posY - secondEntity.posY;
-        double distanceZ = firstEntity.posZ - secondEntity.posZ;
+        return MathsUtils.getDistanceBetweenPoints(firstEntity.getPositionVector(), secondEntity.getPositionVector());
+    }
+    
+    /**
+     * Calculates the distance between an entity and a BlockPos.
+     * 
+     * @param entity: The Entity to use for the first position.
+     * @param pos: The BlockPos to use for the second position.
+     * @return double: The distance between the Entity and the BlockPos.
+     */
+    public static double getDistaceFromPos (Entity entity, BlockPos pos) {
         
-        return Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
+        return MathsUtils.getDistanceBetweenPoints(entity.getPositionVector(), new Vec3(pos));
+    }
+    
+    /**
+     * Pushes an entity towards a specific direction.
+     * 
+     * @param entityToMove: The entity that you want to push.
+     * @param direction: The direction to push the entity.
+     * @param force: The amount of force to push the entity with.
+     */
+    public static void pushTowards (Entity entityToMove, EnumFacing direction, double force) {
+        
+        pushTowards(entityToMove, entityToMove.getPosition().offset(direction.getOpposite(), 1), force);
+    }
+    
+    /**
+     * Pushes an Entity towards a BlockPos.
+     * 
+     * @param entityToMove: The entity that you want to push.
+     * @param pos: The BlockPos to push the entity towards.
+     * @param force: The amount of force to push the entity with.
+     */
+    public static void pushTowards (Entity entityToMove, BlockPos pos, double force) {
+        
+        BlockPos entityPos = entityToMove.getPosition();
+        double distanceX = pos.getX() - entityPos.getX();
+        double distanceY = pos.getY() - entityPos.getY();
+        double distanceZ = pos.getZ() - entityPos.getZ();
+        double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
+        
+        if (distance > 0) {
+            
+            entityToMove.motionX = distanceX / distance * force;
+            entityToMove.motionY = distanceY / distance * force;
+            entityToMove.motionZ = distanceZ / distance * force;
+        }
     }
     
     /**
@@ -55,6 +100,6 @@ public final class EntityUtils {
      */
     public static boolean areEntitiesCloseEnough (Entity firstEntity, Entity secondEntity, double maxDistance) {
         
-        return getDistanceBetweenEntities(firstEntity, secondEntity) < (maxDistance * maxDistance);
+        return getDistanceFromEntity(firstEntity, secondEntity) < (maxDistance * maxDistance);
     }
 }

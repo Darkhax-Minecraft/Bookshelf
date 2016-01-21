@@ -12,6 +12,35 @@ import net.minecraft.util.Vec3;
 public final class MathsUtils {
     
     /**
+     * Checks if a double is within range of two other doubles.
+     * 
+     * @param min: The smallest valid value.
+     * @param max: The largest valid value.
+     * @param value: The value to check.
+     * @return boolean: Whether or not the value is within the provided scope.
+     */
+    public static boolean isInRange (double min, double max, double value) {
+        
+        return (value <= max && value >= min);
+    }
+    
+    /**
+     * Calculates the distance between two Vec3 positions.
+     * 
+     * @param firstPos: The first position to work with.
+     * @param secondPos: The second position to work with.
+     * @return double: The distance between the two provided locations.
+     */
+    public static double getDistanceBetweenPoints (Vec3 firstPos, Vec3 secondPos) {
+        
+        final double distanceX = firstPos.xCoord - secondPos.xCoord;
+        final double distanceY = firstPos.yCoord - secondPos.yCoord;
+        final double distanceZ = firstPos.zCoord - secondPos.zCoord;
+        
+        return Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
+    }
+    
+    /**
      * This method can be used to round a double to a certain amount of places.
      * 
      * @param value: The double being round.
