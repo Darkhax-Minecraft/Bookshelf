@@ -8,9 +8,10 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 
-public class TileEntityBasic extends TileEntity {
+public class TileEntityBasic extends TileEntity implements ITickable {
     
     @Override
     public void readFromNBT (NBTTagCompound dataTag) {
@@ -47,6 +48,7 @@ public class TileEntityBasic extends TileEntity {
         return oldState.getBlock() != newState.getBlock();
     }
     
+    @Override
     public final void update () {
         
         if (this.isInvalid() || !this.getWorld().isBlockLoaded(this.getPos()) || this.getWorld().isRemote)
