@@ -41,6 +41,11 @@ public final class Utilities {
     public static String[] rainbowChars = new String[] { "4", "6", "e", "a", "9", "5" };
     
     /**
+     * An array of all the LWJGL numeric key codes.
+     */
+    public static int[] validKeys = new int[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 71, 72, 73, 75, 76, 77, 79, 80, 81 };
+    
+    /**
      * This method will take a string and break it down into multiple lines based on a provided
      * line length. The separate strings are then added to the list provided. This method is
      * useful for adding a long description to an item tool tip and having it wrap. This method
@@ -301,6 +306,28 @@ public final class Utilities {
         
         for (double degree = 0.0d; degree < (2 * Math.PI * percentage); degree += step)
             world.spawnParticle(particle, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
+    }
+    
+    public static String getTicksAstime (int timeInTicks) {
+        
+        float time = (float) timeInTicks / 20f;
+        
+        return MathsUtils.round(time, 2) + ((time == 1f) ? " Second " : "Seconds");
+    }
+    
+    /**
+     * Checks if a keyCode is numeric, meaning 0-9 on the keyboard or number pad.
+     * 
+     * @param keyCode: The key code to test.
+     * @return boolean: True, if the key is a number key.
+     */
+    public static boolean isKeyCodeNumeric (int keyCode) {
+        
+        for (int validKey : validKeys)
+            if (validKey == keyCode)
+                return true;
+                
+        return false;
     }
     
     /**
