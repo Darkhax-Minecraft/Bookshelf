@@ -115,4 +115,17 @@ public final class MathsUtils {
         
         return Math.round((first + second) / 2.0F);
     }
+    
+    /**
+     * Converts time in ticks to a human readable string.
+     * 
+     * @param ticks: The amount of ticks to convert.
+     * @return String: A human readable version of the time.
+     */
+    public static String ticksToTime (int ticks) {
+        
+        int seconds = ticks / 20;
+        int minutes = seconds / 60;
+        return minutes + ":" + seconds;
+    }
 }
