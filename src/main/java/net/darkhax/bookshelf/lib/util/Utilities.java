@@ -13,6 +13,7 @@ import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -328,6 +329,14 @@ public final class Utilities {
                 return true;
                 
         return false;
+    }
+    
+    public static Potion getPotionByID (int id) {
+        
+        if (id >= 0 && id < Potion.potionTypes.length)
+            return Potion.potionTypes[id];
+            
+        return null;
     }
     
     /**
