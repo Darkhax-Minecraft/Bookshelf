@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf;
 
 import net.darkhax.bookshelf.common.ProxyCommon;
+import net.darkhax.bookshelf.event.EnchantmentLevelEvent;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.item.Item;
@@ -34,6 +35,9 @@ public class Bookshelf {
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
         
         proxy.preInit();
+        
+        String name = EnchantmentLevelEvent.DepthStriderEvent.class.getName();
+        System.out.println(name);
     }
     
     @EventHandler

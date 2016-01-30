@@ -43,6 +43,14 @@ public class Mappings {
     public static String updateSpawner;
     public static String updatePistonState;
     public static String canPushBlock;
+    public static String getKnockbackModifier;
+    public static String getFireAspectModifier;
+    public static String getRespiration;
+    public static String getDepthStriderModifier;
+    public static String getEfficiencyModifier;
+    public static String getFortuneModifier;
+    public static String getLuckOfSeaModifier;
+    public static String getLureModifier;
     public static String getLootingModifier;
     public static String displayAllReleventItems;
     public static String getRelevantEnchantmentTypes;
@@ -95,7 +103,20 @@ public class Mappings {
         updateSpawner = ASMUtils.getAppropriateMapping("updateSpawner", "func_98278_g");
         updatePistonState = ASMUtils.getAppropriateMapping("updatePistonState", "func_150078_e");
         canPushBlock = ASMUtils.getAppropriateMapping("canPushBlock", "");
+        
+        getKnockbackModifier = ASMUtils.getAppropriateMapping("getKnockbackModifier", "func_77501_a");
+        getFireAspectModifier = ASMUtils.getAppropriateMapping("getFireAspectModifier", "func_90036_a");
+        
+        // (Lnet/minecraft/entity/Entity;)I
+        getRespiration = ASMUtils.getAppropriateMapping("getRespiration", "func_180319_a");
+        getDepthStriderModifier = ASMUtils.getAppropriateMapping("getDepthStriderModifier", "func_180318_b");
+        
+        getEfficiencyModifier = ASMUtils.getAppropriateMapping("getEfficiencyModifier", "func_77509_b");
+        getFortuneModifier = ASMUtils.getAppropriateMapping("getFortuneModifier", "func_77517_e");
+        getLuckOfSeaModifier = ASMUtils.getAppropriateMapping("getLuckOfSeaModifier", "func_151386_g");
+        getLureModifier = ASMUtils.getAppropriateMapping("getLureModifier", "func_151387_h ");
         getLootingModifier = ASMUtils.getAppropriateMapping("getLootingModifier", "func_77519_f");
+        
         displayAllReleventItems = ASMUtils.getAppropriateMapping("displayAllReleventItems", "func_78018_a");
         getRelevantEnchantmentTypes = ASMUtils.getAppropriateMapping("func_111225_m", "func_111225_m");
         addEnchantmentBooksToList = ASMUtils.getAppropriateMapping("addEnchantmentBooksToList", "func_92116_a");
