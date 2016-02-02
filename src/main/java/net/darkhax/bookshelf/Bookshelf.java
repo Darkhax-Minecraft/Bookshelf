@@ -1,10 +1,11 @@
 package net.darkhax.bookshelf;
 
+import net.darkhax.bookshelf.block.BlockShelves;
 import net.darkhax.bookshelf.common.ProxyCommon;
-import net.darkhax.bookshelf.event.EnchantmentLevelEvent;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
+import net.darkhax.bookshelf.item.ItemBlockBasic;
 import net.darkhax.bookshelf.lib.Constants;
-import net.minecraft.item.Item;
+import net.minecraft.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION)
 public class Bookshelf {
@@ -25,7 +27,7 @@ public class Bookshelf {
     public static Bookshelf instance;
     
     public static SimpleNetworkWrapper network;
-    public static Item itemModPotion;
+    public static Block blockShelf;
     
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
@@ -34,10 +36,10 @@ public class Bookshelf {
         
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
         
-        proxy.preInit();
+        blockShelf = new BlockShelves();
+        GameRegistry.registerBlock(blockShelf, ItemBlockBasic.class, "bookshelf", new Object[] { BlockShelves.types });
         
-        String name = EnchantmentLevelEvent.DepthStriderEvent.class.getName();
-        System.out.println(name);
+        proxy.preInit();
     }
     
     @EventHandler
