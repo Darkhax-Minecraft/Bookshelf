@@ -6,6 +6,9 @@ import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.item.ItemBlockBasic;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -39,6 +42,9 @@ public class Bookshelf {
         blockShelf = new BlockShelves();
         GameRegistry.registerBlock(blockShelf, ItemBlockBasic.class, "bookshelf", new Object[] { BlockShelves.types });
         
+        for (int meta = 1; meta <= 5; meta++)
+            GameRegistry.addShapedRecipe(new ItemStack(blockShelf, 1, meta - 1), new Object[] { "xxx", "yyy", "xxx", Character.valueOf('x'), new ItemStack(Blocks.planks, 1, meta), Character.valueOf('y'), Items.book });
+            
         proxy.preInit();
     }
     
