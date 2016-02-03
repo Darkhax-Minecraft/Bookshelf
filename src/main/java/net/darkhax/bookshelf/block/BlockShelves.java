@@ -13,7 +13,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -66,6 +68,12 @@ public class BlockShelves extends Block {
     public Item getItemDropped (IBlockState state, Random rand, int fortune) {
         
         return Items.book;
+    }
+    
+    @Override
+    public float getEnchantPowerBonus (World world, BlockPos pos) {
+        
+        return 1;
     }
     
     @Override
