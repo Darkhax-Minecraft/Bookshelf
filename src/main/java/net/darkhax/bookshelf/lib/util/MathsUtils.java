@@ -3,39 +3,42 @@ package net.darkhax.bookshelf.lib.util;
 import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.biome.BiomeGenBase;
 
 import net.darkhax.bookshelf.lib.Constants;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 
 public final class MathsUtils {
     
     /**
-     * A list of all enchantments that have been found by the getNextEnchantmentID method. This
-     * is meant to keep track of all enchantment IDs that have already been found, and prevent
-     * duplicate results. This should only be accessed internally.
+     * Checks if a double is within range of two other doubles.
+     * 
+     * @param min: The smallest valid value.
+     * @param max: The largest valid value.
+     * @param value: The value to check.
+     * @return boolean: Whether or not the value is within the provided scope.
      */
-    static ArrayList<Integer> foundEnchantments = new ArrayList();
+    public static boolean isInRange (double min, double max, double value) {
+        
+        return (value <= max && value >= min);
+    }
     
     /**
-     * A list of all biome IDs that have been found by the getAvailableBiomeID method. This is
-     * meant to keep track of biome IDs which have already been found, and prevents duplicate
-     * results. This array should only be accessed internally.
+     * Calculates the distance between two Vec3 positions.
+     * 
+     * @param firstPos: The first position to work with.
+     * @param secondPos: The second position to work with.
+     * @return double: The distance between the two provided locations.
      */
-    static ArrayList<Integer> foundBiomes = new ArrayList();
-    
-    /**
-     * A list of all potion IDs that have been found by the getNextPotionID method. This is
-     * meant to keep track of potion IDs which have already been found, and prevents duplicate
-     * results. This array should only be accessed internally.
-     */
-    static ArrayList<Integer> foundPotions = new ArrayList();
+    public static double getDistanceBetweenPoints (Vec3 firstPos, Vec3 secondPos) {
+        
+        final double distanceX = firstPos.xCoord - secondPos.xCoord;
+        final double distanceY = firstPos.yCoord - secondPos.yCoord;
+        final double distanceZ = firstPos.zCoord - secondPos.zCoord;
+        
+        return Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
+    }
     
     /**
      * This method can be used to round a double to a certain amount of places.
@@ -73,7 +76,7 @@ public final class MathsUtils {
      */
     public static MovingObjectPosition rayTrace (EntityPlayer player, double length) {
         
-        Vec3 vec1 = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+        Vec3 vec1 = new Vec3(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         Vec3 vec2 = player.getLookVec();
         Vec3 vec3 = vec1.addVector(vec2.xCoord * length, vec2.yCoord * length, vec2.zCoord * length);
         return player.worldObj.rayTraceBlocks(vec1, vec3);
@@ -102,69 +105,6 @@ public final class MathsUtils {
     }
     
     /**
-     * Attempts to find a biome ID which is vacant. There is no guarantee that other mods
-     * loaded after yours will not use the same ID, however it will prevent a great deal of
-     * issues.
-     * 
-     * @return int: A biome ID which was not occupied at the time of the method being called.
-     */
-    public static int getAvailableBiomeID () {
-        
-        for (int possibleID = 0; possibleID < BiomeGenBase.getBiomeGenArray().length; possibleID++)
-            
-            if (BiomeGenBase.getBiome(possibleID) == null && !foundBiomes.contains(possibleID)) {
-                
-                foundBiomes.add(possibleID);
-                return possibleID;
-            }
-            
-        throw new RuntimeException("An attempt to find an available biome ID was made, however no IDs are available.");
-    }
-    
-    /**
-     * Attempts to find an Enchantment ID which is vacant. There is no guarantee that other
-     * mods loaded after yours will not have the same ID, however it will prevent a great deal
-     * of issues.
-     * 
-     * @return int: An Enchantment ID which was not assigned at the time of the method being
-     *         called.
-     */
-    public static int getNextEnchantmentID () {
-        
-        for (int possibleID = 0; possibleID < Enchantment.enchantmentsList.length; possibleID++) {
-            
-            if (Enchantment.enchantmentsList[possibleID] == null && !foundEnchantments.contains(possibleID)) {
-                
-                foundEnchantments.add(possibleID);
-                return possibleID;
-            }
-        }
-        
-        throw new RuntimeException("An attempt to find an available enchantment ID was made, however no IDs are available.");
-    }
-    
-    /**
-     * Attempts to find a Potion ID which is vacant. There is no guarantee that other mods
-     * loaded after yours will not have the same ID, however it will prevent a great deal of
-     * issues.
-     * 
-     * @return int: A Potion ID which was not assigned at the time of the method being called.
-     */
-    public static int getNextPotionID () {
-        
-        for (int possibleID = 0; possibleID < Potion.potionTypes.length; possibleID++) {
-            
-            if (Potion.potionTypes[possibleID] == null && !foundPotions.contains(possibleID) && possibleID > 32) {
-                
-                foundPotions.add(possibleID);
-                return possibleID;
-            }
-        }
-        
-        throw new RuntimeException("An attempt to find an available potion ID was made, however no IDs are available.");
-    }
-    
-    /**
      * Gets the middle integer between two other integers. The order is not important.
      * 
      * @param first: The first integer.
@@ -174,5 +114,18 @@ public final class MathsUtils {
     public static int getAverage (int first, int second) {
         
         return Math.round((first + second) / 2.0F);
+    }
+    
+    /**
+     * Converts time in ticks to a human readable string.
+     * 
+     * @param ticks: The amount of ticks to convert.
+     * @return String: A human readable version of the time.
+     */
+    public static String ticksToTime (int ticks) {
+        
+        int seconds = ticks / 20;
+        int minutes = seconds / 60;
+        return minutes + ":" + seconds;
     }
 }

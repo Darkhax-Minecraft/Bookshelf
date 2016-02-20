@@ -110,12 +110,12 @@ public final class EnchantmentUtils {
         
         ItemStackUtils.prepareDataTag(stack);
         String tagName = (stored) ? "StoredEnchantments" : "ench";
-        NBTTagCompound tag = stack.stackTagCompound;
+        NBTTagCompound tag = stack.getTagCompound();
         NBTTagList list = tag.getTagList(tagName, 10);
         Enchantment[] ench = new Enchantment[list.tagCount()];
         
-        for (int i = 0; i < list.tagCount(); i++)
-            ench[i] = Enchantment.enchantmentsList[list.getCompoundTagAt(i).getShort("id")];
+        for (int index = 0; index < list.tagCount(); index++)
+            ench[index] = Enchantment.getEnchantmentById(list.getCompoundTagAt(index).getShort("id"));
             
         return ench;
     }

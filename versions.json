@@ -1,62 +1,10 @@
-{
-    "iconUrl": "http://media-elerium.cursecdn.com/avatars/thumbnails/15/169/62/62/635617078813942671.png",
-    "newestVersion": "1.0.4.172",
-    "release": "1.0.4.172",
-    "updateUrl": "http://minecraft.curseforge.com/projects/bookshelf/files",
-    "versions": {
-        "1.0.4.172": [
-            "Added Utility to grab EntityPlayer from CraftingInventory",
-            "Added Player specific Recipes",
-            "Added Crafting utilities",
-            "Added New NEI support and info GUI",
-            "Added ColorObject",
-            "Added Slider GUI component",
-            "Added Average calculation method",
-            "Added NBT comparator",
-            "Added Wrapped formatted text",
-            "Added More ItemStack utilities",
-            "Added Mutable Strings",
-            "Added App specific utilities",
-            "Added Reflection utilities",
-            "Fixed Horse Armor ASM conflicts",
-            "Fixed Networking issue which caused way too many packets to be sent",
-            "Fixed Documentation",
-            "Changed Duplicate potion ID code to be more informative",
-            "Changed Tinkers Construct utilities to be more accurate"
-
-        ],
-        "1.0.3.138": [
-            "Added Several dozen new utility methods",
-            "Added Seperate classes for utility classes",
-            "Added Potion Array Expansion",
-            "Added AbstractTileEntity",
-            "Added SkullUtils",
-            "Added CreativeTabCached",
-            "Added Vanilla Particle enumeration",
-            "Added Method to create rings of particles",
-            "Added LootingEvent",
-            "Added CreativeTabEvent",
-            "Added PotionCuredEvent",
-            "Added PotionEffectStartEvent",
-            "Added PotionEffectChangedEvent",
-            "Added PotionEffectFinishedEvent",
-            "Added Protection against multiple potions using the same ID",
-            "Added The Buff System as an alternative to Potion",
-            "Added Anvil Recipes",
-            "Added LLibrary 0.5.0 support update",
-            "Added Mcmod.info file",
-            "Added Tinkers Construct IMC wrapper",
-            "Added Enchanting Plus 4 IMC wrapper",
-            "Added MilibucketConversion enumeration",
-            "Added EnchantmentUtils",
-            "Added Special GUI for Notifications",
-            "Fixed Mapping bug in obfuscated environments",
-            "Fixed Several smaller issues",
-            "Fixed Critical ASM bug introduced by mcmod.info",
-            "Changed The Import and Format structure"
-        ],
-
-        "1.0.2.56": [
+{  
+    "iconUrl":"http://media-elerium.cursecdn.com/avatars/thumbnails/15/169/62/62/635617078813942671.png",
+    "newestVersion":"1.0.2.56",
+    "release":"1.0.2.56",
+    "updateUrl":"http://minecraft.curseforge.com/projects/bookshelf/files",
+    "versions":{  
+        "1.0.2.56":[
             "Fixed ASM load time. Now several times faster!",
             "Fixed several typos in the code mappings.",
             "Fixed armor items not being colorable. Does not show when worn!",
@@ -73,14 +21,14 @@
             "Added ItemModelledArmor",
             "Made some friends <3"
         ],
-        "1.0.1.0": [
+        "1.0.1.0":[  
             "Fixed issue where ASM code wasn't enabled",
             "Fixed issue where mcp mappings were being used instead of srg",
             "Added ItemEnchantedEvent",
             "Added new color command",
             "Cleaned up several areas of the code, should give very minor performance increases"
         ],
-        "1.0.0.15": [
+        "1.0.0.15":[  
             "Added support for horse armor",
             "Added support for recoloring items",
             "Added support for disabled gui slots",

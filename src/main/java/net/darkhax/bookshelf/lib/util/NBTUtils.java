@@ -2,14 +2,12 @@ package net.darkhax.bookshelf.lib.util;
 
 import java.util.Comparator;
 
+import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-
-import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.Position;
 
 public final class NBTUtils {
     
@@ -69,9 +67,6 @@ public final class NBTUtils {
         else if (value instanceof ItemStack)
             dataTag.setTag(tagName, ((ItemStack) value).writeToNBT(new NBTTagCompound()));
             
-        else if (value instanceof Position)
-            dataTag.setTag(tagName, ((Position) value).write(new NBTTagCompound()));
-            
         else if (value instanceof Entity) {
             
             NBTTagCompound newTag = new NBTTagCompound();
@@ -93,8 +88,8 @@ public final class NBTUtils {
      */
     public static NBTTagCompound writeInventoryToNBT (NBTTagCompound tag, InventoryBasic inventory) {
         
-        if (inventory.hasCustomInventoryName())
-            tag.setString("CustomName", inventory.getInventoryName());
+        if (inventory.hasCustomName())
+            tag.setString("CustomName", inventory.getName());
             
         NBTTagList nbttaglist = new NBTTagList();
         
@@ -128,7 +123,7 @@ public final class NBTUtils {
     public static InventoryBasic readInventoryFromNBT (NBTTagCompound tag, InventoryBasic inventory) {
         
         if (tag.hasKey("CustomName", 8))
-            inventory.func_110133_a(tag.getString("CustomName"));
+            inventory.setCustomName(tag.getString("CustomName"));
             
         NBTTagList items = tag.getTagList("Items", 10);
         

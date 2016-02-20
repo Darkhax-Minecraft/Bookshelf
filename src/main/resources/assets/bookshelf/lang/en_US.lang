@@ -1,13 +1,13 @@
 #English Language File 
 
 #Commands
-command.bookshelf.color.usage=/color This command will change the color of the held item. This command accepts several different color formats. The accepted formats are hex(#FF0000), hex integer(16711680) and RGB(255 0 0). You may also use r or remove to clear the color, or random to give a random color. Vanilla color names are also accepted.
-command.bookshelf.color.error=There was an error with your color, please make sure it was entered correctly. Hex entries must start with a # and RGB values can not be over 255. You must also have an item in your hand.
-command.bookshelf.color.success=The color was applied successfully.
-command.bookshelf.color.remove=All color data has been removed successfully.
 
-#GUI
-gui.bookshelf.nei.documentation=Information
+#Blocks
+tile.bookshelf.bookshelf.spruce.name=Spruce Bookshelf
+tile.bookshelf.bookshelf.birch.name=Birch Bookshelf
+tile.bookshelf.bookshelf.jungle.name=Jungle Bookshelf
+tile.bookshelf.bookshelf.acacia.name=Acacia Bookshelf
+tile.bookshelf.bookshelf.dark_oak.name=Dark Oak Bookshelf
  
 #Enchantment Level localization. Do not translate!
 enchantment.level.11=XI

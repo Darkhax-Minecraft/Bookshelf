@@ -2,20 +2,19 @@ package net.darkhax.bookshelf.asm;
 
 import java.util.Map;
 
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-
 import net.darkhax.bookshelf.lib.Constants;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 @IFMLLoadingPlugin.SortingIndex(1001)
 @IFMLLoadingPlugin.TransformerExclusions("net.darkhax.bookshelf.asm")
-@IFMLLoadingPlugin.MCVersion("1.7.10")
+@IFMLLoadingPlugin.MCVersion("1.8.9")
 public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
     
     @Override
     public String[] getASMTransformerClass () {
         
-        ASMHelper.isASMEnabled = true;
-        ASMConfigs.loadConfigOptions();
+        ASMUtils.isASMEnabled = true;
+        ASMConfig.loadConfigOptions();
         Constants.LOG.info("Starting to apply transformations");
         return new String[] { BookshelfTransformerManager.class.getName() };
     }
@@ -35,8 +34,9 @@ public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
     @Override
     public void injectData (Map<String, Object> data) {
         
-        ASMHelper.isSrg = (Boolean) data.get("runtimeDeobfuscationEnabled");
-        new Mappings();
+        ASMUtils.isSrg = (Boolean) data.get("runtimeDeobfuscationEnabled");
+        Mappings.initFields();
+        Mappings.initMethods();
     }
     
     @Override

@@ -1,13 +1,14 @@
 package net.darkhax.bookshelf.lib.util;
 
+import net.darkhax.bookshelf.lib.VanillaColor;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.*;
-
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.oredict.OreDictionary;
-
-import net.darkhax.bookshelf.lib.VanillaColor;
 
 public final class ItemStackUtils {
     
@@ -172,43 +173,16 @@ public final class ItemStackUtils {
         return (firstStack == null && secondStack == null) ? true : (isValidStack(firstStack) && isValidStack(secondStack) && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem() && firstStack.stackSize == secondStack.stackSize);
     }
     
-    /**
-     * Retrieves the custom color of an ItemStack. This will only retrieve color data that has
-     * been set through this mod. If no valid color can be found, white will be used.
-     * 
-     * @param stack: The ItemStack to check the color of.
-     * @return int: A numeric representation of the color, that can be broken down into RGB
-     *         components.
-     */
-    public static int getItemColor (ItemStack stack) {
+    public static ItemStack writePotionEffectsToStack (ItemStack stack, PotionEffect[] effects) {
         
-        return stack.getTagCompound().hasKey("bookshelfColor") ? stack.getTagCompound().getInteger("bookshelfColor") : 16777215;
-    }
-    
-    /**
-     * Sets a color to an ItemStack. This color will override any color value provided by the
-     * getColorFromItemStack method.
-     * 
-     * @param stack: The ItemStack to change the color of.
-     * @param color: A numeric representation of the color, that can be broken down into RGB
-     *            components.
-     */
-    public static void setItemColor (ItemStack stack, int color) {
+        NBTTagCompound stackTag = prepareDataTag(stack);
+        NBTTagList potionTag = new NBTTagList();
         
-        prepareDataTag(stack);
-        stack.getTagCompound().setInteger("bookshelfColor", color);
-    }
-    
-    /**
-     * Removes all color data associated with an ItemStack. This only works for custom NBT
-     * colors set by this mod.
-     * 
-     * @param stack: The ItemStack to remove the color from.
-     */
-    public static void removeItemColor (ItemStack stack) {
-        
-        prepareDataTag(stack);
-        stack.getTagCompound().removeTag("bookshelfColor");
+        for (PotionEffect effect : effects)
+            potionTag.appendTag(effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
+            
+        stackTag.setTag("CustomPotionEffects", potionTag);
+        return stack;
     }
     
     /**

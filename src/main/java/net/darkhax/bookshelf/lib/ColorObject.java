@@ -2,11 +2,10 @@ package net.darkhax.bookshelf.lib;
 
 import java.awt.Color;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-
-import io.netty.buffer.ByteBuf;
 
 public class ColorObject {
     

@@ -1,24 +1,26 @@
 package net.darkhax.bookshelf;
 
-import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.Side;
-
-import net.darkhax.bookshelf.command.CommandItemColor;
+import net.darkhax.bookshelf.block.BlockShelves;
 import net.darkhax.bookshelf.common.ProxyCommon;
-import net.darkhax.bookshelf.common.network.packet.*;
-import net.darkhax.bookshelf.handler.ExpansionHandler;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
+import net.darkhax.bookshelf.item.ItemBlockBasic;
 import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.util.Utilities;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-@Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION)
+@Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION)
 public class Bookshelf {
     
     @SidedProxy(serverSide = Constants.PROXY_COMMON, clientSide = Constants.PROXY_CLIENT)
@@ -28,20 +30,22 @@ public class Bookshelf {
     public static Bookshelf instance;
     
     public static SimpleNetworkWrapper network;
+    public static Block blockShelf;
     
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
         
         network = NetworkRegistry.INSTANCE.newSimpleChannel("Bookshelf");
-        Utilities.registerMessage(network, PacketSyncPlayerProperties.class, 0, Side.CLIENT);
-        Utilities.registerMessage(network, PacketAddPlayerProperties.class, 1, Side.CLIENT);
-        Utilities.registerMessage(network, PacketRemovePlayerProperties.class, 2, Side.CLIENT);
         
-        proxy.preInit();
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
         
-        ExpansionHandler.expandEnchantmentList();
-        ExpansionHandler.expandPotionArray();
+        blockShelf = new BlockShelves();
+        GameRegistry.registerBlock(blockShelf, ItemBlockBasic.class, "bookshelf", new Object[] { BlockShelves.types });
+        
+        for (int meta = 1; meta <= 5; meta++)
+            GameRegistry.addShapedRecipe(new ItemStack(blockShelf, 1, meta - 1), new Object[] { "xxx", "yyy", "xxx", Character.valueOf('x'), new ItemStack(Blocks.planks, 1, meta), Character.valueOf('y'), Items.book });
+            
+        proxy.preInit();
     }
     
     @EventHandler
@@ -54,12 +58,5 @@ public class Bookshelf {
     public void onPostInit (FMLPostInitializationEvent event) {
         
         proxy.postInit();
-        Utilities.checkDuplicatePotions();
-    }
-    
-    @EventHandler
-    public void onServerStarting (FMLServerStartingEvent event) {
-        
-        event.registerServerCommand(new CommandItemColor());
     }
 }

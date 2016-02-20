@@ -1,44 +1,16 @@
 package net.darkhax.bookshelf.lib.util;
 
-import java.lang.reflect.Field;
 import java.util.UUID;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.*;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class PlayerUtils {
-    
-    /**
-     * Access to the eventHandler field in an InventoryCrafting instance.
-     */
-    private static final Field eventHandler = ReflectionHelper.findField(InventoryCrafting.class, "eventHandler", "field_70465_c");
-    
-    /**
-     * Access to the thePlayer field in a ContainerPlayer instance.
-     */
-    private static final Field containerPlayer = ReflectionHelper.findField(ContainerPlayer.class, "thePlayer", "field_82862_h");
-    
-    /**
-     * Access to the thePlayer field in a SlotCrafting instance.
-     */
-    private static final Field slotPlayer = ReflectionHelper.findField(SlotCrafting.class, "thePlayer", "field_75238_b");
-    
-    /**
-     * Access to the curBlockDamageMP field in the client-side PlayerControllerMP instance.
-     */
-    @SideOnly(Side.CLIENT)
-    public static Field currentBlockDamage;
     
     /**
      * Checks if a specific player can sleep. For this to be true, a player must not already be
@@ -50,79 +22,6 @@ public final class PlayerUtils {
     public static boolean canPlayerSleep (EntityPlayer player) {
         
         return (!player.isPlayerSleeping() && player.isEntityAlive() && player.worldObj.getWorldTime() > 12541 && player.worldObj.getWorldTime() < 23458);
-    }
-    
-    /**
-     * Attempts to harvest blocks in an AOE based effect around where the player is looking.
-     * This effect is designed to be used in conjunction with a tool, and should be used as
-     * such.
-     * 
-     * @param player: The player who is attempting to harvest the block.
-     * @param materials: An array of valid material types that this effect will be able to
-     *            break.
-     * @param layers: The amount of layers to break. Each layer adds one more out in every
-     *            direction. For example 1 will break a 3x3 area, 2 will break a 5x5 area and 3
-     *            will break a 9x9 area.
-     */
-    public static void tryAOEHarvest (EntityPlayer player, Material[] materials, int layers) {
-        
-        ItemStack stack = player.getHeldItem();
-        
-        if (stack != null) {
-            
-            ItemStackUtils.prepareDataTag(stack);
-            MovingObjectPosition lookPos = MathsUtils.rayTrace(player, 4.5d);
-            
-            if (lookPos != null && player instanceof EntityPlayerMP) {
-                
-                EntityPlayerMP playerMP = (EntityPlayerMP) player;
-                NBTTagCompound dataTag = stack.stackTagCompound;
-                
-                int x = lookPos.blockX;
-                int y = lookPos.blockY;
-                int z = lookPos.blockZ;
-                
-                if (!dataTag.hasKey("bookshelfBreaking") || !dataTag.getBoolean("bookshelfBreaking")) {
-                    
-                    dataTag.setBoolean("bookshelfBreaking", true);
-                    int rangeX = layers;
-                    int rangeY = layers;
-                    int rangeZ = layers;
-                    
-                    switch (lookPos.sideHit) {
-                        
-                        case 1:
-                            rangeY = 0;
-                            break;
-                            
-                        case 3:
-                            rangeZ = 0;
-                            break;
-                            
-                        case 5:
-                            rangeX = 0;
-                            break;
-                    }
-                    
-                    for (int posX = x - rangeX; posX <= x + rangeX; posX++) {
-                        
-                        for (int posY = y - rangeY; posY <= y + rangeY; posY++) {
-                            
-                            for (int posZ = z - rangeZ; posZ <= z + rangeZ; posZ++) {
-                                
-                                Block block = playerMP.worldObj.getBlock(posX, posY, posZ);
-                                
-                                for (Material mat : materials)
-                                    if (block != null && mat == block.getMaterial() && block.getPlayerRelativeBlockHardness(playerMP, playerMP.worldObj, x, posY, z) > 0)
-                                        playerMP.theItemInWorldManager.tryHarvestBlock(posX, posY, posZ);
-                            }
-                        }
-                    }
-                    
-                    dataTag.setBoolean("bookshelfBreaking", false);
-                }
-            }
-        }
     }
     
     /**
@@ -167,37 +66,6 @@ public final class PlayerUtils {
     }
     
     /**
-     * Retrieves the player that is crafting in an InventoryCrafting. This is done through
-     * reflection. The first attempt will try to get the player from a ContainerPlayer, and the
-     * second attempt tries a ContainerWorkbench. If no player is found, null will be thrown.
-     * 
-     * @param inventory: An instance of the InventoryCrafting being used.
-     * @return EntityPlayer: The EntityPlayer that is using the InventoryCrafting. If none is
-     *         found, null will be returned.
-     */
-    public static EntityPlayer getPlayerFromCrafting (InventoryCrafting inventory) {
-        
-        try {
-            
-            Container container = (Container) eventHandler.get(inventory);
-            
-            if (container instanceof ContainerPlayer)
-                return (EntityPlayer) containerPlayer.get(container);
-                
-            else if (container instanceof ContainerWorkbench)
-                return (EntityPlayer) slotPlayer.get(container.getSlot(0));
-                
-        }
-        
-        catch (Exception e) {
-            
-            e.printStackTrace();
-        }
-        
-        return null;
-    }
-    
-    /**
      * Retrieves an instance of the player from the client side. This code only exists in
      * client side code and can not be used in server side code.
      */
@@ -205,36 +73,5 @@ public final class PlayerUtils {
     public static EntityPlayer getClientPlayer () {
         
         return Minecraft.getMinecraft().thePlayer;
-    }
-    
-    /**
-     * A client sided method used to retrieve the progression of the block currently being
-     * mined by the player. This method is client side only, and refers to only the one
-     * instance of the player. Do not try to use this method to get data for multiple players,
-     * or for server sided things.
-     * 
-     * @return float: A float value representing how much time is left for the block being
-     *         broken to break. 0 = no damage has been done. 1 = the block is broken.
-     */
-    @SideOnly(Side.CLIENT)
-    public static float getBlockDamage () {
-        
-        if (currentBlockDamage == null)
-            return 0;
-            
-        try {
-            
-            return currentBlockDamage.getFloat(Minecraft.getMinecraft().playerController);
-        }
-        
-        catch (IllegalArgumentException e) {
-        
-        }
-        
-        catch (IllegalAccessException e) {
-        
-        }
-        
-        return 0;
     }
 }

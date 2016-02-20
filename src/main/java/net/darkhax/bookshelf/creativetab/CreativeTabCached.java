@@ -1,14 +1,13 @@
 package net.darkhax.bookshelf.creativetab;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import net.darkhax.bookshelf.handler.BookshelfHooks;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class CreativeTabCached extends CreativeTabs {
     
@@ -38,9 +37,6 @@ public abstract class CreativeTabCached extends CreativeTabs {
     @SideOnly(Side.CLIENT)
     public void displayAllReleventItems (List itemList) {
         
-        if (BookshelfHooks.onCreativeTabDisplayPre(this, itemList))
-            return;
-            
         if (this.cachedItems.isEmpty()) {
             
             Iterator iterator = Item.itemRegistry.iterator();
@@ -62,9 +58,7 @@ public abstract class CreativeTabCached extends CreativeTabs {
                     if (tab == this)
                         item.getSubItems(item, this, itemList);
                         
-        if (this.func_111225_m() != null)
-            this.addEnchantmentBooksToList(itemList, this.func_111225_m());
-            
-        BookshelfHooks.onCreativeTabDisplayPost(this, itemList);
+        if (this.getRelevantEnchantmentTypes() != null)
+            this.addEnchantmentBooksToList(itemList, this.getRelevantEnchantmentTypes());
     }
 }

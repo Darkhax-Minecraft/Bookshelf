@@ -1,16 +1,9 @@
 package net.darkhax.bookshelf.common;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import net.darkhax.bookshelf.buff.Buff;
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 
 public class BookshelfRegistry {
     
@@ -18,18 +11,6 @@ public class BookshelfRegistry {
      * A List of all the anvil recipes that have been registered with Bookshelf.
      */
     private static final List<AnvilRecipe> anvilRecipes = new ArrayList<AnvilRecipe>();
-    
-    /**
-     * A BiMap which stores every single Buff effect that has been registered.
-     */
-    public static BiMap<String, Buff> buffMap = HashBiMap.create();
-    
-    /**
-     * A HashMap that contains a list of descriptions for ingame items. The key is the
-     * ItemStack, while the ArrayList contains a bunch of localization keys for the
-     * descriptions of that item.
-     */
-    public static HashMap<ItemStack, ArrayList<String>> infoMap = new HashMap<ItemStack, ArrayList<String>>();
     
     /**
      * Adds a new AnvilRecipe to the registry. Inputs can be null.
@@ -91,130 +72,6 @@ public class BookshelfRegistry {
     public static List<AnvilRecipe> getAnvilRecipes () {
         
         return anvilRecipes;
-    }
-    
-    /**
-     * Attempts to retrieve a Buff by its name.
-     *
-     * @param name: The name of the buff you are looking for.
-     * @return Buff: The Buff, if its name was found. If not, null.
-     */
-    public static Buff getBuffFromString (String name) {
-        
-        return (buffMap.containsKey(name)) ? buffMap.get(name) : null;
-    }
-    
-    /**
-     * Registers a Buff with the buffMap.
-     *
-     * @param buff: The Buff to register.
-     */
-    public static void registerBuff (Buff buff) {
-        
-        if (buffMap.containsKey(buff.getPotionName()))
-            throw new RuntimeException("An attempt was made to register a Potion with the name of " + buff.getPotionName() + " however it is already in use. " + buffMap.get(buff.getPotionName()).getClass().getName() + " " + buff.getClass().getName());
-            
-        buffMap.put(buff.getPotionName(), buff);
-    }
-    
-    /**
-     * Registers an Item into the information system. This will associate the item with the
-     * basic information localization key, which is info. followed by the unlocalized name of
-     * the item with the item. part cut off.
-     * 
-     * @param item: The Item to add the information for.
-     */
-    public static void addInformation (Item item) {
-        
-        addInformation(item, "info." + item.getUnlocalizedName().substring(5));
-    }
-    
-    /**
-     * Registers a localization key to an Item. This is used to provide information about that
-     * Item. If information already exists, yours will be appended to it.
-     * 
-     * @param item: The Item to add information for.
-     * @param localozationKey: The localization key used to retrieve the information.
-     */
-    public static void addInformation (Item item, String localizationKey) {
-        
-        addInformation(new ItemStack(item), localizationKey);
-    }
-    
-    /**
-     * Registers a Block into the information system. This will associate the block with a
-     * basic information localization key, which is info. followed by the unlocalized name of
-     * the block with the tile. part cut off.
-     * 
-     * @param block: The Block to add the information for.
-     */
-    public static void addInformation (Block block) {
-        
-        addInformation(block, "info." + block.getUnlocalizedName().substring(5));
-    }
-    
-    /**
-     * Registers a localization key to a Block. This is used to provide information about that
-     * Item. If information already exists, yours will be appended to it.
-     * 
-     * @param Block: The Block to add information for.
-     * @param localozationKey: The localization key used to retrieve the information.
-     */
-    public static void addInformation (Block block, String localizationKey) {
-        
-        addInformation(new ItemStack(block), localizationKey);
-    }
-    
-    /**
-     * Registers a localization key to an ItemStack. This is used to provide information about
-     * that Item. If information already exists, yours will be appended to it.
-     * 
-     * @param stack: The ItemStack to add information for.
-     * @param localozationKey: The localization key used to retrieve the information.
-     */
-    public static void addInformation (ItemStack stack, String localizationKey) {
-        
-        for (ItemStack keyStack : infoMap.keySet()) {
-            
-            if (ItemStackUtils.areStacksSimilar(keyStack, stack)) {
-                infoMap.get(keyStack).add(localizationKey);
-                return;
-            }
-        }
-        
-        ArrayList infoKeys = new ArrayList<String>();
-        infoKeys.add(localizationKey);
-        infoMap.put(stack, infoKeys);
-    }
-    
-    /**
-     * Checks to see if an ItemStack has any information registered.
-     * 
-     * @param stack: The ItemStack to check for.
-     * @return boolean: Whether or not the ItemStack has information about it.
-     */
-    public static boolean doesStackHaveDescription (ItemStack stack) {
-        
-        for (ItemStack keyStack : infoMap.keySet())
-            if (ItemStackUtils.areStacksSimilar(keyStack, stack))
-                return true;
-                
-        return false;
-    }
-    
-    /**
-     * Retrieves a list of description translation keys for an ItemStack.
-     * 
-     * @param stack: The ItemStack to grab keys for.
-     * @return ArrayList<String>: The array of description keys.
-     */
-    public static ArrayList<String> getDescriptionKeys (ItemStack stack) {
-        
-        for (ItemStack keyStack : infoMap.keySet())
-            if (ItemStackUtils.areStacksSimilar(keyStack, stack))
-                return infoMap.get(keyStack);
-                
-        return null;
     }
     
     public static class AnvilRecipe {

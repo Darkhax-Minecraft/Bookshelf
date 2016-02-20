@@ -1,13 +1,13 @@
 package net.darkhax.bookshelf.lib.util;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.init.Blocks;
@@ -15,21 +15,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-
 import net.minecraftforge.fluids.IFluidBlock;
-
-import cpw.mods.fml.common.network.simpleimpl.*;
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.VillagerRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import net.darkhax.bookshelf.common.network.AbstractMessage;
-import net.darkhax.bookshelf.handler.BookshelfHooks;
-import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.Tuple;
+import net.minecraftforge.fml.common.registry.GameData;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class Utilities {
     
@@ -49,10 +42,9 @@ public final class Utilities {
     public static String[] rainbowChars = new String[] { "4", "6", "e", "a", "9", "5" };
     
     /**
-     * A List of all available enchantments. Needs to occasionally be updated using
-     * updateAvailableEnchantments.
+     * An array of all the LWJGL numeric key codes.
      */
-    private static List<Enchantment> availableEnchantments;
+    public static int[] validKeys = new int[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 71, 72, 73, 75, 76, 77, 79, 80, 81 };
     
     /**
      * This method will take a string and break it down into multiple lines based on a provided
@@ -129,12 +121,14 @@ public final class Utilities {
      */
     public static Object getThingByName (String name) {
         
-        Object thing = Item.itemRegistry.getObject(name);
+        ResourceLocation location = new ResourceLocation(name);
+        
+        Object thing = Item.itemRegistry.getObject(location);
         
         if (thing != null)
             return thing;
             
-        thing = Block.blockRegistry.getObject(name);
+        thing = Block.blockRegistry.getObject(location);
         
         if (thing != null)
             return thing;
@@ -256,7 +250,7 @@ public final class Utilities {
      */
     public static String getModName (Item item) {
         
-        String itemID = GameData.getItemRegistry().getNameForObject(item);
+        String itemID = GameData.getItemRegistry().getNameForObject(item).toString();
         return itemID.substring(0, itemID.indexOf(':'));
     }
     
@@ -268,76 +262,8 @@ public final class Utilities {
      */
     public static String getModName (Block block) {
         
-        String blockID = GameData.getBlockRegistry().getNameForObject(block);
+        String blockID = GameData.getBlockRegistry().getNameForObject(block).toString();
         return blockID.substring(0, blockID.indexOf(':'));
-    }
-    
-    /**
-     * A safe way to grab an enchantment by its numeric ID. This is to help prevent crashes
-     * when working with ids above the default maximum.
-     *
-     * @param id: The ID of the enchantment you wish to grab.
-     * @return Enchantment: The enchantment that is assigned to the provided ID. Id the ID is
-     *         invalid, or the enchantment does not exist, you will get null.
-     */
-    public static Enchantment getEnchantment (int id) {
-        
-        return (id >= 0 && id <= Enchantment.enchantmentsList.length) ? Enchantment.enchantmentsList[id] : null;
-    }
-    
-    /**
-     * A safe way to grab a Potion by its numeric ID. This is to help prevent crashes when
-     * working with IDs above the default maximum.
-     * 
-     * @param id: The ID of the Potion you wish to grab.
-     * @return Potion: The Potion that was assigned the the passed ID. If it can't be found, is
-     *         null, or out of range, you will get null.
-     */
-    public static Potion getPotion (int id) {
-        
-        return (id >= 0 && id <= Potion.potionTypes.length) ? Potion.potionTypes[id] : null;
-    }
-    
-    /**
-     * Updates the available enchantment array to contain all current enchantments.
-     */
-    public static void updateAvailableEnchantments () {
-        
-        List<Enchantment> foundEnchantments = new ArrayList<Enchantment>();
-        
-        for (Enchantment enchantment : Enchantment.enchantmentsList)
-            if (enchantment != null)
-                foundEnchantments.add(enchantment);
-                
-        availableEnchantments = foundEnchantments;
-    }
-    
-    /**
-     * Provides a list of all enchantments that are currently available. If the list has not
-     * yet been initialized, this will do it automatically.
-     *
-     * @return List<Enchantment>: A list of all the enchantments that were found in the
-     *         enchantment list.
-     */
-    public static List<Enchantment> getAvailableEnchantments () {
-        
-        if (availableEnchantments == null)
-            updateAvailableEnchantments();
-            
-        return availableEnchantments;
-    }
-    
-    /**
-     * Registers an AbstractMessage to your SimpleNetworkWrapper.
-     *
-     * @param network: The SimpleNetworkWrapper to register to.
-     * @param clazz: The class of your AbstractMessage.
-     * @param id: And ID for your AbstractMessage.
-     * @param side: The side to send these messages towards.
-     */
-    public static <T extends AbstractMessage<T> & IMessageHandler<T, IMessage>> void registerMessage (SimpleNetworkWrapper network, Class<T> clazz, int id, Side side) {
-        
-        network.registerMessage(clazz, clazz, id, side);
     }
     
     /**
@@ -345,7 +271,7 @@ public final class Utilities {
      * focused around the provided XYZ coordinates.
      *
      * @param world: The world to spawn the particles in.
-     * @param name: The name of the particle to spawn. VanillaParticle has a list of these.
+     * @param particle: The type of particle to spawn.
      * @param x: The x position to spawn the particle around.
      * @param y: The y position to spawn the particle around.
      * @param z: The z position to spawn the particle around.
@@ -355,10 +281,10 @@ public final class Utilities {
      * @param step: The distance in degrees, between each particle. The maximum is 2 * PI,
      *            which will create 1 particle per ring. 0.15 is a nice value.
      */
-    public static void spawnParticleRing (World world, String name, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
+    public static void spawnParticleRing (World world, EnumParticleTypes particle, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
         
         for (double degree = 0.0d; degree < 2 * Math.PI; degree += step)
-            world.spawnParticle(name, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
+            world.spawnParticle(particle, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
     }
     
     /**
@@ -366,7 +292,7 @@ public final class Utilities {
      * focused around the provided XYZ coordinates.
      *
      * @param world: The world to spawn the particles in.
-     * @param name: The name of the particle to spawn. VanillaParticle has a list of these.
+     * @param particle: The type of particle to spawn.
      * @param percent: The percentage of the ring to render.
      * @param x: The x position to spawn the particle around.
      * @param y: The y position to spawn the particle around.
@@ -377,10 +303,40 @@ public final class Utilities {
      * @param step: The distance in degrees, between each particle. The maximum is 2 * PI,
      *            which will create 1 particle per ring. 0.15 is a nice value.
      */
-    public static void spawnParticleRing (World world, String name, float percentage, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
+    public static void spawnParticleRing (World world, EnumParticleTypes particle, float percentage, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
         
         for (double degree = 0.0d; degree < (2 * Math.PI * percentage); degree += step)
-            world.spawnParticle(name, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
+            world.spawnParticle(particle, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
+    }
+    
+    public static String getTicksAstime (int timeInTicks) {
+        
+        float time = (float) timeInTicks / 20f;
+        
+        return MathsUtils.round(time, 2) + ((time == 1f) ? " Second " : "Seconds");
+    }
+    
+    /**
+     * Checks if a keyCode is numeric, meaning 0-9 on the keyboard or number pad.
+     * 
+     * @param keyCode: The key code to test.
+     * @return boolean: True, if the key is a number key.
+     */
+    public static boolean isKeyCodeNumeric (int keyCode) {
+        
+        for (int validKey : validKeys)
+            if (validKey == keyCode)
+                return true;
+                
+        return false;
+    }
+    
+    public static Potion getPotionByID (int id) {
+        
+        if (id >= 0 && id < Potion.potionTypes.length)
+            return Potion.potionTypes[id];
+            
+        return null;
     }
     
     /**
@@ -413,39 +369,5 @@ public final class Utilities {
                 return tab;
                 
         return null;
-    }
-    
-    /**
-     * Checks the list of duplicate potion IDs, and recommends suggestions to the user based on
-     * what IDs are available. This will also crash the player, if the crash is not disabled in
-     * the config.
-     */
-    public static void checkDuplicatePotions () {
-        
-        if (!BookshelfHooks.conflictingPotions.isEmpty()) {
-            
-            Constants.LOG.error(BookshelfHooks.conflictingPotions.size() + " overlapping potions have been detected.");
-            
-            for (Tuple tuple : BookshelfHooks.conflictingPotions) {
-                
-                final String modName = (String) tuple.getFirstObject();
-                final Potion potion = (Potion) tuple.getSecondObject();
-                Constants.LOG.error("The " + potion.getName() + " effect from " + modName + " is using an overlapping ID. ID: " + potion.id);
-            }
-            
-            int index = 1;
-            List<Integer> unused = new ArrayList<Integer>();
-            
-            for (int id = 32; id < Potion.potionTypes.length; id++) {
-                
-                if (index <= BookshelfHooks.conflictingPotions.size() + 5 && Utilities.getPotion(id) == null) {
-                    
-                    unused.add(id);
-                    index++;
-                }
-            }
-            
-            Constants.LOG.error((unused.isEmpty() || unused.size() < BookshelfHooks.conflictingPotions.size()) ? "You have ran out of available potion IDs. This is a serious problem." : "Here are a few recommended potion IDs which are not being used: " + unused.toString());
-        }
     }
 }
