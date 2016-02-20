@@ -13,9 +13,9 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.0"
-group= "com.yourname.modid"
-archivesBaseName = "modid"
+version = "1.1.1.0"
+group= "net.darkhax.bookshelf"
+archivesBaseName = "Bookshelf"
 
 minecraft {
 
