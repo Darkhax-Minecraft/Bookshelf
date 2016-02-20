@@ -102,19 +102,15 @@ public class Mappings {
         getColorFromItemStack = ASMUtils.getAppropriateMapping("getColorFromItemStack", "func_82790_a");
         updateSpawner = ASMUtils.getAppropriateMapping("updateSpawner", "func_98278_g");
         updatePistonState = ASMUtils.getAppropriateMapping("updatePistonState", "func_150078_e");
-        canPushBlock = ASMUtils.getAppropriateMapping("canPushBlock", "");
-        
+        canPushBlock = ASMUtils.getAppropriateMapping("canPushBlock", "");       
         getKnockbackModifier = ASMUtils.getAppropriateMapping("getKnockbackModifier", "func_77501_a");
         getFireAspectModifier = ASMUtils.getAppropriateMapping("getFireAspectModifier", "func_90036_a");
-        
-        // (Lnet/minecraft/entity/Entity;)I
         getRespiration = ASMUtils.getAppropriateMapping("getRespiration", "func_180319_a");
-        getDepthStriderModifier = ASMUtils.getAppropriateMapping("getDepthStriderModifier", "func_180318_b");
-        
+        getDepthStriderModifier = ASMUtils.getAppropriateMapping("getDepthStriderModifier", "func_180318_b");      
         getEfficiencyModifier = ASMUtils.getAppropriateMapping("getEfficiencyModifier", "func_77509_b");
         getFortuneModifier = ASMUtils.getAppropriateMapping("getFortuneModifier", "func_77517_e");
         getLuckOfSeaModifier = ASMUtils.getAppropriateMapping("getLuckOfSeaModifier", "func_151386_g");
-        getLureModifier = ASMUtils.getAppropriateMapping("getLureModifier", "func_151387_h ");
+        getLureModifier = ASMUtils.getAppropriateMapping("getLureModifier", "func_151387_h");
         getLootingModifier = ASMUtils.getAppropriateMapping("getLootingModifier", "func_77519_f");
         
         displayAllReleventItems = ASMUtils.getAppropriateMapping("displayAllReleventItems", "func_78018_a");
