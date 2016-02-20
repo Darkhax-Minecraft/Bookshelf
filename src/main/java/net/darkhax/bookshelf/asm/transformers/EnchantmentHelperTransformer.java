@@ -43,11 +43,6 @@ public class EnchantmentHelperTransformer {
         ClassNode enchantmentHelperClass = ASMUtils.createClassFromByteArray(bytes);
         transformGetLootingModifier(ASMUtils.getMethodFromClass(enchantmentHelperClass, getKnockbackModifier, "(Lnet/minecraft/entity/EntityLivingBase;)I"), "KnockbackEvent", false);
         transformGetLootingModifier(ASMUtils.getMethodFromClass(enchantmentHelperClass, getFireAspectModifier, "(Lnet/minecraft/entity/EntityLivingBase;)I"), "FireAspectEvent", false);
-        // transformGetLootingModifier(ASMUtils.getMethodFromClass(enchantmentHelperClass,
-        // getRespiration, "(Lnet/minecraft/entity/Entity;)I"), "RespirationEvent", true);
-        // transformGetLootingModifier(ASMUtils.getMethodFromClass(enchantmentHelperClass,
-        // getDepthStriderModifier, "(Lnet/minecraft/entity/Entity;)I"), "DepthStriderEvent",
-        // true);
         transformGetLootingModifier(ASMUtils.getMethodFromClass(enchantmentHelperClass, getEfficiencyModifier, "(Lnet/minecraft/entity/EntityLivingBase;)I"), "EfficiencyEvent", false);
         transformGetLootingModifier(ASMUtils.getMethodFromClass(enchantmentHelperClass, getFortuneModifier, "(Lnet/minecraft/entity/EntityLivingBase;)I"), "FortuneEvent", false);
         transformGetLootingModifier(ASMUtils.getMethodFromClass(enchantmentHelperClass, getLuckOfSeaModifier, "(Lnet/minecraft/entity/EntityLivingBase;)I"), "LuckOfSeaEvent", false);
