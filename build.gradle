@@ -77,7 +77,7 @@ String getVersionFromJava(File file) {
 
     file.write(outfile);
 
-    return "$release.$update.$patch.$build";
+    return "1.8.9-$release.$update.$patch.$build";
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
