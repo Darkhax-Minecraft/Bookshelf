@@ -19,6 +19,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven'
 apply plugin: "com.matthewprenger.cursegradle"
 
+
 version = getVersionFromJava(file("src/main/java/net/darkhax/bookshelf/lib/Constants.java"))
 group= "net.darkhax.bookshelf"
 archivesBaseName = "Bookshelf"
@@ -30,6 +31,8 @@ minecraft {
     mappings = "stable_20"
 }
 
+ext.versionFile = file "versions.json"
+project.ext.versions = new JsonSlurper().parseText versionFile.text
 
 processResources {
 
