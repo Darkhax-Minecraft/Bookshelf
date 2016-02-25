@@ -118,7 +118,7 @@ uploadArchives {
 
 jar {
     manifest {
-        attributes "FMLAT': 'bookshelf_at.cfg", "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true"
+        attributes "FMLAT": "bookshelf_at.cfg", "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true"
     }
 }
 
