@@ -1,3 +1,5 @@
+import groovy.json.*
+
 buildscript {
     repositories {
         jcenter()
@@ -18,7 +20,6 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven'
 apply plugin: "com.matthewprenger.cursegradle"
-
 
 version = getVersionFromJava(file("src/main/java/net/darkhax/bookshelf/lib/Constants.java"))
 group= "net.darkhax.bookshelf"
