@@ -22,7 +22,7 @@ apply plugin: 'maven'
 apply plugin: "com.matthewprenger.cursegradle"
 
 version = getVersionFromJava(file("src/main/java/net/darkhax/bookshelf/lib/Constants.java"))
-group= "net.darkhax.bookshelf"
+group = "net.darkhax.bookshelf"
 archivesBaseName = "Bookshelf"
 
 minecraft {
@@ -41,15 +41,15 @@ processResources {
     inputs.property "mcversion", project.minecraft.version
 
     from(sourceSets.main.resources.srcDirs) {
-    
+
         include 'mcmod.info'
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
-        
+
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
-    	
+
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
@@ -98,7 +98,7 @@ task deobfJar(type: Jar) {
     from sourceSets.main.output
     classifier = "deobf"
     manifest {
-        attributes "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true", 'FMLAT': 'bookshelf_at.cfg'
+        attributes "FMLAT': 'bookshelf_at.cfg", "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true"
     }
 }
 
@@ -118,11 +118,11 @@ uploadArchives {
 
 jar {
     manifest {
-        attributes "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true", 'FMLAT': 'bookshelf_at.cfg'
+        attributes "FMLAT': 'bookshelf_at.cfg", "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true"
     }
 }
 
-task getChangelog() {
+task setCurseForgeInfo() {
 
     def proc = "git log --pretty=format:%s -1".execute();
     proc.waitFor();
