@@ -261,4 +261,17 @@ public final class ItemStackUtils {
                 
         return false;
     }
+    
+    /**
+     * Copies an ItemStack with a new size value.
+     * 
+     * @param stack The ItemStack to copy.
+     * @param size The new size to set for the stack.
+     * @return ItemStack A new ItemStack with the same item and meta as the original, but with
+     *         a new size.
+     */
+    public static ItemStack copyStackWithSize (ItemStack stack, int size) {
+        
+        return new ItemStack(stack.getItem(), size, stack.getMetadata());
+    }
 }
