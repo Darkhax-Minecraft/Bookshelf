@@ -37,19 +37,19 @@ public class PropertyObject<T> implements IUnlistedProperty<T> {
         
         return name;
     }
-       
+    
     @Override
     public Class<T> getType () {
         
         return type;
-    } 
+    }
     
     @Override
     public boolean isValid (T object) {
         
         return true;
     }
-
+    
     @Override
     public String valueToString (T object) {
         
