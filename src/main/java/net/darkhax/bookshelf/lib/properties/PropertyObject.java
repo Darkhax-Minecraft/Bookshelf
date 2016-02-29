@@ -1,8 +1,5 @@
 package net.darkhax.bookshelf.lib.properties;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
 public class PropertyObject<T> implements IUnlistedProperty<T> {

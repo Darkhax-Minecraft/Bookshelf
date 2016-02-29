@@ -6,7 +6,6 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 
 public class BlockStates {
@@ -25,7 +24,7 @@ public class BlockStates {
      * Used to hold an IBlockAccess of the block.
      */
     public static final PropertyObject<IBlockAccess> BLOCK_ACCESS = new PropertyObject<IBlockAccess>("world", IBlockAccess.class);
-
+    
     /**
      * Used to hold the BlockPos of the block.
      */
