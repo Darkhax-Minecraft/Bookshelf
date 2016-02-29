@@ -1,9 +1,13 @@
 package net.darkhax.bookshelf.lib.util;
 
+import java.util.List;
+
 import net.minecraft.entity.Entity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 
 public final class EntityUtils {
     
@@ -101,5 +105,20 @@ public final class EntityUtils {
     public static boolean areEntitiesCloseEnough (Entity firstEntity, Entity secondEntity, double maxDistance) {
         
         return getDistanceFromEntity(firstEntity, secondEntity) < (maxDistance * maxDistance);
+    }
+    
+    /**
+     * Gets a List of entities that are within the provided area.
+     * 
+     * @param entityClass: The type of entity you are looking for.
+     * @param world: The world to search in.
+     * @param pos: The position to start the search around.
+     * @param range: The range of the search.
+     * @return List<Entity>: A List containing all entities of the specified type that are
+     *         within the range.
+     */
+    public static List<Entity> getEntitiesInArea (Class<? extends Entity> entityClass, World world, BlockPos pos, int range) {
+        
+        return world.getEntitiesWithinAABB(entityClass, new AxisAlignedBB(pos.add(-range, -range, -range), pos.add(range + 1, range + 1, range + 1)));
     }
 }
