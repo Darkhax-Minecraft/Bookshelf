@@ -24,12 +24,12 @@ public class BlockStates {
     /**
      * Used to hold an IBlockAccess of the block.
      */
-    public static final PropertyObject<IBlockAccess> BLOCK_ACCESS = new PropertyObject<>("world", IBlockAccess.class);
+    public static final PropertyObject<IBlockAccess> BLOCK_ACCESS = new PropertyObject<IBlockAccess>("world", IBlockAccess.class);
 
     /**
      * Used to hold the BlockPos of the block.
      */
-    public static final PropertyObject<BlockPos> BLOCKPOS = new PropertyObject<>("pos", BlockPos.class);
+    public static final PropertyObject<BlockPos> BLOCKPOS = new PropertyObject<BlockPos>("pos", BlockPos.class);
     
     /**
      * Used to determine the color of a block. Only supports the 16 vanilla colors.
