@@ -13,8 +13,6 @@ public class ProxyClient extends ProxyCommon {
     @Override
     public void preInit () {
         
-        MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
-        
         Item item = Item.getItemFromBlock(Bookshelf.blockShelf);
         
         for (int meta = 0; meta < 5; meta++)
