@@ -6,7 +6,6 @@ import net.darkhax.bookshelf.common.ProxyCommon;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
 
 public class ProxyClient extends ProxyCommon {
     
