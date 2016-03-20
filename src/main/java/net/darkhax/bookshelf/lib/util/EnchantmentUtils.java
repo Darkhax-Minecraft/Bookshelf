@@ -2,10 +2,7 @@ package net.darkhax.bookshelf.lib.util;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 
 public final class EnchantmentUtils {
     
@@ -80,43 +77,5 @@ public final class EnchantmentUtils {
     public static boolean areEnchantmentsCompatible (Enchantment firstEnchantment, Enchantment secondEnchantment) {
         
         return firstEnchantment.canApplyTogether(secondEnchantment) && secondEnchantment.canApplyTogether(firstEnchantment);
-    }
-    
-    /**
-     * Checks to see if an ItemStack has any enchantments written to it. For this method to
-     * return true, the stack must be valid, and it must be enchanted with at least one
-     * enchantment.
-     * 
-     * @param stack: The ItemStack to check for enchantments.
-     * @return boolean: Whether or not the enchantment is enchanted.
-     */
-    public static boolean isStackEnchanted (ItemStack stack) {
-        
-        return ItemStackUtils.isValidStack(stack) && EnchantmentUtils.getEnchantmentsFromStack(stack, (stack.getItem() instanceof ItemEnchantedBook)).length > 0;
-    }
-    
-    /**
-     * Retrieves an array of all the enchantments placed on an ItemStack. This method can be
-     * used for regular items, along with enchanted books, which store enchantments under a
-     * different NBTTagCompound so that the enchantment's effects won't apply for that book.
-     * 
-     * @param stack: The ItemStack you wish to read the enchantments from.
-     * @param stored: Whether or not the stored enchantments should be read. Stored
-     *            enchantments are those which do not give the ItemStack special abilities. For
-     *            example, enchanted books.
-     * @return Enchantment[]: An array of all the enchantments stored on the ItemStack.
-     */
-    public static Enchantment[] getEnchantmentsFromStack (ItemStack stack, boolean stored) {
-        
-        ItemStackUtils.prepareDataTag(stack);
-        String tagName = (stored) ? "StoredEnchantments" : "ench";
-        NBTTagCompound tag = stack.getTagCompound();
-        NBTTagList list = tag.getTagList(tagName, 10);
-        Enchantment[] ench = new Enchantment[list.tagCount()];
-        
-        for (int index = 0; index < list.tagCount(); index++)
-            ench[index] = Enchantment.getEnchantmentById(list.getCompoundTagAt(index).getShort("id"));
-            
-        return ench;
     }
 }

@@ -1,40 +1,54 @@
-import groovy.json.*
-
 buildscript {
+
     repositories {
+
         jcenter()
+
         maven {
+
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
+
         maven {
+
             url "https://plugins.gradle.org/m2/"
         }
     }
+
     dependencies {
+
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
         classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.0.7"
     }
 }
 
+apply plugin: "maven"
 apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'maven'
 apply plugin: "com.matthewprenger.cursegradle"
 
+group = "net.darkhax.badmobs"
+archivesBaseName = "BadMobs"
 version = getVersionFromJava(file("src/main/java/net/darkhax/bookshelf/lib/Constants.java"))
-group = "net.darkhax.bookshelf"
-archivesBaseName = "Bookshelf"
 
+//Defines the MC environment information.
 minecraft {
 
-    version = "1.8.9-11.15.1.1764"
+    version = "1.9-12.16.0.1767-1.9"
     runDir = "run"
-    mappings = "stable_20"
+    mappings = "snapshot_20160312"
 }
 
-ext.versionFile = file "versions.json"
-project.ext.versions = new JsonSlurper().parseText versionFile.text
+//Defines basic patterns for pulling various dependencies.
+repositories {
 
+}
+
+dependencies {
+
+}
+
+//Handles basic resources such as mcmod.info
 processResources {
 
     inputs.property "version", project.version
@@ -47,27 +61,30 @@ processResources {
     }
 
     from(sourceSets.main.resources.srcDirs) {
+
         exclude 'mcmod.info'
     }
-
-    rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
+//Pulls the build version from a Java file.
 String getVersionFromJava(File file) {
 
     String release = "0";
     String update = "0";
     String patch = "0";
 
-    String build = System.getenv("BUILD_NUMBER") ?: "0";
+    String build = System.getenv("BUILD_NUMBER") ? System.getenv("BUILD_NUMBER") : "0";
     def outfile = "";
     def ln = System.getProperty("line.separator")
 
-    String prefix = "public static final String VERSION = \"";
-    file.eachLine { String s ->
+    String prefix = "public static final String VERSION_NUMBER = \"";
+    file.eachLine {
+        String s ->
 
-        String v = s.trim();
+            String v = s.trim();
+
         if (v.startsWith(prefix)) {
+
             v = v.substring(prefix.length(), v.length() - 2);
             String[] pts = v.split("\\.");
 
@@ -76,49 +93,53 @@ String getVersionFromJava(File file) {
             patch = pts[2];
             s = s.replaceAll(".0\";", ".${build}\";");
         }
+
         outfile += (s + ln);
     }
 
     file.write(outfile);
 
-    return "1.8.9-$release.$update.$patch.$build";
+    return "1.9-$release.$update.$patch.$build";
 }
 
+//Creates the source jar.
 task sourcesJar(type: Jar, dependsOn: classes) {
+
     from sourceSets.main.allSource
     classifier = 'sources'
 }
 
+//Creates the JavaDoc jar.
 task javadocJar(type: Jar, dependsOn: javadoc) {
+
     from javadoc.destinationDir
     classifier = 'javadoc'
 }
 
+//Creates the deobfuscated jar.
 task deobfJar(type: Jar) {
+
     from sourceSets.main.output
     classifier = "deobf"
-    manifest {
-        attributes "FMLAT": "bookshelf_at.cfg", "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true"
-    }
 }
 
+//Adds the deobf, source and javadoc jars to the build artifacts.
 artifacts {
+
     archives deobfJar
     archives sourcesJar
     archives javadocJar
 }
 
+//Uploads the artifacts to the maven server.
 uploadArchives {
+
     repositories {
+
         mavenDeployer {
+
             repository(url: "file:///var/www/html/maven")
         }
-    }
-}
-
-jar {
-    manifest {
-        attributes "FMLAT": "bookshelf_at.cfg", "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true"
     }
 }
 
@@ -128,43 +149,43 @@ task setCurseForgeInfo() {
     proc.waitFor();
     def message = "${proc.in.text}"
 
-    if (message.toLowerCase().contains("#release")) {
-        project.ext.release = true;
-    } else {
-        proc = "git log --pretty=format:%H -1".execute();
-        proc.waitFor();
-        project.ext.changelog = "${proc.in.text}" + "\nhttps://github.com/Darkhax-Minecraft/Bookshelf/commits/master";
-        project.ext.release = false;
-    }
+    //Changes the type of release. Default is alpha release. #beta and #release can be added into the commit message to change it.
+    project.ext.releaseType = message.toLowerCase().contains("#release") ? "release" : message.toLowerCase().contains("#beta") ? "beta" : "alpha";
 
+    //Sets the Changelog to direct the reader to the GitHub commit log.
+    proc = "git log --pretty=format:%H -1".execute();
+    proc.waitFor();
+    project.ext.changelog = "All changes can be found here: " + "https://github.com/Darkhax-Minecraft/WAWLA/commits/master" + "${proc.in.text}";
 }
+
+//Prevents incomplete JavaDocs from preventing a build on Java 8.
 if (JavaVersion.current().isJava8Compatible()) {
+
     allprojects {
+
         tasks.withType(Javadoc) {
+
             options.addStringOption('Xdoclint:none', '-quiet')
         }
     }
 }
 
+//Provides the basic CurseForge upload details
 curseforge {
-    if (System.getenv("curseForgeApiKey"))
-        apiKey = System.getenv("curseForgeApiKey")
-    else
-        apiKey = "0"
 
+    //Sets the API from the system environment, if available.
+    apiKey = System.getenv("curseForgeApiKey") ? System.getenv("curseForgeApiKey") : "0";
 
     project {
-        if (System.getenv("projectId"))
-            id = System.getenv("projectId")
-        else
-            id = "0"
 
-        releaseType = project.release ? "release" : "beta"
-        changelog = project.release ? versions.versions[versions.newestVersion].join("\n") : project.changelog
+        //Sets the Project ID from the system environment, if available.
+        id = System.getenv("projectId") ? System.getenv("projectId") : "0";
 
-        addGameVersion "1.8.9"
+        releaseType = project.releaseType;
+        changelog = project.changelog;
 
-        mainArtifact(jar)
+        addGameVersion "1.9"
+        
         addArtifact(deobfJar)
         addArtifact(sourcesJar)
         addArtifact(javadocJar)

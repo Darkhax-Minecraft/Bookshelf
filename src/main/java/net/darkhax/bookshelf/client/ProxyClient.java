@@ -3,7 +3,7 @@ package net.darkhax.bookshelf.client;
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.block.BlockShelves;
 import net.darkhax.bookshelf.common.ProxyCommon;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 

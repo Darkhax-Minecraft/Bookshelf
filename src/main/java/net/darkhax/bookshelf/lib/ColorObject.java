@@ -5,7 +5,7 @@ import java.awt.Color;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 
 public class ColorObject {
     
@@ -346,10 +346,10 @@ public class ColorObject {
     @Override
     public String toString () {
         
-        String output = EnumChatFormatting.RED + "" + (int) (this.red * 255) + " " + EnumChatFormatting.GREEN + (int) (this.getGreen() * 255) + " " + EnumChatFormatting.BLUE + (int) (this.blue * 255);
+        String output = TextFormatting.RED + "" + (int) (this.red * 255) + " " + TextFormatting.GREEN + (int) (this.getGreen() * 255) + " " + TextFormatting.BLUE + (int) (this.blue * 255);
         
         if (this.alpha < 1.0f)
-            output += " " + EnumChatFormatting.GRAY + (int) (100 - (this.alpha * 100));
+            output += " " + TextFormatting.GRAY + (int) (100 - (this.alpha * 100));
             
         return output;
     }

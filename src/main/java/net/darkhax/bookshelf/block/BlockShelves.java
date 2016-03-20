@@ -7,14 +7,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -28,7 +28,6 @@ public class BlockShelves extends Block {
         
         super(Material.wood);
         this.setHardness(1.5F);
-        this.setStepSound(soundTypeWood);
         this.setUnlocalizedName("bookshelf.bookshelf");
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumType.SPRUCE));
         this.setCreativeTab(CreativeTabs.tabBlock);
@@ -53,9 +52,9 @@ public class BlockShelves extends Block {
     }
     
     @Override
-    protected BlockState createBlockState () {
+    protected BlockStateContainer createBlockState () {
         
-        return new BlockState(this, new IProperty[] { VARIANT });
+        return new BlockStateContainer(this, new IProperty[] { VARIANT });
     }
     
     @Override

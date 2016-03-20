@@ -6,8 +6,8 @@ import java.math.RoundingMode;
 
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 
 public final class MathsUtils {
     
@@ -31,7 +31,7 @@ public final class MathsUtils {
      * @param secondPos: The second position to work with.
      * @return double: The distance between the two provided locations.
      */
-    public static double getDistanceBetweenPoints (Vec3 firstPos, Vec3 secondPos) {
+    public static double getDistanceBetweenPoints (Vec3d firstPos, Vec3d secondPos) {
         
         final double distanceX = firstPos.xCoord - secondPos.xCoord;
         final double distanceY = firstPos.yCoord - secondPos.yCoord;
@@ -74,11 +74,11 @@ public final class MathsUtils {
      * @return MovingObjectPosition: A MovingObjectPosition containing the exact location where
      *         the player is looking.
      */
-    public static MovingObjectPosition rayTrace (EntityPlayer player, double length) {
+    public static RayTraceResult rayTrace (EntityPlayer player, double length) {
         
-        Vec3 vec1 = new Vec3(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-        Vec3 vec2 = player.getLookVec();
-        Vec3 vec3 = vec1.addVector(vec2.xCoord * length, vec2.yCoord * length, vec2.zCoord * length);
+        Vec3d vec1 = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+        Vec3d vec2 = player.getLookVec();
+        Vec3d vec3 = vec1.addVector(vec2.xCoord * length, vec2.yCoord * length, vec2.zCoord * length);
         return player.worldObj.rayTraceBlocks(vec1, vec3);
     }
     

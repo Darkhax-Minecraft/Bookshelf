@@ -5,10 +5,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TileEntityBasic extends TileEntity implements ITickable {
@@ -28,15 +28,15 @@ public class TileEntityBasic extends TileEntity implements ITickable {
     }
     
     @Override
-    public Packet getDescriptionPacket () {
+    public Packet<?> getDescriptionPacket () {
         
         NBTTagCompound dataTag = new NBTTagCompound();
         writeNBT(dataTag);
-        return new S35PacketUpdateTileEntity(pos, -1337, dataTag);
+        return new SPacketUpdateTileEntity(pos, -1337, dataTag);
     }
     
     @Override
-    public void onDataPacket (NetworkManager net, S35PacketUpdateTileEntity packet) {
+    public void onDataPacket (NetworkManager net, SPacketUpdateTileEntity packet) {
         
         super.onDataPacket(net, packet);
         readNBT(packet.getNbtCompound());

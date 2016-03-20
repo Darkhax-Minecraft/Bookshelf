@@ -3,10 +3,10 @@ package net.darkhax.bookshelf.lib.util;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public final class EntityUtils {
@@ -32,7 +32,7 @@ public final class EntityUtils {
      */
     public static double getDistaceFromPos (Entity entity, BlockPos pos) {
         
-        return MathsUtils.getDistanceBetweenPoints(entity.getPositionVector(), new Vec3(pos));
+        return MathsUtils.getDistanceBetweenPoints(entity.getPositionVector(), new Vec3d(pos));
     }
     
     /**

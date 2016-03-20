@@ -5,7 +5,6 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,10 +32,8 @@ public final class PlayerUtils {
      */
     public static boolean isPlayerReal (EntityPlayer player) {
         
-        if (player == null || player.worldObj == null || player.getClass() != EntityPlayerMP.class)
-            return false;
-            
-        return MinecraftServer.getServer().getConfigurationManager().playerEntityList.contains(player);
+        return (player != null && player.worldObj != null && player.getClass() == EntityPlayerMP.class);
+        // TODO Check ServerList for player
     }
     
     /**

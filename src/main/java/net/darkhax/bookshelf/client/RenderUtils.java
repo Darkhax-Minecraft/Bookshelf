@@ -1,20 +1,21 @@
 package net.darkhax.bookshelf.client;
 
+import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+
 import net.darkhax.bookshelf.client.particle.OpenEntityDiggingFX;
 import net.darkhax.bookshelf.lib.Constants;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -23,44 +24,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderUtils {
     
     /**
-     * Registers a LayerRenderer with a RendererLivingEntity. Only works for living entities.
-     * 
-     * @param entityClass The class of the Entity to register the renderer to.
-     * @param layer The LayerRenderer to register to that entity.
-     * @return boolean Whether or not the layer was succesfully registered.
-     */
-    public static boolean registerEntityLayer (Class<? extends Entity> entityClass, LayerRenderer layer) {
-        
-        RendererLivingEntity renderer = getEntityRenderer(entityClass);
-        
-        if (renderer != null) {
-            
-            renderer.addLayer(layer);
-            return true;
-        }
-        
-        return false;
-    }
-    
-    /**
-     * Gets a RendererLivingEntity instance from the render manager based on the provided
-     * entity class. Only works for living entities.
-     * 
-     * @param entityClass The class of the Entity to register the renderer to.
-     * @return
-     */
-    public static RendererLivingEntity getEntityRenderer (Class<? extends Entity> entityClass) {
-        
-        Render renderer = Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(entityClass);
-        return (renderer instanceof RendererLivingEntity) ? (RendererLivingEntity) renderer : null;
-    }
-    
-    /**
      * Registers a LayerRenderer to both the Alex and Steve player renderers.
      * 
      * @param layer The LayerRenderer to register.
      */
-    public static void registerPlayerLayer (LayerRenderer layer) {
+    public static void registerPlayerLayer (LayerRenderer<EntityLivingBase> layer) {
         
         getSteveRenderer().addLayer(layer);
         getAlexRenderer().addLayer(layer);
@@ -99,35 +67,19 @@ public class RenderUtils {
     }
     
     /**
-     * Attempts to set the skin texture for a player to the resource location passed to it.
+     * Sets a player specific texture. This can be used to change the skin, cape or elytra
+     * texture.
      * 
-     * @param player The AbstractClientPlayer to set the texture to.
-     * @param skin The ResourceLocation for the new skin texture.
-     * @return boolean Whether or not the texture was set.
+     * @param type The type of texture to apply. Vanilla has Skin, Cape and Elytra.
+     * @param player The player to set the texture to.
+     * @param texture The texture to apply.
+     * @return boolean Whether or not the texture was succesfully applied.
      */
-    public static boolean setPlayerSkin (AbstractClientPlayer player, ResourceLocation skin) {
+    public static boolean setPlayerTexture (Type type, AbstractClientPlayer player, ResourceLocation texture) {
         
-        if (player.hasPlayerInfo() && skin != null) {
+        if (player.hasPlayerInfo() && texture != null) {
             
-            player.getPlayerInfo().locationSkin = skin;
-            return true;
-        }
-        
-        return false;
-    }
-    
-    /**
-     * Attempts to set the cape texture for a player to the resource location passed to it.
-     * 
-     * @param player The AbstractClientPlayer to set the texture to.
-     * @param cape The ResourceLocation for the new cape texture.
-     * @return boolean Whether or not the texture was set.
-     */
-    public static boolean setPlayerCape (AbstractClientPlayer player, ResourceLocation cape) {
-        
-        if (player.hasPlayerInfo() && cape != null) {
-            
-            player.getPlayerInfo().locationCape = cape;
+            player.getPlayerInfo().playerTextures.put(type, texture);
             return true;
         }
         
@@ -147,39 +99,36 @@ public class RenderUtils {
      */
     public static boolean spawnDigParticles (EffectRenderer renderer, IBlockState state, World world, BlockPos pos, EnumFacing side) {
         
-        Block block = state.getBlock();
-        
-        if (block != null && block.getRenderType() != -1) {
+        if (state != null && state.getRenderType() != EnumBlockRenderType.INVISIBLE) {
             
             int x = pos.getX();
             int y = pos.getY();
             int z = pos.getZ();
             float offset = 0.1F;
-            
-            double xOffset = (double) x + Constants.RANDOM.nextDouble() * (block.getBlockBoundsMaxX() - block.getBlockBoundsMinX() - (double) (offset * 2.0F)) + (double) offset + block.getBlockBoundsMinX();
-            double yOffset = (double) y + Constants.RANDOM.nextDouble() * (block.getBlockBoundsMaxY() - block.getBlockBoundsMinY() - (double) (offset * 2.0F)) + (double) offset + block.getBlockBoundsMinY();
-            double zOffset = (double) z + Constants.RANDOM.nextDouble() * (block.getBlockBoundsMaxZ() - block.getBlockBoundsMinZ() - (double) (offset * 2.0F)) + (double) offset + block.getBlockBoundsMinZ();
+            AxisAlignedBB bounds = state.getBoundingBox(world, pos);
+            double xOffset = (double) x + Constants.RANDOM.nextDouble() * (bounds.maxX - bounds.minX - (double) (offset * 2.0F)) + (double) offset + bounds.minX;
+            double yOffset = (double) y + Constants.RANDOM.nextDouble() * (bounds.maxY - bounds.minY - (double) (offset * 2.0F)) + (double) offset + bounds.minY;
+            double zOffset = (double) z + Constants.RANDOM.nextDouble() * (bounds.maxZ - bounds.minZ - (double) (offset * 2.0F)) + (double) offset + bounds.minZ;
             
             if (side == EnumFacing.DOWN)
-                yOffset = (double) y + block.getBlockBoundsMinY() - (double) offset;
+                yOffset = (double) y + bounds.minY - (double) offset;
                 
             else if (side == EnumFacing.UP)
-                yOffset = (double) y + block.getBlockBoundsMaxY() + (double) offset;
+                yOffset = (double) y + bounds.maxY + (double) offset;
                 
             else if (side == EnumFacing.NORTH)
-                zOffset = (double) z + block.getBlockBoundsMinZ() - (double) offset;
+                zOffset = (double) z + bounds.minZ - (double) offset;
                 
             else if (side == EnumFacing.SOUTH)
-                zOffset = (double) z + block.getBlockBoundsMaxZ() + (double) offset;
+                zOffset = (double) z + bounds.maxZ + (double) offset;
                 
             else if (side == EnumFacing.WEST)
-                xOffset = (double) x + block.getBlockBoundsMinX() - (double) offset;
+                xOffset = (double) x + bounds.minX - (double) offset;
                 
             else if (side == EnumFacing.EAST)
-                xOffset = (double) x + block.getBlockBoundsMaxX() + (double) offset;
+                xOffset = (double) x + bounds.maxX + (double) offset;
                 
-            renderer.addEffect((new OpenEntityDiggingFX(world, xOffset, yOffset, zOffset, 0.0D, 0.0D, 0.0D, state)).func_174846_a(pos).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
-            return true;
+            renderer.addEffect((new OpenEntityDiggingFX(world, xOffset, yOffset, zOffset, 0.0D, 0.0D, 0.0D, state)).setBlockPos(pos).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
         }
         
         return false;
@@ -210,7 +159,7 @@ public class RenderUtils {
                         double xPos = (double) pos.getX() + ((double) xOffset + 0.5D) / (double) multiplier;
                         double yPos = (double) pos.getY() + ((double) yOffset + 0.5D) / (double) multiplier;
                         double zPos = (double) pos.getZ() + ((double) zOffset + 0.5D) / (double) multiplier;
-                        renderer.addEffect((new OpenEntityDiggingFX(world, xPos, yPos, zPos, xPos - (double) pos.getX() - 0.5D, yPos - (double) pos.getY() - 0.5D, zPos - (double) pos.getZ() - 0.5D, state)).func_174846_a(pos));
+                        renderer.addEffect((new OpenEntityDiggingFX(world, xPos, yPos, zPos, xPos - (double) pos.getX() - 0.5D, yPos - (double) pos.getY() - 0.5D, zPos - (double) pos.getZ() - 0.5D, state)).setBlockPos(pos));
                     }
                 }
             }

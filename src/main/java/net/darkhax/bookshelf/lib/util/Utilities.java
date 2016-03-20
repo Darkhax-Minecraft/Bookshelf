@@ -9,27 +9,20 @@ import org.apache.commons.lang3.text.WordUtils;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.registry.GameData;
-import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class Utilities {
-    
-    /**
-     * Array of names for the vanilla villagers.
-     */
-    private static String[] vanillaVillagers = { "farmer", "librarian", "priest", "blacksmith", "butcher" };
     
     /**
      * An array of all keys used in ChestGenHooks for the vanilla chests.
@@ -86,11 +79,11 @@ public final class Utilities {
      *            on the end of each line.
      * @param format: A list to add each line of text to. An good example of such list would be
      *            the list of tooltips on an item.
-     * @param color: An EnumChatFormatting to apply to all lines added to the list.
+     * @param color: An TextFormatting to apply to all lines added to the list.
      * @return List: The same List instance provided however the string provided will be
      *         wrapped to the ideal line length and then added.
      */
-    public static List<String> wrapStringToListWithFormat (String string, int lnLength, boolean wrapLongWords, List<String> list, EnumChatFormatting format) {
+    public static List<String> wrapStringToListWithFormat (String string, int lnLength, boolean wrapLongWords, List<String> list, TextFormatting format) {
         
         String lines[] = WordUtils.wrap(string, lnLength, null, wrapLongWords).split(SystemUtils.LINE_SEPARATOR);
         
@@ -144,7 +137,7 @@ public final class Utilities {
      * @param class2: The second class to compare.
      * @return boolean: True if neither class is null, and both share the same name.
      */
-    public static boolean compareClasses (Class class1, Class class2) {
+    public static boolean compareClasses (Class<?> class1, Class<?> class2) {
         
         return (class1 != null && class2 != null && class1.getName().equalsIgnoreCase(class2.getName()));
     }
@@ -157,7 +150,7 @@ public final class Utilities {
      * @param clazz: The class to compare the Object to.
      * @return boolean: True if the Object is of the same class as the one provided.
      */
-    public static boolean compareObjectToClass (Object obj, Class clazz) {
+    public static boolean compareObjectToClass (Object obj, Class<?> clazz) {
         
         return compareClasses(obj.getClass(), clazz);
     }
@@ -182,7 +175,7 @@ public final class Utilities {
      * @param name: The name of the class you are trying to get. Example: java.lang.String
      * @return Class: If a class could be found, it will be returned. Otherwise, null.
      */
-    public static Class getClassFromString (String name) {
+    public static Class<?> getClassFromString (String name) {
         
         try {
             
@@ -205,41 +198,20 @@ public final class Utilities {
      * @return boolean: True if every piece of armor the entity is wearing are the same class
      *         as the provied armor class.
      */
-    public static boolean isWearingFullSet (EntityLivingBase living, Class armorClass) {
+    public static boolean isWearingFullSet (EntityLivingBase living, Class<Item> armorClass) {
         
-        for (int armorSlot = 1; armorSlot <= 4; armorSlot++) {
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             
-            ItemStack armor = living.getEquipmentInSlot(armorSlot);
-            
-            if (armor == null || !armor.getItem().getClass().equals(armorClass))
-                return false;
+            if (slot.getSlotType().equals(EntityEquipmentSlot.Type.ARMOR)) {
+                
+                ItemStack armor = living.getItemStackFromSlot(slot);
+                
+                if (armor == null || !armor.getItem().getClass().equals(armorClass))
+                    return false;
+            }
         }
         
         return true;
-    }
-    
-    /**
-     * Retrieves the ItemStack placed in an EntityHorse's custom armor inventory slot.
-     *
-     * @param horse: An instance of the EntityHorse to grab the armor ItemStack from.
-     * @return ItemStack: The ItemStack in the horses custom armor slot. This ItemStack maybe
-     *         null, and won't always be an instance of ItemHorseArmor.
-     */
-    public static ItemStack getCustomHorseArmor (EntityHorse horse) {
-        
-        return horse.getDataWatcher().getWatchableObjectItemStack(23);
-    }
-    
-    /**
-     * Allows for a custom ItemStack to be set to an EntityHorse's custom armor inventory slot.
-     *
-     * @param horse: An instance of the EntityHorse to set the ItemStack to.
-     * @param stack: An ItemStack you want to set to an EntityHorse's custom armor inventory
-     *            slot.
-     */
-    public static void setCustomHorseArmor (EntityHorse horse, ItemStack stack) {
-        
-        horse.getDataWatcher().updateObject(23, stack);
     }
     
     /**
@@ -329,28 +301,6 @@ public final class Utilities {
                 return true;
                 
         return false;
-    }
-    
-    public static Potion getPotionByID (int id) {
-        
-        if (id >= 0 && id < Potion.potionTypes.length)
-            return Potion.potionTypes[id];
-            
-        return null;
-    }
-    
-    /**
-     * Retrieves a unique string related to the texture name of a villager. This allows for
-     * villagers to be differentiated based on their profession rather than their ID.
-     *
-     * @param id : The ID of the villager being looked up.
-     * @return String: The texture name, minus file path and extension.
-     */
-    @SideOnly(Side.CLIENT)
-    public static String getVillagerName (int id) {
-        
-        ResourceLocation skin = VillagerRegistry.getVillagerSkin(id, null);
-        return (id >= 0 && id <= 4) ? vanillaVillagers[id] : (skin != null) ? skin.getResourceDomain() + "." + skin.getResourcePath().substring(skin.getResourcePath().lastIndexOf("/") + 1, skin.getResourcePath().length() - 4) : "misingno";
     }
     
     /**

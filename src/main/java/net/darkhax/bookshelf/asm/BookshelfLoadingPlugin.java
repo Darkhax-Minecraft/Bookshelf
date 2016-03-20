@@ -35,8 +35,6 @@ public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
     public void injectData (Map<String, Object> data) {
         
         ASMUtils.isSrg = (Boolean) data.get("runtimeDeobfuscationEnabled");
-        Mappings.initFields();
-        Mappings.initMethods();
     }
     
     @Override
