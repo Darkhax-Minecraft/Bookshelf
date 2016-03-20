@@ -27,8 +27,8 @@ apply plugin: "maven"
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: "com.matthewprenger.cursegradle"
 
-group = "net.darkhax.badmobs"
-archivesBaseName = "BadMobs"
+group = "net.darkhax.bookshelf"
+archivesBaseName = "Bookshelf"
 version = getVersionFromJava(file("src/main/java/net/darkhax/bookshelf/lib/Constants.java"))
 
 //Defines the MC environment information.
