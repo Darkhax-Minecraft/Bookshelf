@@ -6,32 +6,36 @@ Compilation
 ===========
 It is easy to build Bookshelf from the repository by using Forge Gradle. Bookshelf makes use of the Forge Gradle Wrapper, which is included as part of the repository. To compile the mod, simply clone or download the repository and run the 'gradlew build' command from the command line, from within the project directory. An obfuscated jar and a dev jar will be generated in the build/libs folder. 
 
-Dev Environment
-===============
-This project relies on core mod functionality. All core mod features will only function correctly if the mod is set up as one. The easiest way to use Bookshelf in your dev environment is to download the deobfuscated jar from our [CurseForge](http://minecraft.curseforge.com/projects/bookshelf/files) page. All uploads will have an attached deobfuscated jar that can be found under the '+1 More' button. The deobfuscated version of Bookshelf can be installed by placing it in the mods folder within your workspace. Alternatively, if you want to work off of the raw source for this mod, you will need to create a dummy jar, or you can simply add the following line your your VM arguments.
 
--Dfml.coreMods.load=net.darkhax.bookshelf.asm.BookshelfLoadingPlugin      
+##Dependency Management
+If you are using [Maven](https://maven.apache.org/download.cgi) to manage your dependencies. Add the following into your `pom.xml` file. Make sure to replace the version with the correct one. All versions can be viewed [here](http://maven.rubbix.net/net/darkhax/bookshelf/Bookshelf/).
+```
+<repositories>
+    <repository>
+        <id>Rubbix.net</id>
+        <url>http://maven.rubbix.net</url>
+    </repository>
+</repositories>
 
-Events
-======
-[ItemEnchantedEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/event/ItemEnchantedEvent.java)  
-[LootingEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/event/LootingEvent.java)   
-[CreativeTabEvent](https://github.com/Darkhax-Minecraft/Bookshelf/blob/db7d1f6ab63826c13457a22ce6da19977c9b5372/src/main/java/net/darkhax/bookshelf/event/CreativeTabEvent.java)    
+<dependency>
+     <groupId>net.darkhax.bookshelf</groupId>
+     <artifactId>Bookshelf</artifactId>
+     <version>PUT_VERSION_HERE</version>
+</dependency>
+```
 
-Other Features
-==============
-[Horse Armor](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/items/ItemHorseArmor.java)  
-[Color any Item](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/command/CommandItemColor.java)  
-[Modeled Armor](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/items/ItemModelledArmor.java)   
-[Simplified Messages](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/common/network/AbstractMessage.java)   
-[More Enchantment IDs](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/handler/EnchantmentListExpansionHandler.java)   
-[More Potion IDs](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/handler/PotionArrayExpansionHandler.java)    
-[Potion Base](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/potion/PotionBase.java)   
-[Cached Creative Tabs](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/creativetab/CreativeTabCached.java)    
-[Position Object](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/util/Position.java)   
-[Vanilla Color Enum](https://github.com/Darkhax-Minecraft/Bookshelf/blob/master/src/main/java/net/darkhax/bookshelf/util/VanillaColor.java)   
-[Assorted Utilities](https://github.com/Darkhax-Minecraft/Bookshelf/tree/db7d1f6ab63826c13457a22ce6da19977c9b5372/src/main/java/net/darkhax/bookshelf/lib/util)   
+If you are using [Gradle](https://gradle.org) to manage your dependencies, add the following into your `build.gradle` file. Make sure to replace the version with the correct one. All versions can be viewed [here](http://maven.rubbix.net/net/darkhax/bookshelf/Bookshelf/).
+```
+repositories {
 
+    maven { url 'http://maven.rubbix.net' }
+}
+
+dependencies {
+
+    compile "net.darkhax.bookshelf:Bookshelf:PUT_VERSION_HERE"
+}
+```
 
 Credits
 =======
