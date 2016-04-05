@@ -12,20 +12,20 @@ public class ForgeEventHandler {
         
         for (BookshelfRegistry.AnvilRecipe recipe : BookshelfRegistry.getAnvilRecipes()) {
             
-            if (recipe != null && ItemStackUtils.isValidStack(recipe.output) && ItemStackUtils.areStacksSimilarWithSize(event.left, recipe.inputLeft) && ItemStackUtils.areStacksSimilarWithSize(event.right, recipe.inputRight)) {
+            if (recipe != null && ItemStackUtils.isValidStack(recipe.output) && ItemStackUtils.areStacksSimilarWithSize(event.getLeft(), recipe.inputLeft) && ItemStackUtils.areStacksSimilarWithSize(event.getRight(), recipe.inputRight)) {
                 
-                event.cost = recipe.getExperienceCost(event.left, event.right, event.name);
-                event.materialCost = recipe.getMaterialCost(event.left, event.right, event.name);
+                event.setCost(recipe.getExperienceCost(event.getLeft(), event.getRight(), event.getName()));
+                event.setMaterialCost(recipe.getMaterialCost(event.getLeft(), event.getRight(), event.getName()));
                 
                 if (recipe.nameTaxt != null && !recipe.nameTaxt.isEmpty()) {
                     
-                    if (recipe.nameTaxt.equalsIgnoreCase(event.name))
-                        event.output = recipe.getOutput(event.left, event.right, event.name);
+                    if (recipe.nameTaxt.equalsIgnoreCase(event.getName()))
+                        event.setOutput(recipe.getOutput(event.getLeft(), event.getRight(), event.getName()));
                         
                     return;
                 }
                 
-                event.output = recipe.getOutput(event.left, event.right, event.name);
+                event.setOutput(recipe.getOutput(event.getLeft(), event.getRight(), event.getName()));
                 return;
             }
         }

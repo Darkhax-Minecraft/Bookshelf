@@ -15,19 +15,19 @@ public class NBTBrewingRecipe extends BrewingRecipe {
     @Override
     public boolean isIngredient (ItemStack stack) {
         
-        boolean isIngredient = OreDictionary.itemMatches(this.ingredient, stack, false) && ItemStackUtils.areStacksEqual(this.ingredient, stack, true);
+        boolean isIngredient = OreDictionary.itemMatches(this.getIngredient(), stack, false) && ItemStackUtils.areStacksEqual(this.getIngredient(), stack, true);
         return isIngredient;
     }
     
     @Override
     public boolean isInput (ItemStack stack) {
         
-        return OreDictionary.itemMatches(this.input, stack, false) && ItemStackUtils.areStacksEqual(this.input, stack, true);
+        return OreDictionary.itemMatches(this.getInput(), stack, false) && ItemStackUtils.areStacksEqual(this.getInput(), stack, true);
     }
     
     @Override
     public ItemStack getOutput (ItemStack input, ItemStack ingredient) {
         
-        return isInput(input) && isIngredient(ingredient) ? this.output.copy() : null;
+        return isInput(input) && isIngredient(ingredient) ? this.getOutput().copy() : null;
     }
 }
