@@ -1,6 +1,6 @@
 Bookshelf
 =========
-Bookshelf is a core mod that expands upon Forge and Minecraft by adding new utilities, hooks and events which are publicly available to every mod authors. 
+Bookshelf is a core mod that expands upon Forge and Minecraft by adding new utilities, hooks and events which are publicly available to any mod authors. 
 
 Compilation
 ===========
