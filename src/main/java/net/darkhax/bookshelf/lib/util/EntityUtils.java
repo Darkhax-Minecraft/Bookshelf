@@ -117,6 +117,7 @@ public final class EntityUtils {
      * @return List<Entity>: A List containing all entities of the specified type that are
      *         within the range.
      */
+    @SuppressWarnings("unchecked")
     public static <T> List<T> getEntitiesInArea (Class<? extends Entity> entityClass, World world, BlockPos pos, int range) {
         
         return (List<T>) world.getEntitiesWithinAABB(entityClass, new AxisAlignedBB(pos.add(-range, -range, -range), pos.add(range + 1, range + 1, range + 1)));

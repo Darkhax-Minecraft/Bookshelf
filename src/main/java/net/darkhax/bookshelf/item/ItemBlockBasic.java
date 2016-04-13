@@ -16,6 +16,9 @@ public class ItemBlockBasic extends ItemBlock {
         this.names = names;
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
+        this.setRegistryName(block.getRegistryName());
+        // this.setRegistryName("item" +
+        // StringUtils.capitalize(block.getRegistryName().getResourcePath()));
     }
     
     @Override

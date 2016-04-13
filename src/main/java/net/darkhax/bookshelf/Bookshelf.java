@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf;
 
-import net.darkhax.bookshelf.block.BlockShelves;
+import net.darkhax.bookshelf.block.BlockWoodenShelf;
 import net.darkhax.bookshelf.common.ProxyCommon;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.item.ItemBlockBasic;
@@ -30,7 +30,7 @@ public class Bookshelf {
     public static Bookshelf instance;
     
     public static SimpleNetworkWrapper network;
-    public static Block blockShelf;
+    public static Block blockShelf = new BlockWoodenShelf();
     
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
@@ -39,11 +39,11 @@ public class Bookshelf {
         
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
         
-        blockShelf = new BlockShelves();
-        GameRegistry.registerBlock(blockShelf, ItemBlockBasic.class, "bookshelf", new Object[] { BlockShelves.types });
+        GameRegistry.register(blockShelf);
+        GameRegistry.register(new ItemBlockBasic(blockShelf, BlockWoodenShelf.types));
         
         for (int meta = 1; meta <= 5; meta++)
-            GameRegistry.addShapedRecipe(new ItemStack(blockShelf, 1, meta - 1), new Object[] { "xxx", "yyy", "xxx", Character.valueOf('x'), new ItemStack(Blocks.planks, 1, meta), Character.valueOf('y'), Items.book });
+            GameRegistry.addShapedRecipe(new ItemStack(blockShelf, 1, meta - 1), new Object[] { "xxx", "yyy", "xxx", Character.valueOf('x'), new ItemStack(Blocks.PLANKS, 1, meta), Character.valueOf('y'), Items.BOOK });
             
         proxy.preInit();
     }

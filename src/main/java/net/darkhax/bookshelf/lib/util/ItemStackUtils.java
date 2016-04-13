@@ -60,7 +60,7 @@ public final class ItemStackUtils {
      */
     public static String writeStackToString (ItemStack stack) {
         
-        return Item.itemRegistry.getNameForObject(stack.getItem()) + "#" + stack.getItemDamage();
+        return stack.getItem().getRegistryName().toString() + "#" + stack.getItemDamage();
     }
     
     /**

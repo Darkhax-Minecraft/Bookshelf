@@ -92,6 +92,7 @@ public final class ReflectionUtils {
      * @param srgName: The SRG mapping for the field name.
      * @return <T, E> T: The value that the Field was set to.
      */
+    @SuppressWarnings("unchecked")
     public static <T, E> T getCachedFieldValue (Class<? super E> classToAccess, E instance, String mcpName, String srgName) {
         
         Field field = getCachedField(classToAccess, mcpName, srgName);
@@ -118,6 +119,7 @@ public final class ReflectionUtils {
      * @param parameterValues: The parameter values to pass to the method.
      * @return <T, E> T: The data returned by the method.
      */
+    @SuppressWarnings("unchecked")
     public static <T, E> T invokeCachedMethod (Class<? super E> classToAccess, E instance, String mcpName, String srgName, Class<?>[] parameterTypes, Object[] parameterValues) {
         
         Method method = getCachedMethod(classToAccess, mcpName, srgName, parameterTypes);
@@ -257,6 +259,7 @@ public final class ReflectionUtils {
      * @param obj: The Object to cast.
      * @return <T> T: The Object as a generic Type.
      */
+    @SuppressWarnings("unchecked")
     public static <T> T getCasted (Object obj) {
         
         return (T) obj;

@@ -35,9 +35,9 @@ version = getVersionFromJava(file("src/main/java/net/darkhax/bookshelf/lib/Const
 minecraft {
 
     useDepAts = true
-    version = "1.9-12.16.0.1845-1.9"
+    version = "1.9-12.16.0.1863-1.9"
     runDir = "run"
-    mappings = 'snapshot_20160405'
+    mappings = 'snapshot_20160412'
 }
 
 //Defines basic patterns for pulling various dependencies.

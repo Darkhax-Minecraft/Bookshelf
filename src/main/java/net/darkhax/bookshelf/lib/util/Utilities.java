@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.lib.util;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.SystemUtils;
@@ -8,17 +9,21 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
-import net.minecraftforge.fml.common.registry.GameData;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry.EntityRegistration;
+import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -37,7 +42,12 @@ public final class Utilities {
     /**
      * An array of all the LWJGL numeric key codes.
      */
-    public static int[] validKeys = new int[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 71, 72, 73, 75, 76, 77, 79, 80, 81 };
+    public static int[] numericKeys = new int[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 71, 72, 73, 75, 76, 77, 79, 80, 81 };
+    
+    /**
+     * A hashmap which links domains to their ModContainer.
+     */
+    private static HashMap<String, ModContainer> mods;
     
     /**
      * This method will take a string and break it down into multiple lines based on a provided
@@ -102,7 +112,7 @@ public final class Utilities {
      */
     public static boolean isFluid (Block block) {
         
-        return (block == Blocks.lava || block == Blocks.water || block instanceof IFluidBlock);
+        return (block == Blocks.LAVA || block == Blocks.WATER || block instanceof IFluidBlock);
     }
     
     /**
@@ -114,14 +124,12 @@ public final class Utilities {
      */
     public static Object getThingByName (String name) {
         
-        ResourceLocation location = new ResourceLocation(name);
-        
-        Object thing = Item.itemRegistry.getObject(location);
+        Object thing = Item.getByNameOrId(name);
         
         if (thing != null)
             return thing;
             
-        thing = Block.blockRegistry.getObject(location);
+        thing = Block.getBlockFromName(name);
         
         if (thing != null)
             return thing;
@@ -215,27 +223,47 @@ public final class Utilities {
     }
     
     /**
-     * Retrieves the name of the mod that added the item to the game.
-     *
-     * @param item: The Item to get the mod name from.
-     * @return String: The name of the mod which added the provided item to the game.
+     * Gets the name of a mod that registered the passed object. Has support for a wide range
+     * of registerable objects such as blocks, items, enchantments, potions, sounds, villagers,
+     * biomes, and so on.
+     * 
+     * @param registerable The registerable object. Accepts anything that extends
+     *            IForgeRegistryEntry.Impl. Current list includes BiomeGenBase, Block,
+     *            Enchantment, Item, Potion, PotionType, SoundEvent and VillagerProfession.
+     * @return String The name of the mod that registered the object.
      */
-    public static String getModName (Item item) {
+    public static String getModName (IForgeRegistryEntry.Impl<?> registerable) {
         
-        String itemID = GameData.getItemRegistry().getNameForObject(item).toString();
-        return itemID.substring(0, itemID.indexOf(':'));
+        final String modID = registerable.getRegistryName().getResourceDomain();
+        final ModContainer mod = mods.get(modID);
+        return mod != null ? mod.getName() : modID.equalsIgnoreCase("minecraft") ? "Minecraft" : "Unknown";
     }
     
     /**
-     * Retrieves the name of the mod that added the block to the game.
-     *
-     * @param block: The Block to get the mod name from.
-     * @return String: The name of the mod which added the provided block.
+     * Gets the name of a mod that registered the entity. Due to Entity not using
+     * IForgeRegistryEntry.Impl a special method is required.
+     * 
+     * @param entity The entity to get the mod name for.
+     * @return String The name of the mod that registered the entity.
      */
-    public static String getModName (Block block) {
+    public static String getModName (Entity entity) {
         
-        String blockID = GameData.getBlockRegistry().getNameForObject(block).toString();
-        return blockID.substring(0, blockID.indexOf(':'));
+        if (entity == null)
+            return "Unknown";
+            
+        final EntityRegistration reg = EntityRegistry.instance().lookupModSpawn(entity.getClass(), false);
+        
+        if (reg != null) {
+            
+            final ModContainer mod = reg.getContainer();
+            
+            if (mod != null)
+                return mod.getName();
+                
+            return "Unknown";
+        }
+        
+        return "Minecraft";
     }
     
     /**
@@ -296,7 +324,7 @@ public final class Utilities {
      */
     public static boolean isKeyCodeNumeric (int keyCode) {
         
-        for (int validKey : validKeys)
+        for (int validKey : numericKeys)
             if (validKey == keyCode)
                 return true;
                 
@@ -314,10 +342,19 @@ public final class Utilities {
     @SideOnly(Side.CLIENT)
     public static CreativeTabs getTabFromLabel (String label) {
         
-        for (CreativeTabs tab : CreativeTabs.creativeTabArray)
+        for (CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY)
             if (tab.getTabLabel().equalsIgnoreCase(label))
                 return tab;
                 
         return null;
+    }
+    
+    static {
+        
+        mods = new HashMap<String, ModContainer>();
+        
+        final Loader loader = Loader.instance();
+        for (final String key : loader.getIndexedModList().keySet())
+            mods.put(key, loader.getIndexedModList().get(key));
     }
 }

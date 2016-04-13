@@ -5,7 +5,6 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public final class SkullUtils {
     
@@ -56,7 +55,7 @@ public final class SkullUtils {
     
     /**
      * Creates a skull that represents a player. This method can use plain text usernames, or
-     * player UUID. It is recomended to use the UUID over the username, unless you are 100%
+     * player UUID. It is recommended to use the UUID over the username, unless you are 100%
      * certain that the username will never change.
      * 
      * @param owner: The owner of the skull being created. Can be a username of a UUID.
@@ -65,10 +64,9 @@ public final class SkullUtils {
      */
     public static ItemStack createSkull (String owner) {
         
-        ItemStack stack = new ItemStack(Items.skull, 1, 3);
+        ItemStack stack = new ItemStack(Items.SKULL, 1, 3);
         ItemStackUtils.prepareDataTag(stack);
         stack.getTagCompound().setString("SkullOwner", owner);
-        NBTTagCompound tagCompound = stack.getTagCompound();
         return stack;
     }
     
@@ -79,7 +77,7 @@ public final class SkullUtils {
      */
     public static ItemStack getWitherSkeletonSkull () {
         
-        return new ItemStack(Items.skull, 1, 1);
+        return new ItemStack(Items.SKULL, 1, 1);
     }
     
     /**
@@ -89,7 +87,7 @@ public final class SkullUtils {
      */
     public static ItemStack getZombieSkull () {
         
-        return new ItemStack(Items.skull, 1, 2);
+        return new ItemStack(Items.SKULL, 1, 2);
     }
     
     /**
@@ -99,7 +97,7 @@ public final class SkullUtils {
      */
     public static ItemStack getCreeperSkull () {
         
-        return new ItemStack(Items.skull, 1, 4);
+        return new ItemStack(Items.SKULL, 1, 4);
     }
     
     /**
@@ -109,7 +107,7 @@ public final class SkullUtils {
      */
     public static ItemStack getSteveSkull () {
         
-        return new ItemStack(Items.skull, 1, 3);
+        return new ItemStack(Items.SKULL, 1, 3);
     }
     
     /**
@@ -119,7 +117,7 @@ public final class SkullUtils {
      */
     public static ItemStack getSkeletonSkull () {
         
-        return new ItemStack(Items.skull, 1, 0);
+        return new ItemStack(Items.SKULL, 1, 0);
     }
     
     /**

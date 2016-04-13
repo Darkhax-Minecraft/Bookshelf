@@ -15,7 +15,7 @@ public final class EnchantmentUtils {
      */
     public static boolean isItemEnchantable (ItemStack itemStack) {
         
-        return itemStack.getItem().getItemEnchantability(itemStack) > 0 && (itemStack.getItem() == Items.book || itemStack.getItem() == Items.enchanted_book || itemStack.isItemEnchantable());
+        return itemStack.getItem().getItemEnchantability(itemStack) > 0 && (itemStack.getItem() == Items.BOOK || itemStack.getItem() == Items.ENCHANTED_BOOK || itemStack.isItemEnchantable());
     }
     
     /**
