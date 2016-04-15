@@ -11,14 +11,19 @@ public class ItemBlockBasic extends ItemBlock {
     
     public ItemBlockBasic(Block block, String[] names) {
         
+        this(block, names, false);
+    }
+    
+    public ItemBlockBasic(Block block, String[] names, boolean selfRegister) {
+        
         super(block);
         this.theBlock = block;
         this.names = names;
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
-        this.setRegistryName(block.getRegistryName());
-        // this.setRegistryName("item" +
-        // StringUtils.capitalize(block.getRegistryName().getResourcePath()));
+        
+        if (selfRegister)
+            this.setRegistryName(block.getRegistryName());
     }
     
     @Override
