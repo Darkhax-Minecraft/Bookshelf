@@ -272,6 +272,8 @@ public final class ItemStackUtils {
      */
     public static ItemStack copyStackWithSize (ItemStack stack, int size) {
         
-        return new ItemStack(stack.getItem(), size, stack.getMetadata());
+        final ItemStack output = stack.copy();
+        output.stackSize = size;
+        return output;
     }
 }
