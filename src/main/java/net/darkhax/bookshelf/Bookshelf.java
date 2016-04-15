@@ -40,7 +40,7 @@ public class Bookshelf {
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
         
         GameRegistry.register(blockShelf);
-        GameRegistry.register(new ItemBlockBasic(blockShelf, BlockWoodenShelf.types));
+        GameRegistry.register(new ItemBlockBasic(blockShelf, BlockWoodenShelf.types, true));
         
         for (int meta = 1; meta <= 5; meta++)
             GameRegistry.addShapedRecipe(new ItemStack(blockShelf, 1, meta - 1), new Object[] { "xxx", "yyy", "xxx", Character.valueOf('x'), new ItemStack(Blocks.PLANKS, 1, meta), Character.valueOf('y'), Items.BOOK });
