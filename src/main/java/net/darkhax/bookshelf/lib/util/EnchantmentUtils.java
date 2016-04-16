@@ -10,8 +10,8 @@ public final class EnchantmentUtils {
      * A check to see if an ItemStack can be enchanted. For this to be true, the ItemStack must
      * have an enchantability grater than 0, and be a book, enchanted book, or an tool.
      * 
-     * @param itemStack: The ItemStack to check.
-     * @return boolean: Whether or not the ItemStack is enchantable.
+     * @param itemStack The ItemStack to check.
+     * @return boolean Whether or not the ItemStack is enchantable.
      */
     public static boolean isItemEnchantable (ItemStack itemStack) {
         
@@ -21,8 +21,8 @@ public final class EnchantmentUtils {
     /**
      * Calculates how many experience points are it would take to get to the specified level.
      * 
-     * @param level: The level to calculate for.
-     * @return int: The amount of experience points required to go from level 0 to the
+     * @param level The level to calculate for.
+     * @return int The amount of experience points required to go from level 0 to the
      *         specified level.
      */
     public static int getExperienceFromLevel (int level) {
@@ -33,9 +33,9 @@ public final class EnchantmentUtils {
     /**
      * Calculate the amount of experience to go from one level to another.
      * 
-     * @param startingLevel: The level you are currently at.
-     * @param destinationLevel: The level you want to go to.
-     * @return int: The amount of experience points needed to go from the startingLevel to the
+     * @param startingLevel The level you are currently at.
+     * @param destinationLevel The level you want to go to.
+     * @return int The amount of experience points needed to go from the startingLevel to the
      *         destinationLevel.
      */
     public static int getExperienceToLevel (int startingLevel, int destinationLevel) {
@@ -47,8 +47,8 @@ public final class EnchantmentUtils {
      * Calculates the amount of levels that an amount of EXP is equal to. This is a pretty
      * costly method due to the level curve.
      * 
-     * @param exp: The amount of EXP to solve for.
-     * @return int: The amount of levels that can be created by the amount of exp.
+     * @param exp The amount of EXP to solve for.
+     * @return int The amount of levels that can be created by the amount of exp.
      */
     public static int getLevelsFromExperience (int exp) {
         
@@ -70,9 +70,9 @@ public final class EnchantmentUtils {
      * Checks if two enchantments are compatible with each other. For two enchantments to be
      * compatible, both of their canApplyTegether methods must return true.
      * 
-     * @param firstEnchantment: The first Enchantment to check.
-     * @param secondEnchantment: The second Enchantment to check.
-     * @return boolean: Whether or not the two enchantments are compatible or not.
+     * @param firstEnchantment The first Enchantment to check.
+     * @param secondEnchantment The second Enchantment to check.
+     * @return boolean Whether or not the two enchantments are compatible or not.
      */
     public static boolean areEnchantmentsCompatible (Enchantment firstEnchantment, Enchantment secondEnchantment) {
         

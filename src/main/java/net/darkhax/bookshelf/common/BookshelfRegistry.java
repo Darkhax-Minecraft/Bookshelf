@@ -1,7 +1,5 @@
 package net.darkhax.bookshelf.common;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,11 +27,11 @@ public class BookshelfRegistry {
     /**
      * Adds a new AnvilRecipe to the registry. Inputs can be null.
      * 
-     * @param inputLeft: The ItemStack required in the left slot of the Anvil GUI.
-     * @param inputRight: The ItemStack required in the right slot.
-     * @param experience: The amount of experience levels this recipe will cost. Must be at
+     * @param inputLeft The ItemStack required in the left slot of the Anvil GUI.
+     * @param inputRight The ItemStack required in the right slot.
+     * @param experience The amount of experience levels this recipe will cost. Must be at
      *            least one for this to work.
-     * @param output: The ItemStack to be created by the recipe.
+     * @param output The ItemStack to be created by the recipe.
      */
     public static void addAnvilRecipe (ItemStack inputLeft, ItemStack inputRight, int experience, ItemStack output) {
         
@@ -43,12 +41,12 @@ public class BookshelfRegistry {
     /**
      * Adds a new AnvilRecipe to the registry. Inputs can be null.
      * 
-     * @param inputLeft: The ItemStack required in the left slot of the Anvil GUI.
-     * @param inputRight: The ItemStack required in the left slot of the Anvil GUI.
-     * @param requiredName: A name requirement for this recipe to complete.
-     * @param experience: The amount of experience levels this recipe will cost. Must be at
+     * @param inputLeft The ItemStack required in the left slot of the Anvil GUI.
+     * @param inputRight The ItemStack required in the left slot of the Anvil GUI.
+     * @param requiredName A name requirement for this recipe to complete.
+     * @param experience The amount of experience levels this recipe will cost. Must be at
      *            least one for this to work.
-     * @param output: The ItemStack to be created by this recipe.
+     * @param output The ItemStack to be created by this recipe.
      */
     public static void addAnvilRecipe (ItemStack inputLeft, ItemStack inputRight, String requiredName, int experience, ItemStack output) {
         
@@ -58,14 +56,14 @@ public class BookshelfRegistry {
     /**
      * Adds a new AnvilRecipe to the registry. Inputs can be null.
      * 
-     * @param inputLeft: The ItemStack required in the left slot of the Anvil GUI.
-     * @param inputRight: The ItemStack required in the left slot of the Anvil GUI.
-     * @param requiredName: A name requirement for this recipe to complete.
-     * @param experience: The amount of experience levels this recipe will cost. Must be at
+     * @param inputLeft The ItemStack required in the left slot of the Anvil GUI.
+     * @param inputRight The ItemStack required in the left slot of the Anvil GUI.
+     * @param requiredName A name requirement for this recipe to complete.
+     * @param experience The amount of experience levels this recipe will cost. Must be at
      *            least one for this to work.
-     * @param materialCost: The amount of items to consume from the right side of the Anvil
+     * @param materialCost The amount of items to consume from the right side of the Anvil
      *            GUI. If 0, all will be used.
-     * @param output: The ItemStack to be created by this recipe.
+     * @param output The ItemStack to be created by this recipe.
      */
     public static void addAnvilRecipe (ItemStack inputLeft, ItemStack inputRight, String requiredName, int experience, int materialCost, ItemStack output) {
         
@@ -80,7 +78,7 @@ public class BookshelfRegistry {
     /**
      * Retrieves the List of all registered anvil recipes.
      * 
-     * @return List<AnvilRecipe>: A List of all AnvilRecipes that have been registered with
+     * @return List<AnvilRecipe> A List of all AnvilRecipes that have been registered with
      *         booksehfl.
      */
     public static List<AnvilRecipe> getAnvilRecipes () {
@@ -102,7 +100,7 @@ public class BookshelfRegistry {
         /*
         //TODO remove this reflection code.
         Field[] vars = LootTable.class.getDeclaredFields();
-        for(Field field : vars){
+        for(Field field  vars){
             if(field.getType().isArray() && field.getType().getComponentType().isAssignableFrom(LootPool.class)){
                 
                 try {
@@ -160,10 +158,10 @@ public class BookshelfRegistry {
          * Constructs a new AnvilRecipe, using all of the required parameters, except for the
          * name requirement and material cost.
          * 
-         * @param firstInput: The ItemStack required in the left slot of the Anvil GUI.
-         * @param secondInput: The ItemStack required in the right slot of the Anvil GUI.
-         * @param experience: The amount of experience that this recipe should cost.
-         * @param outputStack: The ItemStack that will be created by this recipe.
+         * @param firstInput The ItemStack required in the left slot of the Anvil GUI.
+         * @param secondInput The ItemStack required in the right slot of the Anvil GUI.
+         * @param experience The amount of experience that this recipe should cost.
+         * @param outputStack The ItemStack that will be created by this recipe.
          */
         public AnvilRecipe(ItemStack firstInput, ItemStack secondInput, int experience, ItemStack outputStack) {
             
@@ -173,13 +171,13 @@ public class BookshelfRegistry {
         /**
          * Constructs a new AnvilRecipe, using all of the required parameters.
          * 
-         * @param firstInput: The ItemStack required in the left slot of the Anvil GUI.
-         * @param secondInput: The ItemStack required in the right slot of the Anvil GUI.
-         * @param requiredName: A name requirement for this recipe.
-         * @param experience: The amount of experience that this recipe should cost.
-         * @param materialCost: The amount of items to consume from the right slot of the Anvil
+         * @param firstInput The ItemStack required in the left slot of the Anvil GUI.
+         * @param secondInput The ItemStack required in the right slot of the Anvil GUI.
+         * @param requiredName A name requirement for this recipe.
+         * @param experience The amount of experience that this recipe should cost.
+         * @param materialCost The amount of items to consume from the right slot of the Anvil
          *            GUI. If 0, the whole stack will be consumed.
-         * @param outputStack: The ItemStack that will be created by this recipe.
+         * @param outputStack The ItemStack that will be created by this recipe.
          */
         public AnvilRecipe(ItemStack firstInput, ItemStack secondInput, String requiredName, int experience, int materialCost, ItemStack outputStack) {
             
@@ -195,10 +193,10 @@ public class BookshelfRegistry {
          * A basic method for calculating the experience level cost. This can be overridden to
          * add your own calculations.
          * 
-         * @param firstInput: The ItemStack in the left slot of the Anvil GUI.
-         * @param secondInput: The ItemStack in the right slot of the Anvil GUI.
-         * @param enteredName: The name entered into the rename field.
-         * @return int: The amount of experience levels to charge the player for. This must be
+         * @param firstInput The ItemStack in the left slot of the Anvil GUI.
+         * @param secondInput The ItemStack in the right slot of the Anvil GUI.
+         * @param enteredName The name entered into the rename field.
+         * @return int The amount of experience levels to charge the player for. This must be
          *         at least 1 level for the recipe to work.
          */
         public int getExperienceCost (ItemStack firstInput, ItemStack secondInput, String enteredName) {
@@ -210,10 +208,10 @@ public class BookshelfRegistry {
          * A basic method for calculating the material cost. This can be overridden to add your
          * own calculations.
          * 
-         * @param firstInput: The ItemStack in the left slot of the Anvil GUI.
-         * @param secondInput: The ItemStack in the right slot of the Anvil GUI.
-         * @param enteredName: The name entered into the rename field.
-         * @return int: The amount of experience levels to charge the player for. This must be
+         * @param firstInput The ItemStack in the left slot of the Anvil GUI.
+         * @param secondInput The ItemStack in the right slot of the Anvil GUI.
+         * @param enteredName The name entered into the rename field.
+         * @return int The amount of experience levels to charge the player for. This must be
          *         at least 1 level for the recipe to work.
          */
         public int getMaterialCost (ItemStack firstInput, ItemStack secondInput, String enteredName) {
@@ -225,10 +223,10 @@ public class BookshelfRegistry {
          * A basic method for generating the output. This can be overridden to change how your
          * output is created.
          * 
-         * @param firstInput: The ItemStack in the left slot of the Anvil GUI.
-         * @param secondInput: The ItemStack in the right slot of the Anvil GUI.
-         * @param enteredName: The name entered into the rename field.
-         * @return int: The amount of experience levels to charge the player for. This must be
+         * @param firstInput The ItemStack in the left slot of the Anvil GUI.
+         * @param secondInput The ItemStack in the right slot of the Anvil GUI.
+         * @param enteredName The name entered into the rename field.
+         * @return int The amount of experience levels to charge the player for. This must be
          *         at least 1 level for the recipe to work.
          */
         public ItemStack getOutput (ItemStack firstInput, ItemStack secondInput, String enteredName) {

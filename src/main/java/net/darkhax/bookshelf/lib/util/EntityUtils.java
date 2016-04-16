@@ -14,9 +14,9 @@ public final class EntityUtils {
     /**
      * Calculates the distance between two entities.
      * 
-     * @param firstEntity: The first entity to use.
-     * @param secondEntity: The second entity to use.
-     * @return double: The distance between the two entities passed.
+     * @param firstEntity The first entity to use.
+     * @param secondEntity The second entity to use.
+     * @return double The distance between the two entities passed.
      */
     public static double getDistanceFromEntity (Entity firstEntity, Entity secondEntity) {
         
@@ -26,9 +26,9 @@ public final class EntityUtils {
     /**
      * Calculates the distance between an entity and a BlockPos.
      * 
-     * @param entity: The Entity to use for the first position.
-     * @param pos: The BlockPos to use for the second position.
-     * @return double: The distance between the Entity and the BlockPos.
+     * @param entity The Entity to use for the first position.
+     * @param pos The BlockPos to use for the second position.
+     * @return double The distance between the Entity and the BlockPos.
      */
     public static double getDistaceFromPos (Entity entity, BlockPos pos) {
         
@@ -38,9 +38,9 @@ public final class EntityUtils {
     /**
      * Pushes an entity towards a specific direction.
      * 
-     * @param entityToMove: The entity that you want to push.
-     * @param direction: The direction to push the entity.
-     * @param force: The amount of force to push the entity with.
+     * @param entityToMove The entity that you want to push.
+     * @param direction The direction to push the entity.
+     * @param force The amount of force to push the entity with.
      */
     public static void pushTowards (Entity entityToMove, EnumFacing direction, double force) {
         
@@ -50,9 +50,9 @@ public final class EntityUtils {
     /**
      * Pushes an Entity towards a BlockPos.
      * 
-     * @param entityToMove: The entity that you want to push.
-     * @param pos: The BlockPos to push the entity towards.
-     * @param force: The amount of force to push the entity with.
+     * @param entityToMove The entity that you want to push.
+     * @param pos The BlockPos to push the entity towards.
+     * @param force The amount of force to push the entity with.
      */
     public static void pushTowards (Entity entityToMove, BlockPos pos, double force) {
         
@@ -73,10 +73,10 @@ public final class EntityUtils {
     /**
      * Pushes an entity towards another one.
      * 
-     * @param entityToMove: The entity that should be pushed towards the other entity.
-     * @param destination: The destination entity, that the entity to move should be pushed
+     * @param entityToMove The entity that should be pushed towards the other entity.
+     * @param destination The destination entity, that the entity to move should be pushed
      *            towards.
-     * @param force: The amount of force to push the entityToMove with.
+     * @param force The amount of force to push the entityToMove with.
      */
     public static void pushTowards (Entity entityToMove, Entity destination, double force) {
         
@@ -96,10 +96,10 @@ public final class EntityUtils {
     /**
      * Checks if two entities are close enough together.
      * 
-     * @param firstEntity: The first entity to check.
-     * @param secondEntity: The second entity to check.
-     * @param maxDistance: The maximum distance that the entities can be apart.
-     * @return boolean: True if the distance between the entities are within range of the
+     * @param firstEntity The first entity to check.
+     * @param secondEntity The second entity to check.
+     * @param maxDistance The maximum distance that the entities can be apart.
+     * @return boolean True if the distance between the entities are within range of the
      *         maxDistance.
      */
     public static boolean areEntitiesCloseEnough (Entity firstEntity, Entity secondEntity, double maxDistance) {
@@ -110,11 +110,11 @@ public final class EntityUtils {
     /**
      * Gets a List of entities that are within the provided area.
      * 
-     * @param entityClass: The type of entity you are looking for.
-     * @param world: The world to search in.
-     * @param pos: The position to start the search around.
-     * @param range: The range of the search.
-     * @return List<Entity>: A List containing all entities of the specified type that are
+     * @param entityClass The type of entity you are looking for.
+     * @param world The world to search in.
+     * @param pos The position to start the search around.
+     * @param range The range of the search.
+     * @return List<Entity> A List containing all entities of the specified type that are
      *         within the range.
      */
     @SuppressWarnings("unchecked")
