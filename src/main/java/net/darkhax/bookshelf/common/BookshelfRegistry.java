@@ -1,9 +1,16 @@
 package net.darkhax.bookshelf.common;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.LootTable;
 
 public class BookshelfRegistry {
     
@@ -11,6 +18,13 @@ public class BookshelfRegistry {
      * A List of all the anvil recipes that have been registered with Bookshelf.
      */
     private static final List<AnvilRecipe> anvilRecipes = new ArrayList<AnvilRecipe>();
+    
+    /**
+     * A map of all the mod registered loot tables. The first map uses the loot category as the
+     * key, and another map as the value. The value map is a list of loot table names and their
+     * corresponding pool.
+     */
+    private static final Map<String, Map<String, List<LootPool>>> lootPools = new HashMap<String, Map<String, List<LootPool>>>();
     
     /**
      * Adds a new AnvilRecipe to the registry. Inputs can be null.
@@ -72,6 +86,41 @@ public class BookshelfRegistry {
     public static List<AnvilRecipe> getAnvilRecipes () {
         
         return anvilRecipes;
+    }
+    
+    /**
+     * Adds a list of LootPools to a LootTable.
+     * @param table The LootTable to add to.
+     * @param pools The pools to add to the LootTable.
+     */
+    public static void addPoolsToLootTable(LootTable table, List<LootPool> pools) {
+        
+        List<LootPool> newPools = new ArrayList<LootPool>();
+        newPools.addAll(Arrays.asList(table.pools));
+        newPools.addAll(pools);
+        
+        /*
+        //TODO remove this reflection code.
+        Field[] vars = LootTable.class.getDeclaredFields();
+        for(Field field : vars){
+            if(field.getType().isArray() && field.getType().getComponentType().isAssignableFrom(LootPool.class)){
+                
+                try {
+                    
+                    field.setAccessible(true);
+                    Field modField = Field.class.getDeclaredField("modifiers");
+                    modField.setAccessible(true);
+                    modField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+                    field.set(table, newPools.toArray(new LootPool[newPools.size()]));
+                    break;
+                }
+                
+                catch (Exception e) {
+                    
+                }
+            }
+        }
+        */
     }
     
     public static class AnvilRecipe {
