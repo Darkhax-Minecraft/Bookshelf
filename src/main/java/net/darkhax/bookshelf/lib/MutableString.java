@@ -2,6 +2,8 @@ package net.darkhax.bookshelf.lib;
 
 public class MutableString implements java.io.Serializable, Comparable<String>, CharSequence {
     
+    private static final long serialVersionUID = 8345543667917868717L;
+    
     /**
      * The String value held by the MutableString.
      */
