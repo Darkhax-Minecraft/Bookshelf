@@ -17,6 +17,7 @@ public class BookshelfRegistry {
      */
     private static final List<AnvilRecipe> anvilRecipes = new ArrayList<AnvilRecipe>();
     
+    //TODO use
     /**
      * A map of all the mod registered loot tables. The first map uses the loot category as the
      * key, and another map as the value. The value map is a list of loot table names and their
@@ -61,8 +62,8 @@ public class BookshelfRegistry {
      * @param requiredName A name requirement for this recipe to complete.
      * @param experience The amount of experience levels this recipe will cost. Must be at
      *            least one for this to work.
-     * @param materialCost The amount of items to consume from the right side of the Anvil
-     *            GUI. If 0, all will be used.
+     * @param materialCost The amount of items to consume from the right side of the Anvil GUI.
+     *            If 0, all will be used.
      * @param output The ItemStack to be created by this recipe.
      */
     public static void addAnvilRecipe (ItemStack inputLeft, ItemStack inputRight, String requiredName, int experience, int materialCost, ItemStack output) {
@@ -87,38 +88,17 @@ public class BookshelfRegistry {
     }
     
     /**
-     * Adds a list of LootPools to a LootTable.
+     * Adds a list of LootPool to a LootTable.
+     * 
      * @param table The LootTable to add to.
      * @param pools The pools to add to the LootTable.
      */
-    public static void addPoolsToLootTable(LootTable table, List<LootPool> pools) {
+    public static void addPoolsToLootTable (LootTable table, List<LootPool> pools) {
         
         List<LootPool> newPools = new ArrayList<LootPool>();
         newPools.addAll(Arrays.asList(table.pools));
         newPools.addAll(pools);
-        
-        /*
-        //TODO remove this reflection code.
-        Field[] vars = LootTable.class.getDeclaredFields();
-        for(Field field  vars){
-            if(field.getType().isArray() && field.getType().getComponentType().isAssignableFrom(LootPool.class)){
-                
-                try {
-                    
-                    field.setAccessible(true);
-                    Field modField = Field.class.getDeclaredField("modifiers");
-                    modField.setAccessible(true);
-                    modField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-                    field.set(table, newPools.toArray(new LootPool[newPools.size()]));
-                    break;
-                }
-                
-                catch (Exception e) {
-                    
-                }
-            }
-        }
-        */
+        table.pools = newPools.toArray(new LootPool[newPools.size()]);
     }
     
     public static class AnvilRecipe {
