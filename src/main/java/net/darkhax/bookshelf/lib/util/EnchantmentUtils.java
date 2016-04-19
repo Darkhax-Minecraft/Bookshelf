@@ -22,8 +22,8 @@ public final class EnchantmentUtils {
      * Calculates how many experience points are it would take to get to the specified level.
      * 
      * @param level The level to calculate for.
-     * @return int The amount of experience points required to go from level 0 to the
-     *         specified level.
+     * @return int The amount of experience points required to go from level 0 to the specified
+     *         level.
      */
     public static int getExperienceFromLevel (int level) {
         
