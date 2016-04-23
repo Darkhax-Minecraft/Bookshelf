@@ -30,24 +30,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public final class Utilities {
     
     /**
-     * An array of all keys used in ChestGenHooks for the vanilla chests.
-     */
-    public static String[] vanillaLootChests = new String[] { "dungeonChest", "bonusChest", "villageBlacksmith", "strongholdCrossing", "strongholdLibrary", "strongholdCorridor", "pyramidJungleDispenser", "pyramidJungleChest", "pyramidDesertyChest", "mineshaftCorridor" };
-    
-    /**
-     * An array of formatting codes used to create rainbow text.
-     */
-    public static String[] rainbowChars = new String[] { "4", "6", "e", "a", "9", "5" };
-    
-    /**
      * An array of all the LWJGL numeric key codes.
      */
-    public static int[] numericKeys = new int[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 71, 72, 73, 75, 76, 77, 79, 80, 81 };
+    public static final int[] NUMERIC_KEYS = new int[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 71, 72, 73, 75, 76, 77, 79, 80, 81 };
     
     /**
      * A hashmap which links domains to their ModContainer.
      */
-    private static HashMap<String, ModContainer> mods;
+    private static final HashMap<String, ModContainer> MODS;
+    
+    /**
+     * An array of armor equipment slots.
+     */
+    private static final EntityEquipmentSlot[] EQUIPMENT_SLOTS = new EntityEquipmentSlot[] { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET };
     
     /**
      * This method will take a string and break it down into multiple lines based on a provided
@@ -235,7 +230,7 @@ public final class Utilities {
     public static String getModName (IForgeRegistryEntry.Impl<?> registerable) {
         
         final String modID = registerable.getRegistryName().getResourceDomain();
-        final ModContainer mod = mods.get(modID);
+        final ModContainer mod = MODS.get(modID);
         return mod != null ? mod.getName() : modID.equalsIgnoreCase("minecraft") ? "Minecraft" : "Unknown";
     }
     
@@ -324,11 +319,25 @@ public final class Utilities {
      */
     public static boolean isKeyCodeNumeric (int keyCode) {
         
-        for (int validKey : numericKeys)
+        for (int validKey : NUMERIC_KEYS)
             if (validKey == keyCode)
                 return true;
                 
         return false;
+    }
+    
+    /**
+     * Gets the type of equipment for slot index.
+     * 
+     * @param index The index of the slot.
+     * @return EntityEquipmentSlot The slot for the index.
+     */
+    public static EntityEquipmentSlot getSlotForInex (int index) {
+        
+        if (index >= 0 && index < EQUIPMENT_SLOTS.length)
+            return EQUIPMENT_SLOTS[index];
+            
+        return null;
     }
     
     /**
@@ -351,10 +360,10 @@ public final class Utilities {
     
     static {
         
-        mods = new HashMap<String, ModContainer>();
+        MODS = new HashMap<String, ModContainer>();
         
         final Loader loader = Loader.instance();
         for (final String key : loader.getIndexedModList().keySet())
-            mods.put(key, loader.getIndexedModList().get(key));
+            MODS.put(key, loader.getIndexedModList().get(key));
     }
 }
