@@ -332,7 +332,7 @@ public final class Utilities {
      * @param index The index of the slot.
      * @return EntityEquipmentSlot The slot for the index.
      */
-    public static EntityEquipmentSlot getSlotForInex (int index) {
+    public static EntityEquipmentSlot getEquipmentSlot (int index) {
         
         if (index >= 0 && index < EQUIPMENT_SLOTS.length)
             return EQUIPMENT_SLOTS[index];
