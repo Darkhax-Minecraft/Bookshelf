@@ -12,7 +12,7 @@ public class ProxyClient extends ProxyCommon {
     @Override
     public void preInit () {
         
-        Item item = Item.getItemFromBlock(Bookshelf.blockShelf);
+        final Item item = Item.getItemFromBlock(Bookshelf.blockShelf);
         
         for (int meta = 0; meta < 5; meta++)
             ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation("bookshelf:bookshelf_" + BlockWoodenShelf.types[meta], "inventory"));

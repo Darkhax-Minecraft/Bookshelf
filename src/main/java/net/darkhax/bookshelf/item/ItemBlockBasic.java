@@ -33,13 +33,14 @@ public class ItemBlockBasic extends ItemBlock {
     @Override
     public String getUnlocalizedName (ItemStack stack) {
         
-        if (stack.getMetadata() > names.length)
-            return super.getUnlocalizedName() + "." + names[0];
+        if (stack.getMetadata() > this.names.length)
+            return super.getUnlocalizedName() + "." + this.names[0];
             
-        return super.getUnlocalizedName() + "." + names[stack.getMetadata()];
+        return super.getUnlocalizedName() + "." + this.names[stack.getMetadata()];
     }
     
-    public Block getBlock() {
+    @Override
+    public Block getBlock () {
         
         return this.block;
     }

@@ -52,7 +52,7 @@ public enum VanillaColor {
      */
     public String getDyeName () {
         
-        return "dye" + name;
+        return "dye" + this.name;
     }
     
     /**
@@ -63,7 +63,7 @@ public enum VanillaColor {
      */
     public String getGlassPaneName () {
         
-        return "paneGlass" + name;
+        return "paneGlass" + this.name;
     }
     
     /**
@@ -74,7 +74,7 @@ public enum VanillaColor {
      */
     public String getGlassBlockName () {
         
-        return "blockGlass" + name;
+        return "blockGlass" + this.name;
     }
     
     /**
@@ -87,7 +87,7 @@ public enum VanillaColor {
      */
     public static VanillaColor getColorByName (String name) {
         
-        for (VanillaColor color : VanillaColor.values())
+        for (final VanillaColor color : VanillaColor.values())
             if (color.name.equalsIgnoreCase(name))
                 return color;
                 

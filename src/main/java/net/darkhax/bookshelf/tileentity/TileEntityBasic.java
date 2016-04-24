@@ -17,29 +17,29 @@ public class TileEntityBasic extends TileEntity implements ITickable {
     public void readFromNBT (NBTTagCompound dataTag) {
         
         super.readFromNBT(dataTag);
-        readNBT(dataTag);
+        this.readNBT(dataTag);
     }
     
     @Override
     public void writeToNBT (NBTTagCompound dataTag) {
         
         super.writeToNBT(dataTag);
-        writeNBT(dataTag);
+        this.writeNBT(dataTag);
     }
     
     @Override
     public Packet<?> getDescriptionPacket () {
         
-        NBTTagCompound dataTag = new NBTTagCompound();
-        writeNBT(dataTag);
-        return new SPacketUpdateTileEntity(pos, -1337, dataTag);
+        final NBTTagCompound dataTag = new NBTTagCompound();
+        this.writeNBT(dataTag);
+        return new SPacketUpdateTileEntity(this.pos, -1337, dataTag);
     }
     
     @Override
     public void onDataPacket (NetworkManager net, SPacketUpdateTileEntity packet) {
         
         super.onDataPacket(net, packet);
-        readNBT(packet.getNbtCompound());
+        this.readNBT(packet.getNbtCompound());
     }
     
     @Override
@@ -59,7 +59,7 @@ public class TileEntityBasic extends TileEntity implements ITickable {
             this.onEntityUpdate();
         }
         
-        catch (Exception exception) {
+        catch (final Exception exception) {
             
             Constants.LOG.warn("A TileEntity at %s in world %s failed a client update tick!", this.getPos(), this.getWorld().getWorldInfo().getWorldName());
             exception.printStackTrace();

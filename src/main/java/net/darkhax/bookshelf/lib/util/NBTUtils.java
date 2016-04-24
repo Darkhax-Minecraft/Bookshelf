@@ -69,7 +69,7 @@ public final class NBTUtils {
             
         else if (value instanceof Entity) {
             
-            NBTTagCompound newTag = new NBTTagCompound();
+            final NBTTagCompound newTag = new NBTTagCompound();
             ((Entity) value).writeToNBT(newTag);
             dataTag.setTag(tagName, newTag);
         }
@@ -91,15 +91,15 @@ public final class NBTUtils {
         if (inventory.hasCustomName())
             tag.setString("CustomName", inventory.getName());
             
-        NBTTagList nbttaglist = new NBTTagList();
+        final NBTTagList nbttaglist = new NBTTagList();
         
         for (int slotCount = 0; slotCount < inventory.getSizeInventory(); slotCount++) {
             
-            ItemStack stackInSlot = inventory.getStackInSlot(slotCount);
+            final ItemStack stackInSlot = inventory.getStackInSlot(slotCount);
             
             if (stackInSlot != null) {
                 
-                NBTTagCompound itemTag = new NBTTagCompound();
+                final NBTTagCompound itemTag = new NBTTagCompound();
                 itemTag.setByte("Slot", (byte) slotCount);
                 stackInSlot.writeToNBT(itemTag);
                 nbttaglist.appendTag(itemTag);
@@ -125,14 +125,14 @@ public final class NBTUtils {
         if (tag.hasKey("CustomName", 8))
             inventory.setCustomName(tag.getString("CustomName"));
             
-        NBTTagList items = tag.getTagList("Items", 10);
+        final NBTTagList items = tag.getTagList("Items", 10);
         
         for (int storedCount = 0; storedCount < items.tagCount(); storedCount++) {
             
-            NBTTagCompound itemTag = items.getCompoundTagAt(storedCount);
-            int slotCount = itemTag.getByte("Slot") & 0xFF;
+            final NBTTagCompound itemTag = items.getCompoundTagAt(storedCount);
+            final int slotCount = itemTag.getByte("Slot") & 0xFF;
             
-            if ((slotCount >= 0) && (slotCount < inventory.getSizeInventory()))
+            if (slotCount >= 0 && slotCount < inventory.getSizeInventory())
                 inventory.setInventorySlotContents(slotCount, ItemStack.loadItemStackFromNBT(itemTag));
         }
         
@@ -155,17 +155,15 @@ public final class NBTUtils {
         
         if (tag.hasKey("Items")) {
             
-            NBTTagList list = tag.getTagList("Items", 10);
+            final NBTTagList list = tag.getTagList("Items", 10);
             inventory = new ItemStack[invSize];
             
-            for (int i = 0; i < list.tagCount(); i++) {
-                
+            for (int i = 0; i < list.tagCount(); i++)
                 if (!(i > list.tagCount())) {
                     
-                    NBTTagCompound currentTag = list.getCompoundTagAt(i);
-                    inventory[(int) currentTag.getByte("Slot")] = ItemStack.loadItemStackFromNBT(currentTag);
+                    final NBTTagCompound currentTag = list.getCompoundTagAt(i);
+                    inventory[currentTag.getByte("Slot")] = ItemStack.loadItemStackFromNBT(currentTag);
                 }
-            }
         }
         
         return inventory;
@@ -188,7 +186,7 @@ public final class NBTUtils {
         NBTTagCompound deepTag = tag;
         
         if (tag != null)
-            for (String tagName : tags)
+            for (final String tagName : tags)
                 if (deepTag.hasKey(tagName))
                     deepTag = deepTag.getCompoundTag(tagName);
                     

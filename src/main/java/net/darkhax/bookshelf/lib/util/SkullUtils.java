@@ -64,7 +64,7 @@ public final class SkullUtils {
      */
     public static ItemStack createSkull (String owner) {
         
-        ItemStack stack = new ItemStack(Items.SKULL, 1, 3);
+        final ItemStack stack = new ItemStack(Items.SKULL, 1, 3);
         ItemStackUtils.prepareDataTag(stack);
         stack.getTagCompound().setString("SkullOwner", owner);
         return stack;
@@ -129,9 +129,9 @@ public final class SkullUtils {
     public static ItemStack[] getMHFSkulls () {
         
         int counter = 0;
-        ItemStack[] MHFSkulls = new ItemStack[MHFAccount.values().length];
+        final ItemStack[] MHFSkulls = new ItemStack[MHFAccount.values().length];
         
-        for (MHFAccount account : MHFAccount.values()) {
+        for (final MHFAccount account : MHFAccount.values()) {
             
             MHFSkulls[counter] = createSkull(account);
             counter++;
@@ -148,9 +148,9 @@ public final class SkullUtils {
     public static ItemStack[] getPlayerSkulls () {
         
         int counter = 0;
-        ItemStack[] playerSkulls = new ItemStack[Player.values().length];
+        final ItemStack[] playerSkulls = new ItemStack[Player.values().length];
         
-        for (Player player : Player.values()) {
+        for (final Player player : Player.values()) {
             
             playerSkulls[counter] = createSkull(player);
             counter++;
@@ -203,7 +203,7 @@ public final class SkullUtils {
         /**
          * The base of the username, without the MHF prefix.
          */
-        private String username;
+        private final String username;
         
         /**
          * The UUID tied to the account.

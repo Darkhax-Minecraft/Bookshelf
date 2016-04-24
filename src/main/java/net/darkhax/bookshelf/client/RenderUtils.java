@@ -101,34 +101,34 @@ public class RenderUtils {
         
         if (state != null && state.getRenderType() != EnumBlockRenderType.INVISIBLE) {
             
-            int x = pos.getX();
-            int y = pos.getY();
-            int z = pos.getZ();
-            float offset = 0.1F;
-            AxisAlignedBB bounds = state.getBoundingBox(world, pos);
-            double xOffset = (double) x + Constants.RANDOM.nextDouble() * (bounds.maxX - bounds.minX - (double) (offset * 2.0F)) + (double) offset + bounds.minX;
-            double yOffset = (double) y + Constants.RANDOM.nextDouble() * (bounds.maxY - bounds.minY - (double) (offset * 2.0F)) + (double) offset + bounds.minY;
-            double zOffset = (double) z + Constants.RANDOM.nextDouble() * (bounds.maxZ - bounds.minZ - (double) (offset * 2.0F)) + (double) offset + bounds.minZ;
+            final int x = pos.getX();
+            final int y = pos.getY();
+            final int z = pos.getZ();
+            final float offset = 0.1F;
+            final AxisAlignedBB bounds = state.getBoundingBox(world, pos);
+            double xOffset = x + Constants.RANDOM.nextDouble() * (bounds.maxX - bounds.minX - offset * 2.0F) + offset + bounds.minX;
+            double yOffset = y + Constants.RANDOM.nextDouble() * (bounds.maxY - bounds.minY - offset * 2.0F) + offset + bounds.minY;
+            double zOffset = z + Constants.RANDOM.nextDouble() * (bounds.maxZ - bounds.minZ - offset * 2.0F) + offset + bounds.minZ;
             
             if (side == EnumFacing.DOWN)
-                yOffset = (double) y + bounds.minY - (double) offset;
+                yOffset = y + bounds.minY - offset;
                 
             else if (side == EnumFacing.UP)
-                yOffset = (double) y + bounds.maxY + (double) offset;
+                yOffset = y + bounds.maxY + offset;
                 
             else if (side == EnumFacing.NORTH)
-                zOffset = (double) z + bounds.minZ - (double) offset;
+                zOffset = z + bounds.minZ - offset;
                 
             else if (side == EnumFacing.SOUTH)
-                zOffset = (double) z + bounds.maxZ + (double) offset;
+                zOffset = z + bounds.maxZ + offset;
                 
             else if (side == EnumFacing.WEST)
-                xOffset = (double) x + bounds.minX - (double) offset;
+                xOffset = x + bounds.minX - offset;
                 
             else if (side == EnumFacing.EAST)
-                xOffset = (double) x + bounds.maxX + (double) offset;
+                xOffset = x + bounds.maxX + offset;
                 
-            renderer.addEffect((new OpenEntityDiggingFX(world, xOffset, yOffset, zOffset, 0.0D, 0.0D, 0.0D, state)).setBlockPos(pos).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
+            renderer.addEffect(new OpenEntityDiggingFX(world, xOffset, yOffset, zOffset, 0.0D, 0.0D, 0.0D, state).setBlockPos(pos).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
         }
         
         return false;
@@ -148,22 +148,18 @@ public class RenderUtils {
         
         if (state.getBlock() != null) {
             
-            int multiplier = 4;
+            final int multiplier = 4;
             
-            for (int xOffset = 0; xOffset < multiplier; xOffset++) {
-                
-                for (int yOffset = 0; yOffset < multiplier; yOffset++) {
-                    
+            for (int xOffset = 0; xOffset < multiplier; xOffset++)
+                for (int yOffset = 0; yOffset < multiplier; yOffset++)
                     for (int zOffset = 0; zOffset < multiplier; zOffset++) {
                         
-                        double xPos = (double) pos.getX() + ((double) xOffset + 0.5D) / (double) multiplier;
-                        double yPos = (double) pos.getY() + ((double) yOffset + 0.5D) / (double) multiplier;
-                        double zPos = (double) pos.getZ() + ((double) zOffset + 0.5D) / (double) multiplier;
-                        renderer.addEffect((new OpenEntityDiggingFX(world, xPos, yPos, zPos, xPos - (double) pos.getX() - 0.5D, yPos - (double) pos.getY() - 0.5D, zPos - (double) pos.getZ() - 0.5D, state)).setBlockPos(pos));
+                        final double xPos = pos.getX() + (xOffset + 0.5D) / multiplier;
+                        final double yPos = pos.getY() + (yOffset + 0.5D) / multiplier;
+                        final double zPos = pos.getZ() + (zOffset + 0.5D) / multiplier;
+                        renderer.addEffect(new OpenEntityDiggingFX(world, xPos, yPos, zPos, xPos - pos.getX() - 0.5D, yPos - pos.getY() - 0.5D, zPos - pos.getZ() - 0.5D, state).setBlockPos(pos));
                     }
-                }
-            }
-            
+                    
             return true;
         }
         

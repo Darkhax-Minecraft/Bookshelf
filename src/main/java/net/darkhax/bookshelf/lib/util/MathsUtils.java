@@ -21,7 +21,7 @@ public final class MathsUtils {
      */
     public static boolean isInRange (double min, double max, double value) {
         
-        return (value <= max && value >= min);
+        return value <= max && value >= min;
     }
     
     /**
@@ -50,7 +50,7 @@ public final class MathsUtils {
      */
     public static double round (double value, int places) {
         
-        return (value >= 0 && places > 0) ? new BigDecimal(value).setScale(places, RoundingMode.HALF_UP).doubleValue() : value;
+        return value >= 0 && places > 0 ? new BigDecimal(value).setScale(places, RoundingMode.HALF_UP).doubleValue() : value;
     }
     
     /**
@@ -76,9 +76,9 @@ public final class MathsUtils {
      */
     public static RayTraceResult rayTrace (EntityPlayer player, double length) {
         
-        Vec3d vec1 = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-        Vec3d vec2 = player.getLookVec();
-        Vec3d vec3 = vec1.addVector(vec2.xCoord * length, vec2.yCoord * length, vec2.zCoord * length);
+        final Vec3d vec1 = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+        final Vec3d vec2 = player.getLookVec();
+        final Vec3d vec3 = vec1.addVector(vec2.xCoord * length, vec2.yCoord * length, vec2.zCoord * length);
         return player.worldObj.rayTraceBlocks(vec1, vec3);
     }
     
@@ -124,8 +124,8 @@ public final class MathsUtils {
      */
     public static String ticksToTime (int ticks) {
         
-        int seconds = ticks / 20;
-        int minutes = seconds / 60;
+        final int seconds = ticks / 20;
+        final int minutes = seconds / 60;
         return minutes + ":" + seconds;
     }
 }

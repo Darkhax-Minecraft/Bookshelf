@@ -49,7 +49,7 @@ public class ColorObject {
      */
     public ColorObject(boolean doAlpha) {
         
-        this(getRandomColor(), getRandomColor(), getRandomColor(), (doAlpha) ? getRandomColor() : 1.0f);
+        this(getRandomColor(), getRandomColor(), getRandomColor(), doAlpha ? getRandomColor() : 1.0f);
     }
     
     /**
@@ -62,7 +62,7 @@ public class ColorObject {
         this.setRed(tag.hasKey("red") ? tag.getFloat("red") : 1.0f);
         this.setGreen(tag.hasKey("green") ? tag.getFloat("green") : 1.0f);
         this.setBlue(tag.hasKey("blue") ? tag.getFloat("blue") : 1.0f);
-        this.setAlpha((tag.hasKey("alpha")) ? tag.getFloat("alpha") : 1.0f);
+        this.setAlpha(tag.hasKey("alpha") ? tag.getFloat("alpha") : 1.0f);
     }
     
     /**
@@ -73,7 +73,7 @@ public class ColorObject {
      */
     public ColorObject(int rgb) {
         
-        this((float) (rgb >> 16 & 255) / 255.0F, (float) (rgb >> 8 & 255) / 255.0F, (float) (rgb & 255) / 255.0F);
+        this((rgb >> 16 & 255) / 255.0F, (rgb >> 8 & 255) / 255.0F, (rgb & 255) / 255.0F);
     }
     
     /**
@@ -141,7 +141,7 @@ public class ColorObject {
      */
     public void setRed (float amount) {
         
-        this.red = (amount < 0.0f) ? 0.0f : (amount > 1.0f) ? 1.0f : amount;
+        this.red = amount < 0.0f ? 0.0f : amount > 1.0f ? 1.0f : amount;
     }
     
     /**
@@ -152,7 +152,7 @@ public class ColorObject {
      */
     public float getRed () {
         
-        return (this.red < 0.0f) ? 0.0f : (this.red > 1.0f) ? 1.0f : this.red;
+        return this.red < 0.0f ? 0.0f : this.red > 1.0f ? 1.0f : this.red;
     }
     
     /**
@@ -163,7 +163,7 @@ public class ColorObject {
      */
     public void setGreen (float amount) {
         
-        this.green = (amount < 0.0f) ? 0.0f : (amount > 1.0f) ? 1.0f : amount;
+        this.green = amount < 0.0f ? 0.0f : amount > 1.0f ? 1.0f : amount;
     }
     
     /**
@@ -174,7 +174,7 @@ public class ColorObject {
      */
     public float getGreen () {
         
-        return (this.green < 0.0f) ? 0.0f : (this.green > 1.0f) ? 1.0f : this.green;
+        return this.green < 0.0f ? 0.0f : this.green > 1.0f ? 1.0f : this.green;
     }
     
     /**
@@ -185,7 +185,7 @@ public class ColorObject {
      */
     public void setBlue (float amount) {
         
-        this.blue = (amount < 0.0f) ? 0.0f : (amount > 1.0f) ? 1.0f : amount;
+        this.blue = amount < 0.0f ? 0.0f : amount > 1.0f ? 1.0f : amount;
     }
     
     /**
@@ -196,7 +196,7 @@ public class ColorObject {
      */
     public float getBlue () {
         
-        return (this.blue < 0.0f) ? 0.0f : (this.blue > 1.0f) ? 1.0f : this.blue;
+        return this.blue < 0.0f ? 0.0f : this.blue > 1.0f ? 1.0f : this.blue;
     }
     
     /**
@@ -207,7 +207,7 @@ public class ColorObject {
      */
     public void setAlpha (float amount) {
         
-        this.alpha = (amount < 0.0f) ? 0.0f : (amount > 1.0f) ? 1.0f : amount;
+        this.alpha = amount < 0.0f ? 0.0f : amount > 1.0f ? 1.0f : amount;
     }
     
     /**
@@ -218,7 +218,7 @@ public class ColorObject {
      */
     public float getAlpha () {
         
-        return (this.alpha < 0.0f) ? 0.0f : (this.alpha > 1.0f) ? 1.0f : this.alpha;
+        return this.alpha < 0.0f ? 0.0f : this.alpha > 1.0f ? 1.0f : this.alpha;
     }
     
     /**
@@ -263,7 +263,7 @@ public class ColorObject {
      */
     public boolean isGenericWhite () {
         
-        return isGeneric(1.0f);
+        return this.isGeneric(1.0f);
     }
     
     /**
@@ -275,7 +275,7 @@ public class ColorObject {
      */
     public boolean isGeneric (float color) {
         
-        return (this.red >= color && this.blue >= color && this.green >= color);
+        return this.red >= color && this.blue >= color && this.green >= color;
     }
     
     /**
@@ -286,7 +286,7 @@ public class ColorObject {
      */
     public ColorObject copy () {
         
-        ColorObject clone = new ColorObject(false);
+        final ColorObject clone = new ColorObject(false);
         clone.red = this.red;
         clone.green = this.green;
         clone.blue = this.blue;
@@ -325,7 +325,7 @@ public class ColorObject {
      */
     public ItemStack writeToItemStack (ItemStack stack) {
         
-        stack.setTagCompound(writeToTag(stack.getTagCompound()));
+        stack.setTagCompound(this.writeToTag(stack.getTagCompound()));
         return stack;
     }
     
@@ -349,7 +349,7 @@ public class ColorObject {
         String output = TextFormatting.RED + "" + (int) (this.red * 255) + " " + TextFormatting.GREEN + (int) (this.getGreen() * 255) + " " + TextFormatting.BLUE + (int) (this.blue * 255);
         
         if (this.alpha < 1.0f)
-            output += " " + TextFormatting.GRAY + (int) (100 - (this.alpha * 100));
+            output += " " + TextFormatting.GRAY + (int) (100 - this.alpha * 100);
             
         return output;
     }
@@ -359,8 +359,8 @@ public class ColorObject {
         
         if (obj instanceof ColorObject) {
             
-            ColorObject colorObj = (ColorObject) obj;
-            return (colorObj.red == this.red && colorObj.green == this.green && colorObj.blue == this.blue && colorObj.alpha == this.alpha);
+            final ColorObject colorObj = (ColorObject) obj;
+            return colorObj.red == this.red && colorObj.green == this.green && colorObj.blue == this.blue && colorObj.alpha == this.alpha;
         }
         
         return false;

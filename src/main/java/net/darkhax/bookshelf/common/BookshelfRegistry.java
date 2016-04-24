@@ -17,7 +17,7 @@ public class BookshelfRegistry {
      */
     private static final List<AnvilRecipe> anvilRecipes = new ArrayList<AnvilRecipe>();
     
-    //TODO use
+    // TODO use
     /**
      * A map of all the mod registered loot tables. The first map uses the loot category as the
      * key, and another map as the value. The value map is a list of loot table names and their
@@ -95,7 +95,7 @@ public class BookshelfRegistry {
      */
     public static void addPoolsToLootTable (LootTable table, List<LootPool> pools) {
         
-        List<LootPool> newPools = new ArrayList<LootPool>();
+        final List<LootPool> newPools = new ArrayList<LootPool>();
         newPools.addAll(Arrays.asList(table.pools));
         newPools.addAll(pools);
         table.pools = newPools.toArray(new LootPool[newPools.size()]);

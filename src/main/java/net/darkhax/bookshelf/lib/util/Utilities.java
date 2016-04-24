@@ -64,7 +64,7 @@ public final class Utilities {
      */
     public static List<String> wrapStringToList (String string, int lnLength, boolean wrapLongWords, List<String> list) {
         
-        String lines[] = WordUtils.wrap(string, lnLength, null, wrapLongWords).split(SystemUtils.LINE_SEPARATOR);
+        final String lines[] = WordUtils.wrap(string, lnLength, null, wrapLongWords).split(SystemUtils.LINE_SEPARATOR);
         list.addAll(Arrays.asList(lines));
         return list;
     }
@@ -90,9 +90,9 @@ public final class Utilities {
      */
     public static List<String> wrapStringToListWithFormat (String string, int lnLength, boolean wrapLongWords, List<String> list, TextFormatting format) {
         
-        String lines[] = WordUtils.wrap(string, lnLength, null, wrapLongWords).split(SystemUtils.LINE_SEPARATOR);
+        final String lines[] = WordUtils.wrap(string, lnLength, null, wrapLongWords).split(SystemUtils.LINE_SEPARATOR);
         
-        for (String line : lines)
+        for (final String line : lines)
             list.add(format + line);
             
         return list;
@@ -107,7 +107,7 @@ public final class Utilities {
      */
     public static boolean isFluid (Block block) {
         
-        return (block == Blocks.LAVA || block == Blocks.WATER || block instanceof IFluidBlock);
+        return block == Blocks.LAVA || block == Blocks.WATER || block instanceof IFluidBlock;
     }
     
     /**
@@ -142,7 +142,7 @@ public final class Utilities {
      */
     public static boolean compareClasses (Class<?> class1, Class<?> class2) {
         
-        return (class1 != null && class2 != null && class1.getName().equalsIgnoreCase(class2.getName()));
+        return class1 != null && class2 != null && class1.getName().equalsIgnoreCase(class2.getName());
     }
     
     /**
@@ -185,7 +185,7 @@ public final class Utilities {
             return Class.forName(name);
         }
         
-        catch (ClassNotFoundException e) {
+        catch (final ClassNotFoundException e) {
             
             e.printStackTrace();
             return null;
@@ -203,17 +203,15 @@ public final class Utilities {
      */
     public static boolean isWearingFullSet (EntityLivingBase living, Class<Item> armorClass) {
         
-        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
-            
+        for (final EntityEquipmentSlot slot : EntityEquipmentSlot.values())
             if (slot.getSlotType().equals(EntityEquipmentSlot.Type.ARMOR)) {
                 
-                ItemStack armor = living.getItemStackFromSlot(slot);
+                final ItemStack armor = living.getItemStackFromSlot(slot);
                 
                 if (armor == null || !armor.getItem().getClass().equals(armorClass))
                     return false;
             }
-        }
-        
+            
         return true;
     }
     
@@ -300,15 +298,15 @@ public final class Utilities {
      */
     public static void spawnParticleRing (World world, EnumParticleTypes particle, float percentage, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
         
-        for (double degree = 0.0d; degree < (2 * Math.PI * percentage); degree += step)
+        for (double degree = 0.0d; degree < 2 * Math.PI * percentage; degree += step)
             world.spawnParticle(particle, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
     }
     
     public static String getTicksAstime (int timeInTicks) {
         
-        float time = (float) timeInTicks / 20f;
+        final float time = timeInTicks / 20f;
         
-        return MathsUtils.round(time, 2) + ((time == 1f) ? " Second " : "Seconds");
+        return MathsUtils.round(time, 2) + (time == 1f ? " Second " : "Seconds");
     }
     
     /**
@@ -319,7 +317,7 @@ public final class Utilities {
      */
     public static boolean isKeyCodeNumeric (int keyCode) {
         
-        for (int validKey : NUMERIC_KEYS)
+        for (final int validKey : NUMERIC_KEYS)
             if (validKey == keyCode)
                 return true;
                 
@@ -351,7 +349,7 @@ public final class Utilities {
     @SideOnly(Side.CLIENT)
     public static CreativeTabs getTabFromLabel (String label) {
         
-        for (CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY)
+        for (final CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY)
             if (tab.getTabLabel().equalsIgnoreCase(label))
                 return tab;
                 

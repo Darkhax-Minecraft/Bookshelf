@@ -2,7 +2,6 @@ package net.darkhax.bookshelf.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiGraphicButton extends GuiButton {
@@ -19,7 +18,7 @@ public class GuiGraphicButton extends GuiButton {
     public void drawButton (Minecraft mc, int posX, int posY) {
         
         super.drawButton(mc, posX, posY);
-        mc.getTextureManager().bindTexture(buttonImage);
+        mc.getTextureManager().bindTexture(this.buttonImage);
         drawModalRectWithCustomSizedTexture(this.xPosition, this.yPosition, 0f, 0f, 20, 20, 20f, 20f);
     }
 }

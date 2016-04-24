@@ -20,7 +20,7 @@ public final class PlayerUtils {
      */
     public static boolean canPlayerSleep (EntityPlayer player) {
         
-        return (!player.isPlayerSleeping() && player.isEntityAlive() && player.worldObj.getWorldTime() > 12541 && player.worldObj.getWorldTime() < 23458);
+        return !player.isPlayerSleeping() && player.isEntityAlive() && player.worldObj.getWorldTime() > 12541 && player.worldObj.getWorldTime() < 23458;
     }
     
     /**
@@ -32,7 +32,7 @@ public final class PlayerUtils {
      */
     public static boolean isPlayerReal (EntityPlayer player) {
         
-        return (player != null && player.worldObj != null && player.getClass() == EntityPlayerMP.class);
+        return player != null && player.worldObj != null && player.getClass() == EntityPlayerMP.class;
         // TODO Check ServerList for player
     }
     
@@ -48,17 +48,15 @@ public final class PlayerUtils {
      */
     public static EntityPlayer getPlayerFromUUID (World world, UUID playerID) {
         
-        for (Object playerEntry : world.playerEntities) {
-            
+        for (final Object playerEntry : world.playerEntities)
             if (playerEntry instanceof EntityPlayer) {
                 
-                EntityPlayer player = (EntityPlayer) playerEntry;
+                final EntityPlayer player = (EntityPlayer) playerEntry;
                 
                 if (player.getUniqueID().equals(playerID))
                     return player;
             }
-        }
-        
+            
         return null;
     }
     

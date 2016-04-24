@@ -38,7 +38,7 @@ public class BlockWoodenShelf extends BlockBookshelf {
     @Override
     public int getMetaFromState (IBlockState state) {
         
-        return ((EnumType) state.getValue(VARIANT)).getMetadata();
+        return state.getValue(VARIANT).getMetadata();
     }
     
     @Override
@@ -84,6 +84,7 @@ public class BlockWoodenShelf extends BlockBookshelf {
             return this.meta;
         }
         
+        @Override
         public String toString () {
             
             return this.name;
@@ -97,6 +98,7 @@ public class BlockWoodenShelf extends BlockBookshelf {
             return META_LOOKUP[meta];
         }
         
+        @Override
         public String getName () {
             
             return this.name;
@@ -104,7 +106,7 @@ public class BlockWoodenShelf extends BlockBookshelf {
         
         static {
             
-            for (EnumType type : values())
+            for (final EnumType type : values())
                 META_LOOKUP[type.getMetadata()] = type;
         }
     }

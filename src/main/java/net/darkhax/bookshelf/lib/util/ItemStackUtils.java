@@ -35,13 +35,13 @@ public final class ItemStackUtils {
     public static ItemStack setLore (ItemStack stack, String[] lore) {
         
         prepareDataTag(stack);
-        NBTTagCompound tag = stack.getTagCompound();
-        NBTTagList loreList = new NBTTagList();
+        final NBTTagCompound tag = stack.getTagCompound();
+        final NBTTagList loreList = new NBTTagList();
         
         if (!tag.hasKey("display", 10))
             tag.setTag("display", new NBTTagCompound());
             
-        for (String line : lore)
+        for (final String line : lore)
             loreList.appendTag(new NBTTagString(line));
             
         tag.getCompoundTag("display").setTag("Lore", loreList);
@@ -73,10 +73,10 @@ public final class ItemStackUtils {
      */
     public static ItemStack createStackFromString (String stackString) {
         
-        String[] parts = stackString.split("#");
-        Object contents = Utilities.getThingByName(parts[0]);
-        int damage = (parts.length > 1) ? Integer.parseInt(parts[1]) : 0;
-        return (contents instanceof Item) ? new ItemStack((Item) contents, 1, damage) : new ItemStack((Block) contents, 1, damage);
+        final String[] parts = stackString.split("#");
+        final Object contents = Utilities.getThingByName(parts[0]);
+        final int damage = parts.length > 1 ? Integer.parseInt(parts[1]) : 0;
+        return contents instanceof Item ? new ItemStack((Item) contents, 1, damage) : new ItemStack((Block) contents, 1, damage);
     }
     
     /**
@@ -91,8 +91,8 @@ public final class ItemStackUtils {
     public static int getDyeColor (ItemStack stack) {
         
         if (ItemStackUtils.isValidStack(stack))
-            for (VanillaColor color : VanillaColor.values())
-                for (ItemStack oreStack : OreDictionary.getOres(color.getDyeName()))
+            for (final VanillaColor color : VanillaColor.values())
+                for (final ItemStack oreStack : OreDictionary.getOres(color.getDyeName()))
                     if (oreStack.isItemEqual(stack))
                         return color.color.getRGB();
                         
@@ -108,7 +108,7 @@ public final class ItemStackUtils {
      */
     public static boolean isValidStack (ItemStack stack) {
         
-        return (stack != null && stack.getItem() != null);
+        return stack != null && stack.getItem() != null;
     }
     
     /**
@@ -122,7 +122,7 @@ public final class ItemStackUtils {
      */
     public static boolean compareStackToOreName (ItemStack stack, String oreName) {
         
-        for (int stackName : OreDictionary.getOreIDs(stack))
+        for (final int stackName : OreDictionary.getOreIDs(stack))
             if (OreDictionary.getOreName(stackName).equalsIgnoreCase(oreName))
                 return true;
                 
@@ -139,8 +139,8 @@ public final class ItemStackUtils {
      */
     public static boolean doStacksShareOreName (ItemStack firstStack, ItemStack secondStack) {
         
-        for (int firstName : OreDictionary.getOreIDs(firstStack))
-            for (int secondName : OreDictionary.getOreIDs(secondStack))
+        for (final int firstName : OreDictionary.getOreIDs(firstStack))
+            for (final int secondName : OreDictionary.getOreIDs(secondStack))
                 if (firstName == secondName)
                     return true;
                     
@@ -157,7 +157,7 @@ public final class ItemStackUtils {
      */
     public static boolean areStacksSimilar (ItemStack firstStack, ItemStack secondStack) {
         
-        return (firstStack == null && secondStack == null) ? true : (isValidStack(firstStack) && isValidStack(secondStack) && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem());
+        return firstStack == null && secondStack == null ? true : isValidStack(firstStack) && isValidStack(secondStack) && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem();
     }
     
     /**
@@ -170,15 +170,15 @@ public final class ItemStackUtils {
      */
     public static boolean areStacksSimilarWithSize (ItemStack firstStack, ItemStack secondStack) {
         
-        return (firstStack == null && secondStack == null) ? true : (isValidStack(firstStack) && isValidStack(secondStack) && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem() && firstStack.stackSize == secondStack.stackSize);
+        return firstStack == null && secondStack == null ? true : isValidStack(firstStack) && isValidStack(secondStack) && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem() && firstStack.stackSize == secondStack.stackSize;
     }
     
     public static ItemStack writePotionEffectsToStack (ItemStack stack, PotionEffect[] effects) {
         
-        NBTTagCompound stackTag = prepareDataTag(stack);
-        NBTTagList potionTag = new NBTTagList();
+        final NBTTagCompound stackTag = prepareDataTag(stack);
+        final NBTTagList potionTag = new NBTTagList();
         
-        for (PotionEffect effect : effects)
+        for (final PotionEffect effect : effects)
             potionTag.appendTag(effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
             
         stackTag.setTag("CustomPotionEffects", potionTag);
@@ -194,7 +194,7 @@ public final class ItemStackUtils {
      */
     public static void writeStackToTag (ItemStack stack, NBTTagCompound tag, String tagName) {
         
-        NBTTagCompound stackTag = new NBTTagCompound();
+        final NBTTagCompound stackTag = new NBTTagCompound();
         stack.writeToNBT(stackTag);
         tag.setTag(tagName, stackTag);
     }
@@ -209,7 +209,7 @@ public final class ItemStackUtils {
     public static ItemStack decreaseStackSize (ItemStack stack, int amount) {
         
         stack.stackSize -= amount;
-        return (stack.stackSize <= 0) ? null : stack;
+        return stack.stackSize <= 0 ? null : stack;
     }
     
     /**
@@ -228,8 +228,8 @@ public final class ItemStackUtils {
         if (firstStack == null || secondStack == null)
             return firstStack == secondStack;
             
-        Item firstItem = firstStack.getItem();
-        Item secondItem = secondStack.getItem();
+        final Item firstItem = firstStack.getItem();
+        final Item secondItem = secondStack.getItem();
         
         if (firstItem == null || secondItem == null)
             return firstItem == secondItem;
@@ -255,7 +255,7 @@ public final class ItemStackUtils {
      */
     public static boolean isStackInArray (ItemStack stack, boolean checkNBT, ItemStack... stacks) {
         
-        for (ItemStack currentStack : stacks)
+        for (final ItemStack currentStack : stacks)
             if (areStacksEqual(stack, currentStack, checkNBT))
                 return true;
                 

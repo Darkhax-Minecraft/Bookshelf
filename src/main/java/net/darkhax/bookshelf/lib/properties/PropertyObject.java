@@ -32,13 +32,13 @@ public class PropertyObject<T> implements IUnlistedProperty<T> {
     @Override
     public String getName () {
         
-        return name;
+        return this.name;
     }
     
     @Override
     public Class<T> getType () {
         
-        return type;
+        return this.type;
     }
     
     @Override

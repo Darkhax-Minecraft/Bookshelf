@@ -48,13 +48,13 @@ public class SlotArmor extends Slot {
     @Override
     public boolean isItemValid (ItemStack stack) {
         
-        return (ItemStackUtils.isValidStack(stack) ? stack.getItem().isValidArmor(stack, slotType, entity) : false);
+        return ItemStackUtils.isValidStack(stack) ? stack.getItem().isValidArmor(stack, this.slotType, this.entity) : false;
     }
     
     @Override
     @SideOnly(Side.CLIENT)
     public String getSlotTexture () {
         
-        return ItemArmor.EMPTY_SLOT_NAMES[slotType.getIndex()];
+        return ItemArmor.EMPTY_SLOT_NAMES[this.slotType.getIndex()];
     }
 }

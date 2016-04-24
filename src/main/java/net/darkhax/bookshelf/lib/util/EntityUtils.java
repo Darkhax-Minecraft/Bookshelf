@@ -56,11 +56,11 @@ public final class EntityUtils {
      */
     public static void pushTowards (Entity entityToMove, BlockPos pos, double force) {
         
-        BlockPos entityPos = entityToMove.getPosition();
-        double distanceX = pos.getX() - entityPos.getX();
-        double distanceY = pos.getY() - entityPos.getY();
-        double distanceZ = pos.getZ() - entityPos.getZ();
-        double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
+        final BlockPos entityPos = entityToMove.getPosition();
+        final double distanceX = pos.getX() - entityPos.getX();
+        final double distanceY = pos.getY() - entityPos.getY();
+        final double distanceZ = pos.getZ() - entityPos.getZ();
+        final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
         if (distance > 0) {
             
@@ -80,10 +80,10 @@ public final class EntityUtils {
      */
     public static void pushTowards (Entity entityToMove, Entity destination, double force) {
         
-        double distanceX = destination.posX - entityToMove.posX;
-        double distanceY = destination.posY - entityToMove.posY;
-        double distanceZ = destination.posZ - entityToMove.posZ;
-        double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
+        final double distanceX = destination.posX - entityToMove.posX;
+        final double distanceY = destination.posY - entityToMove.posY;
+        final double distanceZ = destination.posZ - entityToMove.posZ;
+        final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
         if (distance > 0) {
             
@@ -104,7 +104,7 @@ public final class EntityUtils {
      */
     public static boolean areEntitiesCloseEnough (Entity firstEntity, Entity secondEntity, double maxDistance) {
         
-        return getDistanceFromEntity(firstEntity, secondEntity) < (maxDistance * maxDistance);
+        return getDistanceFromEntity(firstEntity, secondEntity) < maxDistance * maxDistance;
     }
     
     /**

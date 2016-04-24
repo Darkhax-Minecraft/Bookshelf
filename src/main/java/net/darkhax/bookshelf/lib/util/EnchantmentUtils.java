@@ -27,7 +27,7 @@ public final class EnchantmentUtils {
      */
     public static int getExperienceFromLevel (int level) {
         
-        return (int) ((level < 16) ? 17 * level : (level > 15 && level < 31) ? (1.5f * (float) (level * level) - 29.5f * level + 360) : (3.5f * (level * level) - 151.5f * level + 2220));
+        return (int) (level < 16 ? 17 * level : level > 15 && level < 31 ? 1.5f * (level * level) - 29.5f * level + 360 : 3.5f * (level * level) - 151.5f * level + 2220);
     }
     
     /**
