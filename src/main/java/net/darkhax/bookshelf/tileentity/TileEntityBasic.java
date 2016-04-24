@@ -49,7 +49,7 @@ public class TileEntityBasic extends TileEntity implements ITickable {
     }
     
     @Override
-    public final void update () {
+    public void update () {
         
         if (this.isInvalid() || !this.getWorld().isBlockLoaded(this.getPos()) || this.getWorld().isRemote)
             return;
