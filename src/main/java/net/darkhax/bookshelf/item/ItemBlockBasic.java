@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBlockBasic extends ItemBlock {
     
-    public final Block theBlock;
     public final String[] names;
     
     public ItemBlockBasic(Block block, String[] names) {
@@ -17,7 +16,6 @@ public class ItemBlockBasic extends ItemBlock {
     public ItemBlockBasic(Block block, String[] names, boolean selfRegister) {
         
         super(block);
-        this.theBlock = block;
         this.names = names;
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
@@ -39,5 +37,10 @@ public class ItemBlockBasic extends ItemBlock {
             return super.getUnlocalizedName() + "." + names[0];
             
         return super.getUnlocalizedName() + "." + names[stack.getMetadata()];
+    }
+    
+    public Block getBlock() {
+        
+        return this.block;
     }
 }
