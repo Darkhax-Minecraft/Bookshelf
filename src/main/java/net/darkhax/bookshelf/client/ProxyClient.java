@@ -59,18 +59,14 @@ public class ProxyClient extends ProxyCommon {
         if (event.getEntity() instanceof AbstractClientPlayer) {
             
             final AbstractClientPlayer player = (AbstractClientPlayer) event.getEntity();
-            System.out.println(player.getUniqueID().toString());
             final UUID id = player.getUniqueID();
             
             // Darkhax
-            if (id.toString().equals("d183e5a2-a087-462a-963e-c3d7295f9ec5")) {
-                
-                System.out.println("Darkhax is True");
+            if (id.toString().equals("d183e5a2-a087-462a-963e-c3d7295f9ec5"))
                 makePlayerFancy(player, CAPE_DARKHAX, ELYTRA_DARKHAX);
-            }
             
             // Syco
-            if (id.toString().equals("eec70f59-1543-4580-b4d8-4954a108866b"))
+            else if (id.toString().equals("eec70f59-1543-4580-b4d8-4954a108866b"))
                 makePlayerFancy(player, CAPE_SYCO, ELYTRA_SYCO);
                 
             // Seth
