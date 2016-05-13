@@ -83,7 +83,7 @@ public class ProxyClient extends ProxyCommon {
      * @param cape The cape texture to set.
      * @param elytra The elytra texture to set.
      */
-    private static void makePlayerFancy (AbstractClientPlayer player, ResourceLocation cape, ResourceLocation elytra) {
+    private static void makePlayerFancy (final AbstractClientPlayer player, final ResourceLocation cape, final ResourceLocation elytra) {
         
         THREAD_POOL.submit(new Runnable() {
             
@@ -104,11 +104,8 @@ public class ProxyClient extends ProxyCommon {
                     @Override
                     public void run () {
                         
-                        if (cape != null)
-                            RenderUtils.setPlayerTexture(Type.CAPE, player, cape);
-                            
-                        if (elytra != null)
-                            RenderUtils.setPlayerTexture(Type.ELYTRA, player, elytra);
+                        RenderUtils.setPlayerTexture(Type.CAPE, player, cape);
+                        RenderUtils.setPlayerTexture(Type.ELYTRA, player, elytra);
                     }
                 });
             }
