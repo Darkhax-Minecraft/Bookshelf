@@ -1,13 +1,12 @@
 package net.darkhax.bookshelf.client;
 
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
-
-import net.darkhax.bookshelf.client.particle.OpenEntityDiggingFX;
+import net.darkhax.bookshelf.client.particle.OpenParticleDigging;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLivingBase;
@@ -90,14 +89,14 @@ public class RenderUtils {
      * Spawns the digging particles for a block, similarly to the normal block hit effect
      * particle. The intended use of this method is to override the block hit effects.
      * 
-     * @param renderer The EffectRenderer, used to render the particle effect.
+     * @param manager The EffectRenderer, used to render the particle effect.
      * @param state The BlockState for the block to render the breaking effect of.
      * @param world The World to spawn the particle effects in.
      * @param pos The position to spawn the particles at.
      * @param side The side offset for the effect.
      * @return boolean Whether or not the effect actually spawned.
      */
-    public static boolean spawnDigParticles (EffectRenderer renderer, IBlockState state, World world, BlockPos pos, EnumFacing side) {
+    public static boolean spawnDigParticles (ParticleManager manager, IBlockState state, World world, BlockPos pos, EnumFacing side) {
         
         if (state != null && state.getRenderType() != EnumBlockRenderType.INVISIBLE) {
             
@@ -128,7 +127,7 @@ public class RenderUtils {
             else if (side == EnumFacing.EAST)
                 xOffset = x + bounds.maxX + offset;
                 
-            renderer.addEffect(new OpenEntityDiggingFX(world, xOffset, yOffset, zOffset, 0.0D, 0.0D, 0.0D, state).setBlockPos(pos).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
+            manager.addEffect(new OpenParticleDigging(world, xOffset, yOffset, zOffset, 0.0D, 0.0D, 0.0D, state).setBlockPos(pos).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
         }
         
         return false;
@@ -138,13 +137,13 @@ public class RenderUtils {
      * Spawns the break particles for a block, similarly to the normal block break effect
      * particle. The intended use of this method is to override the block break effects.
      * 
-     * @param renderer The EffectRenderer, used to render the particle effect.
+     * @param manager The EffectRenderer, used to render the particle effect.
      * @param state The BlockState for the block to render the breaking effect of.
      * @param world The World to spawn the particle effect in.
      * @param pos The position to spawn the particles at.
      * @return boolean Whether or not the effect actually spawned.
      */
-    public static boolean spawnBreakParticles (EffectRenderer renderer, IBlockState state, World world, BlockPos pos) {
+    public static boolean spawnBreakParticles (ParticleManager manager, IBlockState state, World world, BlockPos pos) {
         
         if (state.getBlock() != null) {
             
@@ -157,7 +156,7 @@ public class RenderUtils {
                         final double xPos = pos.getX() + (xOffset + 0.5D) / multiplier;
                         final double yPos = pos.getY() + (yOffset + 0.5D) / multiplier;
                         final double zPos = pos.getZ() + (zOffset + 0.5D) / multiplier;
-                        renderer.addEffect(new OpenEntityDiggingFX(world, xPos, yPos, zPos, xPos - pos.getX() - 0.5D, yPos - pos.getY() - 0.5D, zPos - pos.getZ() - 0.5D, state).setBlockPos(pos));
+                        manager.addEffect(new OpenParticleDigging(world, xPos, yPos, zPos, xPos - pos.getX() - 0.5D, yPos - pos.getY() - 0.5D, zPos - pos.getZ() - 0.5D, state).setBlockPos(pos));
                     }
                     
             return true;

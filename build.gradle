@@ -18,7 +18,7 @@ buildscript {
 
     dependencies {
 
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
         classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.0.7"
     }
 }
@@ -35,9 +35,9 @@ version = getVersionFromJava(file("src/main/java/net/darkhax/bookshelf/lib/Const
 minecraft {
 
     useDepAts = true
-    version = "1.9-12.16.1.1907"
+    version = "1909"
     runDir = "run"
-    mappings = 'snapshot_20160516'
+    mappings = 'snapshot_20160518'
 }
 
 //Defines basic patterns for pulling various dependencies.
