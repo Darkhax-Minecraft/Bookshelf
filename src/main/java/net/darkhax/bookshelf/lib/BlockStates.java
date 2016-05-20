@@ -34,4 +34,34 @@ public class BlockStates {
      * Used to determine the color of a block. Only supports the 16 vanilla colors.
      */
     public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
+    
+    /**
+     * Used to determine if a block is connected on the bottom face.
+     */
+    public static final PropertyBool CONNECTED_DOWN = PropertyBool.create("connected_down");
+    
+    /**
+     * Used to determine if a block is connected on the upward face.
+     */
+    public static final PropertyBool CONNECTED_UP = PropertyBool.create("connected_up");
+    
+    /**
+     * Used to determine if a block is connected on the northern face.
+     */
+    public static final PropertyBool CONNECTED_NORTH = PropertyBool.create("connected_north");
+    
+    /**
+     * Used to determine if a block is connected on the southern face.
+     */
+    public static final PropertyBool CONNECTED_SOUTH = PropertyBool.create("connected_south");
+    
+    /**
+     * Used to determine if a block is connected on the eastern face.
+     */
+    public static final PropertyBool CONNECTED_EAST = PropertyBool.create("connected_east");
+    
+    /**
+     * Used to determine if a block is connected on the western face.
+     */
+    public static final PropertyBool CONNECTED_WEST = PropertyBool.create("connected_west");
 }
