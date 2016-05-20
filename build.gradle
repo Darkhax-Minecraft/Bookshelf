@@ -110,7 +110,7 @@ String getVersionFromJava(File file) {
 
     file.write(outfile);
 
-    return "1.9-$release.$update.$patch.$build";
+    return "1.9.4-$release.$update.$patch.$build";
 }
 
 //Creates the source jar.
@@ -195,7 +195,7 @@ curseforge {
         releaseType = project.releaseType;
         changelog = project.changelog;
 
-        addGameVersion "1.9"
+        addGameVersion "1.9.4"
         
         addArtifact(deobfJar)
         addArtifact(sourcesJar)
