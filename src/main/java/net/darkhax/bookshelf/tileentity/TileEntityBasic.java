@@ -4,7 +4,6 @@ import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
@@ -21,18 +20,17 @@ public class TileEntityBasic extends TileEntity implements ITickable {
     }
     
     @Override
-    public void writeToNBT (NBTTagCompound dataTag) {
+    public NBTTagCompound writeToNBT (NBTTagCompound dataTag) {
         
         super.writeToNBT(dataTag);
         this.writeNBT(dataTag);
+        return dataTag;
     }
     
     @Override
-    public Packet<?> getDescriptionPacket () {
-        
-        final NBTTagCompound dataTag = new NBTTagCompound();
-        this.writeNBT(dataTag);
-        return new SPacketUpdateTileEntity(this.pos, -1337, dataTag);
+    public SPacketUpdateTileEntity getUpdatePacket() {
+
+        return new SPacketUpdateTileEntity(this.pos, 0, this.getUpdateTag());
     }
     
     @Override
