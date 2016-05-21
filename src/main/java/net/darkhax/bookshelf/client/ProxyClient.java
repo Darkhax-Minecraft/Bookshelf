@@ -85,22 +85,30 @@ public class ProxyClient extends ProxyCommon {
      */
     private static void makePlayerFancy (final AbstractClientPlayer player, final ResourceLocation cape, final ResourceLocation elytra) {
         
-        THREAD_POOL.submit( () -> {
+        THREAD_POOL.submit(new Runnable() {
             
-            try {
+            @Override
+            public void run () {
                 
-                Thread.sleep(100);
+                try {
+                    
+                    Thread.sleep(100);
+                }
+                catch (final InterruptedException e) {
+                    
+                    return;
+                }
+                
+                Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+                    
+                    @Override
+                    public void run () {
+                        
+                        RenderUtils.setPlayerTexture(Type.CAPE, player, cape);
+                        RenderUtils.setPlayerTexture(Type.ELYTRA, player, elytra);
+                    }
+                });
             }
-            catch (final InterruptedException e) {
-                
-                return;
-            }
-            
-            Minecraft.getMinecraft().addScheduledTask( () -> {
-                
-                RenderUtils.setPlayerTexture(Type.CAPE, player, cape);
-                RenderUtils.setPlayerTexture(Type.ELYTRA, player, elytra);
-            });
         });
     }
 }
