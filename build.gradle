@@ -157,7 +157,7 @@ uploadArchives {
 task setCurseForgeInfo() {
 
     project.ext.releaseType = "alpha";
-    project.ext.changelog = "All changes can be found here: " + "https://github.com/Darkhax-Minecraft/bookshelf/commits/master" + "${proc.in.text}";
+    project.ext.changelog = "All changes can be found here: " + "https://github.com/Darkhax-Minecraft/bookshelf/commits/master";
 }
 
 //Prevents incomplete JavaDocs from preventing a build on Java 8.
