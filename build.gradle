@@ -35,7 +35,7 @@ version = getVersionFromJava(file("src/main/java/net/darkhax/bookshelf/lib/Const
 minecraft {
 
     useDepAts = true
-    version = "1909"
+    version = "1.9.4-12.17.0.1909-1.9.4"
     runDir = "run"
     mappings = 'snapshot_20160518'
 }
@@ -156,16 +156,7 @@ uploadArchives {
 
 task setCurseForgeInfo() {
 
-    def proc = "git log --pretty=format:%s -1".execute();
-    proc.waitFor();
-    def message = "${proc.in.text}"
-
-    //Changes the type of release. Default is alpha release. #beta and #release can be added into the commit message to change it.
-    project.ext.releaseType = message.toLowerCase().contains("#release") ? "release" : message.toLowerCase().contains("#beta") ? "beta" : "alpha";
-
-    //Sets the Changelog to direct the reader to the GitHub commit log.
-    proc = "git log --pretty=format:%H -1".execute();
-    proc.waitFor();
+    project.ext.releaseType = "alpha";
     project.ext.changelog = "All changes can be found here: " + "https://github.com/Darkhax-Minecraft/bookshelf/commits/master" + "${proc.in.text}";
 }
 
