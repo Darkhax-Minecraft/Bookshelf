@@ -14,19 +14,15 @@ public final class NBTUtils {
     /**
      * A Comparator used to compare NBTTagCompound.
      */
-    public static final Comparator<NBTTagCompound> NBT_COMPARATOR = new Comparator<NBTTagCompound>() {
+    public static final Comparator<NBTTagCompound> NBT_COMPARATOR = (firstTag, secondTag) -> {
         
-        @Override
-        public int compare (NBTTagCompound firstTag, NBTTagCompound secondTag) {
+        if (firstTag != null && firstTag != secondTag)
+            return 1;
             
-            if (firstTag != null && firstTag != secondTag)
-                return 1;
-                
-            else if (secondTag != null)
-                return -1;
-                
-            return 0;
-        }
+        else if (secondTag != null)
+            return -1;
+            
+        return 0;
     };
     
     /**

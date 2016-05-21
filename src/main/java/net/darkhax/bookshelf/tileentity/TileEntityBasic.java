@@ -28,8 +28,8 @@ public class TileEntityBasic extends TileEntity implements ITickable {
     }
     
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-
+    public SPacketUpdateTileEntity getUpdatePacket () {
+        
         return new SPacketUpdateTileEntity(this.pos, 0, this.getUpdateTag());
     }
     

@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.client;
 
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+
 import net.darkhax.bookshelf.client.particle.OpenParticleDigging;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.block.state.IBlockState;
