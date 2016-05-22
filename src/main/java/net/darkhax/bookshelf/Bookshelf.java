@@ -5,6 +5,7 @@ import net.darkhax.bookshelf.common.ProxyCommon;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.item.ItemBlockBasic;
 import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.util.HolidayUtils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -38,6 +39,8 @@ public class Bookshelf {
         network = NetworkRegistry.INSTANCE.newSimpleChannel("Bookshelf");
         
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
+
+        HolidayUtils.CheckDates();
         
         GameRegistry.register(blockShelf);
         GameRegistry.register(new ItemBlockBasic(blockShelf, BlockWoodenShelf.types, true));
