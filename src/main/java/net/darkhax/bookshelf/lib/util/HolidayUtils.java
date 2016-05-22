@@ -5,30 +5,30 @@ import net.darkhax.bookshelf.lib.Constants;
 import java.util.Calendar;
 
 public class HolidayUtils {
-    public static Boolean IsNewYears = false;
-    public static Boolean IsAprilFirst = false;
-    public static Boolean IsHalloween = false;
-    public static Boolean IsChristmas = false;
+    public static Boolean isNewYears = false;
+    public static Boolean isAprilFirst = false;
+    public static Boolean isHalloween = false;
+    public static Boolean isChristmas = false;
 
-    public static void CheckDates () {
+    public static void checkDates () {
 
-        DateChecker();
-        if (IsNewYears == true) {
+        dateChecker();
+        if (isNewYears == true) {
             Constants.LOG.info("Happy New Year");
         }
-        if (IsAprilFirst == true) {
+        if (isAprilFirst == true) {
             Constants.LOG.info("Happy April Fools Day");
         }
-        if (IsHalloween == true) {
+        if (isHalloween == true) {
             Constants.LOG.info("Happy Halloween");
         }
-        if (IsChristmas == true) {
+        if (isChristmas == true) {
             Constants.LOG.info("Merry Christmas");
         }
 
     }
 
-    public static void DateChecker () {
+    public static void dateChecker () {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -36,25 +36,25 @@ public class HolidayUtils {
         switch (calendar.get(2)) {
             case 0: {
                 if (calendar.get(5) == 1) {
-                    IsNewYears = true;
+                    isNewYears = true;
                 }
                 break;
             }
             case 3: {
                 if (calendar.get(5) == 1) {
-                    IsAprilFirst = true;
+                    isAprilFirst = true;
                 }
                 break;
             }
             case 9: {
                 if (calendar.get(5) == 31) {
-                    IsHalloween = true;
+                    isHalloween = true;
                 }
                 break;
             }
             case 11: {
                 if (calendar.get(5) == 25) {
-                    IsChristmas = true;
+                    isChristmas = true;
                 }
                 break;
             }
