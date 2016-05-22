@@ -40,7 +40,7 @@ public class Bookshelf {
         
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
 
-        HolidayUtils.CheckDates();
+        HolidayUtils.checkDates();
         
         GameRegistry.register(blockShelf);
         GameRegistry.register(new ItemBlockBasic(blockShelf, BlockWoodenShelf.types, true));
