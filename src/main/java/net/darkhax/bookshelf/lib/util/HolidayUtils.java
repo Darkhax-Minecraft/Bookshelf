@@ -13,17 +13,20 @@ public class HolidayUtils {
     public static void checkDates () {
 
         dateChecker();
-        if (isNewYears == true) {
+        if (isNewYears = true) {
             Constants.LOG.info("Happy New Year");
         }
-        if (isAprilFirst == true) {
+        else if (isAprilFirst = true) {
             Constants.LOG.info("Happy April Fools Day");
         }
-        if (isHalloween == true) {
+        else if (isHalloween = true) {
             Constants.LOG.info("Happy Halloween");
         }
-        if (isChristmas == true) {
+        else if (isChristmas = true) {
             Constants.LOG.info("Merry Christmas");
+        }
+        else {
+            Constants.LOG.info(":( Today is not a Holiday");
         }
 
     }
