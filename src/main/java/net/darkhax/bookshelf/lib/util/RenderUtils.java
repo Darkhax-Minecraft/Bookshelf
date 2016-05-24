@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.client;
+package net.darkhax.bookshelf.lib.util;
 
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 

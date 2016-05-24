@@ -11,6 +11,7 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.block.BlockWoodenShelf;
 import net.darkhax.bookshelf.common.ProxyCommon;
+import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -23,13 +24,39 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ProxyClient extends ProxyCommon {
     
-    private static final ExecutorService THREAD_POOL = new ThreadPoolExecutor(0, 2, 1L, TimeUnit.MINUTES, new LinkedBlockingQueue());
+    /**
+     * A Thread pool to handle certain player specific texture requests. 
+     */
+    private static final ExecutorService THREAD_POOL = new ThreadPoolExecutor(0, 2, 1L, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>());
     
+    /**
+     * A custom cape texture for Darkhax. Do not ask for your own!
+     */
     private static final ResourceLocation CAPE_DARKHAX = new ResourceLocation("bookshelf", "textures/entity/player/cape_darkhax.png");
+   
+    /**
+     * A custom Elytra texture for Darkhax. Do not ask for your own!
+     */
     private static final ResourceLocation ELYTRA_DARKHAX = new ResourceLocation("bookshelf", "textures/entity/player/elytra_darkhax.png");
+    
+    /**
+     * A custom cape texture for SethG. Do not ask for your own!
+     */
     private static final ResourceLocation CAPE_SETH = new ResourceLocation("bookshelf", "textures/entity/player/cape_seth.png");
+    
+    /**
+     * A custom Elytra texture for SethG. Do not ask for your own!
+     */
     private static final ResourceLocation ELYTRA_SETH = new ResourceLocation("bookshelf", "textures/entity/player/elytra_seth.png");
+    
+    /**
+     * A custom cape texture for Sycophantasia. Do not ask for your own!
+     */
     private static final ResourceLocation CAPE_SYCO = new ResourceLocation("bookshelf", "textures/entity/player/cape_syco.png");
+    
+    /**
+     * A custom Elytra texture for Sycophantasia. Do not ask for your own!
+     */
     private static final ResourceLocation ELYTRA_SYCO = new ResourceLocation("bookshelf", "textures/entity/player/elytra_syco.png");
     
     @Override
@@ -77,7 +104,7 @@ public class ProxyClient extends ProxyCommon {
     
     /**
      * Attempts to make the player super fancy. Will try to apply the cape texture and the
-     * elytra texture that is passed.
+     * elytra texture that is passed. This method is used internally and should not be considered part of the public API.
      * 
      * @param player The player to make fancy.
      * @param cape The cape texture to set.
