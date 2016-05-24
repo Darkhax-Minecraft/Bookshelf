@@ -76,7 +76,7 @@ public final class PlayerUtils {
      * the chat once. If another version of the message were to be added to chat, the earlier
      * one would be removed.
      * 
-     * @param messageID A unique message ID used to seperate your message from the others. It
+     * @param messageID A unique message ID used to separate your message from the others. It
      *            is highly recommended to use a random number to prevent conflicts with other
      *            mods doing similar things. Each message type should have it's own ID.
      * @param message The message to send to chat, this message will replace earlier messages

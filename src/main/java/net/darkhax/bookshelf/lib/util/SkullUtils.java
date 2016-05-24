@@ -11,8 +11,8 @@ public final class SkullUtils {
     /**
      * Create a skull from an instance of EntityPlayer.
      *
-     * @param player: The EntityPlayer to use the skin from.
-     * @return ItemStack: An ItemStack containing a skull that represents the passed player.
+     * @param player The EntityPlayer to use the skin from.
+     * @return ItemStack An ItemStack containing a skull that represents the passed player.
      */
     public static ItemStack createSkull (EntityPlayer player) {
         
@@ -22,8 +22,8 @@ public final class SkullUtils {
     /**
      * Creates a skull using a players UUID.
      * 
-     * @param uuid: The UUID of the player to base the skull on.
-     * @return ItemStack: An ItemStack containing a skull which represents the owner of the
+     * @param uuid The UUID of the player to base the skull on.
+     * @return ItemStack An ItemStack containing a skull which represents the owner of the
      *         passed UUID.
      */
     public static ItemStack createSkull (UUID uuid) {
@@ -34,8 +34,8 @@ public final class SkullUtils {
     /**
      * Creates a skull from the list of publicly provided MHF accounts.
      * 
-     * @param account: The MHFAccount to create the skull from.
-     * @return ItemStack: An ItemStack containing a skull which represents the MHF account.
+     * @param account The MHFAccount to create the skull from.
+     * @return ItemStack An ItemStack containing a skull which represents the MHF account.
      */
     public static ItemStack createSkull (MHFAccount account) {
         
@@ -45,8 +45,8 @@ public final class SkullUtils {
     /**
      * Creates a skull from the list of provided players.
      * 
-     * @param player: The Player account to create the skull from
-     * @return ItemStack: An ItemStack containing a skull which represents the known Player.
+     * @param player The Player account to create the skull from
+     * @return ItemStack An ItemStack containing a skull which represents the known Player.
      */
     public static ItemStack createSkull (Player player) {
         
@@ -58,8 +58,8 @@ public final class SkullUtils {
      * player UUID. It is recommended to use the UUID over the username, unless you are 100%
      * certain that the username will never change.
      * 
-     * @param owner: The owner of the skull being created. Can be a username of a UUID.
-     * @return ItemStack: An ItemStack containing a skull which represents the passed owner
+     * @param owner The owner of the skull being created. Can be a username of a UUID.
+     * @return ItemStack An ItemStack containing a skull which represents the passed owner
      *         name.
      */
     public static ItemStack createSkull (String owner) {
@@ -73,7 +73,7 @@ public final class SkullUtils {
     /**
      * Creates a vanilla Wither Skeleton Skull.
      * 
-     * @return ItemStack: An ItemStack containing a vanilla wither skeleton skull.
+     * @return ItemStack An ItemStack containing a vanilla wither skeleton skull.
      */
     public static ItemStack getWitherSkeletonSkull () {
         
@@ -83,7 +83,7 @@ public final class SkullUtils {
     /**
      * Creates a vanilla Zombie Skull.
      * 
-     * @return ItemStack: An ItemStack containing a vanilla zombie skull.
+     * @return ItemStack An ItemStack containing a vanilla zombie skull.
      */
     public static ItemStack getZombieSkull () {
         
@@ -93,7 +93,7 @@ public final class SkullUtils {
     /**
      * Creates a vanilla Creeper Skull.
      * 
-     * @return ItemStack: An ItemStack containing a vanilla creeper skull.
+     * @return ItemStack An ItemStack containing a vanilla creeper skull.
      */
     public static ItemStack getCreeperSkull () {
         
@@ -103,7 +103,7 @@ public final class SkullUtils {
     /**
      * Creates a vanilla Steve Skull.
      * 
-     * @return ItemStack: An ItemStack containing a vanilla steve skull.
+     * @return ItemStack An ItemStack containing a vanilla steve skull.
      */
     public static ItemStack getSteveSkull () {
         
@@ -113,7 +113,7 @@ public final class SkullUtils {
     /**
      * Creates a vanilla Skeleton Skull.
      * 
-     * @return ItemStack: An ItemStack containing a vanilla skeleton skull.
+     * @return ItemStack An ItemStack containing a vanilla skeleton skull.
      */
     public static ItemStack getSkeletonSkull () {
         
@@ -123,7 +123,7 @@ public final class SkullUtils {
     /**
      * Creates an array of ItemStacks containing MHF Skulls.
      * 
-     * @return ItemStack[]: An array of ItemStack containing every skull from the MHFAccount
+     * @return ItemStack[] An array of ItemStack containing every skull from the MHFAccount
      *         enum.
      */
     public static ItemStack[] getMHFSkulls () {
@@ -143,7 +143,7 @@ public final class SkullUtils {
     /**
      * Creates an array of ItemStacks containing the skulls of players from the Player enum.
      * 
-     * @return ItemStack[]: An array of ItemStacks containing the skulls of known players.
+     * @return ItemStack[] An array of ItemStacks containing the skulls of known players.
      */
     public static ItemStack[] getPlayerSkulls () {
         
@@ -213,8 +213,8 @@ public final class SkullUtils {
         /**
          * An enumeration of all accounts provided by Mojang under the MHF format.
          * 
-         * @param username: The username tied to the account.
-         * @param uuid: The uuid tied to the account.
+         * @param username The username tied to the account.
+         * @param uuid The uuid tied to the account.
          */
         MHFAccount(String username, String uuid) {
             
@@ -226,7 +226,7 @@ public final class SkullUtils {
          * Provides the base name for this skull. This is the base name, and not the full
          * username. Use getMHFName to get an actual username that can be used.
          * 
-         * @return String: The skull name, without the MHF_ prefix.
+         * @return String The skull name, without the MHF_ prefix.
          */
         public String getBaseName () {
             
@@ -238,7 +238,7 @@ public final class SkullUtils {
          * to provide a series of additional player names which can reliably be used for things
          * like skulls.
          * 
-         * @return String: The basic username, with the MHF_ prefix.
+         * @return String The basic username, with the MHF_ prefix.
          */
         public String getMHFName () {
             
@@ -281,8 +281,8 @@ public final class SkullUtils {
         /**
          * An enumeration of a few player names. This list includes contributors, and friends.
          * 
-         * @param username: The last known username tied to the account.
-         * @param uuid: The UUID tied to the account.
+         * @param username The last known username tied to the account.
+         * @param uuid The UUID tied to the account.
          */
         Player(String username, String uuid) {
             
