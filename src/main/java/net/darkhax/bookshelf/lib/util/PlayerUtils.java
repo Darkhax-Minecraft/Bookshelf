@@ -3,8 +3,10 @@ package net.darkhax.bookshelf.lib.util;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,7 +35,6 @@ public final class PlayerUtils {
     public static boolean isPlayerReal (EntityPlayer player) {
         
         return player != null && player.worldObj != null && player.getClass() == EntityPlayerMP.class;
-        // TODO Check ServerList for player
     }
     
     /**
@@ -68,5 +69,23 @@ public final class PlayerUtils {
     public static EntityPlayer getClientPlayer () {
         
         return Minecraft.getMinecraft().thePlayer;
+    }
+    
+    /**
+     * Sends a spamless message to the chat. A spamless message is one that only shows up in
+     * the chat once. If another version of the message were to be added to chat, the earlier
+     * one would be removed.
+     * 
+     * @param messageID A unique message ID used to seperate your message from the others. It
+     *            is highly recommended to use a random number to prevent conflicts with other
+     *            mods doing similar things. Each message type should have it's own ID.
+     * @param message The message to send to chat, this message will replace earlier messages
+     *            in the gui that use the same ID.
+     */
+    @SideOnly(Side.CLIENT)
+    private static void sendSpamlessMessage (int messageID, ITextComponent message) {
+        
+        final GuiNewChat chat = Minecraft.getMinecraft().ingameGUI.getChatGUI();
+        chat.printChatMessageWithOptionalDeletion(message, messageID);
     }
 }
