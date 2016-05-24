@@ -16,7 +16,7 @@ public enum Milibucket {
     /**
      * A simple enumeration used to list how many milibuckets is in a given measurement.
      * 
-     * @param amount: The amount of milibuckets in the measurement.
+     * @param amount The amount of milibuckets in the measurement.
      */
     Milibucket(int amount) {
         

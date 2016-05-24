@@ -1,0 +1,92 @@
+package net.darkhax.bookshelf.lib.util;
+
+import java.util.HashMap;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry.EntityRegistration;
+import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+public class ModUtils {
+    
+    /**
+     * A hashmap which links domains to their ModContainer.
+     */
+    private static final HashMap<String, ModContainer> MODS;
+    
+    /**
+     * Gets the name of a mod that registered the passed object. Has support for a wide range
+     * of registerable objects such as blocks, items, enchantments, potions, sounds, villagers,
+     * biomes, and so on.
+     * 
+     * @param registerable The registerable object. Accepts anything that extends
+     *            IForgeRegistryEntry.Impl. Current list includes BiomeGenBase, Block,
+     *            Enchantment, Item, Potion, PotionType, SoundEvent and VillagerProfession.
+     * @return String The name of the mod that registered the object.
+     */
+    public static String getModName (IForgeRegistryEntry.Impl<?> registerable) {
+        
+        final String modID = registerable.getRegistryName().getResourceDomain();
+        final ModContainer mod = MODS.get(modID);
+        return mod != null ? mod.getName() : modID.equalsIgnoreCase("minecraft") ? "Minecraft" : "Unknown";
+    }
+    
+    /**
+     * Gets the name of a mod that registered the entity. Due to Entity not using
+     * IForgeRegistryEntry.Impl a special method is required.
+     * 
+     * @param entity The entity to get the mod name for.
+     * @return String The name of the mod that registered the entity.
+     */
+    public static String getModName (Entity entity) {
+        
+        if (entity == null)
+            return "Unknown";
+            
+        final EntityRegistration reg = EntityRegistry.instance().lookupModSpawn(entity.getClass(), false);
+        
+        if (reg != null) {
+            
+            final ModContainer mod = reg.getContainer();
+            
+            if (mod != null)
+                return mod.getName();
+                
+            return "Unknown";
+        }
+        
+        return "Minecraft";
+    }
+    
+    /**
+     * Searches through the array of CreativeTabs and finds the first tab with the same label
+     * as the one passed.
+     * 
+     * @param label: The label of the tab you are looking for.
+     * @return CreativeTabs: A CreativeTabs with the same label as the one passed. If this is
+     *         not found, you will get null.
+     */
+    @SideOnly(Side.CLIENT)
+    public static CreativeTabs getTabFromLabel (String label) {
+        
+        for (final CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY)
+            if (tab.getTabLabel().equalsIgnoreCase(label))
+                return tab;
+                
+        return null;
+    }
+    
+    static {
+        
+        MODS = new HashMap<String, ModContainer>();
+        
+        final Loader loader = Loader.instance();
+        for (final String key : loader.getIndexedModList().keySet())
+            MODS.put(key, loader.getIndexedModList().get(key));
+    }
+}

@@ -83,7 +83,7 @@ public final class PlayerUtils {
      *            in the gui that use the same ID.
      */
     @SideOnly(Side.CLIENT)
-    private static void sendSpamlessMessage (int messageID, ITextComponent message) {
+    public static void sendSpamlessMessage (int messageID, ITextComponent message) {
         
         final GuiNewChat chat = Minecraft.getMinecraft().ingameGUI.getChatGUI();
         chat.printChatMessageWithOptionalDeletion(message, messageID);

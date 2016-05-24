@@ -36,8 +36,8 @@ public enum VanillaColor {
      * representation of the color, which is mostly used for Ore Dictionary stuff, and a Color
      * which holds all the data for the color.
      * 
-     * @param name: A name which represents the color within Minecraft. Example: Gray
-     * @param color: A Color which holds the RGB value for this color.
+     * @param name A name which represents the color within Minecraft. Example Gray
+     * @param color A Color which holds the RGB value for this color.
      */
     VanillaColor(String name, Color color) {
         
@@ -48,7 +48,7 @@ public enum VanillaColor {
     /**
      * Provides the OreDictionary name for the dye item associated with this color.
      * 
-     * @return String: A string which represents the associated dye within the OreDictionary.
+     * @return String A string which represents the associated dye within the OreDictionary.
      */
     public String getDyeName () {
         
@@ -58,7 +58,7 @@ public enum VanillaColor {
     /**
      * Provides the OreDictionary name for the Dyed Glass Pane associated with this color.
      * 
-     * @return String: A string which represents the associated Dyed Glass Pane within the
+     * @return String A string which represents the associated Dyed Glass Pane within the
      *         OreDictionary.
      */
     public String getGlassPaneName () {
@@ -69,7 +69,7 @@ public enum VanillaColor {
     /**
      * Provides the OreDictionary name for the Dyed Glass Block associated with this color.
      * 
-     * @return String: A String which represents the associated Dyed Glass Block within the
+     * @return String A String which represents the associated Dyed Glass Block within the
      *         OreDictionary.
      */
     public String getGlassBlockName () {
@@ -81,8 +81,8 @@ public enum VanillaColor {
      * Attempts to retrieve a color, based on a provided name. The provided name does not need
      * to match the casings of the actual color name.
      * 
-     * @param name: The name of the color you are looking for. Example: Green
-     * @return VanillaColor: A VenillaColor which reflects the provided name. If no name is
+     * @param name The name of the color you are looking for. Example Green
+     * @return VanillaColor A VenillaColor which reflects the provided name. If no name is
      *         found, it will be null.
      */
     public static VanillaColor getColorByName (String name) {

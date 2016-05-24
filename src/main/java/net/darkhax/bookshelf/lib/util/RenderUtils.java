@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -164,5 +165,47 @@ public class RenderUtils {
         }
         
         return false;
+    }
+    
+    /**
+     * Spawns particles in a ring, centered around a certain position.
+     *
+     * @param world The world to spawn the particles in.
+     * @param particle The type of particle to spawn.
+     * @param x The x position to spawn the particle around.
+     * @param y The y position to spawn the particle around.
+     * @param z The z position to spawn the particle around.
+     * @param velocityX The velocity of the particle, in the x direction.
+     * @param velocityY The velocity of the particle, in the y direction.
+     * @param velocityZ The velocity of the particle, in the z direction.
+     * @param step The distance in degrees, between each particle. The maximum is 2 * PI, which
+     *            will create 1 particle per ring. 0.15 is a nice value.
+     */
+    public static void spawnParticleRing (World world, EnumParticleTypes particle, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
+        
+        for (double degree = 0.0d; degree < 2 * Math.PI; degree += step)
+            world.spawnParticle(particle, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
+    }
+    
+    /**
+     * Spawns particles in a ring, centered around a certain point. This method takes a percent
+     * argument which is used to calculate the amount of the ring to spawn.
+     *
+     * @param world The world to spawn the particles in.
+     * @param particle The type of particle to spawn.
+     * @param percent The percentage of the ring to render.
+     * @param x The x position to spawn the particle around.
+     * @param y The y position to spawn the particle around.
+     * @param z The z position to spawn the particle around.
+     * @param velocityX The velocity of the particle, in the x direction.
+     * @param velocityY The velocity of the particle, in the y direction.
+     * @param velocityZ The velocity of the particle, in the z direction.
+     * @param step The distance in degrees, between each particle. The maximum is 2 * PI, which
+     *            will create 1 particle per ring. 0.15 is a nice value.
+     */
+    public static void spawnPercentageParticleRing (World world, EnumParticleTypes particle, float percentage, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
+        
+        for (double degree = 0.0d; degree < 2 * Math.PI * percentage; degree += step)
+            world.spawnParticle(particle, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
     }
 }

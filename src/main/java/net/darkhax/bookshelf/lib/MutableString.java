@@ -13,7 +13,7 @@ public class MutableString implements java.io.Serializable, Comparable<String>, 
      * Constructs a MutableString object. This variant on String allows for the instance to be
      * altered, as opposed to Java's immutable String.
      * 
-     * @param string: The value to set.
+     * @param string The value to set.
      */
     public MutableString(String string) {
         
@@ -23,7 +23,7 @@ public class MutableString implements java.io.Serializable, Comparable<String>, 
     /**
      * Sets the value of the MutableStrong.
      * 
-     * @param string: The value to set.
+     * @param string The value to set.
      */
     public void setValue (String string) {
         
@@ -33,7 +33,7 @@ public class MutableString implements java.io.Serializable, Comparable<String>, 
     /**
      * Retrieves the value of the MutableString.
      * 
-     * @return String: The value held by the MutableString.
+     * @return String The value held by the MutableString.
      */
     public String getValue () {
         

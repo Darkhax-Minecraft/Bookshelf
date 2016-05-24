@@ -13,8 +13,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -46,17 +44,5 @@ public class Bookshelf {
             GameRegistry.addShapedRecipe(new ItemStack(blockShelf, 1, meta - 1), new Object[] { "xxx", "yyy", "xxx", Character.valueOf('x'), new ItemStack(Blocks.PLANKS, 1, meta), Character.valueOf('y'), Items.BOOK });
             
         proxy.preInit();
-    }
-    
-    @EventHandler
-    public void init (FMLInitializationEvent event) {
-        
-        proxy.init();
-    }
-    
-    @EventHandler
-    public void onPostInit (FMLPostInitializationEvent event) {
-        
-        proxy.postInit();
     }
 }

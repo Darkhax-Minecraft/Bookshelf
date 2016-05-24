@@ -74,7 +74,7 @@ public final class ItemStackUtils {
     public static ItemStack createStackFromString (String stackString) {
         
         final String[] parts = stackString.split("#");
-        final Object contents = Utilities.getThingByName(parts[0]);
+        final Object contents = getThingByName(parts[0]);
         final int damage = parts.length > 1 ? Integer.parseInt(parts[1]) : 0;
         return contents instanceof Item ? new ItemStack((Item) contents, 1, damage) : new ItemStack((Block) contents, 1, damage);
     }
@@ -275,5 +275,27 @@ public final class ItemStackUtils {
         final ItemStack output = stack.copy();
         output.stackSize = size;
         return output;
+    }
+    
+    /**
+     * A blend between the itemRegistry.getObject and bockRegistry.getObject methods. Used for
+     * grabbing something from an ID, when you have no clue what it might be.
+     *
+     * @param name: The ID of the thing you're looking for. Domains are often preferred.
+     * @return Object: Hopefully the thing you're looking for.
+     */
+    public static Object getThingByName (String name) {
+        
+        Object thing = Item.getByNameOrId(name);
+        
+        if (thing != null)
+            return thing;
+            
+        thing = Block.getBlockFromName(name);
+        
+        if (thing != null)
+            return thing;
+            
+        return null;
     }
 }

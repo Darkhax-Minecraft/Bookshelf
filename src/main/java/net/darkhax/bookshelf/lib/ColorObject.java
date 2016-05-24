@@ -25,7 +25,7 @@ public class ColorObject {
     /**
      * Constructs a new ColorObject from a ByteBuf.
      * 
-     * @param buf: The ByteBuf to pull the data from.
+     * @param buf The ByteBuf to pull the data from.
      */
     public ColorObject(ByteBuf buf) {
         
@@ -35,7 +35,7 @@ public class ColorObject {
     /**
      * Constructs a new ColorObject from an AWT Color.
      * 
-     * @param color: The AWT Color to pull the RGB from.
+     * @param color The AWT Color to pull the RGB from.
      */
     public ColorObject(Color color) {
         
@@ -45,7 +45,7 @@ public class ColorObject {
     /**
      * Constructs a new ColorObject with completely random values for RGBA.
      *
-     * @param doAlpha : If true, the alpha value will also be randomized, by default it is 1.
+     * @param doAlpha If true, the alpha value will also be randomized, by default it is 1.
      */
     public ColorObject(boolean doAlpha) {
         
@@ -55,7 +55,7 @@ public class ColorObject {
     /**
      * Constructs a new ColorObject from a NBTTagCompound.
      *
-     * @param tag: An NBTTagCompound which should have color data written to it.
+     * @param tag An NBTTagCompound which should have color data written to it.
      */
     public ColorObject(NBTTagCompound tag) {
         
@@ -69,7 +69,7 @@ public class ColorObject {
      * Converts a decimal color integer like the one produced in getIntFromColor back into a
      * ColorObject.
      *
-     * @param rgb : The decimal value which represents all of the color data.
+     * @param rgb The decimal value which represents all of the color data.
      */
     public ColorObject(int rgb) {
         
@@ -80,9 +80,9 @@ public class ColorObject {
      * Creates a new ColorObject using integers which will be converted back into floats. The
      * alpha value is automatically set to 1. (0-255)
      *
-     * @param red : The amount of red that makes up this color.
-     * @param green : The amount of green that makes up this color.
-     * @param blue : The amount of blue that makes up this color.
+     * @param red The amount of red that makes up this color.
+     * @param green The amount of green that makes up this color.
+     * @param blue The amount of blue that makes up this color.
      */
     public ColorObject(int red, int green, int blue) {
         
@@ -93,10 +93,10 @@ public class ColorObject {
      * Creates a new ColorObject using integers which will be converted back into floats.
      * (0-255)
      *
-     * @param red : The amount of red that makes up this color.
-     * @param green : The amount of green that makes up this color.
-     * @param blue : The amount of blue that makes up this color.
-     * @param alpha : The transparency for this color. 0 is fully transparent, while 100 is
+     * @param red The amount of red that makes up this color.
+     * @param green The amount of green that makes up this color.
+     * @param blue The amount of blue that makes up this color.
+     * @param alpha The transparency for this color. 0 is fully transparent, while 100 is
      *            completely solid.
      */
     public ColorObject(int red, int green, int blue, int alpha) {
@@ -107,9 +107,9 @@ public class ColorObject {
     /**
      * Creates a new ColorObject using the standard RGB color values. Alpha is set to 1.
      *
-     * @param red : The amount of red that makes up this color.
-     * @param green : The amount of green that makes up this color.
-     * @param blue : The amount of blue that makes up this color.
+     * @param red The amount of red that makes up this color.
+     * @param green The amount of green that makes up this color.
+     * @param blue The amount of blue that makes up this color.
      */
     public ColorObject(float red, float green, float blue) {
         
@@ -119,10 +119,10 @@ public class ColorObject {
     /**
      * Creates a new ColorObject using the standard RGBA color values.
      *
-     * @param red : The amount of that makes up this color.
-     * @param green : The amount of that makes up this color.
-     * @param blue : The amount of that makes up this color.
-     * @param alpha : The transparency of this color object. 0 is completely see through, 1 is
+     * @param red The amount of that makes up this color.
+     * @param green The amount of that makes up this color.
+     * @param blue The amount of that makes up this color.
+     * @param alpha The transparency of this color object. 0 is completely see through, 1 is
      *            completely solid.
      */
     public ColorObject(float red, float green, float blue, float alpha) {
@@ -137,7 +137,7 @@ public class ColorObject {
      * Sets the red value for this color object. If the value provided is not appropriate, it
      * will be corrected.
      *
-     * @param amount: The amount of red to set the value at. 0.0f -> 1.0f
+     * @param amount The amount of red to set the value at. 0.0f -> 1.0f
      */
     public void setRed (float amount) {
         
@@ -148,7 +148,7 @@ public class ColorObject {
      * Retrieves the red value from this color object. If the value stored is not appropriate,
      * it will be corrected.
      *
-     * @return float: The value of the red color.
+     * @return float The value of the red color.
      */
     public float getRed () {
         
@@ -159,7 +159,7 @@ public class ColorObject {
      * Sets the green value for this color object. If the value provided is not appropriate, it
      * will be corrected.
      *
-     * @param amount: The amount of green to set the value at. 0.0f -> 1.0f
+     * @param amount The amount of green to set the value at. 0.0f -> 1.0f
      */
     public void setGreen (float amount) {
         
@@ -170,7 +170,7 @@ public class ColorObject {
      * Retrieves the green value from this color object. If the value stored is not
      * appropriate, it will be corrected.
      *
-     * @return float: The value of the green color.
+     * @return float The value of the green color.
      */
     public float getGreen () {
         
@@ -181,7 +181,7 @@ public class ColorObject {
      * Sets the blue value for this color object. If the value provided is not appropriate, it
      * will be corrected.
      *
-     * @param amount: The amount of blue to set the value at. 0.0f -> 1.0f
+     * @param amount The amount of blue to set the value at. 0.0f -> 1.0f
      */
     public void setBlue (float amount) {
         
@@ -192,7 +192,7 @@ public class ColorObject {
      * Retrieves the blue value from this color object. If the value stored is not appropriate,
      * it will be corrected.
      *
-     * @return float: The value of the blue color.
+     * @return float The value of the blue color.
      */
     public float getBlue () {
         
@@ -203,7 +203,7 @@ public class ColorObject {
      * Sets the transparency value for this color object. If the value provided is not
      * appropriate, it will be corrected.
      *
-     * @param amount: The amount of alpha to set the value at. 0.0f -> 1.0f
+     * @param amount The amount of alpha to set the value at. 0.0f -> 1.0f
      */
     public void setAlpha (float amount) {
         
@@ -214,7 +214,7 @@ public class ColorObject {
      * Retrieves the transparency value from this color object. If the value stored is not
      * appropriate, it will be corrected.
      *
-     * @return float: The value of the transparency color.
+     * @return float The value of the transparency color.
      */
     public float getAlpha () {
         
@@ -224,7 +224,7 @@ public class ColorObject {
     /**
      * Creates a new NBTTagCompound from a ColorObject.
      *
-     * @return NBTTagCompound: A NBTTagCompound containing the RGBA of the ColorObject.
+     * @return NBTTagCompound A NBTTagCompound containing the RGBA of the ColorObject.
      */
     public NBTTagCompound getTagFromColor () {
         
@@ -235,7 +235,7 @@ public class ColorObject {
      * Converts a ColorObject to a decimal color value. This is most notably used by Mojang for
      * item overlay colors and font rendering colors.
      *
-     * @return int: An Integer which represents all of the color data.
+     * @return int An Integer which represents all of the color data.
      */
     public int getIntFromColor () {
         
@@ -248,7 +248,7 @@ public class ColorObject {
     /**
      * Creates a random float value which represents a color.
      *
-     * @return float: A random float between 0 and 1.
+     * @return float A random float between 0 and 1.
      */
     public static float getRandomColor () {
         
@@ -259,7 +259,7 @@ public class ColorObject {
      * A simple method used to check if a ColorObject is generic. A generic ColorObject is
      * considered a ColorObject that represents White.
      *
-     * @return boolean: If the ColorObject represents pure white, this method will return true.
+     * @return boolean If the ColorObject represents pure white, this method will return true.
      */
     public boolean isGenericWhite () {
         
@@ -270,8 +270,8 @@ public class ColorObject {
      * A method which can be used to check if a ColorObject is generic. A Generic ColorObject,
      * as defined in this method, is a ColorObject which has the same value for R, G and B.
      *
-     * @param color : The value of the color being checked for the RGB.
-     * @return boolean: If true, the ColorObject will be considered generic.
+     * @param color The value of the color being checked for the RGB.
+     * @return boolean If true, the ColorObject will be considered generic.
      */
     public boolean isGeneric (float color) {
         
@@ -282,7 +282,7 @@ public class ColorObject {
      * Creates a copy of the provided ColorObject, useful when you don't want to mess up
      * existing instances.
      *
-     * @return ColorObject: A clone of the provided ColorObject;
+     * @return ColorObject A clone of the provided ColorObject;
      */
     public ColorObject copy () {
         
@@ -298,9 +298,9 @@ public class ColorObject {
     /**
      * Writes the data contained within the ColorObject to the provided NBTTagCompound.
      *
-     * @param tag: An NBTTagCompound used to write data to. If null is provided, one will be
+     * @param tag An NBTTagCompound used to write data to. If null is provided, one will be
      *            generated for you.
-     * @return NBTTagCompound: An NBTTagCompound instance which contains the color data. Can be
+     * @return NBTTagCompound An NBTTagCompound instance which contains the color data. Can be
      *         used with the NBTTagCompound based constructor to recreate a ColorObject.
      */
     public NBTTagCompound writeToTag (NBTTagCompound tag) {
@@ -320,8 +320,8 @@ public class ColorObject {
      * re-apply the nbt tag compound after it has been set. This prevents null tags from
      * slipping through.
      *
-     * @param stack: The ItemStack you wish to write to.
-     * @return ItemStack: The instance of ItemStack that was used.
+     * @param stack The ItemStack you wish to write to.
+     * @return ItemStack The instance of ItemStack that was used.
      */
     public ItemStack writeToItemStack (ItemStack stack) {
         
@@ -333,7 +333,7 @@ public class ColorObject {
      * Writes the ColorObject to a ByteBuf. Useful when sending data through a packet, as it is
      * more compact then a tag compound.
      * 
-     * @param buf: The ByteBuf to write the ColorObject into.
+     * @param buf The ByteBuf to write the ColorObject into.
      */
     public void writeToBuffer (ByteBuf buf) {
         

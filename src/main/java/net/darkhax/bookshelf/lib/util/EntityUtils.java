@@ -3,6 +3,10 @@ package net.darkhax.bookshelf.lib.util;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -10,6 +14,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public final class EntityUtils {
+    
+    /**
+     * An array of armor equipment slots.
+     */
+    private static final EntityEquipmentSlot[] EQUIPMENT_SLOTS = new EntityEquipmentSlot[] { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET };
     
     /**
      * Calculates the distance between two entities.
@@ -121,5 +130,42 @@ public final class EntityUtils {
     public static <T> List<T> getEntitiesInArea (Class<? extends Entity> entityClass, World world, BlockPos pos, int range) {
         
         return (List<T>) world.getEntitiesWithinAABB(entityClass, new AxisAlignedBB(pos.add(-range, -range, -range), pos.add(range + 1, range + 1, range + 1)));
+    }
+    
+    /**
+     * Gets the type of equipment for slot index.
+     * 
+     * @param index The index of the slot.
+     * @return EntityEquipmentSlot The slot for the index.
+     */
+    public static EntityEquipmentSlot getEquipmentSlot (int index) {
+        
+        if (index >= 0 && index < EQUIPMENT_SLOTS.length)
+            return EQUIPMENT_SLOTS[index];
+            
+        return null;
+    }
+    
+    /**
+     * A check to see if an entity is wearing a full suit of the armor. This check is based on
+     * the class names of armor.
+     *
+     * @param living: The living entity to check the armor of.
+     * @param armorClass: The class of the armor to check against.
+     * @return boolean: True if every piece of armor the entity is wearing are the same class
+     *         as the provied armor class.
+     */
+    public static boolean isWearingFullSet (EntityLivingBase living, Class<Item> armorClass) {
+        
+        for (final EntityEquipmentSlot slot : EntityEquipmentSlot.values())
+            if (slot.getSlotType().equals(EntityEquipmentSlot.Type.ARMOR)) {
+                
+                final ItemStack armor = living.getItemStackFromSlot(slot);
+                
+                if (armor == null || !armor.getItem().getClass().equals(armorClass))
+                    return false;
+            }
+            
+        return true;
     }
 }
