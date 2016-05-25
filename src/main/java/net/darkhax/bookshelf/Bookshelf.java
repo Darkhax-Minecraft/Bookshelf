@@ -6,6 +6,7 @@ import net.darkhax.bookshelf.creativetab.CreativeTabSkulls;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.item.ItemBlockBasic;
 import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.util.HolidayUtils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -34,6 +35,8 @@ public class Bookshelf {
     public void preInit (FMLPreInitializationEvent event) {
         
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
+
+        HolidayUtils.checkDates();
         
         GameRegistry.register(blockShelf);
         GameRegistry.register(new ItemBlockBasic(blockShelf, BlockWoodenShelf.types, true));
