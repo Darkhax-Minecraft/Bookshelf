@@ -2,6 +2,7 @@ package net.darkhax.bookshelf;
 
 import net.darkhax.bookshelf.block.BlockWoodenShelf;
 import net.darkhax.bookshelf.common.ProxyCommon;
+import net.darkhax.bookshelf.creativetab.CreativeTabSkulls;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.item.ItemBlockBasic;
 import net.darkhax.bookshelf.lib.Constants;
@@ -14,7 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -33,8 +33,6 @@ public class Bookshelf {
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
         
-        network = NetworkRegistry.INSTANCE.newSimpleChannel("Bookshelf");
-        
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
         
         GameRegistry.register(blockShelf);
@@ -44,5 +42,7 @@ public class Bookshelf {
             GameRegistry.addShapedRecipe(new ItemStack(blockShelf, 1, meta - 1), new Object[] { "xxx", "yyy", "xxx", Character.valueOf('x'), new ItemStack(Blocks.PLANKS, 1, meta), Character.valueOf('y'), Items.BOOK });
             
         proxy.preInit();
+        
+        new CreativeTabSkulls();
     }
 }

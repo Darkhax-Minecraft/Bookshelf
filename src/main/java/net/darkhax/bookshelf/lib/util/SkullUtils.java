@@ -5,6 +5,7 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public final class SkullUtils {
     
@@ -16,7 +17,7 @@ public final class SkullUtils {
      */
     public static ItemStack createSkull (EntityPlayer player) {
         
-        return createSkull(player.getUniqueID());
+        return createSkull(player.getDisplayNameString(), player.getUniqueID());
     }
     
     /**
@@ -26,9 +27,15 @@ public final class SkullUtils {
      * @return ItemStack An ItemStack containing a skull which represents the owner of the
      *         passed UUID.
      */
-    public static ItemStack createSkull (UUID uuid) {
+    public static ItemStack createSkull (String name, UUID uuid) {
         
-        return createSkull(uuid.toString());
+        final ItemStack stack = new ItemStack(Items.SKULL, 1, 3);
+        ItemStackUtils.prepareDataTag(stack);
+        final NBTTagCompound ownerTag = new NBTTagCompound();
+        ownerTag.setString("Name", name);
+        ownerTag.setString("Id", uuid.toString());
+        stack.getTagCompound().setTag("SkullOwner", ownerTag);
+        return stack;
     }
     
     /**
@@ -50,7 +57,7 @@ public final class SkullUtils {
      */
     public static ItemStack createSkull (Player player) {
         
-        return createSkull(player.UUID);
+        return createSkull(player.lastKnownName, UUID.fromString(player.UUID));
     }
     
     /**

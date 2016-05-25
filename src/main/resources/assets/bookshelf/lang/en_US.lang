@@ -1,6 +1,7 @@
 #English Language File 
 
-#Commands
+#Misc
+itemGroup.bookshelfheads=Player Heads
 
 #Blocks
 tile.bookshelf.bookshelf.spruce.name=Spruce Bookshelf
