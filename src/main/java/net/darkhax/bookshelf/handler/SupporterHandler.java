@@ -27,14 +27,14 @@ public class SupporterHandler {
     private static final ResourceLocation MISSING_ELYTRA = new ResourceLocation("bookshelf", "textures/entity/player/missing_elytra.png");
     
     private static final List<SupporterData> DATA = new ArrayList<SupporterData>();
-    private static final String supporter_URL = "https://raw.githubusercontent.com/Darkhax-Minecraft/Bookshelf/master/supporters.json";
+    private static final String SUPPORTER_URL = "https://raw.githubusercontent.com/Darkhax-Minecraft/Bookshelf/master/supporters.json";
     
     public static void readsupporterData () {
         
         try {
             
             // Reads the json file and makes it usable.
-            final HttpURLConnection connection = (HttpURLConnection) new URL(supporter_URL).openConnection();
+            final HttpURLConnection connection = (HttpURLConnection) new URL(SUPPORTER_URL).openConnection();
             final JsonReader reader = new JsonReader(new InputStreamReader((InputStream) connection.getContent()));
             
             reader.beginObject();
@@ -42,10 +42,10 @@ public class SupporterHandler {
             // Starts a loop through all of the player entries.
             while (reader.hasNext()) {
                 
-                // Gets the name of the next player entry
-                final String entryName = reader.nextName();
+                // Gets the name of the next player entry and skips it.
+                reader.nextName();
+                // final String entryName = reader.nextName();
                 
-                System.out.println("Reading support data for: " + entryName);
                 UUID playerID = null;
                 String type = null;
                 boolean confirmed = false;
@@ -119,7 +119,7 @@ public class SupporterHandler {
      * @param player The player to check for.
      * @return Whether or not the player is a supporter.
      */
-    public static boolean issupporter (EntityPlayer player) {
+    public static boolean isSupporter (EntityPlayer player) {
         
         for (final SupporterData supporter : DATA)
             if (supporter.getPlayerID().equals(player.getUniqueID()))
@@ -134,7 +134,7 @@ public class SupporterHandler {
      * @param player The player to get data for.
      * @return The supporter data, or null if the player is not a supporter.
      */
-    public static SupporterData getsupporterData (EntityPlayer player) {
+    public static SupporterData getSupporterData (EntityPlayer player) {
         
         for (final SupporterData supporter : DATA)
             if (supporter.getPlayerID().equals(player.getUniqueID()))
@@ -272,6 +272,16 @@ public class SupporterHandler {
         public ResourceLocation getElytraTexture () {
             
             return this.ELYTRA_TEXTURE != null && !this.ELYTRA_TEXTURE.isEmpty() ? RenderUtils.downloadResourceLocation(this.ELYTRA_TEXTURE, new ResourceLocation("bookshelf", "elytra/" + this.getPlayerID().toString()), MISSING_ELYTRA, null) : null;
+        }
+        
+        /**
+         * Gets the type of supporter. Currently dev, contributor, patreon and other.
+         * 
+         * @return The type of supporter.
+         */
+        public String getType () {
+            
+            return this.TYPE;
         }
     }
 }

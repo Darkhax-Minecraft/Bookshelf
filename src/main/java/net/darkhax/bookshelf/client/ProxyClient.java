@@ -47,7 +47,7 @@ public class ProxyClient extends ProxyCommon {
         if (event.getEntity() instanceof AbstractClientPlayer) {
             
             final AbstractClientPlayer player = (AbstractClientPlayer) event.getEntity();
-            final SupporterData data = SupporterHandler.getsupporterData(player);
+            final SupporterData data = SupporterHandler.getSupporterData(player);
             
             if (data != null)
                 makePlayerFancy(player, data.getCapeTexture(), data.getElytraTexture());
