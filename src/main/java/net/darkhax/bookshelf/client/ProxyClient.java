@@ -1,6 +1,5 @@
 package net.darkhax.bookshelf.client;
 
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -11,6 +10,8 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.block.BlockWoodenShelf;
 import net.darkhax.bookshelf.common.ProxyCommon;
+import net.darkhax.bookshelf.handler.SupporterHandler;
+import net.darkhax.bookshelf.handler.SupporterHandler.SupporterData;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -29,36 +30,6 @@ public class ProxyClient extends ProxyCommon {
      */
     private static final ExecutorService THREAD_POOL = new ThreadPoolExecutor(0, 2, 1L, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>());
     
-    /**
-     * A custom cape texture for Darkhax. Do not ask for your own!
-     */
-    private static final ResourceLocation CAPE_DARKHAX = new ResourceLocation("bookshelf", "textures/entity/player/cape_darkhax.png");
-    
-    /**
-     * A custom Elytra texture for Darkhax. Do not ask for your own!
-     */
-    private static final ResourceLocation ELYTRA_DARKHAX = new ResourceLocation("bookshelf", "textures/entity/player/elytra_darkhax.png");
-    
-    /**
-     * A custom cape texture for SethG. Do not ask for your own!
-     */
-    private static final ResourceLocation CAPE_SETH = new ResourceLocation("bookshelf", "textures/entity/player/cape_seth.png");
-    
-    /**
-     * A custom Elytra texture for SethG. Do not ask for your own!
-     */
-    private static final ResourceLocation ELYTRA_SETH = new ResourceLocation("bookshelf", "textures/entity/player/elytra_seth.png");
-    
-    /**
-     * A custom cape texture for Sycophantasia. Do not ask for your own!
-     */
-    private static final ResourceLocation CAPE_SYCO = new ResourceLocation("bookshelf", "textures/entity/player/cape_syco.png");
-    
-    /**
-     * A custom Elytra texture for Sycophantasia. Do not ask for your own!
-     */
-    private static final ResourceLocation ELYTRA_SYCO = new ResourceLocation("bookshelf", "textures/entity/player/elytra_syco.png");
-    
     @Override
     public void preInit () {
         
@@ -76,19 +47,10 @@ public class ProxyClient extends ProxyCommon {
         if (event.getEntity() instanceof AbstractClientPlayer) {
             
             final AbstractClientPlayer player = (AbstractClientPlayer) event.getEntity();
-            final UUID id = player.getUniqueID();
+            final SupporterData data = SupporterHandler.getsupporterData(player);
             
-            // Darkhax
-            if (id.toString().equals("d183e5a2-a087-462a-963e-c3d7295f9ec5"))
-                makePlayerFancy(player, CAPE_DARKHAX, ELYTRA_DARKHAX);
-                
-            // Syco
-            else if (id.toString().equals("eec70f59-1543-4580-b4d8-4954a108866b"))
-                makePlayerFancy(player, CAPE_SYCO, ELYTRA_SYCO);
-                
-            // Seth
-            else if (id.toString().equals("90b9f095-ba47-450c-a290-200a5cefe5be"))
-                makePlayerFancy(player, CAPE_SETH, ELYTRA_SETH);
+            if (data != null)
+                makePlayerFancy(player, data.getCapeTexture(), data.getElytraTexture());
         }
     }
     
@@ -103,6 +65,8 @@ public class ProxyClient extends ProxyCommon {
      */
     private static void makePlayerFancy (final AbstractClientPlayer player, final ResourceLocation cape, final ResourceLocation elytra) {
         
+        System.out.println(cape.toString());
+        System.out.println(elytra.toString());
         THREAD_POOL.submit(new Runnable() {
             
             @Override

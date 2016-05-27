@@ -4,6 +4,7 @@ import net.darkhax.bookshelf.block.BlockWoodenShelf;
 import net.darkhax.bookshelf.common.ProxyCommon;
 import net.darkhax.bookshelf.creativetab.CreativeTabSkulls;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
+import net.darkhax.bookshelf.handler.SupporterHandler;
 import net.darkhax.bookshelf.item.ItemBlockBasic;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.block.Block;
@@ -33,6 +34,7 @@ public class Bookshelf {
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
         
+        SupporterHandler.readsupporterData();
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
         
         GameRegistry.register(blockShelf);
