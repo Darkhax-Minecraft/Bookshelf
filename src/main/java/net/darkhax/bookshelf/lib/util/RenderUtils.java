@@ -10,9 +10,11 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -221,7 +223,8 @@ public class RenderUtils {
      * @param url The URL to download the resource from. This should be the raw/source url.
      * @param outputResource The ResourceLocation to use for the newly downloaded resource.
      * @param defaultResource The default texture to use, on the chance that it fails to
-     *            download a texture. This must be a valid texture, or else you will get a missing texture.
+     *            download a texture. This must be a valid texture, or else you will get a
+     *            missing texture.
      * @param buffer A special buffer to use when downloading the image. It is okay to pass
      *            null for this if you don't want anything fancy.
      * @return The output resource location.
@@ -239,7 +242,8 @@ public class RenderUtils {
      * @param url The URL to download the resource from. This should be the raw/source url.
      * @param outputResource The ResourceLocation to use for the newly downloaded resource.
      * @param defaultResource The default texture to use, on the chance that it fails to
-     *            download a texture. This must be a valid texture, or else you will get a missing texture.
+     *            download a texture. This must be a valid texture, or else you will get a
+     *            missing texture.
      * @param buffer A special buffer to use when downloading the image. It is okay to pass
      *            null for this if you don't want anything fancy.
      * @return The downloaded image data.
@@ -257,5 +261,23 @@ public class RenderUtils {
         }
         
         return imageData;
+    }
+    
+    /**
+     * Gets the camera for a specific entity.
+     * 
+     * @param entity The entity to get the camera for.
+     * @param partialTicks The partial ticks for the camera.
+     * @return The camera for the entity.
+     */
+    public static Frustum getCamera (Entity entity, float partialTicks) {
+        
+        final double cameraX = entity.prevPosX + (entity.posX - entity.prevPosX) * partialTicks;
+        final double cameraY = entity.prevPosY + (entity.posY - entity.prevPosY) * partialTicks;
+        final double cameraZ = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * partialTicks;
+        
+        final Frustum camera = new Frustum();
+        camera.setPosition(cameraX, cameraY, cameraZ);
+        return camera;
     }
 }
