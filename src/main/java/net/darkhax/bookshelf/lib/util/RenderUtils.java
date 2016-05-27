@@ -8,8 +8,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.client.renderer.IImageBuffer;
+import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -207,5 +210,52 @@ public class RenderUtils {
         
         for (double degree = 0.0d; degree < 2 * Math.PI * percentage; degree += step)
             world.spawnParticle(particle, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
+    }
+    
+    /**
+     * Attempts to download a resource from the web and load it into the game. If the resource
+     * can not be downloaded successfully. Wraps
+     * {@link #downloadResource(String, ResourceLocation, ResourceLocation, IImageBuffer)} but
+     * returns the output ResourceLocation.
+     * 
+     * @param url The URL to download the resource from. This should be the raw/source url.
+     * @param outputResource The ResourceLocation to use for the newly downloaded resource.
+     * @param defaultResource The default texture to use, on the chance that it fails to
+     *            download a texture. This must be a valid texture, or else you will get a missing texture.
+     * @param buffer A special buffer to use when downloading the image. It is okay to pass
+     *            null for this if you don't want anything fancy.
+     * @return The output resource location.
+     */
+    public static ResourceLocation downloadResourceLocation (String url, ResourceLocation outputResource, ResourceLocation defaultResource, IImageBuffer buffer) {
+        
+        downloadResource(url, outputResource, defaultResource, buffer);
+        return outputResource;
+    }
+    
+    /**
+     * Attempts to download a resource from the web and load it into the game. If the resource
+     * can not be downloaded successfully.
+     * 
+     * @param url The URL to download the resource from. This should be the raw/source url.
+     * @param outputResource The ResourceLocation to use for the newly downloaded resource.
+     * @param defaultResource The default texture to use, on the chance that it fails to
+     *            download a texture. This must be a valid texture, or else you will get a missing texture.
+     * @param buffer A special buffer to use when downloading the image. It is okay to pass
+     *            null for this if you don't want anything fancy.
+     * @return The downloaded image data.
+     */
+    public static ThreadDownloadImageData downloadResource (String url, ResourceLocation outputResource, ResourceLocation defaultResource, IImageBuffer buffer) {
+        
+        final TextureManager manager = Minecraft.getMinecraft().getTextureManager();
+        
+        ThreadDownloadImageData imageData = (ThreadDownloadImageData) manager.getTexture(outputResource);
+        
+        if (imageData == null) {
+            
+            imageData = new ThreadDownloadImageData(null, url, defaultResource, buffer);
+            manager.loadTexture(outputResource, imageData);
+        }
+        
+        return imageData;
     }
 }
