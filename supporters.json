@@ -1,0 +1,31 @@
+{
+	"Darkhax": {
+		"playerID": "d183e5a2-a087-462a-963e-c3d7295f9ec5",
+		"type": "dev",
+		"confirmed": false,
+		"wantHead": false,
+		"wantWawla": false,
+		"elytraTexture": "http://i.imgur.com/1sgYRjK.png",
+		"capeTexture": "http://i.imgur.com/cNuauKX.png"
+	},
+
+	"SethG": {
+		"playerID": "90b9f095-ba47-450c-a290-200a5cefe5be",
+		"type": "other",
+		"confirmed": false,
+		"wantHead": false,
+		"wantWawla": false,
+		"elytraTexture": "http://i.imgur.com/FIi5dDY.png",
+		"capeTexture": "http://i.imgur.com/fmWQMhO.png"
+	},
+
+	"Sycophantaia": {
+		"playerID": "eec70f59-1543-4580-b4d8-4954a108866b",
+		"type": "other",
+		"confirmed": false,
+		"wantHead": false,
+		"wantWawla": false,
+		"elytraTexture": "http://i.imgur.com/FIi5dDY.png",
+		"capeTexture": "http://i.imgur.com/fmWQMhO.png"
+	}
+}
