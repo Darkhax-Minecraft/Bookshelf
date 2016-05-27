@@ -88,4 +88,17 @@ public final class PlayerUtils {
         final GuiNewChat chat = Minecraft.getMinecraft().ingameGUI.getChatGUI();
         chat.printChatMessageWithOptionalDeletion(message, messageID);
     }
+    
+    /**
+     * Checks if the player is currently in game. This is done by checking if the current world
+     * and player exist, and if the player exists in a valid world.
+     * 
+     * @return Whether or not the player is currently in game.
+     */
+    @SideOnly(Side.CLIENT)
+    public static boolean isPlayerInGame () {
+        
+        final Minecraft mc = Minecraft.getMinecraft();
+        return mc.thePlayer != null && mc.theWorld != null && mc.thePlayer.worldObj != null;
+    }
 }
