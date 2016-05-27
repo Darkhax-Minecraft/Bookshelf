@@ -10,13 +10,16 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.IImageBuffer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -308,5 +311,63 @@ public class RenderUtils {
     public static TextureAtlasSprite getParticleTexture (ItemStack stack) {
         
         return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(stack).getParticleTexture();
+    }
+    
+    /**
+     * Draws a block overlay into the world.
+     * 
+     * @param width The width of the rendered overlay. 1.0f is the width of a MC cube.
+     * @param height The height of the rendered overlay. 1.0f is the height of a MC cube.
+     * @param length The length of the rendered overlay. 1.0f is the length of a MC cube.
+     * @param icon The texture to render.
+     * @param red The red color modifier for the texture. 0-255
+     * @param green The green color modifier for the texture. 0-255
+     * @param blue The blue color modifier for the texture. 0-255
+     * @param alpha The transparency of the texture. 0-255
+     */
+    public static void drawBlockOverlay (float width, float height, float length, TextureAtlasSprite icon, int red, int green, int blue, int alpha) {
+        
+        final Tessellator tessellator = Tessellator.getInstance();
+        final VertexBuffer vertexbuffer = tessellator.getBuffer();
+        
+        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+        
+        // TOP
+        vertexbuffer.pos(-(width / 2), height / 2, -(length / 2)).tex(icon.getMinU(), icon.getMinV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(width / 2, height / 2, -(length / 2)).tex(icon.getMaxU(), icon.getMinV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(width / 2, height / 2, length / 2).tex(icon.getMaxU(), icon.getMaxV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(-(width / 2), height / 2, length / 2).tex(icon.getMinU(), icon.getMaxV()).color(red, green, blue, alpha).endVertex();
+        
+        // BOTTOM
+        vertexbuffer.pos(-(width / 2), -(height / 2), length / 2).tex(icon.getMinU(), icon.getMaxV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(width / 2, -(height / 2), length / 2).tex(icon.getMaxU(), icon.getMaxV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(width / 2, -(height / 2), -(length / 2)).tex(icon.getMaxU(), icon.getMinV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(-(width / 2), -(height / 2), -(length / 2)).tex(icon.getMinU(), icon.getMinV()).color(red, green, blue, alpha).endVertex();
+        
+        // NORTH
+        vertexbuffer.pos(-(width / 2), height / 2, length / 2).tex(icon.getMinU(), icon.getMaxV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(width / 2, height / 2, length / 2).tex(icon.getMaxU(), icon.getMaxV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(width / 2, -(height / 2), length / 2).tex(icon.getMaxU(), icon.getMinV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(-(width / 2), -(height / 2), length / 2).tex(icon.getMinU(), icon.getMinV()).color(red, green, blue, alpha).endVertex();
+        
+        // SOUTH
+        vertexbuffer.pos(-(width / 2), -(height / 2), -(length / 2)).tex(icon.getMinU(), icon.getMinV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(width / 2, -(height / 2), -(length / 2)).tex(icon.getMaxU(), icon.getMinV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(width / 2, height / 2, -(length / 2)).tex(icon.getMaxU(), icon.getMaxV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(-(width / 2), height / 2, -(length / 2)).tex(icon.getMinU(), icon.getMaxV()).color(red, green, blue, alpha).endVertex();
+        
+        // EAST
+        vertexbuffer.pos(-(width / 2), height / 2, -(length / 2)).tex(icon.getMinU(), icon.getMaxV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(-(width / 2), height / 2, length / 2).tex(icon.getMaxU(), icon.getMaxV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(-(width / 2), -(height / 2), length / 2).tex(icon.getMaxU(), icon.getMinV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(-(width / 2), -(height / 2), -(length / 2)).tex(icon.getMinU(), icon.getMinV()).color(red, green, blue, alpha).endVertex();
+        
+        // WEST
+        vertexbuffer.pos(width / 2, -(height / 2), -(length / 2)).tex(icon.getMinU(), icon.getMinV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(width / 2, -(height / 2), length / 2).tex(icon.getMaxU(), icon.getMinV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(width / 2, height / 2, length / 2).tex(icon.getMaxU(), icon.getMaxV()).color(red, green, blue, alpha).endVertex();
+        vertexbuffer.pos(width / 2, height / 2, -(length / 2)).tex(icon.getMinU(), icon.getMaxV()).color(red, green, blue, alpha).endVertex();
+        
+        tessellator.draw();
     }
 }
