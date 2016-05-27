@@ -14,10 +14,12 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -295,5 +297,16 @@ public class RenderUtils {
         final float y = (float) (pos.getY() - TileEntityRendererDispatcher.staticPlayerY);
         final float z = (float) (pos.getZ() - TileEntityRendererDispatcher.staticPlayerZ);
         GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+    }
+    
+    /**
+     * Gets the particle sprite for an ItemStack.
+     * 
+     * @param stack The ItemStack to get the particle for.
+     * @return A TextureAtlasSprite that points to the particle texture for the ItemStack.
+     */
+    public static TextureAtlasSprite getParticleTexture (ItemStack stack) {
+        
+        return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(stack).getParticleTexture();
     }
 }
