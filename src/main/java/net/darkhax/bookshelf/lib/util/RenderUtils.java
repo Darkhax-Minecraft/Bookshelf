@@ -8,12 +8,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumBlockRenderType;
@@ -279,5 +281,19 @@ public class RenderUtils {
         final Frustum camera = new Frustum();
         camera.setPosition(cameraX, cameraY, cameraZ);
         return camera;
+    }
+    
+    /**
+     * Translates the render state to be relative to the player's position. Allows for
+     * rendering at a static world position that is not tied to the player's position.
+     * 
+     * @param pos The BlockPos The position to translate to within the world.
+     */
+    public static void translateAgainstPlayer (BlockPos pos) {
+        
+        final float x = (float) (pos.getX() - TileEntityRendererDispatcher.staticPlayerX);
+        final float y = (float) (pos.getY() - TileEntityRendererDispatcher.staticPlayerY);
+        final float z = (float) (pos.getZ() - TileEntityRendererDispatcher.staticPlayerZ);
+        GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
     }
 }
