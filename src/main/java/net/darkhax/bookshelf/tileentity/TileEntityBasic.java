@@ -15,16 +15,15 @@ public class TileEntityBasic extends TileEntity implements ITickable {
     @Override
     public void readFromNBT (NBTTagCompound dataTag) {
         
-        super.readFromNBT(dataTag);
         this.readNBT(dataTag);
+        super.readFromNBT(dataTag);
     }
     
     @Override
     public NBTTagCompound writeToNBT (NBTTagCompound dataTag) {
         
-        super.writeToNBT(dataTag);
         this.writeNBT(dataTag);
-        return dataTag;
+        return super.writeToNBT(dataTag);
     }
     
     @Override
@@ -38,6 +37,12 @@ public class TileEntityBasic extends TileEntity implements ITickable {
         
         super.onDataPacket(net, packet);
         this.readNBT(packet.getNbtCompound());
+    }
+    
+    @Override
+    public final NBTTagCompound getUpdateTag() {
+        
+        return writeToNBT(new NBTTagCompound());
     }
     
     @Override
