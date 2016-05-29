@@ -1,7 +1,5 @@
 package net.darkhax.bookshelf.lib.util;
 
-import java.util.HashMap;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.Loader;
@@ -13,11 +11,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModUtils {
-    
-    /**
-     * A hashmap which links domains to their ModContainer.
-     */
-    private static final HashMap<String, ModContainer> MODS;
     
     /**
      * Gets the name of a mod that registered the passed object. Has support for a wide range
@@ -32,7 +25,7 @@ public class ModUtils {
     public static String getModName (IForgeRegistryEntry.Impl<?> registerable) {
         
         final String modID = registerable.getRegistryName().getResourceDomain();
-        final ModContainer mod = MODS.get(modID);
+        final ModContainer mod = Loader.instance().getIndexedModList().get(modID);
         return mod != null ? mod.getName() : modID.equalsIgnoreCase("minecraft") ? "Minecraft" : "Unknown";
     }
     
@@ -79,14 +72,5 @@ public class ModUtils {
                 return tab;
                 
         return null;
-    }
-    
-    static {
-        
-        MODS = new HashMap<String, ModContainer>();
-        
-        final Loader loader = Loader.instance();
-        for (final String key : loader.getIndexedModList().keySet())
-            MODS.put(key, loader.getIndexedModList().get(key));
     }
 }
