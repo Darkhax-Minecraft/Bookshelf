@@ -15,9 +15,10 @@ public class BlockUtils {
      * the display name of the stack to see if it has the word Ore in it.
      * 
      * @param stack The ItemStack to check.
+     * @param checkName Whether or not the name of the ItemStack should be checked.
      * @return Whether or not the ItemStack is an ore.
      */
-    public static boolean isOre (ItemStack stack) {
+    public static boolean isOre (ItemStack stack, boolean checkName) {
         
         if (stack == null || stack.getItem() == null)
             return false;
@@ -29,7 +30,7 @@ public class BlockUtils {
             if (OreDictionary.getOreName(oreID).startsWith("ore"))
                 return true;
                 
-        if (stack.getDisplayName().matches(".*(^|\\s)([oO]re)($|\\s)."))
+        if (checkName && stack.getItem().getItemStackDisplayName(stack).matches(".*(^|\\s)([oO]re)($|\\s)."))
             return true;
             
         return false;
