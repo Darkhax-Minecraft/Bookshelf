@@ -12,8 +12,8 @@ If you are using [Maven](https://maven.apache.org/download.cgi) to manage your d
 ```
 <repositories>
     <repository>
-        <id>Rubbix.net</id>
-        <url>http://maven.rubbix.net</url>
+        <id>epoxide.xyz</id>
+        <url>http://maven.epoxide.xyz</url>
     </repository>
 </repositories>
 
@@ -28,7 +28,7 @@ If you are using [Gradle](https://gradle.org) to manage your dependencies, add t
 ```
 repositories {
 
-    maven { url 'http://maven.rubbix.net' }
+    maven { url 'http://maven.epoxide.xyz' }
 }
 
 dependencies {
