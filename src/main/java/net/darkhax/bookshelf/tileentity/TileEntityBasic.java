@@ -40,9 +40,9 @@ public class TileEntityBasic extends TileEntity implements ITickable {
     }
     
     @Override
-    public final NBTTagCompound getUpdateTag() {
+    public final NBTTagCompound getUpdateTag () {
         
-        return writeToNBT(new NBTTagCompound());
+        return this.writeToNBT(new NBTTagCompound());
     }
     
     @Override
