@@ -103,6 +103,29 @@ public final class EntityUtils {
     }
     
     /**
+     * Creates a Vec3d that represents the additional motion that would be needed to push an
+     * entity towards a destination.
+     * 
+     * @param entityToMove The entity to push.
+     * @param direction The direction to push the entity.
+     * @param force The amount of force to use.
+     * @return A Vec3d object that represents the motion of pushing the entity towards the
+     *         destination.
+     */
+    public static Vec3d pushTowardsDirection (Entity entityToMove, EnumFacing direction, double force) {
+        
+        final BlockPos entityPos = entityToMove.getPosition();
+        final BlockPos destination = entityToMove.getPosition().offset(direction.getOpposite(), 1);
+        
+        final double distanceX = destination.getX() - entityPos.getX();
+        final double distanceY = destination.getY() - entityPos.getY();
+        final double distanceZ = destination.getZ() - entityPos.getZ();
+        final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
+        
+        return (distance > 0) ? new Vec3d(entityToMove.motionX = distanceX / distance * force, entityToMove.motionY = distanceY / distance * force, entityToMove.motionZ = distanceZ / distance * force) : new Vec3d(0d, 0d, 0d);
+    }
+    
+    /**
      * Checks if two entities are close enough together.
      * 
      * @param firstEntity The first entity to check.
