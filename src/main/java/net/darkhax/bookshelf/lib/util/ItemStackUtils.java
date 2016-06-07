@@ -281,8 +281,8 @@ public final class ItemStackUtils {
      * A blend between the itemRegistry.getObject and bockRegistry.getObject methods. Used for
      * grabbing something from an ID, when you have no clue what it might be.
      *
-     * @param name: The ID of the thing you're looking for. Domains are often preferred.
-     * @return Object: Hopefully the thing you're looking for.
+     * @param name The ID of the thing you're looking for. Domains are often preferred.
+     * @return Hopefully the thing you're looking for.
      */
     public static Object getThingByName (String name) {
         
@@ -297,5 +297,17 @@ public final class ItemStackUtils {
             return thing;
             
         return null;
+    }
+    
+    /**
+     * Safely gets a block instance from an ItemStack. If the ItemStack is not valid, null will
+     * be returned. Null can also be returned if the Item does not have a block form.
+     * 
+     * @param stack The ItemStack to get a block from.
+     * @return The block version of the item contained in the ItemStack.
+     */
+    public static Block getBlockFromStack (ItemStack stack) {
+        
+        return isValidStack(stack) ? Block.getBlockFromItem(stack.getItem()) : null;
     }
 }
