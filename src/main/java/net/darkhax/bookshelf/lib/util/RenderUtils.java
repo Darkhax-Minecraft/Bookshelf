@@ -4,12 +4,14 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
 import net.darkhax.bookshelf.client.particle.OpenParticleDigging;
 import net.darkhax.bookshelf.lib.Constants;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.IImageBuffer;
+import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -369,5 +371,25 @@ public class RenderUtils {
         vertexbuffer.pos(width / 2, height / 2, -(length / 2)).tex(icon.getMinU(), icon.getMaxV()).color(red, green, blue, alpha).endVertex();
         
         tessellator.draw();
+    }
+    
+    /**
+     * Gets the TextureAtlasSprite for the ItemStack. Has support for both Items and Blocks.
+     * 
+     * @param stack The ItemStack to get the sprite for.
+     * @return The sprite for the ItemStack.
+     */
+    public static TextureAtlasSprite getSprite (ItemStack stack) {
+        
+        final Minecraft mc = Minecraft.getMinecraft();
+        final Block block = ItemStackUtils.getBlockFromStack(stack);
+        
+        if (block == null) {
+            
+            final ItemModelMesher mesher = mc.getRenderItem().getItemModelMesher();
+            return (ItemStackUtils.isValidStack(stack)) ? mesher.getParticleIcon(stack.getItem(), stack.getItemDamage()) : mesher.getItemModel(null).getParticleTexture();
+        }
+        
+        return mc.getBlockRendererDispatcher().getBlockModelShapes().getTexture(block.getStateFromMeta(stack.getItemDamage()));
     }
 }
