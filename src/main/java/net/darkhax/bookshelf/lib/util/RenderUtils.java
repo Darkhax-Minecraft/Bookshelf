@@ -15,6 +15,8 @@ import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -391,5 +393,27 @@ public class RenderUtils {
         }
         
         return mc.getBlockRendererDispatcher().getBlockModelShapes().getTexture(block.getStateFromMeta(stack.getItemDamage()));
+    }
+    
+    /**
+     * Gets the baked model for a ModelResourceLocation.
+     * 
+     * @param name The location to get the model from.
+     * @return The baked model that was found.
+     */
+    public static IBakedModel getBakedModel (ModelResourceLocation name) {
+        
+        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getModel(name);
+    }
+    
+    /**
+     * Gets the baked model for an ItemStack.
+     * 
+     * @param stack The stack to get the model of.
+     * @return The baked model for the ItemStack.
+     */
+    public static IBakedModel getBakedModel (ItemStack stack) {
+        
+        return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(stack);
     }
 }
