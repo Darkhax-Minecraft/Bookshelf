@@ -8,6 +8,9 @@ public class OreDictUtils {
     public static final String SLAB_WOOD = "slabWood";
     public static final String STAIR_WOOD = "stairWood";
     public static final String STICK_WOOD = "stickWood";
+    public static final String FENCE_WOOD = "fenceWood";
+    public static final String FENCE_GATE_WOOD = "fenceGateWood";
+    public static final String DOOR_WOOD = "doorWood";
 
     // Trees
     public static final String TREE_SAPLING = "treeSapling";
