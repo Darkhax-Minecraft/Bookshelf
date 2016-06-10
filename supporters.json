@@ -27,5 +27,24 @@
 		"wantWawla": false,
 		"elytraTexture": "http://i.imgur.com/FIi5dDY.png",
 		"capeTexture": "http://i.imgur.com/fmWQMhO.png"
+	},
+
+	"Aeronica": {
+
+		"playerID": "adb3bab0-1ee8-4be3-9749-949b6f4f0f43",
+		"type": "patreon",
+		"confirmed": true,
+		"wantHead": true,
+		"wantWawla": true,
+		"elytraTexture": "http://puu.sh/p6OXK.png"
+	},
+
+	"CoolSquid": {
+		"playerID": "03a42a75-223a-4307-99c1-b69162ad6a6f",
+		"type": "patreon",
+		"confirmed": false,
+		"wantHead": true,
+		"wantWawla": true,
+		"elytraTexture": "https://i.imgur.com/AiJmwI0.png"
 	}
 }
