@@ -65,8 +65,6 @@ public class ProxyClient extends ProxyCommon {
      */
     private static void makePlayerFancy (final AbstractClientPlayer player, final ResourceLocation cape, final ResourceLocation elytra) {
         
-        System.out.println(cape.toString());
-        System.out.println(elytra.toString());
         THREAD_POOL.submit(new Runnable() {
             
             @Override

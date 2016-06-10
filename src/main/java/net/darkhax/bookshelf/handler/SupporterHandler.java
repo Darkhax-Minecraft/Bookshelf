@@ -29,7 +29,7 @@ public class SupporterHandler {
     private static final List<SupporterData> DATA = new ArrayList<SupporterData>();
     private static final String SUPPORTER_URL = "https://raw.githubusercontent.com/Darkhax-Minecraft/Bookshelf/master/supporters.json";
     
-    public static void readsupporterData () {
+    public static void readSupporterData () {
         
         try {
             
