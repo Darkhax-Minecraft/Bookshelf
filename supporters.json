@@ -2,9 +2,6 @@
 	"Darkhax": {
 		"playerID": "d183e5a2-a087-462a-963e-c3d7295f9ec5",
 		"type": "Developer",
-		"confirmed": false,
-		"wantHead": false,
-		"wantWawla": false,
 		"elytraTexture": "http://i.imgur.com/1sgYRjK.png",
 		"capeTexture": "http://i.imgur.com/cNuauKX.png"
 	},
@@ -12,9 +9,6 @@
 	"SethG": {
 		"playerID": "90b9f095-ba47-450c-a290-200a5cefe5be",
 		"type": "Other",
-		"confirmed": false,
-		"wantHead": false,
-		"wantWawla": false,
 		"elytraTexture": "http://i.imgur.com/FIi5dDY.png",
 		"capeTexture": "http://i.imgur.com/fmWQMhO.png"
 	},
@@ -22,9 +16,6 @@
 	"Sycophantaia": {
 		"playerID": "eec70f59-1543-4580-b4d8-4954a108866b",
 		"type": "Other",
-		"confirmed": false,
-		"wantHead": false,
-		"wantWawla": false,
 		"elytraTexture": "http://i.imgur.com/FIi5dDY.png",
 		"capeTexture": "http://i.imgur.com/fmWQMhO.png"
 	},
@@ -34,7 +25,6 @@
 		"playerID": "adb3bab0-1ee8-4be3-9749-949b6f4f0f43",
 		"type": "Patreon",
 		"confirmed": true,
-		"wantHead": true,
 		"wantWawla": true,
 		"elytraTexture": "http://puu.sh/p6OXK.png"
 	},
@@ -43,8 +33,14 @@
 		"playerID": "03a42a75-223a-4307-99c1-b69162ad6a6f",
 		"type": "Patreon",
 		"confirmed": false,
-		"wantHead": true,
 		"wantWawla": true,
 		"elytraTexture": "https://i.imgur.com/AiJmwI0.png"
-	}
+	},
+    
+    "lclc98": {
+        "playerID": "f0f76db6-0461-4151-8ba7-392d65d62ea3",
+        "type": "Contributor",
+        "capeTexture": "http://i.imgur.com/Sbr5yVB.png",
+        "elytraTexture": "http://i.imgur.com/abNUY5v.png"
+    }
 }

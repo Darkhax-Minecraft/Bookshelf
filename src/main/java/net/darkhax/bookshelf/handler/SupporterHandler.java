@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.google.gson.stream.JsonReader;
+import com.mojang.realmsclient.gui.ChatFormatting;
 
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,7 +51,7 @@ public class SupporterHandler {
                 String type = null;
                 boolean confirmed = false;
                 boolean wantsHead = true;
-                boolean wantsWawla = true;
+                boolean wantsWawla = false;
                 String elytraTexture = null;
                 String capeTexture = null;
                 
@@ -141,6 +142,16 @@ public class SupporterHandler {
                 return supporter;
                 
         return null;
+    }
+    
+    /**
+     * Gets an array containing all entries in the list of supporters.
+     * 
+     * @return An array of all supporter entries.
+     */
+    public static SupporterData[] getSupporters () {
+        
+        return DATA.toArray(new SupporterData[DATA.size()]);
     }
     
     public static class SupporterData {
@@ -282,6 +293,25 @@ public class SupporterHandler {
         public String getType () {
             
             return this.TYPE;
+        }
+        
+        /**
+         * Gets a special formatting effect to use for the supporter.
+         * 
+         * @return The formatting effect to use for the supporter.
+         */
+        public ChatFormatting getFormat () {
+            
+            if (this.TYPE.equals("Developer"))
+                return ChatFormatting.GREEN;
+                
+            else if (this.TYPE.equals("Contributor"))
+                return ChatFormatting.BLUE;
+                
+            else if (this.TYPE.equals("Patreon"))
+                return ChatFormatting.GOLD;
+                
+            return ChatFormatting.WHITE;
         }
     }
 }
