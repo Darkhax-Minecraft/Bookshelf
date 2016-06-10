@@ -34,7 +34,7 @@ public class Bookshelf {
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
         
-        SupporterHandler.readsupporterData();
+        SupporterHandler.readSupporterData();
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
         
         GameRegistry.register(blockShelf);

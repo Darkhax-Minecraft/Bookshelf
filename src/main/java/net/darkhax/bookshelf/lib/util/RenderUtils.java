@@ -389,7 +389,7 @@ public class RenderUtils {
         if (block == null) {
             
             final ItemModelMesher mesher = mc.getRenderItem().getItemModelMesher();
-            return (ItemStackUtils.isValidStack(stack)) ? mesher.getParticleIcon(stack.getItem(), stack.getItemDamage()) : mesher.getItemModel(null).getParticleTexture();
+            return ItemStackUtils.isValidStack(stack) ? mesher.getParticleIcon(stack.getItem(), stack.getItemDamage()) : mesher.getItemModel(null).getParticleTexture();
         }
         
         return mc.getBlockRendererDispatcher().getBlockModelShapes().getTexture(block.getStateFromMeta(stack.getItemDamage()));
