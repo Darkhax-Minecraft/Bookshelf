@@ -36,11 +36,11 @@
 		"wantWawla": true,
 		"elytraTexture": "https://i.imgur.com/AiJmwI0.png"
 	},
-    
-    "lclc98": {
-        "playerID": "f0f76db6-0461-4151-8ba7-392d65d62ea3",
-        "type": "Contributor",
-        "capeTexture": "http://i.imgur.com/Sbr5yVB.png",
-        "elytraTexture": "http://i.imgur.com/abNUY5v.png"
-    }
+
+	"lclc98": {
+		"playerID": "f0f76db6-0461-4151-8ba7-392d65d62ea3",
+		"type": "Contributor",
+		"capeTexture": "http://i.imgur.com/Sbr5yVB.png",
+		"elytraTexture": "http://i.imgur.com/abNUY5v.png"
+	}
 }
