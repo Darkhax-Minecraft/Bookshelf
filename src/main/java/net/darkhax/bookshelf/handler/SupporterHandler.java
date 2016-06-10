@@ -306,10 +306,13 @@ public class SupporterHandler {
                 return ChatFormatting.GREEN;
                 
             else if (this.TYPE.equals("Contributor"))
-                return ChatFormatting.BLUE;
+                return ChatFormatting.AQUA;
                 
             else if (this.TYPE.equals("Patreon"))
                 return ChatFormatting.GOLD;
+            
+            else if (this.TYPE.equals("Translator"))
+                return ChatFormatting.RED;
                 
             return ChatFormatting.WHITE;
         }
