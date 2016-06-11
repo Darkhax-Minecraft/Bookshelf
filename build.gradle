@@ -102,7 +102,7 @@ String getVersionFromJava(File file) {
             release = pts[0];
             update = pts[1];
             patch = pts[2];
-            s = s.replaceAll(".0\";", ".${build}\";");
+            s = s.replaceAll(".[0-9]+\";", ".${build}\";");
         }
 
         outfile += (s + ln);
