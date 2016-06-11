@@ -11,13 +11,11 @@ import java.util.List;
 import java.util.UUID;
 
 import com.google.gson.stream.JsonReader;
-import com.mojang.realmsclient.gui.ChatFormatting;
 
 import net.darkhax.bookshelf.lib.util.RenderUtils;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * This class is used to handle my supporters data. This class is not intended for other mod
@@ -298,26 +296,13 @@ public class SupporterHandler {
         }
         
         /**
-         * Gets a special formatting effect to use for the supporter.
+         * Gets the localized name, including colors and other formatting.
          * 
-         * @return The formatting effect to use for the supporter.
+         * @return The localized display name for the supporter type.
          */
-        @SideOnly(Side.CLIENT)
-        public ChatFormatting getFormat () {
+        public String getLocalizedType () {
             
-            if (this.TYPE.equals("Developer"))
-                return ChatFormatting.GREEN;
-                
-            else if (this.TYPE.equals("Contributor"))
-                return ChatFormatting.AQUA;
-                
-            else if (this.TYPE.equals("Patreon"))
-                return ChatFormatting.GOLD;
-            
-            else if (this.TYPE.equals("Translator"))
-                return ChatFormatting.RED;
-                
-            return ChatFormatting.WHITE;
+            return I18n.format("supporters." + this.TYPE);
         }
     }
 }

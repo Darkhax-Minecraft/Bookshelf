@@ -10,6 +10,12 @@ tile.bookshelf.bookshelf.jungle.name=Jungle Bookshelf
 tile.bookshelf.bookshelf.acacia.name=Acacia Bookshelf
 tile.bookshelf.bookshelf.dark_oak.name=Dark Oak Bookshelf
  
+#Supporters
+supporters.developer=§2Developer
+supporters.patreon=§6Patreon
+supporters.contributor=§3
+supporters.translator=§c
+
 #Enchantment Level localization. Do not translate!
 enchantment.level.11=XI
 enchantment.level.12=XII
