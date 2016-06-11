@@ -16,6 +16,8 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * This class is used to handle my supporters data. This class is not intended for other mod
@@ -300,6 +302,7 @@ public class SupporterHandler {
          * 
          * @return The formatting effect to use for the supporter.
          */
+        @SideOnly(Side.CLIENT)
         public ChatFormatting getFormat () {
             
             if (this.TYPE.equals("Developer"))
