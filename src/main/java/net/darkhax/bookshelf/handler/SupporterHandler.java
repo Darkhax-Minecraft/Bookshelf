@@ -13,9 +13,9 @@ import java.util.UUID;
 import com.google.gson.stream.JsonReader;
 
 import net.darkhax.bookshelf.lib.util.RenderUtils;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 
 /**
  * This class is used to handle my supporters data. This class is not intended for other mod
@@ -302,7 +302,7 @@ public class SupporterHandler {
          */
         public String getLocalizedType () {
             
-            return I18n.format("supporters." + this.TYPE);
+            return I18n.translateToLocal("supporters." + this.TYPE);
         }
     }
 }
