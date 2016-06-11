@@ -1,18 +1,25 @@
 package net.darkhax.bookshelf.features;
 
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import com.javamex.classmexer.MemoryUtil;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
 import net.darkhax.bookshelf.handler.SupporterHandler;
 import net.darkhax.bookshelf.handler.SupporterHandler.SupporterData;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
+import net.minecraft.block.BlockRedstoneTorch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -37,6 +44,7 @@ public class FeatureSupporters extends Feature {
         MinecraftForge.EVENT_BUS.register(this);
     }
     
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void entityJoinWorld (EntityJoinWorldEvent event) {
         
