@@ -5,6 +5,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.io.Resources;
 import com.google.gson.stream.JsonReader;
 
@@ -19,6 +21,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class PlayerUtils {
+    
+    /**
+     * A cache for storing known username uuid pairs.
+     */
+    public static BiMap<String, UUID> PROFILE_CACHE = HashBiMap.<String, UUID> create();
     
     /**
      * Checks if a specific player can sleep. For this to be true, a player must not already be
@@ -77,6 +84,9 @@ public final class PlayerUtils {
      */
     public static String getPlayerNameFromUUID (UUID uuid) {
         
+        if (PROFILE_CACHE.containsValue(uuid))
+            return PROFILE_CACHE.inverse().get(uuid);
+            
         String name = null;
         
         try {
@@ -107,6 +117,50 @@ public final class PlayerUtils {
     }
     
     /**
+     * Attempts to get the UUID associated with a username from Mojang. If no uuid is found,
+     * null will return.
+     * 
+     * @param username The username to look for.
+     * @return The UUID for the player, or null if it could not be found.
+     */
+    public static UUID getUUIDFromName (String username) {
+        
+        if (PROFILE_CACHE.containsKey(username))
+            return PROFILE_CACHE.get(username);
+            
+        UUID uuid = null;
+        
+        try {
+            
+            final BufferedReader reader = Resources.asCharSource(new URL("https://api.mojang.com/users/profiles/minecraft/" + username), StandardCharsets.UTF_8).openBufferedStream();
+            final JsonReader json = new JsonReader(reader);
+            
+            json.beginObject();
+            
+            while (json.hasNext())
+                if (json.nextName().equals("id")) {
+                    
+                    final String id = json.nextString();
+                    uuid = UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) + "-" + id.substring(20, 32));
+                }
+                
+                else
+                    json.skipValue();
+                    
+            json.endObject();
+            json.close();
+            reader.close();
+        }
+        
+        catch (final Exception exception) {
+            
+            Constants.LOG.warn("Could not get name for " + username + " " + exception.getMessage());
+        }
+        
+        return uuid;
+    }
+    
+    /**
      * Retrieves an instance of the player from the client side. This code only exists in
      * client side code and can not be used in server side code.
      */
@@ -122,10 +176,10 @@ public final class PlayerUtils {
      * one would be removed.
      * 
      * @param messageID A unique message ID used to separate your message from the others. It
-     *            is highly recommended to use a random number to prevent conflicts with other
-     *            mods doing similar things. Each message type should have it's own ID.
+     *        is highly recommended to use a random number to prevent conflicts with other mods
+     *        doing similar things. Each message type should have it's own ID.
      * @param message The message to send to chat, this message will replace earlier messages
-     *            in the gui that use the same ID.
+     *        in the gui that use the same ID.
      */
     @SideOnly(Side.CLIENT)
     public static void sendSpamlessMessage (int messageID, ITextComponent message) {
