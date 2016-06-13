@@ -138,11 +138,8 @@ public final class PlayerUtils {
             json.beginObject();
             
             while (json.hasNext())
-                if (json.nextName().equals("id")) {
-                    
-                    final String id = json.nextString();
-                    uuid = UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) + "-" + id.substring(20, 32));
-                }
+                if (json.nextName().equals("id"))
+                    uuid = fixStrippedUUID(json.nextString());
                 
                 else
                     json.skipValue();
@@ -158,6 +155,17 @@ public final class PlayerUtils {
         }
         
         return uuid;
+    }
+    
+    /**
+     * Attempts to fix a stripped UUID. Usually used to fix stripped uuid strings from Mojang.
+     * 
+     * @param uuidString The UUID string to fix.
+     * @return The fixed UUID, or null if the uuid string is invalid.
+     */
+    public static UUID fixStrippedUUID (String uuidString) {
+        
+        return (uuidString.length() != 32) ? null : UUID.fromString(uuidString.substring(0, 8) + "-" + uuidString.substring(8, 12) + "-" + uuidString.substring(12, 16) + "-" + uuidString.substring(16, 20) + "-" + uuidString.substring(20, 32));
     }
     
     /**
