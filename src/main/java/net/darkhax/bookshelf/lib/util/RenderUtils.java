@@ -195,7 +195,7 @@ public class RenderUtils {
      * @param velocityY The velocity of the particle, in the y direction.
      * @param velocityZ The velocity of the particle, in the z direction.
      * @param step The distance in degrees, between each particle. The maximum is 2 * PI, which
-     *            will create 1 particle per ring. 0.15 is a nice value.
+     *        will create 1 particle per ring. 0.15 is a nice value.
      */
     public static void spawnParticleRing (World world, EnumParticleTypes particle, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
         
@@ -217,7 +217,7 @@ public class RenderUtils {
      * @param velocityY The velocity of the particle, in the y direction.
      * @param velocityZ The velocity of the particle, in the z direction.
      * @param step The distance in degrees, between each particle. The maximum is 2 * PI, which
-     *            will create 1 particle per ring. 0.15 is a nice value.
+     *        will create 1 particle per ring. 0.15 is a nice value.
      */
     public static void spawnPercentageParticleRing (World world, EnumParticleTypes particle, float percentage, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
         
@@ -234,10 +234,10 @@ public class RenderUtils {
      * @param url The URL to download the resource from. This should be the raw/source url.
      * @param outputResource The ResourceLocation to use for the newly downloaded resource.
      * @param defaultResource The default texture to use, on the chance that it fails to
-     *            download a texture. This must be a valid texture, or else you will get a
-     *            missing texture.
+     *        download a texture. This must be a valid texture, or else you will get a missing
+     *        texture.
      * @param buffer A special buffer to use when downloading the image. It is okay to pass
-     *            null for this if you don't want anything fancy.
+     *        null for this if you don't want anything fancy.
      * @return The output resource location.
      */
     public static ResourceLocation downloadResourceLocation (String url, ResourceLocation outputResource, ResourceLocation defaultResource, IImageBuffer buffer) {
@@ -253,10 +253,10 @@ public class RenderUtils {
      * @param url The URL to download the resource from. This should be the raw/source url.
      * @param outputResource The ResourceLocation to use for the newly downloaded resource.
      * @param defaultResource The default texture to use, on the chance that it fails to
-     *            download a texture. This must be a valid texture, or else you will get a
-     *            missing texture.
+     *        download a texture. This must be a valid texture, or else you will get a missing
+     *        texture.
      * @param buffer A special buffer to use when downloading the image. It is okay to pass
-     *            null for this if you don't want anything fancy.
+     *        null for this if you don't want anything fancy.
      * @return The downloaded image data.
      */
     public static ThreadDownloadImageData downloadResource (String url, ResourceLocation outputResource, ResourceLocation defaultResource, IImageBuffer buffer) {

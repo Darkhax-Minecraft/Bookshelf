@@ -70,7 +70,7 @@ public final class MathsUtils {
      * 
      * @param player: The player to get the looking position of.
      * @param length: The distance to go outwards from the player, the maximum "reach". Default
-     *            reach is 4.5D.
+     *        reach is 4.5D.
      * @return MovingObjectPosition: A MovingObjectPosition containing the exact location where
      *         the player is looking.
      */

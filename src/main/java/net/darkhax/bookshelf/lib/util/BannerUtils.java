@@ -17,7 +17,7 @@ public class BannerUtils {
      * 
      * @param baseColor The base color for the banner.
      * @param patterns The patterns to apply. This can be null if you want no patterns. See
-     *            {@link #createPatternList(BannerLayer...)} for an easy way to make this.
+     *        {@link #createPatternList(BannerLayer...)} for an easy way to make this.
      * @return The ItemStack that was created. All of the data is on the NBT.
      */
     public static ItemStack createBanner (EnumDyeColor baseColor, NBTTagList patterns) {
@@ -62,10 +62,10 @@ public class BannerUtils {
      * such a pattern is the default empty pattern.
      * 
      * @param name The name of the banner pattern being created. This is used for the texture
-     *            file and unlocalized name. This is also upper cased to use as the Enum value
-     *            name.
+     *        file and unlocalized name. This is also upper cased to use as the Enum value
+     *        name.
      * @param id A short ID to represent the banner pattern. It is critical that this value be
-     *            unique. Please consider adding the modID into this somehow.
+     *        unique. Please consider adding the modID into this somehow.
      * @return The pattern that was created.
      */
     public static EnumBannerPattern addBasicPattern (String name, String id) {
@@ -81,10 +81,10 @@ public class BannerUtils {
      * different colors by adding additional dyes into the recipe.
      * 
      * @param name The name of the banner pattern being created. This is used for the texture
-     *            file and unlocalized name. This is also upper cased to use as the Enum value
-     *            name.
+     *        file and unlocalized name. This is also upper cased to use as the Enum value
+     *        name.
      * @param id A short ID to represent the banner pattern. It is critical that this value be
-     *            unique. Please consider adding the modID into this somehow.
+     *        unique. Please consider adding the modID into this somehow.
      * @param craftingStack The ItemStack to use to create this pattern.
      * @return The pattern that was created.
      */
@@ -101,22 +101,21 @@ public class BannerUtils {
      * with vanilla. There is roughly 512 possibilities for this.
      * 
      * @param name The name of the banner pattern being created. This is used for the texture
-     *            file and unlocalized name. This is also upper cased to use as the Enum value
-     *            name.
+     *        file and unlocalized name. This is also upper cased to use as the Enum value
+     *        name.
      * @param id A short ID to represent the banner pattern. It is critical that this value be
-     *            unique. Please consider adding the modID into this somehow.
+     *        unique. Please consider adding the modID into this somehow.
      * @param craftingTop A layout for the pattern in the top row of the crafting grid. This is
-     *            represented by a string with three characters. A blank space means nothing
-     *            goes in that slot, while a # means that a dye would go in that slot. Example:
-     *            "# #"
+     *        represented by a string with three characters. A blank space means nothing goes
+     *        in that slot, while a # means that a dye would go in that slot. Example: "# #"
      * @param craftingMid A layout for the pattern in the middle row of the crafting grid. This
-     *            is represented by a string with three characters. A blank space means nothing
-     *            goes in that slot, while a # means that a dye would go in that slot. Example:
-     *            " # "
+     *        is represented by a string with three characters. A blank space means nothing
+     *        goes in that slot, while a # means that a dye would go in that slot. Example:
+     *        " # "
      * @param craftingBot A layout for the pattern in the bottom row of the crafting grid. This
-     *            is represented by a string with three characters. A blank space means nothing
-     *            goes in that slot, while a # means that a dye would go in that slot. Example:
-     *            "###"
+     *        is represented by a string with three characters. A blank space means nothing
+     *        goes in that slot, while a # means that a dye would go in that slot. Example:
+     *        "###"
      * @return The pattern that was created.
      */
     public static EnumBannerPattern addDyePattern (String name, String id, String craftingTop, String craftingMid, String craftingBot) {

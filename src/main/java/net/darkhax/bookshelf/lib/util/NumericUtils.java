@@ -35,7 +35,7 @@ public class NumericUtils {
      * 
      * @param month The month of the year to check for. January is 1 and December is 12.
      * @param day The day of the year to check for. The first day of the month is 1, the 15th
-     *            day is 15 and so on.
+     *        day is 15 and so on.
      * @return Whether or not the current day is the one specified.
      */
     public static boolean isSpecialDay (int month, int day) {

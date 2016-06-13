@@ -18,8 +18,8 @@ public class ModUtils {
      * biomes, and so on.
      * 
      * @param registerable The registerable object. Accepts anything that extends
-     *            IForgeRegistryEntry.Impl. Current list includes BiomeGenBase, Block,
-     *            Enchantment, Item, Potion, PotionType, SoundEvent and VillagerProfession.
+     *        IForgeRegistryEntry.Impl. Current list includes BiomeGenBase, Block, Enchantment,
+     *        Item, Potion, PotionType, SoundEvent and VillagerProfession.
      * @return String The name of the mod that registered the object.
      */
     public static String getModName (IForgeRegistryEntry.Impl<?> registerable) {

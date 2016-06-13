@@ -146,7 +146,7 @@ public final class NBTUtils {
      * 
      * @param tag: The tag to retrieve all of the item data from.
      * @param invSize: The projected size of the inventory stored to the tag. It is critical
-     *            that this never be smaller then the actual amount.
+     *        that this never be smaller then the actual amount.
      * @return ItemStack[]: An array of ItemStack stored on the NBTTagCompound.
      */
     public static ItemStack[] getStoredItems (NBTTagCompound tag, int invSize) {
@@ -176,7 +176,7 @@ public final class NBTUtils {
      * 
      * @param tag: An NBTTagCompound to search through.
      * @param tags: An array containing the various steps to get to the desired deep
-     *            NBTTagCompound.
+     *        NBTTagCompound.
      * @return NBTTagCompound: This method will return the deepest possible NBTTagCompound. In
      *         some cases, this may be the tag you provide, or only a few steps deep, rather
      *         than all of the way.

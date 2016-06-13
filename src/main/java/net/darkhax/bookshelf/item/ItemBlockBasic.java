@@ -28,7 +28,7 @@ public class ItemBlockBasic extends ItemBlock {
      * @param block The Block to represent.
      * @param names The variants for the item.
      * @param selfRegister Whether or not the ItemBlock should use the same registry name as
-     *            the passed block.
+     *        the passed block.
      */
     public ItemBlockBasic(Block block, String[] names, boolean selfRegister) {
         

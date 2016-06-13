@@ -97,7 +97,7 @@ public class ColorObject {
      * @param green The amount of green that makes up this color.
      * @param blue The amount of blue that makes up this color.
      * @param alpha The transparency for this color. 0 is fully transparent, while 100 is
-     *            completely solid.
+     *        completely solid.
      */
     public ColorObject(int red, int green, int blue, int alpha) {
         
@@ -123,7 +123,7 @@ public class ColorObject {
      * @param green The amount of that makes up this color.
      * @param blue The amount of that makes up this color.
      * @param alpha The transparency of this color object. 0 is completely see through, 1 is
-     *            completely solid.
+     *        completely solid.
      */
     public ColorObject(float red, float green, float blue, float alpha) {
         
@@ -299,7 +299,7 @@ public class ColorObject {
      * Writes the data contained within the ColorObject to the provided NBTTagCompound.
      *
      * @param tag An NBTTagCompound used to write data to. If null is provided, one will be
-     *            generated for you.
+     *        generated for you.
      * @return NBTTagCompound An NBTTagCompound instance which contains the color data. Can be
      *         used with the NBTTagCompound based constructor to recreate a ColorObject.
      */

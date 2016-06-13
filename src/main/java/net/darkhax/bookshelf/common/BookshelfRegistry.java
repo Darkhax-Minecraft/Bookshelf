@@ -18,7 +18,7 @@ public class BookshelfRegistry {
      * @param inputLeft The ItemStack required in the left slot of the Anvil GUI.
      * @param inputRight The ItemStack required in the right slot.
      * @param experience The amount of experience levels this recipe will cost. Must be at
-     *            least one for this to work.
+     *        least one for this to work.
      * @param output The ItemStack to be created by the recipe.
      */
     public static void addAnvilRecipe (ItemStack inputLeft, ItemStack inputRight, int experience, ItemStack output) {
@@ -33,7 +33,7 @@ public class BookshelfRegistry {
      * @param inputRight The ItemStack required in the left slot of the Anvil GUI.
      * @param requiredName A name requirement for this recipe to complete.
      * @param experience The amount of experience levels this recipe will cost. Must be at
-     *            least one for this to work.
+     *        least one for this to work.
      * @param output The ItemStack to be created by this recipe.
      */
     public static void addAnvilRecipe (ItemStack inputLeft, ItemStack inputRight, String requiredName, int experience, ItemStack output) {
@@ -48,9 +48,9 @@ public class BookshelfRegistry {
      * @param inputRight The ItemStack required in the left slot of the Anvil GUI.
      * @param requiredName A name requirement for this recipe to complete.
      * @param experience The amount of experience levels this recipe will cost. Must be at
-     *            least one for this to work.
+     *        least one for this to work.
      * @param materialCost The amount of items to consume from the right side of the Anvil GUI.
-     *            If 0, all will be used.
+     *        If 0, all will be used.
      * @param output The ItemStack to be created by this recipe.
      */
     public static void addAnvilRecipe (ItemStack inputLeft, ItemStack inputRight, String requiredName, int experience, int materialCost, ItemStack output) {
@@ -129,7 +129,7 @@ public class BookshelfRegistry {
          * @param requiredName A name requirement for this recipe.
          * @param experience The amount of experience that this recipe should cost.
          * @param materialCost The amount of items to consume from the right slot of the Anvil
-         *            GUI. If 0, the whole stack will be consumed.
+         *        GUI. If 0, the whole stack will be consumed.
          * @param outputStack The ItemStack that will be created by this recipe.
          */
         public AnvilRecipe(ItemStack firstInput, ItemStack secondInput, String requiredName, int experience, int materialCost, ItemStack outputStack) {

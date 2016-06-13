@@ -122,7 +122,7 @@ public class WeightedSelector<T> {
          * 
          * @param entry The outcome to represent with the entry.
          * @param weight The weight of the entry. Entries with a higher weight have a higher
-         *            likelihood of being selected.
+         *        likelihood of being selected.
          */
         public WeightedEntry(T entry, int weight) {
             

@@ -84,7 +84,7 @@ public final class EntityUtils {
      * 
      * @param entityToMove The entity that should be pushed towards the other entity.
      * @param destination The destination entity, that the entity to move should be pushed
-     *            towards.
+     *        towards.
      * @param force The amount of force to push the entityToMove with.
      */
     public static void pushTowards (Entity entityToMove, Entity destination, double force) {
