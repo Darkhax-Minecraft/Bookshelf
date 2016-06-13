@@ -120,6 +120,18 @@ public class TextUtils {
         return NAME_TO_FORMAT.get(name.toLowerCase());
     }
     
+    /**
+     * Adds a format code to a string. Will add the resent format character to the end.
+     * 
+     * @param string The string to format.
+     * @param format The format to apply.
+     * @return The input string with the new format codes.
+     */
+    public static String formatString (String string, ChatFormat format) {
+        
+        return format + string + ChatFormat.RESET;
+    }
+    
     public enum ChatFormat {
         
         BLACK('0'),
