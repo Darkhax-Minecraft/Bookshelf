@@ -28,12 +28,6 @@ public final class PlayerUtils {
     public static BiMap<String, UUID> PROFILE_CACHE = HashBiMap.<String, UUID> create();
     
     /**
-     * The UUID of the client player. Used to make sure the client player is always rendered.
-     */
-    @SideOnly(Side.CLIENT)
-    public static UUID clientID = null;
-    
-    /**
      * Checks if a specific player can sleep. For this to be true, a player must not already be
      * in a bed, and the world time bust be greater than 12541, but less than 23458.
      * 
@@ -146,7 +140,7 @@ public final class PlayerUtils {
             while (json.hasNext())
                 if (json.nextName().equals("id"))
                     uuid = fixStrippedUUID(json.nextString());
-                
+                    
                 else
                     json.skipValue();
                     
@@ -213,5 +207,16 @@ public final class PlayerUtils {
         
         final Minecraft mc = Minecraft.getMinecraft();
         return mc.thePlayer != null && mc.theWorld != null && mc.thePlayer.worldObj != null;
+    }
+    
+    /**
+     * Gets the UUID for the client side player.
+     * 
+     * @return The UUID for the client side player. May be null.
+     */
+    @SideOnly(Side.CLIENT)
+    public static UUID getClientUUID () {
+        
+        return fixStrippedUUID(Minecraft.getMinecraft().getSession().getPlayerID());
     }
 }
