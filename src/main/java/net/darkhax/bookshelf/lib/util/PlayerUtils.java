@@ -28,6 +28,12 @@ public final class PlayerUtils {
     public static BiMap<String, UUID> PROFILE_CACHE = HashBiMap.<String, UUID> create();
     
     /**
+     * The UUID of the client player. Used to make sure the client player is always rendered.
+     */
+    @SideOnly(Side.CLIENT)
+    public static UUID clientID = null;
+    
+    /**
      * Checks if a specific player can sleep. For this to be true, a player must not already be
      * in a bed, and the world time bust be greater than 12541, but less than 23458.
      * 
