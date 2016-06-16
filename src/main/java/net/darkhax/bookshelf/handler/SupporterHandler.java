@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import com.google.gson.stream.JsonReader;
 
+import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -105,12 +106,12 @@ public class SupporterHandler {
         
         catch (final MalformedURLException e) {
             
-            e.printStackTrace();
+            Constants.LOG.error("Could not access supporter data. " + e.getMessage());
         }
         
         catch (final IOException e) {
             
-            e.printStackTrace();
+            Constants.LOG.error("Could not access supporter data. " + e.getMessage());
         }
     }
     
