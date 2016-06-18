@@ -34,7 +34,7 @@ public class CreativeTabSkulls extends CreativeTabs {
             if (data.wantsHead()) {
                 
                 final ItemStack stack = SkullUtils.createSkull(PlayerUtils.getPlayerNameFromUUID(data.getPlayerID()));
-                ItemStackUtils.setLore(stack, new String[] { data.getLocalizedType() });
+                ItemStackUtils.setLore(stack, new String[] { data.getFormat() + data.getLocalizedType() });
                 cache.add(stack);
             }
             
@@ -63,7 +63,6 @@ public class CreativeTabSkulls extends CreativeTabs {
     @Override
     public void displayAllRelevantItems (List<ItemStack> itemList) {
         
-        System.out.println(cache.size());
         itemList.addAll(cache);
     }
 }

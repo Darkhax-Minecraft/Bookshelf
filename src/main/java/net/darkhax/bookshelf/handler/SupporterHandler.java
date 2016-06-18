@@ -14,6 +14,7 @@ import com.google.gson.stream.JsonReader;
 
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
+import net.darkhax.bookshelf.lib.util.TextUtils.ChatFormat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
@@ -304,6 +305,16 @@ public class SupporterHandler {
         public String getLocalizedType () {
             
             return I18n.translateToLocal("supporters." + this.TYPE);
+        }
+        
+        /**
+         * Gets the color type for the supporter tier.
+         * 
+         * @return The chat formatting for the supporter tier.
+         */
+        public ChatFormat getFormat () {
+            
+            return this.TYPE.equals("developer") ? ChatFormat.GREEN : this.TYPE.equals("patreon") ? ChatFormat.GOLD : this.TYPE.equals("contributor") ? ChatFormat.AQUA : this.TYPE.equalsIgnoreCase("translator") ? ChatFormat.RED : ChatFormat.RESET;
         }
     }
 }
