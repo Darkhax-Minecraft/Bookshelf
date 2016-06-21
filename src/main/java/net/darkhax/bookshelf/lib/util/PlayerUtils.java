@@ -15,6 +15,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -166,6 +168,42 @@ public final class PlayerUtils {
     public static UUID fixStrippedUUID (String uuidString) {
         
         return (uuidString.length() != 32) ? null : UUID.fromString(uuidString.substring(0, 8) + "-" + uuidString.substring(8, 12) + "-" + uuidString.substring(12, 16) + "-" + uuidString.substring(16, 20) + "-" + uuidString.substring(20, 32));
+    }
+    
+    /**
+     * Gets the amount of an item in a players inventory. Only checks main inventory and hot
+     * bar. Checks the stack size of the items found.
+     * 
+     * @param player The player to check the inventory of.
+     * @param item The item to check for.
+     * @return The amount of the item being searched for.
+     */
+    public static int getItemCountInInv (EntityPlayer player, Item item) {
+        
+        int count = 0;
+        
+        for (ItemStack stack : player.inventory.mainInventory)
+            if (stack != null && stack.getItem().equals(item))
+                count += stack.stackSize;
+                
+        return count;
+    }
+    
+    /**
+     * Checks if a player has an item in their inventory.
+     * 
+     * @param player The player to check the inventory of.
+     * @param item The item to check for.
+     * @param meta The metadata for the item to look for. Less than 0 can be used for any item.
+     * @return Whether or not the player has the item in their inventory.
+     */
+    public static boolean playerHasItem (EntityPlayer player, Item item, int meta) {
+        
+        for (ItemStack stack : player.inventory.mainInventory)
+            if (stack != null && stack.getItem().equals(item) && (meta < 0 || stack.getMetadata() == meta))
+                return true;
+                
+        return false;
     }
     
     /**
