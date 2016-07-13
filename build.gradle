@@ -34,10 +34,10 @@ version = getVersionFromJava(file("src/main/java/net/darkhax/bookshelf/lib/Const
 //Defines the MC environment information.
 minecraft {
 
-    useDepAts = true
-    version = "1.10-12.18.0.1986-1.10.0"
+    version = "1.10.2-12.18.1.2018"
     runDir = "run"
-    mappings = 'snapshot_20160518'
+    mappings = "snapshot_20160518"
+    useDepAts = true
 }
 
 //Defines basic patterns for pulling various dependencies.
@@ -110,7 +110,7 @@ String getVersionFromJava(File file) {
 
     file.write(outfile);
 
-    return "1.10-$release.$update.$patch.$build";
+    return "1.10.2-$release.$update.$patch.$build";
 }
 
 //Creates the source jar.
@@ -186,7 +186,7 @@ curseforge {
         releaseType = project.releaseType;
         changelog = project.changelog;
 
-        addGameVersion "1.10"
+        addGameVersion "1.10.2"
         
         addArtifact(deobfJar)
         addArtifact(sourcesJar)
