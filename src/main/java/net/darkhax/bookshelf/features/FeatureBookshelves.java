@@ -43,9 +43,12 @@ public class FeatureBookshelves extends Feature {
     @Override
     public void setupRendering () {
         
-        final Item item = Item.getItemFromBlock(this.blockShelf);
-        
-        for (int meta = 0; meta < 5; meta++)
-            ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation("bookshelf:bookshelf_" + BlockWoodenShelf.types[meta], "inventory"));
+        if (this.enabled) {
+            
+            final Item item = Item.getItemFromBlock(this.blockShelf);
+            
+            for (int meta = 0; meta < 5; meta++)
+                ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation("bookshelf:bookshelf_" + BlockWoodenShelf.types[meta], "inventory"));
+        }
     }
 }
