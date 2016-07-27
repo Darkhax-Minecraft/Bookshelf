@@ -58,6 +58,11 @@ public class BookshelfRegistry {
         anvilRecipes.add(new AnvilRecipe(inputLeft, inputRight, requiredName, experience, materialCost, output));
     }
     
+    /**
+     * Adds a new AnvilRecipe to the registry directly.
+     * 
+     * @param recipe The AnvilRecipe to register.
+     */
     public void addAnvilRecipe (AnvilRecipe recipe) {
         
         anvilRecipes.add(recipe);
@@ -74,6 +79,9 @@ public class BookshelfRegistry {
         return anvilRecipes;
     }
     
+    /**
+     * Wrapper for basic anvil recipe info.
+     */
     public static class AnvilRecipe {
         
         /**
