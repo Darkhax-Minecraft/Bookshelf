@@ -1,6 +1,6 @@
-package net.darkhax.bookshelf.features;
+package net.darkhax.bookshelf.features.bookshelves;
 
-import net.darkhax.bookshelf.block.BlockWoodenShelf;
+import net.darkhax.bookshelf.features.Feature;
 import net.darkhax.bookshelf.item.ItemBlockBasic;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

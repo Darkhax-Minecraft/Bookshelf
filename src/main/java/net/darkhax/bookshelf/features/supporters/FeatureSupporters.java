@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.features;
+package net.darkhax.bookshelf.features.supporters;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
+import net.darkhax.bookshelf.features.Feature;
 import net.darkhax.bookshelf.handler.SupporterHandler;
 import net.darkhax.bookshelf.handler.SupporterHandler.SupporterData;
 import net.darkhax.bookshelf.lib.util.RenderUtils;

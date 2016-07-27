@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.block;
+package net.darkhax.bookshelf.features.bookshelves;
 
 import java.util.List;
 

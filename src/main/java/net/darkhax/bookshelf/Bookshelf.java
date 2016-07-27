@@ -5,9 +5,9 @@ import java.util.List;
 
 import net.darkhax.bookshelf.common.ProxyCommon;
 import net.darkhax.bookshelf.features.Feature;
-import net.darkhax.bookshelf.features.FeatureBookshelves;
-import net.darkhax.bookshelf.features.FeaturePlayerHeads;
-import net.darkhax.bookshelf.features.FeatureSupporters;
+import net.darkhax.bookshelf.features.bookshelves.FeatureBookshelves;
+import net.darkhax.bookshelf.features.playerheads.FeaturePlayerHeads;
+import net.darkhax.bookshelf.features.supporters.FeatureSupporters;
 import net.darkhax.bookshelf.handler.ConfigurationHandler;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.lib.Constants;
