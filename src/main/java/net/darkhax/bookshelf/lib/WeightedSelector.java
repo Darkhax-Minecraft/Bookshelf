@@ -22,6 +22,19 @@ public class WeightedSelector<T> {
     private int total = 0;
     
     /**
+     * Adds an entry to the list. The entry is created from the value and weight passed. Only
+     * serves as a quality of life method.
+     * 
+     * @param value The value to register.
+     * @param weight The weight of the entry.
+     * @return Whether or not the entry was added successfully.
+     */
+    public boolean addEntry (T value, int weight) {
+        
+        return addEntry(new WeightedEntry<T>(value, weight));
+    }
+    
+    /**
      * Adds an entry to the entry list. If the entry is added successfully, the total will
      * automatically update.
      * 
