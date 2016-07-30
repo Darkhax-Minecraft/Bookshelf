@@ -4,6 +4,9 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
+/**
+ * Object for representing enchantments that have a level component to them.
+ */
 public class EnchantmentObject {
     
     /**

@@ -1,5 +1,8 @@
 package net.darkhax.bookshelf.lib;
 
+/**
+ * Represents the different attribute modifiers in vanilla.
+ */
 public enum ModifierOperation {
     
     /**

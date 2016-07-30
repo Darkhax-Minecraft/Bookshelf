@@ -2,6 +2,9 @@ package net.darkhax.bookshelf.lib;
 
 import java.awt.Color;
 
+/**
+ * Represents the base 16 colors in Minecraft.
+ */
 public enum VanillaColor {
     
     BLACK("Black", new Color(25, 25, 25)),

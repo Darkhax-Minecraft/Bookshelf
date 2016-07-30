@@ -4,6 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+/**
+ * A basic implementation of ItemBlock that has support for multiple meta varients.
+ */
 public class ItemBlockBasic extends ItemBlock {
     
     /**

@@ -1,5 +1,8 @@
 package net.darkhax.bookshelf.lib;
 
+/**
+ * Represents common mb amounts.
+ */
 public enum Milibucket {
     
     NUGGET(16),
