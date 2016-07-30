@@ -1,16 +1,15 @@
 package net.darkhax.bookshelf.tileentity;
 
-import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TileEntityBasic extends TileEntity implements ITickable {
+
+public class TileEntityBasic extends TileEntity {
     
     @Override
     public void readFromNBT (NBTTagCompound dataTag) {
@@ -51,24 +50,6 @@ public class TileEntityBasic extends TileEntity implements ITickable {
         return oldState.getBlock() != newState.getBlock();
     }
     
-    @Override
-    public void update () {
-        
-        if (this.isInvalid() || !this.getWorld().isBlockLoaded(this.getPos()) || this.getWorld().isRemote)
-            return;
-            
-        try {
-            
-            this.onEntityUpdate();
-        }
-        
-        catch (final Exception exception) {
-            
-            Constants.LOG.warn("A TileEntity at %s in world %s failed a client update tick!", this.getPos(), this.getWorld().getWorldInfo().getWorldName());
-            exception.printStackTrace();
-        }
-    }
-    
     /**
      * Handles the ability to write custom NBT values to a TileEntity.
      * 
@@ -84,14 +65,6 @@ public class TileEntityBasic extends TileEntity implements ITickable {
      * @param dataTag: The NBTTagCompound for the TileEntity.
      */
     public void readNBT (NBTTagCompound dataTag) {
-    
-    }
-    
-    /**
-     * Handles the TileEntity update ticks. This method will only be called in a safe
-     * environment.
-     */
-    public void onEntityUpdate () {
     
     }
 }
