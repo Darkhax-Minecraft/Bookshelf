@@ -9,6 +9,9 @@ import net.minecraft.tileentity.TileEntityBanner;
 import net.minecraft.tileentity.TileEntityBanner.EnumBannerPattern;
 import net.minecraftforge.common.util.EnumHelper;
 
+/**
+ * A compilation of utilities and methods for working with banners.
+ */
 public class BannerUtils {
     
     /**
@@ -125,6 +128,9 @@ public class BannerUtils {
         return EnumHelper.addEnum(EnumBannerPattern.class, name.toUpperCase(), paramTypes, paramValues);
     }
     
+    /**
+     * Object that represents a layer in a banner.
+     */
     public static class BannerLayer {
         
         /**
