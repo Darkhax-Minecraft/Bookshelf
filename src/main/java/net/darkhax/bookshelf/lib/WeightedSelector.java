@@ -31,7 +31,7 @@ public class WeightedSelector<T> {
      */
     public boolean addEntry (T value, int weight) {
         
-        return addEntry(new WeightedEntry<T>(value, weight));
+        return this.addEntry(new WeightedEntry<T>(value, weight));
     }
     
     /**

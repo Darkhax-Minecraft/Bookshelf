@@ -167,7 +167,7 @@ public final class PlayerUtils {
      */
     public static UUID fixStrippedUUID (String uuidString) {
         
-        return (uuidString.length() != 32) ? null : UUID.fromString(uuidString.substring(0, 8) + "-" + uuidString.substring(8, 12) + "-" + uuidString.substring(12, 16) + "-" + uuidString.substring(16, 20) + "-" + uuidString.substring(20, 32));
+        return uuidString.length() != 32 ? null : UUID.fromString(uuidString.substring(0, 8) + "-" + uuidString.substring(8, 12) + "-" + uuidString.substring(12, 16) + "-" + uuidString.substring(16, 20) + "-" + uuidString.substring(20, 32));
     }
     
     /**
@@ -182,7 +182,7 @@ public final class PlayerUtils {
         
         int count = 0;
         
-        for (ItemStack stack : player.inventory.mainInventory)
+        for (final ItemStack stack : player.inventory.mainInventory)
             if (stack != null && stack.getItem().equals(item))
                 count += stack.stackSize;
                 
@@ -199,7 +199,7 @@ public final class PlayerUtils {
      */
     public static boolean playerHasItem (EntityPlayer player, Item item, int meta) {
         
-        for (ItemStack stack : player.inventory.mainInventory)
+        for (final ItemStack stack : player.inventory.mainInventory)
             if (stack != null && stack.getItem().equals(item) && (meta < 0 || stack.getMetadata() == meta))
                 return true;
                 

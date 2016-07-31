@@ -64,30 +64,22 @@ public class FeatureSupporters extends Feature {
     @SideOnly(Side.CLIENT)
     private static void makePlayerFancy (final AbstractClientPlayer player, final ResourceLocation cape, final ResourceLocation elytra) {
         
-        THREAD_POOL.submit(new Runnable() {
+        THREAD_POOL.submit( () -> {
             
-            @Override
-            public void run () {
+            try {
                 
-                try {
-                    
-                    Thread.sleep(100);
-                }
-                catch (final InterruptedException e) {
-                    
-                    return;
-                }
-                
-                Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-                    
-                    @Override
-                    public void run () {
-                        
-                        RenderUtils.setPlayerTexture(Type.CAPE, player, cape);
-                        RenderUtils.setPlayerTexture(Type.ELYTRA, player, elytra);
-                    }
-                });
+                Thread.sleep(100);
             }
+            catch (final InterruptedException e) {
+                
+                return;
+            }
+            
+            Minecraft.getMinecraft().addScheduledTask( () -> {
+                
+                RenderUtils.setPlayerTexture(Type.CAPE, player, cape);
+                RenderUtils.setPlayerTexture(Type.ELYTRA, player, elytra);
+            });
         });
     }
 }
