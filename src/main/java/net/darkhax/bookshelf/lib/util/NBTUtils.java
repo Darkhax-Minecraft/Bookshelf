@@ -14,21 +14,8 @@ public final class NBTUtils {
     /**
      * A Comparator used to compare NBTTagCompound.
      */
-    public static final Comparator<NBTTagCompound> NBT_COMPARATOR = new Comparator<NBTTagCompound>() {
-        
-        @Override
-        public int compare (NBTTagCompound firstTag, NBTTagCompound secondTag) {
-            
-            if (firstTag != null && firstTag != secondTag)
-                return 1;
-                
-            else if (secondTag != null)
-                return -1;
-                
-            return 0;
-        }
-    };
-    
+    public static final Comparator<NBTTagCompound> NBT_COMPARATOR = (firstTag, secondTag) -> firstTag != null ? (firstTag.equals(secondTag) ? 0 : 1) : (secondTag != null ? -1 : 0);
+
     /**
      * Sets an unknown data type to an NBTTagCompound. If the type of the data can not be
      * identified, and exception will be thrown. Current supported data types include String,
