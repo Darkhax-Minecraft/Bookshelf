@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.lib.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -9,6 +10,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -95,5 +97,22 @@ public final class CraftingUtils {
             }
             
         return foundRecipes;
+    }
+    
+    /**
+     * Creates 9 recipes which allow an ItemStack to be converted into a different one. 9
+     * recipes to allow up to 9 at a time.
+     * 
+     * @param input The initial input item.
+     * @param output The resulting item.
+     */
+    public static void createConversionRecipes (ItemStack input, ItemStack output) {
+        
+        for (int amount = 1; amount < 10; amount++) {
+            
+            final ItemStack[] inputs = new ItemStack[amount];
+            Arrays.fill(inputs, input);
+            GameRegistry.addShapelessRecipe(ItemStackUtils.copyStackWithSize(output, amount), (Object[]) inputs);
+        }
     }
 }
