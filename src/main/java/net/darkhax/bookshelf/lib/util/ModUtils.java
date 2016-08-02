@@ -25,7 +25,7 @@ public class ModUtils {
     public static String getModName (IForgeRegistryEntry.Impl<?> registerable) {
         
         final String modID = registerable.getRegistryName().getResourceDomain();
-        final ModContainer mod = Loader.instance().getIndexedModList().get(modID);
+        final ModContainer mod = getModContainer(modID);
         return mod != null ? mod.getName() : modID.equalsIgnoreCase("minecraft") ? "Minecraft" : "Unknown";
     }
     
@@ -54,6 +54,17 @@ public class ModUtils {
         }
         
         return "Minecraft";
+    }
+    
+    /**
+     * Gets a mod container by it's ID.
+     * 
+     * @param modID The ID of the mod to grab.
+     * @return The ModContainer using that ID.
+     */
+    public static ModContainer getModContainer (String modID) {
+        
+        return Loader.instance().getIndexedModList().get(modID);
     }
     
     /**
