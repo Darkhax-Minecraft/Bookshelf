@@ -1,41 +1,53 @@
 package net.darkhax.bookshelf.inventory;
 
+import javax.annotation.Nullable;
+
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class SlotFake extends Slot {
     
-    public SlotFake(IInventory inventoryIn, int index, int xPosition, int yPosition) {
-        
-        super(inventoryIn, index, xPosition, yPosition);
-    }
-    
     /**
-     * Must be called for custom logic to be applied. This can be done by overriding
-     * {@link Container#slotClick(int, int, ClickType, EntityPlayer)} and checking if the slot
-     * clicked is a fake one. If it is, return this method call.
+     * Creates a slot which acts as a fake/ghost/filter slot. When an item is placed inside,
+     * only a copy with a stack size of one is placed. When it is removed, the copy is deleted.
+     * Perfect for creating item filters.
      * 
-     * @param container The container the slot is in.
-     * @param slotId The Id of the slot.
-     * @param dragType The drag type.
-     * @param type the click type.
-     * @param player The player.
-     * @return The resulting item.
+     * @param inventory The inventory to add the slot to.
+     * @param index The slot index.
+     * @param x The X position of the slot.
+     * @param y The Y position of the slot.
      */
-    public ItemStack slotClicked (Container container, int slotId, int dragType, ClickType type, EntityPlayer player) {
+    public SlotFake(IInventory inventory, int index, int x, int y) {
         
-        putStack(player.inventory.getItemStack());
-        container.detectAndSendChanges();
-        return (player.inventory.getItemStack() != null) ? player.inventory.getItemStack() : null;
+        super(inventory, index, x, y);
     }
     
     @Override
-    public void putStack (ItemStack stack) {
+    public boolean canTakeStack (EntityPlayer playerIn) {
+        
+        this.putStack(playerIn.inventory.getItemStack());
+        return false;
+    }
+    
+    @Override
+    public boolean isItemValid (ItemStack stack) {
+        
+        this.putStack(stack.copy());
+        return false;
+    }
+    
+    @Override
+    public ItemStack decrStackSize (int amount) {
+        
+        this.putStack(null);
+        return null;
+    }
+    
+    @Override
+    public void putStack (@Nullable ItemStack stack) {
         
         if (ItemStackUtils.isValidStack(stack)) {
             
@@ -44,23 +56,5 @@ public class SlotFake extends Slot {
         }
         
         super.putStack(stack);
-    }
-    
-    @Override
-    public boolean isItemValid (ItemStack stack) {
-        
-        return false;
-    }
-    
-    @Override
-    public boolean canTakeStack (EntityPlayer player) {
-        
-        return false;
-    }
-    
-    @Override
-    public ItemStack decrStackSize (int amount) {
-        
-        return null;
     }
 }
