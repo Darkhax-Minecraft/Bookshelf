@@ -3,6 +3,8 @@ package net.darkhax.bookshelf.lib.util;
 import java.io.BufferedReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.google.common.collect.BiMap;
@@ -204,6 +206,25 @@ public final class PlayerUtils {
                 return true;
                 
         return false;
+    }
+    
+    /**
+     * Gets all stacks of a certain type from the player's inventory.
+     * 
+     * @param player The player to search.
+     * @param item The item to search for.
+     * @param meta The desired metadata for the item. If less than 0, any meta will work.
+     * @return The list of found items.
+     */
+    public static List<ItemStack> getStacksFromPlayer (EntityPlayer player, Item item, int meta) {
+        
+        final List<ItemStack> items = new ArrayList<ItemStack>();
+        
+        for (final ItemStack stack : player.inventory.mainInventory)
+            if (stack != null && stack.getItem() == item && (meta < 0 || stack.getMetadata() == meta))
+                items.add(stack);
+                
+        return items;
     }
     
     /**
