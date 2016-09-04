@@ -218,10 +218,10 @@ public final class ItemStackUtils {
      * wild card damage value, they will also be considered the same. If the checkNBT parameter
      * is true, they will also need the same item nbt.
      * 
-     * @param firstStackThe first ItemStack to compare.
-     * @param secondStackThe second ItemStack to compare.
-     * @param checkNBTShould NBT be checked as well?
-     * @return booleanWhether or not the items are close enough to be called the same.
+     * @param firstStack The first ItemStack to compare.
+     * @param secondStack The second ItemStack to compare.
+     * @param checkNBT Should NBT be checked as well?
+     * @return boolean Whether or not the items are close enough to be called the same.
      */
     public static boolean areStacksEqual (ItemStack firstStack, ItemStack secondStack, boolean checkNBT) {
         
