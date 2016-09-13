@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.lib.util;
 
 import net.darkhax.bookshelf.lib.VanillaColor;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -386,5 +387,17 @@ public final class ItemStackUtils {
     public static void readTileEntityFromStack (TileEntity tile, ItemStack stack) {
         
         tile.readFromNBT(stack.getTagCompound().getCompoundTag("TileData"));
+    }
+    
+    /**
+     * Creates an ItemStack representation of an IBlockState.
+     * 
+     * @param state The state to use.
+     * @param size The stack size to create.
+     * @return An ItemStack which represents the passed state.
+     */
+    public static ItemStack getStackFromState (IBlockState state, int size) {
+        
+        return new ItemStack(state.getBlock(), size, state.getBlock().getMetaFromState(state));
     }
 }
