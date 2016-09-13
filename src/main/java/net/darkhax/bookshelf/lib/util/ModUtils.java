@@ -68,6 +68,18 @@ public class ModUtils {
     }
     
     /**
+     * Gets the name of a mod from it's ID.
+     * 
+     * @param modId The mod to look up.
+     * @return The name of the mod.
+     */
+    public static String getModName (String modId) {
+        
+        final ModContainer mod = getModContainer(modId);
+        return mod != null ? mod.getName() : modId;
+    }
+    
+    /**
      * Searches through the array of CreativeTabs and finds the first tab with the same label
      * as the one passed.
      * 
