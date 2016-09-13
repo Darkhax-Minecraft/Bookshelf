@@ -369,19 +369,6 @@ public class RenderUtils {
     }
     
     /**
-     * Renders a fluid block, call from TESR. x/y/z is the rendering offset.
-     *
-     * @param fluid Fluid to render
-     * @param pos BlockPos where the Block is rendered. Used for brightness.
-     * @param x Rendering offset. TESR x parameter.
-     * @param y Rendering offset. TESR x parameter.
-     * @param z Rendering offset. TESR x parameter.
-     * @param w Width. 1 = full X-Width
-     * @param h Height. 1 = full Y-Height
-     * @param d Depth. 1 = full Z-Depth
-     */
-    
-    /**
      * Renders a fluid at the given position.
      * 
      * @param fluid The fluid to render.
@@ -446,7 +433,7 @@ public class RenderUtils {
         final int brightness = mc.theWorld.getCombinedLight(pos, fluid.getFluid().getLuminosity());
         
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-        mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);      
+        mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         setupRenderState(x, y, z);
         
         final TextureAtlasSprite still = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getStill(fluid).toString());
@@ -457,7 +444,7 @@ public class RenderUtils {
         addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.EAST, color, brightness);
         addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.SOUTH, color, brightness);
         addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.WEST, color, brightness);
-        addTexturedQuad(buffer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.UP, color, brightness);        
+        addTexturedQuad(buffer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.UP, color, brightness);
         tessellator.draw();
         
         cleanupRenderState();
@@ -465,6 +452,7 @@ public class RenderUtils {
     
     /**
      * Adds a textured quad to a VertexBuffer. This is intended to be used for block rendering.
+     * 
      * @param buffer The VertexBuffer to add to.
      * @param sprite The texture to use.
      * @param x The X position.
@@ -486,18 +474,19 @@ public class RenderUtils {
         }
         
         final int firstLightValue = brightness >> 0x10 & 0xFFFF;
-        final int secondLightValue = brightness & 0xFFFF;      
+        final int secondLightValue = brightness & 0xFFFF;
         final int alpha = color >> 24 & 0xFF;
         final int red = color >> 16 & 0xFF;
         final int green = color >> 8 & 0xFF;
         final int blue = color & 0xFF;
         
-        putTexturedQuad(buffer, sprite, x, y, z, width, height, length, face, red, green, blue, alpha, firstLightValue, secondLightValue);
+        addTextureQuad(buffer, sprite, x, y, z, width, height, length, face, red, green, blue, alpha, firstLightValue, secondLightValue);
     }
     
     /**
      * Adds a textured quad to a VertexBuffer. This is intended to be used for block rendering.
-     * @param buffer The VertexBuffer to add to. 
+     * 
+     * @param buffer The VertexBuffer to add to.
      * @param sprite The texture to use.
      * @param x The X position.
      * @param y The Y position.
@@ -513,15 +502,15 @@ public class RenderUtils {
      * @param light1 The first light map value.
      * @param light2 The second light map value.
      */
-    public static void putTexturedQuad (VertexBuffer buffer, TextureAtlasSprite sprite, double x, double y, double z, double width, double height, double length, EnumFacing face, int red, int green, int blue, int alpha, int light1, int light2) {
+    public static void addTextureQuad (VertexBuffer buffer, TextureAtlasSprite sprite, double x, double y, double z, double width, double height, double length, EnumFacing face, int red, int green, int blue, int alpha, int light1, int light2) {
         
         double minU;
         double maxU;
         double minV;
         double maxV;
         
-        double size = 16f;
-            
+        final double size = 16f;
+        
         final double x2 = x + width;
         final double y2 = y + height;
         final double z2 = z + length;
@@ -531,23 +520,23 @@ public class RenderUtils {
         
         while (u1 > 1f)
             u1 -= 1f;
-        
-        double vy = y % 1d;
+            
+        final double vy = y % 1d;
         double vy1 = vy + height;
         
         while (vy1 > 1f)
             vy1 -= 1f;
-        
+            
         final double vz = z % 1d;
         double vz1 = vz + length;
         
         while (vz1 > 1f)
             vz1 -= 1f;
-        
+            
         switch (face) {
             
             case DOWN:
-                
+            
             case UP:
                 minU = sprite.getInterpolatedU(u * size);
                 maxU = sprite.getInterpolatedU(u1 * size);
@@ -556,7 +545,7 @@ public class RenderUtils {
                 break;
                 
             case NORTH:
-                
+            
             case SOUTH:
                 minU = sprite.getInterpolatedU(u1 * size);
                 maxU = sprite.getInterpolatedU(u * size);
@@ -565,7 +554,7 @@ public class RenderUtils {
                 break;
                 
             case WEST:
-                
+            
             case EAST:
                 minU = sprite.getInterpolatedU(vz1 * size);
                 maxU = sprite.getInterpolatedU(vz * size);

@@ -2,12 +2,16 @@ package net.darkhax.bookshelf.lib.util;
 
 import net.darkhax.bookshelf.lib.VanillaColor;
 import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 public final class ItemStackUtils {
@@ -309,5 +313,78 @@ public final class ItemStackUtils {
     public static Block getBlockFromStack (ItemStack stack) {
         
         return isValidStack(stack) ? Block.getBlockFromItem(stack.getItem()) : null;
+    }
+    
+    /**
+     * Safely consumes an item from an ItemStack. Respects container items.
+     * 
+     * @param stack The stack to use.
+     * @return The remaining/generated item.
+     */
+    public static ItemStack consumeStack (ItemStack stack) {
+        
+        if (stack.stackSize == 1) {
+            
+            if (stack.getItem().hasContainerItem(stack))
+                return stack.getItem().getContainerItem(stack);
+                
+            else
+                return null;
+        }
+        
+        else {
+            
+            stack.splitStack(1);
+            return stack;
+        }
+    }
+    
+    /**
+     * Safely drops an ItemStack intot he world. Used for mob drops.
+     * 
+     * @param world The world to drop the item in.
+     * @param pos The base pos to drop the item.
+     * @param stack The stack to drop.
+     */
+    public static void dropStackInWorld (World world, BlockPos pos, ItemStack stack) {
+        
+        if (!world.isRemote && world.getGameRules().getBoolean("doTileDrops")) {
+            
+            final float offset = 0.7F;
+            final double offX = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
+            final double offY = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
+            final double offZ = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
+            final EntityItem entityitem = new EntityItem(world, pos.getX() + offX, pos.getY() + offY, pos.getZ() + offZ, stack);
+            entityitem.setPickupDelay(10);
+            world.spawnEntityInWorld(entityitem);
+        }
+    }
+    
+    /**
+     * Creates an ItemStack which represents a TileEntity, and has all of the TileEntities
+     * properties stored.
+     * 
+     * @param tile The TileEntity to turn into an ItemStack.
+     * @return The resulting ItemStack.
+     */
+    public static ItemStack createStackFromTileEntity (TileEntity tile) {
+        
+        final ItemStack stack = new ItemStack(tile.getBlockType(), 1, tile.getBlockMetadata());
+        prepareDataTag(stack);
+        final NBTTagCompound tileTag = tile.writeToNBT(new NBTTagCompound());
+        stack.getTagCompound().setTag("TileData", tileTag);
+        return stack;
+    }
+    
+    /**
+     * Reads tile entity data from an ItemStack. Meant to be an inverse of
+     * {@link ItemStackUtils#createStackFromTileEntity(TileEntity)}.
+     * 
+     * @param tile The tile to apply the changes to.
+     * @param stack The stack to read from.
+     */
+    public static void readTileEntityFromStack (TileEntity tile, ItemStack stack) {
+        
+        tile.readFromNBT(stack.getTagCompound().getCompoundTag("TileData"));
     }
 }
