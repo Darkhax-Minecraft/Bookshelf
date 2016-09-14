@@ -18,7 +18,6 @@ import static org.objectweb.asm.tree.AbstractInsnNode.TYPE_INSN;
 import static org.objectweb.asm.tree.AbstractInsnNode.VAR_INSN;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,15 +26,14 @@ import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.IincInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.IntInsnNode;
-import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.LineNumberNode;
-import org.objectweb.asm.tree.LookupSwitchInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.TableSwitchInsnNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
+
+import net.darkhax.bookshelf.lib.Constants;
 
 public final class InstructionComparator {
     
@@ -73,38 +71,48 @@ public final class InstructionComparator {
      */
     public static boolean insnEqual (AbstractInsnNode node1, AbstractInsnNode node2) {
         
-        if (node1.getType() != node2.getType())
-            return false;
-            
-        else if (node1.getOpcode() != node2.getOpcode())
+        boolean result = false;
+        if (node1.getType() != node2.getType() || node1.getOpcode() != node2.getOpcode())
             return false;
             
         switch (node2.getType()) {
             
             case VAR_INSN:
-                return varInsnEqual((VarInsnNode) node1, (VarInsnNode) node2);
+                result = varInsnEqual((VarInsnNode) node1, (VarInsnNode) node2);
+                break;
                 
             case TYPE_INSN:
-                return typeInsnEqual((TypeInsnNode) node1, (TypeInsnNode) node2);
+                result = typeInsnEqual((TypeInsnNode) node1, (TypeInsnNode) node2);
+                break;
                 
             case FIELD_INSN:
-                return fieldInsnEqual((FieldInsnNode) node1, (FieldInsnNode) node2);
+                result = fieldInsnEqual((FieldInsnNode) node1, (FieldInsnNode) node2);
+                break;
                 
             case METHOD_INSN:
-                return methodInsnEqual((MethodInsnNode) node1, (MethodInsnNode) node2);
+                result = methodInsnEqual((MethodInsnNode) node1, (MethodInsnNode) node2);
+                break;
                 
             case LDC_INSN:
-                return ldcInsnEqual((LdcInsnNode) node1, (LdcInsnNode) node2);
+                result = ldcInsnEqual((LdcInsnNode) node1, (LdcInsnNode) node2);
+                break;
                 
             case IINC_INSN:
-                return iincInsnEqual((IincInsnNode) node1, (IincInsnNode) node2);
+                result = iincInsnEqual((IincInsnNode) node1, (IincInsnNode) node2);
+                break;
                 
             case INT_INSN:
-                return intInsnEqual((IntInsnNode) node1, (IntInsnNode) node2);
+                result = intInsnEqual((IntInsnNode) node1, (IntInsnNode) node2);
+                break;
                 
             default:
-                return true;
+                result = true;
         }
+        
+        if (!result && (node1.getType() == node2.getType() && node1.getOpcode() == node2.getOpcode()))
+            Constants.LOG.warn("Faild: " + ASMUtils.getInstructionString(node1) + " - " + ASMUtils.getInstructionString(node2));
+        
+        return result;
     }
     
     // TODO: Add documentation
@@ -142,54 +150,6 @@ public final class InstructionComparator {
     }
     
     // TODO: Add documentation
-    public static List<InsnListSection> insnListFindL (InsnList haystack, InsnList needle) {
-        
-        final HashSet<LabelNode> controlFlowLabels = new HashSet<LabelNode>();
-        
-        for (AbstractInsnNode insn = haystack.getFirst(); insn != null; insn = insn.getNext())
-            switch (insn.getType()) {
-                
-                case 8:
-                case 15:
-                    break;
-                    
-                case 7:
-                    final JumpInsnNode jinsn = (JumpInsnNode) insn;
-                    controlFlowLabels.add(jinsn.label);
-                    break;
-                    
-                case 11:
-                    final TableSwitchInsnNode tsinsn = (TableSwitchInsnNode) insn;
-                    for (final LabelNode label : tsinsn.labels)
-                        controlFlowLabels.add(label);
-                    break;
-                    
-                case 12:
-                    final LookupSwitchInsnNode lsinsn = (LookupSwitchInsnNode) insn;
-                    for (final LabelNode label : lsinsn.labels)
-                        controlFlowLabels.add(label);
-                    break;
-            }
-            
-        final LinkedList<InsnListSection> list = new LinkedList<InsnListSection>();
-        
-        nextsection : for (int start = 0; start <= haystack.size() - needle.size(); start++) {
-            final InsnListSection section = insnListMatchesL(haystack, needle, start, controlFlowLabels);
-            
-            if (section != null) {
-                
-                for (final InsnListSection asection : list)
-                    if (asection.last == section.last)
-                        continue nextsection;
-                        
-                list.add(section);
-            }
-        }
-        
-        return list;
-    }
-    
-    // TODO: Add documentation
     public static boolean insnListMatches (InsnList haystack, InsnList needle, int start) {
         
         if (haystack.size() - start < needle.size())
@@ -200,33 +160,6 @@ public final class InstructionComparator {
                 return false;
                 
         return true;
-    }
-    
-    // TODO: Add documentation
-    private static InsnListSection insnListMatchesL (InsnList haystack, InsnList needle, int start, HashSet<LabelNode> controlFlowLabels) {
-        
-        int h = start, n = 0;
-        
-        for (; h < haystack.size() && n < needle.size(); h++) {
-            
-            final AbstractInsnNode insn = haystack.get(h);
-            
-            if (insn.getType() == 15)
-                continue;
-                
-            if (insn.getType() == 8 && !controlFlowLabels.contains(insn))
-                continue;
-                
-            if (!insnEqual(haystack.get(h), needle.get(n)))
-                return null;
-                
-            n++;
-        }
-        
-        if (n != needle.size())
-            return null;
-            
-        return new InsnListSection(haystack, start, h - 1);
     }
     
     /**
@@ -332,32 +265,5 @@ public final class InstructionComparator {
     public static boolean fieldInsnEqual (FieldInsnNode insn1, FieldInsnNode insn2) {
         
         return insn1.owner.equals(insn2.owner) && insn1.name.equals(insn2.name) && insn1.desc.equals(insn2.desc);
-    }
-    
-    public static class InsnListSection {
-        
-        /**
-         * The first instruction in a section.
-         */
-        public AbstractInsnNode first;
-        
-        /**
-         * The last instruction in a section.
-         */
-        public AbstractInsnNode last;
-        
-        /**
-         * Creates an object which reflects the first and last instruction within a list of
-         * instructions.
-         *
-         * @param haystack: The list of instructions to reflect.
-         * @param start The index of the first instruction.
-         * @param end The index of the last instruction.
-         */
-        public InsnListSection(InsnList haystack, int start, int end) {
-            
-            this.first = haystack.get(start);
-            this.last = haystack.get(end);
-        }
     }
 }

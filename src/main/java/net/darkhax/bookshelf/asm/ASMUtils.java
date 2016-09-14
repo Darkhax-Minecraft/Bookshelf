@@ -14,6 +14,7 @@ package net.darkhax.bookshelf.asm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -25,18 +26,18 @@ import org.objectweb.asm.tree.LineNumberNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import net.darkhax.bookshelf.lib.Constants;
+import net.minecraft.launchwrapper.Launch;
 
 public final class ASMUtils {
     
     /**
      * Whether or not the game is running with srg mappings.
      */
-    public static boolean isSrg = true;
+    public static boolean isSrg = !(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
     
-    /**
-     * Whether or not ASM has been enabled.
-     */
-    public static boolean isASMEnabled = false;
+    public static final String[] INSN_TYPES = new String[] { "insn", "int", "var", "type", "field", "method", "invoke_dynamic", "jump", "label", "ldc", "iinc", "table_switch", "lookup_switch", "multianewarry", "frame", "line" };
+    
+    public static final String[] OPCODES = new String[] { "NOP", "ACONST_NULL", "ICONST_M1", "ICONST_0", "ICONST_1", "ICONST_2", "ICONST_3", "ICONST_4", "ICONST_5", "LCONST_0", "LCONST_1", "FCONST_0", "FCONST_1", "FCONST_2", "DCONST_0", "DCONST_1", "BIPUSH", "SIPUSH", "LDC", "LDC_W", "LDC2_W", "ILOAD", "LLOAD", "FLOAD", "DLOAD", "ALOAD", "ILOAD_0", "ILOAD_1", "ILOAD_2", "ILOAD_3", "LLOAD_0", "LLOAD_1", "LLOAD_2", "LLOAD_3", "FLOAD_0", "FLOAD_1", "FLOAD_2", "FLOAD_3", "DLOAD_0", "DLOAD_1", "DLOAD_2", "DLOAD_3", "ALOAD_0", "ALOAD_1", "ALOAD_2", "ALOAD_3", "IALOAD", "LALOAD", "FALOAD", "DALOAD", "AALOAD", "BALOAD", "CALOAD", "SALOAD", "ISTORE", "LSTORE", "FSTORE", "DSTORE", "ASTORE", "ISTORE_0", "ISTORE_1", "ISTORE_2", "ISTORE_3", "LSTORE_0", "LSTORE_1", "LSTORE_2", "LSTORE_3", "FSTORE_0", "FSTORE_1", "FSTORE_2", "FSTORE_3", "DSTORE_0", "DSTORE_1", "DSTORE_2", "DSTORE_3", "ASTORE_0", "ASTORE_1", "ASTORE_2", "ASTORE_3", "IASTORE", "LASTORE", "FASTORE", "DASTORE", "AASTORE", "BASTORE", "CASTORE", "SASTORE", "POP", "POP2", "DUP", "DUP_X1", "DUP_X2", "DUP2", "DUP2_X1", "DUP2_X2", "SWAP", "IADD", "LADD", "FADD", "DADD", "ISUB", "LSUB", "FSUB", "DSUB", "IMUL", "LMUL", "FMUL", "DMUL", "IDIV", "LDIV", "FDIV", "DDIV", "IREM", "LREM", "FREM", "DREM", "INEG", "LNEG", "FNEG", "DNEG", "ISHL", "LSHL", "ISHR", "LSHR", "IUSHR", "LUSHR", "IAND", "LAND", "IOR", "LOR", "IXOR", "LXOR", "IINC", "I2L", "I2F", "I2D", "L2I", "L2F", "L2D", "F2I", "F2L", "F2D", "D2I", "D2L", "D2F", "I2B", "I2C", "I2S", "LCMP", "FCMPL", "FCMPG", "DCMPL", "DCMPG", "IFEQ", "IFNE", "IFLT", "IFGE", "IFGT", "IFLE", "IF_ICMPEQ", "IF_ICMPNE", "IF_ICMPLT", "IF_ICMPGE", "IF_ICMPGT", "IF_ICMPLE", "IF_ACMPEQ", "IF_ACMPNE", "GOTO", "JSR", "RET", "TABLESWITCH", "LOOKUPSWITCH", "IRETURN", "LRETURN", "FRETURN", "DRETURN", "ARETURN", "RETURN", "GETSTATIC", "PUTSTATIC", "GETFIELD", "PUTFIELD", "INVOKEVIRTUAL", "INVOKESPECIAL", "INVOKESTATIC", "INVOKEINTERFACE", "INVOKEDYNAMIC", "NEW", "NEWARRAY", "ANEWARRAY", "ARRAYLENGTH", "ATHROW", "CHECKCAST", "INSTANCEOF", "MONITORENTER", "MONITOREXIT", "WIDE", "MULTIANEWARRAY", "IFNULL", "IFNONNULL", "GOTO_W", "JSR_W" };
     
     /**
      * Converts a ClassNode into a byte array which can then be returned by your transformer.
@@ -101,7 +102,7 @@ public final class ASMUtils {
         final List<AbstractInsnNode> ret = InstructionComparator.insnListFindStart(haystack, needle);
         
         if (ret.size() != 1)
-            Constants.LOG.warn(new InvalidNeedleException(ret.size()));
+            Constants.LOG.warn(new InvalidNeedleException(ret.size(), needle, haystack));
             
         return ret.get(0);
     }
@@ -121,7 +122,7 @@ public final class ASMUtils {
         final List<AbstractInsnNode> ret = InstructionComparator.insnListFindEnd(haystack, needle);
         
         if (ret.size() != 1)
-            Constants.LOG.warn(new InvalidNeedleException(ret.size()));
+            Constants.LOG.warn(new InvalidNeedleException(ret.size(), needle, haystack));
             
         return ret.get(0);
     }
@@ -161,6 +162,11 @@ public final class ASMUtils {
         return insn instanceof LabelNode || insn instanceof LineNumberNode;
     }
     
+    public static String getInstructionString (AbstractInsnNode node) {
+        
+        return canIgnoreInstruction(node) ? "IGNORED" : "Type: " + INSN_TYPES[node.getType()] + " Opcode: " + (node.getOpcode() >= 0 ? OPCODES[node.getOpcode()] : "NONE");
+    }
+    
     public static class InvalidNeedleException extends RuntimeException {
         
         /**
@@ -170,9 +176,22 @@ public final class ASMUtils {
          *
          * @param count: The amount of the specified needle which was found.
          */
-        public InvalidNeedleException(int count) {
+        public InvalidNeedleException(int count, InsnList needle, InsnList hayStack) {
             
             super(count > 1 ? "More than one instance of the needle have been found!" : count < 1 ? "The needle was not found" : "There is a glitch in the matrix");
+            
+            Constants.LOG.warn("Printing Needle");
+            
+            ListIterator<AbstractInsnNode> i = needle.iterator();
+            
+            while (i.hasNext())
+                Constants.LOG.warn(getInstructionString(i.next()));
+                
+            Constants.LOG.warn("Printing Haystack");
+            i = hayStack.iterator();
+            
+            while (i.hasNext())
+                Constants.LOG.warn(getInstructionString(i.next()));
         }
     }
 }

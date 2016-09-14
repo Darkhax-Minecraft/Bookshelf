@@ -5,20 +5,12 @@ import java.util.Map;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 @IFMLLoadingPlugin.SortingIndex(1001)
-@IFMLLoadingPlugin.TransformerExclusions("net.epoxide.surge.asm")
-// Removing version as 1.9 and 1.10 are supported. @IFMLLoadingPlugin.MCVersion("1.10.2")
+@IFMLLoadingPlugin.TransformerExclusions("net.darkhax.bookshelf.asm")
+@IFMLLoadingPlugin.MCVersion("1.10.2")
 public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
     
-    public static boolean loaded = false;
-    
     public BookshelfLoadingPlugin() {
-        
-        if (loaded)
-            return; // FML Callback constructs this twice
-            
-        ASMUtils.isASMEnabled = true;
-        
-        loaded = true;
+    
     }
     
     @Override
@@ -41,8 +33,7 @@ public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
     
     @Override
     public void injectData (Map<String, Object> data) {
-        
-        ASMUtils.isSrg = (Boolean) data.get("runtimeDeobfuscationEnabled");
+    
     }
     
     @Override
