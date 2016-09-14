@@ -54,7 +54,8 @@ public class BookshelfTransformerManager implements IClassTransformer {
             final InsnList newInstr = new InsnList();
 
             newInstr.add(new VarInsnNode(Opcodes.ALOAD, 1));
-            newInstr.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "net/darkhax/bookshelf/client/renderer/BookshelfClientRegistry", "renderPreItem", "(Lnet/minecraft/item/ItemStack;)V", false));
+            newInstr.add(new VarInsnNode(Opcodes.ALOAD, 2));
+            newInstr.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "net/darkhax/bookshelf/common/BookshelfRegistry", "renderPreModel", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/renderer/block/model/IBakedModel;)V", false));
             newInstr.add(new LabelNode());
 
             method.instructions.insert(pointer, newInstr);
@@ -74,7 +75,8 @@ public class BookshelfTransformerManager implements IClassTransformer {
             final InsnList newInstr = new InsnList();
 
             newInstr.add(new VarInsnNode(Opcodes.ALOAD, 1));
-            newInstr.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "net/darkhax/bookshelf/client/renderer/BookshelfClientRegistry", "renderItem", "(Lnet/minecraft/item/ItemStack;)V", false));
+            newInstr.add(new VarInsnNode(Opcodes.ALOAD, 2));
+            newInstr.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "net/darkhax/bookshelf/common/BookshelfRegistry", "renderPostModel", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/renderer/block/model/IBakedModel;)V", false));
             newInstr.add(new LabelNode());
 
             method.instructions.insert(pointer, newInstr);
@@ -93,7 +95,8 @@ public class BookshelfTransformerManager implements IClassTransformer {
             final InsnList newInstr = new InsnList();
 
             newInstr.add(new VarInsnNode(Opcodes.ALOAD, 1));
-            newInstr.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "net/darkhax/bookshelf/client/renderer/BookshelfClientRegistry", "renderPostItem", "(Lnet/minecraft/item/ItemStack;)V", false));
+            newInstr.add(new VarInsnNode(Opcodes.ALOAD, 2));
+            newInstr.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "net/darkhax/bookshelf/common/BookshelfRegistry", "renderPostEffect", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/renderer/block/model/IBakedModel;)V", false));
             newInstr.add(new LabelNode());
 
             method.instructions.insert(pointer, newInstr);
