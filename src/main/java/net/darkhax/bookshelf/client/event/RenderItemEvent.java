@@ -78,7 +78,9 @@ public class RenderItemEvent extends Event {
     public static class Allow extends RenderItemEvent {
         
         /**
-         * Base event constructor. See sub events for more info on this event!
+         * Event that checks if anything wants to use custom item rendering. Must be canceled
+         * if you want to use any of the other sub events. Called before anything else in the
+         * item render code.
          * 
          * @param renderer Instance of the item renderer.
          * @param stack The ItemStack being rendered.
