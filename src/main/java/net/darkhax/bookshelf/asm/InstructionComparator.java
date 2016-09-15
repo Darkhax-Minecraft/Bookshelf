@@ -33,8 +33,6 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-import net.darkhax.bookshelf.lib.Constants;
-
 public final class InstructionComparator {
     
     // TODO: Add documentation
@@ -71,48 +69,38 @@ public final class InstructionComparator {
      */
     public static boolean insnEqual (AbstractInsnNode node1, AbstractInsnNode node2) {
         
-        boolean result = false;
-        if (node1.getType() != node2.getType() || node1.getOpcode() != node2.getOpcode())
+        if (node1.getType() != node2.getType())
+            return false;
+            
+        else if (node1.getOpcode() != node2.getOpcode())
             return false;
             
         switch (node2.getType()) {
             
             case VAR_INSN:
-                result = varInsnEqual((VarInsnNode) node1, (VarInsnNode) node2);
-                break;
+                return varInsnEqual((VarInsnNode) node1, (VarInsnNode) node2);
                 
             case TYPE_INSN:
-                result = typeInsnEqual((TypeInsnNode) node1, (TypeInsnNode) node2);
-                break;
+                return typeInsnEqual((TypeInsnNode) node1, (TypeInsnNode) node2);
                 
             case FIELD_INSN:
-                result = fieldInsnEqual((FieldInsnNode) node1, (FieldInsnNode) node2);
-                break;
+                return fieldInsnEqual((FieldInsnNode) node1, (FieldInsnNode) node2);
                 
             case METHOD_INSN:
-                result = methodInsnEqual((MethodInsnNode) node1, (MethodInsnNode) node2);
-                break;
+                return methodInsnEqual((MethodInsnNode) node1, (MethodInsnNode) node2);
                 
             case LDC_INSN:
-                result = ldcInsnEqual((LdcInsnNode) node1, (LdcInsnNode) node2);
-                break;
+                return ldcInsnEqual((LdcInsnNode) node1, (LdcInsnNode) node2);
                 
             case IINC_INSN:
-                result = iincInsnEqual((IincInsnNode) node1, (IincInsnNode) node2);
-                break;
+                return iincInsnEqual((IincInsnNode) node1, (IincInsnNode) node2);
                 
             case INT_INSN:
-                result = intInsnEqual((IntInsnNode) node1, (IntInsnNode) node2);
-                break;
+                return intInsnEqual((IntInsnNode) node1, (IntInsnNode) node2);
                 
             default:
-                result = true;
+                return true;
         }
-        
-        if (!result && node1.getType() == node2.getType() && node1.getOpcode() == node2.getOpcode())
-            Constants.LOG.warn("Faild: " + ASMUtils.getInstructionString(node1) + " - " + ASMUtils.getInstructionString(node2));
-            
-        return result;
     }
     
     // TODO: Add documentation
