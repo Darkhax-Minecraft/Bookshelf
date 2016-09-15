@@ -21,8 +21,6 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.LabelNode;
-import org.objectweb.asm.tree.LineNumberNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import net.darkhax.bookshelf.lib.Constants;
@@ -149,22 +147,9 @@ public final class ASMUtils {
             haystack.remove(node);
     }
     
-    /**
-     * Checks if an instruction can be ignored. While this typically isn't needed, there may be
-     * some cases where you want to ignore LabelNodes and LineNumberNodes. This method will
-     * help with that.
-     *
-     * @param insn: The AbstractInsnNode to check against.
-     * @return boolean: True if it okay to ignore this instruction, false if it not okay.
-     */
-    public static boolean canIgnoreInstruction (AbstractInsnNode insn) {
-        
-        return insn instanceof LabelNode || insn instanceof LineNumberNode;
-    }
-    
     public static String getInstructionString (AbstractInsnNode node) {
         
-        return canIgnoreInstruction(node) ? "IGNORED" : "Type: " + INSN_TYPES[node.getType()] + " Opcode: " + (node.getOpcode() >= 0 ? OPCODES[node.getOpcode()] : "NONE");
+        return "Type: " + INSN_TYPES[node.getType()] + " Opcode: " + (node.getOpcode() >= 0 ? OPCODES[node.getOpcode()] : "NONE");
     }
     
     public static class InvalidNeedleException extends RuntimeException {

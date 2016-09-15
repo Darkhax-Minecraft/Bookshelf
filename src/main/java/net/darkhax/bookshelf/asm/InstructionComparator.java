@@ -109,9 +109,9 @@ public final class InstructionComparator {
                 result = true;
         }
         
-        if (!result && (node1.getType() == node2.getType() && node1.getOpcode() == node2.getOpcode()))
+        if (!result && node1.getType() == node2.getType() && node1.getOpcode() == node2.getOpcode())
             Constants.LOG.warn("Faild: " + ASMUtils.getInstructionString(node1) + " - " + ASMUtils.getInstructionString(node2));
-        
+            
         return result;
     }
     

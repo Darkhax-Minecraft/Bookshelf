@@ -343,6 +343,19 @@ public class ColorObject {
         buf.writeFloat(this.alpha);
     }
     
+    /**
+     * Adds another color object to this one.
+     * 
+     * @param color The color object to add.
+     */
+    public void add (ColorObject color) {
+        
+        this.setRed(this.red + color.red);
+        this.setGreen(this.green + color.green);
+        this.setBlue(this.blue + color.blue);
+        this.setAlpha(this.alpha + color.alpha);
+    }
+    
     @Override
     public String toString () {
         

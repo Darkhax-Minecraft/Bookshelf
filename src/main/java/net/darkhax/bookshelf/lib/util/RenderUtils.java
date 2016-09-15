@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -44,6 +45,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderUtils {
+    
+    public static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
     
     /**
      * Registers a LayerRenderer to both the Alex and Steve player renderers.
@@ -648,5 +651,35 @@ public class RenderUtils {
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
         RenderHelper.enableStandardItemLighting();
+    }
+    
+    public static void renderGlintEffect (RenderItem renderer, ItemStack stack, IBakedModel model, ResourceLocation texture, int color) {
+        
+        GlStateManager.depthMask(false);
+        GlStateManager.depthFunc(514);
+        GlStateManager.disableLighting();
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_COLOR, GlStateManager.DestFactor.ONE);
+        renderer.textureManager.bindTexture(texture);
+        GlStateManager.matrixMode(5890);
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(8.0F, 8.0F, 8.0F);
+        final float f = Minecraft.getSystemTime() % 3000L / 3000.0F / 8.0F;
+        GlStateManager.translate(f, 0.0F, 0.0F);
+        GlStateManager.rotate(-50.0F, 0.0F, 0.0F, 1.0F);
+        renderer.renderModel(model, color);
+        GlStateManager.popMatrix();
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(8.0F, 8.0F, 8.0F);
+        final float f1 = Minecraft.getSystemTime() % 4873L / 4873.0F / 8.0F;
+        GlStateManager.translate(-f1, 0.0F, 0.0F);
+        GlStateManager.rotate(10.0F, 0.0F, 0.0F, 1.0F);
+        renderer.renderModel(model, color);
+        GlStateManager.popMatrix();
+        GlStateManager.matrixMode(5888);
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.enableLighting();
+        GlStateManager.depthFunc(515);
+        GlStateManager.depthMask(true);
+        renderer.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
     }
 }
