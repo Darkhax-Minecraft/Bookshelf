@@ -76,7 +76,7 @@ jar {
 
 	manifest {
 	
-		attributes 'FMLAT': 'bookshelf_at.cfg'
+	    attributes 'FMLAT': 'bookshelf_at.cfg',  "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true"
 	}
 }
 
