@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.darkhax.bookshelf.common.ProxyCommon;
 import net.darkhax.bookshelf.features.Feature;
+import net.darkhax.bookshelf.features.armorfix.FeatureAttributeFix;
 import net.darkhax.bookshelf.features.bookshelves.FeatureBookshelves;
 import net.darkhax.bookshelf.features.playerheads.FeaturePlayerHeads;
 import net.darkhax.bookshelf.features.supporters.FeatureSupporters;
@@ -40,6 +41,7 @@ public class Bookshelf {
         features.add(new FeatureBookshelves());
         features.add(new FeaturePlayerHeads());
         features.add(new FeatureSupporters());
+        features.add(new FeatureAttributeFix());
         
         new ConfigurationHandler(event.getSuggestedConfigurationFile());
         
