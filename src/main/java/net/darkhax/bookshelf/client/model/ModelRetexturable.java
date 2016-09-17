@@ -32,6 +32,22 @@ import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
+/**
+ * This class defines a model which allows for certain parts of it to be retextured to other
+ * blocks. Specifically parts which use {@link #textureVariable} for the texture. This has a
+ * near endless amount of possibilities when it comes to decoration, customization and upgrads.
+ * To use this model effectively, there are several different things you need to do. Luckily
+ * there are examples available!
+ * 
+ * Bake/register your instance of ModelRetexturable so it can be seen by MC's renderer.
+ * https://goo.gl/I6Roou
+ * 
+ * Set the Item model to point to the model, like you would any item.
+ * https://goo.gl/Cd3PlT
+ * 
+ * Create an ItemOverrideList to remap the ItemStack to the correct variable. 
+ * https://goo.gl/Aup8MK
+ */
 public class ModelRetexturable implements IPerspectiveAwareModel {
     
     /**
