@@ -1,7 +1,10 @@
 package net.darkhax.bookshelf.lib.util;
 
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
+import com.google.common.collect.ImmutableMap;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
 import net.darkhax.bookshelf.client.particle.OpenParticleDigging;
@@ -19,7 +22,9 @@ import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -39,6 +44,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -653,6 +660,16 @@ public class RenderUtils {
         RenderHelper.enableStandardItemLighting();
     }
     
+    /**
+     * A modified version of the vanilla glint effect. This modified version accepts a color
+     * and texture.
+     * 
+     * @param renderer Instance of RenderItem to use when rendering the effect.
+     * @param stack The ItemStack to render the effect to.
+     * @param model The model to render the effect around.
+     * @param texture The texture for the glint effect.
+     * @param color The color for the glint effect.
+     */
     public static void renderGlintEffect (RenderItem renderer, ItemStack stack, IBakedModel model, ResourceLocation texture, int color) {
         
         GlStateManager.depthMask(false);
@@ -681,5 +698,50 @@ public class RenderUtils {
         GlStateManager.depthFunc(515);
         GlStateManager.depthMask(true);
         renderer.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+    }
+    
+    /**
+     * Gets the missing quads for a given state.
+     * 
+     * @param state The state to use.
+     * @param side The side to get quads for.
+     * @param rand A random long seed.
+     * @return The missing quads for the missing model.
+     */
+    public static List<BakedQuad> getMissingquads (IBlockState state, EnumFacing side, long rand) {
+        
+        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel().getQuads(state, side, rand);
+    }
+    
+    /**
+     * Attempts to get a block sprite from a block state.
+     * 
+     * @param state The block state to get the sprite for.
+     * @return The block sprite.
+     */
+    public static TextureAtlasSprite getSprite (IBlockState state) {
+        
+        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state);
+    }
+    
+    /**
+     * Creates the basic TRSRTransformations for a perspective aware model.
+     * 
+     * @param model The model to get the transforms for.
+     * @return An immutable map of all the transforms.
+     */
+    public static ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> getBasicTransforms (IPerspectiveAwareModel model) {
+        
+        final ImmutableMap.Builder<ItemCameraTransforms.TransformType, TRSRTransformation> builder = ImmutableMap.builder();
+        
+        for (final ItemCameraTransforms.TransformType type : ItemCameraTransforms.TransformType.values()) {
+            
+            final TRSRTransformation transformation = new TRSRTransformation(model.handlePerspective(type).getRight());
+            
+            if (!transformation.equals(TRSRTransformation.identity()))
+                builder.put(type, TRSRTransformation.blockCenterToCorner(transformation));
+        }
+        
+        return builder.build();
     }
 }
