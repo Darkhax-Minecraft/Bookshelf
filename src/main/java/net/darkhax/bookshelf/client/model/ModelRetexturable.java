@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
@@ -42,10 +43,9 @@ import net.minecraftforge.common.property.IExtendedBlockState;
  * Bake/register your instance of ModelRetexturable so it can be seen by MC's renderer.
  * https://goo.gl/I6Roou
  * 
- * Set the Item model to point to the model, like you would any item.
- * https://goo.gl/Cd3PlT
+ * Set the Item model to point to the model, like you would any item. https://goo.gl/Cd3PlT
  * 
- * Create an ItemOverrideList to remap the ItemStack to the correct variable. 
+ * Create an ItemOverrideList to remap the ItemStack to the correct variable.
  * https://goo.gl/Aup8MK
  */
 public class ModelRetexturable implements IPerspectiveAwareModel {
@@ -53,64 +53,64 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
     /**
      * The base model to retexture. This is your model!
      */
-    private final IRetexturableModel baseModel;
+    protected final IRetexturableModel baseModel;
     
     /**
      * The name of the texture variable to retexture. Only support for one right now.
      */
-    private final String textureVariable;
+    protected final String textureVariable;
     
     /**
      * Function used to get a texture sprite. The following is one of the best defaults for
      * this. location ->
      * Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString())
      */
-    private final Function<ResourceLocation, TextureAtlasSprite> spriteGetter;
+    protected final Function<ResourceLocation, TextureAtlasSprite> spriteGetter;
     
     /**
      * Map of all the TRSRTransformations. See
      * {@link RenderUtils#getBasicTransforms(IPerspectiveAwareModel)} for a default option for
      * this.
      */
-    private final ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms;
+    protected final ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms;
     
     /**
      * A cache which links texture names to their retextured model counter part.
      */
-    private final Map<String, IBakedModel> cache = Maps.newHashMap();
+    protected final Map<String, IBakedModel> cache = Maps.newHashMap();
     
     /**
      * Whether or not the model uses ambientOcclusion.
      * https://en.wikipedia.org/wiki/Ambient_occlusion
      */
-    private final boolean ambientOcclusion;
+    protected final boolean ambientOcclusion;
     
     /**
      * Whether or not the model is 3d in a gui.
      */
-    private final boolean gui3D;
+    protected final boolean gui3D;
     
     /**
      * Whether or not the model is considered to be built in. This is almost always false.
      */
-    private final boolean builtin;
+    protected final boolean builtin;
     
     /**
      * The blockstate to use for the default particle texture.
      */
-    private final IBlockState particle;
+    protected final IBlockState particle;
     
     /**
      * The camera transforms for this model. A good default is
      * {@link ItemCameraTransforms#DEFAULT}
      */
-    private final ItemCameraTransforms cameraTransforms;
+    protected final ItemCameraTransforms cameraTransforms;
     
     /**
      * An override for the item version of the model. Allows you to map an ItemStack to the
      * correct model.
      */
-    private final ItemOverrideList itemOverride;
+    protected final ItemOverrideList itemOverride;
     
     /**
      * Creates a new model which represents a retexturable version of a json model. One of the
@@ -188,12 +188,23 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
     @Override
     public List<BakedQuad> getQuads (IBlockState state, EnumFacing side, long rand) {
         
-        final IBlockState heldState = ((IExtendedBlockState) state).getValue(BlockStates.HELD_STATE);
+        List<BakedQuad> quads = null;
         
-        if (heldState == null)
-            return RenderUtils.getMissingquads(heldState, side, rand);
+        if (state != null) {
             
-        return this.getRetexturedModel(RenderUtils.getSprite(heldState).getIconName()).getQuads(state, side, rand);
+            final IBlockState heldState = ((IExtendedBlockState) state).getValue(BlockStates.HELD_STATE);
+            
+            if (heldState == null)
+                quads = RenderUtils.getMissingquads(state, side, rand);
+                
+            else
+                quads = this.getRetexturedModel(RenderUtils.getSprite(heldState).getIconName()).getQuads(state, side, rand);
+        }
+        
+        else
+            quads = RenderUtils.getMissingquads(Blocks.STONE.getDefaultState(), side, rand);
+        
+        return quads;
     }
     
     @Override
