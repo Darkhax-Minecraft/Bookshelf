@@ -22,7 +22,6 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
@@ -113,6 +112,27 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
     protected final ItemOverrideList itemOverride;
     
     /**
+     * The model to use when the retextured model could not be found or generated.
+     */
+    protected final TextureAtlasSprite defaultSprite;
+    
+    /**
+     * Creates a new model which represents a retexturable version of a json model. One of the
+     * texture variables can be remapped to any other block texture.
+     * 
+     * @param baseModel The base model to use for this model.
+     * @param textureVariable The specific texture variable to retexture.
+     * @param particle The Blockstate of the particle to use for this model.
+     * @param transforms Map of TRSRTransformations to use for the model.
+     * @param defaultSprite The model to use when the retextured model could not be found or
+     *        generated.
+     */
+    public ModelRetexturable(IRetexturableModel baseModel, String textureVariable, IBlockState particle, TextureAtlasSprite defaultSprite) {
+        
+        this(baseModel, textureVariable, particle, RenderUtils.getBasicTransforms((IPerspectiveAwareModel) baseModel), DefaultItemOverrideList.DEFAULT, defaultSprite);
+    }
+    
+    /**
      * Creates a new model which represents a retexturable version of a json model. One of the
      * texture variables can be remapped to any other block texture.
      * 
@@ -122,10 +142,12 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
      * @param transforms Map of TRSRTransformations to use for the model.
      * @param itemOverride An override for the item version of the model. Allows you to map an
      *        ItemStack to the correct model.
+     * @param defaultSprite The model to use when the retextured model could not be found or
+     *        generated.
      */
-    public ModelRetexturable(IRetexturableModel baseModel, String textureVariable, IBlockState particle, ImmutableMap<TransformType, TRSRTransformation> transforms, ItemOverrideList itemOverride) {
+    public ModelRetexturable(IRetexturableModel baseModel, String textureVariable, IBlockState particle, ImmutableMap<TransformType, TRSRTransformation> transforms, ItemOverrideList itemOverride, TextureAtlasSprite defaultSprite) {
         
-        this(baseModel, textureVariable, location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()), transforms, true, true, false, particle, ItemCameraTransforms.DEFAULT, itemOverride);
+        this(baseModel, textureVariable, location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()), transforms, true, true, false, particle, ItemCameraTransforms.DEFAULT, itemOverride, defaultSprite);
     }
     
     /**
@@ -143,8 +165,10 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
      * @param cameraTransforms The camera transforms for the model.
      * @param itemOverride An override for the item version of the model. Allows you to map an
      *        ItemStack to the correct model.
+     * @param defaultSprite The model to use when the retextured model could not be found or
+     *        generated.
      */
-    public ModelRetexturable(IRetexturableModel baseModel, String textureVariable, Function<ResourceLocation, TextureAtlasSprite> spriteGetter, ImmutableMap<TransformType, TRSRTransformation> transforms, boolean ambientOcclusion, boolean gui3d, boolean builtin, IBlockState particle, ItemCameraTransforms cameraTransforms, ItemOverrideList itemOverride) {
+    public ModelRetexturable(IRetexturableModel baseModel, String textureVariable, Function<ResourceLocation, TextureAtlasSprite> spriteGetter, ImmutableMap<TransformType, TRSRTransformation> transforms, boolean ambientOcclusion, boolean gui3d, boolean builtin, IBlockState particle, ItemCameraTransforms cameraTransforms, ItemOverrideList itemOverride, TextureAtlasSprite defaultSprite) {
         
         this.baseModel = baseModel;
         this.textureVariable = textureVariable;
@@ -156,6 +180,7 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
         this.particle = particle;
         this.cameraTransforms = cameraTransforms;
         this.itemOverride = itemOverride;
+        this.defaultSprite = defaultSprite;
     }
     
     /**
@@ -185,26 +210,31 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
         return model;
     }
     
+    /**
+     * Gets the default textured model.
+     * 
+     * @return The default textured model.
+     */
+    public IBakedModel getDefaultModel () {
+        
+        return this.getRetexturedModel(this.defaultSprite.getIconName());
+    }
+    
     @Override
     public List<BakedQuad> getQuads (IBlockState state, EnumFacing side, long rand) {
-        
-        List<BakedQuad> quads = null;
         
         if (state != null) {
             
             final IBlockState heldState = ((IExtendedBlockState) state).getValue(BlockStates.HELD_STATE);
             
-            if (heldState == null)
-                quads = RenderUtils.getMissingquads(state, side, rand);
+            if (heldState != null)
+                return this.getRetexturedModel(RenderUtils.getSprite(heldState).getIconName()).getQuads(state, side, rand);
                 
-            else
-                quads = this.getRetexturedModel(RenderUtils.getSprite(heldState).getIconName()).getQuads(state, side, rand);
+            else if (this.defaultSprite != null)
+                return this.getRetexturedModel(this.defaultSprite.getIconName()).getQuads(state, side, rand);
         }
         
-        else
-            quads = RenderUtils.getMissingquads(Blocks.STONE.getDefaultState(), side, rand);
-        
-        return quads;
+        return RenderUtils.getMissingquads(state, side, rand);
     }
     
     @Override
