@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.darkhax.bookshelf.common.ProxyCommon;
 import net.darkhax.bookshelf.features.Feature;
-import net.darkhax.bookshelf.features.armorfix.FeatureAttributeFix;
+import net.darkhax.bookshelf.features.attribcap.FeatureAttributeFix;
 import net.darkhax.bookshelf.features.bookshelves.FeatureBookshelves;
 import net.darkhax.bookshelf.features.playerheads.FeaturePlayerHeads;
 import net.darkhax.bookshelf.features.supporters.FeatureSupporters;
