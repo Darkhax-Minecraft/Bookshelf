@@ -78,4 +78,11 @@ public final class EnchantmentUtils {
         
         return firstEnchantment.canApplyTogether(secondEnchantment) && secondEnchantment.canApplyTogether(firstEnchantment);
     }
+    
+    public static String getExpForDisplay (int xp) {
+        
+        final int levels = getLevelsFromExperience(xp);
+        
+        return levels > 0 ? levels + "L" : xp + "xp";
+    }
 }
