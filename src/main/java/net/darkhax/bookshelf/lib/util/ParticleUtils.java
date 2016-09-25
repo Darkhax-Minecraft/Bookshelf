@@ -10,6 +10,8 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ParticleUtils {
     
@@ -24,6 +26,7 @@ public class ParticleUtils {
      * @param side The side offset for the effect.
      * @return boolean Whether or not the effect actually spawned.
      */
+    @SideOnly(Side.CLIENT)
     public static boolean spawnDigParticles (ParticleManager manager, IBlockState state, World world, BlockPos pos, EnumFacing side) {
         
         if (state != null && state.getRenderType() != EnumBlockRenderType.INVISIBLE) {
@@ -71,6 +74,7 @@ public class ParticleUtils {
      * @param pos The position to spawn the particles at.
      * @return boolean Whether or not the effect actually spawned.
      */
+    @SideOnly(Side.CLIENT)
     public static boolean spawnBreakParticles (ParticleManager manager, IBlockState state, World world, BlockPos pos) {
         
         if (state.getBlock() != null) {
@@ -107,6 +111,7 @@ public class ParticleUtils {
      * @param step The distance in degrees, between each particle. The maximum is 2 * PI, which
      *        will create 1 particle per ring. 0.15 is a nice value.
      */
+    @SideOnly(Side.CLIENT)
     public static void spawnParticleRing (World world, EnumParticleTypes particle, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
         
         for (double degree = 0.0d; degree < 2 * Math.PI; degree += step)
