@@ -402,19 +402,19 @@ public class RenderUtils {
         
         while (u1 > 1f)
             u1 -= 1f;
-            
+        
         final double vy = y % 1d;
         double vy1 = vy + height;
         
         while (vy1 > 1f)
             vy1 -= 1f;
-            
+        
         final double vz = z % 1d;
         double vz1 = vz + length;
         
         while (vz1 > 1f)
             vz1 -= 1f;
-            
+        
         switch (face) {
             
             case DOWN:
@@ -425,7 +425,7 @@ public class RenderUtils {
                 minV = sprite.getInterpolatedV(vz * size);
                 maxV = sprite.getInterpolatedV(vz1 * size);
                 break;
-                
+            
             case NORTH:
             
             case SOUTH:
@@ -434,7 +434,7 @@ public class RenderUtils {
                 minV = sprite.getInterpolatedV(vy * size);
                 maxV = sprite.getInterpolatedV(vy1 * size);
                 break;
-                
+            
             case WEST:
             
             case EAST:
@@ -443,7 +443,7 @@ public class RenderUtils {
                 minV = sprite.getInterpolatedV(vy * size);
                 maxV = sprite.getInterpolatedV(vy1 * size);
                 break;
-                
+            
             default:
                 minU = sprite.getMinU();
                 maxU = sprite.getMaxU();
@@ -459,35 +459,35 @@ public class RenderUtils {
                 buffer.pos(x2, y, z2).color(red, green, blue, alpha).tex(maxU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x, y, z2).color(red, green, blue, alpha).tex(minU, maxV).lightmap(light1, light2).endVertex();
                 break;
-                
+            
             case UP:
                 buffer.pos(x, y2, z).color(red, green, blue, alpha).tex(minU, minV).lightmap(light1, light2).endVertex();
                 buffer.pos(x, y2, z2).color(red, green, blue, alpha).tex(minU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y2, z2).color(red, green, blue, alpha).tex(maxU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y2, z).color(red, green, blue, alpha).tex(maxU, minV).lightmap(light1, light2).endVertex();
                 break;
-                
+            
             case NORTH:
                 buffer.pos(x, y, z).color(red, green, blue, alpha).tex(minU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x, y2, z).color(red, green, blue, alpha).tex(minU, minV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y2, z).color(red, green, blue, alpha).tex(maxU, minV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y, z).color(red, green, blue, alpha).tex(maxU, maxV).lightmap(light1, light2).endVertex();
                 break;
-                
+            
             case SOUTH:
                 buffer.pos(x, y, z2).color(red, green, blue, alpha).tex(maxU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y, z2).color(red, green, blue, alpha).tex(minU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y2, z2).color(red, green, blue, alpha).tex(minU, minV).lightmap(light1, light2).endVertex();
                 buffer.pos(x, y2, z2).color(red, green, blue, alpha).tex(maxU, minV).lightmap(light1, light2).endVertex();
                 break;
-                
+            
             case WEST:
                 buffer.pos(x, y, z).color(red, green, blue, alpha).tex(maxU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x, y, z2).color(red, green, blue, alpha).tex(minU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x, y2, z2).color(red, green, blue, alpha).tex(minU, minV).lightmap(light1, light2).endVertex();
                 buffer.pos(x, y2, z).color(red, green, blue, alpha).tex(maxU, minV).lightmap(light1, light2).endVertex();
                 break;
-                
+            
             case EAST:
                 buffer.pos(x2, y, z).color(red, green, blue, alpha).tex(minU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y2, z).color(red, green, blue, alpha).tex(minU, minV).lightmap(light1, light2).endVertex();
@@ -517,7 +517,7 @@ public class RenderUtils {
             GL11.glShadeModel(GL11.GL_SMOOTH);
         else
             GL11.glShadeModel(GL11.GL_FLAT);
-            
+        
         GlStateManager.translate(x, y, z);
     }
     

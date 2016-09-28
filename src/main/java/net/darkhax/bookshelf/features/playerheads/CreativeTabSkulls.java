@@ -43,7 +43,7 @@ public class CreativeTabSkulls extends CreativeTabs {
                 ItemStackUtils.setLore(stack, new String[] { data.getFormat() + data.getLocalizedType() });
                 cache.add(stack);
             }
-            
+        
         for (final MHFAccount mhf : MHFAccount.values())
             cache.add(SkullUtils.createSkull(mhf));
     }

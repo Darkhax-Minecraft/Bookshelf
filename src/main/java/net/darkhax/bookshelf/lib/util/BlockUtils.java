@@ -22,17 +22,17 @@ public class BlockUtils {
         
         if (stack == null || stack.getItem() == null)
             return false;
-            
+        
         if (Block.getBlockFromItem(stack.getItem()) instanceof BlockOre)
             return true;
-            
+        
         for (final int oreID : OreDictionary.getOreIDs(stack))
             if (OreDictionary.getOreName(oreID).startsWith("ore"))
                 return true;
-                
+            
         if (checkName && stack.getItem().getItemStackDisplayName(stack).matches(".*(^|\\s)([oO]re)($|\\s)."))
             return true;
-            
+        
         return false;
     }
     

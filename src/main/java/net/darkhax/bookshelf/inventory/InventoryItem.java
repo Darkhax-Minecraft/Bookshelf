@@ -111,7 +111,7 @@ public class InventoryItem extends Item implements IInventory {
         
         for (int index = 0; index < items.tagCount(); index++)
             list.add(ItemStack.loadItemStackFromNBT(items.getCompoundTagAt(index)));
-            
+        
         return list;
     }
     
@@ -159,7 +159,7 @@ public class InventoryItem extends Item implements IInventory {
             
             else
                 this.setInventorySlotContents(index, null);
-                
+            
         return stack;
     }
     
@@ -178,7 +178,7 @@ public class InventoryItem extends Item implements IInventory {
         
         if (stack != null && stack.stackSize > this.getInventoryStackLimit())
             stack.stackSize = this.getInventoryStackLimit();
-            
+        
         this.markDirty();
     }
     
@@ -194,7 +194,7 @@ public class InventoryItem extends Item implements IInventory {
         for (int index = 0; index < this.getSizeInventory(); index++)
             if (ItemStackUtils.isValidStack(this.getStackInSlot(index)) && this.getStackInSlot(index).stackSize == 0)
                 this.inventory[index] = null;
-                
+            
         this.writeToNBT();
     }
     
@@ -206,12 +206,12 @@ public class InventoryItem extends Item implements IInventory {
     
     @Override
     public void openInventory (EntityPlayer player) {
-    
+        
     }
     
     @Override
     public void closeInventory (EntityPlayer player) {
-    
+        
     }
     
     @Override
@@ -228,7 +228,7 @@ public class InventoryItem extends Item implements IInventory {
     
     @Override
     public void setField (int id, int value) {
-    
+        
     }
     
     @Override
@@ -239,6 +239,6 @@ public class InventoryItem extends Item implements IInventory {
     
     @Override
     public void clear () {
-    
+        
     }
 }

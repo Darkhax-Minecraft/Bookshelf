@@ -165,7 +165,7 @@ public final class EntityUtils {
         
         if (index >= 0 && index < EQUIPMENT_SLOTS.length)
             return EQUIPMENT_SLOTS[index];
-            
+        
         return null;
     }
     
@@ -188,7 +188,7 @@ public final class EntityUtils {
                 if (armor == null || !armor.getItem().getClass().equals(armorClass))
                     return false;
             }
-            
+        
         return true;
     }
 }

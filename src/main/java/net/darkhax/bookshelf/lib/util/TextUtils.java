@@ -83,7 +83,7 @@ public class TextUtils {
         
         for (final String line : lines)
             list.add(format + line);
-            
+        
         return list;
     }
     

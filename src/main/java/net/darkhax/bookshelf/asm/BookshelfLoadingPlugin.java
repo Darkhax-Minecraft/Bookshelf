@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
     
     public BookshelfLoadingPlugin() {
-    
+        
     }
     
     @Override
@@ -33,7 +33,7 @@ public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
     
     @Override
     public void injectData (Map<String, Object> data) {
-    
+        
     }
     
     @Override

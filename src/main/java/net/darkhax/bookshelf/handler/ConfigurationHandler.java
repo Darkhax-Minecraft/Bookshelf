@@ -32,7 +32,7 @@ public class ConfigurationHandler {
         
         for (final Feature feature : Bookshelf.features)
             feature.setupConfig(config);
-            
+        
         if (config.hasChanged())
             config.save();
     }

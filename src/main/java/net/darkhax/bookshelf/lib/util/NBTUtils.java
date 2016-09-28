@@ -29,31 +29,31 @@ public final class NBTUtils {
         
         if (value instanceof String)
             dataTag.setString(tagName, (String) value);
-            
+        
         else if (value instanceof Integer)
             dataTag.setInteger(tagName, (Integer) value);
-            
+        
         else if (value instanceof Float)
             dataTag.setFloat(tagName, (Float) value);
-            
+        
         else if (value instanceof Boolean)
             dataTag.setBoolean(tagName, (Boolean) value);
-            
+        
         else if (value instanceof Double)
             dataTag.setDouble(tagName, (Double) value);
-            
+        
         else if (value instanceof Long)
             dataTag.setLong(tagName, (Long) value);
-            
+        
         else if (value instanceof Short)
             dataTag.setShort(tagName, (Short) value);
-            
+        
         else if (value instanceof Byte)
             dataTag.setByte(tagName, (Byte) value);
-            
+        
         else if (value instanceof ItemStack)
             dataTag.setTag(tagName, ((ItemStack) value).writeToNBT(new NBTTagCompound()));
-            
+        
         else if (value instanceof Entity) {
             
             final NBTTagCompound newTag = new NBTTagCompound();
@@ -77,7 +77,7 @@ public final class NBTUtils {
         
         if (inventory.hasCustomName())
             tag.setString("CustomName", inventory.getName());
-            
+        
         final NBTTagList nbttaglist = new NBTTagList();
         
         for (int slotCount = 0; slotCount < inventory.getSizeInventory(); slotCount++) {
@@ -111,7 +111,7 @@ public final class NBTUtils {
         
         if (tag.hasKey("CustomName", 8))
             inventory.setCustomName(tag.getString("CustomName"));
-            
+        
         final NBTTagList items = tag.getTagList("Items", 10);
         
         for (int storedCount = 0; storedCount < items.tagCount(); storedCount++) {
@@ -176,7 +176,7 @@ public final class NBTUtils {
             for (final String tagName : tags)
                 if (deepTag.hasKey(tagName))
                     deepTag = deepTag.getCompoundTag(tagName);
-                    
+                
         return deepTag;
     }
     

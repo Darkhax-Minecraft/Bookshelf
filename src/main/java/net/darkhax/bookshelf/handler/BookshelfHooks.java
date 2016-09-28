@@ -21,7 +21,7 @@ public class BookshelfHooks {
         
         if (!allow.isCanceled() || stack == null)
             return false;
-            
+        
         GlStateManager.pushMatrix();
         GlStateManager.translate(-0.5F, -0.5F, -0.5F);
         MinecraftForge.EVENT_BUS.post(new RenderItemEvent.Pre(renderer, stack, model));
@@ -42,7 +42,7 @@ public class BookshelfHooks {
             
             if (event.isCanceled())
                 RenderUtils.renderGlintEffect(renderer, stack, model, event.texture, event.getColor().getRGB());
-                
+            
             else if (stack.hasEffect())
                 RenderUtils.renderGlintEffect(renderer, stack, model, RenderUtils.RES_ITEM_GLINT, -8372020);
         }

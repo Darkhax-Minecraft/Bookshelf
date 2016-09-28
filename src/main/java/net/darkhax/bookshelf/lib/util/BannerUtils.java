@@ -113,8 +113,8 @@ public class BannerUtils {
      *        in that slot, while a # means that a dye would go in that slot. Example: "# #"
      * @param craftingMid A layout for the pattern in the middle row of the crafting grid. This
      *        is represented by a string with three characters. A blank space means nothing
-     *        goes in that slot, while a # means that a dye would go in that slot. Example:
-     *        " # "
+     *        goes in that slot, while a # means that a dye would go in that slot. Example: " #
+     *        "
      * @param craftingBot A layout for the pattern in the bottom row of the crafting grid. This
      *        is represented by a string with three characters. A blank space means nothing
      *        goes in that slot, while a # means that a dye would go in that slot. Example:

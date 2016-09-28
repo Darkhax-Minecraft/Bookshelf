@@ -196,7 +196,7 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
         
         if (this.cache.containsKey(textureName))
             model = this.cache.get(textureName);
-            
+        
         else if (this.baseModel != null) {
             
             final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
@@ -229,7 +229,7 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
             
             if (heldState != null)
                 return this.getRetexturedModel(RenderUtils.getSprite(heldState).getIconName()).getQuads(state, side, rand);
-                
+            
             else if (this.defaultSprite != null)
                 return this.getRetexturedModel(this.defaultSprite.getIconName()).getQuads(state, side, rand);
         }

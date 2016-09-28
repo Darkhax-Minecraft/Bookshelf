@@ -55,7 +55,7 @@ public class TileEntityBasic extends TileEntity {
      * @param dataTag: The NBTTagCompound for the TileEntity.
      */
     public void writeNBT (NBTTagCompound dataTag) {
-    
+        
     }
     
     /**
@@ -64,6 +64,6 @@ public class TileEntityBasic extends TileEntity {
      * @param dataTag: The NBTTagCompound for the TileEntity.
      */
     public void readNBT (NBTTagCompound dataTag) {
-    
+        
     }
 }

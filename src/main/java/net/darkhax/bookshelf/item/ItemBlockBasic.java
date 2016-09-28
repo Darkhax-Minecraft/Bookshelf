@@ -55,7 +55,7 @@ public class ItemBlockBasic extends ItemBlock {
         
         if (stack.getMetadata() > this.names.length)
             return super.getUnlocalizedName() + "." + this.names[0];
-            
+        
         return super.getUnlocalizedName() + "." + this.names[stack.getMetadata()];
     }
     

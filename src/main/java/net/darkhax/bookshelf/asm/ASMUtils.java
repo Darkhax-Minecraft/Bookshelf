@@ -87,7 +87,7 @@ public final class ASMUtils {
         for (final MethodNode method : classNode.methods)
             if (methodName.equals(method.name))
                 return true;
-                
+            
         return false;
     }
     
@@ -107,7 +107,7 @@ public final class ASMUtils {
         
         if (ret.size() != 1)
             Constants.LOG.warn(new InvalidNeedleException(ret.size(), needle, haystack));
-            
+        
         return ret.get(0);
     }
     
@@ -127,7 +127,7 @@ public final class ASMUtils {
         
         if (ret.size() != 1)
             Constants.LOG.warn(new InvalidNeedleException(ret.size(), needle, haystack));
-            
+        
         return ret.get(0);
     }
     
@@ -148,7 +148,7 @@ public final class ASMUtils {
         
         for (int i = firstInd; i <= lastInd; i++)
             realNeedle.add(haystack.get(i));
-            
+        
         for (final AbstractInsnNode node : realNeedle)
             haystack.remove(node);
     }
@@ -185,7 +185,7 @@ public final class ASMUtils {
             
             while (i.hasNext())
                 Constants.LOG.warn(getInstructionString(i.next()));
-                
+            
             Constants.LOG.warn("Printing Haystack");
             i = hayStack.iterator();
             

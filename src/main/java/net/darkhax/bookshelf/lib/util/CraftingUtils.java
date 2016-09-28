@@ -95,7 +95,7 @@ public final class CraftingUtils {
                 if (ItemStackUtils.areStacksEqual(result, stack, result.hasTagCompound()))
                     foundRecipes.add((T) recipe);
             }
-            
+        
         return foundRecipes;
     }
     

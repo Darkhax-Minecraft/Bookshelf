@@ -75,7 +75,7 @@ public final class PlayerUtils {
                 if (player.getUniqueID().equals(playerID))
                     return player;
             }
-            
+        
         return null;
     }
     
@@ -90,7 +90,7 @@ public final class PlayerUtils {
         
         if (PROFILE_CACHE.containsValue(uuid))
             return PROFILE_CACHE.inverse().get(uuid);
-            
+        
         String name = null;
         
         try {
@@ -102,10 +102,10 @@ public final class PlayerUtils {
             while (json.hasNext())
                 if (json.nextName().equals("name"))
                     name = json.nextString();
-                    
+                
                 else
                     json.skipValue();
-                    
+                
             json.endObject();
             json.close();
             reader.close();
@@ -131,7 +131,7 @@ public final class PlayerUtils {
         
         if (PROFILE_CACHE.containsKey(username))
             return PROFILE_CACHE.get(username);
-            
+        
         UUID uuid = null;
         
         try {
@@ -144,10 +144,10 @@ public final class PlayerUtils {
             while (json.hasNext())
                 if (json.nextName().equals("id"))
                     uuid = fixStrippedUUID(json.nextString());
-                    
+                
                 else
                     json.skipValue();
-                    
+                
             json.endObject();
             json.close();
             reader.close();
@@ -187,7 +187,7 @@ public final class PlayerUtils {
         for (final ItemStack stack : player.inventory.mainInventory)
             if (stack != null && stack.getItem().equals(item))
                 count += stack.stackSize;
-                
+            
         return count;
     }
     
@@ -204,7 +204,7 @@ public final class PlayerUtils {
         for (final ItemStack stack : player.inventory.mainInventory)
             if (stack != null && stack.getItem().equals(item) && (meta < 0 || stack.getMetadata() == meta))
                 return true;
-                
+            
         return false;
     }
     
@@ -223,7 +223,7 @@ public final class PlayerUtils {
         for (final ItemStack stack : player.inventory.mainInventory)
             if (stack != null && stack.getItem() == item && (meta < 0 || stack.getMetadata() == meta))
                 items.add(stack);
-                
+            
         return items;
     }
     

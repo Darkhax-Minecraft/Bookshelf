@@ -78,7 +78,7 @@ public class Mapping {
         for (final MethodNode mnode : classNode.methods)
             if (this.getName().equals(mnode.name) && this.descriptor.equals(mnode.desc))
                 return mnode;
-                
+            
         Constants.LOG.warn(new RuntimeException(String.format("The method %s with descriptor %s could not be found in %s", this.getName(), this.descriptor, classNode.name)));
         return null;
     }

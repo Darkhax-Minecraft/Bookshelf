@@ -42,22 +42,22 @@ public class ParticleUtils {
             
             if (side == EnumFacing.DOWN)
                 yOffset = y + bounds.minY - offset;
-                
+            
             else if (side == EnumFacing.UP)
                 yOffset = y + bounds.maxY + offset;
-                
+            
             else if (side == EnumFacing.NORTH)
                 zOffset = z + bounds.minZ - offset;
-                
+            
             else if (side == EnumFacing.SOUTH)
                 zOffset = z + bounds.maxZ + offset;
-                
+            
             else if (side == EnumFacing.WEST)
                 xOffset = x + bounds.minX - offset;
-                
+            
             else if (side == EnumFacing.EAST)
                 xOffset = x + bounds.maxX + offset;
-                
+            
             manager.addEffect(new OpenParticleDigging(world, xOffset, yOffset, zOffset, 0.0D, 0.0D, 0.0D, state).setBlockPos(pos).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
         }
         
@@ -90,7 +90,7 @@ public class ParticleUtils {
                         final double zPos = pos.getZ() + (zOffset + 0.5D) / multiplier;
                         manager.addEffect(new OpenParticleDigging(world, xPos, yPos, zPos, xPos - pos.getX() - 0.5D, yPos - pos.getY() - 0.5D, zPos - pos.getZ() - 0.5D, state).setBlockPos(pos));
                     }
-                    
+                
             return true;
         }
         

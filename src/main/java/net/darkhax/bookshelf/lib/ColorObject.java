@@ -307,7 +307,7 @@ public class ColorObject {
         
         if (tag == null)
             tag = new NBTTagCompound();
-            
+        
         tag.setFloat("red", this.red);
         tag.setFloat("green", this.green);
         tag.setFloat("blue", this.blue);
@@ -363,7 +363,7 @@ public class ColorObject {
         
         if (this.alpha < 1.0f)
             output += " " + TextFormatting.GRAY + (int) (100 - this.alpha * 100);
-            
+        
         return output;
     }
     

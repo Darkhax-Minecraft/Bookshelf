@@ -10,7 +10,7 @@ public class Constants {
     // Mod Constants
     public static final String MOD_ID = "bookshelf";
     public static final String MOD_NAME = "Bookshelf";
-    public static final String VERSION_NUMBER = "1.4.1.0";
+    public static final String VERSION_NUMBER = "1.4.1.320";
     public static final String PROXY_CLIENT = "net.darkhax.bookshelf.client.ProxyClient";
     public static final String PROXY_COMMON = "net.darkhax.bookshelf.common.ProxyCommon";
     

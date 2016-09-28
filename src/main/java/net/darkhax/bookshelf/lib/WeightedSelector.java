@@ -47,7 +47,7 @@ public class WeightedSelector<T> {
         
         if (added)
             this.total += entry.getWeight();
-            
+        
         return added;
     }
     
@@ -64,7 +64,7 @@ public class WeightedSelector<T> {
         
         if (removed)
             this.total -= entry.getWeight();
-            
+        
         return removed;
     }
     
@@ -114,7 +114,7 @@ public class WeightedSelector<T> {
         
         for (final WeightedEntry<T> entry : this.entries)
             total += entry.getWeight();
-            
+        
         return total;
     }
     

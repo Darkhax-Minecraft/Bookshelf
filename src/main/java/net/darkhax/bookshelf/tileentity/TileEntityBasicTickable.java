@@ -10,7 +10,7 @@ public class TileEntityBasicTickable extends TileEntityBasic implements ITickabl
         
         if (this.isInvalid() || !this.getWorld().isBlockLoaded(this.getPos()) || this.getWorld().isRemote)
             return;
-            
+        
         try {
             
             this.onEntityUpdate();
@@ -28,6 +28,6 @@ public class TileEntityBasicTickable extends TileEntityBasic implements ITickabl
      * environment.
      */
     public void onEntityUpdate () {
-    
+        
     }
 }

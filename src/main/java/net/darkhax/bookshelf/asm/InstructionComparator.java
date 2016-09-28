@@ -40,20 +40,20 @@ public final class InstructionComparator {
         
         if (list.size() == 0)
             return list;
-            
+        
         final HashMap<LabelNode, LabelNode> labels = new HashMap<LabelNode, LabelNode>();
         
         for (AbstractInsnNode insn = list.getFirst(); insn != null; insn = insn.getNext())
             if (insn instanceof LabelNode)
                 labels.put((LabelNode) insn, (LabelNode) insn);
-                
+            
         final InsnList importantNodeList = new InsnList();
         
         for (AbstractInsnNode insn = list.getFirst(); insn != null; insn = insn.getNext()) {
             
             if (insn instanceof LabelNode || insn instanceof LineNumberNode)
                 continue;
-                
+            
             importantNodeList.add(insn.clone(labels));
         }
         
@@ -71,33 +71,33 @@ public final class InstructionComparator {
         
         if (node1.getType() != node2.getType())
             return false;
-            
+        
         else if (node1.getOpcode() != node2.getOpcode())
             return false;
-            
+        
         switch (node2.getType()) {
             
             case VAR_INSN:
                 return varInsnEqual((VarInsnNode) node1, (VarInsnNode) node2);
-                
+            
             case TYPE_INSN:
                 return typeInsnEqual((TypeInsnNode) node1, (TypeInsnNode) node2);
-                
+            
             case FIELD_INSN:
                 return fieldInsnEqual((FieldInsnNode) node1, (FieldInsnNode) node2);
-                
+            
             case METHOD_INSN:
                 return methodInsnEqual((MethodInsnNode) node1, (MethodInsnNode) node2);
-                
+            
             case LDC_INSN:
                 return ldcInsnEqual((LdcInsnNode) node1, (LdcInsnNode) node2);
-                
+            
             case IINC_INSN:
                 return iincInsnEqual((IincInsnNode) node1, (IincInsnNode) node2);
-                
+            
             case INT_INSN:
                 return intInsnEqual((IntInsnNode) node1, (IntInsnNode) node2);
-                
+            
             default:
                 return true;
         }
@@ -110,7 +110,7 @@ public final class InstructionComparator {
         
         for (final int callPoint : insnListFind(haystack, needle))
             callNodes.add(haystack.get(callPoint));
-            
+        
         return callNodes;
     }
     
@@ -122,7 +122,7 @@ public final class InstructionComparator {
         for (int start = 0; start <= haystack.size() - needle.size(); start++)
             if (insnListMatches(haystack, needle, start))
                 list.add(start);
-                
+            
         return list;
     }
     
@@ -133,7 +133,7 @@ public final class InstructionComparator {
         
         for (final int callPoint : insnListFind(haystack, needle))
             callNodes.add(haystack.get(callPoint + needle.size() - 1));
-            
+        
         return callNodes;
     }
     
@@ -142,11 +142,11 @@ public final class InstructionComparator {
         
         if (haystack.size() - start < needle.size())
             return false;
-            
+        
         for (int i = 0; i < needle.size(); i++)
             if (!insnEqual(haystack.get(i + start), needle.get(i)))
                 return false;
-                
+            
         return true;
     }
     

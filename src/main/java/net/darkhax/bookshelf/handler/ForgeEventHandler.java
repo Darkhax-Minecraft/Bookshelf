@@ -34,7 +34,7 @@ public class ForgeEventHandler {
                     
                     if (recipe.nameTaxt.equalsIgnoreCase(event.getName()))
                         event.setOutput(recipe.getOutput(event.getLeft(), event.getRight(), event.getName()));
-                        
+                    
                     return;
                 }
                 

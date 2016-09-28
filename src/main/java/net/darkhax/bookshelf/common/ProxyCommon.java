@@ -7,6 +7,6 @@ public class ProxyCommon {
      * exclusively on the client or server side during the pre-initialization phase.
      */
     public void preInit () {
-    
+        
     }
 }

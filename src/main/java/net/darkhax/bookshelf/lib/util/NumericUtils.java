@@ -25,7 +25,7 @@ public class NumericUtils {
         for (final int validKey : NUMERIC_KEYS)
             if (validKey == keyCode)
                 return true;
-                
+            
         return false;
     }
     

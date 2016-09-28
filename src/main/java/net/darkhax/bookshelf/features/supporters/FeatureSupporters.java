@@ -48,7 +48,7 @@ public class FeatureSupporters extends Feature {
             final SupporterData data = SupporterHandler.getSupporterData(player);
             
             if (data != null)
-                makePlayerFancy(player, data.getCapeTexture(), data.getElytraTexture());
+                makePlayerFancy(player, data.getElytraTexture());
         }
     }
     
@@ -62,7 +62,7 @@ public class FeatureSupporters extends Feature {
      * @param elytra The elytra texture to set.
      */
     @SideOnly(Side.CLIENT)
-    private static void makePlayerFancy (final AbstractClientPlayer player, final ResourceLocation cape, final ResourceLocation elytra) {
+    private static void makePlayerFancy (final AbstractClientPlayer player, final ResourceLocation elytra) {
         
         THREAD_POOL.submit( () -> {
             
@@ -77,7 +77,6 @@ public class FeatureSupporters extends Feature {
             
             Minecraft.getMinecraft().addScheduledTask( () -> {
                 
-                RenderUtils.setPlayerTexture(Type.CAPE, player, cape);
                 RenderUtils.setPlayerTexture(Type.ELYTRA, player, elytra);
             });
         });

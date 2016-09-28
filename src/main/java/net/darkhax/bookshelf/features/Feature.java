@@ -10,21 +10,21 @@ public class Feature {
      * Called during the mod pre-initialization phase.
      */
     public void onPreInit () {
-    
+        
     }
     
     /**
      * Called during the mod initialization phase.
      */
     public void onInit () {
-    
+        
     }
     
     /**
      * Called during the mod post initialization phase
      */
     public void onPostInit () {
-    
+        
     }
     
     /**
@@ -33,7 +33,7 @@ public class Feature {
      * @param config The incofiguration file instance.
      */
     public void setupConfig (Configuration config) {
-    
+        
     }
     
     /**
@@ -42,6 +42,6 @@ public class Feature {
      */
     @SideOnly(Side.CLIENT)
     public void setupRendering () {
-    
+        
     }
 }

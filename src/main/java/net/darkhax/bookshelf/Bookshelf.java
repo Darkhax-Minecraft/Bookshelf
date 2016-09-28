@@ -47,7 +47,7 @@ public class Bookshelf {
         
         for (final Feature feature : features)
             feature.onPreInit();
-            
+        
         proxy.preInit();
     }
 }

@@ -26,7 +26,7 @@ public final class ItemStackUtils {
         
         if (!stack.hasTagCompound())
             stack.setTagCompound(new NBTTagCompound());
-            
+        
         return stack.getTagCompound();
     }
     
@@ -45,10 +45,10 @@ public final class ItemStackUtils {
         
         if (!tag.hasKey("display", 10))
             tag.setTag("display", new NBTTagCompound());
-            
+        
         for (final String line : lore)
             loreList.appendTag(new NBTTagString(line));
-            
+        
         tag.getCompoundTag("display").setTag("Lore", loreList);
         stack.setTagCompound(tag);
         
@@ -100,7 +100,7 @@ public final class ItemStackUtils {
                 for (final ItemStack oreStack : OreDictionary.getOres(color.getDyeName()))
                     if (oreStack.isItemEqual(stack))
                         return color.color.getRGB();
-                        
+                    
         return -1337;
     }
     
@@ -130,7 +130,7 @@ public final class ItemStackUtils {
         for (final int stackName : OreDictionary.getOreIDs(stack))
             if (OreDictionary.getOreName(stackName).equalsIgnoreCase(oreName))
                 return true;
-                
+            
         return false;
     }
     
@@ -148,7 +148,7 @@ public final class ItemStackUtils {
             for (final int secondName : OreDictionary.getOreIDs(secondStack))
                 if (firstName == secondName)
                     return true;
-                    
+                
         return false;
     }
     
@@ -185,7 +185,7 @@ public final class ItemStackUtils {
         
         for (final PotionEffect effect : effects)
             potionTag.appendTag(effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
-            
+        
         stackTag.setTag("CustomPotionEffects", potionTag);
         return stack;
     }
@@ -232,18 +232,18 @@ public final class ItemStackUtils {
         
         if (firstStack == null || secondStack == null)
             return firstStack == secondStack;
-            
+        
         final Item firstItem = firstStack.getItem();
         final Item secondItem = secondStack.getItem();
         
         if (firstItem == null || secondItem == null)
             return firstItem == secondItem;
-            
+        
         if (firstItem == secondItem) {
             
             if (checkNBT && NBTUtils.NBT_COMPARATOR.compare(firstStack.getTagCompound(), secondStack.getTagCompound()) != 0)
                 return false;
-                
+            
             return firstStack.getItemDamage() == OreDictionary.WILDCARD_VALUE || secondStack.getItemDamage() == OreDictionary.WILDCARD_VALUE || firstStack.getItemDamage() == secondStack.getItemDamage();
         }
         
@@ -263,7 +263,7 @@ public final class ItemStackUtils {
         for (final ItemStack currentStack : stacks)
             if (areStacksEqual(stack, currentStack, checkNBT))
                 return true;
-                
+            
         return false;
     }
     
@@ -295,12 +295,12 @@ public final class ItemStackUtils {
         
         if (thing != null)
             return thing;
-            
+        
         thing = Block.getBlockFromName(name);
         
         if (thing != null)
             return thing;
-            
+        
         return null;
     }
     
@@ -328,7 +328,7 @@ public final class ItemStackUtils {
             
             if (stack.getItem().hasContainerItem(stack))
                 return stack.getItem().getContainerItem(stack);
-                
+            
             else
                 return null;
         }
