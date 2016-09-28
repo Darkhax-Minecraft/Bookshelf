@@ -15,9 +15,9 @@ import com.google.gson.stream.JsonReader;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.darkhax.bookshelf.lib.util.TextUtils.ChatFormat;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 
 /**
  * This class is used to handle my supporters data. This class is not intended for other mod
@@ -26,7 +26,6 @@ import net.minecraft.util.text.translation.I18n;
  */
 public class SupporterHandler {
     
-    private static final ResourceLocation MISSING_CAPE = new ResourceLocation("bookshelf", "textures/entity/player/missing_cape.png");
     private static final ResourceLocation MISSING_ELYTRA = new ResourceLocation("bookshelf", "textures/entity/player/missing_elytra.png");
     
     private static final List<SupporterData> DATA = new ArrayList<SupporterData>();
@@ -55,7 +54,6 @@ public class SupporterHandler {
                 boolean wantsHead = true;
                 boolean wantsWawla = false;
                 String elytraTexture = null;
-                String capeTexture = null;
                 
                 // Opens up the player entry object
                 reader.beginObject();
@@ -67,32 +65,29 @@ public class SupporterHandler {
                     
                     if (name.equals("playerID"))
                         playerID = UUID.fromString(reader.nextString());
-                        
+                    
                     else if (name.equals("type"))
                         type = reader.nextString();
-                        
+                    
                     else if (name.equals("confirmed"))
                         confirmed = reader.nextBoolean();
-                        
+                    
                     else if (name.equals("wantHead"))
                         wantsHead = reader.nextBoolean();
-                        
+                    
                     else if (name.equals("wantWawla"))
                         wantsWawla = reader.nextBoolean();
-                        
+                    
                     else if (name.equals("elytraTexture"))
                         elytraTexture = reader.nextString();
-                        
-                    else if (name.equals("capeTexture"))
-                        capeTexture = reader.nextString();
-                        
+                    
                     // Skips values we don't care about so they don't break us.
                     else
                         reader.skipValue();
                 }
                 
                 // Adds the data that was read to the list.
-                DATA.add(new SupporterData(playerID, type, confirmed, wantsHead, wantsWawla, elytraTexture, capeTexture));
+                DATA.add(new SupporterData(playerID, type, confirmed, wantsHead, wantsWawla, elytraTexture));
                 
                 // Ends the current player object, allowing us to read the next player object.
                 reader.endObject();
@@ -127,7 +122,7 @@ public class SupporterHandler {
         for (final SupporterData supporter : DATA)
             if (supporter.getPlayerID().equals(player.getUniqueID()))
                 return true;
-                
+            
         return false;
     }
     
@@ -142,7 +137,7 @@ public class SupporterHandler {
         for (final SupporterData supporter : DATA)
             if (supporter.getPlayerID().equals(player.getUniqueID()))
                 return supporter;
-                
+            
         return null;
     }
     
@@ -189,12 +184,7 @@ public class SupporterHandler {
          */
         private final String ELYTRA_TEXTURE;
         
-        /**
-         * The URL for the cape texture for the supporter.
-         */
-        private final String CAPE_TEXTURE;
-        
-        protected SupporterData(UUID playerID, String type, boolean confirmed, boolean wantsHead, boolean wantsWawla, String elytraTexture, String capeTexture) {
+        protected SupporterData(UUID playerID, String type, boolean confirmed, boolean wantsHead, boolean wantsWawla, String elytraTexture) {
             
             this.PLAYER_ID = playerID;
             this.TYPE = type;
@@ -202,7 +192,6 @@ public class SupporterHandler {
             this.WANTS_HEAD = wantsHead;
             this.WANTS_WAWLA = wantsWawla;
             this.ELYTRA_TEXTURE = elytraTexture;
-            this.CAPE_TEXTURE = capeTexture;
         }
         
         /**
@@ -246,16 +235,6 @@ public class SupporterHandler {
         }
         
         /**
-         * Gets the URL for the custom Cape texture for the supporter.
-         * 
-         * @return A url that points to the custom Cape texture that the supporter wants.
-         */
-        public String getCapeTextureURL () {
-            
-            return this.CAPE_TEXTURE;
-        }
-        
-        /**
          * Gets the URL for the custom Elytra texture for the supporter.
          * 
          * @return A url that points to the custom Elytra texture that the supporter wants.
@@ -263,17 +242,6 @@ public class SupporterHandler {
         public String getElytraTextureURL () {
             
             return this.ELYTRA_TEXTURE;
-        }
-        
-        /**
-         * Gets the custom Cape texture for the supporter.
-         * 
-         * @return A ResourceLocation that points to the custom Cape texture that the supporter
-         *         wants.
-         */
-        public ResourceLocation getCapeTexture () {
-            
-            return this.CAPE_TEXTURE != null && !this.CAPE_TEXTURE.isEmpty() ? RenderUtils.downloadResourceLocation(this.CAPE_TEXTURE, new ResourceLocation("bookshelf", "cape/" + this.PLAYER_ID.toString()), MISSING_CAPE, null) : null;
         }
         
         /**
@@ -304,7 +272,7 @@ public class SupporterHandler {
          */
         public String getLocalizedType () {
             
-            return I18n.translateToLocal("supporters." + this.TYPE);
+            return I18n.format("supporters." + this.TYPE);
         }
         
         /**

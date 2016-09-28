@@ -2,22 +2,19 @@
 	"Darkhax": {
 		"playerID": "d183e5a2-a087-462a-963e-c3d7295f9ec5",
 		"type": "developer",
-		"elytraTexture": "http://i.imgur.com/1sgYRjK.png",
-		"capeTexture": "http://i.imgur.com/cNuauKX.png"
+		"elytraTexture": "http://i.imgur.com/1sgYRjK.png"
 	},
 
 	"SethG": {
 		"playerID": "90b9f095-ba47-450c-a290-200a5cefe5be",
 		"type": "other",
-		"elytraTexture": "http://i.imgur.com/FIi5dDY.png",
-		"capeTexture": "http://i.imgur.com/fmWQMhO.png"
+		"elytraTexture": "http://i.imgur.com/FIi5dDY.png"
 	},
 
 	"Sycophantaia": {
 		"playerID": "eec70f59-1543-4580-b4d8-4954a108866b",
 		"type": "other",
-		"elytraTexture": "http://i.imgur.com/FIi5dDY.png",
-		"capeTexture": "http://i.imgur.com/fmWQMhO.png"
+		"elytraTexture": "http://i.imgur.com/FIi5dDY.png"
 	},
 
 	"Aeronica": {
@@ -40,7 +37,6 @@
 	"lclc98": {
 		"playerID": "f0f76db6-0461-4151-8ba7-392d65d62ea3",
 		"type": "contributor",
-		"capeTexture": "http://i.imgur.com/Sbr5yVB.png",
 		"elytraTexture": "http://i.imgur.com/abNUY5v.png"
 	}
 }
