@@ -15,7 +15,6 @@ import com.google.gson.stream.JsonReader;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.darkhax.bookshelf.lib.util.TextUtils.ChatFormat;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -272,7 +271,7 @@ public class SupporterHandler {
          */
         public String getLocalizedType () {
             
-            return I18n.format("supporters." + this.TYPE);
+            return this.TYPE.toLowerCase();
         }
         
         /**
