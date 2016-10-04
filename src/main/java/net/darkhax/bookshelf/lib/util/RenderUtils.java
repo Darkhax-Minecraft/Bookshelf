@@ -25,6 +25,8 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -615,5 +617,36 @@ public class RenderUtils {
         }
         
         return builder.build();
+    }
+    
+    /**
+     * Renders an entity onto the screen. This behaves similarly to the Player render in the
+     * inventory GUI. This method is intended for use in GUI however it can also be used in
+     * other places.
+     * 
+     * @param entity: The Entity to render.
+     * @param x: The X position to render the entity at.
+     * @param y: The Y position to render the entity at.
+     * @param z: The Z position to render the entity at.
+     * @param entityYaw: The yaw to use for the entity.
+     * @param partialTicks: A tick to pass to the entity render.
+     */
+    @SideOnly(Side.CLIENT)
+    public static void renderEntity (Entity entity, double x, double y, double z, float entityYaw, float partialTicks) {
+        
+        RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+        Render<Entity> render = renderManager.getEntityRenderObject(entity);
+        
+        if (render != null && renderManager.renderEngine != null) {
+            
+            try {
+                
+                render.doRender(entity, x, y, z, entityYaw, partialTicks);
+            }
+            
+            catch (Exception exception) {
+            
+            }
+        }
     }
 }
