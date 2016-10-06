@@ -59,6 +59,16 @@ public enum VanillaColor {
     }
     
     /**
+     * Gets the AWT version of the color.
+     * 
+     * @return An AWT Color object.
+     */
+    public Color getAWTColor () {
+        
+        return this.color;
+    }
+    
+    /**
      * Provides the OreDictionary name for the Dyed Glass Pane associated with this color.
      * 
      * @return String A string which represents the associated Dyed Glass Pane within the
