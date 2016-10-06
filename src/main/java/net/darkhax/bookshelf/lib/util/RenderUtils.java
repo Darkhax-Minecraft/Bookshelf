@@ -7,7 +7,6 @@ import org.lwjgl.opengl.GL11;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
-import net.darkhax.bookshelf.lib.Color4f;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -26,8 +25,6 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -629,7 +626,7 @@ public class RenderUtils {
      * @param entity The entity to render the effect on.
      * @param partialTicks The partial ticks.
      */
-    public static void colorRainbow (EntityLivingBase entity, int partialTicks) {
+    public static void colorRainbow (EntityLivingBase entity, float partialTicks) {
         
         rainbowColor(entity.ticksExisted, entity.getEntityId(), partialTicks);
     }
@@ -642,15 +639,15 @@ public class RenderUtils {
      * @param offset An offset value.
      * @param partialTicks The partial ticks.
      */
-    public static void rainbowColor (int previousTicks, int offset, int partialTicks) {
+    public static void rainbowColor (int previousTicks, int offset, float partialTicks) {
         
-        int ticks = previousTicks / 25 + offset;
-        int colorCount = EnumDyeColor.values().length;
-        int colorMeta1 = ticks % colorCount;
-        int colorMeta2 = (ticks + 1) % colorCount;
-        float f = ((float) (previousTicks % 25) + partialTicks) / 25.0F;
-        float[] color1 = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colorMeta1));
-        float[] color2 = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colorMeta2));
+        final int ticks = previousTicks / 25 + offset;
+        final int colorCount = EnumDyeColor.values().length;
+        final int colorMeta1 = ticks % colorCount;
+        final int colorMeta2 = (ticks + 1) % colorCount;
+        final float f = (previousTicks % 25 + partialTicks) / 25.0F;
+        final float[] color1 = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colorMeta1));
+        final float[] color2 = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colorMeta2));
         GlStateManager.color(color1[0] * (1.0F - f) + color2[0] * f, color1[1] * (1.0F - f) + color2[1] * f, color1[2] * (1.0F - f) + color2[2] * f);
     }
 }

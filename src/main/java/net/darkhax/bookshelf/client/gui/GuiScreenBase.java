@@ -29,12 +29,12 @@ public abstract class GuiScreenBase extends GuiScreen {
     /**
      * Offset of the tooltip to adjust for rendering.
      */
-    private int tooltipXOffset = 10;
+    private final int tooltipXOffset = 10;
     
     /**
      * Offset of the tooltip to adjust for rendering.
      */
-    private int tooltipYOffset = -2;
+    private final int tooltipYOffset = -2;
     
     /**
      * The time that the mouse has been over an area with a tooltip.

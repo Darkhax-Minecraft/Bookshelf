@@ -37,7 +37,7 @@ public class Color4f {
      */
     public Color4f(boolean alpha) {
         
-        this(Constants.RANDOM.nextFloat(), Constants.RANDOM.nextFloat(), Constants.RANDOM.nextFloat(), (alpha) ? Constants.RANDOM.nextFloat() : 1f);
+        this(Constants.RANDOM.nextFloat(), Constants.RANDOM.nextFloat(), Constants.RANDOM.nextFloat(), alpha ? Constants.RANDOM.nextFloat() : 1f);
     }
     
     /**
@@ -57,7 +57,7 @@ public class Color4f {
      */
     public Color4f(NBTTagCompound tag) {
         
-        this(tag.getFloat("red"), tag.getFloat("green"), tag.getFloat("blue"), (tag.hasKey("alpha") ? tag.getInteger("alpha") : 1f));
+        this(tag.getFloat("red"), tag.getFloat("green"), tag.getFloat("blue"), tag.hasKey("alpha") ? tag.getInteger("alpha") : 1f);
     }
     
     /**
@@ -90,7 +90,7 @@ public class Color4f {
      */
     public Color4f(int red, int green, int blue, int alpha) {
         
-        this((float) red / 255f, (float) green / 255f, (float) blue / 255f, (float) alpha / 255f);
+        this(red / 255f, green / 255f, blue / 255f, alpha / 255f);
     }
     
     /**
@@ -168,7 +168,7 @@ public class Color4f {
      */
     public boolean isWhite () {
         
-        return red == 1f && green == 1f && blue == 1f;
+        return this.red == 1f && this.green == 1f && this.blue == 1f;
     }
     
     /**
@@ -188,7 +188,7 @@ public class Color4f {
      */
     public float getRed () {
         
-        return red;
+        return this.red;
     }
     
     /**
@@ -208,7 +208,7 @@ public class Color4f {
      */
     public float getGreen () {
         
-        return green;
+        return this.green;
     }
     
     /**
@@ -228,7 +228,7 @@ public class Color4f {
      */
     public float getBlue () {
         
-        return blue;
+        return this.blue;
     }
     
     /**
@@ -248,7 +248,7 @@ public class Color4f {
      */
     public float getAlpha () {
         
-        return alpha;
+        return this.alpha;
     }
     
     /**
