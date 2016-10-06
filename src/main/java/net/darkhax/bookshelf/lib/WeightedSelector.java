@@ -14,7 +14,7 @@ public class WeightedSelector<T> {
     /**
      * The list of entries held by the selector.
      */
-    private final List<WeightedEntry<T>> entries = new ArrayList<WeightedEntry<T>>();
+    private final List<WeightedEntry<T>> entries = new ArrayList<>();
     
     /**
      * The total weight of all entries.
@@ -31,7 +31,7 @@ public class WeightedSelector<T> {
      */
     public boolean addEntry (T value, int weight) {
         
-        return this.addEntry(new WeightedEntry<T>(value, weight));
+        return this.addEntry(new WeightedEntry<>(value, weight));
     }
     
     /**

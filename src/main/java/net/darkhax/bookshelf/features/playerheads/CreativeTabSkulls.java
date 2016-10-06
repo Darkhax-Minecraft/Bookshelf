@@ -27,7 +27,7 @@ public class CreativeTabSkulls extends CreativeTabs {
     /**
      * A cache of all the player skull ItemStacks so they don't need to be recreated.
      */
-    private static List<ItemStack> cache = new ArrayList<ItemStack>();
+    private static List<ItemStack> cache = new ArrayList<>();
     
     public CreativeTabSkulls() {
         

@@ -10,7 +10,7 @@ public class BookshelfRegistry {
     /**
      * A List of all the anvil recipes that have been registered with Bookshelf.
      */
-    private static final List<AnvilRecipe> anvilRecipes = new ArrayList<AnvilRecipe>();
+    private static final List<AnvilRecipe> anvilRecipes = new ArrayList<>();
     
     /**
      * Adds a new AnvilRecipe to the registry. Inputs can be null.

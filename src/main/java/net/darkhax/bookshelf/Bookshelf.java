@@ -31,7 +31,7 @@ public class Bookshelf {
      * A list of feature objects. The feature system is specifically intended for features that
      * are bundled with the library and should not be considered part of the API/Library.
      */
-    public static List<Feature> features = new ArrayList<Feature>();
+    public static List<Feature> features = new ArrayList<>();
     
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {

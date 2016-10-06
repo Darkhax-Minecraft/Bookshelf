@@ -41,7 +41,7 @@ public final class InstructionComparator {
         if (list.size() == 0)
             return list;
         
-        final HashMap<LabelNode, LabelNode> labels = new HashMap<LabelNode, LabelNode>();
+        final HashMap<LabelNode, LabelNode> labels = new HashMap<>();
         
         for (AbstractInsnNode insn = list.getFirst(); insn != null; insn = insn.getNext())
             if (insn instanceof LabelNode)
@@ -106,7 +106,7 @@ public final class InstructionComparator {
     // TODO: Add documentation
     public static List<AbstractInsnNode> insnListFindStart (InsnList haystack, InsnList needle) {
         
-        final LinkedList<AbstractInsnNode> callNodes = new LinkedList<AbstractInsnNode>();
+        final LinkedList<AbstractInsnNode> callNodes = new LinkedList<>();
         
         for (final int callPoint : insnListFind(haystack, needle))
             callNodes.add(haystack.get(callPoint));
@@ -117,7 +117,7 @@ public final class InstructionComparator {
     // TODO: Add documentation
     public static List<Integer> insnListFind (InsnList haystack, InsnList needle) {
         
-        final LinkedList<Integer> list = new LinkedList<Integer>();
+        final LinkedList<Integer> list = new LinkedList<>();
         
         for (int start = 0; start <= haystack.size() - needle.size(); start++)
             if (insnListMatches(haystack, needle, start))
@@ -129,7 +129,7 @@ public final class InstructionComparator {
     // TODO: Add documentation
     public static List<AbstractInsnNode> insnListFindEnd (InsnList haystack, InsnList needle) {
         
-        final LinkedList<AbstractInsnNode> callNodes = new LinkedList<AbstractInsnNode>();
+        final LinkedList<AbstractInsnNode> callNodes = new LinkedList<>();
         
         for (final int callPoint : insnListFind(haystack, needle))
             callNodes.add(haystack.get(callPoint + needle.size() - 1));

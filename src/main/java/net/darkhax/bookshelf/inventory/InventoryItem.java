@@ -106,7 +106,7 @@ public class InventoryItem extends Item implements IInventory {
     public static List<ItemStack> getContents (ItemStack stack) {
         
         ItemStackUtils.prepareDataTag(stack);
-        final List<ItemStack> list = new ArrayList<ItemStack>();
+        final List<ItemStack> list = new ArrayList<>();
         final NBTTagList items = stack.getTagCompound().getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
         
         for (int index = 0; index < items.tagCount(); index++)

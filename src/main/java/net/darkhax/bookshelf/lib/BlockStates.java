@@ -19,17 +19,17 @@ public class BlockStates {
     /**
      * Used to hold another block state. This is useful for mimicking other blocks.
      */
-    public static final PropertyObject<IBlockState> HELD_STATE = new PropertyObject<IBlockState>("held_state", IBlockState.class);
+    public static final PropertyObject<IBlockState> HELD_STATE = new PropertyObject<>("held_state", IBlockState.class);
     
     /**
      * Used to hold an IBlockAccess of the block.
      */
-    public static final PropertyObject<IBlockAccess> BLOCK_ACCESS = new PropertyObject<IBlockAccess>("world", IBlockAccess.class);
+    public static final PropertyObject<IBlockAccess> BLOCK_ACCESS = new PropertyObject<>("world", IBlockAccess.class);
     
     /**
      * Used to hold the BlockPos of the block.
      */
-    public static final PropertyObject<BlockPos> BLOCKPOS = new PropertyObject<BlockPos>("pos", BlockPos.class);
+    public static final PropertyObject<BlockPos> BLOCKPOS = new PropertyObject<>("pos", BlockPos.class);
     
     /**
      * Used to determine the color of a block. Only supports the 16 vanilla colors.

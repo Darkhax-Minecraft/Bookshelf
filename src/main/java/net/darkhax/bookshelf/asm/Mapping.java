@@ -1,11 +1,10 @@
-package net.darkhax.bookshelf.asm.mapping;
+package net.darkhax.bookshelf.asm;
 
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import net.darkhax.bookshelf.asm.ASMUtils;
 import net.darkhax.bookshelf.lib.Constants;
 
 public class Mapping {

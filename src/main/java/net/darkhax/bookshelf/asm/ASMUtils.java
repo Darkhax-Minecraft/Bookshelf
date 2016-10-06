@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.AbstractInsnNode;
@@ -23,7 +24,6 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
 
-import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.launchwrapper.Launch;
 
 public final class ASMUtils {
@@ -106,7 +106,7 @@ public final class ASMUtils {
         final List<AbstractInsnNode> ret = InstructionComparator.insnListFindStart(haystack, needle);
         
         if (ret.size() != 1)
-            Constants.LOG.warn(new InvalidNeedleException(ret.size(), needle, haystack));
+            throw new InvalidNeedleException(ret.size(), needle, haystack);
         
         return ret.get(0);
     }
@@ -126,7 +126,7 @@ public final class ASMUtils {
         final List<AbstractInsnNode> ret = InstructionComparator.insnListFindEnd(haystack, needle);
         
         if (ret.size() != 1)
-            Constants.LOG.warn(new InvalidNeedleException(ret.size(), needle, haystack));
+            throw new InvalidNeedleException(ret.size(), needle, haystack);
         
         return ret.get(0);
     }
@@ -144,7 +144,7 @@ public final class ASMUtils {
         
         final int firstInd = haystack.indexOf(findFirstNodeFromNeedle(haystack, needle));
         final int lastInd = haystack.indexOf(findLastNodeFromNeedle(haystack, needle));
-        final List<AbstractInsnNode> realNeedle = new ArrayList<AbstractInsnNode>();
+        final List<AbstractInsnNode> realNeedle = new ArrayList<>();
         
         for (int i = firstInd; i <= lastInd; i++)
             realNeedle.add(haystack.get(i));
@@ -162,8 +162,29 @@ public final class ASMUtils {
     public static String getInstructionString (AbstractInsnNode node) {
         
         final String type = node.getType() < 0 || node.getType() > INSN_TYPES.length ? "Invalid" : INSN_TYPES[node.getType()];
-        final String opcode = node.getOpcode() > 0 || node.getOpcode() > OPCODES.length ? "N/A" : OPCODES[node.getOpcode()];
+        final String opcode = node.getOpcode() < 0 || node.getOpcode() > OPCODES.length ? "N/A" : OPCODES[node.getOpcode()];
         return "Type: " + type + " Opcode: " + opcode;
+    }
+    
+    private static String infod (InsnList needle, InsnList hayStack) {
+        
+        final StringBuilder builder = new StringBuilder();
+        builder.append(SystemUtils.LINE_SEPARATOR);
+        builder.append("Printing Needle" + SystemUtils.LINE_SEPARATOR);
+        
+        ListIterator<AbstractInsnNode> i = needle.iterator();
+        
+        while (i.hasNext())
+            builder.append(getInstructionString(i.next()) + SystemUtils.LINE_SEPARATOR);
+        
+        builder.append("Printing Haystack" + SystemUtils.LINE_SEPARATOR);
+        i = hayStack.iterator();
+        
+        while (i.hasNext())
+            builder.append(getInstructionString(i.next()) + SystemUtils.LINE_SEPARATOR);
+        
+        builder.append("fuffff");
+        return builder.toString();
     }
     
     public static class InvalidNeedleException extends RuntimeException {
@@ -177,20 +198,7 @@ public final class ASMUtils {
          */
         public InvalidNeedleException(int count, InsnList needle, InsnList hayStack) {
             
-            super(count > 1 ? "More than one instance of the needle have been found!" : count < 1 ? "The needle was not found" : "There is a glitch in the matrix");
-            
-            Constants.LOG.warn("Printing Needle");
-            
-            ListIterator<AbstractInsnNode> i = needle.iterator();
-            
-            while (i.hasNext())
-                Constants.LOG.warn(getInstructionString(i.next()));
-            
-            Constants.LOG.warn("Printing Haystack");
-            i = hayStack.iterator();
-            
-            while (i.hasNext())
-                Constants.LOG.warn(getInstructionString(i.next()));
+            super((count > 1 ? "More than one instance of the needle have been found!" : count < 1 ? "The needle was not found" : "There is a glitch in the matrix") + infod(needle, hayStack));
         }
     }
 }

@@ -1,17 +1,26 @@
 package net.darkhax.bookshelf.handler;
 
-import net.darkhax.bookshelf.client.event.RenderItemEvent;
+import net.darkhax.bookshelf.events.RenderItemEvent;
+import net.darkhax.bookshelf.events.RenderLivingStateEvent;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BookshelfHooks {
+    
+    @SideOnly(Side.CLIENT)
+    public static void modifyEntityRender (RenderLivingBase<EntityLivingBase> renderer, EntityLivingBase entity) {
+        
+        MinecraftForge.EVENT_BUS.post(new RenderLivingStateEvent(entity, renderer));
+    }
     
     @SideOnly(Side.CLIENT)
     public static boolean renderItem (RenderItem renderer, ItemStack stack, IBakedModel model) {

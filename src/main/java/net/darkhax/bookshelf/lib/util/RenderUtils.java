@@ -634,19 +634,17 @@ public class RenderUtils {
     @SideOnly(Side.CLIENT)
     public static void renderEntity (Entity entity, double x, double y, double z, float entityYaw, float partialTicks) {
         
-        RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
-        Render<Entity> render = renderManager.getEntityRenderObject(entity);
+        final RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+        final Render<Entity> render = renderManager.getEntityRenderObject(entity);
         
-        if (render != null && renderManager.renderEngine != null) {
-            
+        if (render != null && renderManager.renderEngine != null)
             try {
                 
                 render.doRender(entity, x, y, z, entityYaw, partialTicks);
             }
             
-            catch (Exception exception) {
-            
+            catch (final Exception exception) {
+                
             }
-        }
     }
 }

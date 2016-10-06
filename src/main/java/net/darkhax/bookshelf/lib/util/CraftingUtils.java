@@ -85,7 +85,7 @@ public final class CraftingUtils {
     @SuppressWarnings("unchecked")
     public static <T extends IRecipe> List<T> getRecipesForStack (ItemStack stack, Predicate<IRecipe> condition) {
         
-        final List<T> foundRecipes = new ArrayList<T>();
+        final List<T> foundRecipes = new ArrayList<>();
         
         for (final IRecipe recipe : CraftingManager.getInstance().getRecipeList())
             if (condition.test(recipe)) {

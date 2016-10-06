@@ -27,7 +27,7 @@ public class SupporterHandler {
     
     private static final ResourceLocation MISSING_ELYTRA = new ResourceLocation("bookshelf", "textures/entity/player/missing_elytra.png");
     
-    private static final List<SupporterData> DATA = new ArrayList<SupporterData>();
+    private static final List<SupporterData> DATA = new ArrayList<>();
     private static final String SUPPORTER_URL = "https://raw.githubusercontent.com/Darkhax-Minecraft/Bookshelf/master/supporters.json";
     
     public static void readSupporterData () {

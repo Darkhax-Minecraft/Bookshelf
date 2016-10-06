@@ -218,7 +218,7 @@ public final class PlayerUtils {
      */
     public static List<ItemStack> getStacksFromPlayer (EntityPlayer player, Item item, int meta) {
         
-        final List<ItemStack> items = new ArrayList<ItemStack>();
+        final List<ItemStack> items = new ArrayList<>();
         
         for (final ItemStack stack : player.inventory.mainInventory)
             if (stack != null && stack.getItem() == item && (meta < 0 || stack.getMetadata() == meta))

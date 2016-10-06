@@ -2,17 +2,16 @@ package net.darkhax.bookshelf.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
+import net.darkhax.bookshelf.lib.util.MathsUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-
-import net.darkhax.bookshelf.lib.util.MathsUtils;
 
 public class GuiSlider extends GuiButton {
     
     /**
      * The text to display for the slider.
      */
-    private String sliderName;
+    private final String sliderName;
     
     /**
      * The current percent value of the slider.
@@ -24,26 +23,25 @@ public class GuiSlider extends GuiButton {
      */
     private boolean isDragging;
     
-    
     /**
      * The largest possible slider value.
      */
-    private float maximum = 1.0f;
+    private final float maximum = 1.0f;
     
     /**
      * Whether or not the value should be represented as an integer.
      */
-    private boolean repAsInt;
+    private final boolean repAsInt;
     
     /**
      * The Integer value to display, if repAsInt is true.
      */
-    private int intValue;
+    private final int intValue;
     
     /**
      * Whether or not the value should be inverted.
      */
-    private boolean shouldInvert;
+    private final boolean shouldInvert;
     
     /**
      * Constructs a new GuiSlider.
@@ -55,7 +53,7 @@ public class GuiSlider extends GuiButton {
      * @param yPos: The Y position to start rendering.
      * @param repAsInt: Whether or not the value should be represented as an integer.
      * @param repValue: The total value to represent. For example if 100 us used, 15% of the
-     *            slider will show as 15, and if 1000 is used it will be 150.
+     *        slider will show as 15, and if 1000 is used it will be 150.
      */
     public GuiSlider(int id, String title, float initialValue, int xPos, int yPos, boolean repAsInt, int repValue) {
         
@@ -72,13 +70,13 @@ public class GuiSlider extends GuiButton {
      * @param yPos: The Y position to start rendering.
      * @param repAsInt: Whether or not the value should be represented as an integer.
      * @param repValue: The total value to represent. For example if 100 us used, 15% of the
-     *            slider will show as 15, and if 1000 is used it will be 150.
+     *        slider will show as 15, and if 1000 is used it will be 150.
      * @param invert: Whether or not the value should be inverted.
      */
     public GuiSlider(int id, String title, float initialValue, int xPos, int yPos, boolean repAsInt, int intValue, boolean invert) {
         
         super(id, xPos, yPos, 55, 20, "");
-        sliderName = title;
+        this.sliderName = title;
         this.setSliderValue(initialValue);
         this.repAsInt = repAsInt;
         this.intValue = intValue;
@@ -93,12 +91,12 @@ public class GuiSlider extends GuiButton {
             if (this.isDragging) {
                 
                 this.sliderValue = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
-                this.sliderValue = (this.sliderValue < 0f) ? 0f : (this.sliderValue > 1f) ? 1f : this.sliderValue;
+                this.sliderValue = this.sliderValue < 0f ? 0f : this.sliderValue > 1f ? 1f : this.sliderValue;
             }
             
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.drawTexturedModalRect(this.xPosition + (int) (this.sliderValue * (float) (this.width - 8)), this.yPosition, 0, 66, 4, 20);
-            this.drawTexturedModalRect(this.xPosition + (int) (this.sliderValue * (float) (this.width - 8)) + 4, this.yPosition, 196, 66, 4, 20);
+            this.drawTexturedModalRect(this.xPosition + (int) (this.sliderValue * (this.width - 8)), this.yPosition, 0, 66, 4, 20);
+            this.drawTexturedModalRect(this.xPosition + (int) (this.sliderValue * (this.width - 8)) + 4, this.yPosition, 196, 66, 4, 20);
             
             this.updateDisplay();
         }
@@ -110,7 +108,7 @@ public class GuiSlider extends GuiButton {
         if (super.mousePressed(mc, mouseX, mouseY)) {
             
             this.sliderValue = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
-            this.sliderValue = (this.sliderValue < 0f) ? 0f : (this.sliderValue > 1f) ? 1f : this.sliderValue;
+            this.sliderValue = this.sliderValue < 0f ? 0f : this.sliderValue > 1f ? 1f : this.sliderValue;
             this.isDragging = true;
             this.updateDisplay();
             
@@ -141,8 +139,8 @@ public class GuiSlider extends GuiButton {
      */
     public void setSliderValue (float value) {
         
-        this.sliderValue = (float) value / this.maximum;
-        updateDisplay();
+        this.sliderValue = value / this.maximum;
+        this.updateDisplay();
     }
     
     /**
@@ -161,7 +159,7 @@ public class GuiSlider extends GuiButton {
      */
     private void updateDisplay () {
         
-        String value = (this.repAsInt) ? (this.shouldInvert) ? this.intValue - (int) (this.getSliderValue() * this.intValue) + "%" : "" + (int) (this.getSliderValue() * this.intValue) : "" + MathsUtils.round(this.getSliderValue(), 2);
+        final String value = this.repAsInt ? this.shouldInvert ? this.intValue - (int) (this.getSliderValue() * this.intValue) + "%" : "" + (int) (this.getSliderValue() * this.intValue) : "" + MathsUtils.round(this.getSliderValue(), 2);
         this.displayString = this.sliderName + ": " + value;
     }
 }

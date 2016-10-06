@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.client.event;
+package net.darkhax.bookshelf.events;
 
 import java.awt.Color;
 

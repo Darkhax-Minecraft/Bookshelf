@@ -16,12 +16,12 @@ public class TextUtils {
     /**
      * A map for getting a ChatFormat to be quickly retrieved based on its character value.
      */
-    private static final Map<Character, ChatFormat> CHARACTER_TO_FORMAT = new HashMap<Character, ChatFormat>();
+    private static final Map<Character, ChatFormat> CHARACTER_TO_FORMAT = new HashMap<>();
     
     /**
      * A map for getting a ChatFormat quickly by using its name.
      */
-    private static final Map<String, ChatFormat> NAME_TO_FORMAT = new HashMap<String, ChatFormat>();
+    private static final Map<String, ChatFormat> NAME_TO_FORMAT = new HashMap<>();
     
     /**
      * The prefix character used for formatting codes.
