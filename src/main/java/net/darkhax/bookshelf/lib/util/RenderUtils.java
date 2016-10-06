@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
+import net.darkhax.bookshelf.lib.Color4f;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -36,6 +37,8 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -620,31 +623,34 @@ public class RenderUtils {
     }
     
     /**
-     * Renders an entity onto the screen. This behaves similarly to the Player render in the
-     * inventory GUI. This method is intended for use in GUI however it can also be used in
-     * other places.
+     * Applies a color to GL state based on the current tick. This is the same code used by
+     * sheeps for their jeb color effect.
      * 
-     * @param entity: The Entity to render.
-     * @param x: The X position to render the entity at.
-     * @param y: The Y position to render the entity at.
-     * @param z: The Z position to render the entity at.
-     * @param entityYaw: The yaw to use for the entity.
-     * @param partialTicks: A tick to pass to the entity render.
+     * @param entity The entity to render the effect on.
+     * @param partialTicks The partial ticks.
      */
-    @SideOnly(Side.CLIENT)
-    public static void renderEntity (Entity entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    public static void colorRainbow (EntityLivingBase entity, int partialTicks) {
         
-        final RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
-        final Render<Entity> render = renderManager.getEntityRenderObject(entity);
+        rainbowColor(entity.ticksExisted, entity.getEntityId(), partialTicks);
+    }
+    
+    /**
+     * Applies a color to GL state based on the current tick. This is similar to the code used
+     * by jeb sheeps.
+     * 
+     * @param previousTicks The previous tick value.
+     * @param offset An offset value.
+     * @param partialTicks The partial ticks.
+     */
+    public static void rainbowColor (int previousTicks, int offset, int partialTicks) {
         
-        if (render != null && renderManager.renderEngine != null)
-            try {
-                
-                render.doRender(entity, x, y, z, entityYaw, partialTicks);
-            }
-            
-            catch (final Exception exception) {
-                
-            }
+        int ticks = previousTicks / 25 + offset;
+        int colorCount = EnumDyeColor.values().length;
+        int colorMeta1 = ticks % colorCount;
+        int colorMeta2 = (ticks + 1) % colorCount;
+        float f = ((float) (previousTicks % 25) + partialTicks) / 25.0F;
+        float[] color1 = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colorMeta1));
+        float[] color2 = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colorMeta2));
+        GlStateManager.color(color1[0] * (1.0F - f) + color2[0] * f, color1[1] * (1.0F - f) + color2[1] * f, color1[2] * (1.0F - f) + color2[2] * f);
     }
 }
