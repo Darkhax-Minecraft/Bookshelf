@@ -12,11 +12,13 @@ import net.darkhax.bookshelf.features.supporters.FeatureSupporters;
 import net.darkhax.bookshelf.handler.ConfigurationHandler;
 import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.tileentity.TileEntityBasicChest;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION_NUMBER)
 public class Bookshelf {
@@ -48,6 +50,7 @@ public class Bookshelf {
         for (final Feature feature : features)
             feature.onPreInit();
         
+        GameRegistry.registerTileEntity(TileEntityBasicChest.class, "basic_chest");
         proxy.preInit();
     }
 }
