@@ -46,10 +46,15 @@ minecraft {
 //Defines basic patterns for pulling various dependencies.
 repositories {
 
+    maven {
+    
+        url "https://jitpack.io"
+    }
 }
 
 dependencies {
 
+    deobfCompile 'com.github.Azanor:Baubles:3f3fdadf09'
 }
 
 //Handles basic resources such as mcmod.info
