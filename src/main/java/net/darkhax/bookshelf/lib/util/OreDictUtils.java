@@ -1,9 +1,5 @@
 package net.darkhax.bookshelf.lib.util;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-
 public class OreDictUtils {
     
     // Variant Arrays
@@ -202,19 +198,4 @@ public class OreDictUtils {
     public static final String DYE_WHITE = "dyeWhite";
     public static final String BLOCK_GLASS_WHITE = "blockGlassWhite";
     public static final String PANE_GLASS_WHITE = "paneGlassWhite";
-    
-    /**
-     * Registers a wooden block into the ore dict. This expects that the wooden block follows
-     * the minecraft plank scheme for meta variations. 0 is oak, 1 is spruce, and so on.
-     * 
-     * @param block The block to register.
-     * @param base The base part of the name. Will also be registered under this name.
-     * @param ignoreOak Allows for oak to be ignored.
-     */
-    public static void registerWooden (Block block, String base, boolean ignoreOak) {
-        
-        for (int meta = 0; meta < WOOD_TYPES.length; meta++)
-            if (!(ignoreOak && meta == 0))
-                OreDictionary.registerOre(base + WOOD_TYPES[meta], new ItemStack(block, 1, meta));
-    }
 }

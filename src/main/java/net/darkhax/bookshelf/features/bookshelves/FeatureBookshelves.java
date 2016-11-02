@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class FeatureBookshelves extends Feature {
     
@@ -27,11 +28,15 @@ public class FeatureBookshelves extends Feature {
             
             GameRegistry.register(this.blockShelf);
             GameRegistry.register(new ItemBlockBasic(this.blockShelf, BlockWoodenShelf.types, true));
-            OreDictUtils.registerWooden(this.blockShelf, "Bookshelf", true);
             
             if (this.allowCrafting)
                 for (int meta = 1; meta < 6; meta++)
                     GameRegistry.addShapedRecipe(new ItemStack(this.blockShelf, 1, meta - 1), new Object[] { "xxx", "yyy", "xxx", Character.valueOf('x'), new ItemStack(Blocks.PLANKS, 1, meta), Character.valueOf('y'), Items.BOOK });
+                
+            OreDictionary.registerOre(OreDictUtils.BOOKSHELF, blockShelf);
+            
+            for (final BlockWoodenShelf.EnumType type : BlockWoodenShelf.EnumType.values())
+                OreDictionary.registerOre(OreDictUtils.BOOKSHELF + type.getOreName(), new ItemStack(this.blockShelf, 1, type.getMetadata()));
         }
     }
     

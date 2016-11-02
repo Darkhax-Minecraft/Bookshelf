@@ -63,20 +63,22 @@ public class BlockWoodenShelf extends BlockBookshelf {
     
     public static enum EnumType implements IStringSerializable {
         
-        SPRUCE(0, "spruce"),
-        BIRCH(1, "birch"),
-        JUNGLE(2, "jungle"),
-        ACACIA(3, "acacia"),
-        DARK_OAK(4, "dark_oak");
+        SPRUCE(0, "spruce", "Spruce"),
+        BIRCH(1, "birch", "Birch"),
+        JUNGLE(2, "jungle", "Jungle"),
+        ACACIA(3, "acacia", "Acacia"),
+        DARK_OAK(4, "dark_oak", "DarkOak");
         
         private static final EnumType[] META_LOOKUP = new EnumType[values().length];
         private final int meta;
         private final String name;
+        private final String oreName;
         
-        private EnumType(int meta, String name) {
+        private EnumType(int meta, String name, String oredict) {
             
             this.meta = meta;
             this.name = name;
+            this.oreName = oredict;
         }
         
         public int getMetadata () {
@@ -102,6 +104,11 @@ public class BlockWoodenShelf extends BlockBookshelf {
         public String getName () {
             
             return this.name;
+        }
+        
+        public String getOreName () {
+            
+            return this.oreName;
         }
         
         static {
