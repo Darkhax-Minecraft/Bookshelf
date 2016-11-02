@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.features.bookshelves;
 
 import net.darkhax.bookshelf.features.Feature;
 import net.darkhax.bookshelf.item.ItemBlockBasic;
+import net.darkhax.bookshelf.lib.util.OreDictUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
@@ -26,6 +27,7 @@ public class FeatureBookshelves extends Feature {
             
             GameRegistry.register(this.blockShelf);
             GameRegistry.register(new ItemBlockBasic(this.blockShelf, BlockWoodenShelf.types, true));
+            OreDictUtils.registerWooden(this.blockShelf, "Bookshelf", true);
             
             if (this.allowCrafting)
                 for (int meta = 1; meta < 6; meta++)

@@ -1,6 +1,13 @@
 package net.darkhax.bookshelf.lib.util;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 public class OreDictUtils {
+    
+    // Variant Arrays
+    public static final String[] WOOD_TYPES = new String[] { "Oak", "Spruce", "Birch", "Jungle", "Acacia", "DarkOak" };
     
     // Wooden Stuff
     public static final String LOG_WOOD = "logWood";
@@ -11,6 +18,15 @@ public class OreDictUtils {
     public static final String FENCE_WOOD = "fenceWood";
     public static final String FENCE_GATE_WOOD = "fenceGateWood";
     public static final String DOOR_WOOD = "doorWood";
+    
+    // Bookshelves
+    public static final String BOOKSHELF = "bookshelf";
+    public static final String BOOKSHELF_OAK = "bookshelfOak";
+    public static final String BOOKSHELF_SPRUCE = "bookshelfSpruce";
+    public static final String BOOKSHELF_BIRCH = "bookshelfBirch";
+    public static final String BOOKSHELF_JUNGLE = "bookshelfJungle";
+    public static final String BOOKSHELF_ACACIA = "bookshelfAcacia";
+    public static final String BOOKSHELF_DARK_OAK = "bookshelfDarkOak";
     
     // Trees
     public static final String TREE_SAPLING = "treeSapling";
@@ -186,4 +202,19 @@ public class OreDictUtils {
     public static final String DYE_WHITE = "dyeWhite";
     public static final String BLOCK_GLASS_WHITE = "blockGlassWhite";
     public static final String PANE_GLASS_WHITE = "paneGlassWhite";
+    
+    /**
+     * Registers a wooden block into the ore dict. This expects that the wooden block follows
+     * the minecraft plank scheme for meta variations. 0 is oak, 1 is spruce, and so on.
+     * 
+     * @param block The block to register.
+     * @param base The base part of the name. Will also be registered under this name.
+     * @param ignoreOak Allows for oak to be ignored.
+     */
+    public static void registerWooden (Block block, String base, boolean ignoreOak) {
+        
+        for (int meta = 0; meta < WOOD_TYPES.length; meta++)
+            if (!(ignoreOak && meta == 0))
+                OreDictionary.registerOre(base + WOOD_TYPES[meta], new ItemStack(block, 1, meta));
+    }
 }
