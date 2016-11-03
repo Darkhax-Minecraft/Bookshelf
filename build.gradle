@@ -54,7 +54,7 @@ repositories {
 
 dependencies {
 
-    deobfCompile 'com.github.Azanor:Baubles:3f3fdadf09'
+    deobfCompile 'com.github.Azanor:Baubles:3199790'
 }
 
 //Handles basic resources such as mcmod.info
