@@ -13,6 +13,7 @@ import com.google.common.io.Resources;
 import com.google.gson.stream.JsonReader;
 
 import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.modutils.baubles.BaublesUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -205,6 +207,9 @@ public final class PlayerUtils {
             if (stack != null && stack.getItem().equals(item) && (meta < 0 || stack.getMetadata() == meta))
                 return true;
             
+        if (Loader.isModLoaded("Baubles"))
+            return BaublesUtils.hasItem(player, item, meta);
+        
         return false;
     }
     
@@ -224,6 +229,9 @@ public final class PlayerUtils {
             if (stack != null && stack.getItem() == item && (meta < 0 || stack.getMetadata() == meta))
                 items.add(stack);
             
+        if (Loader.isModLoaded("Baubles"))
+            items.addAll(BaublesUtils.getBaublesFromPlayer(player, item, meta));
+        
         return items;
     }
     

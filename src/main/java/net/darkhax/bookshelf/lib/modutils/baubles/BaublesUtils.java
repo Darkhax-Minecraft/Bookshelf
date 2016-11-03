@@ -1,10 +1,15 @@
 package net.darkhax.bookshelf.lib.modutils.baubles;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
+import baubles.api.IBauble;
 import baubles.api.cap.IBaublesItemHandler;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Optional;
 
@@ -17,6 +22,73 @@ public class BaublesUtils {
     public static final int HEAD = 4;
     public static final int BODY = 5;
     public static final int CHARM = 6;
+    
+    /**
+     * Checks if a player has a bauble in a given slot. Automatically called by
+     * PlayerUtils#playerHasItem
+     * 
+     * @param player The player to check.
+     * @param item The item you are looking for.
+     * @param meta The required meta value.
+     * @return Whether or not the item was found.
+     */
+    @Optional.Method(modid = "Baubles")
+    public static boolean hasItem (EntityPlayer player, Item item, int meta) {
+        
+        final BaubleType type = getBaubleType(item, meta);
+        
+        if (type != null) {
+            
+            final ItemStack stack = getBauble(player, type);
+            
+            if (stack != null)
+                return stack != null && stack.getItem().equals(item) && (meta < 0 || stack.getMetadata() == meta);
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Gets all stacks of a specific type from the baubles inventory. Automatically called by
+     * PlayerUtils#getStacksFromPlayer.
+     * 
+     * @param player The player to search.
+     * @param item The item to search for.
+     * @param meta The desired metadata for the item. If less than 0, any meta will work.
+     * @return The list of found items.
+     */
+    @Optional.Method(modid = "Baubles")
+    public static List<ItemStack> getBaublesFromPlayer (EntityPlayer player, Item item, int meta) {
+        
+        final List<ItemStack> items = new ArrayList<>();
+        IBaublesItemHandler inv = BaublesApi.getBaublesHandler(player);
+        
+        for (int slot = 0; slot < BaubleType.TRINKET.getValidSlots().length; slot++) {
+            
+            ItemStack stack = inv.getStackInSlot(slot);
+            if (stack != null && stack.getItem() == item && (meta < 0 || stack.getMetadata() == meta))
+                items.add(stack);
+        }
+        
+        return items;
+    }
+    
+    /**
+     * Gets the type of a bauble from a generic item.
+     * 
+     * @param item The item to get info from.
+     * @param meta The meta to use.
+     * @return The bauble type that was found. Can be null.
+     */
+    @Optional.Method(modid = "Baubles")
+    public static BaubleType getBaubleType (Item item, int meta) {
+        
+        if (item instanceof IBauble) {
+            
+            return ((IBauble) item).getBaubleType(new ItemStack(item, meta));
+        }
+        return null;
+    }
     
     /**
      * Attempts to get a bauble from the player.
