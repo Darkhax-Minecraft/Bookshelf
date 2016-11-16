@@ -18,7 +18,7 @@ public class TileEntityBasicTickable extends TileEntityBasic implements ITickabl
         
         catch (final Exception exception) {
             
-            Constants.LOG.warn("A TileEntity at %s in world %s failed a client update tick!", this.getPos(), this.getWorld().getWorldInfo().getWorldName());
+            Constants.LOG.warn("A TileEntity at %s in world %s failed a client update tick!", this.getPos().toString(), this.getWorld().getWorldInfo().getWorldName());
             exception.printStackTrace();
         }
     }
