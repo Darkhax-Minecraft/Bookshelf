@@ -28,6 +28,8 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION_NUMBER)
 public class Bookshelf {
@@ -61,36 +63,9 @@ public class Bookshelf {
         
         GameRegistry.registerTileEntity(TileEntityBasicChest.class, "basic_chest");
         proxy.preInit();
-        
-        RenderingRegistry.registerEntityRenderingHandler(FakeEntity.class, manager -> {
-            
-            try {
-                
-                for (final Render<? extends Entity> render : manager.entityRenderMap.values())
-                    if (render != null)
-                        for (final Field field : render.getClass().getDeclaredFields())
-                            if (field.getType().equals(RenderItem.class)) {
-                                field.setAccessible(true);
-                                field.set(render, RenderItemWrapper.instance());
-                            }
-            }
-            
-            catch (final Exception e) {
-                
-                throw new RuntimeException("Unable to reflect an EntityRenderer!", e);
-            }
-            
-            return new Render<FakeEntity>(manager) {
-                
-                @Override
-                protected ResourceLocation getEntityTexture (FakeEntity entity) {
-                    
-                    return null;
-                }
-            };
-        });
     }
     
+    @SideOnly(Side.CLIENT)
     @EventHandler
     public void init (FMLInitializationEvent event) {
         
