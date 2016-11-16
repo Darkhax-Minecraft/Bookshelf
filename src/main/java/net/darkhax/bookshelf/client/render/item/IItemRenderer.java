@@ -24,7 +24,6 @@ public interface IItemRenderer extends IBakedModel {
      * Handles additional rendering for the ItemStack.
      * 
      * @param item The ItemStack being rendered.
-     * @param model The model being rendered.
      */
-    void renderItem (ItemStack item, IBakedModel model);
+    void renderItem (ItemStack item);
 }

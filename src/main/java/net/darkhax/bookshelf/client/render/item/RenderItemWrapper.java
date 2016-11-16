@@ -103,10 +103,7 @@ public class RenderItemWrapper extends RenderItem {
      */
     private IBakedModel handleTransforms (ItemStack stack, IBakedModel model, TransformType transformType, boolean isLeftHand) {
         
-        if (model instanceof IMatrixTransformer)
-            ((IMatrixTransformer) model).getTransform(transformType, isLeftHand).glApply();
-        
-        else if (model instanceof IGlTransformer)
+        if (model instanceof IGlTransformer)
             ((IGlTransformer) model).applyTransforms(transformType, isLeftHand);
         
         else if (model instanceof IPerspectiveAwareModel)
@@ -144,12 +141,13 @@ public class RenderItemWrapper extends RenderItem {
      */
     private boolean isExtendedModel (IBakedModel model) {
         
-        return model instanceof IItemRenderer || model instanceof IGlTransformer || model instanceof IMatrixTransformer || model instanceof IStackPerspectiveAwareModel;
+        return model instanceof IItemRenderer || model instanceof IGlTransformer || model instanceof IStackPerspectiveAwareModel;
     }
     
     @Override
     public void renderItem (ItemStack stack, IBakedModel model) {
         
+        System.out.println(model.getClass().getName());
         if (stack != null && model instanceof IItemRenderer) {
             
             final IItemRenderer renderer = (IItemRenderer) model;
@@ -158,7 +156,7 @@ public class RenderItemWrapper extends RenderItem {
             GlStateManager.translate(-0.5F, -0.5F, -0.5F);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.enableRescaleNormal();
-            renderer.renderItem(stack, model);
+            renderer.renderItem(stack);
             GlStateManager.popMatrix();
             return;
         }

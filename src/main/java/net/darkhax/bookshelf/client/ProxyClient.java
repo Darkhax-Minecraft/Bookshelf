@@ -26,7 +26,6 @@ public class ProxyClient extends ProxyCommon {
         
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBasicChest.class, new RenderBasicChest());
         
-        
         RenderingRegistry.registerEntityRenderingHandler(FakeEntity.class, manager -> {
             
             try {
