@@ -61,11 +61,11 @@ public class BaublesUtils {
     public static List<ItemStack> getBaublesFromPlayer (EntityPlayer player, Item item, int meta) {
         
         final List<ItemStack> items = new ArrayList<>();
-        IBaublesItemHandler inv = BaublesApi.getBaublesHandler(player);
+        final IBaublesItemHandler inv = BaublesApi.getBaublesHandler(player);
         
         for (int slot = 0; slot < BaubleType.TRINKET.getValidSlots().length; slot++) {
             
-            ItemStack stack = inv.getStackInSlot(slot);
+            final ItemStack stack = inv.getStackInSlot(slot);
             if (stack != null && stack.getItem() == item && (meta < 0 || stack.getMetadata() == meta))
                 items.add(stack);
         }
@@ -83,10 +83,8 @@ public class BaublesUtils {
     @Optional.Method(modid = "Baubles")
     public static BaubleType getBaubleType (Item item, int meta) {
         
-        if (item instanceof IBauble) {
-            
+        if (item instanceof IBauble)
             return ((IBauble) item).getBaubleType(new ItemStack(item, meta));
-        }
         return null;
     }
     
