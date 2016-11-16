@@ -319,6 +319,7 @@ public class RenderUtils {
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         setupRenderState(x, y, z);
+        GlStateManager.translate(x, y, z);
         
         final TextureAtlasSprite still = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getStill(fluid).toString());
         final TextureAtlasSprite flowing = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getFlowing(fluid).toString());
@@ -508,7 +509,17 @@ public class RenderUtils {
      * @param y The Y position to render at.
      * @param z The Z position to render at.
      */
+    @Deprecated
     public static void setupRenderState (double x, double y, double z) {
+        
+        setupRenderState();
+    }
+    
+    /**
+     * Handles all of the basic startup to minimize render conflicts with existing rendering.
+     * Make sure to
+     */
+    public static void setupRenderState () {
         
         GlStateManager.pushMatrix();
         RenderHelper.disableStandardItemLighting();
@@ -517,10 +528,9 @@ public class RenderUtils {
         
         if (Minecraft.isAmbientOcclusionEnabled())
             GL11.glShadeModel(GL11.GL_SMOOTH);
+        
         else
             GL11.glShadeModel(GL11.GL_FLAT);
-        
-        GlStateManager.translate(x, y, z);
     }
     
     /**
