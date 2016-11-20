@@ -71,6 +71,7 @@ public class RenderItemWrapper extends RenderItem {
     private RenderItemWrapper(RenderItem parentRenderer) {
         
         super(parentRenderer.textureManager, parentRenderer.itemModelMesher.getModelManager(), parentRenderer.itemColors);
+        this.itemModelMesher = parentRenderer.itemModelMesher;
         this.parent = parentRenderer;
     }
     
@@ -147,7 +148,6 @@ public class RenderItemWrapper extends RenderItem {
     @Override
     public void renderItem (ItemStack stack, IBakedModel model) {
         
-        System.out.println(model.getClass().getName());
         if (stack != null && model instanceof IItemRenderer) {
             
             final IItemRenderer renderer = (IItemRenderer) model;
