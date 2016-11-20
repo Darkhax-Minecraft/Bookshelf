@@ -70,4 +70,9 @@ public class BlockStates {
      * Used to determine if a block is connected on the western face.
      */
     public static final PropertyBool CONNECTED_WEST = PropertyBool.create("connected_west");
+    
+    /**
+     * Used to determine if a block has been enabled or not.
+     */
+    public static final PropertyBool ENABLED = PropertyBool.create("enabled");
 }
