@@ -53,7 +53,7 @@ public class RenderBasicChest extends TileEntitySpecialRenderer<TileEntityBasicC
                     GlStateManager.matrixMode(5888);
                 }
                 
-                else
+                else if (te.getBlockType() instanceof BlockBasicChest)
                     this.bindTexture(((BlockBasicChest) te.getBlockType()).getSingleTexture());
             }
             else {
@@ -68,7 +68,7 @@ public class RenderBasicChest extends TileEntitySpecialRenderer<TileEntityBasicC
                     GlStateManager.matrixMode(5888);
                 }
                 
-                else
+                else if (te.getBlockType() instanceof BlockBasicChest)
                     this.bindTexture(((BlockBasicChest) te.getBlockType()).getDoubleTexture());
             }
             
