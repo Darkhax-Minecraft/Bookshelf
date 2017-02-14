@@ -1,16 +1,9 @@
 package net.darkhax.bookshelf.client.model;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.vecmath.Matrix4f;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-
+import net.darkhax.bookshelf.client.ProxyClient;
 import net.darkhax.bookshelf.lib.BlockStates;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.minecraft.block.state.IBlockState;
@@ -22,8 +15,11 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.client.model.IRetexturableModel;
@@ -31,6 +27,11 @@ import net.minecraftforge.client.model.SimpleModelState;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import org.apache.commons.lang3.tuple.Pair;
+
+import javax.vecmath.Matrix4f;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class defines a model which allows for certain parts of it to be retextured to other
@@ -47,18 +48,12 @@ import net.minecraftforge.common.property.IExtendedBlockState;
  * Create an ItemOverrideList to remap the ItemStack to the correct variable.
  * https://goo.gl/Aup8MK
  */
-@Deprecated
-public class ModelRetexturable implements IPerspectiveAwareModel {
+public class ModelMultiRetexturable implements IPerspectiveAwareModel {
 
     /**
      * The base model to retexture. This is your model!
      */
     protected final IRetexturableModel baseModel;
-
-    /**
-     * The name of the texture variable to retexture. Only support for one right now.
-     */
-    protected final String textureVariable;
 
     /**
      * Function used to get a texture sprite. The following is one of the best defaults for
@@ -72,12 +67,12 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
      * {@link RenderUtils#getBasicTransforms(IPerspectiveAwareModel)} for a default option for
      * this.
      */
-    protected final ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms;
+    protected final ImmutableMap<TransformType, TRSRTransformation> transforms;
 
     /**
      * A cache which links texture names to their retextured model counter part.
      */
-    protected final Map<String, IBakedModel> cache = Maps.newHashMap();
+    protected final Map<ImmutableMap<String, String>, IBakedModel> cache = Maps.newHashMap();
 
     /**
      * Whether or not the model uses ambientOcclusion.
@@ -113,24 +108,15 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
     protected final ItemOverrideList itemOverride;
 
     /**
-     * The model to use when the retextured model could not be found or generated.
-     */
-    protected final TextureAtlasSprite defaultSprite;
-
-    /**
      * Creates a new model which represents a retexturable version of a json model. One of the
      * texture variables can be remapped to any other block texture.
      *
      * @param baseModel The base model to use for this model.
-     * @param textureVariable The specific texture variable to retexture.
      * @param particle The Blockstate of the particle to use for this model.
-     * @param transforms Map of TRSRTransformations to use for the model.
-     * @param defaultSprite The model to use when the retextured model could not be found or
-     *        generated.
      */
-    public ModelRetexturable(IRetexturableModel baseModel, String textureVariable, IBlockState particle, TextureAtlasSprite defaultSprite) {
+    public ModelMultiRetexturable(IRetexturableModel baseModel, IBlockState particle) {
 
-        this(baseModel, textureVariable, particle, RenderUtils.getBasicTransforms((IPerspectiveAwareModel) baseModel), DefaultItemOverrideList.DEFAULT, defaultSprite);
+        this(baseModel, particle, RenderUtils.getBasicTransforms((IPerspectiveAwareModel) baseModel), DefaultItemOverrideList.DEFAULT);
     }
 
     /**
@@ -138,25 +124,21 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
      * texture variables can be remapped to any other block texture.
      *
      * @param baseModel The base model to use for this model.
-     * @param textureVariable The specific texture variable to retexture.
      * @param particle The Blockstate of the particle to use for this model.
      * @param transforms Map of TRSRTransformations to use for the model.
      * @param itemOverride An override for the item version of the model. Allows you to map an
-     *        ItemStack to the correct model.
-     * @param defaultSprite The model to use when the retextured model could not be found or
-     *        generated.
+     * ItemStack to the correct model.
      */
-    public ModelRetexturable(IRetexturableModel baseModel, String textureVariable, IBlockState particle, ImmutableMap<TransformType, TRSRTransformation> transforms, ItemOverrideList itemOverride, TextureAtlasSprite defaultSprite) {
+    public ModelMultiRetexturable(IRetexturableModel baseModel, IBlockState particle, ImmutableMap<TransformType, TRSRTransformation> transforms, ItemOverrideList itemOverride) {
 
-        this(baseModel, textureVariable, location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()), transforms, true, true, false, particle, ItemCameraTransforms.DEFAULT, itemOverride, defaultSprite);
+        this(baseModel, location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()), transforms, true, true, false, particle, ItemCameraTransforms.DEFAULT, itemOverride);
     }
+
 
     /**
      * Creates a new model which can have aspects of it retextured.
      *
      * @param baseModel The base model to use for this model.
-     * @param textureVariable The specific texture variable to retexture. Only supports one
-     *        right now.
      * @param spriteGetter Function to handle item sprite lookup.
      * @param transforms Map of TRSRTransformations to use for the model.
      * @param ambientOcclusion Whether or not the model should use ambient occlusion.
@@ -165,14 +147,11 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
      * @param particle Blockstate of the particle to use for this model.
      * @param cameraTransforms The camera transforms for the model.
      * @param itemOverride An override for the item version of the model. Allows you to map an
-     *        ItemStack to the correct model.
-     * @param defaultSprite The model to use when the retextured model could not be found or
-     *        generated.
+     * ItemStack to the correct model.
      */
-    public ModelRetexturable(IRetexturableModel baseModel, String textureVariable, Function<ResourceLocation, TextureAtlasSprite> spriteGetter, ImmutableMap<TransformType, TRSRTransformation> transforms, boolean ambientOcclusion, boolean gui3d, boolean builtin, IBlockState particle, ItemCameraTransforms cameraTransforms, ItemOverrideList itemOverride, TextureAtlasSprite defaultSprite) {
+    public ModelMultiRetexturable(IRetexturableModel baseModel, Function<ResourceLocation, TextureAtlasSprite> spriteGetter, ImmutableMap<TransformType, TRSRTransformation> transforms, boolean ambientOcclusion, boolean gui3d, boolean builtin, IBlockState particle, ItemCameraTransforms cameraTransforms, ItemOverrideList itemOverride) {
 
         this.baseModel = baseModel;
-        this.textureVariable = textureVariable;
         this.spriteGetter = spriteGetter;
         this.transforms = transforms;
         this.ambientOcclusion = ambientOcclusion;
@@ -181,31 +160,29 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
         this.particle = particle;
         this.cameraTransforms = cameraTransforms;
         this.itemOverride = itemOverride;
-        this.defaultSprite = defaultSprite;
     }
 
     /**
      * Gets the retextured representation for a given texture name. If one does not exist it
      * will be made and added to the cache.
      *
-     * @param textureName The texture name to look for.
+     * @param builder The map of textures
+     *
      * @return The retextured representation of the base model.
      */
-    public IBakedModel getRetexturedModel (String textureName) {
+    public IBakedModel getRetexturedModel (ImmutableMap<String, String> builder) {
 
         IBakedModel model = this;
 
-        if (this.cache.containsKey(textureName))
-            model = this.cache.get(textureName);
+        if (this.cache.containsKey(builder))
+            model = this.cache.get(builder);
 
         else if (this.baseModel != null) {
 
-            final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-            builder.put(this.textureVariable, textureName);
-            final IModel retexturedModel = this.baseModel.retexture(builder.build());
+            final IModel retexturedModel = this.baseModel.retexture(builder);
             final IModelState modelState = new SimpleModelState(this.transforms);
             model = retexturedModel.bake(modelState, DefaultVertexFormats.BLOCK, this.spriteGetter);
-            this.cache.put(textureName, model);
+            this.cache.put(builder, model);
         }
 
         return model;
@@ -217,8 +194,9 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
      * @return The default textured model.
      */
     public IBakedModel getDefaultModel () {
+        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 
-        return this.getRetexturedModel(this.defaultSprite.getIconName());
+        return this.getRetexturedModel(builder.build());
     }
 
     @Override
@@ -227,12 +205,22 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
         if (state != null) {
 
             final IBlockState heldState = ((IExtendedBlockState) state).getValue(BlockStates.HELD_STATE);
+            final IBlockAccess iBlockAccess = ((IExtendedBlockState) state).getValue(BlockStates.BLOCK_ACCESS);
+            final BlockPos blockPos = ((IExtendedBlockState) state).getValue(BlockStates.BLOCKPOS);
 
-            if (heldState != null)
-                return this.getRetexturedModel(RenderUtils.getSprite(heldState).getIconName()).getQuads(state, side, rand);
+            if (heldState != null){
 
-            else if (this.defaultSprite != null)
-                return this.getRetexturedModel(this.defaultSprite.getIconName()).getQuads(state, side, rand);
+                if(iBlockAccess != null && blockPos != null) {
+                    TileEntity e = iBlockAccess.getTileEntity(blockPos);
+                    ITileEntityRender render = ProxyClient.getTileEntityRender(e.getClass());
+                    if(render != null)
+                        return this.getRetexturedModel(render.getRenderStates(e)).getQuads(state, side, rand);
+                }
+
+                final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+                builder.put("blank", RenderUtils.getSprite(heldState).getIconName());
+                return this.getRetexturedModel(builder.build()).getQuads(state, side, rand);
+            }
         }
 
         return RenderUtils.getMissingquads(state, side, rand);
@@ -277,6 +265,6 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
     @Override
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective (TransformType cameraTransformType) {
 
-        return IPerspectiveAwareModel.MapWrapper.handlePerspective(this, this.transforms, cameraTransformType);
+        return MapWrapper.handlePerspective(this, this.transforms, cameraTransformType);
     }
 }
