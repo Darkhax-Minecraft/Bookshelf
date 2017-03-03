@@ -20,12 +20,14 @@ buildscript {
 
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
         classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.0.7"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1"
     }
 }
 
 apply plugin: "maven"
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "com.matthewprenger.cursegradle"
+apply plugin: "org.sonarqube"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -199,5 +201,13 @@ curseforge {
         addArtifact(deobfJar)
         addArtifact(sourcesJar)
         addArtifact(javadocJar)
+    }
+}
+
+sonarqube {
+
+    properties {
+        property "sonar.host.url", "https://sonarqube.com"
+        property "sonar.login", System.getenv("sonarQubeApiKey")
     }
 }
