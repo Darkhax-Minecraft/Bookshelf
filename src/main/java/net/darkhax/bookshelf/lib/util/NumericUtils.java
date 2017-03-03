@@ -10,11 +10,6 @@ public class NumericUtils {
     public static final int[] NUMERIC_KEYS = new int[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 71, 72, 73, 75, 76, 77, 79, 80, 81 };
 
     /**
-     * A Calendar instance which represents the current day.
-     */
-    public static final Calendar TODAY = Calendar.getInstance();
-
-    /**
      * Checks if a keyCode is numeric, meaning 0-9 on the keyboard or number pad.
      *
      * @param keyCode The key code to test.
@@ -40,6 +35,7 @@ public class NumericUtils {
      */
     public static boolean isSpecialDay (int month, int day) {
 
-        return TODAY.get(Calendar.MONTH) + 1 == month && TODAY.get(Calendar.DAY_OF_MONTH) == day;
+        final Calendar today = Calendar.getInstance();
+        return today.get(Calendar.MONTH) + 1 == month && today.get(Calendar.DAY_OF_MONTH) == day;
     }
 }
