@@ -225,7 +225,7 @@ public final class SkullUtils {
         /**
          * The UUID tied to the account.
          */
-        public String playerId;
+        private final String playerId;
 
         /**
          * An enumeration of all accounts provided by Mojang under the MHF format.
@@ -288,12 +288,12 @@ public final class SkullUtils {
         /**
          * The last known username tied to the account.
          */
-        public String lastKnownName;
+        public final String lastKnownName;
 
         /**
          * The UUID tied to the account.
          */
-        public String playerId;
+        private final String playerId;
 
         /**
          * An enumeration of a few player names. This list includes contributors, and friends.
@@ -305,6 +305,26 @@ public final class SkullUtils {
 
             this.lastKnownName = username;
             this.playerId = uuid;
+        }
+
+        /**
+         * Gets the last name that was known for the profile.
+         *
+         * @return The last known name for the profile.
+         */
+        public String getLastKnownName () {
+
+            return this.lastKnownName;
+        }
+
+        /**
+         * Gets the UUID for the profile.
+         *
+         * @return The UUID for the profile.
+         */
+        public String getId () {
+
+            return this.playerId;
         }
     }
 }
