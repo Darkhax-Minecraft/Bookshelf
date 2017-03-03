@@ -10,6 +10,7 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import net.darkhax.bookshelf.features.Feature;
 import net.darkhax.bookshelf.handler.SupporterHandler;
 import net.darkhax.bookshelf.handler.SupporterHandler.SupporterData;
+import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -73,7 +74,7 @@ public class FeatureSupporters extends Feature {
             }
             catch (final InterruptedException e) {
 
-                return;
+                Constants.LOG.warn("Unable to make player: " + player.getName(), e);
             }
 
             Minecraft.getMinecraft().addScheduledTask( () -> {
