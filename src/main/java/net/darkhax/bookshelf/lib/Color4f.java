@@ -169,7 +169,7 @@ public class Color4f {
      */
     public boolean isWhite () {
 
-        return this.red == 1f && this.green == 1f && this.blue == 1f;
+        return this.toAWTColor().equals(Color.WHITE);
     }
 
     /**
