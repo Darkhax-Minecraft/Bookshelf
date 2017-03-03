@@ -15,3 +15,5 @@ run/
 .metadata/
 .project
 .settings/
+*.launch
+/bin/
