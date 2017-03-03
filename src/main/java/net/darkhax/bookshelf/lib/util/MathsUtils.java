@@ -50,7 +50,7 @@ public final class MathsUtils {
      */
     public static double round (double value, int places) {
 
-        return value >= 0 && places > 0 ? new BigDecimal(value).setScale(places, RoundingMode.HALF_UP).doubleValue() : value;
+        return value >= 0 && places > 0 ? BigDecimal.valueOf(value).setScale(places, RoundingMode.HALF_UP).doubleValue() : value;
     }
 
     /**
