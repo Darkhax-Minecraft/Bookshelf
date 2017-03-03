@@ -7,6 +7,16 @@ import net.minecraft.item.ItemStack;
 public final class EnchantmentUtils {
 
     /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private EnchantmentUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
+
+    /**
      * A check to see if an ItemStack can be enchanted. For this to be true, the ItemStack must
      * have an enchantability grater than 0, and be a book, enchanted book, or an tool.
      *

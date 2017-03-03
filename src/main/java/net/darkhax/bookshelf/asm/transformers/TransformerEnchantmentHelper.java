@@ -14,7 +14,7 @@ import org.objectweb.asm.tree.VarInsnNode;
 import net.darkhax.bookshelf.asm.ASMUtils;
 import net.darkhax.bookshelf.asm.Mapping;
 
-public class TransformerEnchantmentHelper {
+public final class TransformerEnchantmentHelper {
 
     public static final Mapping METHOD_GET_ENCH_LEVEL = new Mapping("func_185284_a", "getMaxEnchantmentLevel", "net/minecraft/enchantment/EnchantmentHelper", "(Lnet/minecraft/enchantment/Enchantment;Lnet/minecraft/entity/EntityLivingBase;)I");
 
@@ -27,6 +27,16 @@ public class TransformerEnchantmentHelper {
     public static final Mapping METHOD_GET_LEVELS = new Mapping("getLevels", "net/darkhax/bookshelf/events/EnchantmentModifierEvent", "()I");
 
     public static final Mapping FIELD_EVENT_BUS = new Mapping("EVENT_BUS", "net/minecraftforge/common/MinecraftForge", "Lnet/minecraftforge/fml/common/eventhandler/EventBus;");
+
+    /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private TransformerEnchantmentHelper () {
+
+        throw new IllegalAccessError("Utility class");
+    }
 
     public static byte[] transform (String name, String transformedName, byte[] classBytes) {
 

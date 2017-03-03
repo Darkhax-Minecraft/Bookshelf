@@ -17,6 +17,16 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 public final class CraftingUtils {
 
     /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private CraftingUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
+
+    /**
      * Generates a list of all shaped recipes that have a result similar to the passed stack.
      *
      * @param stack The ItemStack to get recipes for.

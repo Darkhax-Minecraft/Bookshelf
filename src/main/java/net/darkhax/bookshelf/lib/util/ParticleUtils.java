@@ -13,7 +13,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ParticleUtils {
+public final class ParticleUtils {
+
+    /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private ParticleUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
 
     /**
      * Spawns the digging particles for a block, similarly to the normal block hit effect

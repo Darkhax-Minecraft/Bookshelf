@@ -21,6 +21,16 @@ public final class EntityUtils {
     private static final EntityEquipmentSlot[] EQUIPMENT_SLOTS = new EntityEquipmentSlot[] { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET };
 
     /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private EntityUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
+
+    /**
      * Calculates the distance between two entities.
      *
      * @param firstEntity The first entity to use.

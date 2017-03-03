@@ -10,7 +10,17 @@ import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ModUtils {
+public final class ModUtils {
+
+    /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private ModUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
 
     /**
      * Gets the name of a mod that registered the passed object. Has support for a wide range

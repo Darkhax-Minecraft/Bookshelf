@@ -18,6 +18,16 @@ import net.minecraftforge.oredict.OreDictionary;
 public final class ItemStackUtils {
 
     /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private ItemStackUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
+
+    /**
      * Sets a stack compound to an ItemStack if it does not already have one.
      *
      * @param stackItemStack having a tag set on it.

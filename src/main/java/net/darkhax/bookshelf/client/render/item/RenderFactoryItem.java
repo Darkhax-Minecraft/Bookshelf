@@ -24,7 +24,7 @@ public class RenderFactoryItem implements IRenderFactory<FakeEntity> {
             if (render != null) {
                 this.patchRenderer(render);
             }
-        
+
         return new Render<FakeEntity>(manager) {
 
             @Override

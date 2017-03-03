@@ -13,7 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Optional;
 
-public class BaublesUtils {
+public final class BaublesUtils {
 
     public static final int AMULTER = 0;
 
@@ -28,6 +28,16 @@ public class BaublesUtils {
     public static final int BODY = 5;
 
     public static final int CHARM = 6;
+
+    /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private BaublesUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
 
     /**
      * Checks if a player has a bauble in a given slot. Automatically called by

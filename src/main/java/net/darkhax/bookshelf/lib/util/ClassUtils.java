@@ -2,7 +2,17 @@ package net.darkhax.bookshelf.lib.util;
 
 import net.darkhax.bookshelf.lib.Constants;
 
-public class ClassUtils {
+public final class ClassUtils {
+
+    /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private ClassUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
 
     /**
      * A basic check to see if two classes are the same. For the classes to be the same,

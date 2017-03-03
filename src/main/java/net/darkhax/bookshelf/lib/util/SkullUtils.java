@@ -10,6 +10,16 @@ import net.minecraft.nbt.NBTTagCompound;
 public final class SkullUtils {
 
     /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private SkullUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
+
+    /**
      * Create a skull from an instance of EntityPlayer.
      *
      * @param player The EntityPlayer to use the skin from.

@@ -7,7 +7,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class BlockUtils {
+public final class BlockUtils {
+
+    /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private BlockUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
 
     /**
      * Checks if an ItemStack contains an ore item. This is done by checking the item extends

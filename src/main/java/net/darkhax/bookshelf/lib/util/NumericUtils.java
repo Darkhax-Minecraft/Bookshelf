@@ -2,12 +2,22 @@ package net.darkhax.bookshelf.lib.util;
 
 import java.util.Calendar;
 
-public class NumericUtils {
+public final class NumericUtils {
 
     /**
      * An array of all the LWJGL numeric key codes.
      */
     public static final int[] NUMERIC_KEYS = new int[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 71, 72, 73, 75, 76, 77, 79, 80, 81 };
+
+    /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private NumericUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
 
     /**
      * Checks if a keyCode is numeric, meaning 0-9 on the keyboard or number pad.

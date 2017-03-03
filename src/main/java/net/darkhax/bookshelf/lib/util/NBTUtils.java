@@ -18,6 +18,16 @@ public final class NBTUtils {
     public static final Comparator<NBTTagCompound> NBT_COMPARATOR = (firstTag, secondTag) -> firstTag != null ? firstTag.equals(secondTag) ? 0 : 1 : secondTag != null ? -1 : 0;
 
     /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private NBTUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
+
+    /**
      * Sets an unknown data type to an NBTTagCompound. If the type of the data can not be
      * identified, and exception will be thrown. Current supported data types include String,
      * Integer, Float, Boolean, Double, Long, Short, Byte, ItemStack, Entity and Position.

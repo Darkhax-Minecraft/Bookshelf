@@ -23,13 +23,23 @@ import net.minecraft.util.ResourceLocation;
  * authors to access in their code. If you want, you can copy and modify this code to add
  * support for your own supporters and rewards.
  */
-public class SupporterHandler {
+public final class SupporterHandler {
 
     private static final ResourceLocation MISSING_ELYTRA = new ResourceLocation("bookshelf", "textures/entity/player/missing_elytra.png");
 
     private static final List<SupporterData> DATA = new ArrayList<>();
 
     private static final String SUPPORTER_URL = "https://raw.githubusercontent.com/Darkhax-Minecraft/Bookshelf/master/supporters.json";
+
+    /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private SupporterHandler () {
+
+        throw new IllegalAccessError("Utility class");
+    }
 
     public static void readSupporterData () {
 

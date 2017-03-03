@@ -35,6 +35,16 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 public final class InstructionComparator {
 
+    /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private InstructionComparator () {
+
+        throw new IllegalAccessError("Utility class");
+    }
+
     // TODO: Add documentation
     public static InsnList getImportantList (InsnList list) {
 

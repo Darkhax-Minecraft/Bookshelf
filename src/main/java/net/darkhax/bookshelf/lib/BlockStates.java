@@ -9,7 +9,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-public class BlockStates {
+public final class BlockStates {
 
     /**
      * Used to handle whether or not the block is on or off. Used mainly by redstone blocks.
@@ -75,4 +75,14 @@ public class BlockStates {
      * Used to determine if a block has been enabled or not.
      */
     public static final PropertyBool ENABLED = PropertyBool.create("enabled");
+
+    /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private BlockStates () {
+
+        throw new IllegalAccessError("Utility class");
+    }
 }

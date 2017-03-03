@@ -34,6 +34,16 @@ public final class PlayerUtils {
     public static BiMap<String, UUID> PROFILE_CACHE = HashBiMap.<String, UUID> create();
 
     /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private PlayerUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
+
+    /**
      * Checks if a specific player can sleep. For this to be true, a player must not already be
      * in a bed, and the world time bust be greater than 12541, but less than 23458.
      *

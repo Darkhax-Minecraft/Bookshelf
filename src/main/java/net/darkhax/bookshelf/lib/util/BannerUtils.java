@@ -12,7 +12,17 @@ import net.minecraftforge.common.util.EnumHelper;
 /**
  * A compilation of utilities and methods for working with banners.
  */
-public class BannerUtils {
+public final class BannerUtils {
+
+    /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private BannerUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
 
     /**
      * Creates a new Banner ItemStack that has all of the patterns in the NBTTagList written to

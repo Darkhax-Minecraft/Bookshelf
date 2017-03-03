@@ -4,7 +4,17 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 
-public class GuiUtils {
+public final class GuiUtils {
+
+    /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private GuiUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
 
     /**
      * Adds a standard player inventory to the container.

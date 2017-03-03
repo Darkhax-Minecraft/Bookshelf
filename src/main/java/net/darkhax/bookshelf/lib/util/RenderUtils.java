@@ -47,9 +47,19 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderUtils {
+public final class RenderUtils {
 
     public static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+
+    /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
+     */
+    private RenderUtils () {
+
+        throw new IllegalAccessError("Utility class");
+    }
 
     /**
      * Registers a LayerRenderer to both the Alex and Steve player renderers.
