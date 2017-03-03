@@ -1,5 +1,7 @@
 package net.darkhax.bookshelf.lib.util;
 
+import net.darkhax.bookshelf.lib.Constants;
+
 public class ClassUtils {
 
     /**
@@ -44,7 +46,7 @@ public class ClassUtils {
 
         catch (final ClassNotFoundException e) {
 
-            e.printStackTrace();
+            Constants.LOG.warn(e);
             return null;
         }
     }

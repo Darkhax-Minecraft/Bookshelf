@@ -102,12 +102,12 @@ public class SupporterHandler {
 
         catch (final MalformedURLException e) {
 
-            Constants.LOG.error("Could not access supporter data. " + e.getMessage());
+            Constants.LOG.error("Could not access supporter data.", e);
         }
 
         catch (final IOException e) {
 
-            Constants.LOG.error("Could not access supporter data. " + e.getMessage());
+            Constants.LOG.error("Could not access supporter data.", e);
         }
     }
 
