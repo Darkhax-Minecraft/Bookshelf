@@ -296,9 +296,9 @@ public class RenderItemWrapper extends RenderItem {
 
             }
 
-            catch (final Throwable throwable) {
+            catch (final Exception e) {
 
-                final CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering item");
+                final CrashReport crashreport = CrashReport.makeCrashReport(e, "Rendering item");
                 final CrashReportCategory crashreportcategory = crashreport.makeCategory("Item being rendered");
                 crashreportcategory.setDetail("Item Type", () -> String.valueOf(stack.getItem()));
                 crashreportcategory.setDetail("Item Aux", () -> String.valueOf(stack.getMetadata()));
