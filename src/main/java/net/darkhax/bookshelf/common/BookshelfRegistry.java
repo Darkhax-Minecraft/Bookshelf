@@ -6,12 +6,12 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 
 public class BookshelfRegistry {
-    
+
     /**
      * A List of all the anvil recipes that have been registered with Bookshelf.
      */
     private static final List<AnvilRecipe> anvilRecipes = new ArrayList<>();
-    
+
     /**
      * Adds a new AnvilRecipe to the registry. Inputs can be null.
      *
@@ -22,10 +22,10 @@ public class BookshelfRegistry {
      * @param output The ItemStack to be created by the recipe.
      */
     public static void addAnvilRecipe (ItemStack inputLeft, ItemStack inputRight, int experience, ItemStack output) {
-        
+
         anvilRecipes.add(new AnvilRecipe(inputLeft, inputRight, experience, output));
     }
-    
+
     /**
      * Adds a new AnvilRecipe to the registry. Inputs can be null.
      *
@@ -37,10 +37,10 @@ public class BookshelfRegistry {
      * @param output The ItemStack to be created by this recipe.
      */
     public static void addAnvilRecipe (ItemStack inputLeft, ItemStack inputRight, String requiredName, int experience, ItemStack output) {
-        
+
         anvilRecipes.add(new AnvilRecipe(inputLeft, inputRight, requiredName, experience, 0, output));
     }
-    
+
     /**
      * Adds a new AnvilRecipe to the registry. Inputs can be null.
      *
@@ -54,20 +54,20 @@ public class BookshelfRegistry {
      * @param output The ItemStack to be created by this recipe.
      */
     public static void addAnvilRecipe (ItemStack inputLeft, ItemStack inputRight, String requiredName, int experience, int materialCost, ItemStack output) {
-        
+
         anvilRecipes.add(new AnvilRecipe(inputLeft, inputRight, requiredName, experience, materialCost, output));
     }
-    
+
     /**
      * Adds a new AnvilRecipe to the registry directly.
      *
      * @param recipe The AnvilRecipe to register.
      */
     public void addAnvilRecipe (AnvilRecipe recipe) {
-        
+
         anvilRecipes.add(recipe);
     }
-    
+
     /**
      * Retrieves the List of all registered anvil recipes.
      *
@@ -75,46 +75,46 @@ public class BookshelfRegistry {
      *         booksehfl.
      */
     public static List<AnvilRecipe> getAnvilRecipes () {
-        
+
         return anvilRecipes;
     }
-    
+
     /**
      * Wrapper for basic anvil recipe info.
      */
     public static class AnvilRecipe {
-        
+
         /**
          * The ItemStack required in the left slot of the Anvil GUI.
          */
         public ItemStack inputLeft;
-        
+
         /**
          * The ItemStack required in the right side of the Anvil GUI.
          */
         public ItemStack inputRight;
-        
+
         /**
          * A name requirement for the recipe.
          */
         public String nameTaxt;
-        
+
         /**
          * The amount of experience levels to charge for this recipe.
          */
         public int experienceUsed;
-        
+
         /**
          * The amount of items to consume, from the right slot of the Anvil GUI. If 0, the
          * whole stack will be consumed.
          */
         public int materialCost;
-        
+
         /**
          * The ItemStack output for this recipe.
          */
         public ItemStack output;
-        
+
         /**
          * Constructs a new AnvilRecipe, using all of the required parameters, except for the
          * name requirement and material cost.
@@ -124,11 +124,11 @@ public class BookshelfRegistry {
          * @param experience The amount of experience that this recipe should cost.
          * @param outputStack The ItemStack that will be created by this recipe.
          */
-        public AnvilRecipe(ItemStack firstInput, ItemStack secondInput, int experience, ItemStack outputStack) {
-            
+        public AnvilRecipe (ItemStack firstInput, ItemStack secondInput, int experience, ItemStack outputStack) {
+
             this(firstInput, secondInput, null, experience, 0, outputStack);
         }
-        
+
         /**
          * Constructs a new AnvilRecipe, using all of the required parameters.
          *
@@ -140,8 +140,8 @@ public class BookshelfRegistry {
          *        GUI. If 0, the whole stack will be consumed.
          * @param outputStack The ItemStack that will be created by this recipe.
          */
-        public AnvilRecipe(ItemStack firstInput, ItemStack secondInput, String requiredName, int experience, int materialCost, ItemStack outputStack) {
-            
+        public AnvilRecipe (ItemStack firstInput, ItemStack secondInput, String requiredName, int experience, int materialCost, ItemStack outputStack) {
+
             this.inputLeft = firstInput;
             this.inputRight = secondInput;
             this.nameTaxt = requiredName;
@@ -149,7 +149,7 @@ public class BookshelfRegistry {
             this.materialCost = materialCost;
             this.output = outputStack;
         }
-        
+
         /**
          * A basic method for calculating the experience level cost. This can be overridden to
          * add your own calculations.
@@ -161,10 +161,10 @@ public class BookshelfRegistry {
          *         at least 1 level for the recipe to work.
          */
         public int getExperienceCost (ItemStack firstInput, ItemStack secondInput, String enteredName) {
-            
+
             return this.experienceUsed;
         }
-        
+
         /**
          * A basic method for calculating the material cost. This can be overridden to add your
          * own calculations.
@@ -176,10 +176,10 @@ public class BookshelfRegistry {
          *         at least 1 level for the recipe to work.
          */
         public int getMaterialCost (ItemStack firstInput, ItemStack secondInput, String enteredName) {
-            
+
             return this.inputRight.stackSize;
         }
-        
+
         /**
          * A basic method for generating the output. This can be overridden to change how your
          * output is created.
@@ -191,7 +191,7 @@ public class BookshelfRegistry {
          *         at least 1 level for the recipe to work.
          */
         public ItemStack getOutput (ItemStack firstInput, ItemStack secondInput, String enteredName) {
-            
+
             return this.output.copy();
         }
     }

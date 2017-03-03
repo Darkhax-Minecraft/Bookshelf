@@ -7,25 +7,34 @@ import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraftforge.common.config.Configuration;
 
 public class FeatureAttributeFix extends Feature {
-    
+
     private final String CONFIG_NAME = "AttributeFix";
+
     private boolean enabled = true;
-    
+
     private final float maxHealth = 4096f;
+
     private float followRange = 4096f;
+
     private float knockback = 4096f;
+
     private float speed = 4096f;
+
     private float damage = 4096f;
+
     private float atkSpeed = 4096f;
+
     private float maxArmor = 4096f;
+
     private float maxArmorToughness = 4096f;
+
     private float luck = 4096f;
-    
+
     @Override
     public void onPreInit () {
-        
+
         if (this.enabled) {
-            
+
             SharedMonsterAttributes.MAX_HEALTH = new RangedAttribute((IAttribute) null, "generic.maxHealth", 20.0D, 0.0D, this.maxHealth).setDescription("Max Health").setShouldWatch(true);
             SharedMonsterAttributes.FOLLOW_RANGE = new RangedAttribute((IAttribute) null, "generic.followRange", 32.0D, 0.0D, this.followRange).setDescription("Follow Range");
             SharedMonsterAttributes.KNOCKBACK_RESISTANCE = new RangedAttribute((IAttribute) null, "generic.knockbackResistance", 0.0D, 0.0D, this.knockback).setDescription("Knockback Resistance");
@@ -37,12 +46,12 @@ public class FeatureAttributeFix extends Feature {
             SharedMonsterAttributes.LUCK = new RangedAttribute((IAttribute) null, "generic.luck", 0.0D, -1024.0D, this.luck).setShouldWatch(true);
         }
     }
-    
+
     @Override
     public void setupConfig (Configuration config) {
-        
+
         this.enabled = config.getBoolean("Enabled", this.CONFIG_NAME, true, "Should the max armor amount cap be raised?");
-        
+
         this.maxArmor = config.getFloat("MaxHealth", this.CONFIG_NAME, 4096f, 0f, Float.MAX_VALUE, "The highest possible amount of health.");
         this.followRange = config.getFloat("FollowRange", this.CONFIG_NAME, 4096f, 0f, Float.MAX_VALUE, "The highest possible follow range.");
         this.knockback = config.getFloat("Knockback", this.CONFIG_NAME, 4096f, 0f, Float.MAX_VALUE, "The highest possible knockback resistance");

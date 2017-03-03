@@ -9,24 +9,24 @@ import net.minecraft.world.World;
  * references to an entity class for tricking registers.
  */
 public class FakeEntity extends Entity {
-    
-    public FakeEntity(World worldIn) {
-        
+
+    public FakeEntity (World worldIn) {
+
         super(worldIn);
     }
-    
+
     @Override
     protected void entityInit () {
-        
+
     }
-    
+
     @Override
     protected void readEntityFromNBT (NBTTagCompound compound) {
-        
+
     }
-    
+
     @Override
     protected void writeEntityToNBT (NBTTagCompound compound) {
-        
+
     }
 }

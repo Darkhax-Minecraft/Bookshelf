@@ -1,8 +1,16 @@
 package net.darkhax.bookshelf.client.model;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.vecmath.Matrix4f;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+
 import net.darkhax.bookshelf.client.ProxyClient;
 import net.darkhax.bookshelf.lib.BlockStates;
 import net.darkhax.bookshelf.lib.util.RenderUtils;
@@ -27,11 +35,6 @@ import net.minecraftforge.client.model.SimpleModelState;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import org.apache.commons.lang3.tuple.Pair;
-
-import javax.vecmath.Matrix4f;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class defines a model which allows for certain parts of it to be retextured to other
@@ -114,7 +117,7 @@ public class ModelMultiRetexturable implements IPerspectiveAwareModel {
      * @param baseModel The base model to use for this model.
      * @param particle The Blockstate of the particle to use for this model.
      */
-    public ModelMultiRetexturable(IRetexturableModel baseModel, IBlockState particle) {
+    public ModelMultiRetexturable (IRetexturableModel baseModel, IBlockState particle) {
 
         this(baseModel, particle, RenderUtils.getBasicTransforms((IPerspectiveAwareModel) baseModel), DefaultItemOverrideList.DEFAULT);
     }
@@ -127,13 +130,12 @@ public class ModelMultiRetexturable implements IPerspectiveAwareModel {
      * @param particle The Blockstate of the particle to use for this model.
      * @param transforms Map of TRSRTransformations to use for the model.
      * @param itemOverride An override for the item version of the model. Allows you to map an
-     * ItemStack to the correct model.
+     *        ItemStack to the correct model.
      */
-    public ModelMultiRetexturable(IRetexturableModel baseModel, IBlockState particle, ImmutableMap<TransformType, TRSRTransformation> transforms, ItemOverrideList itemOverride) {
+    public ModelMultiRetexturable (IRetexturableModel baseModel, IBlockState particle, ImmutableMap<TransformType, TRSRTransformation> transforms, ItemOverrideList itemOverride) {
 
         this(baseModel, location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()), transforms, true, true, false, particle, ItemCameraTransforms.DEFAULT, itemOverride);
     }
-
 
     /**
      * Creates a new model which can have aspects of it retextured.
@@ -147,9 +149,9 @@ public class ModelMultiRetexturable implements IPerspectiveAwareModel {
      * @param particle Blockstate of the particle to use for this model.
      * @param cameraTransforms The camera transforms for the model.
      * @param itemOverride An override for the item version of the model. Allows you to map an
-     * ItemStack to the correct model.
+     *        ItemStack to the correct model.
      */
-    public ModelMultiRetexturable(IRetexturableModel baseModel, Function<ResourceLocation, TextureAtlasSprite> spriteGetter, ImmutableMap<TransformType, TRSRTransformation> transforms, boolean ambientOcclusion, boolean gui3d, boolean builtin, IBlockState particle, ItemCameraTransforms cameraTransforms, ItemOverrideList itemOverride) {
+    public ModelMultiRetexturable (IRetexturableModel baseModel, Function<ResourceLocation, TextureAtlasSprite> spriteGetter, ImmutableMap<TransformType, TRSRTransformation> transforms, boolean ambientOcclusion, boolean gui3d, boolean builtin, IBlockState particle, ItemCameraTransforms cameraTransforms, ItemOverrideList itemOverride) {
 
         this.baseModel = baseModel;
         this.spriteGetter = spriteGetter;
@@ -174,9 +176,9 @@ public class ModelMultiRetexturable implements IPerspectiveAwareModel {
 
         IBakedModel model = this;
 
-        if (this.cache.containsKey(builder))
+        if (this.cache.containsKey(builder)) {
             model = this.cache.get(builder);
-
+        }
         else if (this.baseModel != null) {
 
             final IModel retexturedModel = this.baseModel.retexture(builder);
@@ -194,6 +196,7 @@ public class ModelMultiRetexturable implements IPerspectiveAwareModel {
      * @return The default textured model.
      */
     public IBakedModel getDefaultModel () {
+
         final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 
         return this.getRetexturedModel(builder.build());
@@ -208,12 +211,12 @@ public class ModelMultiRetexturable implements IPerspectiveAwareModel {
             final IBlockAccess iBlockAccess = ((IExtendedBlockState) state).getValue(BlockStates.BLOCK_ACCESS);
             final BlockPos blockPos = ((IExtendedBlockState) state).getValue(BlockStates.BLOCKPOS);
 
-            if (heldState != null){
+            if (heldState != null) {
 
-                if(iBlockAccess != null && blockPos != null) {
-                    TileEntity e = iBlockAccess.getTileEntity(blockPos);
-                    ITileEntityRender render = ProxyClient.getTileEntityRender(e.getClass());
-                    if(render != null)
+                if (iBlockAccess != null && blockPos != null) {
+                    final TileEntity e = iBlockAccess.getTileEntity(blockPos);
+                    final ITileEntityRender render = ProxyClient.getTileEntityRender(e.getClass());
+                    if (render != null)
                         return this.getRetexturedModel(render.getRenderStates(e)).getQuads(state, side, rand);
                 }
 

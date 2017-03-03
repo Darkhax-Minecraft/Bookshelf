@@ -8,22 +8,22 @@ import net.minecraft.tileentity.TileEntityChest;
  * unique functionality beyond that.
  */
 public class TileEntityBasicChest extends TileEntityChest {
-    
+
     /**
      * Base constructor, used internally by mc/forge. Don't use this!
      */
-    public TileEntityBasicChest() {
-        
+    public TileEntityBasicChest () {
+
         super();
     }
-    
+
     /**
      * Delegate constructor for the chest one.
-     * 
+     *
      * @param type The type of chest being created.
      */
-    public TileEntityBasicChest(BlockChest.Type type) {
-        
+    public TileEntityBasicChest (BlockChest.Type type) {
+
         super(type);
     }
 }

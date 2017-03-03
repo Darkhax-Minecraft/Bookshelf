@@ -12,27 +12,27 @@ import org.apache.commons.lang3.text.WordUtils;
 import net.minecraft.util.text.TextFormatting;
 
 public class TextUtils {
-    
+
     /**
      * A map for getting a ChatFormat to be quickly retrieved based on its character value.
      */
     private static final Map<Character, ChatFormat> CHARACTER_TO_FORMAT = new HashMap<>();
-    
+
     /**
      * A map for getting a ChatFormat quickly by using its name.
      */
     private static final Map<String, ChatFormat> NAME_TO_FORMAT = new HashMap<>();
-    
+
     /**
      * The prefix character used for formatting codes.
      */
     public static final char FORMAT_PREFIX = '\u00a7';
-    
+
     /**
      * Pattern for identifying format codes.
      */
     public static final Pattern FORMAT_PATTERN = Pattern.compile("(?i)" + String.valueOf(FORMAT_PREFIX) + "[0-9A-FK-OR]");
-    
+
     /**
      * This method will take a string and break it down into multiple lines based on a provided
      * line length. The separate strings are then added to the list provided. This method is
@@ -52,12 +52,12 @@ public class TextUtils {
      *         wrapped to the ideal line length and then added.
      */
     public static List<String> wrapStringToList (String string, int lnLength, boolean wrapLongWords, List<String> list) {
-        
+
         final String lines[] = WordUtils.wrap(string, lnLength, null, wrapLongWords).split(SystemUtils.LINE_SEPARATOR);
         list.addAll(Arrays.asList(lines));
         return list;
     }
-    
+
     /**
      * This method will take a string and break it down into multiple lines based on a provided
      * line length. The separate strings are then added to the list provided. This method is
@@ -78,62 +78,63 @@ public class TextUtils {
      *         wrapped to the ideal line length and then added.
      */
     public static List<String> wrapStringToListWithFormat (String string, int lnLength, boolean wrapLongWords, List<String> list, TextFormatting format) {
-        
+
         final String lines[] = WordUtils.wrap(string, lnLength, null, wrapLongWords).split(SystemUtils.LINE_SEPARATOR);
-        
-        for (final String line : lines)
+
+        for (final String line : lines) {
             list.add(format + line);
-        
+        }
+
         return list;
     }
-    
+
     /**
      * Strips all formatting from a piece of text.
-     * 
+     *
      * @param text The text to strip formatting from.
      * @return The text with all formatting stripped.
      */
     public static String stripFormatting (String text) {
-        
+
         return text == null ? null : FORMAT_PATTERN.matcher(text).replaceAll("");
     }
-    
+
     /**
      * Gets a ChatFormat by its formatting character.
-     * 
+     *
      * @param character The character to look for.
      * @return The ChatFormat that was found. May be null.
      */
     public static ChatFormat getValueByCharacter (char character) {
-        
+
         return CHARACTER_TO_FORMAT.get(character);
     }
-    
+
     /**
      * Gets a ChatFormat by its lowercase name.
-     * 
+     *
      * @param name The name to look for.
      * @return The ChatFormat that was found, can be null if nothing was found.
      */
     public static ChatFormat getValueByName (String name) {
-        
+
         return NAME_TO_FORMAT.get(name.toLowerCase());
     }
-    
+
     /**
      * Adds a format code to a string. Will add the resent format character to the end.
-     * 
+     *
      * @param string The string to format.
      * @param format The format to apply.
      * @return The input string with the new format codes.
      */
     public static String formatString (String string, ChatFormat format) {
-        
+
         return format + string + ChatFormat.RESET;
     }
-    
+
     public enum ChatFormat {
-        
+
         BLACK('0'),
         DARK_BLUE('1'),
         DARK_GREEN('2'),
@@ -156,88 +157,88 @@ public class TextUtils {
         UNDERLINE('n', true),
         ITALIC('o', true),
         RESET('r');
-        
+
         /**
          * The format code used by the format.
          */
         private final char formatCode;
-        
+
         /**
          * Whether or not the format is for styling.
          */
         private final boolean isStyle;
-        
+
         /**
          * The text used to apply this formatting to client side text.
          */
         private final String formatText;
-        
+
         /**
          * Constructs a color format for a color.
-         * 
+         *
          * @param character The character code used for the format.
          */
-        private ChatFormat(char character) {
-            
+        private ChatFormat (char character) {
+
             this(character, false);
         }
-        
+
         /**
          * Constructs a styling format.
-         * 
+         *
          * @param character The character code used for the format.
          * @param isStyled Whether or not the this is a styling.
          */
-        private ChatFormat(char character, boolean isStyled) {
-            
+        private ChatFormat (char character, boolean isStyled) {
+
             this.formatCode = character;
             this.isStyle = isStyled;
             this.formatText = "\u00a7" + character;
         }
-        
+
         /**
          * Gets the character used by the formatting.
-         * 
+         *
          * @return The character used by the formatting.
          */
         public char getFormattingCode () {
-            
+
             return this.formatCode;
         }
-        
+
         /**
          * Checks if the format is styled.
-         * 
+         *
          * @return Whether or not the format is styled.
          */
         public boolean isStyled () {
-            
+
             return this.isStyle;
         }
-        
+
         /**
          * Checks if this is a color or not. A color is not styled or reset.
-         * 
+         *
          * @return Whether or not the chat format is a color.
          */
         public boolean isColor () {
-            
+
             return !this.isStyle && this != RESET;
         }
-        
+
         /**
          * Gets the name of the chat format as a lowercase string.
-         * 
+         *
          * @return An all lowercase name for the formatting.
          */
         public String getName () {
-            
+
             return this.name().toLowerCase();
         }
-        
+
         @Override
         public String toString () {
-            
+
             return this.formatText;
         }
     }

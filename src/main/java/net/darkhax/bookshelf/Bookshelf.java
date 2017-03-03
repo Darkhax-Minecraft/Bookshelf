@@ -26,42 +26,43 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION_NUMBER)
 public class Bookshelf {
-    
+
     @SidedProxy(serverSide = Constants.PROXY_COMMON, clientSide = Constants.PROXY_CLIENT)
     public static ProxyCommon proxy;
-    
+
     @Mod.Instance(Constants.MOD_ID)
     public static Bookshelf instance;
-    
+
     /**
      * A list of feature objects. The feature system is specifically intended for features that
      * are bundled with the library and should not be considered part of the API/Library.
      */
     public static List<Feature> features = new ArrayList<>();
-    
+
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
-        
+
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
-        
+
         features.add(new FeatureBookshelves());
         features.add(new FeaturePlayerHeads());
         features.add(new FeatureSupporters());
         features.add(new FeatureAttributeFix());
-        
+
         new ConfigurationHandler(event.getSuggestedConfigurationFile());
-        
-        for (final Feature feature : features)
+
+        for (final Feature feature : features) {
             feature.onPreInit();
-        
+        }
+
         GameRegistry.registerTileEntity(TileEntityBasicChest.class, "basic_chest");
         proxy.preInit();
     }
-    
+
     @SideOnly(Side.CLIENT)
     @EventHandler
     public void init (FMLInitializationEvent event) {
-        
+
         RenderItemWrapper.instance();
     }
 }

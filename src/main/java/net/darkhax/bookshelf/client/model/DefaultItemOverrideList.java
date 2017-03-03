@@ -9,17 +9,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class DefaultItemOverrideList extends ItemOverrideList {
-    
+
     public static final ItemOverrideList DEFAULT = new DefaultItemOverrideList();
-    
-    public DefaultItemOverrideList() {
-        
+
+    public DefaultItemOverrideList () {
+
         super(ImmutableList.of());
     }
-    
+
     @Override
     public IBakedModel handleItemState (IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
-        
+
         return ((ModelMultiRetexturable) originalModel).getDefaultModel();
     }
 }

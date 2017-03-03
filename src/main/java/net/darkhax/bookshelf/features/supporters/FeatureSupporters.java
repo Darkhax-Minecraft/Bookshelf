@@ -21,62 +21,63 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class FeatureSupporters extends Feature {
-    
+
     /**
      * A Thread pool to handle certain player specific texture requests.
      */
     private static final ExecutorService THREAD_POOL = new ThreadPoolExecutor(0, 2, 1L, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>());
-    
-    public FeatureSupporters() {
-        
+
+    public FeatureSupporters () {
+
         SupporterHandler.readSupporterData();
     }
-    
+
     @Override
     public void setupRendering () {
-        
+
         MinecraftForge.EVENT_BUS.register(this);
     }
-    
+
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void entityJoinWorld (EntityJoinWorldEvent event) {
-        
+
         if (event.getEntity() instanceof AbstractClientPlayer) {
-            
+
             final AbstractClientPlayer player = (AbstractClientPlayer) event.getEntity();
             final SupporterData data = SupporterHandler.getSupporterData(player);
-            
-            if (data != null)
+
+            if (data != null) {
                 makePlayerFancy(player, data.getElytraTexture());
+            }
         }
     }
-    
+
     /**
      * Attempts to make the player super fancy. Will try to apply the cape texture and the
      * elytra texture that is passed. This method is used internally and should not be
      * considered part of the public API.
-     * 
+     *
      * @param player The player to make fancy.
      * @param cape The cape texture to set.
      * @param elytra The elytra texture to set.
      */
     @SideOnly(Side.CLIENT)
     private static void makePlayerFancy (final AbstractClientPlayer player, final ResourceLocation elytra) {
-        
+
         THREAD_POOL.submit( () -> {
-            
+
             try {
-                
+
                 Thread.sleep(100);
             }
             catch (final InterruptedException e) {
-                
+
                 return;
             }
-            
+
             Minecraft.getMinecraft().addScheduledTask( () -> {
-                
+
                 RenderUtils.setPlayerTexture(Type.ELYTRA, player, elytra);
             });
         });

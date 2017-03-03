@@ -6,5 +6,5 @@ import net.minecraftforge.fml.common.Optional;
 
 @Optional.Interface(modid = "Baubles", iface = "baubles.api.IBauble")
 public abstract class ItemBauble extends Item implements IBauble {
-    
+
 }

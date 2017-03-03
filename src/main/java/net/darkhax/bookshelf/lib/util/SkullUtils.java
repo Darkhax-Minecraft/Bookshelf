@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public final class SkullUtils {
-    
+
     /**
      * Create a skull from an instance of EntityPlayer.
      *
@@ -16,19 +16,19 @@ public final class SkullUtils {
      * @return ItemStack An ItemStack containing a skull that represents the passed player.
      */
     public static ItemStack createSkull (EntityPlayer player) {
-        
+
         return createSkull(player.getDisplayNameString(), player.getUniqueID());
     }
-    
+
     /**
      * Creates a skull using a players UUID.
-     * 
+     *
      * @param uuid The UUID of the player to base the skull on.
      * @return ItemStack An ItemStack containing a skull which represents the owner of the
      *         passed UUID.
      */
     public static ItemStack createSkull (String name, UUID uuid) {
-        
+
         final ItemStack stack = new ItemStack(Items.SKULL, 1, 3);
         ItemStackUtils.prepareDataTag(stack);
         final NBTTagCompound ownerTag = new NBTTagCompound();
@@ -37,137 +37,137 @@ public final class SkullUtils {
         stack.getTagCompound().setTag("SkullOwner", ownerTag);
         return stack;
     }
-    
+
     /**
      * Creates a skull from the list of publicly provided MHF accounts.
-     * 
+     *
      * @param account The MHFAccount to create the skull from.
      * @return ItemStack An ItemStack containing a skull which represents the MHF account.
      */
     public static ItemStack createSkull (MHFAccount account) {
-        
+
         return createSkull(account.getMHFName());
     }
-    
+
     /**
      * Creates a skull from the list of provided players.
-     * 
+     *
      * @param player The Player account to create the skull from
      * @return ItemStack An ItemStack containing a skull which represents the known Player.
      */
     public static ItemStack createSkull (Player player) {
-        
+
         return createSkull(player.lastKnownName, UUID.fromString(player.UUID));
     }
-    
+
     /**
      * Creates a skull that represents a player. This method can use plain text usernames, or
      * player UUID. It is recommended to use the UUID over the username, unless you are 100%
      * certain that the username will never change.
-     * 
+     *
      * @param owner The owner of the skull being created. Can be a username of a UUID.
      * @return ItemStack An ItemStack containing a skull which represents the passed owner
      *         name.
      */
     public static ItemStack createSkull (String owner) {
-        
+
         final ItemStack stack = new ItemStack(Items.SKULL, 1, 3);
         ItemStackUtils.prepareDataTag(stack);
         stack.getTagCompound().setString("SkullOwner", owner);
         return stack;
     }
-    
+
     /**
      * Creates a vanilla Wither Skeleton Skull.
-     * 
+     *
      * @return ItemStack An ItemStack containing a vanilla wither skeleton skull.
      */
     public static ItemStack getWitherSkeletonSkull () {
-        
+
         return new ItemStack(Items.SKULL, 1, 1);
     }
-    
+
     /**
      * Creates a vanilla Zombie Skull.
-     * 
+     *
      * @return ItemStack An ItemStack containing a vanilla zombie skull.
      */
     public static ItemStack getZombieSkull () {
-        
+
         return new ItemStack(Items.SKULL, 1, 2);
     }
-    
+
     /**
      * Creates a vanilla Creeper Skull.
-     * 
+     *
      * @return ItemStack An ItemStack containing a vanilla creeper skull.
      */
     public static ItemStack getCreeperSkull () {
-        
+
         return new ItemStack(Items.SKULL, 1, 4);
     }
-    
+
     /**
      * Creates a vanilla Steve Skull.
-     * 
+     *
      * @return ItemStack An ItemStack containing a vanilla steve skull.
      */
     public static ItemStack getSteveSkull () {
-        
+
         return new ItemStack(Items.SKULL, 1, 3);
     }
-    
+
     /**
      * Creates a vanilla Skeleton Skull.
-     * 
+     *
      * @return ItemStack An ItemStack containing a vanilla skeleton skull.
      */
     public static ItemStack getSkeletonSkull () {
-        
+
         return new ItemStack(Items.SKULL, 1, 0);
     }
-    
+
     /**
      * Creates an array of ItemStacks containing MHF Skulls.
-     * 
+     *
      * @return ItemStack[] An array of ItemStack containing every skull from the MHFAccount
      *         enum.
      */
     public static ItemStack[] getMHFSkulls () {
-        
+
         int counter = 0;
         final ItemStack[] MHFSkulls = new ItemStack[MHFAccount.values().length];
-        
+
         for (final MHFAccount account : MHFAccount.values()) {
-            
+
             MHFSkulls[counter] = createSkull(account);
             counter++;
         }
-        
+
         return MHFSkulls;
     }
-    
+
     /**
      * Creates an array of ItemStacks containing the skulls of players from the Player enum.
-     * 
+     *
      * @return ItemStack[] An array of ItemStacks containing the skulls of known players.
      */
     public static ItemStack[] getPlayerSkulls () {
-        
+
         int counter = 0;
         final ItemStack[] playerSkulls = new ItemStack[Player.values().length];
-        
+
         for (final Player player : Player.values()) {
-            
+
             playerSkulls[counter] = createSkull(player);
             counter++;
         }
-        
+
         return playerSkulls;
     }
-    
+
     public static enum MHFAccount {
-        
+
         ALEX("Alex", "6ab43178-89fd-4905-97f6-0f67d9d76fd9"),
         BLAZE("Blaze", "4c38ed11-596a-4fd4-ab1d-26f386c1cbac"),
         CAVE_SPIDER("CaveSpider", "cab28771-f0cd-4fe7-b129-02c69eba79a5"),
@@ -206,55 +206,55 @@ public final class SkullUtils {
         QUESTION("Question", "606e2ff0-ed77-4842-9d6c-e1d3321c7838"),
         PRESENT_GREEN("Present1", "156b251b-12e0-4829-a130-a61b53ba7720"),
         PRESENT_RED("Present2", "f1eb7cad-e2c0-4e9e-8aad-1eae21d5fd95");
-        
+
         /**
          * The base of the username, without the MHF prefix.
          */
         private final String username;
-        
+
         /**
          * The UUID tied to the account.
          */
         public String UUID;
-        
+
         /**
          * An enumeration of all accounts provided by Mojang under the MHF format.
-         * 
+         *
          * @param username The username tied to the account.
          * @param uuid The uuid tied to the account.
          */
-        MHFAccount(String username, String uuid) {
-            
+        MHFAccount (String username, String uuid) {
+
             this.username = username;
             this.UUID = uuid;
         }
-        
+
         /**
          * Provides the base name for this skull. This is the base name, and not the full
          * username. Use getMHFName to get an actual username that can be used.
-         * 
+         *
          * @return String The skull name, without the MHF_ prefix.
          */
         public String getBaseName () {
-            
+
             return this.username;
         }
-        
+
         /**
          * Provides the username in the MHF format. The MHF format is a format used by Mojang
          * to provide a series of additional player names which can reliably be used for things
          * like skulls.
-         * 
+         *
          * @return String The basic username, with the MHF_ prefix.
          */
         public String getMHFName () {
-            
+
             return "MHF_" + this.username;
         }
     }
-    
+
     public static enum Player {
-        
+
         ILEXICONN("iLexiconn", "40e85e42-21f6-46b6-b5b3-6aeb07f3e3fd"),
         GEFORCE("Geforce", "e42a08be-4aa9-42c3-b8d9-29bde3aa533d"),
         DARKHAX("Darkhax", "d183e5a2-a087-462a-963e-c3d7295f9ec5"),
@@ -274,25 +274,25 @@ public final class SkullUtils {
         TEDYHERE("TedyHere", "99598e23-9e10-4bf6-af80-fdcda4b80f27"),
         JARED11108("Jaredlll08", "3bf32666-f9ba-4060-af02-53bdb0df38fc"),
         SANANDREASMC("sanandreasMC", "044d980d-5c2a-4030-95cf-cbfde69ea3cb");
-        
+
         /**
          * The last known username tied to the account.
          */
         public String lastKnownName;
-        
+
         /**
          * The UUID tied to the account.
          */
         public String UUID;
-        
+
         /**
          * An enumeration of a few player names. This list includes contributors, and friends.
-         * 
+         *
          * @param username The last known username tied to the account.
          * @param uuid The UUID tied to the account.
          */
-        Player(String username, String uuid) {
-            
+        Player (String username, String uuid) {
+
             this.lastKnownName = username;
             this.UUID = uuid;
         }

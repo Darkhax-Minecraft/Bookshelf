@@ -128,7 +128,7 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
      * @param defaultSprite The model to use when the retextured model could not be found or
      *        generated.
      */
-    public ModelRetexturable(IRetexturableModel baseModel, String textureVariable, IBlockState particle, TextureAtlasSprite defaultSprite) {
+    public ModelRetexturable (IRetexturableModel baseModel, String textureVariable, IBlockState particle, TextureAtlasSprite defaultSprite) {
 
         this(baseModel, textureVariable, particle, RenderUtils.getBasicTransforms((IPerspectiveAwareModel) baseModel), DefaultItemOverrideList.DEFAULT, defaultSprite);
     }
@@ -146,7 +146,7 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
      * @param defaultSprite The model to use when the retextured model could not be found or
      *        generated.
      */
-    public ModelRetexturable(IRetexturableModel baseModel, String textureVariable, IBlockState particle, ImmutableMap<TransformType, TRSRTransformation> transforms, ItemOverrideList itemOverride, TextureAtlasSprite defaultSprite) {
+    public ModelRetexturable (IRetexturableModel baseModel, String textureVariable, IBlockState particle, ImmutableMap<TransformType, TRSRTransformation> transforms, ItemOverrideList itemOverride, TextureAtlasSprite defaultSprite) {
 
         this(baseModel, textureVariable, location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()), transforms, true, true, false, particle, ItemCameraTransforms.DEFAULT, itemOverride, defaultSprite);
     }
@@ -169,7 +169,7 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
      * @param defaultSprite The model to use when the retextured model could not be found or
      *        generated.
      */
-    public ModelRetexturable(IRetexturableModel baseModel, String textureVariable, Function<ResourceLocation, TextureAtlasSprite> spriteGetter, ImmutableMap<TransformType, TRSRTransformation> transforms, boolean ambientOcclusion, boolean gui3d, boolean builtin, IBlockState particle, ItemCameraTransforms cameraTransforms, ItemOverrideList itemOverride, TextureAtlasSprite defaultSprite) {
+    public ModelRetexturable (IRetexturableModel baseModel, String textureVariable, Function<ResourceLocation, TextureAtlasSprite> spriteGetter, ImmutableMap<TransformType, TRSRTransformation> transforms, boolean ambientOcclusion, boolean gui3d, boolean builtin, IBlockState particle, ItemCameraTransforms cameraTransforms, ItemOverrideList itemOverride, TextureAtlasSprite defaultSprite) {
 
         this.baseModel = baseModel;
         this.textureVariable = textureVariable;
@@ -195,9 +195,9 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
 
         IBakedModel model = this;
 
-        if (this.cache.containsKey(textureName))
+        if (this.cache.containsKey(textureName)) {
             model = this.cache.get(textureName);
-
+        }
         else if (this.baseModel != null) {
 
             final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();

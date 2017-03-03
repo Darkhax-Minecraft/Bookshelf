@@ -3,9 +3,9 @@
  *
  * License: Lesser General Public License 2.1
  *          https://github.com/MinecraftModDevelopment/BaseMetals/blob/1041ccba63dcebe009676c9b18e25143f5afda3e/LICENSE
- *            
+ *
  * Original: https://github.com/MinecraftModDevelopment/BaseMetals/blob/62ee3b6cb4d2b1591e614c7266b245546b3f80dd/src/main/java/cyano/basemetals/entity/EntityCustomArrow.java
- * 
+ *
  * Changes: - Reformatted to Bookshelf's code style and formatting.
  *          - Wrote complete Javadocs.
  *          - Renamed class to EntityModArrow.
@@ -24,54 +24,54 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class EntityModArrow extends EntityTippedArrow {
-    
+
     /**
      * The ItemStack held by the arrow entity.
      */
     private ItemStack heldStack;
-    
+
     /**
      * Constructor for a variant on EntityArrow which holds a specific ItemStack rather than a
      * vanilla one.
-     * 
+     *
      * @param world The world to place the new entity in.
      */
-    public EntityModArrow(World world) {
-        
+    public EntityModArrow (World world) {
+
         super(world);
     }
-    
+
     /**
      * Constructor for a variant on EntityArrow which holds a specific ItemStack rather than a
      * vanilla one.
-     * 
+     *
      * @param world The world to place the new entity in.
      * @param stack The ItemStack that is held by the arrow entity.
      * @param shooter The entity which fired the arrow.
      */
-    public EntityModArrow(World world, ItemStack stack, EntityLivingBase shooter) {
-        
+    public EntityModArrow (World world, ItemStack stack, EntityLivingBase shooter) {
+
         super(world, shooter);
         this.heldStack = stack;
     }
-    
+
     @Override
     protected ItemStack getArrowStack () {
-        
+
         return this.heldStack != null ? this.heldStack : super.getArrowStack();
     }
-    
+
     @Override
     public NBTTagCompound writeToNBT (NBTTagCompound compound) {
-        
+
         super.writeToNBT(compound);
         compound.setTag("HeldStack", this.heldStack.writeToNBT(new NBTTagCompound()));
         return compound;
     }
-    
+
     @Override
     public void readFromNBT (NBTTagCompound compound) {
-        
+
         super.readFromNBT(compound);
         this.heldStack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("HeldStack"));
     }

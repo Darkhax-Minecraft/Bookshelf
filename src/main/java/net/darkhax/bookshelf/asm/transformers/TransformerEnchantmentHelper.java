@@ -15,19 +15,24 @@ import net.darkhax.bookshelf.asm.ASMUtils;
 import net.darkhax.bookshelf.asm.Mapping;
 
 public class TransformerEnchantmentHelper {
-    
+
     public static final Mapping METHOD_GET_ENCH_LEVEL = new Mapping("func_185284_a", "getMaxEnchantmentLevel", "net/minecraft/enchantment/EnchantmentHelper", "(Lnet/minecraft/enchantment/Enchantment;Lnet/minecraft/entity/EntityLivingBase;)I");
+
     public static final Mapping METHOD_INIT_EVENT = new Mapping("<init>", "net/darkhax/bookshelf/events/EnchantmentModifierEvent", "(Lnet/minecraft/enchantment/Enchantment;Lnet/minecraft/entity/EntityLivingBase;)V");
+
     public static final Mapping METHOD_POST = new Mapping("post", "net/minecraftforge/fml/common/eventhandler/EventBus", "(Lnet/minecraftforge/fml/common/eventhandler/Event;)Z");
+
     public static final Mapping METHOD_CANCELED = new Mapping("isCanceled", "net/darkhax/bookshelf/events/EnchantmentModifierEvent", "()Z");
+
     public static final Mapping METHOD_GET_LEVELS = new Mapping("getLevels", "net/darkhax/bookshelf/events/EnchantmentModifierEvent", "()I");
+
     public static final Mapping FIELD_EVENT_BUS = new Mapping("EVENT_BUS", "net/minecraftforge/common/MinecraftForge", "Lnet/minecraftforge/fml/common/eventhandler/EventBus;");
-    
+
     public static byte[] transform (String name, String transformedName, byte[] classBytes) {
-        
+
         final ClassNode clazz = ASMUtils.createClassFromByteArray(classBytes);
         final MethodNode method = METHOD_GET_ENCH_LEVEL.getMethodNode(clazz);
-        
+
         final InsnList n1 = new InsnList();
         final LabelNode start = new LabelNode();
         n1.add(start);

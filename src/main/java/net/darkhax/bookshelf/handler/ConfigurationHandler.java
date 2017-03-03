@@ -11,29 +11,32 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEve
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ConfigurationHandler {
-    
+
     private static Configuration config;
-    
-    public ConfigurationHandler(File file) {
-        
+
+    public ConfigurationHandler (File file) {
+
         config = new Configuration(file);
         MinecraftForge.EVENT_BUS.register(this);
         this.syncConfigData();
     }
-    
+
     @SubscribeEvent
     public void onConfigChange (OnConfigChangedEvent event) {
-        
-        if (event.getModID().equals(Constants.MOD_ID))
+
+        if (event.getModID().equals(Constants.MOD_ID)) {
             this.syncConfigData();
+        }
     }
-    
+
     private void syncConfigData () {
-        
-        for (final Feature feature : Bookshelf.features)
+
+        for (final Feature feature : Bookshelf.features) {
             feature.setupConfig(config);
-        
-        if (config.hasChanged())
+        }
+
+        if (config.hasChanged()) {
             config.save();
+        }
     }
 }
