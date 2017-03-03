@@ -17,12 +17,12 @@ public class BlockBasicChest extends BlockChest {
     /**
      * The location of the single chest texture.
      */
-    private final ResourceLocation TEXTURE_SINGLE;
+    private final ResourceLocation textureSingle;
 
     /**
      * The location of the double chest texture.
      */
-    private final ResourceLocation TEXTURE_DOUBLE;
+    private final ResourceLocation textureDouble;
 
     /**
      * Creates a new chest that will behave like the standard vanilla one. The texture for the
@@ -68,8 +68,8 @@ public class BlockBasicChest extends BlockChest {
 
         super(type);
         this.hasPower = hasPower;
-        this.TEXTURE_SINGLE = singleTexture;
-        this.TEXTURE_DOUBLE = doubleTexture;
+        this.textureSingle = singleTexture;
+        this.textureDouble = doubleTexture;
     }
 
     @Override
@@ -91,7 +91,7 @@ public class BlockBasicChest extends BlockChest {
      */
     public ResourceLocation getSingleTexture () {
 
-        return this.TEXTURE_SINGLE;
+        return this.textureSingle;
     }
 
     /**
@@ -101,7 +101,7 @@ public class BlockBasicChest extends BlockChest {
      */
     public ResourceLocation getDoubleTexture () {
 
-        return this.TEXTURE_DOUBLE;
+        return this.textureDouble;
     }
 
     /**

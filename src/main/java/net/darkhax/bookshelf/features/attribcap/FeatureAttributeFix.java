@@ -8,8 +8,6 @@ import net.minecraftforge.common.config.Configuration;
 
 public class FeatureAttributeFix extends Feature {
 
-    private final String CONFIG_NAME = "AttributeFix";
-
     private boolean enabled = true;
 
     private final float maxHealth = 4096f;
@@ -50,16 +48,17 @@ public class FeatureAttributeFix extends Feature {
     @Override
     public void setupConfig (Configuration config) {
 
-        this.enabled = config.getBoolean("Enabled", this.CONFIG_NAME, true, "Should the max armor amount cap be raised?");
+        final String configName = "AttributeFix";
 
-        this.maxArmor = config.getFloat("MaxHealth", this.CONFIG_NAME, 4096f, 0f, Float.MAX_VALUE, "The highest possible amount of health.");
-        this.followRange = config.getFloat("FollowRange", this.CONFIG_NAME, 4096f, 0f, Float.MAX_VALUE, "The highest possible follow range.");
-        this.knockback = config.getFloat("Knockback", this.CONFIG_NAME, 4096f, 0f, Float.MAX_VALUE, "The highest possible knockback resistance");
-        this.speed = config.getFloat("Speed", this.CONFIG_NAME, 4096f, 0f, Float.MAX_VALUE, "The highest possible movement speed.");
-        this.damage = config.getFloat("Damage", this.CONFIG_NAME, 4096f, 0f, Float.MAX_VALUE, "The highest possible attack damage");
-        this.atkSpeed = config.getFloat("AttackSpeed", this.CONFIG_NAME, 4096f, 0f, Float.MAX_VALUE, "The highest possible attack speed");
-        this.maxArmor = config.getFloat("MaxArmor", this.CONFIG_NAME, 4096f, 0f, Float.MAX_VALUE, "The highest possible amount of armor points.");
-        this.maxArmorToughness = config.getFloat("MaxArmorToughness", this.CONFIG_NAME, 4096f, 0f, Float.MAX_VALUE, "The highest possible amount of armor toughness.");
-        this.luck = config.getFloat("Luck", this.CONFIG_NAME, 4096f, 0f, Float.MAX_VALUE, "The highest possible amount of luck.");
+        this.enabled = config.getBoolean("Enabled", configName, true, "Should the max armor amount cap be raised?");
+        this.maxArmor = config.getFloat("MaxHealth", configName, 4096f, 0f, Float.MAX_VALUE, "The highest possible amount of health.");
+        this.followRange = config.getFloat("FollowRange", configName, 4096f, 0f, Float.MAX_VALUE, "The highest possible follow range.");
+        this.knockback = config.getFloat("Knockback", configName, 4096f, 0f, Float.MAX_VALUE, "The highest possible knockback resistance");
+        this.speed = config.getFloat("Speed", configName, 4096f, 0f, Float.MAX_VALUE, "The highest possible movement speed.");
+        this.damage = config.getFloat("Damage", configName, 4096f, 0f, Float.MAX_VALUE, "The highest possible attack damage");
+        this.atkSpeed = config.getFloat("AttackSpeed", configName, 4096f, 0f, Float.MAX_VALUE, "The highest possible attack speed");
+        this.maxArmor = config.getFloat("MaxArmor", configName, 4096f, 0f, Float.MAX_VALUE, "The highest possible amount of armor points.");
+        this.maxArmorToughness = config.getFloat("MaxArmorToughness", configName, 4096f, 0f, Float.MAX_VALUE, "The highest possible amount of armor toughness.");
+        this.luck = config.getFloat("Luck", configName, 4096f, 0f, Float.MAX_VALUE, "The highest possible amount of luck.");
     }
 }

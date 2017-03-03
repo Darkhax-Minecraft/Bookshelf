@@ -25,11 +25,11 @@ import net.minecraft.util.ResourceLocation;
  */
 public final class SupporterHandler {
 
-    private static final ResourceLocation MISSING_ELYTRA = new ResourceLocation("bookshelf", "textures/entity/player/missing_elytra.png");
+    private static final ResourceLocation textureElytraMissing = new ResourceLocation("bookshelf", "textures/entity/player/missing_elytra.png");
 
-    private static final List<SupporterData> DATA = new ArrayList<>();
+    private static final List<SupporterData> supporterData = new ArrayList<>();
 
-    private static final String SUPPORTER_URL = "https://raw.githubusercontent.com/Darkhax-Minecraft/Bookshelf/master/supporters.json";
+    private static final String supporterLocation = "https://raw.githubusercontent.com/Darkhax-Minecraft/Bookshelf/master/supporters.json";
 
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
@@ -46,7 +46,7 @@ public final class SupporterHandler {
         try {
 
             // Reads the json file and makes it usable.
-            final HttpURLConnection connection = (HttpURLConnection) new URL(SUPPORTER_URL).openConnection();
+            final HttpURLConnection connection = (HttpURLConnection) new URL(supporterLocation).openConnection();
             final JsonReader reader = new JsonReader(new InputStreamReader((InputStream) connection.getContent()));
 
             reader.beginObject();
@@ -97,7 +97,7 @@ public final class SupporterHandler {
                 }
 
                 // Adds the data that was read to the list.
-                DATA.add(new SupporterData(playerID, type, confirmed, wantsHead, wantsWawla, elytraTexture));
+                supporterData.add(new SupporterData(playerID, type, confirmed, wantsHead, wantsWawla, elytraTexture));
 
                 // Ends the current player object, allowing us to read the next player object.
                 reader.endObject();
@@ -129,7 +129,7 @@ public final class SupporterHandler {
      */
     public static boolean isSupporter (EntityPlayer player) {
 
-        for (final SupporterData supporter : DATA)
+        for (final SupporterData supporter : supporterData)
             if (supporter.getPlayerID().equals(player.getUniqueID()))
                 return true;
 
@@ -144,7 +144,7 @@ public final class SupporterHandler {
      */
     public static SupporterData getSupporterData (EntityPlayer player) {
 
-        for (final SupporterData supporter : DATA)
+        for (final SupporterData supporter : supporterData)
             if (supporter.getPlayerID().equals(player.getUniqueID()))
                 return supporter;
 
@@ -158,7 +158,7 @@ public final class SupporterHandler {
      */
     public static SupporterData[] getSupporters () {
 
-        return DATA.toArray(new SupporterData[DATA.size()]);
+        return supporterData.toArray(new SupporterData[supporterData.size()]);
     }
 
     public static class SupporterData {
@@ -166,28 +166,28 @@ public final class SupporterHandler {
         /**
          * The unique identifier for the supporter player.
          */
-        private final UUID PLAYER_ID;
+        private final UUID playerId;
 
         /**
          * The type of supporter. Currently supports dev, patreon and contributor.
          */
-        private final String TYPE;
+        private final String type;
 
         /**
          * Whether or not this supporter has completed a payment.
          */
-        private final boolean CONFIRMED;
+        private final boolean confirmed;
 
         /**
          * Whether or not this supporter wants their head to show up in the creative tab.
          */
-        private final boolean WANTS_HEAD;
+        private final boolean wantsHead;
 
         /**
          * Whether or not this supporter wants additional tooltip info when using Wawla on
          * them.
          */
-        private final boolean WANTS_WAWLA;
+        private final boolean wantsWawla;
 
         /**
          * The URL for the custom Elytra texture.
@@ -196,11 +196,11 @@ public final class SupporterHandler {
 
         protected SupporterData (UUID playerID, String type, boolean confirmed, boolean wantsHead, boolean wantsWawla, String elytraTexture) {
 
-            this.PLAYER_ID = playerID;
-            this.TYPE = type;
-            this.CONFIRMED = confirmed;
-            this.WANTS_HEAD = wantsHead;
-            this.WANTS_WAWLA = wantsWawla;
+            this.playerId = playerID;
+            this.type = type;
+            this.confirmed = confirmed;
+            this.wantsHead = wantsHead;
+            this.wantsWawla = wantsWawla;
             this.ELYTRA_TEXTURE = elytraTexture;
         }
 
@@ -211,7 +211,7 @@ public final class SupporterHandler {
          */
         public UUID getPlayerID () {
 
-            return this.PLAYER_ID;
+            return this.playerId;
         }
 
         /**
@@ -221,7 +221,7 @@ public final class SupporterHandler {
          */
         public boolean isConfirmed () {
 
-            return this.CONFIRMED;
+            return this.confirmed;
         }
 
         /**
@@ -231,7 +231,7 @@ public final class SupporterHandler {
          */
         public boolean wantsHead () {
 
-            return this.WANTS_HEAD;
+            return this.wantsHead;
         }
 
         /**
@@ -241,7 +241,7 @@ public final class SupporterHandler {
          */
         public boolean wantsWawla () {
 
-            return this.WANTS_WAWLA;
+            return this.wantsWawla;
         }
 
         /**
@@ -262,7 +262,7 @@ public final class SupporterHandler {
          */
         public ResourceLocation getElytraTexture () {
 
-            return this.ELYTRA_TEXTURE != null && !this.ELYTRA_TEXTURE.isEmpty() ? RenderUtils.downloadResourceLocation(this.ELYTRA_TEXTURE, new ResourceLocation("bookshelf", "elytra/" + this.getPlayerID().toString()), MISSING_ELYTRA, null) : null;
+            return this.ELYTRA_TEXTURE != null && !this.ELYTRA_TEXTURE.isEmpty() ? RenderUtils.downloadResourceLocation(this.ELYTRA_TEXTURE, new ResourceLocation("bookshelf", "elytra/" + this.getPlayerID().toString()), textureElytraMissing, null) : null;
         }
 
         /**
@@ -272,7 +272,7 @@ public final class SupporterHandler {
          */
         public String getType () {
 
-            return this.TYPE;
+            return this.type;
         }
 
         /**
@@ -282,7 +282,7 @@ public final class SupporterHandler {
          */
         public String getLocalizedType () {
 
-            return this.TYPE.toLowerCase();
+            return this.type.toLowerCase();
         }
 
         /**
@@ -292,7 +292,7 @@ public final class SupporterHandler {
          */
         public ChatFormat getFormat () {
 
-            return this.TYPE.equals("developer") ? ChatFormat.GREEN : this.TYPE.equals("patreon") ? ChatFormat.GOLD : this.TYPE.equals("contributor") ? ChatFormat.AQUA : this.TYPE.equalsIgnoreCase("translator") ? ChatFormat.RED : ChatFormat.RESET;
+            return this.type.equals("developer") ? ChatFormat.GREEN : this.type.equals("patreon") ? ChatFormat.GOLD : this.type.equals("contributor") ? ChatFormat.AQUA : this.type.equalsIgnoreCase("translator") ? ChatFormat.RED : ChatFormat.RESET;
         }
     }
 }

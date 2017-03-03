@@ -67,7 +67,7 @@ public final class SkullUtils {
      */
     public static ItemStack createSkull (Player player) {
 
-        return createSkull(player.lastKnownName, UUID.fromString(player.UUID));
+        return createSkull(player.lastKnownName, UUID.fromString(player.playerId));
     }
 
     /**
@@ -225,7 +225,7 @@ public final class SkullUtils {
         /**
          * The UUID tied to the account.
          */
-        public String UUID;
+        public String playerId;
 
         /**
          * An enumeration of all accounts provided by Mojang under the MHF format.
@@ -236,7 +236,7 @@ public final class SkullUtils {
         MHFAccount (String username, String uuid) {
 
             this.username = username;
-            this.UUID = uuid;
+            this.playerId = uuid;
         }
 
         /**
@@ -293,7 +293,7 @@ public final class SkullUtils {
         /**
          * The UUID tied to the account.
          */
-        public String UUID;
+        public String playerId;
 
         /**
          * An enumeration of a few player names. This list includes contributors, and friends.
@@ -304,7 +304,7 @@ public final class SkullUtils {
         Player (String username, String uuid) {
 
             this.lastKnownName = username;
-            this.UUID = uuid;
+            this.playerId = uuid;
         }
     }
 }
