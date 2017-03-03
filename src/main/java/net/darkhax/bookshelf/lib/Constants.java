@@ -5,7 +5,7 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Constants {
+public final class Constants {
 
     // Mod Constants
     public static final String MOD_ID = "bookshelf";
