@@ -35,7 +35,7 @@ public class FeatureBookshelves extends Feature {
                     GameRegistry.addShapedRecipe(new ItemStack(this.blockShelf, 1, meta - 1), new Object[] { "xxx", "yyy", "xxx", Character.valueOf('x'), new ItemStack(Blocks.PLANKS, 1, meta), Character.valueOf('y'), Items.BOOK });
                 }
             }
-            
+
             OreDictionary.registerOre(OreDictUtils.BOOKSHELF, new ItemStack(this.blockShelf, 1, OreDictionary.WILDCARD_VALUE));
 
             for (final BlockWoodenShelf.EnumType type : BlockWoodenShelf.EnumType.values()) {

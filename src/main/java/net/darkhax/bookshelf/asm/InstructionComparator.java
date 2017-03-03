@@ -47,7 +47,7 @@ public final class InstructionComparator {
             if (insn instanceof LabelNode) {
                 labels.put((LabelNode) insn, (LabelNode) insn);
             }
-        
+
         final InsnList importantNodeList = new InsnList();
 
         for (AbstractInsnNode insn = list.getFirst(); insn != null; insn = insn.getNext()) {
@@ -126,7 +126,7 @@ public final class InstructionComparator {
             if (insnListMatches(haystack, needle, start)) {
                 list.add(start);
             }
-        
+
         return list;
     }
 

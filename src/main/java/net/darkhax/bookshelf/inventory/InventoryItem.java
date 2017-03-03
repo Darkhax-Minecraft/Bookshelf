@@ -161,7 +161,7 @@ public class InventoryItem extends Item implements IInventory {
             else {
                 this.setInventorySlotContents(index, null);
             }
-        
+
         return stack;
     }
 
@@ -198,7 +198,7 @@ public class InventoryItem extends Item implements IInventory {
             if (ItemStackUtils.isValidStack(this.getStackInSlot(index)) && this.getStackInSlot(index).stackSize == 0) {
                 this.inventory[index] = null;
             }
-        
+
         this.writeToNBT();
     }
 

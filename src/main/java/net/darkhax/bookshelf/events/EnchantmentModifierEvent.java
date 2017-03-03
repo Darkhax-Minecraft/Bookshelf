@@ -52,7 +52,7 @@ public class EnchantmentModifierEvent extends Event {
                 this.levels += EnchantmentHelper.getEnchantmentLevel(enchantment, stack);
             }
         }
-        
+
         this.enchantment = enchantment;
         this.entity = entity;
     }

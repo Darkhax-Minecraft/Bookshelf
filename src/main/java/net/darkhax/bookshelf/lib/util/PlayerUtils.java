@@ -108,7 +108,7 @@ public final class PlayerUtils {
                 else {
                     json.skipValue();
                 }
-            
+
             json.endObject();
             json.close();
             reader.close();
@@ -151,7 +151,7 @@ public final class PlayerUtils {
                 else {
                     json.skipValue();
                 }
-            
+
             json.endObject();
             json.close();
             reader.close();
@@ -192,7 +192,7 @@ public final class PlayerUtils {
             if (stack != null && stack.getItem().equals(item)) {
                 count += stack.stackSize;
             }
-        
+
         return count;
     }
 
@@ -232,7 +232,7 @@ public final class PlayerUtils {
             if (stack != null && stack.getItem() == item && (meta < 0 || stack.getMetadata() == meta)) {
                 items.add(stack);
             }
-        
+
         if (Loader.isModLoaded("Baubles")) {
             items.addAll(BaublesUtils.getBaublesFromPlayer(player, item, meta));
         }

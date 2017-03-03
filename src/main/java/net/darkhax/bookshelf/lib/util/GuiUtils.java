@@ -20,7 +20,7 @@ public class GuiUtils {
                 container.addSlotToContainer(new Slot(playerInv, playerInvY + playerInvX * 9 + 9, 8 + playerInvY * 18, playerInvX * 18 + 51));
             }
         }
-        
+
         // Hot Bar
         for (int hotbarIndex = 0; hotbarIndex < 9; ++hotbarIndex) {
             container.addSlotToContainer(new Slot(playerInv, hotbarIndex, 8 + hotbarIndex * 18, 109));

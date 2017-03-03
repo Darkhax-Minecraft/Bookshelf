@@ -155,7 +155,7 @@ public abstract class GuiScreenBase extends GuiScreen {
         else {
             this.mouseoverTime = 0;
         }
-        
+
         // Check if enough time has passed, to show a tool tip. If the delay variable is -1 or
         // less, this is disabled.
         if (this.mouseoverTime > this.tooltipDelay && this.tooltipDelay > -1) {

@@ -105,7 +105,7 @@ public final class ItemStackUtils {
                         return color.color.getRGB();
             }
         }
-        
+
         return -1337;
     }
 
@@ -154,7 +154,7 @@ public final class ItemStackUtils {
                 if (firstName == secondName)
                     return true;
         }
-        
+
         return false;
     }
 
