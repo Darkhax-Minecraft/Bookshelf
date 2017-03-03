@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.lib.util;
 
 import java.util.Comparator;
 
+import net.darkhax.bookshelf.lib.BookshelfException;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.InventoryBasic;
@@ -62,7 +63,7 @@ public final class NBTUtils {
         }
 
         else
-            throw new RuntimeException("The data type of " + value.getClass().getName() + " is currently not supported." + Constants.NEW_LINE + "Raw Data: " + value.toString());
+            throw new BookshelfException("The data type of " + value.getClass().getName() + " is currently not supported." + Constants.NEW_LINE + "Raw Data: " + value.toString());
     }
 
     /**
@@ -181,7 +182,7 @@ public final class NBTUtils {
                     deepTag = deepTag.getCompoundTag(tagName);
                 }
         }
-        
+
         return deepTag;
     }
 

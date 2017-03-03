@@ -11,6 +11,7 @@ import net.darkhax.bookshelf.client.render.item.RenderItemWrapper;
 import net.darkhax.bookshelf.common.ProxyCommon;
 import net.darkhax.bookshelf.entity.FakeEntity;
 import net.darkhax.bookshelf.features.Feature;
+import net.darkhax.bookshelf.lib.BookshelfException;
 import net.darkhax.bookshelf.tileentity.TileEntityBasicChest;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.entity.Render;
@@ -22,7 +23,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public class ProxyClient extends ProxyCommon {
 
-    private static Map<Class<? extends TileEntity>, ITileEntityRender> tileEntityRenderMap = new HashMap<>();
+    private static Map<Class<? extends TileEntity>, ITileEntityRender<?>> tileEntityRenderMap = new HashMap<>();
 
     @Override
     public void preInit () {
@@ -49,7 +50,7 @@ public class ProxyClient extends ProxyCommon {
 
             catch (final Exception e) {
 
-                throw new RuntimeException("Unable to reflect an EntityRenderer!", e);
+                throw new BookshelfException("Unable to reflect an EntityRenderer!", e);
             }
 
             return new Render<FakeEntity>(manager) {
@@ -63,17 +64,17 @@ public class ProxyClient extends ProxyCommon {
         });
     }
 
-    public static void registerTileEntityRender (Class<? extends TileEntity> tileEntity, ITileEntityRender iTileEntityRender) {
+    public static void registerTileEntityRender (Class<? extends TileEntity> tileEntity, ITileEntityRender<?> iTileEntityRender) {
 
         tileEntityRenderMap.put(tileEntity, iTileEntityRender);
     }
 
-    public static ITileEntityRender getTileEntityRender (TileEntity tileEntity) {
+    public static ITileEntityRender<?> getTileEntityRender (TileEntity tileEntity) {
 
         return getTileEntityRender(tileEntity.getClass());
     }
 
-    public static ITileEntityRender getTileEntityRender (Class<? extends TileEntity> tileEntity) {
+    public static ITileEntityRender<?> getTileEntityRender (Class<? extends TileEntity> tileEntity) {
 
         return tileEntityRenderMap.get(tileEntity);
     }
