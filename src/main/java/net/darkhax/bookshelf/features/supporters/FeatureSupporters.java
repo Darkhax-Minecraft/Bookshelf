@@ -75,6 +75,7 @@ public class FeatureSupporters extends Feature {
             catch (final InterruptedException e) {
 
                 Constants.LOG.warn("Unable to make player: " + player.getName(), e);
+                Thread.currentThread().interrupt();
             }
 
             Minecraft.getMinecraft().addScheduledTask( () -> {
