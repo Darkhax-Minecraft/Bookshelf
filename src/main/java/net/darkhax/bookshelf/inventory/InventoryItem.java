@@ -211,11 +211,13 @@ public class InventoryItem extends Item implements IInventory {
     @Override
     public void openInventory (EntityPlayer player) {
 
+        // We don't care about this.
     }
 
     @Override
     public void closeInventory (EntityPlayer player) {
 
+        // We don't care about this.
     }
 
     @Override
@@ -233,6 +235,7 @@ public class InventoryItem extends Item implements IInventory {
     @Override
     public void setField (int id, int value) {
 
+        // We don't care about this.
     }
 
     @Override
@@ -244,5 +247,6 @@ public class InventoryItem extends Item implements IInventory {
     @Override
     public void clear () {
 
+        // We don't care about this.
     }
 }

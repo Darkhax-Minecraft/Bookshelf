@@ -11,6 +11,7 @@ public class Feature {
      */
     public void onPreInit () {
 
+        // This should be overridden if you want to use it.
     }
 
     /**
@@ -18,6 +19,7 @@ public class Feature {
      */
     public void onInit () {
 
+        // This should be overridden if you want to use it.
     }
 
     /**
@@ -25,6 +27,7 @@ public class Feature {
      */
     public void onPostInit () {
 
+        // This should be overridden if you want to use it.
     }
 
     /**
@@ -34,6 +37,7 @@ public class Feature {
      */
     public void setupConfig (Configuration config) {
 
+        // This should be overridden if you want to use it.
     }
 
     /**
@@ -43,5 +47,6 @@ public class Feature {
     @SideOnly(Side.CLIENT)
     public void setupRendering () {
 
+        // This should be overridden if you want to use it.
     }
 }

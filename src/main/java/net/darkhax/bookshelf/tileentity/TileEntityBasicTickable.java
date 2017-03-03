@@ -3,7 +3,7 @@ package net.darkhax.bookshelf.tileentity;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.util.ITickable;
 
-public class TileEntityBasicTickable extends TileEntityBasic implements ITickable {
+public abstract class TileEntityBasicTickable extends TileEntityBasic implements ITickable {
 
     @Override
     public void update () {
@@ -26,7 +26,5 @@ public class TileEntityBasicTickable extends TileEntityBasic implements ITickabl
      * Handles the TileEntity update ticks. This method will only be called in a safe
      * environment.
      */
-    public void onEntityUpdate () {
-
-    }
+    abstract void onEntityUpdate ();
 }

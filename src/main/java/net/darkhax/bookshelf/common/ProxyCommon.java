@@ -8,5 +8,6 @@ public class ProxyCommon {
      */
     public void preInit () {
 
+        // This is not currently used.
     }
 }

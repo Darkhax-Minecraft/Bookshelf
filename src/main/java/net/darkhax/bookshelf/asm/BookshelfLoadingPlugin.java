@@ -9,10 +9,6 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 @IFMLLoadingPlugin.MCVersion("1.10.2")
 public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
 
-    public BookshelfLoadingPlugin () {
-
-    }
-
     @Override
     public String[] getASMTransformerClass () {
 
@@ -34,6 +30,7 @@ public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
     @Override
     public void injectData (Map<String, Object> data) {
 
+        // Don't care about this data.
     }
 
     @Override

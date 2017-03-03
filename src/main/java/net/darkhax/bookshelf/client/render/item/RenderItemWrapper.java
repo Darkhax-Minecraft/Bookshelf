@@ -312,6 +312,7 @@ public class RenderItemWrapper extends RenderItem {
     @Override
     public void registerItems () {
 
+        // Overridden to prevent items from being re-registered.
     }
 
     @Override

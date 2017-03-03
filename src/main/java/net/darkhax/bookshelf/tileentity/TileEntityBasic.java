@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TileEntityBasic extends TileEntity {
+public abstract class TileEntityBasic extends TileEntity {
 
     @Override
     public void readFromNBT (NBTTagCompound dataTag) {
@@ -54,16 +54,12 @@ public class TileEntityBasic extends TileEntity {
      *
      * @param dataTag: The NBTTagCompound for the TileEntity.
      */
-    public void writeNBT (NBTTagCompound dataTag) {
-
-    }
+    public abstract void writeNBT (NBTTagCompound dataTag);
 
     /**
      * Handles the ability to read custom NBT values from the TileEntity's NBTTagCompound.
      *
      * @param dataTag: The NBTTagCompound for the TileEntity.
      */
-    public void readNBT (NBTTagCompound dataTag) {
-
-    }
+    public abstract void readNBT (NBTTagCompound dataTag);
 }
