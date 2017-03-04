@@ -81,4 +81,10 @@ public class EntityModArrow extends EntityTippedArrow {
 
         return object instanceof EntityModArrow && super.equals(object);
     }
+
+    @Override
+    public int hashCode () {
+
+        return this.heldStack.hashCode() + super.hashCode();
+    }
 }
