@@ -218,7 +218,7 @@ public abstract class GuiScreenBase extends GuiScreen {
         int lineCount = 0;
         for (final String line : tooltipArray) {
 
-            this.mc.fontRendererObj.drawStringWithShadow(line, tooltipX + 2, tooltipY + 2 + lineCount * LINE_HEIGHT, 0xFFFFFF);
+            this.mc.fontRendererObj.drawStringWithShadow(line, tooltipX + 2f, tooltipY + 2f + (float) lineCount * (float) LINE_HEIGHT, 0xFFFFFF);
             lineCount++;
         }
     }

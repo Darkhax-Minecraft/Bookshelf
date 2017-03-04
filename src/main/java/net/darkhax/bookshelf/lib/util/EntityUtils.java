@@ -76,9 +76,9 @@ public final class EntityUtils {
     public static void pushTowards (Entity entityToMove, BlockPos pos, double force) {
 
         final BlockPos entityPos = entityToMove.getPosition();
-        final double distanceX = pos.getX() - entityPos.getX();
-        final double distanceY = pos.getY() - entityPos.getY();
-        final double distanceZ = pos.getZ() - entityPos.getZ();
+        final double distanceX = (double) pos.getX() - entityPos.getX();
+        final double distanceY = (double) pos.getY() - entityPos.getY();
+        final double distanceZ = (double) pos.getZ() - entityPos.getZ();
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
 
         if (distance > 0) {
@@ -127,9 +127,9 @@ public final class EntityUtils {
         final BlockPos entityPos = entityToMove.getPosition();
         final BlockPos destination = entityToMove.getPosition().offset(direction.getOpposite(), 1);
 
-        final double distanceX = destination.getX() - entityPos.getX();
-        final double distanceY = destination.getY() - entityPos.getY();
-        final double distanceZ = destination.getZ() - entityPos.getZ();
+        final double distanceX = (double) destination.getX() - entityPos.getX();
+        final double distanceY = (double) destination.getY() - entityPos.getY();
+        final double distanceZ = (double) destination.getZ() - entityPos.getZ();
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
 
         return distance > 0 ? new Vec3d(entityToMove.motionX = distanceX / distance * force, entityToMove.motionY = distanceY / distance * force, entityToMove.motionZ = distanceZ / distance * force) : new Vec3d(0d, 0d, 0d);
