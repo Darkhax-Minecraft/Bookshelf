@@ -75,4 +75,10 @@ public class EntityModArrow extends EntityTippedArrow {
         super.readFromNBT(compound);
         this.heldStack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("HeldStack"));
     }
+
+    @Override
+    public boolean equals (Object object) {
+
+        return object instanceof EntityModArrow && super.equals(object);
+    }
 }
