@@ -112,7 +112,7 @@ public final class PlayerUtils {
             json.beginObject();
 
             while (json.hasNext())
-                if (json.nextName().equals("name")) {
+                if ("name".equals(json.nextName())) {
                     name = json.nextString();
                 }
                 else {
@@ -155,7 +155,7 @@ public final class PlayerUtils {
             json.beginObject();
 
             while (json.hasNext())
-                if (json.nextName().equals("id")) {
+                if ("id".equals(json.nextName())) {
                     uuid = fixStrippedUUID(json.nextString());
                 }
                 else {

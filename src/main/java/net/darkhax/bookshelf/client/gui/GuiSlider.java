@@ -159,7 +159,7 @@ public class GuiSlider extends GuiButton {
      */
     private void updateDisplay () {
 
-        final String value = this.repAsInt ? this.shouldInvert ? this.intValue - (int) (this.getSliderValue() * this.intValue) + "%" : "" + (int) (this.getSliderValue() * this.intValue) : "" + MathsUtils.round(this.getSliderValue(), 2);
+        final String value = this.repAsInt ? this.shouldInvert ? this.intValue - (int) (this.getSliderValue() * this.intValue) + "%" : Integer.toString((int) (this.getSliderValue() * this.intValue)) : Double.toString(MathsUtils.round(this.getSliderValue(), 2));
         this.displayString = this.sliderName + ": " + value;
     }
 }
