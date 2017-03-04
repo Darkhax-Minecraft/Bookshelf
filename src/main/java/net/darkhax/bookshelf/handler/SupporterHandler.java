@@ -292,7 +292,7 @@ public final class SupporterHandler {
          */
         public ChatFormat getFormat () {
 
-            return this.type.equals("developer") ? ChatFormat.GREEN : this.type.equals("patreon") ? ChatFormat.GOLD : this.type.equals("contributor") ? ChatFormat.AQUA : this.type.equalsIgnoreCase("translator") ? ChatFormat.RED : ChatFormat.RESET;
+            return "developer".equals(this.type) ? ChatFormat.GREEN : "patreon".equals(this.type) ? ChatFormat.GOLD : "contributor".equals(this.type) ? ChatFormat.AQUA : "translator".equals(this.type) ? ChatFormat.RED : ChatFormat.RESET;
         }
     }
 }
