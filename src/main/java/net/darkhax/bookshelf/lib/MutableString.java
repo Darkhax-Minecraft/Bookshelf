@@ -75,4 +75,10 @@ public class MutableString implements java.io.Serializable, Comparable<String>, 
 
         return this.value.equals(obj);
     }
+    
+    @Override
+    public int hashCode() {
+        
+        return this.value.hashCode();
+    }
 }
