@@ -99,11 +99,13 @@ public class BlockWoodenShelf extends BlockBookshelf {
 
         public static EnumType byMetadata (int meta) {
 
+            int lookupMeta = meta;
+
             if (meta < 0 || meta >= META_LOOKUP.length) {
-                meta = 0;
+                lookupMeta = 0;
             }
 
-            return META_LOOKUP[meta];
+            return META_LOOKUP[lookupMeta];
         }
 
         @Override

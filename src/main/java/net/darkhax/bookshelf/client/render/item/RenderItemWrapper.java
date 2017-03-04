@@ -104,15 +104,17 @@ public class RenderItemWrapper extends RenderItem {
      */
     private IBakedModel handleTransforms (ItemStack stack, IBakedModel model, TransformType transformType, boolean isLeftHand) {
 
-        if (model instanceof IGlTransformer) {
-            ((IGlTransformer) model).applyTransforms(transformType, isLeftHand);
-        }
-        else if (model instanceof IPerspectiveAwareModel) {
-            model = ForgeHooksClient.handleCameraTransforms(model, transformType, isLeftHand);
-        }
-        else if (model instanceof IStackPerspectiveAwareModel) {
+        IBakedModel transformedModel = model;
 
-            final Pair<? extends IBakedModel, Matrix4f> pair = ((IStackPerspectiveAwareModel) model).handlePerspective(stack, transformType);
+        if (transformedModel instanceof IGlTransformer) {
+            ((IGlTransformer) transformedModel).applyTransforms(transformType, isLeftHand);
+        }
+        else if (transformedModel instanceof IPerspectiveAwareModel) {
+            transformedModel = ForgeHooksClient.handleCameraTransforms(transformedModel, transformType, isLeftHand);
+        }
+        else if (transformedModel instanceof IStackPerspectiveAwareModel) {
+
+            final Pair<? extends IBakedModel, Matrix4f> pair = ((IStackPerspectiveAwareModel) transformedModel).handlePerspective(stack, transformType);
 
             if (pair.getRight() != null) {
 
@@ -130,7 +132,7 @@ public class RenderItemWrapper extends RenderItem {
             return pair.getLeft();
         }
 
-        return model;
+        return transformedModel;
     }
 
     /**
@@ -180,9 +182,9 @@ public class RenderItemWrapper extends RenderItem {
                 GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 GlStateManager.pushMatrix();
 
-                bakedModel = this.handleTransforms(stack, bakedModel, transform, leftHanded);
+                final IBakedModel transformedModel = this.handleTransforms(stack, bakedModel, transform, leftHanded);
 
-                this.renderItem(stack, bakedModel);
+                this.renderItem(stack, transformedModel);
                 GlStateManager.cullFace(GlStateManager.CullFace.BACK);
                 GlStateManager.popMatrix();
                 GlStateManager.disableRescaleNormal();
@@ -211,9 +213,9 @@ public class RenderItemWrapper extends RenderItem {
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             this.setupGuiTransform(x, y, bakedModel.isGui3d());
 
-            bakedModel = this.handleTransforms(stack, bakedModel, ItemCameraTransforms.TransformType.GUI, false);
+            final IBakedModel transformedModel = this.handleTransforms(stack, bakedModel, ItemCameraTransforms.TransformType.GUI, false);
 
-            this.renderItem(stack, bakedModel);
+            this.renderItem(stack, transformedModel);
             GlStateManager.disableAlpha();
             GlStateManager.disableRescaleNormal();
             GlStateManager.disableLighting();

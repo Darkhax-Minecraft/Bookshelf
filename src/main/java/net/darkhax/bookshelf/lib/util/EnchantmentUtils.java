@@ -66,9 +66,11 @@ public final class EnchantmentUtils {
 
         float levelCap = getExperienceToLevel(currentLevel, currentLevel + 1);
 
-        while (exp >= levelCap) {
+        int currentExp = exp;
 
-            exp -= levelCap;
+        while (currentExp >= levelCap) {
+
+            currentExp -= levelCap;
             currentLevel += 1;
             levelCap = getExperienceToLevel(currentLevel, currentLevel + 1);
         }
