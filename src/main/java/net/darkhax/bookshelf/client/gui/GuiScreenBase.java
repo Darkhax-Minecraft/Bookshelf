@@ -19,12 +19,12 @@ public abstract class GuiScreenBase extends GuiScreen {
     /**
      * The tick delay before the tooltip will display.
      */
-    public long tooltipDelay = 900;
+    private long tooltipDelay = 900;
 
     /**
      * The maximum width of the tooltip.
      */
-    public int tooltipMaxWidth = 45;
+    private int tooltipMaxWidth = 45;
 
     /**
      * Offset of the tooltip to adjust for rendering.
@@ -275,5 +275,45 @@ public abstract class GuiScreenBase extends GuiScreen {
     public boolean isMouseInArea (int mouseX, int mouseY, int posX, int posY, int width, int height) {
 
         return mouseX >= posX && mouseX <= posX + width && mouseY >= posY && mouseY <= posY + height;
+    }
+
+    /**
+     * Gets the amount of ticks the mouse should hover before the tootlip is displayed.
+     *
+     * @return The amount of ticks before the tooltip is displayed.
+     */
+    public long getTooltipDelay () {
+
+        return this.tooltipDelay;
+    }
+
+    /**
+     * Sets the amount of ticks required before the tooltip will display.
+     *
+     * @param tooltipDelay The amount of ticks before the tooltip will display.
+     */
+    public void setTooltipDelay (long tooltipDelay) {
+
+        this.tooltipDelay = tooltipDelay;
+    }
+
+    /**
+     * Gets the maximum width of the tooltip. Used for splitting length.
+     *
+     * @return The max tooltip length.
+     */
+    public int getTooltipMaxWidth () {
+
+        return this.tooltipMaxWidth;
+    }
+
+    /**
+     * Sets the maximum width of the tooltip.
+     *
+     * @param tooltipMaxWidth The new maximum width for the tooltip.
+     */
+    public void setTooltipMaxWidth (int tooltipMaxWidth) {
+
+        this.tooltipMaxWidth = tooltipMaxWidth;
     }
 }

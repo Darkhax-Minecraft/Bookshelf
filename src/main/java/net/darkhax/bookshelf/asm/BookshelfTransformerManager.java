@@ -8,7 +8,7 @@ public class BookshelfTransformerManager implements IClassTransformer {
     @Override
     public byte[] transform (String name, String transformedName, byte[] classBytes) {
 
-        if (transformedName.equals("net.minecraft.enchantment.EnchantmentHelper"))
+        if ("net.minecraft.enchantment.EnchantmentHelper".equals(name))
             return TransformerEnchantmentHelper.transform(name, transformedName, classBytes);
 
         return classBytes;

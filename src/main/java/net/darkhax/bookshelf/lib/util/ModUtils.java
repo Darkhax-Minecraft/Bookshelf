@@ -36,7 +36,7 @@ public final class ModUtils {
 
         final String modID = registerable.getRegistryName().getResourceDomain();
         final ModContainer mod = getModContainer(modID);
-        return mod != null ? mod.getName() : modID.equalsIgnoreCase("minecraft") ? "Minecraft" : "Unknown";
+        return mod != null ? mod.getName() : "minecraft".equals(modID) ? "Minecraft" : "Unknown";
     }
 
     /**

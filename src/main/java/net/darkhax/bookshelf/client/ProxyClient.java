@@ -22,7 +22,7 @@ public class ProxyClient extends ProxyCommon {
     @Override
     public void preInit () {
 
-        for (final Feature feature : Bookshelf.features) {
+        for (final Feature feature : Bookshelf.FEATURES) {
             feature.setupRendering();
         }
 

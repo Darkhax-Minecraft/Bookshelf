@@ -23,7 +23,7 @@ public class EnchantmentModifierEvent extends Event {
     /**
      * The amount of levels to say the user has of the given enchantment.
      */
-    public int levels;
+    private int levels;
 
     /**
      * This event is fired every time
@@ -85,5 +85,15 @@ public class EnchantmentModifierEvent extends Event {
     public int getLevels () {
 
         return Math.max(this.levels, 0);
+    }
+
+    /**
+     * Sets the amount of levels to return for the event.
+     *
+     * @param amount The amount of levels the event should return.
+     */
+    public void setLevels (int amount) {
+
+        this.levels = amount;
     }
 }

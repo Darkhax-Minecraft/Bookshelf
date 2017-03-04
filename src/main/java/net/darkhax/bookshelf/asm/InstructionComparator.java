@@ -193,7 +193,7 @@ public final class InstructionComparator {
      */
     public static boolean ldcInsnEqual (LdcInsnNode insn1, LdcInsnNode insn2) {
 
-        return insn1.cst.equals("~") || insn2.cst.equals("~") || insn1.cst.equals(insn2.cst);
+        return "~".equals(insn1.cst) || "~".equals(insn2.cst) || insn1.cst.equals(insn2.cst);
 
     }
 
@@ -223,7 +223,7 @@ public final class InstructionComparator {
      */
     public static boolean typeInsnEqual (TypeInsnNode insn1, TypeInsnNode insn2) {
 
-        return insn1.desc.equals("~") || insn2.desc.equals("~") || insn1.desc.equals(insn2.desc);
+        return "~".equals(insn1.desc) || "~".equals(insn2.desc) || insn1.desc.equals(insn2.desc);
 
     }
 

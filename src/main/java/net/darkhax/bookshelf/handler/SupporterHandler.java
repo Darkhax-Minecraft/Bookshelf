@@ -73,22 +73,22 @@ public final class SupporterHandler {
 
                     final String name = reader.nextName();
 
-                    if (name.equals("playerID")) {
+                    if ("playerID".equals(name)) {
                         playerID = UUID.fromString(reader.nextString());
                     }
-                    else if (name.equals("type")) {
+                    else if ("type".equals(name)) {
                         type = reader.nextString();
                     }
-                    else if (name.equals("confirmed")) {
+                    else if ("confirmed".equals(name)) {
                         confirmed = reader.nextBoolean();
                     }
-                    else if (name.equals("wantHead")) {
+                    else if ("wantHead".equals(name)) {
                         wantsHead = reader.nextBoolean();
                     }
-                    else if (name.equals("wantWawla")) {
+                    else if ("wantWawla".equals(name)) {
                         wantsWawla = reader.nextBoolean();
                     }
-                    else if (name.equals("elytraTexture")) {
+                    else if ("elytraTexture".equals(name)) {
                         elytraTexture = reader.nextString();
                     }
                     else {

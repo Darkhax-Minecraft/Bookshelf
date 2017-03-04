@@ -37,21 +37,21 @@ public class Bookshelf {
      * A list of feature objects. The feature system is specifically intended for features that
      * are bundled with the library and should not be considered part of the API/Library.
      */
-    public static List<Feature> features = new ArrayList<>();
+    public static final List<Feature> FEATURES = new ArrayList<>();
 
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
 
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
 
-        features.add(new FeatureBookshelves());
-        features.add(new FeaturePlayerHeads());
-        features.add(new FeatureSupporters());
-        features.add(new FeatureAttributeFix());
+        FEATURES.add(new FeatureBookshelves());
+        FEATURES.add(new FeaturePlayerHeads());
+        FEATURES.add(new FeatureSupporters());
+        FEATURES.add(new FeatureAttributeFix());
 
         new ConfigurationHandler(event.getSuggestedConfigurationFile());
 
-        for (final Feature feature : features) {
+        for (final Feature feature : FEATURES) {
             feature.onPreInit();
         }
 
