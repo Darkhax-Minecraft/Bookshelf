@@ -81,10 +81,7 @@ public final class InstructionComparator {
      */
     public static boolean insnEqual (AbstractInsnNode node1, AbstractInsnNode node2) {
 
-        if (node1.getType() != node2.getType())
-            return false;
-
-        else if (node1.getOpcode() != node2.getOpcode())
+        if (node1.getType() != node2.getType() || node1.getOpcode() != node2.getOpcode())
             return false;
 
         switch (node2.getType()) {
