@@ -3,6 +3,7 @@ package net.darkhax.bookshelf.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.item.ItemStack;
 
 public class BookshelfRegistry {
@@ -11,6 +12,12 @@ public class BookshelfRegistry {
      * A List of all the anvil recipes that have been registered with Bookshelf.
      */
     private static final List<AnvilRecipe> anvilRecipes = new ArrayList<>();
+
+    /**
+     * A List of crash messages. When a crash happens, one of these messages will be randomly
+     * selected.
+     */
+    private static final List<String> crashComments = new ArrayList<>();
 
     /**
      * Adds a new AnvilRecipe to the registry. Inputs can be null.
@@ -72,11 +79,33 @@ public class BookshelfRegistry {
      * Retrieves the List of all registered anvil recipes.
      *
      * @return List<AnvilRecipe> A List of all AnvilRecipes that have been registered with
-     *         booksehfl.
+     *         bookshelf.
      */
     public static List<AnvilRecipe> getAnvilRecipes () {
 
         return anvilRecipes;
+    }
+
+    /**
+     * Gets a crash comment randomly from {@link #crashComments}. This includes all of the
+     * vanilla entries as well.
+     *
+     * @return A random crash comment message.
+     */
+    public static String getCrashComment () {
+
+        return crashComments.get(Constants.RANDOM.nextInt(crashComments.size()));
+    }
+
+    /**
+     * Adds a new crash comment message. If the crash comment message feature is enabled, it
+     * will have a chance in showing up in crash logs.
+     *
+     * @param message The message to add.
+     */
+    public static void addCrashComment (String message) {
+
+        crashComments.add(message);
     }
 
     /**

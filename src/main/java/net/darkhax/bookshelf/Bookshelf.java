@@ -8,6 +8,7 @@ import net.darkhax.bookshelf.common.ProxyCommon;
 import net.darkhax.bookshelf.features.Feature;
 import net.darkhax.bookshelf.features.attribcap.FeatureAttributeFix;
 import net.darkhax.bookshelf.features.bookshelves.FeatureBookshelves;
+import net.darkhax.bookshelf.features.crashes.FeatureCrashComments;
 import net.darkhax.bookshelf.features.playerheads.FeaturePlayerHeads;
 import net.darkhax.bookshelf.features.supporters.FeatureSupporters;
 import net.darkhax.bookshelf.handler.ConfigurationHandler;
@@ -48,6 +49,7 @@ public class Bookshelf {
         FEATURES.add(new FeaturePlayerHeads());
         FEATURES.add(new FeatureSupporters());
         FEATURES.add(new FeatureAttributeFix());
+        FEATURES.add(new FeatureCrashComments());
 
         new ConfigurationHandler(event.getSuggestedConfigurationFile());
 
