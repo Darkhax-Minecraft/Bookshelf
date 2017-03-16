@@ -193,6 +193,7 @@ public class RenderItemWrapper extends RenderItem {
                 this.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
             }
             else {
+                this.parent.zLevel = this.zLevel;
                 this.parent.renderItemModel(stack, bakedModel, transform, leftHanded);
             }
     }
@@ -224,6 +225,8 @@ public class RenderItemWrapper extends RenderItem {
             this.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
         }
         else {
+
+            this.parent.zLevel = this.zLevel;
             this.parent.renderItemModelIntoGUI(stack, x, y, bakedModel);
         }
     }
@@ -239,6 +242,7 @@ public class RenderItemWrapper extends RenderItem {
                 this.renderItemModel(stack, bakedModel, cameraTransformType, false);
             }
 
+            this.parent.zLevel = this.zLevel;
             this.parent.renderItem(stack, cameraTransformType);
         }
     }
@@ -254,6 +258,7 @@ public class RenderItemWrapper extends RenderItem {
                 this.renderItemModel(stack, bakedModel, transform, leftHanded);
             }
             else {
+                this.parent.zLevel = this.zLevel;
                 this.parent.renderItem(stack, livingBase, transform, leftHanded);
             }
         }
@@ -268,6 +273,7 @@ public class RenderItemWrapper extends RenderItem {
             this.renderItemModelIntoGUI(stack, x, y, bakedModel);
         }
         else {
+            this.parent.zLevel = this.zLevel;
             this.parent.renderItemIntoGUI(stack, x, y);
         }
     }
@@ -293,6 +299,7 @@ public class RenderItemWrapper extends RenderItem {
                     this.zLevel -= 50.0F;
                 }
                 else {
+                    this.parent.zLevel = this.zLevel;
                     this.parent.renderItemAndEffectIntoGUI(livingBase, stack, x, y);
                 }
 
