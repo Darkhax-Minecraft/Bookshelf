@@ -6,31 +6,28 @@
  *
  * Original:  https://github.com/MinecraftForge/MinecraftForge/pull/3739
  *
- * Changes:   - Backported the code to a 1.10.2 workspace (not much of a change)
+ * Changes:   - Backported the code to a 1.10.2 workspace (not much of a change).
  *            - Added more documentation in the form of JavaDocs.
  *            - Added a third trackModContainerMethod to reduce code duplication.
+ *            - Final local variables marked final.
+ *            - Made all constructors public.
  *******************************************************************************************************************/
 package net.darkhax.bookshelf.lib;
 
+import java.util.AbstractList;
 import java.util.Collection;
 import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.RandomAccess;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ForwardingIterator;
-import com.google.common.collect.ForwardingList;
-import com.google.common.collect.ForwardingListIterator;
-
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 
-public class ModTrackingList<T> extends ForwardingList<T> implements RandomAccess {
+public class ModTrackingList<T> extends AbstractList<T> implements RandomAccess {
 
     /**
      * The parent/delegate list.
@@ -62,7 +59,7 @@ public class ModTrackingList<T> extends ForwardingList<T> implements RandomAcces
      *        represent the list you are replacing, if you are replacing one.
      * @param modContainerMap The map used to hold the tracking data.
      */
-    private ModTrackingList (@Nonnull List<T> delegate, @Nonnull Map<T, ModContainer> modContainerMap) {
+    public ModTrackingList (@Nonnull List<T> delegate, @Nonnull Map<T, ModContainer> modContainerMap) {
 
         this.delegate = delegate;
         this.modContainerMap = modContainerMap;
@@ -101,7 +98,8 @@ public class ModTrackingList<T> extends ForwardingList<T> implements RandomAcces
      */
     private void trackModContainer (@Nonnull T element, ModContainer container) {
 
-        if (container != null) {
+        if (container != null && !container.getModId().equalsIgnoreCase("Forge")) {
+
             this.modContainerMap.put(element, container);
         }
     }
@@ -125,22 +123,19 @@ public class ModTrackingList<T> extends ForwardingList<T> implements RandomAcces
     }
 
     @Override
-    protected List<T> delegate () {
-
-        return this.delegate;
-    }
-
-    @Override
     public boolean add (@Nonnull T t) {
 
         final boolean changed = this.delegate.add(t);
-
         if (changed) {
-
             this.trackModContainer(t);
         }
-
         return changed;
+    }
+
+    @Override
+    public T get (int index) {
+
+        return this.delegate.get(index);
     }
 
     @Override
@@ -154,12 +149,9 @@ public class ModTrackingList<T> extends ForwardingList<T> implements RandomAcces
     public boolean addAll (int index, @Nonnull Collection<? extends T> elements) {
 
         final boolean changed = this.delegate.addAll(index, elements);
-
         if (changed) {
-
             this.trackModContainer(elements);
         }
-
         return changed;
     }
 
@@ -167,64 +159,34 @@ public class ModTrackingList<T> extends ForwardingList<T> implements RandomAcces
     public boolean addAll (@Nonnull Collection<? extends T> collection) {
 
         final boolean changed = this.delegate.addAll(collection);
-
         if (changed) {
-
             this.trackModContainer(collection);
         }
-
         return changed;
     }
 
     @Override
     public T remove (int index) {
 
-        final T removed = this.delegate.remove(index);
-
-        if (removed != null) {
-
-            this.modContainerMap.remove(removed);
-        }
-
-        return removed;
+        return this.delegate.remove(index);
     }
 
     @Override
     public boolean remove (@Nonnull Object object) {
 
-        final boolean changed = this.delegate.remove(object);
-
-        if (changed) {
-
-            this.modContainerMap.remove(object);
-        }
-
-        return changed;
+        return this.delegate.remove(object);
     }
 
     @Override
     public boolean removeAll (@Nonnull Collection<?> collection) {
 
-        final boolean changed = this.delegate.removeAll(collection);
-
-        if (changed) {
-
-            this.modContainerMap.keySet().removeAll(collection);
-        }
-
-        return changed;
+        return this.delegate.removeAll(collection);
     }
 
     @Override
     public T set (int index, @Nonnull T element) {
 
         final T previous = this.delegate.set(index, element);
-
-        if (previous != null) {
-
-            this.modContainerMap.remove(previous);
-        }
-
         this.trackModContainer(element);
         return previous;
     }
@@ -238,144 +200,14 @@ public class ModTrackingList<T> extends ForwardingList<T> implements RandomAcces
     }
 
     @Override
-    public boolean retainAll (@Nonnull Collection<?> collection) {
+    public int size () {
 
-        final boolean changed = this.delegate.retainAll(collection);
-
-        if (changed) {
-
-            this.modContainerMap.keySet().retainAll(collection);
-        }
-
-        return changed;
-    }
-
-    @Nonnull
-    @Override
-    public Iterator<T> iterator () {
-
-        return new ModTrackedIterator(this.delegate.iterator());
-    }
-
-    @Nonnull
-    @Override
-    public ListIterator<T> listIterator () {
-
-        return new ModTrackedListIterator(this.delegate.listIterator());
-    }
-
-    @Nonnull
-    @Override
-    public ListIterator<T> listIterator (int index) {
-
-        return new ModTrackedListIterator(this.delegate.listIterator(index));
+        return this.delegate.size();
     }
 
     @Override
     public void clear () {
 
         this.delegate.clear();
-        this.modContainerMap.clear();
-    }
-
-    private class ModTrackedIterator extends ForwardingIterator<T> {
-
-        private final Iterator<T> delegate;
-
-        @Nullable
-        private T lastValue;
-
-        public ModTrackedIterator (Iterator<T> delegate) {
-
-            this.delegate = delegate;
-        }
-
-        @Override
-        protected Iterator<T> delegate () {
-
-            return this.delegate;
-        }
-
-        @Override
-        public T next () {
-
-            this.lastValue = this.delegate.next();
-            return this.lastValue;
-        }
-
-        @Override
-        public void remove () {
-
-            this.delegate.remove();
-
-            if (this.lastValue != null) {
-
-                ModTrackingList.this.modContainerMap.remove(this.lastValue);
-            }
-        }
-    }
-
-    private class ModTrackedListIterator extends ForwardingListIterator<T> {
-
-        private final ListIterator<T> delegate;
-
-        @Nullable
-        private T lastValue;
-
-        public ModTrackedListIterator (ListIterator<T> delegate) {
-
-            this.delegate = delegate;
-        }
-
-        @Override
-        protected ListIterator<T> delegate () {
-
-            return this.delegate;
-        }
-
-        @Override
-        public T next () {
-
-            this.lastValue = this.delegate.next();
-            return this.lastValue;
-        }
-
-        @Override
-        public T previous () {
-
-            this.lastValue = this.delegate.previous();
-            return this.lastValue;
-        }
-
-        @Override
-        public void remove () {
-
-            this.delegate.remove();
-
-            if (this.lastValue != null) {
-
-                ModTrackingList.this.modContainerMap.remove(this.lastValue);
-            }
-        }
-
-        @Override
-        public void add (@Nonnull T element) {
-
-            this.delegate.add(element);
-            ModTrackingList.this.trackModContainer(element);
-        }
-
-        @Override
-        public void set (@Nonnull T element) {
-
-            this.delegate.set(element);
-
-            if (this.lastValue != null) {
-
-                ModTrackingList.this.modContainerMap.remove(this.lastValue);
-            }
-
-            ModTrackingList.this.trackModContainer(element);
-        }
     }
 }
