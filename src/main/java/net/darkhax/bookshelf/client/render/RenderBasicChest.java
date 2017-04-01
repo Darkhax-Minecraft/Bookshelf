@@ -20,6 +20,9 @@ public class RenderBasicChest extends TileEntitySpecialRenderer<TileEntityBasicC
     @Override
     public void renderTileEntityAt (TileEntityBasicChest te, double x, double y, double z, float partialTicks, int destroyStage) {
 
+        if (!(te.getBlockType() instanceof BlockBasicChest))
+            return;
+
         GlStateManager.enableDepth();
         GlStateManager.depthFunc(515);
         GlStateManager.depthMask(true);
