@@ -73,7 +73,7 @@ public class EntityModArrow extends EntityTippedArrow {
     public void readFromNBT (NBTTagCompound compound) {
 
         super.readFromNBT(compound);
-        this.heldStack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("HeldStack"));
+        this.heldStack = new ItemStack(compound.getCompoundTag("HeldStack"));
     }
 
     @Override

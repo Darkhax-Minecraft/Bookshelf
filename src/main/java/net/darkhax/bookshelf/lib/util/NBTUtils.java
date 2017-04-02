@@ -133,7 +133,7 @@ public final class NBTUtils {
             final int slotCount = itemTag.getByte("Slot") & 0xFF;
 
             if (slotCount >= 0 && slotCount < inventory.getSizeInventory()) {
-                inventory.setInventorySlotContents(slotCount, ItemStack.loadItemStackFromNBT(itemTag));
+                inventory.setInventorySlotContents(slotCount, new ItemStack(itemTag));
             }
         }
 
@@ -163,7 +163,7 @@ public final class NBTUtils {
                 if (!(i > list.tagCount())) {
 
                     final NBTTagCompound currentTag = list.getCompoundTagAt(i);
-                    inventory[currentTag.getByte("Slot")] = ItemStack.loadItemStackFromNBT(currentTag);
+                    inventory[currentTag.getByte("Slot")] = new ItemStack(currentTag);
                 }
         }
 

@@ -1,12 +1,11 @@
 package net.darkhax.bookshelf.lib.util;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemBanner;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntityBanner;
-import net.minecraft.tileentity.TileEntityBanner.EnumBannerPattern;
+import net.minecraft.tileentity.BannerPattern;
 import net.minecraftforge.common.util.EnumHelper;
 
 /**
@@ -35,15 +34,7 @@ public final class BannerUtils {
      */
     public static ItemStack createBanner (EnumDyeColor baseColor, NBTTagList patterns) {
 
-        final ItemStack stack = new ItemStack(Items.BANNER, 1, baseColor.getDyeDamage());
-        final NBTTagCompound blockTag = new NBTTagCompound();
-        final NBTTagCompound stackTag = new NBTTagCompound();
-
-        TileEntityBanner.setBaseColorAndPatterns(blockTag, baseColor.getDyeDamage(), patterns);
-        stackTag.setTag("BlockEntityTag", blockTag);
-        stack.setTagCompound(stackTag);
-
-        return stack;
+        return ItemBanner.makeBanner(baseColor, patterns);
     }
 
     /**
@@ -62,7 +53,7 @@ public final class BannerUtils {
         for (final BannerLayer layer : layers) {
 
             final NBTTagCompound tag = new NBTTagCompound();
-            tag.setString("Pattern", layer.pattern.getPatternID());
+            tag.setString("Pattern", layer.pattern.getHashname());
             tag.setInteger("Color", layer.color.getDyeDamage());
             patterns.appendTag(tag);
         }
@@ -81,11 +72,11 @@ public final class BannerUtils {
      *        unique. Please consider adding the modID into this somehow.
      * @return The pattern that was created.
      */
-    public static EnumBannerPattern addBasicPattern (String name, String id) {
+    public static BannerPattern addBasicPattern (String name, String id) {
 
         final Class<?>[] paramTypes = { String.class, String.class };
         final Object[] paramValues = { name, id };
-        return EnumHelper.addEnum(EnumBannerPattern.class, name.toUpperCase(), paramTypes, paramValues);
+        return EnumHelper.addEnum(BannerPattern.class, name.toUpperCase(), paramTypes, paramValues);
     }
 
     /**
@@ -101,11 +92,11 @@ public final class BannerUtils {
      * @param craftingStack The ItemStack to use to create this pattern.
      * @return The pattern that was created.
      */
-    public static EnumBannerPattern addCraftingPattern (String name, String id, ItemStack craftingStack) {
+    public static BannerPattern addCraftingPattern (String name, String id, ItemStack craftingStack) {
 
         final Class<?>[] paramTypes = { String.class, String.class, ItemStack.class };
         final Object[] paramValues = { name, id, craftingStack };
-        return EnumHelper.addEnum(EnumBannerPattern.class, name.toUpperCase(), paramTypes, paramValues);
+        return EnumHelper.addEnum(BannerPattern.class, name.toUpperCase(), paramTypes, paramValues);
     }
 
     /**
@@ -131,11 +122,11 @@ public final class BannerUtils {
      *        "###"
      * @return The pattern that was created.
      */
-    public static EnumBannerPattern addDyePattern (String name, String id, String craftingTop, String craftingMid, String craftingBot) {
+    public static BannerPattern addDyePattern (String name, String id, String craftingTop, String craftingMid, String craftingBot) {
 
         final Class<?>[] paramTypes = { String.class, String.class, String.class, String.class, String.class };
         final Object[] paramValues = { name, id, craftingTop, craftingMid, craftingBot };
-        return EnumHelper.addEnum(EnumBannerPattern.class, name.toUpperCase(), paramTypes, paramValues);
+        return EnumHelper.addEnum(BannerPattern.class, name.toUpperCase(), paramTypes, paramValues);
     }
 
     /**
@@ -146,7 +137,7 @@ public final class BannerUtils {
         /**
          * The pattern to use for the layer.
          */
-        private final EnumBannerPattern pattern;
+        private final BannerPattern pattern;
 
         /**
          * The color to use for the player.
@@ -159,7 +150,7 @@ public final class BannerUtils {
          * @param pattern The pattern for the layer.
          * @param color The color for the layer.
          */
-        public BannerLayer (EnumBannerPattern pattern, EnumDyeColor color) {
+        public BannerLayer (BannerPattern pattern, EnumDyeColor color) {
 
             this.pattern = pattern;
             this.color = color;
@@ -170,7 +161,7 @@ public final class BannerUtils {
          *
          * @return The pattern depicted by the layer.
          */
-        public EnumBannerPattern getPattern () {
+        public BannerPattern getPattern () {
 
             return this.pattern;
         }

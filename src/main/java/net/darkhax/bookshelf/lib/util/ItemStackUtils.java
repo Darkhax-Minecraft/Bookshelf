@@ -191,7 +191,7 @@ public final class ItemStackUtils {
      */
     public static boolean areStacksSimilarWithSize (ItemStack firstStack, ItemStack secondStack) {
 
-        return firstStack == null && secondStack == null ? true : isValidStack(firstStack) && isValidStack(secondStack) && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem() && firstStack.stackSize == secondStack.stackSize;
+        return firstStack == null && secondStack == null ? true : isValidStack(firstStack) && isValidStack(secondStack) && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem() && firstStack.getCount() == secondStack.getCount();
     }
 
     public static ItemStack writePotionEffectsToStack (ItemStack stack, PotionEffect[] effects) {
@@ -230,8 +230,8 @@ public final class ItemStackUtils {
      */
     public static ItemStack decreaseStackSize (ItemStack stack, int amount) {
 
-        stack.stackSize -= amount;
-        return stack.stackSize <= 0 ? null : stack;
+        stack.shrink(amount);
+        return stack.getCount() <= 0 ? ItemStack.EMPTY : stack;
     }
 
     /**
@@ -295,7 +295,7 @@ public final class ItemStackUtils {
     public static ItemStack copyStackWithSize (ItemStack stack, int size) {
 
         final ItemStack output = stack.copy();
-        output.stackSize = size;
+        output.setCount(size);
         return output;
     }
 
@@ -341,13 +341,13 @@ public final class ItemStackUtils {
      */
     public static ItemStack consumeStack (ItemStack stack) {
 
-        if (stack.stackSize == 1) {
+        if (stack.getCount() == 1) {
 
             if (stack.getItem().hasContainerItem(stack))
                 return stack.getItem().getContainerItem(stack);
 
             else
-                return null;
+                return ItemStack.EMPTY;
         }
 
         else {
@@ -374,7 +374,7 @@ public final class ItemStackUtils {
             final double offZ = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
             final EntityItem entityitem = new EntityItem(world, pos.getX() + offX, pos.getY() + offY, pos.getZ() + offZ, stack);
             entityitem.setPickupDelay(10);
-            world.spawnEntityInWorld(entityitem);
+            world.spawnEntity(entityitem);
         }
     }
 

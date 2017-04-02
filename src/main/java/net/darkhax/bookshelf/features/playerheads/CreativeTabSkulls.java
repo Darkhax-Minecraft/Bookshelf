@@ -10,9 +10,10 @@ import net.darkhax.bookshelf.lib.util.PlayerUtils;
 import net.darkhax.bookshelf.lib.util.SkullUtils;
 import net.darkhax.bookshelf.lib.util.SkullUtils.MHFAccount;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * The creative tab to put the player heads in.
@@ -50,9 +51,9 @@ public class CreativeTabSkulls extends CreativeTabs {
     }
 
     @Override
-    public Item getTabIconItem () {
+    public ItemStack getTabIconItem () {
 
-        return Items.SKULL;
+        return displayStack;
     }
 
     @Override
@@ -68,7 +69,8 @@ public class CreativeTabSkulls extends CreativeTabs {
     }
 
     @Override
-    public void displayAllRelevantItems (List<ItemStack> itemList) {
+    @SideOnly(Side.CLIENT)
+    public void displayAllRelevantItems (NonNullList<ItemStack> itemList) {
 
         itemList.addAll(cache);
     }

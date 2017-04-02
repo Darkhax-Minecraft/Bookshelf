@@ -187,7 +187,7 @@ public final class BaublesUtils {
             final ItemStack existing = inv.getStackInSlot(slot);
             if (existing == null) {
                 inv.setStackInSlot(slot, item.copy());
-                item.stackSize--;
+                item.shrink(1);
                 return true;
             }
         }

@@ -52,7 +52,7 @@ public final class PlayerUtils {
      */
     public static boolean canPlayerSleep (EntityPlayer player) {
 
-        return !player.isPlayerSleeping() && player.isEntityAlive() && player.worldObj.getWorldTime() > 12541 && player.worldObj.getWorldTime() < 23458;
+        return !player.isPlayerSleeping() && player.isEntityAlive() && player.world.getWorldTime() > 12541 && player.world.getWorldTime() < 23458;
     }
 
     /**
@@ -64,7 +64,7 @@ public final class PlayerUtils {
      */
     public static boolean isPlayerReal (EntityPlayer player) {
 
-        return player != null && player.worldObj != null && player.getClass() == EntityPlayerMP.class;
+        return player != null && player.world != null && player.getClass() == EntityPlayerMP.class;
     }
 
     /**
@@ -200,7 +200,7 @@ public final class PlayerUtils {
 
         for (final ItemStack stack : player.inventory.mainInventory)
             if (stack != null && stack.getItem().equals(item)) {
-                count += stack.stackSize;
+                count += stack.getCount();
             }
 
         return count;
@@ -257,7 +257,7 @@ public final class PlayerUtils {
     @SideOnly(Side.CLIENT)
     public static EntityPlayer getClientPlayer () {
 
-        return Minecraft.getMinecraft().thePlayer;
+        return Minecraft.getMinecraft().player;
     }
 
     /**
@@ -288,7 +288,7 @@ public final class PlayerUtils {
     public static boolean isPlayerInGame () {
 
         final Minecraft mc = Minecraft.getMinecraft();
-        return mc.thePlayer != null && mc.theWorld != null && mc.thePlayer.worldObj != null;
+        return mc.player != null && mc.world != null && mc.player.world != null;
     }
 
     /**

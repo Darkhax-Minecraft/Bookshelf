@@ -1,7 +1,5 @@
 package net.darkhax.bookshelf.features.bookshelves;
 
-import java.util.List;
-
 import net.minecraft.block.BlockBookshelf;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -11,6 +9,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -56,7 +55,7 @@ public class BlockWoodenShelf extends BlockBookshelf {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks (Item item, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks (Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
 
         for (int meta = 0; meta < 5; meta++) {
             list.add(new ItemStack(item, 1, meta));

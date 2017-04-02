@@ -206,7 +206,7 @@ public class BookshelfRegistry {
          */
         public int getMaterialCost (ItemStack firstInput, ItemStack secondInput, String enteredName) {
 
-            return this.inputRight.stackSize;
+            return this.inputRight.getCount();
         }
 
         /**

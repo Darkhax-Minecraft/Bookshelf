@@ -39,9 +39,9 @@ version = getVersionFromJava(file("src/main/java/net/darkhax/bookshelf/lib/Const
 //Defines the MC environment information.
 minecraft {
 
-    version = "1.10.2-12.18.1.2018"
+    version = "1.11.2-13.20.0.2262"
     runDir = "run"
-    mappings = "snapshot_20160731"
+    mappings = "snapshot_20170402"
     useDepAts = true
 }
 
@@ -56,7 +56,7 @@ repositories {
 
 dependencies {
 
-    deobfCompile 'com.github.Azanor:Baubles:3199790'
+    deobfCompile 'com.github.Azanor:Baubles:803f411'
 }
 
 //Handles basic resources such as mcmod.info
@@ -196,7 +196,7 @@ curseforge {
         releaseType = project.releaseType;
         changelog = project.changelog;
 
-        addGameVersion "1.10.2"
+        addGameVersion "1.11.2"
         
         addArtifact(deobfJar)
         addArtifact(sourcesJar)

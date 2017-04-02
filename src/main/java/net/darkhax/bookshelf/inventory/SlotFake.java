@@ -54,7 +54,7 @@ public class SlotFake extends Slot {
         if (ItemStackUtils.isValidStack(copy)) {
 
             copy = copy.copy();
-            copy.stackSize = 1;
+            copy.setCount(1);
         }
 
         super.putStack(copy);

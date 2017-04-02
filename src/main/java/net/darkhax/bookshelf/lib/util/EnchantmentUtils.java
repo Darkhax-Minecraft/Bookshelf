@@ -88,7 +88,7 @@ public final class EnchantmentUtils {
      */
     public static boolean areEnchantmentsCompatible (Enchantment firstEnchantment, Enchantment secondEnchantment) {
 
-        return firstEnchantment.canApplyTogether(secondEnchantment) && secondEnchantment.canApplyTogether(firstEnchantment);
+        return firstEnchantment.func_191560_c(secondEnchantment);
     }
 
     public static String getExpForDisplay (int xp) {

@@ -68,7 +68,7 @@ public class InventoryItem extends Item implements IInventory {
             final int slot = itemData.getInteger("Slot");
 
             if (slot >= 0 && slot < this.getSizeInventory()) {
-                this.inventory[slot] = ItemStack.loadItemStackFromNBT(itemData);
+                this.inventory[slot] = new ItemStack(itemData);
             }
         }
     }
@@ -111,7 +111,7 @@ public class InventoryItem extends Item implements IInventory {
         final NBTTagList items = stack.getTagCompound().getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
         for (int index = 0; index < items.tagCount(); index++) {
-            list.add(ItemStack.loadItemStackFromNBT(items.getCompoundTagAt(index)));
+            list.add(new ItemStack(items.getCompoundTagAt(index)));
         }
 
         return list;
@@ -153,7 +153,7 @@ public class InventoryItem extends Item implements IInventory {
         ItemStack stack = this.getStackInSlot(index);
 
         if (ItemStackUtils.isValidStack(stack))
-            if (stack.stackSize > count) {
+            if (stack.getCount() > count) {
 
                 stack = stack.splitStack(count);
                 this.markDirty();
@@ -178,8 +178,8 @@ public class InventoryItem extends Item implements IInventory {
 
         this.inventory[index] = stack;
 
-        if (stack != null && stack.stackSize > this.getInventoryStackLimit()) {
-            stack.stackSize = this.getInventoryStackLimit();
+        if (stack != null && stack.getCount() > this.getInventoryStackLimit()) {
+            stack.setCount(this.getInventoryStackLimit());
         }
 
         this.markDirty();
@@ -195,17 +195,11 @@ public class InventoryItem extends Item implements IInventory {
     public void markDirty () {
 
         for (int index = 0; index < this.getSizeInventory(); index++)
-            if (ItemStackUtils.isValidStack(this.getStackInSlot(index)) && this.getStackInSlot(index).stackSize == 0) {
+            if (ItemStackUtils.isValidStack(this.getStackInSlot(index)) && this.getStackInSlot(index).getCount() == 0) {
                 this.inventory[index] = null;
             }
 
         this.writeToNBT();
-    }
-
-    @Override
-    public boolean isUseableByPlayer (EntityPlayer player) {
-
-        return true;
     }
 
     @Override
@@ -248,5 +242,22 @@ public class InventoryItem extends Item implements IInventory {
     public void clear () {
 
         // We don't care about this.
+    }
+
+    @Override
+    public boolean isEmpty () {
+
+        for (final ItemStack itemstack : this.inventory) {
+            if (!itemstack.isEmpty())
+                return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean isUsableByPlayer (EntityPlayer player) {
+
+        return true;
     }
 }

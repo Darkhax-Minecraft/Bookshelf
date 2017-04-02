@@ -252,7 +252,7 @@ public class RenderItemWrapper extends RenderItem {
 
         if (stack != null && livingBase != null && stack.getItem() != null) {
 
-            final IBakedModel bakedModel = this.getItemModelWithOverrides(stack, livingBase.worldObj, livingBase);
+            final IBakedModel bakedModel = this.getItemModelWithOverrides(stack, livingBase.world, livingBase);
 
             if (this.isExtendedModel(bakedModel)) {
                 this.renderItemModel(stack, bakedModel, transform, leftHanded);
@@ -281,7 +281,7 @@ public class RenderItemWrapper extends RenderItem {
     @Override
     public void renderItemAndEffectIntoGUI (ItemStack stack, int xPosition, int yPosition) {
 
-        this.renderItemAndEffectIntoGUI(Minecraft.getMinecraft().thePlayer, stack, xPosition, yPosition);
+        this.renderItemAndEffectIntoGUI(Minecraft.getMinecraft().player, stack, xPosition, yPosition);
     }
 
     @Override
