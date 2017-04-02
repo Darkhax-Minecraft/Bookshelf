@@ -30,7 +30,7 @@ public final class BlockUtils {
      */
     public static boolean isOre (ItemStack stack, boolean checkName) {
 
-        if (stack == null || stack.getItem() == null)
+        if (stack == ItemStack.EMPTY || stack.getItem() == null)
             return false;
 
         if (Block.getBlockFromItem(stack.getItem()) instanceof BlockOre)

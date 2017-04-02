@@ -195,7 +195,7 @@ public final class EntityUtils {
 
                 final ItemStack armor = living.getItemStackFromSlot(slot);
 
-                if (armor == null || !armor.getItem().getClass().equals(armorClass))
+                if (armor == ItemStack.EMPTY || !armor.getItem().getClass().equals(armorClass))
                     return false;
             }
 

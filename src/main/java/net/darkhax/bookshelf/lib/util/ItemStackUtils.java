@@ -128,7 +128,7 @@ public final class ItemStackUtils {
      */
     public static boolean isValidStack (ItemStack stack) {
 
-        return stack != null && stack.getItem() != null;
+        return stack != ItemStack.EMPTY && stack.getItem() != null;
     }
 
     /**

@@ -57,7 +57,7 @@ public final class BaublesUtils {
 
             final ItemStack stack = getBauble(player, type);
 
-            if (stack != null)
+            if (stack != ItemStack.EMPTY)
                 return stack.getItem().equals(item) && (meta < 0 || stack.getMetadata() == meta);
         }
 

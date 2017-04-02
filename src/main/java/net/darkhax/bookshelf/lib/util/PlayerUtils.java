@@ -199,7 +199,7 @@ public final class PlayerUtils {
         int count = 0;
 
         for (final ItemStack stack : player.inventory.mainInventory)
-            if (stack != null && stack.getItem().equals(item)) {
+            if (stack != ItemStack.EMPTY && stack.getItem().equals(item)) {
                 count += stack.getCount();
             }
 
