@@ -58,7 +58,7 @@ public class EntityModArrow extends EntityTippedArrow {
     @Override
     protected ItemStack getArrowStack () {
 
-        return this.heldStack != ItemStack.EMPTY ? this.heldStack : super.getArrowStack();
+        return !this.heldStack.isEmpty() ? this.heldStack : super.getArrowStack();
     }
 
     @Override

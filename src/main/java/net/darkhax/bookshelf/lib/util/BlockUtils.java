@@ -1,5 +1,7 @@
 package net.darkhax.bookshelf.lib.util;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
 import net.minecraft.init.Blocks;
@@ -28,10 +30,7 @@ public final class BlockUtils {
      * @param checkName Whether or not the name of the ItemStack should be checked.
      * @return Whether or not the ItemStack is an ore.
      */
-    public static boolean isOre (ItemStack stack, boolean checkName) {
-
-        if (stack == ItemStack.EMPTY || stack.getItem() == null)
-            return false;
+    public static boolean isOre (@Nonnull ItemStack stack, boolean checkName) {
 
         if (Block.getBlockFromItem(stack.getItem()) instanceof BlockOre)
             return true;

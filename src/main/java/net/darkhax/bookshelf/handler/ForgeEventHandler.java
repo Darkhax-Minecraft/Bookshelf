@@ -26,7 +26,7 @@ public class ForgeEventHandler {
     public void onAnvilUsed (AnvilUpdateEvent event) {
 
         for (final BookshelfRegistry.AnvilRecipe recipe : BookshelfRegistry.getAnvilRecipes())
-            if (recipe != null && ItemStackUtils.isValidStack(recipe.output) && ItemStackUtils.areStacksSimilarWithSize(event.getLeft(), recipe.inputLeft) && ItemStackUtils.areStacksSimilarWithSize(event.getRight(), recipe.inputRight)) {
+            if (recipe != null && !recipe.output.isEmpty() && ItemStackUtils.areStacksSimilarWithSize(event.getLeft(), recipe.inputLeft) && ItemStackUtils.areStacksSimilarWithSize(event.getRight(), recipe.inputRight)) {
 
                 event.setCost(recipe.getExperienceCost(event.getLeft(), event.getRight(), event.getName()));
                 event.setMaterialCost(recipe.getMaterialCost(event.getLeft(), event.getRight(), event.getName()));

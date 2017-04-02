@@ -4,6 +4,7 @@ import net.darkhax.bookshelf.lib.VanillaColor;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -108,7 +109,7 @@ public final class ItemStackUtils {
      */
     public static int getDyeColor (ItemStack stack) {
 
-        if (ItemStackUtils.isValidStack(stack)) {
+        if (!stack.isEmpty()) {
             for (final VanillaColor color : VanillaColor.values()) {
                 for (final ItemStack oreStack : OreDictionary.getOres(color.getDyeName()))
                     if (oreStack.isItemEqual(stack))
@@ -117,18 +118,6 @@ public final class ItemStackUtils {
         }
 
         return -1337;
-    }
-
-    /**
-     * Checks if an ItemStack is valid. A valid ItemStack is one that is not null, and has an
-     * Item.
-     *
-     * @param stackThe ItemStack to check.
-     * @return booleanTrue if the stack is valid, false if it is not.
-     */
-    public static boolean isValidStack (ItemStack stack) {
-
-        return stack != ItemStack.EMPTY && stack.getItem() != null;
     }
 
     /**
@@ -178,7 +167,7 @@ public final class ItemStackUtils {
      */
     public static boolean areStacksSimilar (ItemStack firstStack, ItemStack secondStack) {
 
-        return firstStack == null && secondStack == null ? true : isValidStack(firstStack) && isValidStack(secondStack) && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem();
+        return firstStack == null && secondStack == null ? true : !firstStack.isEmpty() && !secondStack.isEmpty() && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem();
     }
 
     /**
@@ -191,7 +180,7 @@ public final class ItemStackUtils {
      */
     public static boolean areStacksSimilarWithSize (ItemStack firstStack, ItemStack secondStack) {
 
-        return firstStack == null && secondStack == null ? true : isValidStack(firstStack) && isValidStack(secondStack) && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem() && firstStack.getCount() == secondStack.getCount();
+        return firstStack == null && secondStack == null ? true : !firstStack.isEmpty() && !secondStack.isEmpty() && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem() && firstStack.getCount() == secondStack.getCount();
     }
 
     public static ItemStack writePotionEffectsToStack (ItemStack stack, PotionEffect[] effects) {
@@ -330,7 +319,7 @@ public final class ItemStackUtils {
      */
     public static Block getBlockFromStack (ItemStack stack) {
 
-        return isValidStack(stack) ? Block.getBlockFromItem(stack.getItem()) : null;
+        return !stack.isEmpty() ? Block.getBlockFromItem(stack.getItem()) : Blocks.AIR;
     }
 
     /**

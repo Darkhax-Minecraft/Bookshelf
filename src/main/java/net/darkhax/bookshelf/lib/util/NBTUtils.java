@@ -96,7 +96,7 @@ public final class NBTUtils {
 
             final ItemStack stackInSlot = inventory.getStackInSlot(slotCount);
 
-            if (stackInSlot != ItemStack.EMPTY) {
+            if (!stackInSlot.isEmpty()) {
 
                 final NBTTagCompound itemTag = new NBTTagCompound();
                 itemTag.setByte("Slot", (byte) slotCount);

@@ -150,7 +150,7 @@ public class RenderItemWrapper extends RenderItem {
     @Override
     public void renderItem (ItemStack stack, IBakedModel model) {
 
-        if (stack != ItemStack.EMPTY && model instanceof IItemRenderer) {
+        if (!stack.isEmpty() && model instanceof IItemRenderer) {
 
             final IItemRenderer renderer = (IItemRenderer) model;
 

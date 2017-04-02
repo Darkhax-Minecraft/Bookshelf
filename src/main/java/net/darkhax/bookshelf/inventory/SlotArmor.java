@@ -1,6 +1,5 @@
 package net.darkhax.bookshelf.inventory;
 
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
@@ -48,7 +47,7 @@ public class SlotArmor extends Slot {
     @Override
     public boolean isItemValid (ItemStack stack) {
 
-        return ItemStackUtils.isValidStack(stack) ? stack.getItem().isValidArmor(stack, this.slotType, this.entity) : false;
+        return !stack.isEmpty() ? stack.getItem().isValidArmor(stack, this.slotType, this.entity) : false;
     }
 
     @Override

@@ -2,7 +2,6 @@ package net.darkhax.bookshelf.inventory;
 
 import javax.annotation.Nullable;
 
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -51,7 +50,7 @@ public class SlotFake extends Slot {
 
         ItemStack copy = stack;
 
-        if (ItemStackUtils.isValidStack(copy)) {
+        if (!copy.isEmpty()) {
 
             copy = copy.copy();
             copy.setCount(1);

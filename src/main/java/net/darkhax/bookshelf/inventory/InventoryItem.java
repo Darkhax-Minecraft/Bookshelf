@@ -84,7 +84,7 @@ public class InventoryItem extends Item implements IInventory {
 
             final ItemStack stack = this.getStackInSlot(index);
 
-            if (ItemStackUtils.isValidStack(stack)) {
+            if (!stack.isEmpty()) {
 
                 final NBTTagCompound itemData = new NBTTagCompound();
                 itemData.setInteger("Slot", index);
@@ -152,7 +152,7 @@ public class InventoryItem extends Item implements IInventory {
 
         ItemStack stack = this.getStackInSlot(index);
 
-        if (ItemStackUtils.isValidStack(stack))
+        if (!stack.isEmpty())
             if (stack.getCount() > count) {
 
                 stack = stack.splitStack(count);
@@ -195,7 +195,7 @@ public class InventoryItem extends Item implements IInventory {
     public void markDirty () {
 
         for (int index = 0; index < this.getSizeInventory(); index++)
-            if (ItemStackUtils.isValidStack(this.getStackInSlot(index)) && this.getStackInSlot(index).getCount() == 0) {
+            if (!this.getStackInSlot(index).isEmpty() && this.getStackInSlot(index).getCount() == 0) {
                 this.inventory[index] = null;
             }
 
