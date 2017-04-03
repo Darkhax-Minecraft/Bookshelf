@@ -6,7 +6,7 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 @IFMLLoadingPlugin.SortingIndex(1001)
 @IFMLLoadingPlugin.TransformerExclusions("net.darkhax.bookshelf.asm")
-@IFMLLoadingPlugin.MCVersion("1.10.2")
+@IFMLLoadingPlugin.MCVersion("1.11.2")
 public class BookshelfLoadingPlugin implements IFMLLoadingPlugin {
 
     @Override
