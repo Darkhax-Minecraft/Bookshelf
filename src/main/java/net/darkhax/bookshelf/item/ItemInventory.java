@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.inventory;
+package net.darkhax.bookshelf.item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +10,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.Constants;
 
-public class InventoryItem extends Item implements IInventory {
+public class ItemInventory extends Item implements IInventory {
 
     /**
      * The item holding the inventory.
@@ -29,7 +30,7 @@ public class InventoryItem extends Item implements IInventory {
     /**
      * The inventory contents.
      */
-    private final ItemStack[] inventory;
+    private final NonNullList<ItemStack> inventory;
 
     /**
      * The name of the inventory.
@@ -44,11 +45,11 @@ public class InventoryItem extends Item implements IInventory {
      * @param size The size of the inventory.
      * @param name The name of the inventory.
      */
-    public InventoryItem (ItemStack invItem, int size, String name) {
+    public ItemInventory (ItemStack invItem, int size, String name) {
 
         this.invItem = invItem;
         this.size = size;
-        this.inventory = new ItemStack[this.size];
+        this.inventory = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
         this.name = name;
 
         ItemStackUtils.prepareDataTag(invItem);
@@ -68,7 +69,7 @@ public class InventoryItem extends Item implements IInventory {
             final int slot = itemData.getInteger("Slot");
 
             if (slot >= 0 && slot < this.getSizeInventory()) {
-                this.inventory[slot] = new ItemStack(itemData);
+                this.inventory.set(slot,  new ItemStack(itemData));
             }
         }
     }
@@ -144,7 +145,7 @@ public class InventoryItem extends Item implements IInventory {
     @Override
     public ItemStack getStackInSlot (int index) {
 
-        return this.inventory[index];
+        return this.inventory.get(index);
     }
 
     @Override
@@ -176,7 +177,7 @@ public class InventoryItem extends Item implements IInventory {
     @Override
     public void setInventorySlotContents (int index, ItemStack stack) {
 
-        this.inventory[index] = stack;
+        this.inventory.set(index, stack);
 
         if (stack != null && stack.getCount() > this.getInventoryStackLimit()) {
             stack.setCount(this.getInventoryStackLimit());
@@ -196,7 +197,7 @@ public class InventoryItem extends Item implements IInventory {
 
         for (int index = 0; index < this.getSizeInventory(); index++)
             if (!this.getStackInSlot(index).isEmpty() && this.getStackInSlot(index).getCount() == 0) {
-                this.inventory[index] = null;
+                this.inventory.set(index, ItemStack.EMPTY);
             }
 
         this.writeToNBT();
