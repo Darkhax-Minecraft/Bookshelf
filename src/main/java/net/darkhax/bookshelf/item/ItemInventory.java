@@ -3,7 +3,7 @@ package net.darkhax.bookshelf.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.util.ItemStackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;

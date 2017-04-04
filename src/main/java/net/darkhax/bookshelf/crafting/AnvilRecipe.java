@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf.crafting;
 
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.util.ItemStackUtils;
 import net.minecraft.item.ItemStack;
 
 public class AnvilRecipe implements IAnvilRecipe {

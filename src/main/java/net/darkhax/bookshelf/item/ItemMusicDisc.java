@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf.item;
 
-import net.darkhax.bookshelf.lib.util.OreDictUtils;
+import net.darkhax.bookshelf.util.OreDictUtils;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.oredict.OreDictionary;

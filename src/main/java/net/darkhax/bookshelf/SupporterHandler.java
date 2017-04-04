@@ -13,8 +13,8 @@ import java.util.UUID;
 import com.google.gson.stream.JsonReader;
 
 import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.util.RenderUtils;
-import net.darkhax.bookshelf.lib.util.TextUtils.ChatFormat;
+import net.darkhax.bookshelf.util.RenderUtils;
+import net.darkhax.bookshelf.util.TextUtils.ChatFormat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 

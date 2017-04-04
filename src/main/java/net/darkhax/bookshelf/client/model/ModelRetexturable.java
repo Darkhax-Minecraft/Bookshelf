@@ -12,7 +12,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import net.darkhax.bookshelf.lib.BlockStates;
-import net.darkhax.bookshelf.lib.util.RenderUtils;
+import net.darkhax.bookshelf.util.RenderUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;

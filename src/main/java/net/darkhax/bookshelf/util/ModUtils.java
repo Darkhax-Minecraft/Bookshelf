@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.lib.util;
+package net.darkhax.bookshelf.util;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;

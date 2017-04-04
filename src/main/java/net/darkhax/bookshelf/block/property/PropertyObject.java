@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.lib.properties;
+package net.darkhax.bookshelf.block.property;
 
 import net.minecraftforge.common.property.IUnlistedProperty;
 

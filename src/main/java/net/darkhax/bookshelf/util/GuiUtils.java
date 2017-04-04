@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.lib.util;
+package net.darkhax.bookshelf.util;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;

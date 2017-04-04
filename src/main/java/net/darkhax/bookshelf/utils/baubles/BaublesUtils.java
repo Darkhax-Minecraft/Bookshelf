@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.lib.modutils.baubles;
+package net.darkhax.bookshelf.utils.baubles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import baubles.api.IBauble;
 import baubles.api.cap.IBaublesItemHandler;
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.util.ItemStackUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

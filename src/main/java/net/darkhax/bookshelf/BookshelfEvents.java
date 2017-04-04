@@ -1,7 +1,7 @@
 package net.darkhax.bookshelf;
 
 import net.darkhax.bookshelf.crafting.IAnvilRecipe;
-import net.darkhax.bookshelf.lib.util.PlayerUtils;
+import net.darkhax.bookshelf.util.PlayerUtils;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;

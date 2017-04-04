@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import net.darkhax.bookshelf.lib.util.TextUtils;
+import net.darkhax.bookshelf.util.TextUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 

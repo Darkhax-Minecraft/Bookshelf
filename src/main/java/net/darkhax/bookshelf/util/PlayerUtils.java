@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.lib.util;
+package net.darkhax.bookshelf.util;
 
 import java.io.BufferedReader;
 import java.net.URL;
@@ -13,7 +13,7 @@ import com.google.common.io.Resources;
 import com.google.gson.stream.JsonReader;
 
 import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.modutils.baubles.BaublesUtils;
+import net.darkhax.bookshelf.utils.baubles.BaublesUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.entity.player.EntityPlayer;

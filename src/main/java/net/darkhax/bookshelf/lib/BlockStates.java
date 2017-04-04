@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf.lib;
 
-import net.darkhax.bookshelf.lib.properties.PropertyObject;
+import net.darkhax.bookshelf.block.property.PropertyObject;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;

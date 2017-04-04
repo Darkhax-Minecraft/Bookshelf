@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.lib.util;
+package net.darkhax.bookshelf.util;
 
 import net.darkhax.bookshelf.lib.VanillaColor;
 import net.minecraft.block.Block;

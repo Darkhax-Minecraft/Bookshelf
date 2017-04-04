@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.lib.util;
+package net.darkhax.bookshelf.util;
 
 import java.util.Calendar;
 

@@ -2,7 +2,7 @@ package net.darkhax.bookshelf.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import net.darkhax.bookshelf.lib.util.MathsUtils;
+import net.darkhax.bookshelf.util.MathsUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 

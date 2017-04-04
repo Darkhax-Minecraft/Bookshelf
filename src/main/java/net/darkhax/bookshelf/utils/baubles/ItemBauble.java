@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.lib.modutils.baubles;
+package net.darkhax.bookshelf.utils.baubles;
 
 import baubles.api.IBauble;
 import net.minecraft.item.Item;
