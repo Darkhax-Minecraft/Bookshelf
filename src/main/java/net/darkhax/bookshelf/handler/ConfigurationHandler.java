@@ -2,11 +2,7 @@ package net.darkhax.bookshelf.handler;
 
 import java.io.File;
 
-import net.darkhax.bookshelf.lib.Constants;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ConfigurationHandler {
 
@@ -15,16 +11,7 @@ public class ConfigurationHandler {
     public ConfigurationHandler (File file) {
 
         config = new Configuration(file);
-        MinecraftForge.EVENT_BUS.register(this);
         this.syncConfigData();
-    }
-
-    @SubscribeEvent
-    public void onConfigChange (OnConfigChangedEvent event) {
-
-        if (event.getModID().equals(Constants.MOD_ID)) {
-            this.syncConfigData();
-        }
     }
 
     private void syncConfigData () {
