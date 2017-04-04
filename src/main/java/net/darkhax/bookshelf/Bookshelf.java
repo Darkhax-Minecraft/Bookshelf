@@ -1,7 +1,6 @@
 package net.darkhax.bookshelf;
 
 import net.darkhax.bookshelf.client.render.item.RenderItemWrapper;
-import net.darkhax.bookshelf.common.ProxyCommon;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.tileentity.TileEntityBasicChest;
 import net.minecraftforge.common.MinecraftForge;

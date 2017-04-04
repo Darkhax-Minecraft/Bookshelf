@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.common;
+package net.darkhax.bookshelf;
 
 public class ProxyCommon {
 
