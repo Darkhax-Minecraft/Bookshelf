@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.handler;
+package net.darkhax.bookshelf;
 
 import java.io.IOException;
 import java.io.InputStream;

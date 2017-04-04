@@ -1,6 +1,5 @@
-package net.darkhax.bookshelf.handler;
+package net.darkhax.bookshelf;
 
-import net.darkhax.bookshelf.BookshelfRegistry;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.PlayerUtils;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -8,7 +7,7 @@ import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class ForgeEventHandler {
+public class BookshelfEvents {
 
     public void onPlayerJoinWorld (EntityJoinWorldEvent event) {
 

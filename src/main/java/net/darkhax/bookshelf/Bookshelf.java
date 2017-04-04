@@ -2,8 +2,6 @@ package net.darkhax.bookshelf;
 
 import net.darkhax.bookshelf.client.render.item.RenderItemWrapper;
 import net.darkhax.bookshelf.common.ProxyCommon;
-import net.darkhax.bookshelf.handler.ConfigurationHandler;
-import net.darkhax.bookshelf.handler.ForgeEventHandler;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.tileentity.TileEntityBasicChest;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,9 +26,9 @@ public class Bookshelf {
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
 
-        MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
+        MinecraftForge.EVENT_BUS.register(new BookshelfEvents());
 
-        new ConfigurationHandler(event.getSuggestedConfigurationFile());
+        new BookshelfConfig(event.getSuggestedConfigurationFile());
 
         GameRegistry.registerTileEntity(TileEntityBasicChest.class, "basic_chest");
         proxy.preInit();

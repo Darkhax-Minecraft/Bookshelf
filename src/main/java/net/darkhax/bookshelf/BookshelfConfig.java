@@ -1,14 +1,14 @@
-package net.darkhax.bookshelf.handler;
+package net.darkhax.bookshelf;
 
 import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
 
-public class ConfigurationHandler {
+public class BookshelfConfig {
 
     private static Configuration config;
 
-    public ConfigurationHandler (File file) {
+    public BookshelfConfig (File file) {
 
         config = new Configuration(file);
         this.syncConfigData();
