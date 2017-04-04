@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf.features.crashes;
 
-import net.darkhax.bookshelf.common.BookshelfRegistry;
+import net.darkhax.bookshelf.BookshelfRegistry;
 import net.darkhax.bookshelf.events.CrashReportEvent;
 import net.darkhax.bookshelf.features.Feature;
 import net.minecraftforge.common.MinecraftForge;

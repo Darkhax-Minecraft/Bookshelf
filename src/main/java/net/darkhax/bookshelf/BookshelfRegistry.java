@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.common;
+package net.darkhax.bookshelf;
 
 import java.util.ArrayList;
 import java.util.List;

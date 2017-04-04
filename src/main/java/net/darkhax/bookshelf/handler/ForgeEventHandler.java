@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf.handler;
 
-import net.darkhax.bookshelf.common.BookshelfRegistry;
+import net.darkhax.bookshelf.BookshelfRegistry;
 import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import net.darkhax.bookshelf.lib.util.PlayerUtils;
 import net.minecraft.client.entity.AbstractClientPlayer;
