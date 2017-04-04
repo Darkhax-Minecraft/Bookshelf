@@ -2,7 +2,7 @@ package net.darkhax.bookshelf.client.render.item;
 
 import java.lang.reflect.Field;
 
-import net.darkhax.bookshelf.entity.FakeEntity;
+import net.darkhax.bookshelf.entity.EntityFake;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.entity.Render;
@@ -15,20 +15,20 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
  * A fake render factory, used to iterate through all other renderers, and patch their
  * reference to the global RenderItem class. For internal use only!
  */
-public class RenderFactoryItem implements IRenderFactory<FakeEntity> {
+public class RenderFactoryItem implements IRenderFactory<EntityFake> {
 
     @Override
-    public Render<FakeEntity> createRenderFor (RenderManager manager) {
+    public Render<EntityFake> createRenderFor (RenderManager manager) {
 
         for (final Render<? extends Entity> render : manager.entityRenderMap.values())
             if (render != null) {
                 this.patchRenderer(render);
             }
 
-        return new Render<FakeEntity>(manager) {
+        return new Render<EntityFake>(manager) {
 
             @Override
-            protected ResourceLocation getEntityTexture (FakeEntity entity) {
+            protected ResourceLocation getEntityTexture (EntityFake entity) {
 
                 return null;
             }
