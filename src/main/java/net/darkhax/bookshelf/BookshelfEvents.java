@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf;
 
-import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.crafting.IAnvilRecipe;
 import net.darkhax.bookshelf.lib.util.PlayerUtils;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -22,23 +22,12 @@ public class BookshelfEvents {
     }
 
     @SubscribeEvent
-    public void onAnvilUsed (AnvilUpdateEvent event) {
+    public void onAnvilUpdate (AnvilUpdateEvent event) {
 
-        for (final BookshelfRegistry.AnvilRecipe recipe : BookshelfRegistry.getAnvilRecipes())
-            if (recipe != null && !recipe.output.isEmpty() && ItemStackUtils.areStacksSimilarWithSize(event.getLeft(), recipe.inputLeft) && ItemStackUtils.areStacksSimilarWithSize(event.getRight(), recipe.inputRight)) {
-
+        for (final IAnvilRecipe recipe : BookshelfRegistry.getAnvilRecipes())
+            if (recipe.isValidRecipe(event.getLeft(), event.getRight(), event.getName())) {
                 event.setCost(recipe.getExperienceCost(event.getLeft(), event.getRight(), event.getName()));
                 event.setMaterialCost(recipe.getMaterialCost(event.getLeft(), event.getRight(), event.getName()));
-
-                if (recipe.nameTaxt != null && !recipe.nameTaxt.isEmpty()) {
-
-                    if (recipe.nameTaxt.equalsIgnoreCase(event.getName())) {
-                        event.setOutput(recipe.getOutput(event.getLeft(), event.getRight(), event.getName()));
-                    }
-
-                    return;
-                }
-
                 event.setOutput(recipe.getOutput(event.getLeft(), event.getRight(), event.getName()));
                 return;
             }
