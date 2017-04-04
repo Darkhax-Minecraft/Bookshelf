@@ -2,8 +2,6 @@ package net.darkhax.bookshelf.handler;
 
 import java.io.File;
 
-import net.darkhax.bookshelf.Bookshelf;
-import net.darkhax.bookshelf.features.Feature;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -30,10 +28,6 @@ public class ConfigurationHandler {
     }
 
     private void syncConfigData () {
-
-        for (final Feature feature : Bookshelf.FEATURES) {
-            feature.setupConfig(config);
-        }
 
         if (config.hasChanged()) {
             config.save();

@@ -49,7 +49,7 @@ public class ItemInventory extends Item implements IInventory {
 
         this.invItem = invItem;
         this.size = size;
-        this.inventory = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
+        this.inventory = NonNullList.<ItemStack> withSize(size, ItemStack.EMPTY);
         this.name = name;
 
         ItemStackUtils.prepareDataTag(invItem);
@@ -69,7 +69,7 @@ public class ItemInventory extends Item implements IInventory {
             final int slot = itemData.getInteger("Slot");
 
             if (slot >= 0 && slot < this.getSizeInventory()) {
-                this.inventory.set(slot,  new ItemStack(itemData));
+                this.inventory.set(slot, new ItemStack(itemData));
             }
         }
     }
