@@ -1,7 +1,8 @@
 package net.darkhax.bookshelf.lib.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
@@ -21,7 +22,7 @@ public final class AnnotationUtils {
     /**
      * Finds all classes annotated with the annotation class. These classes are then
      * instantiated, added to a list, and given to you.
-     * 
+     *
      * @param asmDataTable The ASMDataTable created by Forge. You can get this from most of the
      *        main mod loading stage events.
      * @param annotation The class of the annotation you're using to search for.
@@ -29,17 +30,17 @@ public final class AnnotationUtils {
      *        shared interface, or parent class.
      * @return A list of all classes annotated with the annotation, as instances.
      */
-    public static <T> List<T> getAnnotations (ASMDataTable asmDataTable, Class<?> annotation, Class<T> instance) {
+    public static <T, A extends Annotation> Map<T, A> getAnnotations (ASMDataTable asmDataTable, Class<A> annotation, Class<T> instance) {
         
-        List<T> instances = new ArrayList<T>();
+        final Map<T, A> map = new HashMap<>();
         
-        for (ASMDataTable.ASMData asmData : asmDataTable.getAll(annotation.getCanonicalName())) {
+        for (final ASMDataTable.ASMData asmData : asmDataTable.getAll(annotation.getCanonicalName())) {
             
             try {
                 
-                Class<?> asmClass = Class.forName(asmData.getClassName());
-                Class<? extends T> asmInstanceClass = asmClass.asSubclass(instance);
-                instances.add(asmInstanceClass.newInstance());
+                final Class<?> asmClass = Class.forName(asmData.getClassName());
+                final Class<? extends T> asmInstanceClass = asmClass.asSubclass(instance);
+                map.put(asmInstanceClass.newInstance(), asmInstanceClass.getAnnotation(annotation));
             }
             
             catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
@@ -47,6 +48,8 @@ public final class AnnotationUtils {
                 Constants.LOG.warn("Could not load " + asmData.getClassName(), e);
             }
         }
-        return instances;
+        
+        return map;
     }
+
 }
