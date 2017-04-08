@@ -61,15 +61,32 @@ public final class CraftingUtils {
      */
     public static IRecipe getCurrentCraftingRecipe (EntityPlayer player) {
 
+        final ContainerWorkbench container = getCraftingContainer(player);
+        return container != null ? getRecipeForMatrix(container.craftMatrix, player.getEntityWorld()) : null;
+    }
+
+    /**
+     * Gets the current output from the crafting gui.
+     *
+     * @param player The player to get the recipe for.
+     * @return The output ItemStack in the gui.
+     */
+    public static ItemStack getCurrentCraftingOutput (EntityPlayer player) {
+
+        final ContainerWorkbench container = getCraftingContainer(player);
+        return container != null ? container.craftResult.getStackInSlot(0) : ItemStack.EMPTY;
+    }
+
+    /**
+     * Gets the current crafting table container gui.
+     *
+     * @param player The player to get the container for.
+     * @return The current crafting container.
+     */
+    public static ContainerWorkbench getCraftingContainer (EntityPlayer player) {
+
         final Container container = player.openContainer;
-
-        if (container instanceof ContainerWorkbench) {
-
-            final ContainerWorkbench crafting = (ContainerWorkbench) container;
-            return getRecipeForMatrix(crafting.craftMatrix, player.getEntityWorld());
-        }
-
-        return null;
+        return container instanceof ContainerWorkbench ? (ContainerWorkbench) container : null;
     }
 
     /**

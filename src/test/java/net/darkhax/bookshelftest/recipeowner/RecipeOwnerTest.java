@@ -1,8 +1,11 @@
 package net.darkhax.bookshelftest.recipeowner;
 
+import java.util.UUID;
+
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 import net.darkhax.bookshelf.util.CraftingUtils;
+import net.darkhax.bookshelf.util.ItemStackUtils;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -36,7 +39,12 @@ public class RecipeOwnerTest {
 
             if (container != null) {
 
-                event.getToolTip().add(ChatFormatting.BLUE + container.getName());
+                final ItemStack output = CraftingUtils.getCurrentCraftingOutput(event.getEntityPlayer());
+                ItemStackUtils.prepareDataTag(output).setString("BookshelfTempUUID", UUID.randomUUID().toString());
+
+                if (ItemStackUtils.areStacksEqual(event.getItemStack(), output, true)) {
+                    event.getToolTip().add(ChatFormatting.BLUE + container.getName());
+                }
             }
         }
     }
