@@ -220,7 +220,7 @@ public final class PlayerUtils {
             if (stack != null && stack.getItem().equals(item) && (meta < 0 || stack.getMetadata() == meta))
                 return true;
 
-        if (Loader.isModLoaded("Baubles"))
+        if (Loader.isModLoaded("baubles"))
             return BaublesUtils.hasItem(player, item, meta);
 
         return false;

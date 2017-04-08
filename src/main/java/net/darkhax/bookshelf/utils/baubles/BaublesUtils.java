@@ -48,7 +48,7 @@ public final class BaublesUtils {
      * @param meta The required meta value.
      * @return Whether or not the item was found.
      */
-    @Optional.Method(modid = "Baubles")
+    @Optional.Method(modid = "baubles")
     public static boolean hasItem (EntityPlayer player, Item item, int meta) {
 
         final BaubleType type = getBaubleType(item, meta);
@@ -73,7 +73,7 @@ public final class BaublesUtils {
      * @param meta The desired metadata for the item. If less than 0, any meta will work.
      * @return The list of found items.
      */
-    @Optional.Method(modid = "Baubles")
+    @Optional.Method(modid = "baubles")
     public static List<ItemStack> getBaublesFromPlayer (EntityPlayer player, Item item, int meta) {
 
         final List<ItemStack> items = new ArrayList<>();
@@ -97,7 +97,7 @@ public final class BaublesUtils {
      * @param meta The meta to use.
      * @return The bauble type that was found. Can be null.
      */
-    @Optional.Method(modid = "Baubles")
+    @Optional.Method(modid = "baubles")
     public static BaubleType getBaubleType (Item item, int meta) {
 
         if (item instanceof IBauble)
@@ -112,7 +112,7 @@ public final class BaublesUtils {
      * @param type The type of bauble being searched for.
      * @return The first stack found.
      */
-    @Optional.Method(modid = "Baubles")
+    @Optional.Method(modid = "baubles")
     public static ItemStack getBauble (EntityPlayer player, BaubleType type) {
 
         final IBaublesItemHandler inv = BaublesApi.getBaublesHandler(player);
@@ -136,6 +136,7 @@ public final class BaublesUtils {
      * @param type The slot to get the bauble from.
      * @return Gets the stack in the slot.
      */
+    @Optional.Method(modid = "baubles")
     public static ItemStack getBauble (EntityPlayer player, int type) {
 
         final IBaublesItemHandler inv = BaublesApi.getBaublesHandler(player);
@@ -159,7 +160,7 @@ public final class BaublesUtils {
      * @param type The type of bauble being searched for.
      * @return Whether or not a valid stack was found.
      */
-    @Optional.Method(modid = "Baubles")
+    @Optional.Method(modid = "baubles")
     public static boolean hasBauble (EntityPlayer player, ItemStack stack, BaubleType type) {
 
         final IBaublesItemHandler inv = BaublesApi.getBaublesHandler(player);
@@ -179,7 +180,7 @@ public final class BaublesUtils {
      * @param slot The slot to place the bauble in. 0 is amulet, 1 and 2 are rings. 3 is belt.
      * @return Whether or not the bauble was equipped.
      */
-    @Optional.Method(modid = "Baubles")
+    @Optional.Method(modid = "baubles")
     public static boolean equipBauble (EntityPlayer player, ItemStack item, int slot) {
 
         final IBaublesItemHandler inv = BaublesApi.getBaublesHandler(player);
