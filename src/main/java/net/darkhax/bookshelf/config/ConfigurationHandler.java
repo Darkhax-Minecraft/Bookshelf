@@ -131,6 +131,7 @@ public class ConfigurationHandler {
      */
     public void sync () {
 
+        this.config.load();
         for (final Field field : this.properties) {
 
             if (!(Modifier.isPublic(field.getModifiers()) && Modifier.isStatic(field.getModifiers()))) {
@@ -188,6 +189,11 @@ public class ConfigurationHandler {
     public void save () {
 
         this.config.save();
+    }
+
+    public Configuration getConfig () {
+
+        return this.config;
     }
 
     public static <T extends Object> void addReader (Class<T> type, Adapter<T> reader) {
