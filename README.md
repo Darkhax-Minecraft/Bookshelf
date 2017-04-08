@@ -1,6 +1,6 @@
 Bookshelf [![](http://cf.way2muchnoise.eu/228525.svg)](https://minecraft.curseforge.com/projects/bookshelf) [![](http://cf.way2muchnoise.eu/versions/228525.svg)](https://minecraft.curseforge.com/projects/bookshelf)
 =========
-Bookshelf is a mod that expands upon Forge and Minecraft by adding new utilities, hooks and events which are publicly available to every mod authors. 
+Bookshelf is a mod that expands upon Forge and Minecraft by adding new utilities, hooks and events which are publicly available to mod authors. 
 
 Compilation
 ===========
@@ -8,7 +8,7 @@ It is easy to build Bookshelf from the repository by using Forge Gradle. Bookshe
 
 Dependency Management
 =====================
-If you are using [Maven](https://maven.apache.org/download.cgi) to manage your dependencies. Add the following into your `pom.xml` file. Make sure to replace the version with the correct one. All versions can be viewed [here](http://maven.rubbix.net/net/darkhax/bookshelf/Bookshelf/).
+If you are using [Maven](https://maven.apache.org/download.cgi) to manage your dependencies, add the following into your `pom.xml` file. Make sure to replace the version with the correct one. All versions can be viewed [here](http://maven.rubbix.net/net/darkhax/bookshelf/Bookshelf/).
 ```
 <repositories>
     <repository>
