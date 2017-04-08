@@ -6,6 +6,7 @@ import java.util.List;
 import net.darkhax.bookshelf.crafting.AnvilRecipe;
 import net.darkhax.bookshelf.crafting.IAnvilRecipe;
 import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.ModTrackingList;
 import net.minecraft.item.ItemStack;
 
 public class BookshelfRegistry {
@@ -21,7 +22,7 @@ public class BookshelfRegistry {
      */
     // TODO Add support for oredict recipes by default.
     // TODO add JEI support for showing recipes!
-    private static final List<IAnvilRecipe> anvilRecipes = new ArrayList<>();
+    private static final List<IAnvilRecipe> anvilRecipes = new ModTrackingList<IAnvilRecipe>(new ArrayList<IAnvilRecipe>());
 
     /**
      * Adds a new anvil recipe to the list. This recipe will have no name requirement.
