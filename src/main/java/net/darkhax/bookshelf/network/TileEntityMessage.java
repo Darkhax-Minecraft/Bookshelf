@@ -12,6 +12,7 @@
  * - Added JavaDocs
  * - Fixed some mappings
  * - Changed to Bookshelf's formatting
+ * - getAction now returns void, and is functional.
  */
 package net.darkhax.bookshelf.network;
 
@@ -74,7 +75,7 @@ public abstract class TileEntityMessage<T extends TileEntity> extends Serializab
 
                 final T castTile = (T) tile;
                 this.tile = castTile;
-                ((WorldServer) world).addScheduledTask(this.getAction());
+                ((WorldServer) world).addScheduledTask( () -> this.getAction());
             }
             catch (final ClassCastException e) {
 
@@ -85,5 +86,5 @@ public abstract class TileEntityMessage<T extends TileEntity> extends Serializab
         return null;
     }
 
-    public abstract Runnable getAction ();
+    public abstract void getAction ();
 }
