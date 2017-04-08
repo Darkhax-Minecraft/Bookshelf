@@ -27,8 +27,6 @@ public class Bookshelf {
 
         MinecraftForge.EVENT_BUS.register(new BookshelfEvents());
 
-        new BookshelfConfig(event.getSuggestedConfigurationFile());
-
         GameRegistry.registerTileEntity(TileEntityBasicChest.class, "basic_chest");
         proxy.preInit();
     }
