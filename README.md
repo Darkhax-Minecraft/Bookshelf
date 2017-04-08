@@ -1,6 +1,6 @@
 Bookshelf [![](http://cf.way2muchnoise.eu/228525.svg)](https://minecraft.curseforge.com/projects/bookshelf) [![](http://cf.way2muchnoise.eu/versions/228525.svg)](https://minecraft.curseforge.com/projects/bookshelf)
 =========
-Bookshelf is a mod that expands upon Forge and Minecraft by adding new utilities, hooks and events which are publicly available to mod author. 
+Bookshelf is a mod that expands upon Forge and Minecraft by adding new utilities, hooks and events which are publicly available to mod authors. 
 
 Compilation
 ===========
