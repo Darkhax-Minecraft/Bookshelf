@@ -8,27 +8,12 @@ It is easy to build Bookshelf from the repository by using Forge Gradle. Bookshe
 
 Dependency Management
 =====================
-If you are using [Maven](https://maven.apache.org/download.cgi) to manage your dependencies, add the following into your `pom.xml` file. Make sure to replace the version with the correct one. All versions can be viewed [here](http://maven.rubbix.net/net/darkhax/bookshelf/Bookshelf/).
-```
-<repositories>
-    <repository>
-        <id>epoxide.xyz</id>
-        <url>http://maven.epoxide.xyz</url>
-    </repository>
-</repositories>
 
-<dependency>
-     <groupId>net.darkhax.bookshelf</groupId>
-     <artifactId>Bookshelf</artifactId>
-     <version>PUT_VERSION_HERE</version>
-</dependency>
-```
-
-If you are using [Gradle](https://gradle.org) to manage your dependencies, add the following into your `build.gradle` file. Make sure to replace the version with the correct one. All versions can be viewed [here](http://maven.rubbix.net/net/darkhax/bookshelf/Bookshelf/).
+If you are using [Gradle](https://gradle.org) to manage your dependencies, add the following into your `build.gradle` file. Make sure to replace the version with the correct one. All versions can be viewed [here](http://maven.epoxide.org/net/darkhax/bookshelf/Bookshelf/).
 ```
 repositories {
 
-    maven { url 'http://maven.epoxide.xyz' }
+    maven { url 'http://maven.epoxide.org' }
 }
 
 dependencies {
