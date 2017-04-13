@@ -164,12 +164,6 @@ uploadArchives {
     }
 }
 
-task setCurseForgeInfo() {
-
-    project.ext.releaseType = "alpha";
-    project.ext.changelog = "All changes can be found here: " + "https://github.com/Darkhax-Minecraft/bookshelf/commits/master";
-}
-
 //Prevents incomplete JavaDocs from preventing a build on Java 8.
 if (JavaVersion.current().isJava8Compatible()) {
 
@@ -179,6 +173,34 @@ if (JavaVersion.current().isJava8Compatible()) {
 
             options.addStringOption('Xdoclint:none', '-quiet')
         }
+    }
+}
+
+// Creates a changelog based on the git changelog. Based on code by Kobata
+// https://github.com/Inventory-Tweaks/inventory-tweaks/blob/develop/build.gradle
+def getGitChangelog = { ->
+    try {
+        def stdout = new ByteArrayOutputStream()
+        def gitHash = System.getenv("GIT_COMMIT")
+        def gitPrevHash = System.getenv("GIT_PREVIOUS_COMMIT")
+        def travisRange = System.getenv("TRAVIS_COMMIT_RANGE")
+        if(gitHash && gitPrevHash) {
+            exec {
+                commandLine 'git', 'log', '--pretty=tformat:- %s', '' + gitPrevHash + '...' + gitHash
+                standardOutput = stdout
+            }
+            return stdout.toString().trim()
+        } else if(travisRange) {
+            exec {
+                commandLine 'git', 'log', '--pretty=tformat:- %s', '' + travisRange
+                standardOutput = stdout
+            }
+            return stdout.toString().trim()
+        } else {
+            return "";
+        }
+    } catch(ignored) {
+        return "";
     }
 }
 
@@ -193,8 +215,8 @@ curseforge {
         //Sets the Project ID from the system environment, if available.
         id = System.getenv("projectId") ? System.getenv("projectId") : "0";
 
-        releaseType = project.releaseType;
-        changelog = project.changelog;
+        releaseType = 'alpha'
+        changelog = getGitChangelog()
 
         addGameVersion "${version_minecraft}"
         
