@@ -14,6 +14,11 @@ buildscript {
 
             url "https://plugins.gradle.org/m2/"
         }
+        
+        maven {
+        
+            url = 'http://maven.modmuss50.me/'
+        }
     }
 
     dependencies {
@@ -21,12 +26,14 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
         classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.0.7"
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1"
+        classpath 'ModsIOUpload:ModsIOUpload:2.1.15'
     }
 }
 
 apply plugin: "maven"
 apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "com.matthewprenger.cursegradle"
+apply plugin: 'net.cazzar.gradle.modsio'
 apply plugin: "org.sonarqube"
 
 sourceCompatibility = 1.8
@@ -212,9 +219,7 @@ curseforge {
 
     project {
 
-        //Sets the Project ID from the system environment, if available.
-        id = System.getenv("projectId") ? System.getenv("projectId") : "0";
-
+        id = "${id_curse}"
         releaseType = 'alpha'
         changelog = getGitChangelog()
         changelogType = 'markdown'
@@ -224,6 +229,20 @@ curseforge {
         addArtifact(deobfJar)
         addArtifact(sourcesJar)
         addArtifact(javadocJar)
+    }
+}
+
+modsIO {
+    
+    key = System.getenv("ModsIOApiKey") ? System.getenv("ModsIOApiKey") : '0'
+    
+    project {
+    
+        artifact = jar.archivePath
+        modid = "${id_modsio}"
+        minecraft = "${version_minecraft}"
+        changelog = getGitChangelog()
+        current = true
     }
 }
 
