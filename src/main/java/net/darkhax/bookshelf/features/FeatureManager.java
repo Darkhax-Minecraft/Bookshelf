@@ -1,3 +1,10 @@
+/**
+ * This class was created by <Darkhax>. It is distributed as part of Bookshelf. You can find
+ * the original source here: https://github.com/Darkhax-Minecraft/Bookshelf
+ *
+ * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
+ * 2.1.
+ */
 package net.darkhax.bookshelf.features;
 
 import java.util.ArrayList;
@@ -11,41 +18,41 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 
 public class FeatureManager {
-
+    
     private static final List<Feature> features = new ArrayList<>();
-
+    
     private static boolean loaded = false;
-
+    
     private static ConfigurationHandler config;
-
+    
     public static void init (ASMDataTable asmDataTable) {
-
+        
         loaded = true;
-
+        
         config = new ConfigurationHandler(Constants.MOD_ID);
         config.init(asmDataTable);
-
+        
         for (final Entry<Feature, BookshelfFeature> feature : AnnotationUtils.getAnnotations(asmDataTable, BookshelfFeature.class, Feature.class).entrySet()) {
-
+            
             final BookshelfFeature annotation = feature.getValue();
-
+            
             if (annotation == null) {
-
+                
                 Constants.LOG.warn("Annotation for " + feature.getKey().getClass().getCanonicalName() + " was null!");
                 continue;
             }
-
+            
             registerFeature(feature.getKey(), annotation.name(), annotation.description());
         }
-
+        
         for (final Feature feature : getFeatures()) {
-
+            
             feature.setupConfiguration(config.getConfig());
         }
-
+        
         config.sync();
     }
-
+    
     /**
      * Registers a new feature with the feature manager. This will automatically create an
      * entry in the configuration file to enable/disable this feature. If the feature has been
@@ -56,32 +63,32 @@ public class FeatureManager {
      * @param description A short description of the feature.
      */
     public static void registerFeature (Feature feature, String name, String description) {
-
+        
         feature.enabled = isFeatureEnabled(feature, name, description);
-
+        
         if (feature.enabled) {
-
+            
             feature.configName = name.toLowerCase().replace(' ', '_');
             features.add(feature);
-
+            
             if (feature.usesEvents()) {
                 MinecraftForge.EVENT_BUS.register(feature);
             }
         }
     }
-
+    
     private static boolean isFeatureEnabled (Feature feature, String name, String description) {
-
+        
         return config.getConfig().getBoolean(name, "_features", feature.enabledByDefault(), description);
     }
-
+    
     public static boolean isLoaded () {
-
+        
         return loaded;
     }
-
+    
     public static List<Feature> getFeatures () {
-
+        
         return features;
     }
 }

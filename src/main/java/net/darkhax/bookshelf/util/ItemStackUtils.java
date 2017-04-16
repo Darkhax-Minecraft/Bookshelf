@@ -1,3 +1,10 @@
+/**
+ * This class was created by <Darkhax>. It is distributed as part of Bookshelf. You can find
+ * the original source here: https://github.com/Darkhax-Minecraft/Bookshelf
+ *
+ * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
+ * 2.1.
+ */
 package net.darkhax.bookshelf.util;
 
 import net.darkhax.bookshelf.lib.VanillaColor;
@@ -17,31 +24,31 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 public final class ItemStackUtils {
-
+    
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
     private ItemStackUtils () {
-
+        
         throw new IllegalAccessError("Utility class");
     }
-
+    
     /**
      * Sets a stack compound to an ItemStack if it does not already have one.
      *
      * @param stackItemStack having a tag set on it.
      */
     public static NBTTagCompound prepareDataTag (ItemStack stack) {
-
+        
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
         }
-
+        
         return stack.getTagCompound();
     }
-
+    
     /**
      * Sets the lore for an ItemStack. This will override any existing lore on that item.
      *
@@ -50,25 +57,25 @@ public final class ItemStackUtils {
      * @return ItemStackThe same instance of ItemStack that was passed to this method.
      */
     public static ItemStack setLore (ItemStack stack, String[] lore) {
-
+        
         prepareDataTag(stack);
         final NBTTagCompound tag = stack.getTagCompound();
         final NBTTagList loreList = new NBTTagList();
-
+        
         if (!tag.hasKey("display", 10)) {
             tag.setTag("display", new NBTTagCompound());
         }
-
+        
         for (final String line : lore) {
             loreList.appendTag(new NBTTagString(line));
         }
-
+        
         tag.getCompoundTag("display").setTag("Lore", loreList);
         stack.setTagCompound(tag);
-
+        
         return stack;
     }
-
+    
     /**
      * Writes an ItemStack as a String. This method is intended for use in configuration files,
      * and allows for a damage sensitive item to be represented as a String. The format looks
@@ -78,10 +85,10 @@ public final class ItemStackUtils {
      * @return StringA string which can be used to represent a damage sensitive item.
      */
     public static String writeStackToString (ItemStack stack) {
-
+        
         return stack.getItem().getRegistryName().toString() + "#" + stack.getItemDamage();
     }
-
+    
     /**
      * Reads an ItemStack from a string This method is intended for use in reading information
      * from a configuration file. The correct format is "itemid#damage". This method is
@@ -91,13 +98,13 @@ public final class ItemStackUtils {
      * @return ItemStackAn ItemStack representation of a damage sensitive item.
      */
     public static ItemStack createStackFromString (String stackString) {
-
+        
         final String[] parts = stackString.split("#");
         final Object contents = getThingByName(parts[0]);
         final int damage = parts.length > 1 ? Integer.parseInt(parts[1]) : 0;
         return contents instanceof Item ? new ItemStack((Item) contents, 1, damage) : new ItemStack((Block) contents, 1, damage);
     }
-
+    
     /**
      * Retrieves the color associated with an ItemStack. This method will check the
      * OreDictionary for all items that match with a dye item. The color of that dye will be
@@ -108,7 +115,7 @@ public final class ItemStackUtils {
      *         convert these back into their primary components.
      */
     public static int getDyeColor (ItemStack stack) {
-
+        
         if (!stack.isEmpty()) {
             for (final VanillaColor color : VanillaColor.values()) {
                 for (final ItemStack oreStack : OreDictionary.getOres(color.getDyeName()))
@@ -116,10 +123,10 @@ public final class ItemStackUtils {
                         return color.color.getRGB();
             }
         }
-
+        
         return -1337;
     }
-
+    
     /**
      * Compares all ore dictionary names associated with an ItemStack, with the provided ore
      * dictionary name.
@@ -130,14 +137,14 @@ public final class ItemStackUtils {
      *         the provided ore name.
      */
     public static boolean compareStackToOreName (ItemStack stack, String oreName) {
-
+        
         for (final int stackName : OreDictionary.getOreIDs(stack))
             if (OreDictionary.getOreName(stackName).equalsIgnoreCase(oreName))
                 return true;
-
+            
         return false;
     }
-
+    
     /**
      * Compares all applicable ore dictionary names for two item stacks, to see if either have
      * a name in common.
@@ -147,16 +154,16 @@ public final class ItemStackUtils {
      * @return booleanTrue, if any of the ore dictionary names for either stack are the same.
      */
     public static boolean doStacksShareOreName (ItemStack firstStack, ItemStack secondStack) {
-
+        
         for (final int firstName : OreDictionary.getOreIDs(firstStack)) {
             for (final int secondName : OreDictionary.getOreIDs(secondStack))
                 if (firstName == secondName)
                     return true;
         }
-
+        
         return false;
     }
-
+    
     /**
      * Checks to see if two ItemStacks are similar. A similar stack has the same item, and the
      * same damage.
@@ -166,10 +173,10 @@ public final class ItemStackUtils {
      * @return booleanTrue if stacks are similar, or if both are null.
      */
     public static boolean areStacksSimilar (ItemStack firstStack, ItemStack secondStack) {
-
+        
         return firstStack == null && secondStack == null ? true : !firstStack.isEmpty() && !secondStack.isEmpty() && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem();
     }
-
+    
     /**
      * Checks to see if two ItemStacks are similar. A similar stack has the same item, and the
      * same damage and same size.
@@ -179,23 +186,23 @@ public final class ItemStackUtils {
      * @return booleanTrue if stacks are similar, or if both are null.
      */
     public static boolean areStacksSimilarWithSize (ItemStack firstStack, ItemStack secondStack) {
-
+        
         return firstStack == null && secondStack == null ? true : !firstStack.isEmpty() && !secondStack.isEmpty() && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem() && firstStack.getCount() == secondStack.getCount();
     }
-
+    
     public static ItemStack writePotionEffectsToStack (ItemStack stack, PotionEffect[] effects) {
-
+        
         final NBTTagCompound stackTag = prepareDataTag(stack);
         final NBTTagList potionTag = new NBTTagList();
-
+        
         for (final PotionEffect effect : effects) {
             potionTag.appendTag(effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
         }
-
+        
         stackTag.setTag("CustomPotionEffects", potionTag);
         return stack;
     }
-
+    
     /**
      * Writes an ItemStack as a sub NBTTagCompound on a larger NBTTagCompound.
      *
@@ -204,12 +211,12 @@ public final class ItemStackUtils {
      * @param tagNameThe name for this new NBTTagCompound entry.
      */
     public static void writeStackToTag (ItemStack stack, NBTTagCompound tag, String tagName) {
-
+        
         final NBTTagCompound stackTag = new NBTTagCompound();
         stack.writeToNBT(stackTag);
         tag.setTag(tagName, stackTag);
     }
-
+    
     /**
      * Safely decreases the amount of items held by an ItemStack.
      *
@@ -218,11 +225,11 @@ public final class ItemStackUtils {
      * @return ItemStackNull, if the stack size is smaller than 1.
      */
     public static ItemStack decreaseStackSize (ItemStack stack, int amount) {
-
+        
         stack.shrink(amount);
         return stack.getCount() <= 0 ? ItemStack.EMPTY : stack;
     }
-
+    
     /**
      * Checks if two given ItemStack are equal. For them to be equal, both must be null, or
      * both must have a null item, or both must share a damage value. If either stack has a
@@ -235,27 +242,27 @@ public final class ItemStackUtils {
      * @return boolean Whether or not the items are close enough to be called the same.
      */
     public static boolean areStacksEqual (ItemStack firstStack, ItemStack secondStack, boolean checkNBT) {
-
+        
         if (firstStack == null || secondStack == null)
             return firstStack == secondStack;
-
+        
         final Item firstItem = firstStack.getItem();
         final Item secondItem = secondStack.getItem();
-
+        
         if (firstItem == null || secondItem == null)
             return firstItem == secondItem;
-
+        
         if (firstItem == secondItem) {
-
+            
             if (checkNBT && NBTUtils.NBT_COMPARATOR.compare(firstStack.getTagCompound(), secondStack.getTagCompound()) != 0)
                 return false;
-
+            
             return firstStack.getItemDamage() == OreDictionary.WILDCARD_VALUE || secondStack.getItemDamage() == OreDictionary.WILDCARD_VALUE || firstStack.getItemDamage() == secondStack.getItemDamage();
         }
-
+        
         return false;
     }
-
+    
     /**
      * A check to see if an ItemStack exists within an array of other ItemStack.
      *
@@ -265,14 +272,14 @@ public final class ItemStackUtils {
      * @return booleanWhether or not the array contains the stack you are looking for.
      */
     public static boolean isStackInArray (ItemStack stack, boolean checkNBT, ItemStack... stacks) {
-
+        
         for (final ItemStack currentStack : stacks)
             if (areStacksEqual(stack, currentStack, checkNBT))
                 return true;
-
+            
         return false;
     }
-
+    
     /**
      * Copies an ItemStack with a new size value.
      *
@@ -282,12 +289,12 @@ public final class ItemStackUtils {
      *         a new size.
      */
     public static ItemStack copyStackWithSize (ItemStack stack, int size) {
-
+        
         final ItemStack output = stack.copy();
         output.setCount(size);
         return output;
     }
-
+    
     /**
      * A blend between the itemRegistry.getObject and bockRegistry.getObject methods. Used for
      * grabbing something from an ID, when you have no clue what it might be.
@@ -296,20 +303,20 @@ public final class ItemStackUtils {
      * @return Hopefully the thing you're looking for.
      */
     public static Object getThingByName (String name) {
-
+        
         Object thing = Item.getByNameOrId(name);
-
+        
         if (thing != null)
             return thing;
-
+        
         thing = Block.getBlockFromName(name);
-
+        
         if (thing != null)
             return thing;
-
+        
         return null;
     }
-
+    
     /**
      * Safely gets a block instance from an ItemStack. If the ItemStack is not valid, null will
      * be returned. Null can also be returned if the Item does not have a block form.
@@ -318,10 +325,10 @@ public final class ItemStackUtils {
      * @return The block version of the item contained in the ItemStack.
      */
     public static Block getBlockFromStack (ItemStack stack) {
-
+        
         return !stack.isEmpty() ? Block.getBlockFromItem(stack.getItem()) : Blocks.AIR;
     }
-
+    
     /**
      * Safely consumes an item from an ItemStack. Respects container items.
      *
@@ -329,23 +336,23 @@ public final class ItemStackUtils {
      * @return The remaining/generated item.
      */
     public static ItemStack consumeStack (ItemStack stack) {
-
+        
         if (stack.getCount() == 1) {
-
+            
             if (stack.getItem().hasContainerItem(stack))
                 return stack.getItem().getContainerItem(stack);
-
+            
             else
                 return ItemStack.EMPTY;
         }
-
+        
         else {
-
+            
             stack.splitStack(1);
             return stack;
         }
     }
-
+    
     /**
      * Safely drops an ItemStack intot he world. Used for mob drops.
      *
@@ -354,9 +361,9 @@ public final class ItemStackUtils {
      * @param stack The stack to drop.
      */
     public static void dropStackInWorld (World world, BlockPos pos, ItemStack stack) {
-
+        
         if (!world.isRemote && world.getGameRules().getBoolean("doTileDrops")) {
-
+            
             final float offset = 0.7F;
             final double offX = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
             final double offY = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
@@ -366,7 +373,7 @@ public final class ItemStackUtils {
             world.spawnEntity(entityitem);
         }
     }
-
+    
     /**
      * Creates an ItemStack which represents a TileEntity, and has all of the TileEntities
      * properties stored.
@@ -375,14 +382,14 @@ public final class ItemStackUtils {
      * @return The resulting ItemStack.
      */
     public static ItemStack createStackFromTileEntity (TileEntity tile) {
-
+        
         final ItemStack stack = new ItemStack(tile.getBlockType(), 1, tile.getBlockMetadata());
         prepareDataTag(stack);
         final NBTTagCompound tileTag = tile.writeToNBT(new NBTTagCompound());
         stack.getTagCompound().setTag("TileData", tileTag);
         return stack;
     }
-
+    
     /**
      * Reads tile entity data from an ItemStack. Meant to be an inverse of
      * {@link ItemStackUtils#createStackFromTileEntity(TileEntity)}.
@@ -391,10 +398,10 @@ public final class ItemStackUtils {
      * @param stack The stack to read from.
      */
     public static void readTileEntityFromStack (TileEntity tile, ItemStack stack) {
-
+        
         tile.readFromNBT(stack.getTagCompound().getCompoundTag("TileData"));
     }
-
+    
     /**
      * Creates an ItemStack representation of an IBlockState.
      *
@@ -403,7 +410,7 @@ public final class ItemStackUtils {
      * @return An ItemStack which represents the passed state.
      */
     public static ItemStack getStackFromState (IBlockState state, int size) {
-
+        
         return new ItemStack(state.getBlock(), size, state.getBlock().getMetaFromState(state));
     }
 }

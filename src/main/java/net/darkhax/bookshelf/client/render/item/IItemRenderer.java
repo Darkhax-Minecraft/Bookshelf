@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
  * Implement this on your IBakedModel to be able to render additonal things using GL.
  */
 public interface IItemRenderer extends IBakedModel {
-
+    
     /**
      * Handles additional rendering for the ItemStack.
      *

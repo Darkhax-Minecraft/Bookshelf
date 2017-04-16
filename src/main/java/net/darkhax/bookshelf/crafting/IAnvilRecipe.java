@@ -1,3 +1,10 @@
+/**
+ * This class was created by <Darkhax>. It is distributed as part of Bookshelf. You can find
+ * the original source here: https://github.com/Darkhax-Minecraft/Bookshelf
+ *
+ * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
+ * 2.1.
+ */
 package net.darkhax.bookshelf.crafting;
 
 import net.minecraft.item.ItemStack;
@@ -8,7 +15,7 @@ import net.minecraft.item.ItemStack;
  * @author Tyler Hancock (Darkhax)
  */
 public interface IAnvilRecipe {
-
+    
     /**
      * Checks if the conditions for the recipe are correct.
      *
@@ -18,7 +25,7 @@ public interface IAnvilRecipe {
      * @return Whether or not the conditions for the recipe are met.
      */
     public boolean isValidRecipe (ItemStack leftSlot, ItemStack rightSlot, String name);
-
+    
     /**
      * Gets the amount of experience levels to charge for the recipe.
      *
@@ -28,7 +35,7 @@ public interface IAnvilRecipe {
      * @return The amount of experience levels to charge.
      */
     public int getExperienceCost (ItemStack leftSlot, ItemStack rightSlot, String name);
-
+    
     /**
      * Gets the amount of items to consume from the material (right) slot. If 0, the entire
      * stack will be consumed.
@@ -39,7 +46,7 @@ public interface IAnvilRecipe {
      * @return The amount of items to consume from the material (right) slot.
      */
     public int getMaterialCost (ItemStack leftSlot, ItemStack rightSlot, String name);
-
+    
     /**
      * Gets the output for the recipe. This is the resulting item stack and will be previewable
      * before crafting it.

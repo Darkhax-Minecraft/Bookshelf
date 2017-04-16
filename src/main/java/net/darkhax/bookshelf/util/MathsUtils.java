@@ -1,3 +1,10 @@
+/**
+ * This class was created by <Darkhax>. It is distributed as part of Bookshelf. You can find
+ * the original source here: https://github.com/Darkhax-Minecraft/Bookshelf
+ *
+ * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
+ * 2.1.
+ */
 package net.darkhax.bookshelf.util;
 
 import java.awt.Color;
@@ -10,17 +17,17 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 
 public final class MathsUtils {
-
+    
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
     private MathsUtils () {
-
+        
         throw new IllegalAccessError("Utility class");
     }
-
+    
     /**
      * Checks if a double is within range of two other doubles.
      *
@@ -30,10 +37,10 @@ public final class MathsUtils {
      * @return boolean: Whether or not the value is within the provided scope.
      */
     public static boolean isInRange (double min, double max, double value) {
-
+        
         return value <= max && value >= min;
     }
-
+    
     /**
      * Calculates the distance between two Vec3 positions.
      *
@@ -42,14 +49,14 @@ public final class MathsUtils {
      * @return double: The distance between the two provided locations.
      */
     public static double getDistanceBetweenPoints (Vec3d firstPos, Vec3d secondPos) {
-
+        
         final double distanceX = firstPos.xCoord - secondPos.xCoord;
         final double distanceY = firstPos.yCoord - secondPos.yCoord;
         final double distanceZ = firstPos.zCoord - secondPos.zCoord;
-
+        
         return Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
     }
-
+    
     /**
      * This method can be used to round a double to a certain amount of places.
      *
@@ -59,10 +66,10 @@ public final class MathsUtils {
      *         specified.
      */
     public static double round (double value, int places) {
-
+        
         return value >= 0 && places > 0 ? BigDecimal.valueOf(value).setScale(places, RoundingMode.HALF_UP).doubleValue() : value;
     }
-
+    
     /**
      * Used to retrieve a random integer between the two provided integers. The integers
      * provided are also possible outcomes.
@@ -71,10 +78,10 @@ public final class MathsUtils {
      * @param max: The maximum value which can be returned by this method.
      */
     public static int nextIntInclusive (int min, int max) {
-
+        
         return Constants.RANDOM.nextInt(max - min + 1) + min;
     }
-
+    
     /**
      * Creates a MovingObjectPosition based on where a player is looking.
      *
@@ -85,13 +92,13 @@ public final class MathsUtils {
      *         the player is looking.
      */
     public static RayTraceResult rayTrace (EntityPlayer player, double length) {
-
+        
         final Vec3d vec1 = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         final Vec3d vec2 = player.getLookVec();
         final Vec3d vec3 = vec1.addVector(vec2.xCoord * length, vec2.yCoord * length, vec2.zCoord * length);
         return player.world.rayTraceBlocks(vec1, vec3);
     }
-
+    
     /**
      * A method which handles the calculating of percentages. While this isn't a particularly
      * difficult piece of code, it has been added for the sake of simplicity.
@@ -100,20 +107,20 @@ public final class MathsUtils {
      * @return boolean: Returns are randomly true or false, based on the suplied percentage.
      */
     public static boolean tryPercentage (double percent) {
-
+        
         return Math.random() < percent;
     }
-
+    
     /**
      * Generates a random color as an integer, from Color and three random floats.
      *
      * @return int: An integer based representation of a Color.
      */
     public static int getRandomColor () {
-
+        
         return new Color(Constants.RANDOM.nextFloat(), Constants.RANDOM.nextFloat(), Constants.RANDOM.nextFloat()).getRGB();
     }
-
+    
     /**
      * Gets the middle integer between two other integers. The order is not important.
      *
@@ -122,10 +129,10 @@ public final class MathsUtils {
      * @return int: The integer that is between the two provided integers.
      */
     public static int getAverage (int first, int second) {
-
+        
         return Math.round((first + second) / 2.0F);
     }
-
+    
     /**
      * Converts time in ticks to a human readable string.
      *
@@ -133,7 +140,7 @@ public final class MathsUtils {
      * @return String: A human readable version of the time.
      */
     public static String ticksToTime (int ticks) {
-
+        
         final int seconds = ticks / 20;
         final int minutes = seconds / 60;
         return minutes + ":" + seconds;

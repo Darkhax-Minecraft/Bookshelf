@@ -25,66 +25,66 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public abstract class TileEntityMessage<T extends TileEntity> extends SerializableMessage {
-
+    
     /**
      * The serial version UID.
      */
     private static final long serialVersionUID = -8474561253790105901L;
-
+    
     /**
      * The position of the TileEntity.
      */
     public BlockPos pos;
-
+    
     /**
      * The TileEntity.
      */
     public transient T tile;
-
+    
     /**
      * The message context.
      */
     public transient MessageContext context;
-
+    
     /**
      * Blank constructor required for all messages.
      */
     public TileEntityMessage () {
-
+        
     }
-
+    
     /**
      * Basic constructor for a tile entity update message.
      *
      * @param pos The position of the tile entity.
      */
     public TileEntityMessage (BlockPos pos) {
-
+        
         this.pos = pos;
     }
-
+    
     @Override
     public final IMessage handleMessage (MessageContext context) {
-
+        
         this.context = context;
         final World world = context.getServerHandler().player.getEntityWorld();
         final TileEntity tile = world.getTileEntity(this.pos);
-
+        
         if (tile != null) {
             try {
-
+                
                 final T castTile = (T) tile;
                 this.tile = castTile;
                 ((WorldServer) world).addScheduledTask( () -> this.getAction());
             }
             catch (final ClassCastException e) {
-
+                
                 Constants.LOG.warn("Could not cast?", e);
             }
         }
-
+        
         return null;
     }
-
+    
     public abstract void getAction ();
 }

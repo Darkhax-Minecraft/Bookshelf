@@ -1,3 +1,10 @@
+/**
+ * This class was created by <Darkhax>. It is distributed as part of Bookshelf. You can find
+ * the original source here: https://github.com/Darkhax-Minecraft/Bookshelf
+ *
+ * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
+ * 2.1.
+ */
 package net.darkhax.bookshelf.util;
 
 import java.util.Comparator;
@@ -11,22 +18,22 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 public final class NBTUtils {
-
+    
     /**
      * A Comparator used to compare NBTTagCompound.
      */
     public static final Comparator<NBTTagCompound> NBT_COMPARATOR = (firstTag, secondTag) -> firstTag != null ? firstTag.equals(secondTag) ? 0 : 1 : secondTag != null ? -1 : 0;
-
+    
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
     private NBTUtils () {
-
+        
         throw new IllegalAccessError("Utility class");
     }
-
+    
     /**
      * Sets an unknown data type to an NBTTagCompound. If the type of the data can not be
      * identified, and exception will be thrown. Current supported data types include String,
@@ -37,7 +44,7 @@ public final class NBTUtils {
      * @param value: The unknown data you wish to write to the dataTag.
      */
     public static void setGenericNBTValue (NBTTagCompound dataTag, String tagName, Object value) {
-
+        
         if (value instanceof String) {
             dataTag.setString(tagName, (String) value);
         }
@@ -66,16 +73,16 @@ public final class NBTUtils {
             dataTag.setTag(tagName, ((ItemStack) value).writeToNBT(new NBTTagCompound()));
         }
         else if (value instanceof Entity) {
-
+            
             final NBTTagCompound newTag = new NBTTagCompound();
             ((Entity) value).writeToNBT(newTag);
             dataTag.setTag(tagName, newTag);
         }
-
+        
         else
             throw new BookshelfException("The data type of " + value.getClass().getName() + " is currently not supported." + Constants.NEW_LINE + "Raw Data: " + value.toString());
     }
-
+    
     /**
      * Writes an inventory to an NBTTagCompound. Can be used to save an inventory in a
      * TileEntity, or perhaps an ItemStack.
@@ -85,31 +92,31 @@ public final class NBTUtils {
      * @return NBTTagCompound: The same NBTTagCompound that was passed to this method.
      */
     public static NBTTagCompound writeInventoryToNBT (NBTTagCompound tag, InventoryBasic inventory) {
-
+        
         if (inventory.hasCustomName()) {
             tag.setString("CustomName", inventory.getName());
         }
-
+        
         final NBTTagList nbttaglist = new NBTTagList();
-
+        
         for (int slotCount = 0; slotCount < inventory.getSizeInventory(); slotCount++) {
-
+            
             final ItemStack stackInSlot = inventory.getStackInSlot(slotCount);
-
+            
             if (!stackInSlot.isEmpty()) {
-
+                
                 final NBTTagCompound itemTag = new NBTTagCompound();
                 itemTag.setByte("Slot", (byte) slotCount);
                 stackInSlot.writeToNBT(itemTag);
                 nbttaglist.appendTag(itemTag);
             }
         }
-
+        
         tag.setTag("Items", nbttaglist);
-
+        
         return tag;
     }
-
+    
     /**
      * Reads an inventory from an NBTTagCompound. Can be used to load an Inventory from a
      * TileEntity or perhaps an ItemStak.
@@ -120,26 +127,26 @@ public final class NBTUtils {
      *         method.
      */
     public static InventoryBasic readInventoryFromNBT (NBTTagCompound tag, InventoryBasic inventory) {
-
+        
         if (tag.hasKey("CustomName", 8)) {
             inventory.setCustomName(tag.getString("CustomName"));
         }
-
+        
         final NBTTagList items = tag.getTagList("Items", 10);
-
+        
         for (int storedCount = 0; storedCount < items.tagCount(); storedCount++) {
-
+            
             final NBTTagCompound itemTag = items.getCompoundTagAt(storedCount);
             final int slotCount = itemTag.getByte("Slot") & 0xFF;
-
+            
             if (slotCount >= 0 && slotCount < inventory.getSizeInventory()) {
                 inventory.setInventorySlotContents(slotCount, new ItemStack(itemTag));
             }
         }
-
+        
         return inventory;
     }
-
+    
     /**
      * Retrieves an array of ItemStack from an NBTTagCompound. This method is intended to be
      * used with the NBT version of an IInventory and can be used when parsing things like
@@ -151,25 +158,25 @@ public final class NBTUtils {
      * @return ItemStack[]: An array of ItemStack stored on the NBTTagCompound.
      */
     public static ItemStack[] getStoredItems (NBTTagCompound tag, int invSize) {
-
+        
         ItemStack[] inventory = null;
-
+        
         if (tag.hasKey("Items")) {
-
+            
             final NBTTagList list = tag.getTagList("Items", 10);
             inventory = new ItemStack[invSize];
-
+            
             for (int i = 0; i < list.tagCount(); i++)
                 if (!(i > list.tagCount())) {
-
+                    
                     final NBTTagCompound currentTag = list.getCompoundTagAt(i);
                     inventory[currentTag.getByte("Slot")] = new ItemStack(currentTag);
                 }
         }
-
+        
         return inventory;
     }
-
+    
     /**
      * Provides a way to access an NBTTagCompound that is very deep within another
      * NBTTagCompound. This will allow you to use an array of strings which represent the
@@ -183,17 +190,17 @@ public final class NBTUtils {
      *         than all of the way.
      */
     public static NBTTagCompound getDeepTagCompound (NBTTagCompound tag, String[] tags) {
-
+        
         NBTTagCompound deepTag = tag;
-
+        
         if (tag != null) {
             for (final String tagName : tags)
                 if (deepTag.hasKey(tagName)) {
                     deepTag = deepTag.getCompoundTag(tagName);
                 }
         }
-
+        
         return deepTag;
     }
-
+    
 }

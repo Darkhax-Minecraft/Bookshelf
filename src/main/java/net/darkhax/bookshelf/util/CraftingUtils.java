@@ -1,3 +1,10 @@
+/**
+ * This class was created by <Darkhax>. It is distributed as part of Bookshelf. You can find
+ * the original source here: https://github.com/Darkhax-Minecraft/Bookshelf
+ *
+ * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
+ * 2.1.
+ */
 package net.darkhax.bookshelf.util;
 
 import java.util.ArrayList;
@@ -24,17 +31,17 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public final class CraftingUtils {
-
+    
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
     private CraftingUtils () {
-
+        
         throw new IllegalAccessError("Utility class");
     }
-
+    
     /**
      * Gets the current recipe in a crafting inventory.
      *
@@ -43,16 +50,16 @@ public final class CraftingUtils {
      * @return The recipe being crafted.
      */
     public static IRecipe getRecipeForMatrix (InventoryCrafting craftInv, World world) {
-
+        
         for (final IRecipe recipe : CraftingManager.getInstance().recipes) {
-
+            
             if (recipe.matches(craftInv, world))
                 return recipe;
         }
-
+        
         return null;
     }
-
+    
     /**
      * Gets the current crafting recipe if the GUI the player has open is a ContainerWorkbench
      *
@@ -60,11 +67,11 @@ public final class CraftingUtils {
      * @return The recipe in the current gui.
      */
     public static IRecipe getCurrentCraftingRecipe (EntityPlayer player) {
-
+        
         final ContainerWorkbench container = getCraftingContainer(player);
         return container != null ? getRecipeForMatrix(container.craftMatrix, player.getEntityWorld()) : null;
     }
-
+    
     /**
      * Gets the current output from the crafting gui.
      *
@@ -72,11 +79,11 @@ public final class CraftingUtils {
      * @return The output ItemStack in the gui.
      */
     public static ItemStack getCurrentCraftingOutput (EntityPlayer player) {
-
+        
         final ContainerWorkbench container = getCraftingContainer(player);
         return container != null ? container.craftResult.getStackInSlot(0) : ItemStack.EMPTY;
     }
-
+    
     /**
      * Gets the current crafting table container gui.
      *
@@ -84,11 +91,11 @@ public final class CraftingUtils {
      * @return The current crafting container.
      */
     public static ContainerWorkbench getCraftingContainer (EntityPlayer player) {
-
+        
         final Container container = player.openContainer;
         return container instanceof ContainerWorkbench ? (ContainerWorkbench) container : null;
     }
-
+    
     /**
      * Attempts to get the owner of an IRecipe. This will be the mod that was active when the
      * recipe was loaded.
@@ -97,15 +104,15 @@ public final class CraftingUtils {
      * @return The owner of the recipe. Can be null.
      */
     public static ModContainer getOwner (IRecipe recipe) {
-
+        
         final List<IRecipe> recipes = CraftingManager.getInstance().recipes;
-
+        
         if (recipes instanceof ModTrackingList)
             return ((ModTrackingList<IRecipe>) recipes).getModContainer(recipe);
-
+        
         return null;
     }
-
+    
     /**
      * Gets a map which links IRecipe objects to mod containers. While not every recipe will be
      * tracked, most of the modded ones will be.
@@ -113,11 +120,11 @@ public final class CraftingUtils {
      * @return A map which links IRecipe objects to mod containers.
      */
     public static Map<IRecipe, ModContainer> getRecipeOwners () {
-
+        
         final List<IRecipe> recipes = CraftingManager.getInstance().recipes;
         return recipes instanceof ModTrackingList ? ((ModTrackingList<IRecipe>) recipes).getTrackedEntries() : Collections.emptyMap();
     }
-
+    
     /**
      * Generates a list of all shaped recipes that have a result similar to the passed stack.
      *
@@ -125,10 +132,10 @@ public final class CraftingUtils {
      * @return A list of recipes that can craft the passed stack.
      */
     public static List<ShapedRecipes> getShapedRecipes (ItemStack stack) {
-
+        
         return getRecipesForStack(stack, recipe -> recipe instanceof ShapedRecipes);
     }
-
+    
     /**
      * Generates a list of all shaped ore recipes that have a result similar to the passed
      * stack.
@@ -137,10 +144,10 @@ public final class CraftingUtils {
      * @return A list of recipes that can craft the passed stack.
      */
     public static List<ShapedOreRecipe> getShapedOreRecipe (ItemStack stack) {
-
+        
         return getRecipesForStack(stack, recipe -> recipe instanceof ShapedOreRecipe);
     }
-
+    
     /**
      * Generates a list of all shapeless recipes that have a result similar to the passed
      * stack.
@@ -149,10 +156,10 @@ public final class CraftingUtils {
      * @return A list of recipes that can craft the passed stack.
      */
     public static List<ShapelessRecipes> getShapelessRecipes (ItemStack stack) {
-
+        
         return getRecipesForStack(stack, recipe -> recipe instanceof ShapelessRecipes);
     }
-
+    
     /**
      * Generates a list of all shapeless ore recipes that have a result similar to the passed
      * stack.
@@ -161,10 +168,10 @@ public final class CraftingUtils {
      * @return A list of recipes that can craft the passed stack.
      */
     public static List<ShapelessOreRecipe> getShapelessOreRecipe (ItemStack stack) {
-
+        
         return getRecipesForStack(stack, recipe -> recipe instanceof ShapelessOreRecipe);
     }
-
+    
     /**
      * Generates a list of all recipes that have a result similar to the passed stack.
      *
@@ -172,10 +179,10 @@ public final class CraftingUtils {
      * @return A list of recipes that can craft the passed stack.
      */
     public static List<IRecipe> getAnyRecipe (ItemStack stack) {
-
+        
         return getRecipesForStack(stack, recipe -> true);
     }
-
+    
     /**
      * Generates a list of all recipes that have a result similar to the passed stack and pass
      * the predicate test.
@@ -186,22 +193,22 @@ public final class CraftingUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T extends IRecipe> List<T> getRecipesForStack (ItemStack stack, Predicate<IRecipe> condition) {
-
+        
         final List<T> foundRecipes = new ArrayList<>();
-
+        
         for (final IRecipe recipe : CraftingManager.getInstance().getRecipeList())
             if (condition.test(recipe)) {
-
+                
                 final ItemStack result = recipe.getRecipeOutput();
-
+                
                 if (ItemStackUtils.areStacksEqual(result, stack, result.hasTagCompound())) {
                     foundRecipes.add((T) recipe);
                 }
             }
-
+        
         return foundRecipes;
     }
-
+    
     /**
      * Creates 9 recipes which allow an ItemStack to be converted into a different one. 9
      * recipes to allow up to 9 at a time.
@@ -210,9 +217,9 @@ public final class CraftingUtils {
      * @param output The resulting item.
      */
     public static void createConversionRecipes (ItemStack input, ItemStack output) {
-
+        
         for (int amount = 1; amount < 10; amount++) {
-
+            
             final ItemStack[] inputs = new ItemStack[amount];
             Arrays.fill(inputs, input);
             GameRegistry.addShapelessRecipe(ItemStackUtils.copyStackWithSize(output, amount), (Object[]) inputs);

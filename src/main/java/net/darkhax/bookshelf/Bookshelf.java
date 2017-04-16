@@ -1,3 +1,10 @@
+/**
+ * This class was created by <Darkhax>. It is distributed as part of Bookshelf. You can find
+ * the original source here: https://github.com/Darkhax-Minecraft/Bookshelf
+ *
+ * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
+ * 2.1.
+ */
 package net.darkhax.bookshelf;
 
 import net.darkhax.bookshelf.client.render.item.RenderItemWrapper;
@@ -17,31 +24,31 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION_NUMBER)
 public class Bookshelf {
-
+    
     @SidedProxy(serverSide = Constants.PROXY_COMMON, clientSide = Constants.PROXY_CLIENT)
     public static ProxyCommon proxy;
-
+    
     @Mod.Instance(Constants.MOD_ID)
     public static Bookshelf instance;
-
+    
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
-
+        
         MinecraftForge.EVENT_BUS.register(new BookshelfEvents());
         FeatureManager.init(event.getAsmData());
-
+        
         for (final Feature feature : FeatureManager.getFeatures()) {
             feature.onPreInit();
         }
-
+        
         GameRegistry.registerTileEntity(TileEntityBasicChest.class, "basic_chest");
         proxy.preInit();
     }
-
+    
     @SideOnly(Side.CLIENT)
     @EventHandler
     public void init (FMLInitializationEvent event) {
-
+        
         RenderItemWrapper.instance();
     }
 }

@@ -19,7 +19,7 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
  * Implement this on your IBakedModel to be able to apply transformations using GL code.
  */
 public interface IGlTransformer extends IBakedModel {
-
+    
     /**
      * Used to apply transformations using GL code.
      *
