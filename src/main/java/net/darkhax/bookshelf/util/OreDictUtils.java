@@ -21,7 +21,7 @@ public final class OreDictUtils {
     public static final String FENCE_GATE_WOOD = "fenceGateWood";
 
     public static final String DOOR_WOOD = "doorWood";
-    
+
     public static final String TRAPDOOR_WOOD = "trapdoorWood";
 
     // Bookshelves
@@ -144,7 +144,7 @@ public final class OreDictUtils {
     public static final String PAPER = "paper";
 
     public static final String RECORD = "record";
-    
+
     public static final String BED = "bed";
 
     // Misc Blocks
@@ -209,9 +209,9 @@ public final class OreDictUtils {
     public static final String CHEST_ENDER = "chestEnder";
 
     public static final String CHEST_TRAPPED = "chestTrapped";
-    
+
     public static final String BED_BLOCK = "blockBed";
-    
+
     public static final String TRAPDOOR = "trapdoor";
 
     // Black
