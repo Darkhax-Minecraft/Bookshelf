@@ -2,6 +2,9 @@ Bookshelf [![](http://cf.way2muchnoise.eu/228525.svg)](https://minecraft.cursefo
 =========
 Bookshelf is a mod that expands upon Forge and Minecraft by adding new utilities, hooks and events which are publicly available to mod authors. 
 
+[![Nodecraft](https://i.imgur.com/sz9PUmK.png)](https://nodecraft.com/r/darkhax)    
+This project is sponsored by Nodecraft. Use code [Darkhax](https://nodecraft.com/r/darkhax) for 30% off your first month of service!
+
 Compilation
 ===========
 It is easy to build Bookshelf from the repository by using Forge Gradle. Bookshelf makes use of the Forge Gradle Wrapper, which is included as part of the repository. To compile the mod, simply clone or download the repository and run the 'gradlew build' command from the command line, from within the project directory. An obfuscated jar and a dev jar will be generated in the build/libs folder. 
