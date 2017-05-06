@@ -15,8 +15,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface BookshelfFeature {
-    
+
     String name();
-    
+
     String description();
 }

@@ -21,31 +21,31 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Optional;
 
 public final class BaublesUtils {
-    
+
     public static final int AMULTER = 0;
-    
+
     public static final int RING_1 = 1;
-    
+
     public static final int RING_2 = 2;
-    
+
     public static final int BELT = 3;
-    
+
     public static final int HEAD = 4;
-    
+
     public static final int BODY = 5;
-    
+
     public static final int CHARM = 6;
-    
+
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
     private BaublesUtils () {
-        
+
         throw new IllegalAccessError("Utility class");
     }
-    
+
     /**
      * Checks if a player has a bauble in a given slot. Automatically called by
      * PlayerUtils#playerHasItem
@@ -57,20 +57,20 @@ public final class BaublesUtils {
      */
     @Optional.Method(modid = "baubles")
     public static boolean hasItem (EntityPlayer player, Item item, int meta) {
-        
+
         final BaubleType type = getBaubleType(item, meta);
-        
+
         if (type != null) {
-            
+
             final ItemStack stack = getBauble(player, type);
-            
+
             if (!stack.isEmpty())
                 return stack.getItem().equals(item) && (meta < 0 || stack.getMetadata() == meta);
         }
-        
+
         return false;
     }
-    
+
     /**
      * Gets all stacks of a specific type from the baubles inventory. Automatically called by
      * PlayerUtils#getStacksFromPlayer.
@@ -82,21 +82,21 @@ public final class BaublesUtils {
      */
     @Optional.Method(modid = "baubles")
     public static List<ItemStack> getBaublesFromPlayer (EntityPlayer player, Item item, int meta) {
-        
+
         final List<ItemStack> items = new ArrayList<>();
         final IBaublesItemHandler inv = BaublesApi.getBaublesHandler(player);
-        
+
         for (int slot = 0; slot < BaubleType.TRINKET.getValidSlots().length; slot++) {
-            
+
             final ItemStack stack = inv.getStackInSlot(slot);
             if (stack != null && stack.getItem() == item && (meta < 0 || stack.getMetadata() == meta)) {
                 items.add(stack);
             }
         }
-        
+
         return items;
     }
-    
+
     /**
      * Gets the type of a bauble from a generic item.
      *
@@ -106,12 +106,12 @@ public final class BaublesUtils {
      */
     @Optional.Method(modid = "baubles")
     public static BaubleType getBaubleType (Item item, int meta) {
-        
+
         if (item instanceof IBauble)
             return ((IBauble) item).getBaubleType(new ItemStack(item, meta));
         return null;
     }
-    
+
     /**
      * Attempts to get a bauble from the player.
      *
@@ -121,21 +121,21 @@ public final class BaublesUtils {
      */
     @Optional.Method(modid = "baubles")
     public static ItemStack getBauble (EntityPlayer player, BaubleType type) {
-        
+
         final IBaublesItemHandler inv = BaublesApi.getBaublesHandler(player);
-        
+
         for (final int slotId : type.getValidSlots())
             if (inv != null) {
-                
+
                 final ItemStack stack = inv.getStackInSlot(slotId);
-                
+
                 if (stack != null)
                     return stack;
             }
-        
+
         return null;
     }
-    
+
     /**
      * Attempts to get a bauble from the player.
      *
@@ -145,20 +145,20 @@ public final class BaublesUtils {
      */
     @Optional.Method(modid = "baubles")
     public static ItemStack getBauble (EntityPlayer player, int type) {
-        
+
         final IBaublesItemHandler inv = BaublesApi.getBaublesHandler(player);
-        
+
         if (inv != null) {
-            
+
             final ItemStack stack = inv.getStackInSlot(type);
-            
+
             if (stack != null)
                 return stack;
         }
-        
+
         return null;
     }
-    
+
     /**
      * Checks if a player has a bauble in their inventory.
      *
@@ -169,16 +169,16 @@ public final class BaublesUtils {
      */
     @Optional.Method(modid = "baubles")
     public static boolean hasBauble (EntityPlayer player, ItemStack stack, BaubleType type) {
-        
+
         final IBaublesItemHandler inv = BaublesApi.getBaublesHandler(player);
-        
+
         for (final int slotId : type.getValidSlots())
             if (inv != null && ItemStackUtils.areStacksSimilar(stack, inv.getStackInSlot(slotId)))
                 return true;
-            
+
         return false;
     }
-    
+
     /**
      * Equips a bauble in the desired slot if one does not already exist.
      *
@@ -189,7 +189,7 @@ public final class BaublesUtils {
      */
     @Optional.Method(modid = "baubles")
     public static boolean equipBauble (EntityPlayer player, ItemStack item, int slot) {
-        
+
         final IBaublesItemHandler inv = BaublesApi.getBaublesHandler(player);
         if (inv != null) {
             final ItemStack existing = inv.getStackInSlot(slot);

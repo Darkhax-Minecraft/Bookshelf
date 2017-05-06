@@ -12,7 +12,7 @@ import net.minecraft.client.particle.ParticleDigging;
 import net.minecraft.world.World;
 
 public class OpenParticleDigging extends ParticleDigging {
-    
+
     /**
      * Constructs a new ParticleDigging. The constructor in ParticleDigging is not publicly
      * available, so a work around is required if you want to spawn one of those. This version
@@ -28,7 +28,7 @@ public class OpenParticleDigging extends ParticleDigging {
      * @param state The IBlockState of the block to create the particle for.
      */
     public OpenParticleDigging (World world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, IBlockState state) {
-        
+
         super(world, x, y, z, xSpeed, ySpeed, zSpeed, state);
     }
 }

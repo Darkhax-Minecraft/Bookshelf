@@ -24,12 +24,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class EntityModArrow extends EntityTippedArrow {
-    
+
     /**
      * The ItemStack held by the arrow entity.
      */
     private ItemStack heldStack;
-    
+
     /**
      * Constructor for a variant on EntityArrow which holds a specific ItemStack rather than a
      * vanilla one.
@@ -37,10 +37,10 @@ public class EntityModArrow extends EntityTippedArrow {
      * @param world The world to place the new entity in.
      */
     public EntityModArrow (World world) {
-        
+
         super(world);
     }
-    
+
     /**
      * Constructor for a variant on EntityArrow which holds a specific ItemStack rather than a
      * vanilla one.
@@ -50,41 +50,41 @@ public class EntityModArrow extends EntityTippedArrow {
      * @param shooter The entity which fired the arrow.
      */
     public EntityModArrow (World world, ItemStack stack, EntityLivingBase shooter) {
-        
+
         super(world, shooter);
         this.heldStack = stack;
     }
-    
+
     @Override
     protected ItemStack getArrowStack () {
-        
+
         return !this.heldStack.isEmpty() ? this.heldStack : super.getArrowStack();
     }
-    
+
     @Override
     public NBTTagCompound writeToNBT (NBTTagCompound compound) {
-        
+
         super.writeToNBT(compound);
         compound.setTag("HeldStack", this.heldStack.writeToNBT(new NBTTagCompound()));
         return compound;
     }
-    
+
     @Override
     public void readFromNBT (NBTTagCompound compound) {
-        
+
         super.readFromNBT(compound);
         this.heldStack = new ItemStack(compound.getCompoundTag("HeldStack"));
     }
-    
+
     @Override
     public boolean equals (Object object) {
-        
+
         return object instanceof EntityModArrow && super.equals(object);
     }
-    
+
     @Override
     public int hashCode () {
-        
+
         return this.heldStack.hashCode() + super.hashCode();
     }
 }

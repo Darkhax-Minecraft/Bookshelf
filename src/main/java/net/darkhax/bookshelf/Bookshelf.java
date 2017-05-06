@@ -7,6 +7,7 @@
  */
 package net.darkhax.bookshelf;
 
+import net.darkhax.bookshelf.client.render.block.BookshelfBlockModelRenderer;
 import net.darkhax.bookshelf.client.render.item.RenderItemWrapper;
 import net.darkhax.bookshelf.features.Feature;
 import net.darkhax.bookshelf.features.FeatureManager;
@@ -24,31 +25,32 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION_NUMBER)
 public class Bookshelf {
-    
+
     @SidedProxy(serverSide = Constants.PROXY_COMMON, clientSide = Constants.PROXY_CLIENT)
     public static ProxyCommon proxy;
-    
+
     @Mod.Instance(Constants.MOD_ID)
     public static Bookshelf instance;
-    
+
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
-        
+
         MinecraftForge.EVENT_BUS.register(new BookshelfEvents());
         FeatureManager.init(event.getAsmData());
-        
+
         for (final Feature feature : FeatureManager.getFeatures()) {
             feature.onPreInit();
         }
-        
+
         GameRegistry.registerTileEntity(TileEntityBasicChest.class, "basic_chest");
         proxy.preInit();
     }
-    
+
     @SideOnly(Side.CLIENT)
     @EventHandler
     public void init (FMLInitializationEvent event) {
-        
+
         RenderItemWrapper.instance();
+        BookshelfBlockModelRenderer.instance();
     }
 }

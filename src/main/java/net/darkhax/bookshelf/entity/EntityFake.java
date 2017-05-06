@@ -16,27 +16,27 @@ import net.minecraft.world.World;
  * references to an entity class for tricking registers.
  */
 public class EntityFake extends Entity {
-    
+
     public EntityFake (World worldIn) {
-        
+
         super(worldIn);
     }
-    
+
     @Override
     protected void entityInit () {
-        
+
         // The entity is fake, it should not initialize.
     }
-    
+
     @Override
     protected void readEntityFromNBT (NBTTagCompound compound) {
-        
+
         // The entity is fake, it should not have any nbt.
     }
-    
+
     @Override
     protected void writeEntityToNBT (NBTTagCompound compound) {
-        
+
         // The entity is fake, it should not have any nbt.
     }
 }

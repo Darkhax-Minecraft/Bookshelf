@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Config {
-    
+
     /**
      * The name/id for the config. This is used to create the file name for the config, and all
      * configurable fields in the class will be added to the file with this name. I highly

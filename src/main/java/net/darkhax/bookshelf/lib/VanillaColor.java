@@ -13,7 +13,7 @@ import java.awt.Color;
  * Represents the base 16 colors in Minecraft.
  */
 public enum VanillaColor {
-    
+
     BLACK("Black", new Color(25, 25, 25)),
     RED("Red", new Color(153, 51, 51)),
     GREEN("Green", new Color(102, 127, 51)),
@@ -30,17 +30,17 @@ public enum VanillaColor {
     MAGENTAG("Magenta", new Color(178, 76, 216)),
     ORANGE("Orange", new Color(216, 127, 5)),
     WHITE("White", new Color(255, 255, 255));
-    
+
     /**
      * An English representation of the name for the color.
      */
     public String name;
-    
+
     /**
      * An instance of Color that reflects the vanilla color.
      */
     public Color color;
-    
+
     /**
      * A simple enumeration of all the vanilla Minecraft colors. This contains a string
      * representation of the color, which is mostly used for Ore Dictionary stuff, and a Color
@@ -50,31 +50,31 @@ public enum VanillaColor {
      * @param color A Color which holds the RGB value for this color.
      */
     VanillaColor (String name, Color color) {
-        
+
         this.name = name;
         this.color = color;
     }
-    
+
     /**
      * Provides the OreDictionary name for the dye item associated with this color.
      *
      * @return String A string which represents the associated dye within the OreDictionary.
      */
     public String getDyeName () {
-        
+
         return "dye" + this.name;
     }
-    
+
     /**
      * Gets the AWT version of the color.
      *
      * @return An AWT Color object.
      */
     public Color getAWTColor () {
-        
+
         return this.color;
     }
-    
+
     /**
      * Provides the OreDictionary name for the Dyed Glass Pane associated with this color.
      *
@@ -82,10 +82,10 @@ public enum VanillaColor {
      *         OreDictionary.
      */
     public String getGlassPaneName () {
-        
+
         return "paneGlass" + this.name;
     }
-    
+
     /**
      * Provides the OreDictionary name for the Dyed Glass Block associated with this color.
      *
@@ -93,10 +93,10 @@ public enum VanillaColor {
      *         OreDictionary.
      */
     public String getGlassBlockName () {
-        
+
         return "blockGlass" + this.name;
     }
-    
+
     /**
      * Attempts to retrieve a color, based on a provided name. The provided name does not need
      * to match the casings of the actual color name.
@@ -106,11 +106,11 @@ public enum VanillaColor {
      *         found, it will be null.
      */
     public static VanillaColor getColorByName (String name) {
-        
+
         for (final VanillaColor color : VanillaColor.values())
             if (color.name.equalsIgnoreCase(name))
                 return color;
-            
+
         return null;
     }
 }

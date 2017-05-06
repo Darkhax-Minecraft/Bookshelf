@@ -18,37 +18,37 @@ import net.minecraft.entity.ai.attributes.RangedAttribute;
 @Config(name = "bookshelf")
 @BookshelfFeature(name = "attributefix", description = "Allows for the cap of certain game values to be modified from the vanilla caps")
 public class FeatureAttributeCapFix extends Feature {
-    
+
     @Configurable(category = "attributefix", description = "The highest possible max health.")
     public static float maxHealth = 4096f;
-    
+
     @Configurable(category = "attributefix", description = "The highest possible follow range.")
     public static float followRange = 4096f;
-    
+
     @Configurable(category = "attributefix", description = "The highest possible knockback")
     public static float knockback = 4096f;
-    
+
     @Configurable(category = "attributefix", description = "The highest possible speed")
     public static float speed = 4096f;
-    
+
     @Configurable(category = "attributefix", description = "The highest possible attack damage")
     public static float damage = 4096f;
-    
+
     @Configurable(category = "attributefix", description = "The highest possible attack speed")
     public static float atkSpeed = 4096f;
-    
+
     @Configurable(category = "attributefix", description = "The highest possible armor value")
     public static float maxArmor = 4096f;
-    
+
     @Configurable(category = "attributefix", description = "The highest possible armor toughness")
     public static float maxArmorToughness = 4096f;
-    
+
     @Configurable(category = "attributefix", description = "The highest possible luck value")
     public static float luck = 4096f;
-    
+
     @Override
     public void onPreInit () {
-        
+
         SharedMonsterAttributes.MAX_HEALTH = new RangedAttribute((IAttribute) null, "generic.maxHealth", 20.0D, 0.0D, maxHealth).setDescription("Max Health").setShouldWatch(true);
         SharedMonsterAttributes.FOLLOW_RANGE = new RangedAttribute((IAttribute) null, "generic.followRange", 32.0D, 0.0D, followRange).setDescription("Follow Range");
         SharedMonsterAttributes.KNOCKBACK_RESISTANCE = new RangedAttribute((IAttribute) null, "generic.knockbackResistance", 0.0D, 0.0D, knockback).setDescription("Knockback Resistance");

@@ -13,14 +13,14 @@ package net.darkhax.bookshelf.config;
  * be changed.
  */
 public @interface RequireRestart {
-    
+
     /**
      * Checks if the entry requires a game restart to take effect.
      *
      * @return Whether or not the entry requires a game restart to take effect.
      */
     boolean game() default false;
-    
+
     /**
      * Checks if the entry requires a world restart to take effect.
      *

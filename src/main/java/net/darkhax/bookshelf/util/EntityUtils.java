@@ -21,22 +21,22 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public final class EntityUtils {
-    
+
     /**
      * An array of armor equipment slots.
      */
     private static final EntityEquipmentSlot[] EQUIPMENT_SLOTS = new EntityEquipmentSlot[] { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET };
-    
+
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
     private EntityUtils () {
-        
+
         throw new IllegalAccessError("Utility class");
     }
-    
+
     /**
      * Calculates the distance between two entities.
      *
@@ -45,10 +45,10 @@ public final class EntityUtils {
      * @return double The distance between the two entities passed.
      */
     public static double getDistanceFromEntity (Entity firstEntity, Entity secondEntity) {
-        
+
         return MathsUtils.getDistanceBetweenPoints(firstEntity.getPositionVector(), secondEntity.getPositionVector());
     }
-    
+
     /**
      * Calculates the distance between an entity and a BlockPos.
      *
@@ -57,10 +57,10 @@ public final class EntityUtils {
      * @return double The distance between the Entity and the BlockPos.
      */
     public static double getDistaceFromPos (Entity entity, BlockPos pos) {
-        
+
         return MathsUtils.getDistanceBetweenPoints(entity.getPositionVector(), new Vec3d(pos));
     }
-    
+
     /**
      * Pushes an entity towards a specific direction.
      *
@@ -69,10 +69,10 @@ public final class EntityUtils {
      * @param force The amount of force to push the entity with.
      */
     public static void pushTowards (Entity entityToMove, EnumFacing direction, double force) {
-        
+
         pushTowards(entityToMove, entityToMove.getPosition().offset(direction.getOpposite(), 1), force);
     }
-    
+
     /**
      * Pushes an Entity towards a BlockPos.
      *
@@ -81,21 +81,21 @@ public final class EntityUtils {
      * @param force The amount of force to push the entity with.
      */
     public static void pushTowards (Entity entityToMove, BlockPos pos, double force) {
-        
+
         final BlockPos entityPos = entityToMove.getPosition();
         final double distanceX = (double) pos.getX() - entityPos.getX();
         final double distanceY = (double) pos.getY() - entityPos.getY();
         final double distanceZ = (double) pos.getZ() - entityPos.getZ();
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
-        
+
         if (distance > 0) {
-            
+
             entityToMove.motionX = distanceX / distance * force;
             entityToMove.motionY = distanceY / distance * force;
             entityToMove.motionZ = distanceZ / distance * force;
         }
     }
-    
+
     /**
      * Pushes an entity towards another one.
      *
@@ -105,20 +105,20 @@ public final class EntityUtils {
      * @param force The amount of force to push the entityToMove with.
      */
     public static void pushTowards (Entity entityToMove, Entity destination, double force) {
-        
+
         final double distanceX = destination.posX - entityToMove.posX;
         final double distanceY = destination.posY - entityToMove.posY;
         final double distanceZ = destination.posZ - entityToMove.posZ;
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
-        
+
         if (distance > 0) {
-            
+
             entityToMove.motionX = distanceX / distance * force;
             entityToMove.motionY = distanceY / distance * force;
             entityToMove.motionZ = distanceZ / distance * force;
         }
     }
-    
+
     /**
      * Creates a Vec3d that represents the additional motion that would be needed to push an
      * entity towards a destination.
@@ -130,18 +130,18 @@ public final class EntityUtils {
      *         destination.
      */
     public static Vec3d pushTowardsDirection (Entity entityToMove, EnumFacing direction, double force) {
-        
+
         final BlockPos entityPos = entityToMove.getPosition();
         final BlockPos destination = entityToMove.getPosition().offset(direction.getOpposite(), 1);
-        
+
         final double distanceX = (double) destination.getX() - entityPos.getX();
         final double distanceY = (double) destination.getY() - entityPos.getY();
         final double distanceZ = (double) destination.getZ() - entityPos.getZ();
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
-        
+
         return distance > 0 ? new Vec3d(entityToMove.motionX = distanceX / distance * force, entityToMove.motionY = distanceY / distance * force, entityToMove.motionZ = distanceZ / distance * force) : new Vec3d(0d, 0d, 0d);
     }
-    
+
     /**
      * Checks if two entities are close enough together.
      *
@@ -152,10 +152,10 @@ public final class EntityUtils {
      *         maxDistance.
      */
     public static boolean areEntitiesCloseEnough (Entity firstEntity, Entity secondEntity, double maxDistance) {
-        
+
         return getDistanceFromEntity(firstEntity, secondEntity) < maxDistance * maxDistance;
     }
-    
+
     /**
      * Gets a List of entities that are within the provided area.
      *
@@ -168,10 +168,10 @@ public final class EntityUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> List<T> getEntitiesInArea (Class<? extends Entity> entityClass, World world, BlockPos pos, int range) {
-        
+
         return (List<T>) world.getEntitiesWithinAABB(entityClass, new AxisAlignedBB(pos.add(-range, -range, -range), pos.add(range + 1, range + 1, range + 1)));
     }
-    
+
     /**
      * Gets the type of equipment for slot index.
      *
@@ -179,13 +179,13 @@ public final class EntityUtils {
      * @return EntityEquipmentSlot The slot for the index.
      */
     public static EntityEquipmentSlot getEquipmentSlot (int index) {
-        
+
         if (index >= 0 && index < EQUIPMENT_SLOTS.length)
             return EQUIPMENT_SLOTS[index];
-        
+
         return null;
     }
-    
+
     /**
      * A check to see if an entity is wearing a full suit of the armor. This check is based on
      * the class names of armor.
@@ -196,16 +196,16 @@ public final class EntityUtils {
      *         as the provied armor class.
      */
     public static boolean isWearingFullSet (EntityLivingBase living, Class<Item> armorClass) {
-        
+
         for (final EntityEquipmentSlot slot : EntityEquipmentSlot.values())
             if (slot.getSlotType().equals(EntityEquipmentSlot.Type.ARMOR)) {
-                
+
                 final ItemStack armor = living.getItemStackFromSlot(slot);
-                
+
                 if (armor.isEmpty() || !armor.getItem().getClass().equals(armorClass))
                     return false;
             }
-        
+
         return true;
     }
 }

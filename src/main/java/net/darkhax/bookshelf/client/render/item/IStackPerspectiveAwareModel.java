@@ -23,7 +23,7 @@ import net.minecraft.item.ItemStack;
  * Implement this on your IBakedModel to be able to change it based on perspective.
  */
 public interface IStackPerspectiveAwareModel extends IBakedModel {
-    
+
     /**
      * Handles the perspectives of the model in a way similar to IPerspectiveAwareModel however
      * this also gives you the ItemStack context. Can be used to change model based on how the

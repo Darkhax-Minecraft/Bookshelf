@@ -29,25 +29,25 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
  * reference to the global RenderItem class. For internal use only!
  */
 public class RenderFactoryItem implements IRenderFactory<EntityFake> {
-    
+
     @Override
     public Render<EntityFake> createRenderFor (RenderManager manager) {
-        
+
         for (final Render<? extends Entity> render : manager.entityRenderMap.values())
             if (render != null) {
                 this.patchRenderer(render);
             }
-        
+
         return new Render<EntityFake>(manager) {
-            
+
             @Override
             protected ResourceLocation getEntityTexture (EntityFake entity) {
-                
+
                 return null;
             }
         };
     }
-    
+
     /**
      * Attempts to find any field which holds a RenderItem instance, and replaces it with the
      * RenderItemWrapper from this mod.
@@ -55,9 +55,9 @@ public class RenderFactoryItem implements IRenderFactory<EntityFake> {
      * @param render The render to patch.
      */
     private void patchRenderer (Render<? extends Entity> render) {
-        
+
         try {
-            
+
             for (final Field field : render.getClass().getDeclaredFields()) {
                 if (field.getType().equals(RenderItem.class)) {
                     field.setAccessible(true);
@@ -66,7 +66,7 @@ public class RenderFactoryItem implements IRenderFactory<EntityFake> {
             }
         }
         catch (IllegalArgumentException | IllegalAccessException e) {
-            
+
             Constants.LOG.warn("Could not patch renderer!", e);
         }
     }

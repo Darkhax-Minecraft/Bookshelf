@@ -21,17 +21,17 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class ParticleUtils {
-    
+
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
     private ParticleUtils () {
-        
+
         throw new IllegalAccessError("Utility class");
     }
-    
+
     /**
      * Spawns the digging particles for a block, similarly to the normal block hit effect
      * particle. The intended use of this method is to override the block hit effects.
@@ -45,9 +45,9 @@ public final class ParticleUtils {
      */
     @SideOnly(Side.CLIENT)
     public static boolean spawnDigParticles (ParticleManager manager, IBlockState state, World world, BlockPos pos, EnumFacing side) {
-        
+
         if (state != null && state.getRenderType() != EnumBlockRenderType.INVISIBLE) {
-            
+
             final int x = pos.getX();
             final int y = pos.getY();
             final int z = pos.getZ();
@@ -56,7 +56,7 @@ public final class ParticleUtils {
             double xOffset = x + Constants.RANDOM.nextDouble() * (bounds.maxX - bounds.minX - offset * 2.0F) + offset + bounds.minX;
             double yOffset = y + Constants.RANDOM.nextDouble() * (bounds.maxY - bounds.minY - offset * 2.0F) + offset + bounds.minY;
             double zOffset = z + Constants.RANDOM.nextDouble() * (bounds.maxZ - bounds.minZ - offset * 2.0F) + offset + bounds.minZ;
-            
+
             if (side == EnumFacing.DOWN) {
                 yOffset = y + bounds.minY - offset;
             }
@@ -75,13 +75,13 @@ public final class ParticleUtils {
             else if (side == EnumFacing.EAST) {
                 xOffset = x + bounds.maxX + offset;
             }
-            
+
             manager.addEffect(new OpenParticleDigging(world, xOffset, yOffset, zOffset, 0.0D, 0.0D, 0.0D, state).setBlockPos(pos).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
         }
-        
+
         return false;
     }
-    
+
     /**
      * Spawns the break particles for a block, similarly to the normal block break effect
      * particle. The intended use of this method is to override the block break effects.
@@ -94,15 +94,15 @@ public final class ParticleUtils {
      */
     @SideOnly(Side.CLIENT)
     public static boolean spawnBreakParticles (ParticleManager manager, IBlockState state, World world, BlockPos pos) {
-        
+
         if (state.getBlock() != null) {
-            
+
             final int multiplier = 4;
-            
+
             for (int xOffset = 0; xOffset < multiplier; xOffset++) {
                 for (int yOffset = 0; yOffset < multiplier; yOffset++) {
                     for (int zOffset = 0; zOffset < multiplier; zOffset++) {
-                        
+
                         final double xPos = pos.getX() + (xOffset + 0.5D) / multiplier;
                         final double yPos = pos.getY() + (yOffset + 0.5D) / multiplier;
                         final double zPos = pos.getZ() + (zOffset + 0.5D) / multiplier;
@@ -110,13 +110,13 @@ public final class ParticleUtils {
                     }
                 }
             }
-            
+
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Spawns particles in a ring, centered around a certain position.
      *
@@ -133,12 +133,12 @@ public final class ParticleUtils {
      */
     @SideOnly(Side.CLIENT)
     public static void spawnParticleRing (World world, EnumParticleTypes particle, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
-        
+
         for (double degree = 0.0d; degree < 2 * Math.PI; degree += step) {
             world.spawnParticle(particle, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
         }
     }
-    
+
     /**
      * Spawns particles in a ring, centered around a certain point. This method takes a percent
      * argument which is used to calculate the amount of the ring to spawn.
@@ -156,7 +156,7 @@ public final class ParticleUtils {
      *        will create 1 particle per ring. 0.15 is a nice value.
      */
     public static void spawnPercentageParticleRing (World world, EnumParticleTypes particle, float percentage, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
-        
+
         for (double degree = 0.0d; degree < 2 * Math.PI * percentage; degree += step) {
             world.spawnParticle(particle, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
         }

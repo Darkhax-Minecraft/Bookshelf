@@ -17,14 +17,14 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public class ProxyClient extends ProxyCommon {
-    
+
     @Override
     public void preInit () {
-        
+
         for (final Feature feature : FeatureManager.getFeatures()) {
             feature.onClientPreInit();
         }
-        
+
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBasicChest.class, new RenderBasicChest());
         RenderingRegistry.registerEntityRenderingHandler(EntityFake.class, new RenderFactoryItem());
     }
