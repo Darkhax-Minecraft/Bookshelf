@@ -7,6 +7,7 @@
  */
 package net.darkhax.bookshelf.client.render.block;
 
+import net.darkhax.bookshelf.events.RenderBlockEvent;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelRenderer;
