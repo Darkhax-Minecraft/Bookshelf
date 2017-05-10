@@ -33,10 +33,11 @@ public class RenderFactoryItem implements IRenderFactory<EntityFake> {
     @Override
     public Render<EntityFake> createRenderFor (RenderManager manager) {
 
-        for (final Render<? extends Entity> render : manager.entityRenderMap.values())
+        for (final Render<? extends Entity> render : manager.entityRenderMap.values()) {
             if (render != null) {
                 this.patchRenderer(render);
             }
+        }
 
         return new Render<EntityFake>(manager) {
 

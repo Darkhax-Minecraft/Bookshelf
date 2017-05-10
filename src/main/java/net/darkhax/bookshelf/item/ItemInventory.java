@@ -160,7 +160,7 @@ public class ItemInventory extends Item implements IInventory {
 
         ItemStack stack = this.getStackInSlot(index);
 
-        if (!stack.isEmpty())
+        if (!stack.isEmpty()) {
             if (stack.getCount() > count) {
 
                 stack = stack.splitStack(count);
@@ -169,6 +169,7 @@ public class ItemInventory extends Item implements IInventory {
             else {
                 this.setInventorySlotContents(index, null);
             }
+        }
 
         return stack;
     }
@@ -202,10 +203,11 @@ public class ItemInventory extends Item implements IInventory {
     @Override
     public void markDirty () {
 
-        for (int index = 0; index < this.getSizeInventory(); index++)
+        for (int index = 0; index < this.getSizeInventory(); index++) {
             if (!this.getStackInSlot(index).isEmpty() && this.getStackInSlot(index).getCount() == 0) {
                 this.inventory.set(index, ItemStack.EMPTY);
             }
+        }
 
         this.writeToNBT();
     }
@@ -256,8 +258,9 @@ public class ItemInventory extends Item implements IInventory {
     public boolean isEmpty () {
 
         for (final ItemStack itemstack : this.inventory) {
-            if (!itemstack.isEmpty())
+            if (!itemstack.isEmpty()) {
                 return false;
+            }
         }
 
         return true;

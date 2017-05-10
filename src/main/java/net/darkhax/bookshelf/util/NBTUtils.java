@@ -78,9 +78,9 @@ public final class NBTUtils {
             ((Entity) value).writeToNBT(newTag);
             dataTag.setTag(tagName, newTag);
         }
-
-        else
+        else {
             throw new BookshelfException("The data type of " + value.getClass().getName() + " is currently not supported." + Constants.NEW_LINE + "Raw Data: " + value.toString());
+        }
     }
 
     /**
@@ -166,12 +166,13 @@ public final class NBTUtils {
             final NBTTagList list = tag.getTagList("Items", 10);
             inventory = new ItemStack[invSize];
 
-            for (int i = 0; i < list.tagCount(); i++)
+            for (int i = 0; i < list.tagCount(); i++) {
                 if (!(i > list.tagCount())) {
 
                     final NBTTagCompound currentTag = list.getCompoundTagAt(i);
                     inventory[currentTag.getByte("Slot")] = new ItemStack(currentTag);
                 }
+            }
         }
 
         return inventory;
@@ -194,10 +195,11 @@ public final class NBTUtils {
         NBTTagCompound deepTag = tag;
 
         if (tag != null) {
-            for (final String tagName : tags)
+            for (final String tagName : tags) {
                 if (deepTag.hasKey(tagName)) {
                     deepTag = deepTag.getCompoundTag(tagName);
                 }
+            }
         }
 
         return deepTag;

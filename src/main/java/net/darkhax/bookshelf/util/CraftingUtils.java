@@ -53,8 +53,9 @@ public final class CraftingUtils {
 
         for (final IRecipe recipe : CraftingManager.getInstance().recipes) {
 
-            if (recipe.matches(craftInv, world))
+            if (recipe.matches(craftInv, world)) {
                 return recipe;
+            }
         }
 
         return null;
@@ -107,8 +108,9 @@ public final class CraftingUtils {
 
         final List<IRecipe> recipes = CraftingManager.getInstance().recipes;
 
-        if (recipes instanceof ModTrackingList)
+        if (recipes instanceof ModTrackingList) {
             return ((ModTrackingList<IRecipe>) recipes).getModContainer(recipe);
+        }
 
         return null;
     }
@@ -196,7 +198,7 @@ public final class CraftingUtils {
 
         final List<T> foundRecipes = new ArrayList<>();
 
-        for (final IRecipe recipe : CraftingManager.getInstance().getRecipeList())
+        for (final IRecipe recipe : CraftingManager.getInstance().getRecipeList()) {
             if (condition.test(recipe)) {
 
                 final ItemStack result = recipe.getRecipeOutput();
@@ -205,6 +207,7 @@ public final class CraftingUtils {
                     foundRecipes.add((T) recipe);
                 }
             }
+        }
 
         return foundRecipes;
     }

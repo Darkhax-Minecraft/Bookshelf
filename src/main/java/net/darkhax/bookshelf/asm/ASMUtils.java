@@ -94,9 +94,11 @@ public final class ASMUtils {
      */
     public static boolean hasClassMethodName (ClassNode classNode, String methodName) {
 
-        for (final MethodNode method : classNode.methods)
-            if (methodName.equals(method.name))
+        for (final MethodNode method : classNode.methods) {
+            if (methodName.equals(method.name)) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -115,8 +117,9 @@ public final class ASMUtils {
 
         final List<AbstractInsnNode> ret = InstructionComparator.insnListFindStart(haystack, needle);
 
-        if (ret.size() != 1)
+        if (ret.size() != 1) {
             throw new InvalidNeedleException(ret.size(), needle, haystack);
+        }
 
         return ret.get(0);
     }
@@ -135,8 +138,9 @@ public final class ASMUtils {
 
         final List<AbstractInsnNode> ret = InstructionComparator.insnListFindEnd(haystack, needle);
 
-        if (ret.size() != 1)
+        if (ret.size() != 1) {
             throw new InvalidNeedleException(ret.size(), needle, haystack);
+        }
 
         return ret.get(0);
     }

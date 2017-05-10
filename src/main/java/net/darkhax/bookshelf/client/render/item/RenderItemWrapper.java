@@ -169,8 +169,7 @@ public class RenderItemWrapper extends RenderItem {
     @Override
     public void renderItemModel (ItemStack stack, IBakedModel bakedModel, TransformType transform, boolean leftHanded) {
 
-        if (stack.getItem() != null)
-
+        if (stack.getItem() != null) {
             if (this.isExtendedModel(bakedModel)) {
 
                 this.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
@@ -196,6 +195,7 @@ public class RenderItemWrapper extends RenderItem {
                 this.parent.zLevel = this.zLevel;
                 this.parent.renderItemModel(stack, bakedModel, transform, leftHanded);
             }
+        }
     }
 
     @Override

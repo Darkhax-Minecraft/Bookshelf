@@ -136,9 +136,11 @@ public final class SupporterHandler {
      */
     public static boolean isSupporter (EntityPlayer player) {
 
-        for (final SupporterData supporter : supporterData)
-            if (supporter.getPlayerID().equals(player.getUniqueID()))
+        for (final SupporterData supporter : supporterData) {
+            if (supporter.getPlayerID().equals(player.getUniqueID())) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -151,9 +153,11 @@ public final class SupporterHandler {
      */
     public static SupporterData getSupporterData (EntityPlayer player) {
 
-        for (final SupporterData supporter : supporterData)
-            if (supporter.getPlayerID().equals(player.getUniqueID()))
+        for (final SupporterData supporter : supporterData) {
+            if (supporter.getPlayerID().equals(player.getUniqueID())) {
                 return supporter;
+            }
+        }
 
         return null;
     }

@@ -48,15 +48,17 @@ public final class InstructionComparator {
     // TODO: Add documentation
     public static InsnList getImportantList (InsnList list) {
 
-        if (list.size() == 0)
+        if (list.size() == 0) {
             return list;
+        }
 
         final HashMap<LabelNode, LabelNode> labels = new HashMap<>();
 
-        for (AbstractInsnNode insn = list.getFirst(); insn != null; insn = insn.getNext())
+        for (AbstractInsnNode insn = list.getFirst(); insn != null; insn = insn.getNext()) {
             if (insn instanceof LabelNode) {
                 labels.put((LabelNode) insn, (LabelNode) insn);
             }
+        }
 
         final InsnList importantNodeList = new InsnList();
 
@@ -81,8 +83,9 @@ public final class InstructionComparator {
      */
     public static boolean insnEqual (AbstractInsnNode node1, AbstractInsnNode node2) {
 
-        if (node1.getType() != node2.getType() || node1.getOpcode() != node2.getOpcode())
+        if (node1.getType() != node2.getType() || node1.getOpcode() != node2.getOpcode()) {
             return false;
+        }
 
         switch (node2.getType()) {
 
@@ -129,10 +132,11 @@ public final class InstructionComparator {
 
         final LinkedList<Integer> list = new LinkedList<>();
 
-        for (int start = 0; start <= haystack.size() - needle.size(); start++)
+        for (int start = 0; start <= haystack.size() - needle.size(); start++) {
             if (insnListMatches(haystack, needle, start)) {
                 list.add(start);
             }
+        }
 
         return list;
     }
@@ -152,12 +156,15 @@ public final class InstructionComparator {
     // TODO: Add documentation
     public static boolean insnListMatches (InsnList haystack, InsnList needle, int start) {
 
-        if (haystack.size() - start < needle.size())
+        if (haystack.size() - start < needle.size()) {
             return false;
+        }
 
-        for (int i = 0; i < needle.size(); i++)
-            if (!insnEqual(haystack.get(i + start), needle.get(i)))
+        for (int i = 0; i < needle.size(); i++) {
+            if (!insnEqual(haystack.get(i + start), needle.get(i))) {
                 return false;
+            }
+        }
 
         return true;
     }

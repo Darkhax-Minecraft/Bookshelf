@@ -104,8 +104,9 @@ public class WeightedSelector<T> {
 
             current += entry.weight;
 
-            if (selected < current)
+            if (selected < current) {
                 return entry;
+            }
         }
 
         return null;

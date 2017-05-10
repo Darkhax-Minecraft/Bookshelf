@@ -55,8 +55,9 @@ public final class ModUtils {
      */
     public static String getModName (Entity entity) {
 
-        if (entity == null)
+        if (entity == null) {
             return "Unknown";
+        }
 
         final EntityRegistration reg = EntityRegistry.instance().lookupModSpawn(entity.getClass(), false);
 
@@ -64,8 +65,9 @@ public final class ModUtils {
 
             final ModContainer mod = reg.getContainer();
 
-            if (mod != null)
+            if (mod != null) {
                 return mod.getName();
+            }
 
             return "Unknown";
         }
@@ -107,9 +109,11 @@ public final class ModUtils {
     @SideOnly(Side.CLIENT)
     public static CreativeTabs getTabFromLabel (String label) {
 
-        for (final CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY)
-            if (tab.getTabLabel().equalsIgnoreCase(label))
+        for (final CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
+            if (tab.getTabLabel().equalsIgnoreCase(label)) {
                 return tab;
+            }
+        }
 
         return null;
     }

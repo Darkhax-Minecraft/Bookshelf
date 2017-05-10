@@ -15,8 +15,9 @@ public abstract class TileEntityBasicTickable extends TileEntityBasic implements
     @Override
     public void update () {
 
-        if (this.isInvalid() || !this.getWorld().isBlockLoaded(this.getPos()) || this.getWorld().isRemote)
+        if (this.isInvalid() || !this.getWorld().isBlockLoaded(this.getPos()) || this.getWorld().isRemote) {
             return;
+        }
 
         try {
 

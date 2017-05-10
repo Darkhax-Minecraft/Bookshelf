@@ -77,8 +77,9 @@ public abstract class ModelArmorExtended extends ModelBiped {
      */
     private ArmPose getArmPose (ItemStack stack, EntityPlayer player) {
 
-        if (stack.isEmpty())
+        if (stack.isEmpty()) {
             return ArmPose.EMPTY;
+        }
 
         ArmPose pose = ModelBiped.ArmPose.ITEM;
 

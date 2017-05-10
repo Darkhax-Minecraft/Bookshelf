@@ -121,9 +121,9 @@ public class GuiSlider extends GuiButton {
 
             return true;
         }
-
-        else
+        else {
             return false;
+        }
     }
 
     @Override

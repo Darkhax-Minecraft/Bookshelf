@@ -39,15 +39,19 @@ public final class BlockUtils {
      */
     public static boolean isOre (@Nonnull ItemStack stack, boolean checkName) {
 
-        if (Block.getBlockFromItem(stack.getItem()) instanceof BlockOre)
+        if (Block.getBlockFromItem(stack.getItem()) instanceof BlockOre) {
             return true;
+        }
 
-        for (final int oreID : OreDictionary.getOreIDs(stack))
-            if (OreDictionary.getOreName(oreID).startsWith("ore"))
+        for (final int oreID : OreDictionary.getOreIDs(stack)) {
+            if (OreDictionary.getOreName(oreID).startsWith("ore")) {
                 return true;
+            }
+        }
 
-        if (checkName && stack.getItem().getItemStackDisplayName(stack).matches(".*(^|\\s)([oO]re)($|\\s)."))
+        if (checkName && stack.getItem().getItemStackDisplayName(stack).matches(".*(^|\\s)([oO]re)($|\\s).")) {
             return true;
+        }
 
         return false;
     }

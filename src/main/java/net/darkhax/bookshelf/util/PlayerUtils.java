@@ -86,14 +86,16 @@ public final class PlayerUtils {
      */
     public static EntityPlayer getPlayerFromUUID (World world, UUID playerID) {
 
-        for (final Object playerEntry : world.playerEntities)
+        for (final Object playerEntry : world.playerEntities) {
             if (playerEntry instanceof EntityPlayer) {
 
                 final EntityPlayer player = (EntityPlayer) playerEntry;
 
-                if (player.getUniqueID().equals(playerID))
+                if (player.getUniqueID().equals(playerID)) {
                     return player;
+                }
             }
+        }
 
         return null;
     }
@@ -107,8 +109,9 @@ public final class PlayerUtils {
      */
     public static String getPlayerNameFromUUID (UUID uuid) {
 
-        if (PROFILE_CACHE.containsValue(uuid))
+        if (PROFILE_CACHE.containsValue(uuid)) {
             return PROFILE_CACHE.inverse().get(uuid);
+        }
 
         String name = null;
 
@@ -118,13 +121,14 @@ public final class PlayerUtils {
             final JsonReader json = new JsonReader(reader);
             json.beginObject();
 
-            while (json.hasNext())
+            while (json.hasNext()) {
                 if ("name".equals(json.nextName())) {
                     name = json.nextString();
                 }
                 else {
                     json.skipValue();
                 }
+            }
 
             json.endObject();
             json.close();
@@ -149,8 +153,9 @@ public final class PlayerUtils {
      */
     public static UUID getUUIDFromName (String username) {
 
-        if (PROFILE_CACHE.containsKey(username))
+        if (PROFILE_CACHE.containsKey(username)) {
             return PROFILE_CACHE.get(username);
+        }
 
         UUID uuid = null;
 
@@ -161,13 +166,14 @@ public final class PlayerUtils {
 
             json.beginObject();
 
-            while (json.hasNext())
+            while (json.hasNext()) {
                 if ("id".equals(json.nextName())) {
                     uuid = fixStrippedUUID(json.nextString());
                 }
                 else {
                     json.skipValue();
                 }
+            }
 
             json.endObject();
             json.close();
@@ -205,10 +211,11 @@ public final class PlayerUtils {
 
         int count = 0;
 
-        for (final ItemStack stack : player.inventory.mainInventory)
+        for (final ItemStack stack : player.inventory.mainInventory) {
             if (!stack.isEmpty() && stack.getItem().equals(item)) {
                 count += stack.getCount();
             }
+        }
 
         return count;
     }
@@ -223,12 +230,15 @@ public final class PlayerUtils {
      */
     public static boolean playerHasItem (EntityPlayer player, Item item, int meta) {
 
-        for (final ItemStack stack : player.inventory.mainInventory)
-            if (stack != null && stack.getItem().equals(item) && (meta < 0 || stack.getMetadata() == meta))
+        for (final ItemStack stack : player.inventory.mainInventory) {
+            if (stack != null && stack.getItem().equals(item) && (meta < 0 || stack.getMetadata() == meta)) {
                 return true;
+            }
+        }
 
-        if (Loader.isModLoaded("baubles"))
+        if (Loader.isModLoaded("baubles")) {
             return BaublesUtils.hasItem(player, item, meta);
+        }
 
         return false;
     }
@@ -245,10 +255,11 @@ public final class PlayerUtils {
 
         final List<ItemStack> items = new ArrayList<>();
 
-        for (final ItemStack stack : player.inventory.mainInventory)
+        for (final ItemStack stack : player.inventory.mainInventory) {
             if (stack != null && stack.getItem() == item && (meta < 0 || stack.getMetadata() == meta)) {
                 items.add(stack);
             }
+        }
 
         if (Loader.isModLoaded("Baubles")) {
             items.addAll(BaublesUtils.getBaublesFromPlayer(player, item, meta));

@@ -234,11 +234,12 @@ public class ModelRetexturable implements IPerspectiveAwareModel {
 
             final IBlockState heldState = ((IExtendedBlockState) state).getValue(BlockStates.HELD_STATE);
 
-            if (heldState != null)
+            if (heldState != null) {
                 return this.getRetexturedModel(RenderUtils.getSprite(heldState).getIconName()).getQuads(state, side, rand);
-
-            else if (this.defaultSprite != null)
+            }
+            else if (this.defaultSprite != null) {
                 return this.getRetexturedModel(this.defaultSprite.getIconName()).getQuads(state, side, rand);
+            }
         }
 
         return RenderUtils.getMissingquads(state, side, rand);

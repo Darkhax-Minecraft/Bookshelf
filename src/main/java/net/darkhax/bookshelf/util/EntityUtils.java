@@ -180,8 +180,9 @@ public final class EntityUtils {
      */
     public static EntityEquipmentSlot getEquipmentSlot (int index) {
 
-        if (index >= 0 && index < EQUIPMENT_SLOTS.length)
+        if (index >= 0 && index < EQUIPMENT_SLOTS.length) {
             return EQUIPMENT_SLOTS[index];
+        }
 
         return null;
     }
@@ -197,14 +198,16 @@ public final class EntityUtils {
      */
     public static boolean isWearingFullSet (EntityLivingBase living, Class<Item> armorClass) {
 
-        for (final EntityEquipmentSlot slot : EntityEquipmentSlot.values())
+        for (final EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             if (slot.getSlotType().equals(EntityEquipmentSlot.Type.ARMOR)) {
 
                 final ItemStack armor = living.getItemStackFromSlot(slot);
 
-                if (armor.isEmpty() || !armor.getItem().getClass().equals(armorClass))
+                if (armor.isEmpty() || !armor.getItem().getClass().equals(armorClass)) {
                     return false;
+                }
             }
+        }
 
         return true;
     }

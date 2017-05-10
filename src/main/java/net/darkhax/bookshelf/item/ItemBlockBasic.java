@@ -61,8 +61,9 @@ public class ItemBlockBasic extends ItemBlock {
     @Override
     public String getUnlocalizedName (ItemStack stack) {
 
-        if (stack.getMetadata() > this.names.length)
+        if (stack.getMetadata() > this.names.length) {
             return super.getUnlocalizedName() + "." + this.names[0];
+        }
 
         return super.getUnlocalizedName() + "." + this.names[stack.getMetadata()];
     }

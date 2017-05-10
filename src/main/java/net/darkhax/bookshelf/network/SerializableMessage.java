@@ -131,8 +131,9 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
      */
     private static Field[] getClassFields (Class<?> clazz) {
 
-        if (fieldCache.containsValue(clazz))
+        if (fieldCache.containsValue(clazz)) {
             return fieldCache.get(clazz);
+        }
         else {
             final Field[] fields = clazz.getFields();
             Arrays.sort(fields, (Field f1, Field f2) -> {
@@ -178,8 +179,9 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
     private static Pair<Reader, Writer> getHandler (Class<?> type) {
 
         final Pair<Reader, Writer> pair = handlers.get(type);
-        if (pair == null)
+        if (pair == null) {
             throw new RuntimeException("No R/W handler for  " + type);
+        }
         return pair;
     }
 
@@ -193,8 +195,9 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
     private static boolean acceptField (Field field, Class<?> type) {
 
         final int mods = field.getModifiers();
-        if (Modifier.isFinal(mods) || Modifier.isStatic(mods) || Modifier.isTransient(mods))
+        if (Modifier.isFinal(mods) || Modifier.isStatic(mods) || Modifier.isTransient(mods)) {
             return false;
+        }
 
         return handlers.containsKey(type);
     }

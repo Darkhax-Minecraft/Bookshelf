@@ -64,8 +64,9 @@ public final class BaublesUtils {
 
             final ItemStack stack = getBauble(player, type);
 
-            if (!stack.isEmpty())
+            if (!stack.isEmpty()) {
                 return stack.getItem().equals(item) && (meta < 0 || stack.getMetadata() == meta);
+            }
         }
 
         return false;
@@ -107,8 +108,9 @@ public final class BaublesUtils {
     @Optional.Method(modid = "baubles")
     public static BaubleType getBaubleType (Item item, int meta) {
 
-        if (item instanceof IBauble)
+        if (item instanceof IBauble) {
             return ((IBauble) item).getBaubleType(new ItemStack(item, meta));
+        }
         return null;
     }
 
@@ -124,14 +126,16 @@ public final class BaublesUtils {
 
         final IBaublesItemHandler inv = BaublesApi.getBaublesHandler(player);
 
-        for (final int slotId : type.getValidSlots())
+        for (final int slotId : type.getValidSlots()) {
             if (inv != null) {
 
                 final ItemStack stack = inv.getStackInSlot(slotId);
 
-                if (stack != null)
+                if (stack != null) {
                     return stack;
+                }
             }
+        }
 
         return null;
     }
@@ -152,8 +156,9 @@ public final class BaublesUtils {
 
             final ItemStack stack = inv.getStackInSlot(type);
 
-            if (stack != null)
+            if (stack != null) {
                 return stack;
+            }
         }
 
         return null;
@@ -172,9 +177,11 @@ public final class BaublesUtils {
 
         final IBaublesItemHandler inv = BaublesApi.getBaublesHandler(player);
 
-        for (final int slotId : type.getValidSlots())
-            if (inv != null && ItemStackUtils.areStacksSimilar(stack, inv.getStackInSlot(slotId)))
+        for (final int slotId : type.getValidSlots()) {
+            if (inv != null && ItemStackUtils.areStacksSimilar(stack, inv.getStackInSlot(slotId))) {
                 return true;
+            }
+        }
 
         return false;
     }

@@ -107,9 +107,11 @@ public enum VanillaColor {
      */
     public static VanillaColor getColorByName (String name) {
 
-        for (final VanillaColor color : VanillaColor.values())
-            if (color.name.equalsIgnoreCase(name))
+        for (final VanillaColor color : VanillaColor.values()) {
+            if (color.name.equalsIgnoreCase(name)) {
                 return color;
+            }
+        }
 
         return null;
     }
