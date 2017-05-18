@@ -11,18 +11,11 @@ import java.util.ArrayList;
 
 import net.darkhax.bookshelf.crafting.AnvilRecipe;
 import net.darkhax.bookshelf.crafting.IAnvilRecipe;
-import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.ModTrackingList;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class BookshelfRegistry {
-
-    /**
-     * A List of crash messages. When a crash happens, one of these messages will be randomly
-     * selected.
-     */
-    private static final ModTrackingList<String> crashComments = new ModTrackingList<>(new ArrayList<String>());
 
     /**
      * A List of all the anvil recipes that have been registered with Bookshelf.
@@ -131,37 +124,5 @@ public class BookshelfRegistry {
     public static ModTrackingList<IAnvilRecipe> getAnvilRecipes () {
 
         return anvilRecipes;
-    }
-
-    /**
-     * Gets a crash comment randomly from {@link #crashComments}. This includes all of the
-     * vanilla entries as well.
-     *
-     * @return A random crash comment message.
-     */
-    public static String getCrashComment () {
-
-        return crashComments.get(Constants.RANDOM.nextInt(crashComments.size()));
-    }
-
-    /**
-     * Adds a new crash comment message. If the crash comment message feature is enabled, it
-     * will have a chance in showing up in crash logs.
-     *
-     * @param message The message to add.
-     */
-    public static void addCrashComment (String message) {
-
-        crashComments.add(message);
-    }
-
-    /**
-     * Gets a list of all the crash comments.
-     *
-     * @return A list of all the crash comments.
-     */
-    public static ModTrackingList<String> getCrashComments () {
-
-        return crashComments;
     }
 }
