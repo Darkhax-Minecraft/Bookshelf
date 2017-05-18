@@ -8,10 +8,6 @@
 package net.darkhax.bookshelf.data;
 
 /**
- * Represents common mb amounts.
- */
-
-/**
  * Defines some of the common fluid volume values. Based on values from Tinkers Construct, and
  * many other mods which deal with fluid values.
  */
@@ -19,7 +15,7 @@ public enum FluidVolume {
 
     NUGGET(16),
     INGOT(144),
-    Bottle(333),
+    BOTTLE(333),
     BUCKET(1000),
     BLOCK(1296);
 
