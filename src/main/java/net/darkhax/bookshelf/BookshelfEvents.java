@@ -7,6 +7,22 @@
  */
 package net.darkhax.bookshelf;
 
+import net.darkhax.bookshelf.crafting.IAnvilRecipe;
+import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
 public class BookshelfEvents {
 
+    @SubscribeEvent
+    public void onAnvilUpdate (AnvilUpdateEvent event) {
+
+        for (final IAnvilRecipe recipe : BookshelfRegistry.getAnvilRecipes()) {
+            if (recipe.isValidRecipe(event.getLeft(), event.getRight(), event.getName())) {
+                event.setCost(recipe.getExperienceCost(event.getLeft(), event.getRight(), event.getName()));
+                event.setMaterialCost(recipe.getMaterialCost(event.getLeft(), event.getRight(), event.getName()));
+                event.setOutput(recipe.getOutput(event.getLeft(), event.getRight(), event.getName()));
+                return;
+            }
+        }
+    }
 }
