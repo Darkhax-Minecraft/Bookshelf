@@ -20,7 +20,7 @@ import com.google.common.collect.Multimap;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.util.AnnotationUtils;
 import net.darkhax.bookshelf.util.CollectionUtils;
-import net.darkhax.bookshelf.util.ItemStackUtils;
+import net.darkhax.bookshelf.util.StackUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -292,7 +292,7 @@ public class ConfigurationHandler {
 
     private static ItemStack readItemStack (String name, String category, String comment, Configuration config, ItemStack object) {
 
-        return ItemStackUtils.createStackFromString(readString(name, category, comment, config, ItemStackUtils.writeStackToString(object)));
+        return StackUtils.createStackFromString(readString(name, category, comment, config, StackUtils.writeStackToString(object)));
     }
 
     private static ItemStack[] readItemStackArray (String name, String category, String comment, Configuration config, ItemStack[] object) {

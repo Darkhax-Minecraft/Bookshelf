@@ -19,11 +19,7 @@ public final class Constants {
 
     public static final String MOD_NAME = "Bookshelf";
 
-    public static final String VERSION_NUMBER = "1.5.0.0";
-
-    public static final String PROXY_CLIENT = "net.darkhax.bookshelf.ProxyClient";
-
-    public static final String PROXY_COMMON = "net.darkhax.bookshelf.ProxyCommon";
+    public static final String VERSION_NUMBER = "2.0.0";
 
     // System Constants
     public static final Logger LOG = LogManager.getLogger(MOD_NAME);

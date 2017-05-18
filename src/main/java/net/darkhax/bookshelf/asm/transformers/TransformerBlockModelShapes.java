@@ -41,20 +41,6 @@ public final class TransformerBlockModelShapes {
         throw new IllegalAccessError("Utility class");
     }
 
-    /*
-     * Label l0 = new Label(); mv.visitLabel(l0); mv.visitLineNumber(91, l0);
-     * mv.visitTypeInsn(NEW, "net/darkhax/bookshelf/events/BlockTextureEvent");
-     * mv.visitInsn(DUP); mv.visitVarInsn(ALOAD, 1); mv.visitMethodInsn(INVOKESPECIAL,
-     * "net/darkhax/bookshelf/events/BlockTextureEvent", "<init>",
-     * "(Lnet/minecraft/block/state/IBlockState;)V", false); mv.visitVarInsn(ASTORE, 2); Label
-     * l1 = new Label(); mv.visitLabel(l1); mv.visitLineNumber(92, l1);
-     * mv.visitFieldInsn(GETSTATIC, "net/minecraftforge/common/MinecraftForge", "EVENT_BUS",
-     * "Lnet/minecraftforge/fml/common/eventhandler/EventBus;"); mv.visitVarInsn(ALOAD, 2);
-     * mv.visitMethodInsn(INVOKEVIRTUAL, "net/minecraftforge/fml/common/eventhandler/EventBus",
-     * "post", "(Lnet/minecraftforge/fml/common/eventhandler/Event;)Z", false);
-     * mv.visitInsn(POP);
-     */
-    // a => => getTexture
     public static byte[] transform (String name, String transformedName, byte[] classBytes) {
 
         final ClassNode clazz = ASMUtils.createClassFromByteArray(classBytes);

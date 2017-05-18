@@ -238,7 +238,7 @@ public final class RenderUtils {
     public static TextureAtlasSprite getSprite (ItemStack stack) {
 
         final Minecraft mc = Minecraft.getMinecraft();
-        final Block block = ItemStackUtils.getBlockFromStack(stack);
+        final Block block = StackUtils.getBlockFromStack(stack);
 
         if (block == null) {
 

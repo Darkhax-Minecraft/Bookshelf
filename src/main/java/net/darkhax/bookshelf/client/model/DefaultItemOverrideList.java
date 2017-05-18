@@ -27,6 +27,6 @@ public class DefaultItemOverrideList extends ItemOverrideList {
     @Override
     public IBakedModel handleItemState (IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
 
-        return ((ModelRetexturable) originalModel).getDefaultModel();
+        return ((BakedModelRetexturable) originalModel).getDefaultModel();
     }
 }

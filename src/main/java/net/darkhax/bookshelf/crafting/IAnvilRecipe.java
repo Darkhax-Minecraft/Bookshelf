@@ -10,9 +10,7 @@ package net.darkhax.bookshelf.crafting;
 import net.minecraft.item.ItemStack;
 
 /**
- * Defines the base requirements for any anvil recipe entry.
- *
- * @author Tyler Hancock (Darkhax)
+ * The backing interface for Bookshelf's anvil recipe system.
  */
 public interface IAnvilRecipe {
 

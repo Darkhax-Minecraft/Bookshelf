@@ -20,7 +20,7 @@ import com.google.common.io.Resources;
 import com.google.gson.stream.JsonReader;
 
 import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.utils.baubles.BaublesUtils;
+import net.darkhax.bookshelf.util.baubles.BaubleUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.entity.player.EntityPlayer;
@@ -237,7 +237,7 @@ public final class PlayerUtils {
         }
 
         if (Loader.isModLoaded("baubles")) {
-            return BaublesUtils.hasItem(player, item, meta);
+            return BaubleUtils.hasItem(player, item, meta);
         }
 
         return false;
@@ -262,7 +262,7 @@ public final class PlayerUtils {
         }
 
         if (Loader.isModLoaded("Baubles")) {
-            items.addAll(BaublesUtils.getBaublesFromPlayer(player, item, meta));
+            items.addAll(BaubleUtils.getBaublesFromPlayer(player, item, meta));
         }
 
         return items;

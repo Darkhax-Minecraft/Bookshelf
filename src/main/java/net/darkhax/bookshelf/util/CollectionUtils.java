@@ -118,7 +118,7 @@ public class CollectionUtils {
 
         for (int index = 0; index < input.length; index++) {
 
-            output[index] = ItemStackUtils.writeStackToString(input[index]);
+            output[index] = StackUtils.writeStackToString(input[index]);
         }
 
         return output;
@@ -130,7 +130,7 @@ public class CollectionUtils {
 
         for (int index = 0; index < input.length; index++) {
 
-            output[index] = ItemStackUtils.createStackFromString(input[index]);
+            output[index] = StackUtils.createStackFromString(input[index]);
         }
 
         return output;

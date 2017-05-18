@@ -203,7 +203,7 @@ public final class CraftingUtils {
 
                 final ItemStack result = recipe.getRecipeOutput();
 
-                if (ItemStackUtils.areStacksEqual(result, stack, result.hasTagCompound())) {
+                if (StackUtils.areStacksEqual(result, stack, result.hasTagCompound())) {
                     foundRecipes.add((T) recipe);
                 }
             }
@@ -225,7 +225,7 @@ public final class CraftingUtils {
 
             final ItemStack[] inputs = new ItemStack[amount];
             Arrays.fill(inputs, input);
-            GameRegistry.addShapelessRecipe(ItemStackUtils.copyStackWithSize(output, amount), (Object[]) inputs);
+            GameRegistry.addShapelessRecipe(StackUtils.copyStackWithSize(output, amount), (Object[]) inputs);
         }
     }
 }

@@ -47,7 +47,7 @@ public final class SkullUtils {
     public static ItemStack createSkull (String name, UUID uuid) {
 
         final ItemStack stack = new ItemStack(Items.SKULL, 1, 3);
-        ItemStackUtils.prepareDataTag(stack);
+        StackUtils.prepareStackTag(stack);
         final NBTTagCompound ownerTag = new NBTTagCompound();
         ownerTag.setString("Name", name);
         ownerTag.setString("Id", uuid.toString());
@@ -89,7 +89,7 @@ public final class SkullUtils {
     public static ItemStack createSkull (String owner) {
 
         final ItemStack stack = new ItemStack(Items.SKULL, 1, 3);
-        ItemStackUtils.prepareDataTag(stack);
+        StackUtils.prepareStackTag(stack);
         stack.getTagCompound().setString("SkullOwner", owner);
         return stack;
     }

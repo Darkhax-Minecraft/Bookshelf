@@ -7,7 +7,7 @@
  */
 package net.darkhax.bookshelf.crafting;
 
-import net.darkhax.bookshelf.util.ItemStackUtils;
+import net.darkhax.bookshelf.util.StackUtils;
 import net.minecraft.item.ItemStack;
 
 public class AnvilRecipe implements IAnvilRecipe {
@@ -53,6 +53,7 @@ public class AnvilRecipe implements IAnvilRecipe {
      * @param outputStack The ItemStack that will be created by this recipe.
      */
     public AnvilRecipe (ItemStack firstInput, ItemStack secondInput, int experience, ItemStack outputStack) {
+
         this(firstInput, secondInput, null, experience, 0, outputStack);
     }
 
@@ -68,6 +69,7 @@ public class AnvilRecipe implements IAnvilRecipe {
      * @param outputStack The ItemStack that will be created by this recipe.
      */
     public AnvilRecipe (ItemStack firstInput, ItemStack secondInput, String requiredName, int experience, int materialCost, ItemStack outputStack) {
+
         this.requiredLeft = firstInput;
         this.requiredRight = secondInput;
         this.requiredName = requiredName;
@@ -79,7 +81,7 @@ public class AnvilRecipe implements IAnvilRecipe {
     @Override
     public boolean isValidRecipe (ItemStack leftSlot, ItemStack rightSlot, String name) {
 
-        return ItemStackUtils.areStacksSimilarWithSize(leftSlot, this.requiredLeft) && ItemStackUtils.areStacksSimilarWithSize(rightSlot, this.requiredRight) && this.requiredName != null && !this.requiredName.isEmpty() ? this.requiredName.equals(name) : true;
+        return StackUtils.areStacksSimilarWithSize(leftSlot, this.requiredLeft) && StackUtils.areStacksSimilarWithSize(rightSlot, this.requiredRight) && this.requiredName != null && !this.requiredName.isEmpty() ? this.requiredName.equals(name) : true;
     }
 
     @Override

@@ -7,7 +7,7 @@
  */
 package net.darkhax.bookshelf.client.render.block;
 
-import net.darkhax.bookshelf.events.RenderBlockEvent;
+import net.darkhax.bookshelf.events.BlockModelEvent;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelRenderer;
@@ -65,7 +65,7 @@ public class BookshelfBlockModelRenderer extends ForgeBlockModelRenderer {
     @Override
     public boolean renderModelSmooth (IBlockAccess worldIn, IBakedModel modelIn, IBlockState stateIn, BlockPos posIn, VertexBuffer buffer, boolean checkSides, long rand) {
 
-        final RenderBlockEvent event = new RenderBlockEvent(worldIn, posIn, modelIn, stateIn, buffer, checkSides);
+        final BlockModelEvent event = new BlockModelEvent(worldIn, posIn, modelIn, stateIn, buffer, checkSides);
         MinecraftForge.EVENT_BUS.post(event);
         return parent.renderModelSmooth(worldIn, event.getModel(), event.getState(), posIn, event.getBuffer(), event.isCheckSides(), rand);
     }
@@ -73,7 +73,7 @@ public class BookshelfBlockModelRenderer extends ForgeBlockModelRenderer {
     @Override
     public boolean renderModelFlat (IBlockAccess worldIn, IBakedModel modelIn, IBlockState stateIn, BlockPos posIn, VertexBuffer buffer, boolean checkSides, long rand) {
 
-        final RenderBlockEvent event = new RenderBlockEvent(worldIn, posIn, modelIn, stateIn, buffer, checkSides);
+        final BlockModelEvent event = new BlockModelEvent(worldIn, posIn, modelIn, stateIn, buffer, checkSides);
         MinecraftForge.EVENT_BUS.post(event);
         return parent.renderModelSmooth(worldIn, event.getModel(), event.getState(), posIn, event.getBuffer(), event.isCheckSides(), rand);
     }
