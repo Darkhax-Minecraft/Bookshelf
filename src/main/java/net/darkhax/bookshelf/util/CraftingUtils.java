@@ -16,6 +16,7 @@ import java.util.function.Predicate;
 
 import net.darkhax.bookshelf.lib.ModTrackingList;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.inventory.InventoryCrafting;
@@ -227,5 +228,20 @@ public final class CraftingUtils {
             Arrays.fill(inputs, input);
             GameRegistry.addShapelessRecipe(StackUtils.copyStackWithSize(output, amount), (Object[]) inputs);
         }
+    }
+
+    /**
+     * Validates if an Object is valid for crafting.
+     *
+     * @param object The object to check.
+     * @return The crafting object. Fire if bad.
+     */
+    public static Object validateCrafting (Object object) {
+
+        if (object instanceof ItemStack) {
+            return !((ItemStack) object).isEmpty() ? object : Blocks.FIRE;
+        }
+
+        return object != null ? object : Blocks.FIRE;
     }
 }
