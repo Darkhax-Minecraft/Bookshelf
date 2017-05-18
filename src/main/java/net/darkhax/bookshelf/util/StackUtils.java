@@ -37,15 +37,27 @@ public final class StackUtils {
     /**
      * Sets a stack compound to an ItemStack if it does not already have one.
      *
-     * @param stackItemStack having a tag set on it.
+     * @param stack ItemStack having a tag set on it.
      */
-    public static NBTTagCompound prepareDataTag (ItemStack stack) {
+    public static NBTTagCompound prepareStackTag (ItemStack stack) {
 
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
         }
 
         return stack.getTagCompound();
+    }
+
+    /**
+     * Sets a stack compound to an ItemStack if it does not have one.
+     *
+     * @param stack The stack to set the tag of.
+     * @return The stack, for convenience.
+     */
+    public static ItemStack prepareStack (ItemStack stack) {
+
+        prepareStackTag(stack);
+        return stack;
     }
 
     /**
@@ -57,7 +69,7 @@ public final class StackUtils {
      */
     public static ItemStack setLore (ItemStack stack, String[] lore) {
 
-        prepareDataTag(stack);
+        prepareStackTag(stack);
         final NBTTagCompound tag = stack.getTagCompound();
         final NBTTagList loreList = new NBTTagList();
 
@@ -173,7 +185,7 @@ public final class StackUtils {
 
     public static ItemStack writePotionEffectsToStack (ItemStack stack, PotionEffect[] effects) {
 
-        final NBTTagCompound stackTag = prepareDataTag(stack);
+        final NBTTagCompound stackTag = prepareStackTag(stack);
         final NBTTagList potionTag = new NBTTagList();
 
         for (final PotionEffect effect : effects) {
@@ -373,7 +385,7 @@ public final class StackUtils {
     public static ItemStack createStackFromTileEntity (TileEntity tile) {
 
         final ItemStack stack = new ItemStack(tile.getBlockType(), 1, tile.getBlockMetadata());
-        prepareDataTag(stack);
+        prepareStackTag(stack);
         final NBTTagCompound tileTag = tile.writeToNBT(new NBTTagCompound());
         stack.getTagCompound().setTag("TileData", tileTag);
         return stack;
