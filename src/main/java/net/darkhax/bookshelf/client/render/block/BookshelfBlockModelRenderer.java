@@ -63,18 +63,46 @@ public class BookshelfBlockModelRenderer extends ForgeBlockModelRenderer {
     }
 
     @Override
+    public boolean renderModel (IBlockAccess blockAccessIn, IBakedModel modelIn, IBlockState stateIn, BlockPos posIn, VertexBuffer buffer, boolean checkSides) {
+
+        final BlockModelEvent event = new BlockModelEvent(posIn, modelIn, stateIn, buffer, checkSides);
+        MinecraftForge.EVENT_BUS.post(event);
+        return parent.renderModel(blockAccessIn, event.getModel(), event.getState(), event.getPos(), event.getBuffer(), event.isCheckSides());
+    }
+
+    @Override
+    public boolean renderModel (IBlockAccess worldIn, IBakedModel modelIn, IBlockState stateIn, BlockPos posIn, VertexBuffer buffer, boolean checkSides, long rand) {
+
+        return parent.renderModel(worldIn, modelIn, stateIn, posIn, buffer, checkSides, rand);
+    }
+
+    @Override
     public boolean renderModelSmooth (IBlockAccess worldIn, IBakedModel modelIn, IBlockState stateIn, BlockPos posIn, VertexBuffer buffer, boolean checkSides, long rand) {
 
-        final BlockModelEvent event = new BlockModelEvent(worldIn, posIn, modelIn, stateIn, buffer, checkSides);
-        MinecraftForge.EVENT_BUS.post(event);
-        return parent.renderModelSmooth(worldIn, event.getModel(), event.getState(), posIn, event.getBuffer(), event.isCheckSides(), rand);
+        return parent.renderModelSmooth(worldIn, modelIn, stateIn, posIn, buffer, checkSides, rand);
     }
 
     @Override
     public boolean renderModelFlat (IBlockAccess worldIn, IBakedModel modelIn, IBlockState stateIn, BlockPos posIn, VertexBuffer buffer, boolean checkSides, long rand) {
 
-        final BlockModelEvent event = new BlockModelEvent(worldIn, posIn, modelIn, stateIn, buffer, checkSides);
-        MinecraftForge.EVENT_BUS.post(event);
-        return parent.renderModelSmooth(worldIn, event.getModel(), event.getState(), posIn, event.getBuffer(), event.isCheckSides(), rand);
+        return parent.renderModelFlat(worldIn, modelIn, stateIn, posIn, buffer, checkSides, rand);
+    }
+
+    @Override
+    public void renderModelBrightnessColor (IBakedModel bakedModel, float p_178262_2_, float red, float green, float blue) {
+
+        parent.renderModelBrightnessColor(bakedModel, p_178262_2_, red, green, blue);
+    }
+
+    @Override
+    public void renderModelBrightnessColor (IBlockState state, IBakedModel p_187495_2_, float p_187495_3_, float p_187495_4_, float p_187495_5_, float p_187495_6_) {
+
+        parent.renderModelBrightnessColor(state, p_187495_2_, p_187495_3_, p_187495_4_, p_187495_5_, p_187495_6_);
+    }
+
+    @Override
+    public void renderModelBrightness (IBakedModel model, IBlockState state, float brightness, boolean p_178266_4_) {
+
+        parent.renderModelBrightness(model, state, brightness, p_178266_4_);
     }
 }

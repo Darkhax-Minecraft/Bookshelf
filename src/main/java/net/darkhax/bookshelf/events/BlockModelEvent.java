@@ -8,6 +8,7 @@
 package net.darkhax.bookshelf.events;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.util.math.BlockPos;
@@ -52,16 +53,15 @@ public class BlockModelEvent extends Event {
     /**
      * Constructs the event.
      *
-     * @param world The world instance.
      * @param pos The position of the block.
      * @param model The model to render.
      * @param state The state data.
      * @param buffer The vertex buffer.
      * @param checkSides Whether or not the sides should be checked.
      */
-    public BlockModelEvent (IBlockAccess world, BlockPos pos, IBakedModel model, IBlockState state, VertexBuffer buffer, boolean checkSides) {
+    public BlockModelEvent (BlockPos pos, IBakedModel model, IBlockState state, VertexBuffer buffer, boolean checkSides) {
 
-        this.world = world;
+        this.world = Minecraft.getMinecraft().world;
         this.pos = pos;
         this.model = model;
         this.state = state;
