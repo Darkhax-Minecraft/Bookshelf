@@ -5,7 +5,7 @@
  * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
  * 2.1.
  */
-package net.darkhax.bookshelf.world.loot;
+package net.darkhax.bookshelf.builder;
 
 import java.util.ArrayList;
 import java.util.List;
