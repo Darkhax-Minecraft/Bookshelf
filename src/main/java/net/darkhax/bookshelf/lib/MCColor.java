@@ -12,6 +12,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -98,6 +99,26 @@ public class MCColor extends Color {
     }
 
     /**
+     * Constructs an MCColor from the hashcode of a string.
+     *
+     * @param string The string to get a color for.
+     */
+    public MCColor (String string) {
+
+        this(string.hashCode());
+    }
+
+    /**
+     * Constructs an MCColor from a packed RGB integer.
+     *
+     * @param packed A packed RGB integer.
+     */
+    public MCColor (int packed) {
+
+        super(packed);
+    }
+
+    /**
      * Writes the color object's data to the ItemStack's NBTTagCompound.
      *
      * @param stack The ItemStack to write the color data to.
@@ -125,6 +146,26 @@ public class MCColor extends Color {
     public int[] getComponents () {
 
         return new int[] { this.getRed(), this.getGreen(), this.getBlue() };
+    }
+
+    public float getRedF () {
+
+        return this.getRed() / 255f;
+    }
+
+    public float getGreenF () {
+
+        return this.getGreen() / 255f;
+    }
+
+    public float getBlueF () {
+
+        return this.getBlue() / 255f;
+    }
+
+    public void setRenderColor () {
+
+        GlStateManager.color(this.getRed(), this.getGreen(), this.getBlue());
     }
 
     /**
