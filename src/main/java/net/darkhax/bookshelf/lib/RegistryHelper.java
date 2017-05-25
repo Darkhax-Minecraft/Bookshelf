@@ -15,7 +15,9 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import net.darkhax.bookshelf.builder.LootBuilder;
+import net.darkhax.bookshelf.item.ICustomMesh;
 import net.darkhax.bookshelf.item.IVariant;
+import net.darkhax.bookshelf.util.GameUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -44,6 +46,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * stuff for models.
  */
 public class RegistryHelper {
+
+    private static final List<ICustomMesh> customMeshes = NonNullList.create();
 
     /**
      * The id of the mod the registry helper instance belongs to.
@@ -162,7 +166,7 @@ public class RegistryHelper {
         block.setRegistryName(this.modid, id);
         block.setUnlocalizedName(this.modid + "." + id.toLowerCase().replace("_", "."));
         GameRegistry.register(block);
-        GameRegistry.register(itemBlock, block.getRegistryName());
+        this.registerItem(itemBlock, block.getRegistryName());
         this.blocks.add(block);
 
         if (this.tab != null) {
@@ -182,13 +186,28 @@ public class RegistryHelper {
      */
     public Item registerItem (@Nonnull Item item, @Nonnull String id) {
 
-        item.setRegistryName(this.modid, id);
-        item.setUnlocalizedName(this.modid + "." + id.toLowerCase().replace("_", "."));
+        return this.registerItem(item, new ResourceLocation(this.modid, id));
+    }
+
+    public Item registerItem (@Nonnull Item item, @Nonnull ResourceLocation id) {
+
+        item.setRegistryName(id);
+        item.setUnlocalizedName(id.getResourceDomain().replaceAll("_", ".") + "." + id.getResourcePath().toLowerCase().replace("_", "."));
         GameRegistry.register(item);
         this.items.add(item);
 
         if (this.tab != null) {
             item.setCreativeTab(this.tab);
+        }
+
+        if (GameUtils.isClient) {
+
+            if (item instanceof ICustomMesh) {
+
+                final ICustomMesh mesh = (ICustomMesh) item;
+                customMeshes.add(mesh);
+                ModelLoader.setCustomMeshDefinition(item, mesh.getCustomMesh());
+            }
         }
 
         return item;
@@ -386,5 +405,14 @@ public class RegistryHelper {
     public void registerInventoryModel (@Nonnull Item item, int meta, @Nonnull String modelName) {
 
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(modelName, "inventory"));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void clientInit () {
+
+        for (final ICustomMesh mesh : customMeshes) {
+
+            mesh.registerMeshModels();
+        }
     }
 }
