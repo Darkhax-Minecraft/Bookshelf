@@ -12,6 +12,7 @@ import net.darkhax.bookshelf.client.render.item.RenderFactoryItem;
 import net.darkhax.bookshelf.client.render.item.RenderItemWrapper;
 import net.darkhax.bookshelf.entity.EntityFake;
 import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.RegistryHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -46,5 +47,6 @@ public class Bookshelf {
 
         RenderItemWrapper.instance();
         BookshelfBlockModelRenderer.instance();
+        RegistryHelper.clientInit();
     }
 }
