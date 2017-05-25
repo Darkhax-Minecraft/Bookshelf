@@ -1,0 +1,8 @@
+{
+	"parent": "bookshelf:block/basic_chest",
+	"textures": {
+        "texture": "chesttest:entity/chest/three",
+		"particle": "chesttest:entity/chest/three",
+		"overlay": "bookshelf:entity/chest/trap"
+	}
+}

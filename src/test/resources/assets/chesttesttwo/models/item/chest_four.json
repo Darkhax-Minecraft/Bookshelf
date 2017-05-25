@@ -1,0 +1,7 @@
+{
+	"parent": "bookshelf:block/basic_chest",
+	"textures": {
+		"texture": "chesttesttwo:entity/chest/four",
+		"particle": "chesttesttwo:entity/chest/four"
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"normal": { "model": "bookshelf:basic_chest" },
+		"inventory": { "model": "bookshelf:basic_chest" },
+		"facing=north": { "model": "bookshelf:basic_chest" },
+		"facing=south": { "model": "bookshelf:basic_chest" },
+		"facing=east": { "model": "bookshelf:basic_chest" },
+		"facing=west": { "model": "bookshelf:basic_chest" }
+	}
+}
