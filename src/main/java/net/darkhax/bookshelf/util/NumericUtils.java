@@ -43,18 +43,33 @@ public final class NumericUtils {
         return false;
     }
 
+    public static boolean isChristmasTime () {
+
+        return isSpecialDay(12, 24, 26);
+    }
+
+    public static boolean isHalloweenTime () {
+
+        return isSpecialDay(10, 25, 31);
+    }
+
+    public static boolean isSpecialDay (int month, int day) {
+
+        return isSpecialDay(month, day, day);
+    }
+
     /**
      * Checks if the code is being ran on a special day. If it is, the method will return true.
      * this can be used to allow special events to happen on specific days.
      *
      * @param month The month of the year to check for. January is 1 and December is 12.
-     * @param day The day of the year to check for. The first day of the month is 1, the 15th
-     *        day is 15 and so on.
+     * @param start The first valid day of the month.
+     * @param end The last valid day of the month.
      * @return Whether or not the current day is the one specified.
      */
-    public static boolean isSpecialDay (int month, int day) {
+    public static boolean isSpecialDay (int month, int start, int end) {
 
         final Calendar today = Calendar.getInstance();
-        return today.get(Calendar.MONTH) + 1 == month && today.get(Calendar.DAY_OF_MONTH) == day;
+        return today.get(Calendar.MONTH) + 1 == month && today.get(Calendar.DAY_OF_MONTH) >= start && today.get(Calendar.DAY_OF_MONTH) <= end;
     }
 }
