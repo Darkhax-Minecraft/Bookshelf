@@ -59,6 +59,11 @@ public final class RenderUtils {
     public static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
 
     /**
+     * A flag used by
+     */
+    private static boolean requiresRenderReload = false;
+
+    /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
@@ -683,5 +688,26 @@ public final class RenderUtils {
         final float[] color1 = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colorMeta1));
         final float[] color2 = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colorMeta2));
         GlStateManager.color(color1[0] * (1.0F - f) + color2[0] * f, color1[1] * (1.0F - f) + color2[1] * f, color1[2] * (1.0F - f) + color2[2] * f);
+    }
+
+    /**
+     * Checks if the renderers should be reloaded.
+     *
+     * @return Whether or not the renderers should be reloaded.
+     */
+    public static boolean requireRenderReload () {
+
+        return requiresRenderReload;
+    }
+
+    /**
+     * Updates {@link #requiresRenderReload}. If true, the renderers will be reloaded the next
+     * render tick.
+     *
+     * @param reload Whether or not things should be reloaded.
+     */
+    public static void markRenderersForReload (boolean reload) {
+
+        requiresRenderReload = reload;
     }
 }
