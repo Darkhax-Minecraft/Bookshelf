@@ -35,7 +35,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -46,6 +45,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * stuff for models.
  */
 public class RegistryHelper {
+
+    public static final List<RegistryHelper> HELPERS = NonNullList.create();
 
     private static final List<ICustomMesh> customMeshes = NonNullList.create();
 
@@ -76,6 +77,11 @@ public class RegistryHelper {
     private CreativeTabs tab;
 
     /**
+     * Whether or not models should be automatically registered.
+     */
+    private final boolean enableAutoModelReg;
+
+    /**
      * Constructs a new RegistryHelper for the specified mod id. Multiple helpers can exist
      * with the same id, but it's not recommended.
      *
@@ -83,8 +89,22 @@ public class RegistryHelper {
      */
     public RegistryHelper (@Nonnull String modid) {
 
+        this(modid, true);
+    }
+
+    /**
+     * Constructs a new RegistryHelper for the specified mod id. Multiple helpers can exist
+     * with the same id, but it's not recommended.
+     *
+     * @param modid The modid for the registry helper.
+     * @param autoModels Should models be auto loaded.
+     */
+    public RegistryHelper (@Nonnull String modid, boolean autoModels) {
+
         this.modid = modid;
+        this.enableAutoModelReg = autoModels;
         MinecraftForge.EVENT_BUS.register(this);
+        HELPERS.add(this);
     }
 
     /**
@@ -165,7 +185,6 @@ public class RegistryHelper {
 
         block.setRegistryName(this.modid, id);
         block.setUnlocalizedName(this.modid + "." + id.toLowerCase().replace("_", "."));
-        GameRegistry.register(block);
         this.registerItem(itemBlock, block.getRegistryName());
         this.blocks.add(block);
 
@@ -193,7 +212,6 @@ public class RegistryHelper {
 
         item.setRegistryName(id);
         item.setUnlocalizedName(id.getResourceDomain().replaceAll("_", ".") + "." + id.getResourcePath().toLowerCase().replace("_", "."));
-        GameRegistry.register(item);
         this.items.add(item);
 
         if (this.tab != null) {
@@ -330,7 +348,7 @@ public class RegistryHelper {
 
         this.registerInventoryModel(Item.getItemFromBlock(block));
     }
-    
+
     /**
      * Registers an inventory model for a block with variants. The model name is equal to the
      * registry name of the block, plus the variant string for the meta.
@@ -343,7 +361,7 @@ public class RegistryHelper {
     public void registerInventoryModel (@Nonnull Block block, @Nonnull String prefix, @Nonnull String... variants) {
 
         for (int meta = 0; meta < variants.length; meta++) {
-            this.registerInventoryModel(Item.getItemFromBlock(block), meta, block.getRegistryName().toString() + "_" + ( prefix.isEmpty() ? prefix : prefix + "_") + variants[meta]);
+            this.registerInventoryModel(Item.getItemFromBlock(block), meta, block.getRegistryName().toString() + "_" + (prefix.isEmpty() ? prefix : prefix + "_") + variants[meta]);
         }
     }
 
@@ -391,7 +409,7 @@ public class RegistryHelper {
     public void registerInventoryModel (@Nonnull Item item, @Nonnull String prefix, @Nonnull String... variants) {
 
         for (int meta = 0; meta < variants.length; meta++) {
-            this.registerInventoryModel(item, meta, item.getRegistryName().toString() + "_" + ( prefix.isEmpty() ? prefix : prefix + "_") + variants[meta]);
+            this.registerInventoryModel(item, meta, item.getRegistryName().toString() + "_" + (prefix.isEmpty() ? prefix : prefix + "_") + variants[meta]);
         }
     }
 
@@ -406,6 +424,26 @@ public class RegistryHelper {
     public void registerInventoryModel (@Nonnull Item item, int meta, @Nonnull String modelName) {
 
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(modelName, "inventory"));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void clientPreInit () {
+
+        for (final RegistryHelper helper : HELPERS) {
+
+            if (helper.enableAutoModelReg) {
+
+                for (final Block block : helper.blocks) {
+
+                    helper.registerInventoryModel(block);
+                }
+
+                for (final Item item : helper.items) {
+
+                    helper.registerInventoryModel(item);
+                }
+            }
+        }
     }
 
     @SideOnly(Side.CLIENT)

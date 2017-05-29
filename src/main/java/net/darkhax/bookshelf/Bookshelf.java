@@ -12,7 +12,6 @@ import net.darkhax.bookshelf.lib.ModTrackingList;
 import net.darkhax.bookshelf.lib.RegistryHelper;
 import net.darkhax.bookshelf.util.AnnotationUtils;
 import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.util.Tuple;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -34,15 +33,6 @@ public class Bookshelf {
 
         CraftingManager.getInstance().recipes = new ModTrackingList(CraftingManager.getInstance().recipes);
         AnnotationUtils.asmData = event.getASMHarvestedData();
-    }
-
-    @EventHandler
-    public void preInit (FMLPreInitializationEvent event) {
-
-        for (final Tuple<Class<?>, Mod> clasz : AnnotationUtils.getAnnotatedClasses(AnnotationUtils.asmData, Mod.class)) {
-
-            System.out.println(clasz.getFirst().getCanonicalName());
-        }
         MinecraftForge.EVENT_BUS.register(new BookshelfEvents());
     }
 
@@ -50,6 +40,7 @@ public class Bookshelf {
     @EventHandler
     public void preInitClient (FMLPreInitializationEvent event) {
 
+        RegistryHelper.clientPreInit();
     }
 
     @SideOnly(Side.CLIENT)

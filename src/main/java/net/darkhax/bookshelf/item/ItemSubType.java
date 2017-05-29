@@ -17,13 +17,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * A base class which handles making items with sub types.
  */
-public abstract class ItemSubType extends Item implements IVariant {
+public class ItemSubType extends Item implements IVariant {
+
+    private final String[] variants;
 
     /**
      * Base constructor for this class.
      */
-    public ItemSubType () {
+    public ItemSubType (String... variants) {
 
+        this.variants = variants;
         this.setHasSubtypes(true);
     }
 
@@ -48,5 +51,11 @@ public abstract class ItemSubType extends Item implements IVariant {
         for (int meta = 0; meta < this.getVariant().length; meta++) {
             subItems.add(new ItemStack(this, 1, meta));
         }
+    }
+
+    @Override
+    public String[] getVariant () {
+
+        return this.variants;
     }
 }
