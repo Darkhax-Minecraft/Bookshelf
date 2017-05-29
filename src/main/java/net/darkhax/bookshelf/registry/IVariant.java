@@ -5,7 +5,7 @@
  * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
  * 2.1.
  */
-package net.darkhax.bookshelf.item;
+package net.darkhax.bookshelf.registry;
 
 /**
  * This interface is used by items to list out variants that they have. This is used by

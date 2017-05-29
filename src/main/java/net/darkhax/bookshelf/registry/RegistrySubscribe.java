@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.lib;
+package net.darkhax.bookshelf.registry;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

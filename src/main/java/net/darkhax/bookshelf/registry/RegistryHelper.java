@@ -5,7 +5,7 @@
  * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
  * 2.1.
  */
-package net.darkhax.bookshelf.lib;
+package net.darkhax.bookshelf.registry;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import com.google.common.collect.Multimap;
 
 import net.darkhax.bookshelf.builder.LootBuilder;
 import net.darkhax.bookshelf.item.ICustomMesh;
-import net.darkhax.bookshelf.item.IVariant;
+import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.util.GameUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

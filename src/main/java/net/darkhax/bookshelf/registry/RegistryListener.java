@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.lib;
+package net.darkhax.bookshelf.registry;
 
 public interface RegistryListener {
 

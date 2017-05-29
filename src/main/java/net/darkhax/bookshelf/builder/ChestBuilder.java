@@ -13,7 +13,7 @@ import net.darkhax.bookshelf.block.tileentity.TileEntityBasicChest;
 import net.darkhax.bookshelf.client.render.tileentity.TileEntityBasicChestRenderer;
 import net.darkhax.bookshelf.item.ItemBlockChest;
 import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.lib.RegistryHelper;
+import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.darkhax.bookshelf.util.GameUtils;
 import net.darkhax.bookshelf.util.NumericUtils;
 import net.darkhax.bookshelf.util.OreDictUtils;

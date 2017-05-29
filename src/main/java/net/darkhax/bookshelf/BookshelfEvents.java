@@ -8,9 +8,9 @@
 package net.darkhax.bookshelf;
 
 import net.darkhax.bookshelf.crafting.IAnvilRecipe;
-import net.darkhax.bookshelf.lib.RegistryHelper;
-import net.darkhax.bookshelf.lib.RegistryListener;
-import net.darkhax.bookshelf.lib.RegistrySubscribe;
+import net.darkhax.bookshelf.registry.RegistryHelper;
+import net.darkhax.bookshelf.registry.RegistryListener;
+import net.darkhax.bookshelf.registry.RegistrySubscribe;
 import net.darkhax.bookshelf.util.AnnotationUtils;
 import net.darkhax.bookshelf.util.RenderUtils;
 import net.minecraft.block.Block;

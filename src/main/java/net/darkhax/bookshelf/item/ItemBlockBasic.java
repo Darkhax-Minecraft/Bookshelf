@@ -7,6 +7,7 @@
  */
 package net.darkhax.bookshelf.item;
 
+import net.darkhax.bookshelf.registry.IVariant;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -14,7 +15,7 @@ import net.minecraft.item.ItemStack;
 /**
  * A basic implementation of ItemBlock that has support for multiple meta varients.
  */
-public class ItemBlockBasic extends ItemBlock {
+public class ItemBlockBasic extends ItemBlock implements IVariant {
 
     /**
      * An array of names which represents the variants held by the Item.
@@ -72,5 +73,11 @@ public class ItemBlockBasic extends ItemBlock {
     public Block getBlock () {
 
         return this.block;
+    }
+
+    @Override
+    public String[] getVariant () {
+
+        return this.names;
     }
 }

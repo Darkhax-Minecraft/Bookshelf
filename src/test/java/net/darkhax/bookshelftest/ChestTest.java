@@ -9,7 +9,7 @@ package net.darkhax.bookshelftest;
 
 import net.darkhax.bookshelf.BookshelfEvents;
 import net.darkhax.bookshelf.builder.ChestBuilder;
-import net.darkhax.bookshelf.lib.RegistryHelper;
+import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;

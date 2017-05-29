@@ -7,6 +7,7 @@
  */
 package net.darkhax.bookshelf.item;
 
+import net.darkhax.bookshelf.registry.IVariant;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

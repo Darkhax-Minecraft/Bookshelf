@@ -9,7 +9,7 @@ package net.darkhax.bookshelf;
 
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.ModTrackingList;
-import net.darkhax.bookshelf.lib.RegistryHelper;
+import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.darkhax.bookshelf.util.AnnotationUtils;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;

@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"variant=one": {
+			"model": "clay"
+		},
+		"variant=two": {
+			"model": "stone"
+		}
+	}
+}
