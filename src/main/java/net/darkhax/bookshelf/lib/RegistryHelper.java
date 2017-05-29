@@ -330,19 +330,20 @@ public class RegistryHelper {
 
         this.registerInventoryModel(Item.getItemFromBlock(block));
     }
-
+    
     /**
      * Registers an inventory model for a block with variants. The model name is equal to the
      * registry name of the block, plus the variant string for the meta.
      *
      * @param block The block to register models for.
+     * @param prefix The prefix for the textures. Use empty string for none.
      * @param variants An array of variant names in order of meta.
      */
     @SideOnly(Side.CLIENT)
-    public void registerInventoryModel (@Nonnull Block block, @Nonnull String... variants) {
+    public void registerInventoryModel (@Nonnull Block block, @Nonnull String prefix, @Nonnull String... variants) {
 
         for (int meta = 0; meta < variants.length; meta++) {
-            this.registerInventoryModel(Item.getItemFromBlock(block), meta, block.getRegistryName().toString() + "_" + variants[meta]);
+            this.registerInventoryModel(Item.getItemFromBlock(block), meta, block.getRegistryName().toString() + "_" + ( prefix.isEmpty() ? prefix : prefix + "_") + variants[meta]);
         }
     }
 
@@ -387,10 +388,10 @@ public class RegistryHelper {
      * @param variants An array of variant names in order of meta.
      */
     @SideOnly(Side.CLIENT)
-    public void registerInventoryModel (@Nonnull Item item, String prefix, @Nonnull String... variants) {
+    public void registerInventoryModel (@Nonnull Item item, @Nonnull String prefix, @Nonnull String... variants) {
 
         for (int meta = 0; meta < variants.length; meta++) {
-            this.registerInventoryModel(item, meta, item.getRegistryName().toString() + "_" + prefix + variants[meta]);
+            this.registerInventoryModel(item, meta, item.getRegistryName().toString() + "_" + ( prefix.isEmpty() ? prefix : prefix + "_") + variants[meta]);
         }
     }
 
