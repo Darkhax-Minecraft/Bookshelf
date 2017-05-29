@@ -23,6 +23,8 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
 
 public final class AnnotationUtils {
 
+    public static ASMDataTable asmData;
+
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
@@ -36,6 +38,17 @@ public final class AnnotationUtils {
     /**
      * Gets the ASMData for all classes annotated with the annotation class.
      *
+     * @param annotation The annotation to search for.
+     * @return A set of ASMData for classes with the passed annotation.
+     */
+    public static <A extends Annotation> Set<ASMData> getData (Class<A> annotation) {
+
+        return getData(asmData, annotation);
+    }
+
+    /**
+     * Gets the ASMData for all classes annotated with the annotation class.
+     *
      * @param table The ASMDataTable. This is generated from forge an can be accessed from the
      *        initialization events.
      * @param annotation The annotation to search for.
@@ -44,6 +57,17 @@ public final class AnnotationUtils {
     public static <A extends Annotation> Set<ASMData> getData (ASMDataTable table, Class<A> annotation) {
 
         return table.getAll(annotation.getCanonicalName());
+    }
+
+    /**
+     * Gets all classes annotated with the annotation class.
+     *
+     * @param annotation The annotation to search for.
+     * @return A list of all classes with the passed annotation.
+     */
+    public static <A extends Annotation> List<Tuple<Class<?>, A>> getAnnotatedClasses (Class<A> annotation) {
+
+        return getAnnotatedClasses(asmData, annotation);
     }
 
     /**
@@ -101,6 +125,20 @@ public final class AnnotationUtils {
         }
 
         return fields;
+    }
+
+    /**
+     * Finds all classes annotated with the annotation class. These classes are then
+     * instantiated, added to a list, and given to you.
+     *
+     * @param annotation The class of the annotation you're using to search for.
+     * @param instance The class of the thing you're trying to construct. This should be a
+     *        shared interface, or parent class.
+     * @return A list of all classes annotated with the annotation, as instances.
+     */
+    public static <T, A extends Annotation> Map<T, A> getAnnotations (Class<A> annotation, Class<T> instance) {
+
+        return getAnnotations(asmData, annotation, instance);
     }
 
     /**
