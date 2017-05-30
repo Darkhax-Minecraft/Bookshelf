@@ -8,56 +8,15 @@
 package net.darkhax.bookshelf;
 
 import net.darkhax.bookshelf.crafting.IAnvilRecipe;
-import net.darkhax.bookshelf.registry.RegistryHelper;
-import net.darkhax.bookshelf.registry.RegistryListener;
-import net.darkhax.bookshelf.registry.RegistrySubscribe;
-import net.darkhax.bookshelf.util.AnnotationUtils;
 import net.darkhax.bookshelf.util.RenderUtils;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.Item;
 import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BookshelfEvents {
-
-    @SubscribeEvent
-    public void registerBlocks (RegistryEvent.Register<Block> event) {
-
-        System.out.println("Starting!");
-        // Initial registry call, to allow all the listeners to fire first.
-        for (final RegistryListener listener : AnnotationUtils.getAnnotations(RegistrySubscribe.class, RegistryListener.class).keySet()) {
-
-            listener.onRegistry();
-            System.out.println("HIYA");
-        }
-
-        // Goes through all the blocks registered using the helper, and adds them to the event.
-        for (final RegistryHelper helper : RegistryHelper.HELPERS) {
-
-            for (final Block block : helper.getBlocks()) {
-
-                event.getRegistry().register(block);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void registerItems (RegistryEvent.Register<Item> event) {
-
-        // Goes through all the items registered using the helper, and adds them to the event.
-        for (final RegistryHelper helper : RegistryHelper.HELPERS) {
-
-            for (final Item item : helper.getItems()) {
-
-                event.getRegistry().register(item);
-            }
-        }
-    }
 
     @SubscribeEvent
     public void onAnvilUpdate (AnvilUpdateEvent event) {
