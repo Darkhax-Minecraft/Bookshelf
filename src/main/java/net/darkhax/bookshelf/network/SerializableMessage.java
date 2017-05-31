@@ -67,6 +67,18 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
         addIOHandler(boolean.class, SerializableMessage::readBoolean, SerializableMessage::writeBoolean);
         addIOHandler(char.class, SerializableMessage::readChar, SerializableMessage::writeChar);
         addIOHandler(String.class, SerializableMessage::readString, SerializableMessage::writeString);
+
+        // Arrays
+        addIOHandler(byte[].class, SerializableMessage::readByteArray, SerializableMessage::writeByteArray);
+        addIOHandler(short[].class, SerializableMessage::readShortArray, SerializableMessage::writeShortArray);
+        addIOHandler(int[].class, SerializableMessage::readIntArray, SerializableMessage::writeIntArray);
+        addIOHandler(long[].class, SerializableMessage::readLongArray, SerializableMessage::writeLongArray);
+        addIOHandler(float[].class, SerializableMessage::readFloatArray, SerializableMessage::writeFloatArray);
+        addIOHandler(double[].class, SerializableMessage::readDoubleArray, SerializableMessage::writeDoubleArray);
+        addIOHandler(boolean[].class, SerializableMessage::readBooleanArray, SerializableMessage::writeBooleanArray);
+        addIOHandler(char[].class, SerializableMessage::readCharArray, SerializableMessage::writeCharArray);
+        addIOHandler(String[].class, SerializableMessage::readStringArray, SerializableMessage::writeStringArray);
+
         addIOHandler(NBTTagCompound.class, SerializableMessage::readNBT, SerializableMessage::writeNBT);
         addIOHandler(ItemStack.class, SerializableMessage::readItemStack, SerializableMessage::writeItemStack);
         addIOHandler(BlockPos.class, SerializableMessage::readBlockPos, SerializableMessage::writeBlockPos);
@@ -342,6 +354,205 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
     private static void writeResourceLocation (ResourceLocation location, ByteBuf buf) {
 
         ByteBufUtils.writeUTF8String(buf, location.toString());
+    }
+
+    // Arrays
+    private static String[] readStringArray (ByteBuf buf) {
+
+        final String[] strings = new String[buf.readInt()];
+
+        for (int index = 0; index < strings.length; index++) {
+
+            strings[index] = ByteBufUtils.readUTF8String(buf);
+        }
+
+        return strings;
+    }
+
+    private static void writeStringArray (String[] strings, ByteBuf buf) {
+
+        buf.writeInt(strings.length);
+
+        for (final String string : strings) {
+
+            ByteBufUtils.writeUTF8String(buf, string);
+        }
+    }
+
+    private static byte[] readByteArray (ByteBuf buf) {
+
+        final byte[] objects = new byte[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = buf.readByte();
+        }
+
+        return objects;
+    }
+
+    private static void writeByteArray (byte[] objects, ByteBuf buf) {
+
+        buf.writeInt(objects.length);
+
+        for (final byte object : objects) {
+
+            buf.writeByte(object);
+        }
+    }
+
+    private static short[] readShortArray (ByteBuf buf) {
+
+        final short[] objects = new short[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = buf.readShort();
+        }
+
+        return objects;
+    }
+
+    private static void writeShortArray (short[] objects, ByteBuf buf) {
+
+        buf.writeInt(objects.length);
+
+        for (final short object : objects) {
+
+            buf.writeShort(object);
+        }
+    }
+
+    private static int[] readIntArray (ByteBuf buf) {
+
+        final int[] objects = new int[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = buf.readInt();
+        }
+
+        return objects;
+    }
+
+    private static void writeIntArray (int[] objects, ByteBuf buf) {
+
+        buf.writeInt(objects.length);
+
+        for (final int object : objects) {
+
+            buf.writeInt(object);
+        }
+    }
+
+    private static long[] readLongArray (ByteBuf buf) {
+
+        final long[] objects = new long[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = buf.readLong();
+        }
+
+        return objects;
+    }
+
+    private static void writeLongArray (long[] objects, ByteBuf buf) {
+
+        buf.writeInt(objects.length);
+
+        for (final long object : objects) {
+
+            buf.writeLong(object);
+        }
+    }
+
+    private static float[] readFloatArray (ByteBuf buf) {
+
+        final float[] objects = new float[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = buf.readFloat();
+        }
+
+        return objects;
+    }
+
+    private static void writeFloatArray (float[] objects, ByteBuf buf) {
+
+        buf.writeInt(objects.length);
+
+        for (final float object : objects) {
+
+            buf.writeFloat(object);
+        }
+    }
+
+    private static double[] readDoubleArray (ByteBuf buf) {
+
+        final double[] objects = new double[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = buf.readDouble();
+        }
+
+        return objects;
+    }
+
+    private static void writeDoubleArray (double[] objects, ByteBuf buf) {
+
+        buf.writeInt(objects.length);
+
+        for (final double object : objects) {
+
+            buf.writeDouble(object);
+        }
+    }
+
+    private static boolean[] readBooleanArray (ByteBuf buf) {
+
+        final boolean[] objects = new boolean[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = buf.readBoolean();
+        }
+
+        return objects;
+    }
+
+    private static void writeBooleanArray (boolean[] objects, ByteBuf buf) {
+
+        buf.writeInt(objects.length);
+
+        for (final boolean object : objects) {
+
+            buf.writeBoolean(object);
+        }
+    }
+
+    private static char[] readCharArray (ByteBuf buf) {
+
+        final char[] objects = new char[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = buf.readChar();
+        }
+
+        return objects;
+    }
+
+    private static void writeCharArray (char[] objects, ByteBuf buf) {
+
+        buf.writeInt(objects.length);
+
+        for (final char object : objects) {
+
+            buf.writeChar(object);
+        }
     }
 
     // Functional interfaces
