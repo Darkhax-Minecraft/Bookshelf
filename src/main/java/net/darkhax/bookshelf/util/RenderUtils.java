@@ -710,4 +710,30 @@ public final class RenderUtils {
 
         requiresRenderReload = reload;
     }
+
+    /**
+     * Sets the model for a state in the block model store. This should be used after the
+     * ModelBakeEvent has fired, and models have been fully initialized. After calling, you
+     * will need to rebake the chunks to see changes in the world. This can be done by updating
+     * the chunk, or firing {@link #markRenderersForReload(boolean)}.
+     *
+     * @param state The state to change the model of.
+     * @param model The model to set the thing to.
+     */
+    public static void setModelForState (IBlockState state, IBakedModel model) {
+
+        Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().bakedModelStore.put(state, model);
+    }
+
+    /**
+     * Gets a baked model for the passed state. This model is pulled from the baked model
+     * store.
+     *
+     * @param state The state to get the model for.
+     * @return The model for that state.
+     */
+    public static IBakedModel getModelForState (IBlockState state) {
+
+        return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
+    }
 }
