@@ -17,6 +17,8 @@
  * - Made handleMessage abstract so overriding is enforced
  * - Changed some field/method names/params to be less lazy
  * - Added resource location serialization
+ * - Added array serialization
+ * - Added block state serialization
  */
 package net.darkhax.bookshelf.network;
 
@@ -30,6 +32,9 @@ import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -38,6 +43,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public abstract class SerializableMessage<REQ extends SerializableMessage> implements Serializable, IMessage, IMessageHandler<REQ, IMessage> {
 
@@ -82,6 +88,7 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
         addIOHandler(NBTTagCompound.class, SerializableMessage::readNBT, SerializableMessage::writeNBT);
         addIOHandler(ItemStack.class, SerializableMessage::readItemStack, SerializableMessage::writeItemStack);
         addIOHandler(BlockPos.class, SerializableMessage::readBlockPos, SerializableMessage::writeBlockPos);
+        addIOHandler(IBlockState.class, SerializableMessage::readState, SerializableMessage::writeState);
         addIOHandler(ResourceLocation.class, SerializableMessage::readResourceLocation, SerializableMessage::writeResourceLocation);
     }
 
@@ -553,6 +560,19 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
 
             buf.writeChar(object);
         }
+    }
+    
+    private static IBlockState readState (ByteBuf buf) {
+
+        Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
+        int meta = buf.readByte();
+        return (block != null) ? block.getStateFromMeta(meta) : Blocks.AIR.getDefaultState();
+    }
+
+    private static void writeState (IBlockState state, ByteBuf buf) {
+
+        ByteBufUtils.writeUTF8String(buf, state.getBlock().getRegistryName().toString());
+        buf.writeByte(state.getBlock().getMetaFromState(state));
     }
 
     // Functional interfaces
