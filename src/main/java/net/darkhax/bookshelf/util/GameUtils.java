@@ -22,5 +22,13 @@ public final class GameUtils {
         throw new IllegalAccessError("Utility class");
     }
 
-    public static final boolean isClient = FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
+    /**
+     * Checks if the game is running on the client or not.
+     *
+     * @return Whether or not the current thread is client sided.
+     */
+    public static boolean isClient () {
+
+        return FMLCommonHandler.instance().getSide() == Side.CLIENT;
+    }
 }

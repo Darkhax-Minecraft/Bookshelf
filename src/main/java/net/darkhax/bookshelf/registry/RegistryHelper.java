@@ -218,7 +218,7 @@ public class RegistryHelper {
             item.setCreativeTab(this.tab);
         }
 
-        if (GameUtils.isClient) {
+        if (GameUtils.isClient()) {
 
             if (item instanceof ICustomMesh) {
 

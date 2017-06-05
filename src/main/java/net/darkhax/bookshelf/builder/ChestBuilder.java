@@ -160,7 +160,7 @@ public class ChestBuilder {
 
         GameRegistry.registerTileEntity(TileEntityBasicChest.class, "bookshelf_chest");
 
-        if (GameUtils.isClient) {
+        if (GameUtils.isClient()) {
 
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBasicChest.class, new TileEntityBasicChestRenderer());
         }
