@@ -561,12 +561,12 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
             buf.writeChar(object);
         }
     }
-    
+
     private static IBlockState readState (ByteBuf buf) {
 
-        Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
-        int meta = buf.readByte();
-        return (block != null) ? block.getStateFromMeta(meta) : Blocks.AIR.getDefaultState();
+        final Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
+        final int meta = buf.readByte();
+        return block != null ? block.getStateFromMeta(meta) : Blocks.AIR.getDefaultState();
     }
 
     private static void writeState (IBlockState state, ByteBuf buf) {
