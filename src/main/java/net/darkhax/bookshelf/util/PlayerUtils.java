@@ -261,7 +261,7 @@ public final class PlayerUtils {
             }
         }
 
-        if (Loader.isModLoaded("Baubles")) {
+        if (Loader.isModLoaded("baubles")) {
             items.addAll(BaubleUtils.getBaublesFromPlayer(player, item, meta));
         }
 
