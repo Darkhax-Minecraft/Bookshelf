@@ -45,7 +45,7 @@ public abstract class CommandTree extends CommandTreeBase {
      */
     private String getSubCommandDescriptions (ICommandSender sender) {
 
-        final StringBuilder builder = new StringBuilder(I18n.format("command.surge.usage"));
+        final StringBuilder builder = new StringBuilder(I18n.format(this.getUsage(sender)));
 
         for (final ICommand command : this.getSubCommands()) {
 
