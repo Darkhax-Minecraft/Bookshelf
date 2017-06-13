@@ -7,6 +7,10 @@
  */
 package net.darkhax.bookshelf.util;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraftforge.oredict.OreDictionary;
+
 public final class OreDictUtils {
 
     // Variant Arrays
@@ -30,21 +34,6 @@ public final class OreDictUtils {
     public static final String DOOR_WOOD = "doorWood";
 
     public static final String TRAPDOOR_WOOD = "trapdoorWood";
-
-    // Bookshelves
-    public static final String BOOKSHELF = "bookshelf";
-
-    public static final String BOOKSHELF_OAK = "bookshelfOak";
-
-    public static final String BOOKSHELF_SPRUCE = "bookshelfSpruce";
-
-    public static final String BOOKSHELF_BIRCH = "bookshelfBirch";
-
-    public static final String BOOKSHELF_JUNGLE = "bookshelfJungle";
-
-    public static final String BOOKSHELF_ACACIA = "bookshelfAcacia";
-
-    public static final String BOOKSHELF_DARK_OAK = "bookshelfDarkOak";
 
     // Trees
     public static final String TREE_SAPLING = "treeSapling";
@@ -126,6 +115,8 @@ public final class OreDictUtils {
 
     public static final String BLOCK_CACTUS = "blockCactus";
 
+    public static final String CROP_BEETROOT = "cropBeetroot";
+
     // Drops
     public static final String SLIMEBALL = "slimeball";
 
@@ -145,6 +136,8 @@ public final class OreDictUtils {
 
     public static final String EGG = "egg";
 
+    public static final String SHULKER_SHELL = "shulkerShell";
+
     // Misc Items
     public static final String DYE = "dye";
 
@@ -153,6 +146,10 @@ public final class OreDictUtils {
     public static final String RECORD = "record";
 
     public static final String BED = "bed";
+
+    public static final String SEED = "seed";
+
+    public static final String ARROW = "arrow";
 
     // Misc Blocks
     public static final String DIRT = "dirt";
@@ -217,9 +214,21 @@ public final class OreDictUtils {
 
     public static final String CHEST_TRAPPED = "chestTrapped";
 
-    public static final String BED_BLOCK = "blockBed";
-
     public static final String TRAPDOOR = "trapdoor";
+
+    public static final String HOPPER = "hopper";
+
+    public static final String BOOKSHELF = "bookshelf";
+
+    public static final String SHULKER_BOX = "shulkerBox";
+
+    public static final String RAIL = "rail";
+
+    public static final String BLOCK_MAGMA = "blockMagma";
+
+    public static final String BLOCK_NETHER_WART = "blockNetherWart";
+
+    public static final String BLOCK_BONE = "blockBone";
 
     // Black
     public static final String DYE_BLACK = "dyeBlack";
@@ -341,5 +350,86 @@ public final class OreDictUtils {
     private OreDictUtils () {
 
         throw new IllegalAccessError("Utility class");
+    }
+
+    public static void initAdditionalVanillaEntries () {
+
+        // TODO eventually PR this to forge
+        OreDictionary.registerOre(BED, Items.BED);
+
+        OreDictionary.registerOre(HOPPER, Blocks.HOPPER);
+
+        OreDictionary.registerOre(BOOKSHELF, Blocks.BOOKSHELF);
+
+        OreDictionary.registerOre(CROP_BEETROOT, Items.BEETROOT);
+
+        OreDictionary.registerOre(BLOCK_MAGMA, Blocks.MAGMA);
+
+        OreDictionary.registerOre(BLOCK_NETHER_WART, Blocks.NETHER_WART_BLOCK);
+
+        OreDictionary.registerOre(BLOCK_BONE, Blocks.BONE_BLOCK);
+
+        OreDictionary.registerOre(SHULKER_SHELL, Items.SHULKER_SHELL);
+        OreDictionary.registerOre(FENCE_WOOD, Blocks.OAK_FENCE);
+        OreDictionary.registerOre(FENCE_WOOD, Blocks.SPRUCE_FENCE);
+        OreDictionary.registerOre(FENCE_WOOD, Blocks.BIRCH_FENCE);
+        OreDictionary.registerOre(FENCE_WOOD, Blocks.JUNGLE_FENCE);
+        OreDictionary.registerOre(FENCE_WOOD, Blocks.ACACIA_FENCE);
+        OreDictionary.registerOre(FENCE_WOOD, Blocks.DARK_OAK_FENCE);
+
+        OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.OAK_FENCE_GATE);
+        OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.SPRUCE_FENCE_GATE);
+        OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.BIRCH_FENCE_GATE);
+        OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.JUNGLE_FENCE_GATE);
+        OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.ACACIA_FENCE_GATE);
+        OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.DARK_OAK_FENCE_GATE);
+
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.WHITE_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.ORANGE_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.MAGENTA_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.LIGHT_BLUE_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.YELLOW_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.LIME_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.PINK_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.GRAY_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.SILVER_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.CYAN_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.PURPLE_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.BLUE_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.BROWN_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.GREEN_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.RED_SHULKER_BOX);
+        OreDictionary.registerOre(SHULKER_BOX, Blocks.BLACK_SHULKER_BOX);
+
+        OreDictionary.registerOre(CHEST, Blocks.WHITE_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.ORANGE_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.MAGENTA_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.LIGHT_BLUE_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.YELLOW_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.LIME_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.PINK_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.GRAY_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.SILVER_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.CYAN_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.PURPLE_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.BLUE_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.BROWN_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.GREEN_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.RED_SHULKER_BOX);
+        OreDictionary.registerOre(CHEST, Blocks.BLACK_SHULKER_BOX);
+
+        OreDictionary.registerOre(SEED, Items.WHEAT_SEEDS);
+        OreDictionary.registerOre(SEED, Items.PUMPKIN_SEEDS);
+        OreDictionary.registerOre(SEED, Items.MELON_SEEDS);
+        OreDictionary.registerOre(SEED, Items.BEETROOT_SEEDS);
+
+        OreDictionary.registerOre(RAIL, Blocks.RAIL);
+        OreDictionary.registerOre(RAIL, Blocks.ACTIVATOR_RAIL);
+        OreDictionary.registerOre(RAIL, Blocks.DETECTOR_RAIL);
+        OreDictionary.registerOre(RAIL, Blocks.GOLDEN_RAIL);
+
+        OreDictionary.registerOre(ARROW, Items.ARROW);
+        OreDictionary.registerOre(ARROW, Items.SPECTRAL_ARROW);
+        OreDictionary.registerOre(ARROW, Items.TIPPED_ARROW);
     }
 }

@@ -11,6 +11,7 @@ import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.ModTrackingList;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.darkhax.bookshelf.util.AnnotationUtils;
+import net.darkhax.bookshelf.util.OreDictUtils;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -18,6 +19,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,6 +36,12 @@ public class Bookshelf {
         CraftingManager.getInstance().recipes = new ModTrackingList(CraftingManager.getInstance().recipes);
         AnnotationUtils.asmData = event.getASMHarvestedData();
         MinecraftForge.EVENT_BUS.register(new BookshelfEvents());
+    }
+
+    @EventHandler
+    public void postInit (FMLPostInitializationEvent event) {
+
+        OreDictUtils.initAdditionalVanillaEntries();
     }
 
     @SideOnly(Side.CLIENT)
