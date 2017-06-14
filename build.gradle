@@ -23,7 +23,7 @@ buildscript {
 
     dependencies {
 
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.0.7"
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1"
         classpath 'ModsIOUpload:ModsIOUpload:2.1.15'
@@ -50,20 +50,6 @@ minecraft {
     mappings = "${version_mcp}"
     runDir = "run"
     useDepAts = true
-}
-
-//Defines basic patterns for pulling various dependencies.
-repositories {
-
-    maven {
-    
-        url "https://jitpack.io"
-    }
-}
-
-dependencies {
-
-    deobfCompile 'com.github.Azanor:Baubles:803f411'
 }
 
 //Handles basic resources such as mcmod.info
