@@ -24,7 +24,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.block.model.BakedQuad;

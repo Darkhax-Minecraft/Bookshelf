@@ -11,7 +11,6 @@ import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.darkhax.bookshelf.util.AnnotationUtils;
 import net.darkhax.bookshelf.util.OreDictUtils;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
