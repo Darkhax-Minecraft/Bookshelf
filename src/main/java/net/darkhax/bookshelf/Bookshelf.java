@@ -33,7 +33,6 @@ public class Bookshelf {
     @EventHandler
     public void onConstruction (FMLConstructionEvent event) {
 
-        CraftingManager.getInstance().recipes = new ModTrackingList(CraftingManager.getInstance().recipes);
         AnnotationUtils.asmData = event.getASMHarvestedData();
         MinecraftForge.EVENT_BUS.register(new BookshelfEvents());
     }
