@@ -50,9 +50,9 @@ public final class MathsUtils {
      */
     public static double getDistanceBetweenPoints (Vec3d firstPos, Vec3d secondPos) {
 
-        final double distanceX = firstPos.xCoord - secondPos.xCoord;
-        final double distanceY = firstPos.yCoord - secondPos.yCoord;
-        final double distanceZ = firstPos.zCoord - secondPos.zCoord;
+        final double distanceX = firstPos.x - secondPos.x;
+        final double distanceY = firstPos.y - secondPos.y;
+        final double distanceZ = firstPos.z - secondPos.z;
 
         return Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
     }
@@ -95,7 +95,7 @@ public final class MathsUtils {
 
         final Vec3d vec1 = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         final Vec3d vec2 = player.getLookVec();
-        final Vec3d vec3 = vec1.addVector(vec2.xCoord * length, vec2.yCoord * length, vec2.zCoord * length);
+        final Vec3d vec3 = vec1.addVector(vec2.x * length, vec2.y * length, vec2.z * length);
         return player.world.rayTraceBlocks(vec1, vec3);
     }
 

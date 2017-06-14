@@ -35,10 +35,10 @@ public class GuiGraphicButton extends GuiButton {
     }
 
     @Override
-    public void drawButton (Minecraft mc, int posX, int posY) {
+    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 
-        super.drawButton(mc, posX, posY);
+        super.drawButton(mc, mouseX, mouseY, partialTicks);
         mc.getTextureManager().bindTexture(this.buttonImage);
-        drawModalRectWithCustomSizedTexture(this.xPosition, this.yPosition, 0f, 0f, 20, 20, 20f, 20f);
+        drawModalRectWithCustomSizedTexture(this.x, this.y, 0f, 0f, 20, 20, 20f, 20f);
     }
 }

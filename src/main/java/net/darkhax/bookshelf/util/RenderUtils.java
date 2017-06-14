@@ -19,6 +19,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ItemModelMesher;
@@ -26,7 +27,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -337,7 +337,7 @@ public final class RenderUtils {
 
         final Minecraft mc = Minecraft.getMinecraft();
         final Tessellator tessellator = Tessellator.getInstance();
-        final VertexBuffer buffer = tessellator.getBuffer();
+        final BufferBuilder buffer = tessellator.getBuffer();
         final int brightness = mc.world.getCombinedLight(pos, fluid.getFluid().getLuminosity());
 
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
@@ -374,7 +374,7 @@ public final class RenderUtils {
      * @param color The color multiplier to apply.
      * @param brightness The brightness of the cube.
      */
-    public static void addTexturedQuad (VertexBuffer buffer, TextureAtlasSprite sprite, double x, double y, double z, double width, double height, double length, EnumFacing face, int color, int brightness) {
+    public static void addTexturedQuad (BufferBuilder buffer, TextureAtlasSprite sprite, double x, double y, double z, double width, double height, double length, EnumFacing face, int color, int brightness) {
 
         if (sprite == null) {
 
@@ -411,7 +411,7 @@ public final class RenderUtils {
      * @param light1 The first light map value.
      * @param light2 The second light map value.
      */
-    public static void addTextureQuad (VertexBuffer buffer, TextureAtlasSprite sprite, double x, double y, double z, double width, double height, double length, EnumFacing face, int red, int green, int blue, int alpha, int light1, int light2) {
+    public static void addTextureQuad (BufferBuilder buffer, TextureAtlasSprite sprite, double x, double y, double z, double width, double height, double length, EnumFacing face, int red, int green, int blue, int alpha, int light1, int light2) {
 
         double minU;
         double maxU;
@@ -570,46 +570,6 @@ public final class RenderUtils {
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
         RenderHelper.enableStandardItemLighting();
-    }
-
-    /**
-     * A modified version of the vanilla glint effect. This modified version accepts a color
-     * and texture.
-     *
-     * @param renderer Instance of RenderItem to use when rendering the effect.
-     * @param stack The ItemStack to render the effect to.
-     * @param model The model to render the effect around.
-     * @param texture The texture for the glint effect.
-     * @param color The color for the glint effect.
-     */
-    public static void renderGlintEffect (RenderItem renderer, ItemStack stack, IBakedModel model, ResourceLocation texture, int color) {
-
-        GlStateManager.depthMask(false);
-        GlStateManager.depthFunc(514);
-        GlStateManager.disableLighting();
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_COLOR, GlStateManager.DestFactor.ONE);
-        renderer.textureManager.bindTexture(texture);
-        GlStateManager.matrixMode(5890);
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(8.0F, 8.0F, 8.0F);
-        final float f = Minecraft.getSystemTime() % 3000L / 3000.0F / 8.0F;
-        GlStateManager.translate(f, 0.0F, 0.0F);
-        GlStateManager.rotate(-50.0F, 0.0F, 0.0F, 1.0F);
-        renderer.renderModel(model, color);
-        GlStateManager.popMatrix();
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(8.0F, 8.0F, 8.0F);
-        final float f1 = Minecraft.getSystemTime() % 4873L / 4873.0F / 8.0F;
-        GlStateManager.translate(-f1, 0.0F, 0.0F);
-        GlStateManager.rotate(10.0F, 0.0F, 0.0F, 1.0F);
-        renderer.renderModel(model, color);
-        GlStateManager.popMatrix();
-        GlStateManager.matrixMode(5888);
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        GlStateManager.enableLighting();
-        GlStateManager.depthFunc(515);
-        GlStateManager.depthMask(true);
-        renderer.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
     }
 
     /**

@@ -47,7 +47,7 @@ public class ItemSubType extends Item implements IVariant {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems (Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+    public void getSubItems (CreativeTabs tab, NonNullList<ItemStack> subItems) {
 
         for (int meta = 0; meta < this.getVariant().length; meta++) {
             subItems.add(new ItemStack(this, 1, meta));

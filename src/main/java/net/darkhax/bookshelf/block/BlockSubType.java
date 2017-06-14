@@ -27,11 +27,11 @@ public abstract class BlockSubType extends Block implements IVariant {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks (Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+    public void getSubBlocks (CreativeTabs tab, NonNullList<ItemStack> list) {
 
         for (int meta = 0; meta < this.variants.length; meta++) {
 
-            list.add(new ItemStack(item, 1, meta));
+            list.add(new ItemStack(this, 1, meta));
         }
     }
 
