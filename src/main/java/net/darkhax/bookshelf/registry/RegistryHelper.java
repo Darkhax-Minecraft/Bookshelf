@@ -34,6 +34,7 @@ import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -46,8 +47,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class RegistryHelper {
 
+    /**
+     * A list of all helpers that have been created.
+     */
     public static final List<RegistryHelper> HELPERS = NonNullList.create();
 
+    /**
+     * A list of all the custom mesh definitions.
+     */
     private static final List<ICustomMesh> customMeshes = NonNullList.create();
 
     /**
@@ -90,6 +97,26 @@ public class RegistryHelper {
     public RegistryHelper (@Nonnull String modid) {
 
         this(modid, true);
+    }
+
+    /**
+     * Constructs a new RegistryHelper. The modid for the helper is equal to that of the active
+     * mod container, and auto model registration is enabled.
+     */
+    public RegistryHelper () {
+
+        this(true);
+    }
+
+    /**
+     * Constructs a new RegistryHelper. The modid for this helper is equal to that of the
+     * active mod container.
+     *
+     * @param autoModels Should models be auto loaded.
+     */
+    public RegistryHelper (boolean autoModels) {
+
+        this(Loader.instance().activeModContainer().getModId(), autoModels);
     }
 
     /**
