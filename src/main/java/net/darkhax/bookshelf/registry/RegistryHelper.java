@@ -453,6 +453,10 @@ public class RegistryHelper {
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(modelName, "inventory"));
     }
 
+    /**
+     * This method should not be called directly. It is called when Bookshelf enters preInit on
+     * the client.
+     */
     @SideOnly(Side.CLIENT)
     public static void clientPreInit () {
 
@@ -473,6 +477,10 @@ public class RegistryHelper {
         }
     }
 
+    /**
+     * This method should not be called directly. It is called when Bookshelf enters init on
+     * the client.
+     */
     @SideOnly(Side.CLIENT)
     public static void clientInit () {
 
