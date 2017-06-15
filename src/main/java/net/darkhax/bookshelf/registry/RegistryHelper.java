@@ -14,9 +14,9 @@ import javax.annotation.Nonnull;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-import net.darkhax.bookshelf.builder.LootBuilder;
 import net.darkhax.bookshelf.item.ICustomMesh;
 import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.LootBuilder;
 import net.darkhax.bookshelf.util.GameUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
