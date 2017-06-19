@@ -8,6 +8,7 @@
 package net.darkhax.bookshelf.util;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,15 @@ import org.apache.commons.lang3.text.WordUtils;
 import net.minecraft.util.text.TextFormatting;
 
 public class TextUtils {
+
+    /**
+     * The alphabetical order comparator.
+     */
+    public static final Comparator<String> ALPHABETICAL_ORDER = (str1, str2) -> {
+
+        final int res = String.CASE_INSENSITIVE_ORDER.compare(str1, str2);
+        return res != 0 ? res : str1.compareTo(str2);
+    };
 
     /**
      * A map for getting a ChatFormat to be quickly retrieved based on its character value.
