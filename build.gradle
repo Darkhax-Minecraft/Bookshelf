@@ -72,14 +72,6 @@ processResources {
    rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
-jar {
-
-	manifest {
-	
-	    attributes 'FMLAT': 'bookshelf_at.cfg',  "FMLCorePlugin": "net.darkhax.bookshelf.asm.BookshelfLoadingPlugin", "FMLCorePluginContainsFMLMod": "true"
-	}
-}
-
 //Pulls the build version from a Java file.
 String getVersionFromJava(File file) {
 
