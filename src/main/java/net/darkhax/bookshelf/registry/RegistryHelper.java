@@ -212,7 +212,6 @@ public class RegistryHelper {
 
         block.setRegistryName(this.modid, id);
         block.setUnlocalizedName(this.modid + "." + id.toLowerCase().replace("_", "."));
-        this.registerItem(itemBlock, block.getRegistryName());
         this.blocks.add(block);
 
         if (this.tab != null) {
@@ -233,6 +232,11 @@ public class RegistryHelper {
     public Item registerItem (@Nonnull Item item, @Nonnull String id) {
 
         return this.registerItem(item, new ResourceLocation(this.modid, id));
+    }
+    
+    public Item registerItem(@Nonnull Block block, @Nonnull String id) {
+        
+        return this.registerItem(new ItemBlock(block), id);
     }
 
     public Item registerItem (@Nonnull Item item, @Nonnull ResourceLocation id) {
