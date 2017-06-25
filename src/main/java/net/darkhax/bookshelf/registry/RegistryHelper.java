@@ -233,9 +233,9 @@ public class RegistryHelper {
 
         return this.registerItem(item, new ResourceLocation(this.modid, id));
     }
-    
-    public Item registerItem(@Nonnull Block block, @Nonnull String id) {
-        
+
+    public Item registerItem (@Nonnull Block block, @Nonnull String id) {
+
         return this.registerItem(new ItemBlock(block), id);
     }
 

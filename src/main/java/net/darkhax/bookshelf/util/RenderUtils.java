@@ -46,7 +46,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -601,7 +600,7 @@ public final class RenderUtils {
      * @param model The model to get the transforms for.
      * @return An immutable map of all the transforms.
      */
-    public static ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> getBasicTransforms (IPerspectiveAwareModel model) {
+    public static ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> getBasicTransforms (IBakedModel model) {
 
         final ImmutableMap.Builder<ItemCameraTransforms.TransformType, TRSRTransformation> builder = ImmutableMap.builder();
 
@@ -681,7 +680,8 @@ public final class RenderUtils {
      */
     // public static void setModelForState (IBlockState state, IBakedModel model) {
 
-    //     Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().bakedModelStore.put(state, model);
+    // Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().bakedModelStore.put(state,
+    // model);
     // }
 
     /**

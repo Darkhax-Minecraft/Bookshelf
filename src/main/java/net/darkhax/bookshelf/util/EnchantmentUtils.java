@@ -95,7 +95,7 @@ public final class EnchantmentUtils {
      */
     public static boolean areEnchantmentsCompatible (Enchantment firstEnchantment, Enchantment secondEnchantment) {
 
-        return firstEnchantment.func_191560_c(secondEnchantment);
+        return firstEnchantment.isCompatibleWith(secondEnchantment);
     }
 
     public static String getExpForDisplay (int xp) {

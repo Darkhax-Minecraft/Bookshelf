@@ -50,9 +50,9 @@ public class ItemSubType extends Item implements IVariant {
     public void getSubItems (CreativeTabs tab, NonNullList<ItemStack> subItems) {
 
         if (this.isInCreativeTab(tab)) {
-            
+
             for (int meta = 0; meta < this.getVariant().length; meta++) {
-                
+
                 subItems.add(new ItemStack(this, 1, meta));
             }
         }
