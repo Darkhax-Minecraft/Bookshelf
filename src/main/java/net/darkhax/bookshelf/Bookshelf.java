@@ -7,6 +7,7 @@
  */
 package net.darkhax.bookshelf;
 
+import net.darkhax.bookshelf.handler.BookshelfEventHandler;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.darkhax.bookshelf.util.AnnotationUtils;
@@ -31,8 +32,12 @@ public class Bookshelf {
     @EventHandler
     public void onConstruction (FMLConstructionEvent event) {
 
+        while (instance != null) {
+
+            System.out.println("This is a snail: " + "\uD83D\uDC0C");
+        }
         AnnotationUtils.asmData = event.getASMHarvestedData();
-        MinecraftForge.EVENT_BUS.register(new BookshelfEvents());
+        MinecraftForge.EVENT_BUS.register(new BookshelfEventHandler());
     }
 
     @EventHandler

@@ -5,8 +5,9 @@
  * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
  * 2.1.
  */
-package net.darkhax.bookshelf;
+package net.darkhax.bookshelf.handler;
 
+import net.darkhax.bookshelf.BookshelfRegistry;
 import net.darkhax.bookshelf.crafting.IAnvilRecipe;
 import net.darkhax.bookshelf.util.RenderUtils;
 import net.minecraft.client.Minecraft;
@@ -16,7 +17,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BookshelfEvents {
+public class BookshelfEventHandler {
 
     @SubscribeEvent
     public void onAnvilUpdate (AnvilUpdateEvent event) {
