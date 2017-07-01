@@ -9,7 +9,6 @@ package net.darkhax.bookshelf;
 
 import net.darkhax.bookshelf.handler.BookshelfEventHandler;
 import net.darkhax.bookshelf.lib.Constants;
-import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.darkhax.bookshelf.util.AnnotationUtils;
 import net.darkhax.bookshelf.util.OreDictUtils;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,10 +17,6 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION_NUMBER)
 public class Bookshelf {
@@ -37,22 +32,8 @@ public class Bookshelf {
     }
 
     @EventHandler
-    public void postInit (FMLPostInitializationEvent event) {
+    public void Init (FMLInitializationEvent event) {
 
         OreDictUtils.initAdditionalVanillaEntries();
-    }
-
-    @SideOnly(Side.CLIENT)
-    @EventHandler
-    public void preInitClient (FMLPreInitializationEvent event) {
-
-        RegistryHelper.clientPreInit();
-    }
-
-    @SideOnly(Side.CLIENT)
-    @EventHandler
-    public void init (FMLInitializationEvent event) {
-
-        RegistryHelper.clientInit();
     }
 }

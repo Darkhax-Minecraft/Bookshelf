@@ -48,16 +48,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RegistryHelper {
 
     /**
-     * A list of all helpers that have been created.
-     */
-    public static final List<RegistryHelper> HELPERS = NonNullList.create();
-
-    /**
-     * A list of all the custom mesh definitions.
-     */
-    private static final List<ICustomMesh> customMeshes = NonNullList.create();
-
-    /**
      * The id of the mod the registry helper instance belongs to.
      */
     private final String modid;
@@ -79,25 +69,14 @@ public class RegistryHelper {
     private final Multimap<ResourceLocation, LootBuilder> lootTableEntries = HashMultimap.create();
 
     /**
+     * A list of all the custom mesh definitions.
+     */
+    private final List<ICustomMesh> customMeshes = NonNullList.create();
+
+    /**
      * The creative tab used by the mod. This can be null.
      */
     private CreativeTabs tab;
-
-    /**
-     * Whether or not models should be automatically registered.
-     */
-    private final boolean enableAutoModelReg;
-
-    /**
-     * Constructs a new RegistryHelper for the specified mod id. Multiple helpers can exist
-     * with the same id, but it's not recommended.
-     *
-     * @param modid The modid for the registry helper.
-     */
-    public RegistryHelper (@Nonnull String modid) {
-
-        this(modid, true);
-    }
 
     /**
      * Constructs a new RegistryHelper. The modid for the helper is equal to that of the active
@@ -105,18 +84,7 @@ public class RegistryHelper {
      */
     public RegistryHelper () {
 
-        this(true);
-    }
-
-    /**
-     * Constructs a new RegistryHelper. The modid for this helper is equal to that of the
-     * active mod container.
-     *
-     * @param autoModels Should models be auto loaded.
-     */
-    public RegistryHelper (boolean autoModels) {
-
-        this(Loader.instance().activeModContainer().getModId(), autoModels);
+        this(Loader.instance().activeModContainer().getModId());
     }
 
     /**
@@ -126,12 +94,10 @@ public class RegistryHelper {
      * @param modid The modid for the registry helper.
      * @param autoModels Should models be auto loaded.
      */
-    public RegistryHelper (@Nonnull String modid, boolean autoModels) {
+    public RegistryHelper (@Nonnull String modid) {
 
         this.modid = modid;
-        this.enableAutoModelReg = autoModels;
         MinecraftForge.EVENT_BUS.register(this);
-        HELPERS.add(this);
     }
 
     /**
@@ -213,8 +179,8 @@ public class RegistryHelper {
         block.setRegistryName(this.modid, id);
         block.setUnlocalizedName(this.modid + "." + id.toLowerCase().replace("_", "."));
         this.blocks.add(block);
-        
-        registerItem(itemBlock, id);
+
+        this.registerItem(itemBlock, id);
 
         if (this.tab != null) {
             block.setCreativeTab(this.tab);
@@ -256,7 +222,7 @@ public class RegistryHelper {
             if (item instanceof ICustomMesh) {
 
                 final ICustomMesh mesh = (ICustomMesh) item;
-                customMeshes.add(mesh);
+                this.customMeshes.add(mesh);
                 ModelLoader.setCustomMeshDefinition(item, mesh.getCustomMesh());
             }
         }
@@ -457,42 +423,5 @@ public class RegistryHelper {
     public void registerInventoryModel (@Nonnull Item item, int meta, @Nonnull String modelName) {
 
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(modelName, "inventory"));
-    }
-
-    /**
-     * This method should not be called directly. It is called when Bookshelf enters preInit on
-     * the client.
-     */
-    @SideOnly(Side.CLIENT)
-    public static void clientPreInit () {
-
-        for (final RegistryHelper helper : HELPERS) {
-
-            if (helper.enableAutoModelReg) {
-
-                for (final Block block : helper.blocks) {
-
-                    helper.registerInventoryModel(block);
-                }
-
-                for (final Item item : helper.items) {
-
-                    helper.registerInventoryModel(item);
-                }
-            }
-        }
-    }
-
-    /**
-     * This method should not be called directly. It is called when Bookshelf enters init on
-     * the client.
-     */
-    @SideOnly(Side.CLIENT)
-    public static void clientInit () {
-
-        for (final ICustomMesh mesh : customMeshes) {
-
-            mesh.registerMeshModels();
-        }
     }
 }
