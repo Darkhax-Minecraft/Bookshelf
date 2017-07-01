@@ -213,6 +213,8 @@ public class RegistryHelper {
         block.setRegistryName(this.modid, id);
         block.setUnlocalizedName(this.modid + "." + id.toLowerCase().replace("_", "."));
         this.blocks.add(block);
+        
+        registerItem(block, id);
 
         if (this.tab != null) {
             block.setCreativeTab(this.tab);
