@@ -67,24 +67,91 @@ public final class StackUtils {
      * @param loreAn array containing the lore to write. Each line is a new entry.
      * @return ItemStackThe same instance of ItemStack that was passed to this method.
      */
-    public static ItemStack setLore (ItemStack stack, String[] lore) {
 
-        prepareStackTag(stack);
-        final NBTTagCompound tag = stack.getTagCompound();
+    /**
+     * Sets the lore for an ItemStack. This will completely override any existing lore for that
+     * item.
+     *
+     * @param stack The stack to set the lore to.
+     * @param lore The lore to add.
+     * @return The stack that was updated.
+     */
+    public static ItemStack setLore (ItemStack stack, String... lore) {
+
         final NBTTagList loreList = new NBTTagList();
-
-        if (!tag.hasKey("display", 10)) {
-            tag.setTag("display", new NBTTagCompound());
-        }
 
         for (final String line : lore) {
             loreList.appendTag(new NBTTagString(line));
         }
 
-        tag.getCompoundTag("display").setTag("Lore", loreList);
-        stack.setTagCompound(tag);
+        return setLoreTag(stack, loreList);
+    }
 
+    /**
+     * Adds lore to the ItemStack, preserving the old lore.
+     *
+     * @param stack The stack to append the lore to.
+     * @param lore The lore to append.
+     * @return The stack that was updated.
+     */
+    public static ItemStack appendLore (ItemStack stack, String... lore) {
+
+        final NBTTagList loreTag = getLoreTag(stack);
+
+        for (final String line : lore) {
+            loreTag.appendTag(new NBTTagString(line));
+        }
         return stack;
+    }
+
+    /**
+     * Sets the lore tag for a stack.
+     *
+     * @param stack The stack to update.
+     * @param lore The lore tag.
+     * @return The stack that was updated.
+     */
+    public static ItemStack setLoreTag (ItemStack stack, NBTTagList lore) {
+
+        final NBTTagCompound displayTag = getDisplayTag(stack);
+        displayTag.setTag("Lore", lore);
+        return stack;
+    }
+
+    /**
+     * Gets the display tag from a stack, creates it if it does not exist.
+     *
+     * @param stack The stack to get the display tag of.
+     * @return The display tag.
+     */
+    public static NBTTagCompound getDisplayTag (ItemStack stack) {
+
+        prepareStackTag(stack);
+        final NBTTagCompound tag = stack.getTagCompound();
+
+        if (!tag.hasKey("display", 10)) {
+            tag.setTag("display", new NBTTagCompound());
+        }
+
+        return tag.getCompoundTag("display");
+    }
+
+    /**
+     * Gets the lore tag from a stack, creates it if it does not exist.
+     *
+     * @param stack The stack to get the lore tag of.
+     * @return The lore tag list.
+     */
+    public static NBTTagList getLoreTag (ItemStack stack) {
+
+        final NBTTagCompound displayTag = getDisplayTag(stack);
+
+        if (!displayTag.hasKey("Lore")) {
+
+            displayTag.setTag("Lore", new NBTTagList());
+        }
+
+        return displayTag.getTagList("Lore", 8);
     }
 
     /**
@@ -92,8 +159,8 @@ public final class StackUtils {
      * and allows for a damage sensitive item to be represented as a String. The format looks
      * like "itemid#damage". This method is not intended for actually saving an ItemStack.
      *
-     * @param stackThe instance of ItemStack to write.
-     * @return StringA string which can be used to represent a damage sensitive item.
+     * @param stack The instance of ItemStack to write.
+     * @return String A string which can be used to represent a damage sensitive item.
      */
     public static String writeStackToString (ItemStack stack) {
 
