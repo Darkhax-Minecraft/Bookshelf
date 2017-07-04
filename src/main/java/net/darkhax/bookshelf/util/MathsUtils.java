@@ -145,4 +145,16 @@ public final class MathsUtils {
         final int minutes = seconds / 60;
         return minutes + ":" + seconds;
     }
+
+    /**
+     * Gets the percentage of an integer. Result is an integer and decimal is lost.
+     *
+     * @param value The value to get the percentage of.
+     * @param total The total/max value.
+     * @return The percentage as an integer.
+     */
+    public static int getPercentage (int value, int total) {
+
+        return (int) ((float) value / (float) total * 100f);
+    }
 }
