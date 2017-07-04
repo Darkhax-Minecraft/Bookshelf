@@ -7,6 +7,9 @@
  */
 package net.darkhax.bookshelf.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -85,6 +88,26 @@ public final class StackUtils {
         }
 
         return setLoreTag(stack, loreList);
+    }
+
+    /**
+     * Reads the lore strings off of an ItemStack.
+     *
+     * @param stack The ItemStack to read.
+     * @return The lore on the stack. Can be empty.
+     */
+    public static List<String> getLore (ItemStack stack) {
+
+        final List<String> result = new ArrayList<>();
+        final NBTTagList lore = getLoreTag(stack);
+
+        if (!lore.hasNoTags()) {
+            for (int l1 = 0; l1 < lore.tagCount(); ++l1) {
+                result.add(lore.getStringTagAt(l1));
+            }
+        }
+
+        return result;
     }
 
     /**
