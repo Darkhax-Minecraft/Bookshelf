@@ -7,7 +7,8 @@
  */
 package net.darkhax.bookshelf.command;
 
-import net.darkhax.bookshelf.util.TextUtils.ChatFormat;
+import com.mojang.realmsclient.gui.ChatFormatting;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
@@ -49,7 +50,7 @@ public abstract class CommandTree extends CommandTreeBase {
 
         for (final ICommand command : this.getSubCommands()) {
 
-            builder.append("\n" + ChatFormat.GREEN + I18n.format(command.getUsage(sender)));
+            builder.append("\n" + ChatFormatting.GREEN + I18n.format(command.getUsage(sender)));
         }
 
         return builder.toString();
