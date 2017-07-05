@@ -111,7 +111,7 @@ public class BookshelfRegistry {
      *
      * @param recipe The recipe to add.
      */
-    public static void addAnvilRecipe (AnvilRecipe recipe) {
+    public static void addAnvilRecipe (IAnvilRecipe recipe) {
 
         anvilRecipes.add(recipe);
     }
