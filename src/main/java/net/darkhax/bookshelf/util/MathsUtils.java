@@ -13,6 +13,7 @@ import java.math.RoundingMode;
 
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 
@@ -156,5 +157,33 @@ public final class MathsUtils {
     public static int getPercentage (int value, int total) {
 
         return (int) ((float) value / (float) total * 100f);
+    }
+
+    /**
+     * Gets the distance in world for an amount of pixels. A basic block is a cubic meter, and
+     * each pixel is 1/16th of a block.
+     *
+     * @param pixels The amount of pixels
+     * @return The distance in game for those pixels.
+     */
+    public static double getPixelDistance (int pixels) {
+
+        return pixels / 16d;
+    }
+
+    /**
+     * Creates a bounding box using pixel size.
+     *
+     * @param minX The min X pos.
+     * @param minY The min Y pos.
+     * @param minZ The min Z pos.
+     * @param maxX The max X pos.
+     * @param maxY The max Y pos.
+     * @param maxZ The max Z pos.
+     * @return A bounding box that is made to a pixel specific size.
+     */
+    public static AxisAlignedBB getBoundsForPixels (int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+
+        return new AxisAlignedBB(getPixelDistance(minX), getPixelDistance(minY), getPixelDistance(minZ), getPixelDistance(maxX), getPixelDistance(maxY), getPixelDistance(maxZ));
     }
 }
