@@ -22,12 +22,19 @@ import com.google.gson.stream.JsonReader;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.SPacketEntityEffect;
+import net.minecraft.network.play.server.SPacketRespawn;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -67,7 +74,7 @@ public final class PlayerUtils {
      * @return boolean: If the player exists true will be returned. If they don't false will be
      *         returned.
      */
-    public static boolean isPlayerReal (EntityPlayer player) {
+    public static boolean isPlayerReal (Entity player) {
 
         return player != null && player.world != null && player.getClass() == EntityPlayerMP.class;
     }
@@ -256,6 +263,69 @@ public final class PlayerUtils {
         }
 
         return items;
+    }
+
+    /**
+     * Changes the dimension a player is in, in a safe way. This will make sure the player is
+     * teleported to the dimension and all the correct packets are sent to keep the client in
+     * sync. It also gets around teleporter code which in some cases will crash the server.
+     *
+     * @param player The player to change the dimension of.
+     * @param dimension The dimension to send the player to.
+     */
+    public static void changeDimension (EntityPlayerMP player, int dimension) {
+
+        changeDimension(player, dimension, player.getServer().getPlayerList());
+    }
+
+    /**
+     * Changes the dimension a player is in, in a safe way. This will make sure the player is
+     * teleported to the dimension and all the correct packets are sent to keep the client in
+     * sync. It also gets around teleporter code which in some cases will crash the server.
+     *
+     * @param player The player to change the dimension of.
+     * @param dimension The dimension to send the player to.
+     * @param playerData The player data from the server.
+     */
+    public static void changeDimension (EntityPlayerMP player, int dimension, PlayerList playerData) {
+
+        final int oldDim = player.dimension;
+        final boolean wasAlive = player.isEntityAlive();
+        final WorldServer worldOld = playerData.getServerInstance().getWorld(player.dimension);
+        final WorldServer worldNew = playerData.getServerInstance().getWorld(dimension);
+
+        if (player.isBeingRidden()) {
+
+            player.removePassengers();
+        }
+
+        if (player.isRiding()) {
+
+            player.dismountRidingEntity();
+        }
+
+        player.dimension = dimension;
+        player.connection.sendPacket(new SPacketRespawn(player.dimension, player.world.getDifficulty(), player.world.getWorldInfo().getTerrainType(), player.interactionManager.getGameType()));
+        worldOld.removeEntityDangerously(player);
+
+        EntityUtils.changeWorld(player, worldOld, worldNew);
+        playerData.preparePlayer(player, worldOld);
+        player.connection.setPlayerLocation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
+        player.interactionManager.setWorld(worldNew);
+        playerData.updateTimeAndWeatherForPlayer(player, worldNew);
+        playerData.syncPlayerInventory(player);
+
+        if (player.isDead && wasAlive) {
+
+            player.isDead = false;
+        }
+
+        for (final PotionEffect potioneffect : player.getActivePotionEffects()) {
+
+            player.connection.sendPacket(new SPacketEntityEffect(player.getEntityId(), potioneffect));
+        }
+
+        FMLCommonHandler.instance().firePlayerChangedDimensionEvent(player, oldDim, dimension);
     }
 
     /**
