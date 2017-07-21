@@ -34,6 +34,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -64,6 +65,7 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
 
     static {
 
+        // Primitives
         addIOHandler(byte.class, SerializableMessage::readByte, SerializableMessage::writeByte);
         addIOHandler(short.class, SerializableMessage::readShort, SerializableMessage::writeShort);
         addIOHandler(int.class, SerializableMessage::readInt, SerializableMessage::writeInt);
@@ -72,9 +74,8 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
         addIOHandler(double.class, SerializableMessage::readDouble, SerializableMessage::writeDouble);
         addIOHandler(boolean.class, SerializableMessage::readBoolean, SerializableMessage::writeBoolean);
         addIOHandler(char.class, SerializableMessage::readChar, SerializableMessage::writeChar);
-        addIOHandler(String.class, SerializableMessage::readString, SerializableMessage::writeString);
 
-        // Arrays
+        // Primitive Arrays
         addIOHandler(byte[].class, SerializableMessage::readByteArray, SerializableMessage::writeByteArray);
         addIOHandler(short[].class, SerializableMessage::readShortArray, SerializableMessage::writeShortArray);
         addIOHandler(int[].class, SerializableMessage::readIntArray, SerializableMessage::writeIntArray);
@@ -83,13 +84,24 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
         addIOHandler(double[].class, SerializableMessage::readDoubleArray, SerializableMessage::writeDoubleArray);
         addIOHandler(boolean[].class, SerializableMessage::readBooleanArray, SerializableMessage::writeBooleanArray);
         addIOHandler(char[].class, SerializableMessage::readCharArray, SerializableMessage::writeCharArray);
-        addIOHandler(String[].class, SerializableMessage::readStringArray, SerializableMessage::writeStringArray);
 
+        // Objects
+        addIOHandler(String.class, SerializableMessage::readString, SerializableMessage::writeString);
         addIOHandler(NBTTagCompound.class, SerializableMessage::readNBT, SerializableMessage::writeNBT);
         addIOHandler(ItemStack.class, SerializableMessage::readItemStack, SerializableMessage::writeItemStack);
         addIOHandler(BlockPos.class, SerializableMessage::readBlockPos, SerializableMessage::writeBlockPos);
         addIOHandler(IBlockState.class, SerializableMessage::readState, SerializableMessage::writeState);
         addIOHandler(ResourceLocation.class, SerializableMessage::readResourceLocation, SerializableMessage::writeResourceLocation);
+        addIOHandler(EnchantmentData.class, SerializableMessage::readEnchantmentData, SerializableMessage::writeEnchantmentData);
+
+        // Object Arrays
+        addIOHandler(String[].class, SerializableMessage::readStringArray, SerializableMessage::writeStringArray);
+        addIOHandler(NBTTagCompound[].class, SerializableMessage::readNBTArray, SerializableMessage::writeNBTArray);
+        addIOHandler(ItemStack[].class, SerializableMessage::readItemStackArray, SerializableMessage::writeItemStackArray);
+        addIOHandler(BlockPos[].class, SerializableMessage::readBlockPosArray, SerializableMessage::writeBlockPosArray);
+        addIOHandler(IBlockState[].class, SerializableMessage::readStateArray, SerializableMessage::writeStateArray);
+        addIOHandler(ResourceLocation[].class, SerializableMessage::readResourceLocationArray, SerializableMessage::writeResourceLocationArray);
+        addIOHandler(EnchantmentData[].class, SerializableMessage::readEnchantmentDataArray, SerializableMessage::writeEnchantmentDataArray);
     }
 
     /**
@@ -363,6 +375,32 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
         ByteBufUtils.writeUTF8String(buf, location.toString());
     }
 
+    private static IBlockState readState (ByteBuf buf) {
+
+        final Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
+        final int meta = buf.readByte();
+        return block != null ? block.getStateFromMeta(meta) : Blocks.AIR.getDefaultState();
+    }
+
+    private static void writeState (IBlockState state, ByteBuf buf) {
+
+        ByteBufUtils.writeUTF8String(buf, state.getBlock().getRegistryName().toString());
+        buf.writeByte(state.getBlock().getMetaFromState(state));
+    }
+
+    private static EnchantmentData readEnchantmentData (ByteBuf buf) {
+
+        final ResourceLocation id = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
+        final int level = buf.readInt();
+        return new EnchantmentData(ForgeRegistries.ENCHANTMENTS.getValue(id), level);
+    }
+
+    private static void writeEnchantmentData (EnchantmentData data, ByteBuf buf) {
+
+        ByteBufUtils.writeUTF8String(buf, data.enchantment != null && data.enchantment.getRegistryName() != null ? data.enchantment.getRegistryName().toString() : "invalid");
+        buf.writeInt(data.enchantmentLevel);
+    }
+
     // Arrays
     private static String[] readStringArray (ByteBuf buf) {
 
@@ -562,17 +600,136 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
         }
     }
 
-    private static IBlockState readState (ByteBuf buf) {
+    private static NBTTagCompound[] readNBTArray (ByteBuf buf) {
 
-        final Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
-        final int meta = buf.readByte();
-        return block != null ? block.getStateFromMeta(meta) : Blocks.AIR.getDefaultState();
+        final NBTTagCompound[] objects = new NBTTagCompound[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = readNBT(buf);
+        }
+
+        return objects;
     }
 
-    private static void writeState (IBlockState state, ByteBuf buf) {
+    private static void writeNBTArray (NBTTagCompound[] objects, ByteBuf buf) {
 
-        ByteBufUtils.writeUTF8String(buf, state.getBlock().getRegistryName().toString());
-        buf.writeByte(state.getBlock().getMetaFromState(state));
+        buf.writeInt(objects.length);
+
+        for (final NBTTagCompound object : objects) {
+
+            writeNBT(object, buf);
+        }
+    }
+
+    private static ItemStack[] readItemStackArray (ByteBuf buf) {
+
+        final ItemStack[] objects = new ItemStack[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = readItemStack(buf);
+        }
+
+        return objects;
+    }
+
+    private static void writeItemStackArray (ItemStack[] objects, ByteBuf buf) {
+
+        buf.writeInt(objects.length);
+
+        for (final ItemStack object : objects) {
+
+            writeItemStack(object, buf);
+        }
+    }
+
+    private static BlockPos[] readBlockPosArray (ByteBuf buf) {
+
+        final BlockPos[] objects = new BlockPos[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = readBlockPos(buf);
+        }
+
+        return objects;
+    }
+
+    private static void writeBlockPosArray (BlockPos[] objects, ByteBuf buf) {
+
+        buf.writeInt(objects.length);
+
+        for (final BlockPos object : objects) {
+
+            writeBlockPos(object, buf);
+        }
+    }
+
+    private static ResourceLocation[] readResourceLocationArray (ByteBuf buf) {
+
+        final ResourceLocation[] objects = new ResourceLocation[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = readResourceLocation(buf);
+        }
+
+        return objects;
+    }
+
+    private static void writeResourceLocationArray (ResourceLocation[] objects, ByteBuf buf) {
+
+        buf.writeInt(objects.length);
+
+        for (final ResourceLocation object : objects) {
+
+            writeResourceLocation(object, buf);
+        }
+    }
+
+    private static IBlockState[] readStateArray (ByteBuf buf) {
+
+        final IBlockState[] objects = new IBlockState[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = readState(buf);
+        }
+
+        return objects;
+    }
+
+    private static void writeStateArray (IBlockState[] objects, ByteBuf buf) {
+
+        buf.writeInt(objects.length);
+
+        for (final IBlockState object : objects) {
+
+            writeState(object, buf);
+        }
+    }
+
+    private static EnchantmentData[] readEnchantmentDataArray (ByteBuf buf) {
+
+        final EnchantmentData[] objects = new EnchantmentData[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = readEnchantmentData(buf);
+        }
+
+        return objects;
+    }
+
+    private static void writeEnchantmentDataArray (EnchantmentData[] objects, ByteBuf buf) {
+
+        buf.writeInt(objects.length);
+
+        for (final EnchantmentData object : objects) {
+
+            writeEnchantmentData(object, buf);
+        }
     }
 
     // Functional interfaces
