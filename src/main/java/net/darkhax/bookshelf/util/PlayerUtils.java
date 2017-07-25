@@ -142,7 +142,7 @@ public final class PlayerUtils {
 
         catch (final Exception exception) {
 
-            Constants.LOG.warn("Could not get name for " + uuid, exception);
+            Constants.LOG.info("Could not get name for {}", uuid);
             name = exception.getMessage();
         }
 
@@ -187,7 +187,7 @@ public final class PlayerUtils {
 
         catch (final Exception exception) {
 
-            Constants.LOG.warn("Could not get name for " + username, exception);
+            Constants.LOG.info("Could not get name for {}", username);
         }
 
         return uuid;

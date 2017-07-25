@@ -9,9 +9,6 @@ package net.darkhax.bookshelf.lib;
 
 import java.util.Random;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public final class Constants {
 
     // Mod Constants
@@ -22,7 +19,7 @@ public final class Constants {
     public static final String VERSION_NUMBER = "2.0.0";
 
     // System Constants
-    public static final Logger LOG = LogManager.getLogger(MOD_NAME);
+    public static final LoggingHelper LOG = new LoggingHelper(MOD_ID);
 
     public static final Random RANDOM = new Random();
 

@@ -147,8 +147,22 @@ public class LoggingHelper {
      */
     public void warn (String message, Object... params) {
 
+        this.warn(new LogWarningException(), message, params);
+    }
+
+    /**
+     * Logs a warning message. These messages will also include a stacktrace. Warning messages
+     * are printed to the console and the log file.
+     *
+     * @param message The message to print. Likely uses log4J's format which is {} for
+     *        parameters.
+     * @param params The parameters for the messages. This can be used to insert info directly
+     *        to the message, or completely ignored.
+     */
+    public void warn (Throwable t, String message, Object... params) {
+
         this.logger.warn(message, params);
-        this.logger.catching(new LogWarningException());
+        this.logger.catching(t);
     }
 
     /**

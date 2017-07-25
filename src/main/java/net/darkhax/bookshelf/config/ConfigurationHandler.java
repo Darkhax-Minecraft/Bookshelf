@@ -143,7 +143,7 @@ public class ConfigurationHandler {
 
             if (!(Modifier.isPublic(field.getModifiers()) && Modifier.isStatic(field.getModifiers()))) {
 
-                Constants.LOG.info("Configuration fields must be public, and static!");
+                Constants.LOG.warn("Configuration fields must be public, and static! {} was not!", field.getName());
                 continue;
             }
 
@@ -164,13 +164,13 @@ public class ConfigurationHandler {
 
                 catch (IllegalArgumentException | IllegalAccessException e) {
 
-                    Constants.LOG.info("Error handling configurable field! Could not read/write " + field.getName(), e);
+                    Constants.LOG.warn(e, "Error handling configurable field! Could not read/write field {}", field.getName());
                 }
             }
 
             else {
 
-                Constants.LOG.info("Unhandled type: " + type.getCanonicalName());
+                Constants.LOG.debug("Unhandled type: {}", type.getCanonicalName());
             }
         }
 

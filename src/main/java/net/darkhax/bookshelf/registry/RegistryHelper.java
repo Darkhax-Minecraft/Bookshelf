@@ -305,7 +305,7 @@ public class RegistryHelper {
 
             else {
 
-                Constants.LOG.info(String.format("The mod %s tried to add loot to %s but the pool was not found. %s", this.modid, event.getName(), builder.toString()));
+                Constants.LOG.info("The mod {} tried to add loot to {} but the pool was not found. {}", this.modid, event.getName(), builder.toString());
             }
         }
     }

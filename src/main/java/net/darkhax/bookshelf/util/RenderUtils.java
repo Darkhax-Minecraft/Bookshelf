@@ -376,7 +376,7 @@ public final class RenderUtils {
 
         if (sprite == null) {
 
-            Constants.LOG.warn("Attempted to draw a textures quad with no texture! X:%f Y:%f Z:%f");
+            Constants.LOG.warn("Attempted to draw a textures quad with no texture!");
             return;
         }
 

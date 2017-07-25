@@ -79,7 +79,7 @@ public abstract class TileEntityMessage<T extends TileEntity> extends Serializab
             }
             catch (final ClassCastException e) {
 
-                Constants.LOG.warn("Could not cast?", e);
+                Constants.LOG.warn(e, "Tile entity could not be casted");
             }
         }
 

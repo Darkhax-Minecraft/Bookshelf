@@ -96,7 +96,7 @@ public final class AnnotationUtils {
 
             catch (final ClassNotFoundException e) {
 
-                Constants.LOG.warn("Could not load " + data.getClassName(), e);
+                Constants.LOG.warn(e, "Could not load class {} ", data.getClassName());
             }
         }
 
@@ -167,7 +167,7 @@ public final class AnnotationUtils {
 
             catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 
-                Constants.LOG.warn("Could not load " + asmData.getClassName(), e);
+                Constants.LOG.warn(e, "Could not load class {}", asmData.getClassName());
             }
         }
 

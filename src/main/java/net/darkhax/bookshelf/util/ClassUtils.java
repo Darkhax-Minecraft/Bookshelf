@@ -63,7 +63,7 @@ public final class ClassUtils {
 
         catch (final ClassNotFoundException e) {
 
-            Constants.LOG.warn(e);
+            Constants.LOG.catching(e);
             return null;
         }
     }
