@@ -678,11 +678,10 @@ public final class RenderUtils {
      * @param state The state to change the model of.
      * @param model The model to set the thing to.
      */
-    // public static void setModelForState (IBlockState state, IBakedModel model) {
+    public static void setModelForState (IBlockState state, IBakedModel model) {
 
-    // Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().bakedModelStore.put(state,
-    // model);
-    // }
+        Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().bakedModelStore.put(state, model);
+    }
 
     /**
      * Gets a baked model for the passed state. This model is pulled from the baked model
