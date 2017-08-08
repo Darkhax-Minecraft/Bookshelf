@@ -190,6 +190,7 @@ public final class SkullUtils {
         CAVE_SPIDER("CaveSpider", "cab28771-f0cd-4fe7-b129-02c69eba79a5"),
         CHICKEN("Chicken", "92deafa9-4307-42d9-b003-88601598d6c0"),
         COW("Cow", "f159b274-c22e-4340-b7c1-52abde147713"),
+        CREEPER("Creeper", "057b1c47-1321-4863-a6fe-8887f9ec265f"),
         ENDERMAN("Enderman", "40ffb372-12f6-4678-b3f2-2176bf56dd4b"),
         GHAST("Ghast", "063085a6-797f-4785-be1a-21cd7580f752"),
         GOLEM("Golem", "757f90b2-2344-4b8d-8dac-824232e2cece"),
@@ -200,11 +201,14 @@ public final class SkullUtils {
         PIG("Pig", "8b57078b-f1bd-45df-83c4-d88d16768fbe"),
         PIG_ZOMBIE("PigZombie", "18a2bb50-334a-4084-9184-2c380251a24b"),
         SHEEP("Sheep", "dfaad551-4e7e-45a1-a6f7-c6fc5ec823ac"),
+        SKELETON("Skeleton", "a3f427a8-18c5-49c5-a4fb-64c6e0e1e0a8"),
         SLIME("Slime", "870aba93-40e8-48b3-89c5-32ece00d6630"),
         SPIDER("Spider", "5ad55f34-41b6-4bd2-9c32-18983c635936"),
         SQUID("Squid", "72e64683-e313-4c36-a408-c66b64e94af5"),
         STEVE("Steve", "c06f8906-4c8a-4911-9c29-ea1dbd1aab82"),
         VILLAGER("Villager", "bd482739-767c-45dc-a1f8-c33c40530952"),
+        WITHER_SKELETON("WSkeleton", "7ed571a5-9fb8-416c-8b9d-fb2f446ab5b2"),
+        ZOMBIE("Zombie", "daca2c3d-719b-41f5-b624-e4039e6c04bd"),
         CACTUS("Cactus", "1d9048db-e836-4b9a-a108-55014922f1ae"),
         CAKE("Cake", "afb489c4-9fc8-48a4-98f2-dd7bea414c9a"),
         CHEST("Chest", "73d4e068-3a6d-4c8b-8f85-3323546955c4"),
@@ -212,6 +216,8 @@ public final class SkullUtils {
         COCONUT_GREEN("CoconutG", "74556fea-28ed-4458-8db2-9a8220da0c12"),
         MELON("Melon", "1c7d9784-47ea-4bf3-bc23-acf260b436e6"),
         LOG("OakLog", "e224e5ec-e299-4005-ae22-3b0f77a57714"),
+        PRESENT_GREEN("Present1", "156b251b-12e0-4829-a130-a61b53ba7720"),
+        PRESENT_RED("Present2", "f1eb7cad-e2c0-4e9e-8aad-1eae21d5fd95"),
         PUMPKIN("Pumpkin", "f44d355b-b6ae-4ba8-8e62-ae6441854785"),
         TNT1("TNT", "d43af93c-c330-4a3d-bab8-ee74234a011a"),
         TNT2("TNT2", "55e73380-a973-4a52-9bb5-1efa5256125c"),
@@ -220,9 +226,7 @@ public final class SkullUtils {
         ARROW_LEFT("ArrowLeft", "a68f0b64-8d14-4000-a95f-4b9ba14f8df9"),
         ARROW_RIGHT("ArrowRight", "50c8510b-5ea0-4d60-be9a-7d542d6cd156"),
         EXCLAMATION("Exclamation", "d3c47f6f-ae3a-45c1-ad7c-e2c762b03ae6"),
-        QUESTION("Question", "606e2ff0-ed77-4842-9d6c-e1d3321c7838"),
-        PRESENT_GREEN("Present1", "156b251b-12e0-4829-a130-a61b53ba7720"),
-        PRESENT_RED("Present2", "f1eb7cad-e2c0-4e9e-8aad-1eae21d5fd95");
+        QUESTION("Question", "606e2ff0-ed77-4842-9d6c-e1d3321c7838");
 
         /**
          * The base of the username, without the MHF prefix.
