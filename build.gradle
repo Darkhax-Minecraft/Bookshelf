@@ -211,6 +211,7 @@ curseforge {
         changelogType = 'markdown'
 
         addGameVersion "${version_minecraft}"
+        addGameVersion '1.12'
         
         addArtifact(deobfJar)
         addArtifact(sourcesJar)
