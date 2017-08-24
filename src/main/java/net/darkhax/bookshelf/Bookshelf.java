@@ -7,18 +7,27 @@
  */
 package net.darkhax.bookshelf;
 
-import net.darkhax.bookshelf.handler.BookshelfEventHandler;
+import net.darkhax.bookshelf.crafting.IAnvilRecipe;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.util.AnnotationUtils;
 import net.darkhax.bookshelf.util.OreDictUtils;
+import net.darkhax.bookshelf.util.RenderUtils;
+import net.darkhax.bookshelf.world.gamerule.GameRule;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommand;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION_NUMBER, acceptedMinecraftVersions = "[1.12,1.12.2)")
 public class Bookshelf {
@@ -30,7 +39,7 @@ public class Bookshelf {
     public void onConstruction (FMLConstructionEvent event) {
 
         AnnotationUtils.asmData = event.getASMHarvestedData();
-        MinecraftForge.EVENT_BUS.register(new BookshelfEventHandler());
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @EventHandler
@@ -45,6 +54,45 @@ public class Bookshelf {
         for (final ICommand command : BookshelfRegistry.getCommands()) {
 
             event.registerServerCommand(command);
+        }
+    }
+
+    // Handles game rule registry
+    @SubscribeEvent
+    public void onWorldLoaded (WorldEvent.Load event) {
+
+        if (!event.getWorld().isRemote) {
+
+            for (final GameRule rule : BookshelfRegistry.getGameRules()) {
+
+                rule.initialize(event.getWorld());
+            }
+        }
+    }
+
+    // Handles anvil stuff, for my anvil recipes.
+    @SubscribeEvent
+    public void onAnvilUpdate (AnvilUpdateEvent event) {
+
+        for (final IAnvilRecipe recipe : BookshelfRegistry.getAnvilRecipes()) {
+            if (recipe.isValidRecipe(event.getLeft(), event.getRight(), event.getName())) {
+                event.setCost(recipe.getExperienceCost(event.getLeft(), event.getRight(), event.getName()));
+                event.setMaterialCost(recipe.getMaterialCost(event.getLeft(), event.getRight(), event.getName()));
+                event.setOutput(recipe.getOutput(event.getLeft(), event.getRight(), event.getName()));
+                return;
+            }
+        }
+    }
+
+    // Handles the render reload request in RenderUtils
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onClientTick (TickEvent.ClientTickEvent event) {
+
+        if (RenderUtils.requireRenderReload()) {
+
+            Minecraft.getMinecraft().renderGlobal.loadRenderers();
+            RenderUtils.markRenderersForReload(false);
         }
     }
 }
