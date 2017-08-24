@@ -10,6 +10,7 @@ package net.darkhax.bookshelf;
 import net.darkhax.bookshelf.crafting.AnvilRecipe;
 import net.darkhax.bookshelf.crafting.IAnvilRecipe;
 import net.darkhax.bookshelf.lib.ModTrackingList;
+import net.darkhax.bookshelf.world.gamerule.GameRule;
 import net.minecraft.command.ICommand;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -29,6 +30,12 @@ public class BookshelfRegistry {
      * very minor performance improvement.
      */
     private static final ModTrackingList<ICommand> commands = new ModTrackingList<>();
+
+    /**
+     * A list of game rules registered through bookshelf. This takes some of the tediousness out of
+     * managing your own game rules.
+     */
+    private static final ModTrackingList<GameRule> gameRules = new ModTrackingList<>();
 
     /**
      * Adds a new oredict anvil recipe to the list. This recipe will have no name requirement.
@@ -131,6 +138,26 @@ public class BookshelfRegistry {
     public static ModTrackingList<IAnvilRecipe> getAnvilRecipes () {
 
         return anvilRecipes;
+    }
+
+    /**
+     * Adds a new GameRule.
+     *
+     * @param rule The GameRule to add.
+     */
+    public static void addGameRule (GameRule rule) {
+
+        gameRules.add(rule);
+    }
+
+    /**
+     * Gets all registered GameRules.
+     *
+     * @return A list of all GameRules that have been registered with bookshelf.
+     */
+    public static ModTrackingList<GameRule> getGameRules () {
+
+        return gameRules;
     }
 
     /**
