@@ -14,9 +14,9 @@ import net.minecraft.item.ItemStack;
 public final class EnchantmentUtils {
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
-     * implicit public constructor to every class which does not define at lease one
-     * explicitly. Hence why this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an implicit
+     * public constructor to every class which does not define at lease one explicitly. Hence why
+     * this constructor was added.
      */
     private EnchantmentUtils () {
 
@@ -61,8 +61,8 @@ public final class EnchantmentUtils {
     }
 
     /**
-     * Calculates the amount of levels that an amount of EXP is equal to. This is a pretty
-     * costly method due to the level curve.
+     * Calculates the amount of levels that an amount of EXP is equal to. This is a pretty costly
+     * method due to the level curve.
      *
      * @param exp The amount of EXP to solve for.
      * @return int The amount of levels that can be created by the amount of exp.

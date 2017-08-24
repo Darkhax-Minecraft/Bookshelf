@@ -43,9 +43,9 @@ public final class RecipeGenerator {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
-     * implicit public constructor to every class which does not define at lease one
-     * explicitly. Hence why this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an implicit
+     * public constructor to every class which does not define at lease one explicitly. Hence why
+     * this constructor was added.
      */
     private RecipeGenerator () {
 
@@ -214,17 +214,17 @@ public final class RecipeGenerator {
     }
 
     /**
-     * Generates a new, unique name for a recipe. The name has several parts to it, the first
-     * is the output of the recip and the second is a UUID created from the bytes of a string
-     * which is an amalgamate of all the inputs. Doing it this way achieves a few goals when it
-     * comes to recipe file names.
+     * Generates a new, unique name for a recipe. The name has several parts to it, the first is
+     * the output of the recip and the second is a UUID created from the bytes of a string which is
+     * an amalgamate of all the inputs. Doing it this way achieves a few goals when it comes to
+     * recipe file names.
      *
-     * 1) Recipe names should describe what they do well enough that a modder or user can find
-     * it afterwards with relative ease. 2) Recipe names should be short, due to OS file name
-     * restrictions, and lowering the memory impact. 3) Recipe names should be unique, based
-     * what they contain. Things like chaging the order a recipe is created should not change
-     * the name. 4) Recipe names should follow the identifier format for Minecraft. All lower
-     * case and no spaces.
+     * 1) Recipe names should describe what they do well enough that a modder or user can find it
+     * afterwards with relative ease. 2) Recipe names should be short, due to OS file name
+     * restrictions, and lowering the memory impact. 3) Recipe names should be unique, based what
+     * they contain. Things like chaging the order a recipe is created should not change the name.
+     * 4) Recipe names should follow the identifier format for Minecraft. All lower case and no
+     * spaces.
      *
      * @param output The item that the recipe outputs.
      * @param inputs The input components for the recipe.

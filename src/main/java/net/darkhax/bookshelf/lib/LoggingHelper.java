@@ -43,8 +43,8 @@ public class LoggingHelper {
     }
 
     /**
-     * Logs an exception or error. This is intended for when you are catching an error and
-     * should be used over {@link Throwable#printStackTrace()}.
+     * Logs an exception or error. This is intended for when you are catching an error and should
+     * be used over {@link Throwable#printStackTrace()}.
      *
      * @param t The Throwable object to catch.
      */
@@ -54,13 +54,12 @@ public class LoggingHelper {
     }
 
     /**
-     * Logs a debug message. Debug messages are not printed to the console, but they are added
-     * to the console file.
+     * Logs a debug message. Debug messages are not printed to the console, but they are added to
+     * the console file.
      *
-     * @param message The message to print. Likely uses log4J's format which is {} for
-     *        parameters.
-     * @param params The parameters for the messages. This can be used to insert info directly
-     *        to the message, or completely ignored.
+     * @param message The message to print. Likely uses log4J's format which is {} for parameters.
+     * @param params The parameters for the messages. This can be used to insert info directly to
+     *        the message, or completely ignored.
      */
     public void debug (String message, Object... params) {
 
@@ -70,10 +69,9 @@ public class LoggingHelper {
     /**
      * Logs an error message. Error messages are printed to the console and the log file.
      *
-     * @param message The message to print. Likely uses log4J's format which is {} for
-     *        parameters.
-     * @param params The parameters for the messages. This can be used to insert info directly
-     *        to the message, or completely ignored.
+     * @param message The message to print. Likely uses log4J's format which is {} for parameters.
+     * @param params The parameters for the messages. This can be used to insert info directly to
+     *        the message, or completely ignored.
      */
     public void error (String message, Object... params) {
 
@@ -81,14 +79,13 @@ public class LoggingHelper {
     }
 
     /**
-     * Logs a fatal error message. This should be used to log errors which will prevent the
-     * game from working as expected and are likely to cause a crash. Fatal messages are
-     * printed to the console and the log file.
+     * Logs a fatal error message. This should be used to log errors which will prevent the game
+     * from working as expected and are likely to cause a crash. Fatal messages are printed to the
+     * console and the log file.
      *
-     * @param message The message to print. Likely uses log4J's format which is {} for
-     *        parameters.
-     * @param params The parameters for the messages. This can be used to insert info directly
-     *        to the message, or completely ignored.
+     * @param message The message to print. Likely uses log4J's format which is {} for parameters.
+     * @param params The parameters for the messages. This can be used to insert info directly to
+     *        the message, or completely ignored.
      */
     public void fatal (String message, Object... params) {
 
@@ -98,10 +95,9 @@ public class LoggingHelper {
     /**
      * Logs a generic info message. Info messages are printed to the console and the log file.
      *
-     * @param message The message to print. Likely uses log4J's format which is {} for
-     *        parameters.
-     * @param params The parameters for the messages. This can be used to insert info directly
-     *        to the message, or completely ignored.
+     * @param message The message to print. Likely uses log4J's format which is {} for parameters.
+     * @param params The parameters for the messages. This can be used to insert info directly to
+     *        the message, or completely ignored.
      */
     public void info (String message, Object... params) {
 
@@ -112,10 +108,9 @@ public class LoggingHelper {
      * Logs a message at any Level.
      *
      * @param level The level of the message to log.
-     * @param message The message to print. Likely uses log4J's format which is {} for
-     *        parameters.
-     * @param params The parameters for the messages. This can be used to insert info directly
-     *        to the message, or completely ignored.
+     * @param message The message to print. Likely uses log4J's format which is {} for parameters.
+     * @param params The parameters for the messages. This can be used to insert info directly to
+     *        the message, or completely ignored.
      */
     public void log (Level level, String message, Object... params) {
 
@@ -126,10 +121,9 @@ public class LoggingHelper {
      * Logs a trace message. This is for fine grained debug messages. Trace messages are not
      * printed to the console, but they are added to the console file.
      *
-     * @param message The message to print. Likely uses log4J's format which is {} for
-     *        parameters.
-     * @param params The parameters for the messages. This can be used to insert info directly
-     *        to the message, or completely ignored.
+     * @param message The message to print. Likely uses log4J's format which is {} for parameters.
+     * @param params The parameters for the messages. This can be used to insert info directly to
+     *        the message, or completely ignored.
      */
     public void trace (String message, Object... params) {
 
@@ -137,13 +131,12 @@ public class LoggingHelper {
     }
 
     /**
-     * Logs a warning message. These messages will also include a stacktrace. Warning messages
-     * are printed to the console and the log file.
+     * Logs a warning message. These messages will also include a stacktrace. Warning messages are
+     * printed to the console and the log file.
      *
-     * @param message The message to print. Likely uses log4J's format which is {} for
-     *        parameters.
-     * @param params The parameters for the messages. This can be used to insert info directly
-     *        to the message, or completely ignored.
+     * @param message The message to print. Likely uses log4J's format which is {} for parameters.
+     * @param params The parameters for the messages. This can be used to insert info directly to
+     *        the message, or completely ignored.
      */
     public void warn (String message, Object... params) {
 
@@ -151,13 +144,12 @@ public class LoggingHelper {
     }
 
     /**
-     * Logs a warning message. These messages will also include a stacktrace. Warning messages
-     * are printed to the console and the log file.
+     * Logs a warning message. These messages will also include a stacktrace. Warning messages are
+     * printed to the console and the log file.
      *
-     * @param message The message to print. Likely uses log4J's format which is {} for
-     *        parameters.
-     * @param params The parameters for the messages. This can be used to insert info directly
-     *        to the message, or completely ignored.
+     * @param message The message to print. Likely uses log4J's format which is {} for parameters.
+     * @param params The parameters for the messages. This can be used to insert info directly to
+     *        the message, or completely ignored.
      */
     public void warn (Throwable t, String message, Object... params) {
 

@@ -12,9 +12,9 @@ import net.darkhax.bookshelf.lib.Constants;
 public final class ClassUtils {
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
-     * implicit public constructor to every class which does not define at lease one
-     * explicitly. Hence why this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an implicit
+     * public constructor to every class which does not define at lease one explicitly. Hence why
+     * this constructor was added.
      */
     private ClassUtils () {
 
@@ -22,8 +22,8 @@ public final class ClassUtils {
     }
 
     /**
-     * A basic check to see if two classes are the same. For the classes to be the same,
-     * neither can be null, and they must share the same name.
+     * A basic check to see if two classes are the same. For the classes to be the same, neither
+     * can be null, and they must share the same name.
      *
      * @param class1: The first class to compare.
      * @param class2: The second class to compare.

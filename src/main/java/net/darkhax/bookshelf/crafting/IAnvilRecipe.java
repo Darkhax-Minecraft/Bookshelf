@@ -35,8 +35,8 @@ public interface IAnvilRecipe {
     public int getExperienceCost (ItemStack leftSlot, ItemStack rightSlot, String name);
 
     /**
-     * Gets the amount of items to consume from the material (right) slot. If 0, the entire
-     * stack will be consumed.
+     * Gets the amount of items to consume from the material (right) slot. If 0, the entire stack
+     * will be consumed.
      *
      * @param leftSlot The left anvil slot.
      * @param rightSlot The right anvil slot.

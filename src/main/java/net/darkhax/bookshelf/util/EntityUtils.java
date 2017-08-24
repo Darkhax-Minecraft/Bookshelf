@@ -34,9 +34,9 @@ public final class EntityUtils {
     private static final EntityEquipmentSlot[] EQUIPMENT_SLOTS = new EntityEquipmentSlot[] { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET };
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
-     * implicit public constructor to every class which does not define at lease one
-     * explicitly. Hence why this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an implicit
+     * public constructor to every class which does not define at lease one explicitly. Hence why
+     * this constructor was added.
      */
     private EntityUtils () {
 
@@ -106,8 +106,7 @@ public final class EntityUtils {
      * Pushes an entity towards another one.
      *
      * @param entityToMove The entity that should be pushed towards the other entity.
-     * @param destination The destination entity, that the entity to move should be pushed
-     *        towards.
+     * @param destination The destination entity, that the entity to move should be pushed towards.
      * @param force The amount of force to push the entityToMove with.
      */
     public static void pushTowards (Entity entityToMove, Entity destination, double force) {
@@ -126,8 +125,8 @@ public final class EntityUtils {
     }
 
     /**
-     * Creates a Vec3d that represents the additional motion that would be needed to push an
-     * entity towards a destination.
+     * Creates a Vec3d that represents the additional motion that would be needed to push an entity
+     * towards a destination.
      *
      * @param entityToMove The entity to push.
      * @param direction The direction to push the entity.
@@ -169,8 +168,8 @@ public final class EntityUtils {
      * @param world The world to search in.
      * @param pos The position to start the search around.
      * @param range The range of the search.
-     * @return List<Entity> A List containing all entities of the specified type that are
-     *         within the range.
+     * @return List<Entity> A List containing all entities of the specified type that are within
+     *         the range.
      */
     @SuppressWarnings("unchecked")
     public static <T> List<T> getEntitiesInArea (Class<? extends Entity> entityClass, World world, BlockPos pos, int range) {
@@ -194,13 +193,13 @@ public final class EntityUtils {
     }
 
     /**
-     * A check to see if an entity is wearing a full suit of the armor. This check is based on
-     * the class names of armor.
+     * A check to see if an entity is wearing a full suit of the armor. This check is based on the
+     * class names of armor.
      *
      * @param living: The living entity to check the armor of.
      * @param armorClass: The class of the armor to check against.
-     * @return boolean: True if every piece of armor the entity is wearing are the same class
-     *         as the provied armor class.
+     * @return boolean: True if every piece of armor the entity is wearing are the same class as
+     *         the provied armor class.
      */
     public static boolean isWearingFullSet (EntityLivingBase living, Class<Item> armorClass) {
 
@@ -219,8 +218,8 @@ public final class EntityUtils {
     }
 
     /**
-     * Teleports an entity in an ender way. This takes into account changing dimensions, and
-     * firing the ender teleport event.
+     * Teleports an entity in an ender way. This takes into account changing dimensions, and firing
+     * the ender teleport event.
      *
      * @param entity The entity to teleport.
      * @param dimension The dimension to teleport the entity to.

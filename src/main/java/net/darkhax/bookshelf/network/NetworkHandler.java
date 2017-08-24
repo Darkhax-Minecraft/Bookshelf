@@ -24,8 +24,7 @@ public class NetworkHandler {
     private final SimpleNetworkWrapper network;
 
     /**
-     * The current discriminator value. This is ticked up automatically as messages are
-     * registered.
+     * The current discriminator value. This is ticked up automatically as messages are registered.
      */
     private int curDiscriminator = 0;
 

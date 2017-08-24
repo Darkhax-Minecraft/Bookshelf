@@ -19,9 +19,9 @@ import net.minecraftforge.oredict.OreDictionary;
 public final class BlockUtils {
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
-     * implicit public constructor to every class which does not define at lease one
-     * explicitly. Hence why this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an implicit
+     * public constructor to every class which does not define at lease one explicitly. Hence why
+     * this constructor was added.
      */
     private BlockUtils () {
 
@@ -30,8 +30,8 @@ public final class BlockUtils {
 
     /**
      * Checks if an ItemStack contains an ore item. This is done by checking the item extends
-     * BlockOre, or if the ore dictionary for entries that start with 'ore'. It will also check
-     * the display name of the stack to see if it has the word Ore in it.
+     * BlockOre, or if the ore dictionary for entries that start with 'ore'. It will also check the
+     * display name of the stack to see if it has the word Ore in it.
      *
      * @param stack The ItemStack to check.
      * @param checkName Whether or not the name of the ItemStack should be checked.

@@ -26,9 +26,9 @@ public final class AnnotationUtils {
     public static ASMDataTable asmData;
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
-     * implicit public constructor to every class which does not define at lease one
-     * explicitly. Hence why this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an implicit
+     * public constructor to every class which does not define at lease one explicitly. Hence why
+     * this constructor was added.
      */
     private AnnotationUtils () {
 
@@ -128,12 +128,12 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Finds all classes annotated with the annotation class. These classes are then
-     * instantiated, added to a list, and given to you.
+     * Finds all classes annotated with the annotation class. These classes are then instantiated,
+     * added to a list, and given to you.
      *
      * @param annotation The class of the annotation you're using to search for.
-     * @param instance The class of the thing you're trying to construct. This should be a
-     *        shared interface, or parent class.
+     * @param instance The class of the thing you're trying to construct. This should be a shared
+     *        interface, or parent class.
      * @return A list of all classes annotated with the annotation, as instances.
      */
     public static <T, A extends Annotation> Map<T, A> getAnnotations (Class<A> annotation, Class<T> instance) {
@@ -142,14 +142,14 @@ public final class AnnotationUtils {
     }
 
     /**
-     * Finds all classes annotated with the annotation class. These classes are then
-     * instantiated, added to a list, and given to you.
+     * Finds all classes annotated with the annotation class. These classes are then instantiated,
+     * added to a list, and given to you.
      *
-     * @param table The ASMDataTable created by Forge. You can get this from most of the main
-     *        mod loading stage events.
+     * @param table The ASMDataTable created by Forge. You can get this from most of the main mod
+     *        loading stage events.
      * @param annotation The class of the annotation you're using to search for.
-     * @param instance The class of the thing you're trying to construct. This should be a
-     *        shared interface, or parent class.
+     * @param instance The class of the thing you're trying to construct. This should be a shared
+     *        interface, or parent class.
      * @return A list of all classes annotated with the annotation, as instances.
      */
     public static <T, A extends Annotation> Map<T, A> getAnnotations (ASMDataTable table, Class<A> annotation, Class<T> instance) {

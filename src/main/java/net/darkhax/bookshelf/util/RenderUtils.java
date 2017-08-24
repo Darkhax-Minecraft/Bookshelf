@@ -62,9 +62,9 @@ public final class RenderUtils {
     private static boolean requiresRenderReload = false;
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
-     * implicit public constructor to every class which does not define at lease one
-     * explicitly. Hence why this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an implicit
+     * public constructor to every class which does not define at lease one explicitly. Hence why
+     * this constructor was added.
      */
     private RenderUtils () {
 
@@ -103,8 +103,8 @@ public final class RenderUtils {
     }
 
     /**
-     * Gets a RenderPlayer instance for the specified model type. Currently only Alex (slim)
-     * and Steve (default) are added by vanilla. Can be null if no renderer was found.
+     * Gets a RenderPlayer instance for the specified model type. Currently only Alex (slim) and
+     * Steve (default) are added by vanilla. Can be null if no renderer was found.
      *
      * @param type The name of the model type to retrieve.
      * @return RenderPlayer The RenderPlayer instance for the specified model.
@@ -115,8 +115,7 @@ public final class RenderUtils {
     }
 
     /**
-     * Sets a player specific texture. This can be used to change the skin, cape or elytra
-     * texture.
+     * Sets a player specific texture. This can be used to change the skin, cape or elytra texture.
      *
      * @param type The type of texture to apply. Vanilla has Skin, Cape and Elytra.
      * @param player The player to set the texture to.
@@ -135,18 +134,17 @@ public final class RenderUtils {
     }
 
     /**
-     * Attempts to download a resource from the web and load it into the game. If the resource
-     * can not be downloaded successfully. Wraps
+     * Attempts to download a resource from the web and load it into the game. If the resource can
+     * not be downloaded successfully. Wraps
      * {@link #downloadResource(String, ResourceLocation, ResourceLocation, IImageBuffer)} but
      * returns the output ResourceLocation.
      *
      * @param url The URL to download the resource from. This should be the raw/source url.
      * @param outputResource The ResourceLocation to use for the newly downloaded resource.
-     * @param defaultResource The default texture to use, on the chance that it fails to
-     *        download a texture. This must be a valid texture, or else you will get a missing
-     *        texture.
-     * @param buffer A special buffer to use when downloading the image. It is okay to pass
-     *        null for this if you don't want anything fancy.
+     * @param defaultResource The default texture to use, on the chance that it fails to download a
+     *        texture. This must be a valid texture, or else you will get a missing texture.
+     * @param buffer A special buffer to use when downloading the image. It is okay to pass null
+     *        for this if you don't want anything fancy.
      * @return The output resource location.
      */
     public static ResourceLocation downloadResourceLocation (String url, ResourceLocation outputResource, ResourceLocation defaultResource, IImageBuffer buffer) {
@@ -156,16 +154,15 @@ public final class RenderUtils {
     }
 
     /**
-     * Attempts to download a resource from the web and load it into the game. If the resource
-     * can not be downloaded successfully.
+     * Attempts to download a resource from the web and load it into the game. If the resource can
+     * not be downloaded successfully.
      *
      * @param url The URL to download the resource from. This should be the raw/source url.
      * @param outputResource The ResourceLocation to use for the newly downloaded resource.
-     * @param defaultResource The default texture to use, on the chance that it fails to
-     *        download a texture. This must be a valid texture, or else you will get a missing
-     *        texture.
-     * @param buffer A special buffer to use when downloading the image. It is okay to pass
-     *        null for this if you don't want anything fancy.
+     * @param defaultResource The default texture to use, on the chance that it fails to download a
+     *        texture. This must be a valid texture, or else you will get a missing texture.
+     * @param buffer A special buffer to use when downloading the image. It is okay to pass null
+     *        for this if you don't want anything fancy.
      * @return The downloaded image data.
      */
     public static ThreadDownloadImageData downloadResource (String url, ResourceLocation outputResource, ResourceLocation defaultResource, IImageBuffer buffer) {
@@ -202,8 +199,8 @@ public final class RenderUtils {
     }
 
     /**
-     * Translates the render state to be relative to the player's position. Allows for
-     * rendering at a static world position that is not tied to the player's position.
+     * Translates the render state to be relative to the player's position. Allows for rendering at
+     * a static world position that is not tied to the player's position.
      *
      * @param pos The BlockPos The position to translate to within the world.
      */
@@ -526,9 +523,9 @@ public final class RenderUtils {
     }
 
     /**
-     * Handles all of the basic startup to minimize render conflicts with existing rendering.
-     * Make sure to call {@link #cleanupRenderState()} after the rendering code, to return the
-     * state to normal.
+     * Handles all of the basic startup to minimize render conflicts with existing rendering. Make
+     * sure to call {@link #cleanupRenderState()} after the rendering code, to return the state to
+     * normal.
      *
      * @param x The X position to render at.
      * @param y The Y position to render at.
@@ -541,8 +538,8 @@ public final class RenderUtils {
     }
 
     /**
-     * Handles all of the basic startup to minimize render conflicts with existing rendering.
-     * Make sure to
+     * Handles all of the basic startup to minimize render conflicts with existing rendering. Make
+     * sure to
      */
     public static void setupRenderState () {
 
@@ -560,8 +557,8 @@ public final class RenderUtils {
     }
 
     /**
-     * Counteracts the state changes caused by
-     * {@link #setupRenderState(double, double, double)}. Should only be called after that.
+     * Counteracts the state changes caused by {@link #setupRenderState(double, double, double)}.
+     * Should only be called after that.
      */
     public static void cleanupRenderState () {
 
@@ -617,8 +614,8 @@ public final class RenderUtils {
     }
 
     /**
-     * Applies a color to GL state based on the current tick. This is the same code used by
-     * sheeps for their jeb color effect.
+     * Applies a color to GL state based on the current tick. This is the same code used by sheeps
+     * for their jeb color effect.
      *
      * @param entity The entity to render the effect on.
      * @param partialTicks The partial ticks.
@@ -629,8 +626,8 @@ public final class RenderUtils {
     }
 
     /**
-     * Applies a color to GL state based on the current tick. This is similar to the code used
-     * by jeb sheeps.
+     * Applies a color to GL state based on the current tick. This is similar to the code used by
+     * jeb sheeps.
      *
      * @param previousTicks The previous tick value.
      * @param offset An offset value.
@@ -671,9 +668,9 @@ public final class RenderUtils {
 
     /**
      * Sets the model for a state in the block model store. This should be used after the
-     * ModelBakeEvent has fired, and models have been fully initialized. After calling, you
-     * will need to rebake the chunks to see changes in the world. This can be done by updating
-     * the chunk, or firing {@link #markRenderersForReload(boolean)}.
+     * ModelBakeEvent has fired, and models have been fully initialized. After calling, you will
+     * need to rebake the chunks to see changes in the world. This can be done by updating the
+     * chunk, or firing {@link #markRenderersForReload(boolean)}.
      *
      * @param state The state to change the model of.
      * @param model The model to set the thing to.
@@ -684,8 +681,7 @@ public final class RenderUtils {
     }
 
     /**
-     * Gets a baked model for the passed state. This model is pulled from the baked model
-     * store.
+     * Gets a baked model for the passed state. This model is pulled from the baked model store.
      *
      * @param state The state to get the model for.
      * @return The model for that state.

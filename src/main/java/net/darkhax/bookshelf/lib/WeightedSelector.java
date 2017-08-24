@@ -60,8 +60,8 @@ public class WeightedSelector<T> {
     }
 
     /**
-     * Removes an entry from the entry list. If the entry is removed successfully, the total
-     * will automatically update.
+     * Removes an entry from the entry list. If the entry is removed successfully, the total will
+     * automatically update.
      *
      * @param entry The entry to remove from the entry pool.
      * @return Whether or not the entry was removed successfully.
@@ -79,8 +79,8 @@ public class WeightedSelector<T> {
 
     /**
      * Provides access to the list of entries. If you add or remove anything, make sure to call
-     * {@link #updateTotal()} when you are done. It is critical that the total does not get
-     * messed up!
+     * {@link #updateTotal()} when you are done. It is critical that the total does not get messed
+     * up!
      *
      * @return A list of weighted entries.
      */
@@ -113,8 +113,8 @@ public class WeightedSelector<T> {
     }
 
     /**
-     * Updates the total weight value for the selector. This should be caused any time the list
-     * is altered.
+     * Updates the total weight value for the selector. This should be caused any time the list is
+     * altered.
      *
      * @return The new total weight.
      */
@@ -145,8 +145,8 @@ public class WeightedSelector<T> {
          * Constructs a new WeightedEntry using a basic entry and weight parameter.
          *
          * @param entry The outcome to represent with the entry.
-         * @param weight The weight of the entry. Entries with a higher weight have a higher
-         *        likelihood of being selected.
+         * @param weight The weight of the entry. Entries with a higher weight have a higher likelihood
+         *        of being selected.
          */
         public WeightedEntry (T entry, int weight) {
 

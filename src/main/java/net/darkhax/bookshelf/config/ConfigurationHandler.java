@@ -38,16 +38,16 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 public class ConfigurationHandler {
 
     /**
-     * A cache of all the config classes associated with a config file. Allows for multiple
-     * mods and config files to exist, without rebuilding the list every time. This is
-     * generated the first time {@link #init(ASMDataTable)} is called.
+     * A cache of all the config classes associated with a config file. Allows for multiple mods
+     * and config files to exist, without rebuilding the list every time. This is generated the
+     * first time {@link #init(ASMDataTable)} is called.
      */
     public static final Multimap<String, Class<?>> CLASS_CACHE = HashMultimap.create();
 
     /**
-     * A map of adapters. These are used to read/write a config option for a specific type. The
-     * key is the class of the type being handled, and the value is a functional interface
-     * which is used to process the config data.
+     * A map of adapters. These are used to read/write a config option for a specific type. The key
+     * is the class of the type being handled, and the value is a functional interface which is
+     * used to process the config data.
      */
     public static final Map<Class<?>, Adapter> handlers = new HashMap<>();
 
@@ -97,12 +97,12 @@ public class ConfigurationHandler {
 
     /**
      * Base constructor for a configuration handler. The purpose of this class is to provide a
-     * basic wrapper for Forge's configuration, but mostly to add support for special
-     * configuration based annotations.
+     * basic wrapper for Forge's configuration, but mostly to add support for special configuration
+     * based annotations.
      *
-     * @param name The name of the config file to represent. This should be all lower case and
-     *        have no spaces. Basic file name rules. The .cfg extension and forge config
-     *        directory is added automatically.
+     * @param name The name of the config file to represent. This should be all lower case and have
+     *        no spaces. Basic file name rules. The .cfg extension and forge config directory is
+     *        added automatically.
      */
     public ConfigurationHandler (String name) {
 

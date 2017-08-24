@@ -35,17 +35,16 @@ public class EnchantmentModifierEvent extends Event {
     /**
      * This event is fired every time
      * {@link EnchantmentHelper#getMaxEnchantmentLevel(Enchantment, EntityLivingBase)} would be
-     * called. This allows for enchantment specific effects to be applied, as well as
-     * increasing the effect of an enchantment level, without actually giving the player an
-     * item with that enchantment. For example, a ring item could be put in the inventory,
-     * which would give the player +1 levels to the frost walker enchantment. For the modified
-     * level to be applied, this event must be canceled. Due to how decentralised the
-     * enchantment code is, not all enchantments will trigger this event. Below is a list of
-     * enchantments that are known to work.
+     * called. This allows for enchantment specific effects to be applied, as well as increasing
+     * the effect of an enchantment level, without actually giving the player an item with that
+     * enchantment. For example, a ring item could be put in the inventory, which would give the
+     * player +1 levels to the frost walker enchantment. For the modified level to be applied, this
+     * event must be canceled. Due to how decentralised the enchantment code is, not all
+     * enchantments will trigger this event. Below is a list of enchantments that are known to
+     * work.
      *
-     * Power, Punch, Flame, Frost Walker, Aqua Affinity, Fire Aspect, Respiration, Depth
-     * Strider, Efficiency, Luck of The Sea, Lure, Looting, Knockback, Resistance, Fire
-     * Protection.
+     * Power, Punch, Flame, Frost Walker, Aqua Affinity, Fire Aspect, Respiration, Depth Strider,
+     * Efficiency, Luck of The Sea, Lure, Looting, Knockback, Resistance, Fire Protection.
      *
      * @param enchantment The enchantment that the level is being calculated for.
      * @param entity The entity that is using the enchantment.

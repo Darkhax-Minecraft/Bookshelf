@@ -31,8 +31,8 @@ public class MCColor extends Color {
     private static final long serialVersionUID = -6408679408589215496L;
 
     /**
-     * Constructs an MCColor from an ItemStack. Expects the stack to have already been checked
-     * for validity.
+     * Constructs an MCColor from an ItemStack. Expects the stack to have already been checked for
+     * validity.
      *
      * @param stack The ItemStack to construct a color from.
      */
@@ -54,8 +54,8 @@ public class MCColor extends Color {
     }
 
     /**
-     * Constructs an MCColor from a TileEntity. Expects the TileEntity to have already been
-     * checked for validity.
+     * Constructs an MCColor from a TileEntity. Expects the TileEntity to have already been checked
+     * for validity.
      *
      * @param tile The TileEntity to construct a color from.
      */
@@ -65,8 +65,8 @@ public class MCColor extends Color {
     }
 
     /**
-     * Constructs an MCColor from an NBTTagCompound. Expects the tag to have already been
-     * checked for validity.
+     * Constructs an MCColor from an NBTTagCompound. Expects the tag to have already been checked
+     * for validity.
      *
      * @param tag The NBTTagCompound to construct a color from.
      */
@@ -76,8 +76,8 @@ public class MCColor extends Color {
     }
 
     /**
-     * Constructs an MCColor from an array of color components. Expects the array to have
-     * already been checked for validity.
+     * Constructs an MCColor from an array of color components. Expects the array to have already
+     * been checked for validity.
      *
      * @param colors The array to construct a color from.
      */
@@ -180,8 +180,8 @@ public class MCColor extends Color {
     }
 
     /**
-     * Checks if an ItemStack is acceptable. For an ItemStack to be acceptable, it must not be
-     * null or empty, and must have an NBTTagCompound which is deemed acceptable by
+     * Checks if an ItemStack is acceptable. For an ItemStack to be acceptable, it must not be null
+     * or empty, and must have an NBTTagCompound which is deemed acceptable by
      * {@link #isAcceptable(NBTTagCompound)}.
      *
      * @param stack The ItemStack to check.
@@ -219,8 +219,8 @@ public class MCColor extends Color {
     }
 
     /**
-     * Checks if a NBTTagCompound is acceptable. For an NBTTagCompound to be acceptable, it
-     * must not be null, and must have an integer array named Color with 3 elements.
+     * Checks if a NBTTagCompound is acceptable. For an NBTTagCompound to be acceptable, it must
+     * not be null, and must have an integer array named Color with 3 elements.
      *
      * @param tag The NBTTagCompound to check.
      * @return Whether or not the ItemStack was acceptable.

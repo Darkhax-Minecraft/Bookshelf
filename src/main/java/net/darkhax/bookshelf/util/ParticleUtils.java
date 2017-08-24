@@ -23,9 +23,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public final class ParticleUtils {
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
-     * implicit public constructor to every class which does not define at lease one
-     * explicitly. Hence why this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an implicit
+     * public constructor to every class which does not define at lease one explicitly. Hence why
+     * this constructor was added.
      */
     private ParticleUtils () {
 
@@ -33,8 +33,8 @@ public final class ParticleUtils {
     }
 
     /**
-     * Spawns the digging particles for a block, similarly to the normal block hit effect
-     * particle. The intended use of this method is to override the block hit effects.
+     * Spawns the digging particles for a block, similarly to the normal block hit effect particle.
+     * The intended use of this method is to override the block hit effects.
      *
      * @param manager The EffectRenderer, used to render the particle effect.
      * @param state The BlockState for the block to render the breaking effect of.
@@ -83,8 +83,8 @@ public final class ParticleUtils {
     }
 
     /**
-     * Spawns the break particles for a block, similarly to the normal block break effect
-     * particle. The intended use of this method is to override the block break effects.
+     * Spawns the break particles for a block, similarly to the normal block break effect particle.
+     * The intended use of this method is to override the block break effects.
      *
      * @param manager The EffectRenderer, used to render the particle effect.
      * @param state The BlockState for the block to render the breaking effect of.

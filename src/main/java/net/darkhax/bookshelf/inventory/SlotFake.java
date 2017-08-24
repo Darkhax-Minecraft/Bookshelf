@@ -17,9 +17,9 @@ import net.minecraft.item.ItemStack;
 public class SlotFake extends Slot {
 
     /**
-     * Creates a slot which acts as a fake/ghost/filter slot. When an item is placed inside,
-     * only a copy with a stack size of one is placed. When it is removed, the copy is deleted.
-     * Perfect for creating item filters.
+     * Creates a slot which acts as a fake/ghost/filter slot. When an item is placed inside, only a
+     * copy with a stack size of one is placed. When it is removed, the copy is deleted. Perfect
+     * for creating item filters.
      *
      * @param inventory The inventory to add the slot to.
      * @param index The slot index.

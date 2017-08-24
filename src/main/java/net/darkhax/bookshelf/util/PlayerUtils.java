@@ -46,9 +46,9 @@ public final class PlayerUtils {
     public static BiMap<String, UUID> PROFILE_CACHE = HashBiMap.<String, UUID> create();
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
-     * implicit public constructor to every class which does not define at lease one
-     * explicitly. Hence why this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an implicit
+     * public constructor to every class which does not define at lease one explicitly. Hence why
+     * this constructor was added.
      */
     private PlayerUtils () {
 
@@ -56,8 +56,8 @@ public final class PlayerUtils {
     }
 
     /**
-     * Checks if a specific player can sleep. For this to be true, a player must not already be
-     * in a bed, and the world time bust be greater than 12541, but less than 23458.
+     * Checks if a specific player can sleep. For this to be true, a player must not already be in
+     * a bed, and the world time bust be greater than 12541, but less than 23458.
      *
      * @param player: The player to check the sleepability of.
      * @return boolean: True if the player can sleep, false if they can not.
@@ -85,9 +85,9 @@ public final class PlayerUtils {
      *
      * @param world: The world in which the target player resides.
      * @param playerID: A unique identifier associated with the target player.
-     * @return EntityPlayer: If the target player is online and within the targeted world,
-     *         their EntityPlayer instance will be returned. If the player is not found, null
-     *         will be returned.
+     * @return EntityPlayer: If the target player is online and within the targeted world, their
+     *         EntityPlayer instance will be returned. If the player is not found, null will be
+     *         returned.
      */
     public static EntityPlayer getPlayerFromUUID (World world, UUID playerID) {
 
@@ -106,8 +106,8 @@ public final class PlayerUtils {
     }
 
     /**
-     * Attempts to get the username associated with a UUID from Mojang. If no username is
-     * detected or an exception takes place, the exception message will be returned.
+     * Attempts to get the username associated with a UUID from Mojang. If no username is detected
+     * or an exception takes place, the exception message will be returned.
      *
      * @param id The UUID to search for.
      * @return The name of the player associated to that uuid.
@@ -150,8 +150,8 @@ public final class PlayerUtils {
     }
 
     /**
-     * Attempts to get the UUID associated with a username from Mojang. If no uuid is found,
-     * null will return.
+     * Attempts to get the UUID associated with a username from Mojang. If no uuid is found, null
+     * will return.
      *
      * @param username The username to look for.
      * @return The UUID for the player, or null if it could not be found.
@@ -205,8 +205,8 @@ public final class PlayerUtils {
     }
 
     /**
-     * Gets the amount of an item in a players inventory. Only checks main inventory and hot
-     * bar. Checks the stack size of the items found.
+     * Gets the amount of an item in a players inventory. Only checks main inventory and hot bar.
+     * Checks the stack size of the items found.
      *
      * @param player The player to check the inventory of.
      * @param item The item to check for.
@@ -267,8 +267,8 @@ public final class PlayerUtils {
 
     /**
      * Changes the dimension a player is in, in a safe way. This will make sure the player is
-     * teleported to the dimension and all the correct packets are sent to keep the client in
-     * sync. It also gets around teleporter code which in some cases will crash the server.
+     * teleported to the dimension and all the correct packets are sent to keep the client in sync.
+     * It also gets around teleporter code which in some cases will crash the server.
      *
      * @param player The player to change the dimension of.
      * @param dimension The dimension to send the player to.
@@ -280,8 +280,8 @@ public final class PlayerUtils {
 
     /**
      * Changes the dimension a player is in, in a safe way. This will make sure the player is
-     * teleported to the dimension and all the correct packets are sent to keep the client in
-     * sync. It also gets around teleporter code which in some cases will crash the server.
+     * teleported to the dimension and all the correct packets are sent to keep the client in sync.
+     * It also gets around teleporter code which in some cases will crash the server.
      *
      * @param player The player to change the dimension of.
      * @param dimension The dimension to send the player to.
@@ -329,8 +329,8 @@ public final class PlayerUtils {
     }
 
     /**
-     * Retrieves an instance of the player from the client side. This code only exists in
-     * client side code and can not be used in server side code.
+     * Retrieves an instance of the player from the client side. This code only exists in client
+     * side code and can not be used in server side code.
      */
     @SideOnly(Side.CLIENT)
     public static EntityPlayer getClientPlayer () {
@@ -339,15 +339,15 @@ public final class PlayerUtils {
     }
 
     /**
-     * Sends a spamless message to the chat. A spamless message is one that only shows up in
-     * the chat once. If another version of the message were to be added to chat, the earlier
-     * one would be removed.
+     * Sends a spamless message to the chat. A spamless message is one that only shows up in the
+     * chat once. If another version of the message were to be added to chat, the earlier one would
+     * be removed.
      *
-     * @param messageID A unique message ID used to separate your message from the others. It
-     *        is highly recommended to use a random number to prevent conflicts with other mods
-     *        doing similar things. Each message type should have it's own ID.
-     * @param message The message to send to chat, this message will replace earlier messages
-     *        in the gui that use the same ID.
+     * @param messageID A unique message ID used to separate your message from the others. It is
+     *        highly recommended to use a random number to prevent conflicts with other mods doing
+     *        similar things. Each message type should have it's own ID.
+     * @param message The message to send to chat, this message will replace earlier messages in
+     *        the gui that use the same ID.
      */
     @SideOnly(Side.CLIENT)
     public static void sendSpamlessMessage (int messageID, ITextComponent message) {
@@ -357,8 +357,8 @@ public final class PlayerUtils {
     }
 
     /**
-     * Checks if the player is currently in game. This is done by checking if the current world
-     * and player exist, and if the player exists in a valid world.
+     * Checks if the player is currently in game. This is done by checking if the current world and
+     * player exist, and if the player exists in a valid world.
      *
      * @return Whether or not the player is currently in game.
      */

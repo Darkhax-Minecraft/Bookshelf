@@ -7,8 +7,6 @@
  */
 package net.darkhax.bookshelf;
 
-import java.util.ArrayList;
-
 import net.darkhax.bookshelf.crafting.AnvilRecipe;
 import net.darkhax.bookshelf.crafting.IAnvilRecipe;
 import net.darkhax.bookshelf.lib.ModTrackingList;
@@ -21,7 +19,7 @@ public class BookshelfRegistry {
      * A List of all the anvil recipes that have been registered with Bookshelf.
      */
     // TODO add JEI support for showing recipes!
-    private static final ModTrackingList<IAnvilRecipe> anvilRecipes = new ModTrackingList<>(new ArrayList<IAnvilRecipe>());
+    private static final ModTrackingList<IAnvilRecipe> anvilRecipes = new ModTrackingList<>();
 
     /**
      * Adds a new oredict anvil recipe to the list. This recipe will have no name requirement.

@@ -13,7 +13,7 @@
  * - Fixed some mappings
  * - Changed to Bookshelf's formatting
  * - getAction now returns void.
- * - Added a check to prevent loading new chunks. 
+ * - Added a check to prevent loading new chunks.
  */
 package net.darkhax.bookshelf.network;
 
@@ -71,7 +71,7 @@ public abstract class TileEntityMessage<T extends TileEntity> extends Serializab
         final World world = context.getServerHandler().player.getEntityWorld();
         final TileEntity tile = world.getTileEntity(this.pos);
 
-        if (tile != null && world.isBlockLoaded(pos)) {
+        if (tile != null && world.isBlockLoaded(this.pos)) {
             try {
 
                 final T castTile = (T) tile;
