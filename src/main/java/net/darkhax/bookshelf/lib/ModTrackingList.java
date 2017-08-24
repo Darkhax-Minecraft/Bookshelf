@@ -16,6 +16,7 @@
 package net.darkhax.bookshelf.lib;
 
 import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.IdentityHashMap;
@@ -49,11 +50,19 @@ public class ModTrackingList<T> extends AbstractList<T> implements RandomAccess 
     private final Map<T, ModContainer> modContainerMap;
 
     /**
-     * The main constructor for the tracking list. Entries added and removed from this list
-     * will be tracked.
+     * Constructs a new ModTrackingList, with an empty ArrayList.
+     */
+    public ModTrackingList () {
+
+        this(new ArrayList<>());
+    }
+
+    /**
+     * The main constructor for the tracking list. Entries added and removed from this list will be
+     * tracked.
      *
-     * @param delegate The parent/delegate list. This can be empty, but should probably
-     *        represent the list you are replacing, if you are replacing one.
+     * @param delegate The parent/delegate list. This can be empty, but should probably represent
+     *        the list you are replacing, if you are replacing one.
      */
     public <D extends List<T> & RandomAccess> ModTrackingList (@Nonnull D delegate) {
 
@@ -61,11 +70,11 @@ public class ModTrackingList<T> extends AbstractList<T> implements RandomAccess 
     }
 
     /**
-     * The backing constructor for the tracking list. Entries added and removed from this list
-     * will be tracked.
+     * The backing constructor for the tracking list. Entries added and removed from this list will
+     * be tracked.
      *
-     * @param delegate The parent/delegate list. This can be empty, but should probably
-     *        represent the list you are replacing, if you are replacing one.
+     * @param delegate The parent/delegate list. This can be empty, but should probably represent
+     *        the list you are replacing, if you are replacing one.
      * @param modContainerMap The map used to hold the tracking data.
      */
     public ModTrackingList (@Nonnull List<T> delegate, @Nonnull Map<T, ModContainer> modContainerMap) {
