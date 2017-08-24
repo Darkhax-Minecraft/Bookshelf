@@ -11,12 +11,14 @@ import net.darkhax.bookshelf.handler.BookshelfEventHandler;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.util.AnnotationUtils;
 import net.darkhax.bookshelf.util.OreDictUtils;
+import net.minecraft.command.ICommand;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION_NUMBER, acceptedMinecraftVersions = "[1.12,1.12.2)")
 public class Bookshelf {
@@ -35,5 +37,14 @@ public class Bookshelf {
     public void Init (FMLInitializationEvent event) {
 
         OreDictUtils.initAdditionalVanillaEntries();
+    }
+
+    @EventHandler
+    public void serverStarting (FMLServerStartingEvent event) {
+
+        for (final ICommand command : BookshelfRegistry.getCommands()) {
+
+            event.registerServerCommand(command);
+        }
     }
 }

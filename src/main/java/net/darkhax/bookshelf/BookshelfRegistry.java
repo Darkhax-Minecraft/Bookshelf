@@ -10,6 +10,7 @@ package net.darkhax.bookshelf;
 import net.darkhax.bookshelf.crafting.AnvilRecipe;
 import net.darkhax.bookshelf.crafting.IAnvilRecipe;
 import net.darkhax.bookshelf.lib.ModTrackingList;
+import net.minecraft.command.ICommand;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -20,6 +21,14 @@ public class BookshelfRegistry {
      */
     // TODO add JEI support for showing recipes!
     private static final ModTrackingList<IAnvilRecipe> anvilRecipes = new ModTrackingList<>();
+
+    /**
+     * A list of commands to register. This exists to allow all depending mods to
+     * register/construct their commands during an earlier loading stage, and lower the amount of
+     * work and listeners slowing down the server starting event. It's both a quality of life, and
+     * very minor performance improvement.
+     */
+    private static final ModTrackingList<ICommand> commands = new ModTrackingList<>();
 
     /**
      * Adds a new oredict anvil recipe to the list. This recipe will have no name requirement.
@@ -122,5 +131,25 @@ public class BookshelfRegistry {
     public static ModTrackingList<IAnvilRecipe> getAnvilRecipes () {
 
         return anvilRecipes;
+    }
+
+    /**
+     * Adds a new command. Registration will be handled for you.
+     *
+     * @param command The command to add.
+     */
+    public static void addCommand (ICommand command) {
+
+        commands.add(command);
+    }
+
+    /**
+     * Gets all the commands registered through bookshelf.
+     *
+     * @return All the commands registered through bookshelf.
+     */
+    public static ModTrackingList<ICommand> getCommands () {
+
+        return commands;
     }
 }
