@@ -1,75 +1,69 @@
 buildscript {
 
     repositories {
-
+    
         jcenter()
-
-        maven {
-
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-
-        maven {
-
-            url "https://plugins.gradle.org/m2/"
+        
+        maven { 
+        
+            url = 'http://files.minecraftforge.net/maven'
         }
         
         maven {
-        
-            url = 'http://maven.modmuss50.me/'
+
+            url 'https://plugins.gradle.org/m2/'
         }
     }
-
+    
     dependencies {
-
+    
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.0.9"
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1"
-        classpath 'ModsIOUpload:ModsIOUpload:2.1.15'
+        classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.0.9'
     }
 }
 
-apply plugin: "maven"
-apply plugin: "net.minecraftforge.gradle.forge"
-apply plugin: "com.matthewprenger.cursegradle"
-apply plugin: 'net.cazzar.gradle.modsio'
-apply plugin: "org.sonarqube"
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'com.matthewprenger.cursegradle'
+apply plugin: 'maven-publish' 
+
+apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
+apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/artifacts.gradle'
+apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/maven.gradle'
+
+version = "${mod_version}" + getBuildNumber()
+group = "${mod_group}"
+archivesBaseName = "${mod_name}-${version_minecraft}"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-    
-group = "net.darkhax.bookshelf"
-archivesBaseName = "Bookshelf"
-version = getVersionFromJava(file("src/main/java/net/darkhax/bookshelf/lib/Constants.java"))
 
-//Defines the MC environment information.
 minecraft {
 
-    version = "${version_forge}"
+    version = "${version_minecraft}-${version_forge}"
     mappings = "${version_mcp}"
-    runDir = "run"
-    useDepAts = true
+    runDir = 'run'
+    
+    replace '@VERSION@', project.version
+    replaceIn "${mod_class}.java"
 }
 
-//Handles basic resources such as mcmod.info
 processResources {
 
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
     from(sourceSets.main.resources.srcDirs) {
-
+    
         include 'mcmod.info'
-        expand 'version': project.version, 'mcversion': project.minecraft.version
+        expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-
+        
     from(sourceSets.main.resources.srcDirs) {
-
+    
         exclude 'mcmod.info'
     }
-    
-   rename '(.+_at.cfg)', 'META-INF/$1'
+
+    rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
 jar {
@@ -80,84 +74,12 @@ jar {
  	}
  }
 
-//Pulls the build version from a Java file.
-String getVersionFromJava(File file) {
+String getBuildNumber() {
 
-    String release = "0";
-    String update = "0";
-    String patch = "0";
-
-    String build = System.getenv("BUILD_NUMBER") ? System.getenv("BUILD_NUMBER") : "0";
-    def outfile = "";
-    def ln = System.getProperty("line.separator")
-
-    String prefix = "public static final String VERSION_NUMBER = \"";
-    file.eachLine {
-        String s ->
-
-            String v = s.trim();
-
-        if (v.startsWith(prefix)) {
-
-            v = v.substring(prefix.length(), v.length() - 2);
-            String[] pts = v.split("\\.");
-
-            release = pts[0];
-            update = pts[1];
-            patch = pts[2];
-            s = s.replaceAll(".[0-9]+\";", ".${build}\";");
-        }
-
-        outfile += (s + ln);
-    }
-
-    file.write(outfile);
-
-    return "${version_minecraft}-$release.$update.$patch.$build";
+    return System.getenv('BUILD_NUMBER') ? System.getenv('BUILD_NUMBER') : System.getenv('TRAVIS_BUILD_NUMBER') ? System.getenv('TRAVIS_BUILD_NUMBER') : '0';
 }
 
-//Creates the source jar.
-task sourcesJar(type: Jar, dependsOn: classes) {
-
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
-
-//Creates the JavaDoc jar.
-task javadocJar(type: Jar, dependsOn: javadoc) {
-
-    from javadoc.destinationDir
-    classifier = 'javadoc'
-}
-
-//Creates the deobfuscated jar.
-task deobfJar(type: Jar) {
-
-    from sourceSets.main.output
-    classifier = "deobf"
-}
-
-//Adds the deobf, source and javadoc jars to the build artifacts.
-artifacts {
-
-    archives deobfJar
-    archives sourcesJar
-    archives javadocJar
-}
-
-//Uploads the artifacts to the maven server.
-uploadArchives {
-
-    repositories {
-
-        mavenDeployer {
-
-            repository(url: "file:///var/www/html/maven")
-        }
-    }
-}
-
-//Prevents incomplete JavaDocs from preventing a build on Java 8.
+//Shuts up javadoc failures
 if (JavaVersion.current().isJava8Compatible()) {
 
     allprojects {
@@ -169,74 +91,50 @@ if (JavaVersion.current().isJava8Compatible()) {
     }
 }
 
-// Creates a changelog based on the git changelog. Based on code by Kobata
-// https://github.com/Inventory-Tweaks/inventory-tweaks/blob/develop/build.gradle
-def getGitChangelog = { ->
-    try {
-        def stdout = new ByteArrayOutputStream()
-        def gitHash = System.getenv("GIT_COMMIT")
-        def gitPrevHash = System.getenv("GIT_PREVIOUS_COMMIT")
-        def travisRange = System.getenv("TRAVIS_COMMIT_RANGE")
-        if(gitHash && gitPrevHash) {
-            exec {
-                commandLine 'git', 'log', '--pretty=tformat:- %s', '' + gitPrevHash + '...' + gitHash
-                standardOutput = stdout
-            }
-            return stdout.toString().trim()
-        } else if(travisRange) {
-            exec {
-                commandLine 'git', 'log', '--pretty=tformat:- %s', '' + travisRange
-                standardOutput = stdout
-            }
-            return stdout.toString().trim()
-        } else {
-            return "";
-        }
-    } catch(ignored) {
-        return "";
-    }
-}
-
-//Provides the basic CurseForge upload details
 curseforge {
 
-    //Sets the API from the system environment, if available.
-    apiKey = System.getenv("curseForgeApiKey") ? System.getenv("curseForgeApiKey") : "0";
+    apiKey = System.getenv('curse_auth');
+    def versions = "${curse_versions}".split(', ')
 
     project {
 
-        id = "${id_curse}"
+        id = "${curse_project}"
         releaseType = 'alpha'
-        changelog = getGitChangelog()
+        changelog = getGitChangelog
         changelogType = 'markdown'
 
-        addGameVersion "${version_minecraft}"
-        addGameVersion '1.12'
-        
-        addArtifact(deobfJar)
+        versions.each {
+
+            addGameVersion "${it}"
+        }
+
+        if (project.hasProperty('curse_requirements') || project.hasProperty('curse_optionals')) {
+
+            mainArtifact(jar) {
+
+                relations {
+
+                    if (project.hasProperty('curse_requirements')) {
+                        def requirements = "${curse_requirements}".split(', ')
+                        requirements.each {
+
+                            requiredLibrary "${it}"
+                        }
+                    }
+
+                    if (project.hasProperty('curse_optionals')) {
+                        def optionals = "${curse_optionals}".split(', ')
+                        optionals.each {
+
+                            optionalLibrary "${it}"
+                        }
+                    }
+                }
+            }
+        }
+
         addArtifact(sourcesJar)
         addArtifact(javadocJar)
-    }
-}
-
-modsIO {
-    
-    key = System.getenv("ModsIOApiKey") ? System.getenv("ModsIOApiKey") : '0'
-    
-    project {
-    
-        artifact = jar.archivePath
-        modid = "${id_modsio}"
-        minecraft = "${version_minecraft}"
-        changelog = getGitChangelog()
-        current = true
-    }
-}
-
-sonarqube {
-
-    properties {
-        property "sonar.host.url", "https://sonarqube.com"
-        property "sonar.login", System.getenv("sonarQubeApiKey")
+        addArtifact(deobfJar)
     }
 }
