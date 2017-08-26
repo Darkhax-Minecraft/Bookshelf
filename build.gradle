@@ -93,7 +93,7 @@ if (JavaVersion.current().isJava8Compatible()) {
 
 curseforge {
 
-    apiKey = System.getenv('curse_auth');
+    apiKey = System.getenv('curse_auth') ? System.getenv('curse_auth') : 0 
     def versions = "${curse_versions}".split(', ')
 
     project {
