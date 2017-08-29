@@ -204,4 +204,43 @@ public final class NBTUtils {
         return deepTag;
     }
 
+    /**
+     * Increments the value of an integer tag on an ItemStack.
+     *
+     * @param stack The ItemStack to increment.
+     * @param key The key of the tag.
+     * @param amount The amount to add.
+     * @return The amount after adding.
+     */
+    public static int increment (ItemStack stack, String key, int amount) {
+
+        return incriment(StackUtils.prepareStackTag(stack), key, amount);
+    }
+
+    /**
+     * Increments the value of an integer tag.
+     *
+     * @param tag The tag to modify.
+     * @param key The key of the tag.
+     * @param amount The amount to add.
+     * @return The amount after adding.
+     */
+    public static int incriment (NBTTagCompound tag, String key, int amount) {
+
+        final int result = tag.getInteger(key) + amount;
+        tag.setInteger(key, result);
+        return result;
+    }
+
+    /**
+     * Gets the value of an integer tag on an ItemStack.
+     *
+     * @param stack The ItemStack to check.
+     * @param key The key to get.
+     * @return The value of the tag.
+     */
+    public static int getAmount (ItemStack stack, String key) {
+
+        return StackUtils.prepareStackTag(stack).getInteger(key);
+    }
 }
