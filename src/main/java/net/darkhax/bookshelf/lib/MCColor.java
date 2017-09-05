@@ -26,9 +26,89 @@ import net.minecraft.world.IBlockAccess;
 public class MCColor extends Color {
 
     /**
-     * A serialization ID.
+     * The color of black dye.
      */
-    private static final long serialVersionUID = -6408679408589215496L;
+    public static final MCColor DYE_BLACK = new MCColor(25, 25, 25);
+
+    /**
+     * The color of red dye.
+     */
+    public static final MCColor DYE_RED = new MCColor(153, 51, 51);
+
+    /**
+     * The color of green dye.
+     */
+    public static final MCColor DYE_GREEN = new MCColor(102, 127, 51);
+
+    /**
+     * The color of brown dye.
+     */
+    public static final MCColor DYE_BROWN = new MCColor(102, 76, 51);
+
+    /**
+     * The color of blue dye.
+     */
+    public static final MCColor DYE_BLUE = new MCColor(51, 76, 178);
+
+    /**
+     * The color of purple dye.
+     */
+    public static final MCColor DYE_PURPLE = new MCColor(127, 63, 178);
+
+    /**
+     * The color of cyan dye.
+     */
+    public static final MCColor DYE_CYAN = new MCColor(76, 127, 153);
+
+    /**
+     * The color of light gray dye.
+     */
+    public static final MCColor DYE_LIGHT_GRAY = new MCColor(153, 153, 153);
+
+    /**
+     * The color of gray dye.
+     */
+    public static final MCColor DYE_GRAY = new MCColor(76, 76, 76);
+
+    /**
+     * The color of pink dye.
+     */
+    public static final MCColor DYE_PINK = new MCColor(242, 127, 165);
+
+    /**
+     * The color of lime dye.
+     */
+    public static final MCColor DYE_LIME = new MCColor(127, 204, 25);
+
+    /**
+     * The color of yellow dye.
+     */
+    public static final MCColor DYE_YELLOW = new MCColor(229, 229, 51);
+
+    /**
+     * The color of blue dye.
+     */
+    public static final MCColor DYE_LIGHT_BLUE = new MCColor(102, 153, 216);
+
+    /**
+     * The color of magenta dye.
+     */
+    public static final MCColor DYE_MAGENTA = new MCColor(178, 76, 216);
+
+    /**
+     * The color of orange dye.
+     */
+    public static final MCColor DYE_ORANGE = new MCColor(216, 127, 5);
+
+    /**
+     * The color of white dye.
+     */
+    public static final MCColor DYE_WHITE = new MCColor(255, 255, 255);
+
+    /**
+     * An array of the vanilla colors.
+     */
+    public static final MCColor[] VANILLA_COLORS = { DYE_BLACK, DYE_RED, DYE_GREEN, DYE_BROWN, DYE_BLUE, DYE_PURPLE, DYE_CYAN, DYE_LIGHT_GRAY, DYE_GRAY, DYE_PINK, DYE_LIME, DYE_YELLOW, DYE_LIGHT_BLUE, DYE_MAGENTA, DYE_ORANGE, DYE_WHITE };
 
     /**
      * Constructs an MCColor from an ItemStack. Expects the stack to have already been checked for
