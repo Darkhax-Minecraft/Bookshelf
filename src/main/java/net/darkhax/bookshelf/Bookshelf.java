@@ -9,6 +9,7 @@ package net.darkhax.bookshelf;
 
 import net.darkhax.bookshelf.crafting.IAnvilRecipe;
 import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.darkhax.bookshelf.util.AnnotationUtils;
 import net.darkhax.bookshelf.util.OreDictUtils;
 import net.darkhax.bookshelf.util.RenderUtils;
@@ -96,11 +97,17 @@ public class Bookshelf {
             RenderUtils.markRenderersForReload(false);
         }
     }
-    
-    
+
     @EventHandler
-    public void onFingerprintViolation(FMLFingerprintViolationEvent event) {
-        
+    @SideOnly(Side.CLIENT)
+    public void clientInit (FMLInitializationEvent event) {
+
+        RegistryHelper.initColorHandlers();
+    }
+
+    @EventHandler
+    public void onFingerprintViolation (FMLFingerprintViolationEvent event) {
+
         Constants.LOG.warn("Invalid fingerprint detected! The file " + event.getSource().getName() + " may have been tampered with. This version will NOT be supported by the author!");
     }
 }

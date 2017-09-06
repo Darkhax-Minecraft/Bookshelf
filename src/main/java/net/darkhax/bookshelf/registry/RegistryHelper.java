@@ -14,6 +14,8 @@ import javax.annotation.Nonnull;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
+import net.darkhax.bookshelf.block.IColorfulBlock;
+import net.darkhax.bookshelf.item.IColorfulItem;
 import net.darkhax.bookshelf.item.ICustomMesh;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.LootBuilder;
@@ -48,6 +50,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RegistryHelper {
 
     /**
+     * A list of all known helpers.
+     */
+    private static final List<RegistryHelper> HELPERS = NonNullList.create();
+
+    /**
      * The id of the mod the registry helper instance belongs to.
      */
     private final String modid;
@@ -74,6 +81,16 @@ public class RegistryHelper {
     private final List<ICustomMesh> customMeshes = NonNullList.create();
 
     /**
+     * A list of all the colored items registered here.
+     */
+    private final List<Item> coloredItems = NonNullList.create();
+
+    /**
+     * A list of all the colored blocks registered here.
+     */
+    private final List<Block> coloredBlocks = NonNullList.create();
+
+    /**
      * The creative tab used by the mod. This can be null.
      */
     private CreativeTabs tab;
@@ -98,6 +115,7 @@ public class RegistryHelper {
 
         this.modid = modid;
         MinecraftForge.EVENT_BUS.register(this);
+        HELPERS.add(this);
     }
 
     /**
@@ -186,6 +204,11 @@ public class RegistryHelper {
             block.setCreativeTab(this.tab);
         }
 
+        if (block instanceof IColorfulBlock) {
+
+            this.coloredBlocks.add(block);
+        }
+
         return block;
     }
 
@@ -224,6 +247,11 @@ public class RegistryHelper {
                 final ICustomMesh mesh = (ICustomMesh) item;
                 this.customMeshes.add(mesh);
                 ModelLoader.setCustomMeshDefinition(item, mesh.getCustomMesh());
+            }
+
+            if (item instanceof IColorfulItem) {
+
+                this.coloredItems.add(item);
             }
         }
 
@@ -421,5 +449,25 @@ public class RegistryHelper {
     public void registerInventoryModel (@Nonnull Item item, int meta, @Nonnull String modelName) {
 
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(modelName, "inventory"));
+    }
+
+    /**
+     * Handles color handlers for items and blocks.
+     */
+    @SideOnly(Side.CLIENT)
+    public static void initColorHandlers () {
+
+        for (final RegistryHelper helper : HELPERS) {
+
+            for (final Block block : helper.coloredBlocks) {
+
+                helper.registerColorHandler(block, ((IColorfulBlock) block).getColorHandler());
+            }
+
+            for (final Item item : helper.coloredItems) {
+
+                helper.registerColorHandler(item, ((IColorfulItem) item).getColorHandler());
+            }
+        }
     }
 }
