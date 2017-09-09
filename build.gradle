@@ -44,7 +44,7 @@ minecraft {
     runDir = 'run'
     
     replace '@VERSION@', project.version
-    replace '@FINGERPRINT@', project.signSHA1
+    replace '@FINGERPRINT@', project.findProperty('signSHA1')
     replaceIn "${mod_class}.java"
 }
 
@@ -147,10 +147,10 @@ task signJar(type: SignJar, dependsOn: reobfJar) {
         project.hasProperty('keyStore')
     }
     
-    keyStore = project.keyStore
-    alias = project.keyStoreAlias
-    storePass = project.keyStorePass
-    keyPass = project.keyStoreKeyPass
+    keyStore = project.findProperty('keyStore')
+    alias = project.findProperty('keyStoreAlias')
+    storePass = project.findProperty('keyStorePass')
+    keyPass = project.findProperty('keyStoreKeyPass')
     inputFile = jar.archivePath
     outputFile = jar.archivePath
 }
