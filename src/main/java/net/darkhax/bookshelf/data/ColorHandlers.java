@@ -10,6 +10,7 @@ package net.darkhax.bookshelf.data;
 import net.darkhax.bookshelf.lib.MCColor;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -56,9 +57,26 @@ public class ColorHandlers {
      */
     public static IItemColor ITEM_MCCOLOR = (stack, index) -> MCColor.isAcceptable(stack) ? new MCColor(stack).getRGB() : MCColor.WHITE.getRGB();
 
+    // Blocks
+
     /**
      * A reusable color handler which uses a MCColor which is read from
      * {@link net.minecraft.tileentity.TileEntity#getTileData()}.
      */
     public static IBlockColor BLOCK_MCCOLOR = (state, world, pos, index) -> MCColor.isAcceptable(world, pos) ? new MCColor(world, pos).getRGB() : MCColor.WHITE.getRGB();
+
+    /**
+     * A reusable color handler which applies the foliage color for the biome.
+     */
+    public static IBlockColor BLOCK_FOLIAGE = (state, world, pos, index) -> BiomeColorHelper.getFoliageColorAtPos(world, pos);
+
+    /**
+     * A reusable color handler which applies the grass color for the biome.
+     */
+    public static IBlockColor BLOCK_GRASS = (state, world, pos, index) -> BiomeColorHelper.getGrassColorAtPos(world, pos);
+
+    /**
+     * A reusable color handler which applies the water color for the biome.
+     */
+    public static IBlockColor BLOCK_WATER = (state, world, pos, index) -> BiomeColorHelper.getWaterColorAtPos(world, pos);
 }
