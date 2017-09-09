@@ -500,9 +500,10 @@ public final class StackUtils {
      * @param size The stack size to create.
      * @return An ItemStack which represents the passed state.
      */
+    @Deprecated
     public static ItemStack getStackFromState (IBlockState state, int size) {
 
-        return new ItemStack(state.getBlock(), size, state.getBlock().getMetaFromState(state));
+        return new ItemStack(state.getBlock(), size, state.getBlock().damageDropped(state));
     }
 
     /**
@@ -511,6 +512,7 @@ public final class StackUtils {
      * @param stack The stack to get stuff from.
      * @return The IBlockState from the ItemStack.
      */
+    @Deprecated
     public static IBlockState getStateFromStack (ItemStack stack) {
 
         final Block block = Block.getBlockFromItem(stack.getItem());
