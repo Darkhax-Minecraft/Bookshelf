@@ -289,6 +289,11 @@ public final class PlayerUtils {
      */
     public static void changeDimension (EntityPlayerMP player, int dimension, PlayerList playerData) {
 
+        if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(player, dimension)) {
+
+            return;
+        }
+
         final int oldDim = player.dimension;
         final boolean wasAlive = player.isEntityAlive();
         final WorldServer worldOld = playerData.getServerInstance().getWorld(player.dimension);
