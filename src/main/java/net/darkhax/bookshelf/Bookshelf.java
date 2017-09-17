@@ -108,6 +108,6 @@ public class Bookshelf {
     @EventHandler
     public void onFingerprintViolation (FMLFingerprintViolationEvent event) {
 
-        Constants.LOG.warn("Invalid fingerprint detected! The file " + event.getSource().getName() + " may have been tampered with. This version will NOT be supported by the author!");
+        Constants.LOG.error("Invalid fingerprint detected! The file " + event.getSource().getName() + " may have been tampered with. This version will NOT be supported by the author!");
     }
 }
