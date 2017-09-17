@@ -18,14 +18,14 @@ supporters.translator=Translator
 supporters.other=Other
 
 #Moon Phases
-moon.full.name=Full Moon
-moon.waxing.gibbous.name=Waxing Gibbous
-moon.first.quarter.name=First Quarter
-moon.waxing.crescent.name=Waxing Crescent
-moon.new.moon.name=New Moon
-moon.waning.crescent.name=Waning Crescent
-moon.last.quarter.name=Last Quarter
-moon.waning.gibbous.name=Waning Gibbous
+moon.phase.full.name=Full Moon
+moon.phase.waxing.gibbous.name=Waxing Gibbous
+moon.phase.first.quarter.name=First Quarter
+moon.phase.waxing.crescent.name=Waxing Crescent
+moon.phase.new.name=New Moon
+moon.phase.waning.crescent.name=Waning Crescent
+moon.phase.last.quarter.name=Last Quarter
+moon.phase.waning.gibbous.name=Waning Gibbous
 
 #Enchantment Level localization. Do not translate!
 enchantment.level.11=XI

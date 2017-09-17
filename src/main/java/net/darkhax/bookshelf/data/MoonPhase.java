@@ -11,7 +11,7 @@ public enum MoonPhase {
     WAXING_GIBBOUS(1, "waxing.gibbous"),
     FIRST_QUARTER(2, "first.quarter"),
     WAXING_CRESCENT(3, "waxing.crescent"),
-    NEW_MOON(4, "new.moon"),
+    NEW_MOON(4, "new"),
     WANING_CRESCENT(5, "waning.crescent"),
     LAST_QUARTER(6, "last.quarter"),
     WANING_GIBBOUS(7, "waning.gibbous");
