@@ -31,7 +31,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = "@VERSION@", acceptedMinecraftVersions = "[1.12,1.12.2)", certificateFingerprint = "@FINGERPRINT@")
+@Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = "@VERSION@", certificateFingerprint = "@FINGERPRINT@")
 public class Bookshelf {
 
     @Instance(Constants.MOD_ID)
