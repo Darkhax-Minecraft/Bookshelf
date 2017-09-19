@@ -42,7 +42,7 @@ public abstract class BlockTileEntity extends Block implements ITileEntityProvid
     protected BlockTileEntity (Material material, MapColor color) {
 
         super(material, color);
-        this.isBlockContainer = true;
+        this.hasTileEntity = true;
     }
 
     @Override
