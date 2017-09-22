@@ -8,6 +8,7 @@
 package net.darkhax.bookshelf.util;
 
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 public final class WorldUtils {
 
@@ -38,5 +39,16 @@ public final class WorldUtils {
         }
 
         return result;
+    }
+
+    /**
+     * Gets the amount of loaded chunks.
+     *
+     * @param world The world to get the chunk count of.
+     * @return The amount of chunks. -1 means it was unable to get the amount.
+     */
+    public static int getLoadedChunks (WorldServer world) {
+
+        return world.getChunkProvider() != null ? world.getChunkProvider().getLoadedChunkCount() : -1;
     }
 }
