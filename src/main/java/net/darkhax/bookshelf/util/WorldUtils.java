@@ -51,4 +51,15 @@ public final class WorldUtils {
 
         return world.getChunkProvider() != null ? world.getChunkProvider().getLoadedChunkCount() : -1;
     }
+
+    /**
+     * Gets the dimension id of a world.
+     *
+     * @param world The world to get the id of.
+     * @return The id of the world. 0 (surface) is used if none is found.
+     */
+    public static int getDimId (WorldServer world) {
+
+        return world.provider != null ? world.provider.getDimension() : 0;
+    }
 }
