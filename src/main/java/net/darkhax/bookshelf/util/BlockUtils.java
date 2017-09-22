@@ -315,4 +315,16 @@ public final class BlockUtils {
         final float currentSpeed = getModifiedBreakSpeed(targetSpeed, currentHardness, currentCanHarvest);
         return currentSpeed;
     }
+
+    /**
+     * Checks if a block position is in a slime chunk.
+     *
+     * @param world The world instance.
+     * @param pos The position to check.
+     * @return Whether or not the chunk is a slime chunk.
+     */
+    public static boolean isSlimeChunk (World world, BlockPos pos) {
+
+        return world.getChunkFromBlockCoords(pos).getRandomWithSeed(987234911L).nextInt(10) == 0;
+    }
 }
