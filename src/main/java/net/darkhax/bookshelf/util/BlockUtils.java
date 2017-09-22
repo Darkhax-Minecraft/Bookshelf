@@ -29,9 +29,9 @@ import net.minecraftforge.oredict.OreDictionary;
 public final class BlockUtils {
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an implicit
-     * public constructor to every class which does not define at lease one explicitly. Hence why
-     * this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java
+     * adds an implicit public constructor to every class which does not define
+     * at lease one explicitly. Hence why this constructor was added.
      */
     private BlockUtils () {
 
@@ -39,12 +39,14 @@ public final class BlockUtils {
     }
 
     /**
-     * Checks if an ItemStack contains an ore item. This is done by checking the item extends
-     * BlockOre, or if the ore dictionary for entries that start with 'ore'. It will also check the
-     * display name of the stack to see if it has the word Ore in it.
+     * Checks if an ItemStack contains an ore item. This is done by checking the
+     * item extends BlockOre, or if the ore dictionary for entries that start
+     * with 'ore'. It will also check the display name of the stack to see if it
+     * has the word Ore in it.
      *
      * @param stack The ItemStack to check.
-     * @param checkName Whether or not the name of the ItemStack should be checked.
+     * @param checkName Whether or not the name of the ItemStack should be
+     *        checked.
      * @return Whether or not the ItemStack is an ore.
      */
     public static boolean isOre (@Nonnull ItemStack stack, boolean checkName) {
@@ -70,7 +72,8 @@ public final class BlockUtils {
      * Checks if a block is a fluid or not.
      *
      * @param block An instance of the block being checked.
-     * @return If the block is a fluid, true will be returned. If not, false will be returned.
+     * @return If the block is a fluid, true will be returned. If not, false
+     *         will be returned.
      */
     public static boolean isFluid (Block block) {
 
@@ -166,15 +169,17 @@ public final class BlockUtils {
     }
 
     /**
-     * Creates a modified version of the break speed which already has the hardness and harvest
-     * check factored in. This allows for the BreakSpeed event to change the final speed value, by
-     * adjusting for the hardness and other whether or not the player has the right tool.
+     * Creates a modified version of the break speed which already has the
+     * hardness and harvest check factored in. This allows for the BreakSpeed
+     * event to change the final speed value, by adjusting for the hardness and
+     * other whether or not the player has the right tool.
      *
-     * @param desiredBreakSpeed The desired break speed. This is the desired final result.
+     * @param desiredBreakSpeed The desired break speed. This is the desired
+     *        final result.
      * @param currentHardness The current hardness of the block.
      * @param canHarvest Whether or not the current block can be harvested.
-     * @return A modified version of the break speed with adjustments for hardness and
-     *         harvestability.
+     * @return A modified version of the break speed with adjustments for
+     *         hardness and harvestability.
      */
     public static float getModifiedBreakSpeed (float desiredBreakSpeed, float currentHardness, boolean canHarvest) {
 
@@ -185,8 +190,8 @@ public final class BlockUtils {
     }
 
     /**
-     * Checks if the player can harvest a block, without risk of crashes due to unsupported use of
-     * the method.
+     * Checks if the player can harvest a block, without risk of crashes due to
+     * unsupported use of the method.
      *
      * @param state The block state to check.
      * @param player The player to try and harvest the block.
@@ -229,12 +234,14 @@ public final class BlockUtils {
     }
 
     /**
-     * Gets the hardness of a block without risk of a crash due to unsupported use.
+     * Gets the hardness of a block without risk of a crash due to unsupported
+     * use.
      *
      * @param state The block state to check.
      * @param world The world object.
      * @param pos The position of the block.
-     * @return The hardness of the block. If an exception occurs this will be 99999f.
+     * @return The hardness of the block. If an exception occurs this will be
+     *         99999f.
      */
     public static float getHardnessSafely (IBlockState state, World world, BlockPos pos) {
 
@@ -295,17 +302,18 @@ public final class BlockUtils {
     }
 
     /**
-     * This method is used to calculate and replicate the break speed of another block, in the
-     * BreakSpeed event. This will take all the required values into effect and give you a float
-     * that you can use in the event.
+     * This method is used to calculate and replicate the break speed of another
+     * block, in the BreakSpeed event. This will take all the required values
+     * into effect and give you a float that you can use in the event.
      *
      * @param current The block state that you want to replace the speed of.
-     * @param target The block state that you want to replace the current state with.
+     * @param target The block state that you want to replace the current state
+     *        with.
      * @param world The world object.
      * @param player The player that is mining the block.
      * @param pos The position of the block.
-     * @return A modified speed value that can be used in BreakSpeed to replace the speed of one
-     *         block with the speed of another.
+     * @return A modified speed value that can be used in BreakSpeed to replace
+     *         the speed of one block with the speed of another.
      */
     public static float getBreakSpeedToMatch (IBlockState current, IBlockState target, World world, EntityPlayer player, BlockPos pos) {
 

@@ -35,8 +35,8 @@ public interface IAnvilRecipe {
     public int getExperienceCost (ItemStack leftSlot, ItemStack rightSlot, String name);
 
     /**
-     * Gets the amount of items to consume from the material (right) slot. If 0, the entire stack
-     * will be consumed.
+     * Gets the amount of items to consume from the material (right) slot. If 0,
+     * the entire stack will be consumed.
      *
      * @param leftSlot The left anvil slot.
      * @param rightSlot The right anvil slot.
@@ -46,8 +46,8 @@ public interface IAnvilRecipe {
     public int getMaterialCost (ItemStack leftSlot, ItemStack rightSlot, String name);
 
     /**
-     * Gets the output for the recipe. This is the resulting item stack and will be previewable
-     * before crafting it.
+     * Gets the output for the recipe. This is the resulting item stack and will
+     * be previewable before crafting it.
      *
      * @param leftSlot The left anvil slot.
      * @param rightSlot The right anvil slot.

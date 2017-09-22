@@ -20,8 +20,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 /**
- * This class is an extension of the AWT Color class. It adds several things which make working
- * with color in the MC environment less of a hassle.
+ * This class is an extension of the AWT Color class. It adds several things
+ * which make working with color in the MC environment less of a hassle.
  */
 public class MCColor extends Color {
 
@@ -111,8 +111,8 @@ public class MCColor extends Color {
     public static final MCColor[] VANILLA_COLORS = { DYE_BLACK, DYE_RED, DYE_GREEN, DYE_BROWN, DYE_BLUE, DYE_PURPLE, DYE_CYAN, DYE_LIGHT_GRAY, DYE_GRAY, DYE_PINK, DYE_LIME, DYE_YELLOW, DYE_LIGHT_BLUE, DYE_MAGENTA, DYE_ORANGE, DYE_WHITE };
 
     /**
-     * Constructs an MCColor from an ItemStack. Expects the stack to have already been checked for
-     * validity.
+     * Constructs an MCColor from an ItemStack. Expects the stack to have
+     * already been checked for validity.
      *
      * @param stack The ItemStack to construct a color from.
      */
@@ -122,8 +122,8 @@ public class MCColor extends Color {
     }
 
     /**
-     * Constructs an MCColor from a position in the world. Expects the position to have already
-     * been checked for validity.
+     * Constructs an MCColor from a position in the world. Expects the position
+     * to have already been checked for validity.
      *
      * @param world The World.
      * @param pos A position in the world.
@@ -134,8 +134,8 @@ public class MCColor extends Color {
     }
 
     /**
-     * Constructs an MCColor from a TileEntity. Expects the TileEntity to have already been checked
-     * for validity.
+     * Constructs an MCColor from a TileEntity. Expects the TileEntity to have
+     * already been checked for validity.
      *
      * @param tile The TileEntity to construct a color from.
      */
@@ -145,8 +145,8 @@ public class MCColor extends Color {
     }
 
     /**
-     * Constructs an MCColor from an NBTTagCompound. Expects the tag to have already been checked
-     * for validity.
+     * Constructs an MCColor from an NBTTagCompound. Expects the tag to have
+     * already been checked for validity.
      *
      * @param tag The NBTTagCompound to construct a color from.
      */
@@ -156,8 +156,8 @@ public class MCColor extends Color {
     }
 
     /**
-     * Constructs an MCColor from an array of color components. Expects the array to have already
-     * been checked for validity.
+     * Constructs an MCColor from an array of color components. Expects the
+     * array to have already been checked for validity.
      *
      * @param colors The array to construct a color from.
      */
@@ -260,9 +260,9 @@ public class MCColor extends Color {
     }
 
     /**
-     * Checks if an ItemStack is acceptable. For an ItemStack to be acceptable, it must not be null
-     * or empty, and must have an NBTTagCompound which is deemed acceptable by
-     * {@link #isAcceptable(NBTTagCompound)}.
+     * Checks if an ItemStack is acceptable. For an ItemStack to be acceptable,
+     * it must not be null or empty, and must have an NBTTagCompound which is
+     * deemed acceptable by {@link #isAcceptable(NBTTagCompound)}.
      *
      * @param stack The ItemStack to check.
      * @return Whether or not the ItemStack was acceptable.
@@ -273,8 +273,8 @@ public class MCColor extends Color {
     }
 
     /**
-     * Checks if a tile entity at a given position in the world is acceptable. Check
-     * {@link #isAcceptable(TileEntity)} for more info.
+     * Checks if a tile entity at a given position in the world is acceptable.
+     * Check {@link #isAcceptable(TileEntity)} for more info.
      *
      * @param world The world to check in.
      * @param pos The pos to check at.
@@ -286,9 +286,9 @@ public class MCColor extends Color {
     }
 
     /**
-     * Checks if a tile entity is acceptable. For a TileEntity to be acceptable, it must not be
-     * null or invalid, and must have an NBTTagCompound which is deemed acceptable by
-     * {@link #isAcceptable(NBTTagCompound)}.
+     * Checks if a tile entity is acceptable. For a TileEntity to be acceptable,
+     * it must not be null or invalid, and must have an NBTTagCompound which is
+     * deemed acceptable by {@link #isAcceptable(NBTTagCompound)}.
      *
      * @param tile The TileEntity to check.
      * @return Whether or not the TileEntity was acceptable.
@@ -299,8 +299,9 @@ public class MCColor extends Color {
     }
 
     /**
-     * Checks if a NBTTagCompound is acceptable. For an NBTTagCompound to be acceptable, it must
-     * not be null, and must have an integer array named Color with 3 elements.
+     * Checks if a NBTTagCompound is acceptable. For an NBTTagCompound to be
+     * acceptable, it must not be null, and must have an integer array named
+     * Color with 3 elements.
      *
      * @param tag The NBTTagCompound to check.
      * @return Whether or not the ItemStack was acceptable.

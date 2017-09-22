@@ -61,7 +61,8 @@ public class MCDate {
     /**
      * Constructs a date for the current world time.
      *
-     * @param world The world to get a date for. Different worlds may have different times.
+     * @param world The world to get a date for. Different worlds may have
+     *        different times.
      */
     public MCDate (World world) {
 

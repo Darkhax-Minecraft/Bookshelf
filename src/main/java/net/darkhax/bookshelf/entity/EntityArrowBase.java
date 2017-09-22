@@ -31,8 +31,8 @@ public class EntityArrowBase extends EntityTippedArrow {
     private ItemStack heldStack;
 
     /**
-     * Constructor for a variant on EntityArrow which holds a specific ItemStack rather than a
-     * vanilla one.
+     * Constructor for a variant on EntityArrow which holds a specific ItemStack
+     * rather than a vanilla one.
      *
      * @param world The world to place the new entity in.
      */
@@ -42,8 +42,8 @@ public class EntityArrowBase extends EntityTippedArrow {
     }
 
     /**
-     * Constructor for a variant on EntityArrow which holds a specific ItemStack rather than a
-     * vanilla one.
+     * Constructor for a variant on EntityArrow which holds a specific ItemStack
+     * rather than a vanilla one.
      *
      * @param world The world to place the new entity in.
      * @param stack The ItemStack that is held by the arrow entity.

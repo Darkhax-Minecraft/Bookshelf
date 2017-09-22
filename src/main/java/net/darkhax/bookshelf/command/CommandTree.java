@@ -15,8 +15,8 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.server.command.CommandTreeBase;
 
 /**
- * This implementation of CommandTreeBase fixes a few permission issues, and adds a better help
- * screen.
+ * This implementation of CommandTreeBase fixes a few permission issues, and
+ * adds a better help screen.
  */
 public abstract class CommandTree extends CommandTreeBase {
 

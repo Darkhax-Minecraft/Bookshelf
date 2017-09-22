@@ -25,9 +25,9 @@ public final class NBTUtils {
     public static final Comparator<NBTTagCompound> NBT_COMPARATOR = (firstTag, secondTag) -> firstTag != null ? firstTag.equals(secondTag) ? 0 : 1 : secondTag != null ? -1 : 0;
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an implicit
-     * public constructor to every class which does not define at lease one explicitly. Hence why
-     * this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java
+     * adds an implicit public constructor to every class which does not define
+     * at lease one explicitly. Hence why this constructor was added.
      */
     private NBTUtils () {
 
@@ -35,9 +35,10 @@ public final class NBTUtils {
     }
 
     /**
-     * Sets an unknown data type to an NBTTagCompound. If the type of the data can not be
-     * identified, and exception will be thrown. Current supported data types include String,
-     * Integer, Float, Boolean, Double, Long, Short, Byte, ItemStack, Entity and Position.
+     * Sets an unknown data type to an NBTTagCompound. If the type of the data
+     * can not be identified, and exception will be thrown. Current supported
+     * data types include String, Integer, Float, Boolean, Double, Long, Short,
+     * Byte, ItemStack, Entity and Position.
      *
      * @param dataTag: An NBTTagCompound to write this unknown data to.
      * @param tagName: The name to save this unknown data under.
@@ -84,12 +85,13 @@ public final class NBTUtils {
     }
 
     /**
-     * Writes an inventory to an NBTTagCompound. Can be used to save an inventory in a TileEntity,
-     * or perhaps an ItemStack.
+     * Writes an inventory to an NBTTagCompound. Can be used to save an
+     * inventory in a TileEntity, or perhaps an ItemStack.
      *
      * @param tag: The NBTTagCompound to write the inventory to.
      * @param inventory: The inventory to write to the NBTTagCompound.
-     * @return NBTTagCompound: The same NBTTagCompound that was passed to this method.
+     * @return NBTTagCompound: The same NBTTagCompound that was passed to this
+     *         method.
      */
     public static NBTTagCompound writeInventoryToNBT (NBTTagCompound tag, InventoryBasic inventory) {
 
@@ -118,12 +120,13 @@ public final class NBTUtils {
     }
 
     /**
-     * Reads an inventory from an NBTTagCompound. Can be used to load an Inventory from a
-     * TileEntity or perhaps an ItemStak.
+     * Reads an inventory from an NBTTagCompound. Can be used to load an
+     * Inventory from a TileEntity or perhaps an ItemStak.
      *
      * @param tag: The NBTTagCompound to read the inventory data from.
      * @param inventory: The inventory to set all of the inventory data to.
-     * @return InventoryBasic: The same instance of InventoryBasic that was passed to this method.
+     * @return InventoryBasic: The same instance of InventoryBasic that was
+     *         passed to this method.
      */
     public static InventoryBasic readInventoryFromNBT (NBTTagCompound tag, InventoryBasic inventory) {
 
@@ -147,13 +150,13 @@ public final class NBTUtils {
     }
 
     /**
-     * Retrieves an array of ItemStack from an NBTTagCompound. This method is intended to be used
-     * with the NBT version of an IInventory and can be used when parsing things like TileEntity
-     * NBT data.
+     * Retrieves an array of ItemStack from an NBTTagCompound. This method is
+     * intended to be used with the NBT version of an IInventory and can be used
+     * when parsing things like TileEntity NBT data.
      *
      * @param tag: The tag to retrieve all of the item data from.
-     * @param invSize: The projected size of the inventory stored to the tag. It is critical that
-     *        this never be smaller then the actual amount.
+     * @param invSize: The projected size of the inventory stored to the tag. It
+     *        is critical that this never be smaller then the actual amount.
      * @return ItemStack[]: An array of ItemStack stored on the NBTTagCompound.
      */
     public static ItemStack[] getStoredItems (NBTTagCompound tag, int invSize) {
@@ -178,16 +181,16 @@ public final class NBTUtils {
     }
 
     /**
-     * Provides a way to access an NBTTagCompound that is very deep within another NBTTagCompound.
-     * This will allow you to use an array of strings which represent the different steps to get to
-     * the deep NBTTagCompound.
+     * Provides a way to access an NBTTagCompound that is very deep within
+     * another NBTTagCompound. This will allow you to use an array of strings
+     * which represent the different steps to get to the deep NBTTagCompound.
      *
      * @param tag: An NBTTagCompound to search through.
-     * @param tags: An array containing the various steps to get to the desired deep
-     *        NBTTagCompound.
-     * @return NBTTagCompound: This method will return the deepest possible NBTTagCompound. In some
-     *         cases, this may be the tag you provide, or only a few steps deep, rather than all of
-     *         the way.
+     * @param tags: An array containing the various steps to get to the desired
+     *        deep NBTTagCompound.
+     * @return NBTTagCompound: This method will return the deepest possible
+     *         NBTTagCompound. In some cases, this may be the tag you provide,
+     *         or only a few steps deep, rather than all of the way.
      */
     public static NBTTagCompound getDeepTagCompound (NBTTagCompound tag, String[] tags) {
 

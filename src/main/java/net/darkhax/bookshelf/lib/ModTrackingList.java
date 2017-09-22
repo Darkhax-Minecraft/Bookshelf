@@ -45,7 +45,8 @@ public class ModTrackingList<T> extends AbstractList<T> implements RandomAccess 
     private final List<T> delegate;
 
     /**
-     * A map containing the active mod container at the time the value was added to this list.
+     * A map containing the active mod container at the time the value was added
+     * to this list.
      */
     private final Map<T, ModContainer> modContainerMap;
 
@@ -58,11 +59,12 @@ public class ModTrackingList<T> extends AbstractList<T> implements RandomAccess 
     }
 
     /**
-     * The main constructor for the tracking list. Entries added and removed from this list will be
-     * tracked.
+     * The main constructor for the tracking list. Entries added and removed
+     * from this list will be tracked.
      *
-     * @param delegate The parent/delegate list. This can be empty, but should probably represent
-     *        the list you are replacing, if you are replacing one.
+     * @param delegate The parent/delegate list. This can be empty, but should
+     *        probably represent the list you are replacing, if you are
+     *        replacing one.
      */
     public <D extends List<T> & RandomAccess> ModTrackingList (@Nonnull D delegate) {
 
@@ -70,11 +72,12 @@ public class ModTrackingList<T> extends AbstractList<T> implements RandomAccess 
     }
 
     /**
-     * The backing constructor for the tracking list. Entries added and removed from this list will
-     * be tracked.
+     * The backing constructor for the tracking list. Entries added and removed
+     * from this list will be tracked.
      *
-     * @param delegate The parent/delegate list. This can be empty, but should probably represent
-     *        the list you are replacing, if you are replacing one.
+     * @param delegate The parent/delegate list. This can be empty, but should
+     *        probably represent the list you are replacing, if you are
+     *        replacing one.
      * @param modContainerMap The map used to hold the tracking data.
      */
     public ModTrackingList (@Nonnull List<T> delegate, @Nonnull Map<T, ModContainer> modContainerMap) {
@@ -94,7 +97,8 @@ public class ModTrackingList<T> extends AbstractList<T> implements RandomAccess 
     }
 
     /**
-     * Tracks the mod container that is active when multiple elements are handled.
+     * Tracks the mod container that is active when multiple elements are
+     * handled.
      *
      * @param elements The collection of elements being handled.
      */
@@ -112,7 +116,8 @@ public class ModTrackingList<T> extends AbstractList<T> implements RandomAccess 
      * Tracks the mod container that was active when the element was handled.
      *
      * @param element The element being handled.
-     * @param container The mod container that was active when the element was handled.
+     * @param container The mod container that was active when the element was
+     *        handled.
      */
     private void trackModContainer (@Nonnull T element, ModContainer container) {
 
@@ -133,11 +138,13 @@ public class ModTrackingList<T> extends AbstractList<T> implements RandomAccess 
     }
 
     /**
-     * Gets the mod container that was active when the passed element was handled by this list.
-     * This can be null if the element has not been handled by this list.
+     * Gets the mod container that was active when the passed element was
+     * handled by this list. This can be null if the element has not been
+     * handled by this list.
      *
      * @param element The element to get the mod container of.
-     * @return The ModContainer that was active while the passed element was being handled.
+     * @return The ModContainer that was active while the passed element was
+     *         being handled.
      */
     @Nullable
     public ModContainer getModContainer (@Nonnull T element) {

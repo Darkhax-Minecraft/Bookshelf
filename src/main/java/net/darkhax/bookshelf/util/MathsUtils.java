@@ -20,9 +20,9 @@ import net.minecraft.util.math.Vec3d;
 public final class MathsUtils {
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an implicit
-     * public constructor to every class which does not define at lease one explicitly. Hence why
-     * this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java
+     * adds an implicit public constructor to every class which does not define
+     * at lease one explicitly. Hence why this constructor was added.
      */
     private MathsUtils () {
 
@@ -63,7 +63,8 @@ public final class MathsUtils {
      *
      * @param value: The double being round.
      * @param places: The amount of places to round the double to.
-     * @return double: The double entered however being rounded to the amount of places specified.
+     * @return double: The double entered however being rounded to the amount of
+     *         places specified.
      */
     public static double round (double value, int places) {
 
@@ -71,8 +72,8 @@ public final class MathsUtils {
     }
 
     /**
-     * Used to retrieve a random integer between the two provided integers. The integers provided
-     * are also possible outcomes.
+     * Used to retrieve a random integer between the two provided integers. The
+     * integers provided are also possible outcomes.
      *
      * @param min: The minimum value which can be returned by this method.
      * @param max: The maximum value which can be returned by this method.
@@ -86,10 +87,10 @@ public final class MathsUtils {
      * Creates a MovingObjectPosition based on where a player is looking.
      *
      * @param player: The player to get the looking position of.
-     * @param length: The distance to go outwards from the player, the maximum "reach". Default
-     *        reach is 4.5D.
-     * @return MovingObjectPosition: A MovingObjectPosition containing the exact location where the
-     *         player is looking.
+     * @param length: The distance to go outwards from the player, the maximum
+     *        "reach". Default reach is 4.5D.
+     * @return MovingObjectPosition: A MovingObjectPosition containing the exact
+     *         location where the player is looking.
      */
     public static RayTraceResult rayTrace (EntityPlayer player, double length) {
 
@@ -100,11 +101,14 @@ public final class MathsUtils {
     }
 
     /**
-     * A method which handles the calculating of percentages. While this isn't a particularly
-     * difficult piece of code, it has been added for the sake of simplicity.
+     * A method which handles the calculating of percentages. While this isn't a
+     * particularly difficult piece of code, it has been added for the sake of
+     * simplicity.
      *
-     * @param percent: The percent chance that this method should return true. 1.00 = 100%
-     * @return boolean: Returns are randomly true or false, based on the suplied percentage.
+     * @param percent: The percent chance that this method should return true.
+     *        1.00 = 100%
+     * @return boolean: Returns are randomly true or false, based on the suplied
+     *         percentage.
      */
     public static boolean tryPercentage (double percent) {
 
@@ -112,7 +116,8 @@ public final class MathsUtils {
     }
 
     /**
-     * Generates a random color as an integer, from Color and three random floats.
+     * Generates a random color as an integer, from Color and three random
+     * floats.
      *
      * @return int: An integer based representation of a Color.
      */
@@ -122,7 +127,8 @@ public final class MathsUtils {
     }
 
     /**
-     * Gets the middle integer between two other integers. The order is not important.
+     * Gets the middle integer between two other integers. The order is not
+     * important.
      *
      * @param first: The first integer.
      * @param second: The second integer.
@@ -147,7 +153,8 @@ public final class MathsUtils {
     }
 
     /**
-     * Gets the percentage of an integer. Result is an integer and decimal is lost.
+     * Gets the percentage of an integer. Result is an integer and decimal is
+     * lost.
      *
      * @param value The value to get the percentage of.
      * @param total The total/max value.
@@ -159,8 +166,8 @@ public final class MathsUtils {
     }
 
     /**
-     * Gets the distance in world for an amount of pixels. A basic block is a cubic meter, and each
-     * pixel is 1/16th of a block.
+     * Gets the distance in world for an amount of pixels. A basic block is a
+     * cubic meter, and each pixel is 1/16th of a block.
      *
      * @param pixels The amount of pixels
      * @return The distance in game for those pixels.

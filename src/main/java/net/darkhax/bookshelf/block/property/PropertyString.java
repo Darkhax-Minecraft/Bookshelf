@@ -6,9 +6,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.base.Optional;
-
 import net.minecraft.block.properties.PropertyHelper;
+
+import com.google.common.base.Optional;
 
 public class PropertyString extends PropertyHelper<String> {
 

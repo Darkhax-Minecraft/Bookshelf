@@ -29,7 +29,8 @@ public abstract class ModelArmorExtended extends ModelBiped {
     public abstract void addModelParts ();
 
     /**
-     * Updates the pose/state of the model to reflect that of the entity it's attatched to.
+     * Updates the pose/state of the model to reflect that of the entity it's
+     * attatched to.
      *
      * @param entity The entity to sync the model with.
      * @param partialTicks The partial ticks.

@@ -12,7 +12,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 
 /**
- * This class is a new implementation of CommandBase, which adds working permission levels.
+ * This class is a new implementation of CommandBase, which adds working
+ * permission levels.
  */
 public abstract class Command extends CommandBase {
 

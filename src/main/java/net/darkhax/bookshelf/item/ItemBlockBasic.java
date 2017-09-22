@@ -13,7 +13,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 /**
- * A basic implementation of ItemBlock that has support for multiple meta varients.
+ * A basic implementation of ItemBlock that has support for multiple meta
+ * varients.
  */
 public class ItemBlockBasic extends ItemBlock implements IVariant {
 
@@ -23,7 +24,8 @@ public class ItemBlockBasic extends ItemBlock implements IVariant {
     public final String[] names;
 
     /**
-     * Constructs the basic ItemBlock without automatically setting the registry name.
+     * Constructs the basic ItemBlock without automatically setting the registry
+     * name.
      *
      * @param block The Block to represent.
      * @param names The variants for the item.
@@ -38,8 +40,8 @@ public class ItemBlockBasic extends ItemBlock implements IVariant {
      *
      * @param block The Block to represent.
      * @param names The variants for the item.
-     * @param selfRegister Whether or not the ItemBlock should use the same registry name as the
-     *        passed block.
+     * @param selfRegister Whether or not the ItemBlock should use the same
+     *        registry name as the passed block.
      */
     public ItemBlockBasic (Block block, String[] names, boolean selfRegister) {
 

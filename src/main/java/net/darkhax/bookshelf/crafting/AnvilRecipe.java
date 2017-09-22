@@ -33,8 +33,8 @@ public class AnvilRecipe implements IAnvilRecipe {
     private final int experienceCost;
 
     /**
-     * The amount of items to consume, from the right slot of the Anvil GUI. If 0, the whole stack
-     * will be consumed.
+     * The amount of items to consume, from the right slot of the Anvil GUI. If
+     * 0, the whole stack will be consumed.
      */
     private final int materialCost;
 
@@ -44,11 +44,13 @@ public class AnvilRecipe implements IAnvilRecipe {
     private final ItemStack output;
 
     /**
-     * Constructs a new AnvilRecipe, using all of the required parameters, except for the name
-     * requirement and material cost.
+     * Constructs a new AnvilRecipe, using all of the required parameters,
+     * except for the name requirement and material cost.
      *
-     * @param firstInput The ItemStack required in the left slot of the Anvil GUI.
-     * @param secondInput The ItemStack required in the right slot of the Anvil GUI.
+     * @param firstInput The ItemStack required in the left slot of the Anvil
+     *        GUI.
+     * @param secondInput The ItemStack required in the right slot of the Anvil
+     *        GUI.
      * @param experience The amount of experience that this recipe should cost.
      * @param outputStack The ItemStack that will be created by this recipe.
      */
@@ -60,12 +62,14 @@ public class AnvilRecipe implements IAnvilRecipe {
     /**
      * Constructs a new AnvilRecipe, using all of the required parameters.
      *
-     * @param firstInput The ItemStack required in the left slot of the Anvil GUI.
-     * @param secondInput The ItemStack required in the right slot of the Anvil GUI.
+     * @param firstInput The ItemStack required in the left slot of the Anvil
+     *        GUI.
+     * @param secondInput The ItemStack required in the right slot of the Anvil
+     *        GUI.
      * @param requiredName A name requirement for this recipe.
      * @param experience The amount of experience that this recipe should cost.
-     * @param materialCost The amount of items to consume from the right slot of the Anvil GUI. If
-     *        0, the whole stack will be consumed.
+     * @param materialCost The amount of items to consume from the right slot of
+     *        the Anvil GUI. If 0, the whole stack will be consumed.
      * @param outputStack The ItemStack that will be created by this recipe.
      */
     public AnvilRecipe (ItemStack firstInput, ItemStack secondInput, String requiredName, int experience, int materialCost, ItemStack outputStack) {

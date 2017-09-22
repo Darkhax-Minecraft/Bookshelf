@@ -64,7 +64,8 @@ public abstract class TileEntityBasic extends TileEntity {
     public abstract void writeNBT (NBTTagCompound dataTag);
 
     /**
-     * Handles the ability to read custom NBT values from the TileEntity's NBTTagCompound.
+     * Handles the ability to read custom NBT values from the TileEntity's
+     * NBTTagCompound.
      *
      * @param dataTag: The NBTTagCompound for the TileEntity.
      */

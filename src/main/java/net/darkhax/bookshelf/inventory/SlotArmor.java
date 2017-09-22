@@ -29,7 +29,8 @@ public class SlotArmor extends Slot {
     private final EntityEquipmentSlot slotType;
 
     /**
-     * Creates a new armor inventory slot. Typically used for player armor in a GUI.
+     * Creates a new armor inventory slot. Typically used for player armor in a
+     * GUI.
      *
      * @param entity The entity to show armor for.
      * @param type The type of equipment held by the slot.

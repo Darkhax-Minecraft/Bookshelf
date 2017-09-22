@@ -22,6 +22,8 @@
  */
 package net.darkhax.bookshelf.network;
 
+import io.netty.buffer.ByteBuf;
+
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -29,9 +31,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.tuple.Pair;
-
-import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentData;
@@ -45,6 +44,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 public abstract class SerializableMessage<REQ extends SerializableMessage> implements Serializable, IMessage, IMessageHandler<REQ, IMessage> {
 
@@ -105,7 +106,8 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
     }
 
     /**
-     * Called when the message is received and handled. This is where you process the message.
+     * Called when the message is received and handled. This is where you
+     * process the message.
      *
      * @param context The context for the message.
      * @return A message to send as a response.

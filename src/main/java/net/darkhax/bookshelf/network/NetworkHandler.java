@@ -24,14 +24,17 @@ public class NetworkHandler {
     private final SimpleNetworkWrapper network;
 
     /**
-     * The current discriminator value. This is ticked up automatically as messages are registered.
+     * The current discriminator value. This is ticked up automatically as
+     * messages are registered.
      */
     private int curDiscriminator = 0;
 
     /**
-     * Constructs a new NetworkHandler, which is basically a wrapper for SimpleNetworkWrapper.
+     * Constructs a new NetworkHandler, which is basically a wrapper for
+     * SimpleNetworkWrapper.
      *
-     * @param netId The id for the new network channel. This should probably be your mod id.
+     * @param netId The id for the new network channel. This should probably be
+     *        your mod id.
      */
     public NetworkHandler (String netId) {
 
@@ -41,8 +44,8 @@ public class NetworkHandler {
     /**
      * Registers a new packet to the network handler.
      *
-     * @param clazz The class of the packet. This class must implement IMessage and
-     *        IMessageHandler!
+     * @param clazz The class of the packet. This class must implement IMessage
+     *        and IMessageHandler!
      * @param side The side that receives this packet.
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })

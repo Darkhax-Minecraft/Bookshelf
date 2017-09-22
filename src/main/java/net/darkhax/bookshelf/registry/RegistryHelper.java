@@ -11,9 +11,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-
 import net.darkhax.bookshelf.block.IColorfulBlock;
 import net.darkhax.bookshelf.item.IColorfulItem;
 import net.darkhax.bookshelf.item.ICustomMesh;
@@ -41,11 +38,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
 /**
- * Mods can create new instances of this class, and use it to handle a lot of the registration
- * details. The helper methods included handle all of the basic things such as unlocalized
- * names, creative tabs, registry names, and block/itemblock registry, along with some other
- * stuff for models.
+ * Mods can create new instances of this class, and use it to handle a lot of
+ * the registration details. The helper methods included handle all of the basic
+ * things such as unlocalized names, creative tabs, registry names, and
+ * block/itemblock registry, along with some other stuff for models.
  */
 public class RegistryHelper {
 
@@ -70,8 +70,8 @@ public class RegistryHelper {
     private final NonNullList<Block> blocks = NonNullList.create();
 
     /**
-     * A local map of all the entires that have been added. This is on a per instance basis, used
-     * to get mod-specific entries.
+     * A local map of all the entires that have been added. This is on a per
+     * instance basis, used to get mod-specific entries.
      */
     private final Multimap<ResourceLocation, LootBuilder> lootTableEntries = HashMultimap.create();
 
@@ -96,8 +96,8 @@ public class RegistryHelper {
     private CreativeTabs tab;
 
     /**
-     * Constructs a new RegistryHelper. The modid for the helper is equal to that of the active mod
-     * container, and auto model registration is enabled.
+     * Constructs a new RegistryHelper. The modid for the helper is equal to
+     * that of the active mod container, and auto model registration is enabled.
      */
     public RegistryHelper () {
 
@@ -105,8 +105,8 @@ public class RegistryHelper {
     }
 
     /**
-     * Constructs a new RegistryHelper for the specified mod id. Multiple helpers can exist with
-     * the same id, but it's not recommended.
+     * Constructs a new RegistryHelper for the specified mod id. Multiple
+     * helpers can exist with the same id, but it's not recommended.
      *
      * @param modid The modid for the registry helper.
      * @param autoModels Should models be auto loaded.
@@ -171,8 +171,9 @@ public class RegistryHelper {
     }
 
     /**
-     * Registers a block to the game. This will also set the unlocalized name, and creative tab if
-     * {@link #tab} has been set. The block will also be cached in {@link #blocks}.
+     * Registers a block to the game. This will also set the unlocalized name,
+     * and creative tab if {@link #tab} has been set. The block will also be
+     * cached in {@link #blocks}.
      *
      * @param block The block to register.
      * @param id The id to register the block with.
@@ -184,8 +185,9 @@ public class RegistryHelper {
     }
 
     /**
-     * Registers a block to the game. This will also set the unlocalized name, and creative tab if
-     * {@link #tab} has been set. The block will also be cached in {@link #blocks}.
+     * Registers a block to the game. This will also set the unlocalized name,
+     * and creative tab if {@link #tab} has been set. The block will also be
+     * cached in {@link #blocks}.
      *
      * @param block The block to register.
      * @param itemBlock The ItemBlock for the block.
@@ -213,8 +215,9 @@ public class RegistryHelper {
     }
 
     /**
-     * Registers an item to the game. This will also set the unlocalized name, and creative tab if
-     * {@link #tab} has been set. The item will also be cached in {@link #items}.
+     * Registers an item to the game. This will also set the unlocalized name,
+     * and creative tab if {@link #tab} has been set. The item will also be
+     * cached in {@link #items}.
      *
      * @param item The item to register.
      * @param id The id to register the item with.
@@ -259,12 +262,16 @@ public class RegistryHelper {
     }
 
     /**
-     * Creates a new loot entry that will be added to the loot pools when a world is loaded.
+     * Creates a new loot entry that will be added to the loot pools when a
+     * world is loaded.
      *
      * @param location The loot table to add the loot to. You can use
-     *        {@link net.minecraft.world.storage.loot.LootTableList} for convenience.
-     * @param name The name of the entry being added. This will be prefixed with {@link #modid}.
-     * @param pool The name of the pool to add the entry to. This pool must already exist.
+     *        {@link net.minecraft.world.storage.loot.LootTableList} for
+     *        convenience.
+     * @param name The name of the entry being added. This will be prefixed with
+     *        {@link #modid} .
+     * @param pool The name of the pool to add the entry to. This pool must
+     *        already exist.
      * @param weight The weight of the entry.
      * @param item The item to add.
      * @return A builder object. It can be used to fine tune the loot entry.
@@ -275,16 +282,20 @@ public class RegistryHelper {
     }
 
     /**
-     * Creates a new loot entry that will be added to the loot pools when a world is loaded.
+     * Creates a new loot entry that will be added to the loot pools when a
+     * world is loaded.
      *
      * @param location The loot table to add the loot to. You can use
-     *        {@link net.minecraft.world.storage.loot.LootTableList} for convenience.
-     * @param name The name of the entry being added. This will be prefixed with {@link #modid}.
-     * @param pool The name of the pool to add the entry to. This pool must already exist.
+     *        {@link net.minecraft.world.storage.loot.LootTableList} for
+     *        convenience.
+     * @param name The name of the entry being added. This will be prefixed with
+     *        {@link #modid} .
+     * @param pool The name of the pool to add the entry to. This pool must
+     *        already exist.
      * @param weight The weight of the entry.
-     * @param quality The quality of the entry. Quality is an optional value which modifies the
-     *        weight of an entry based on the player's luck level. totalWeight = weight + (quality
-     *        * luck)
+     * @param quality The quality of the entry. Quality is an optional value
+     *        which modifies the weight of an entry based on the player's luck
+     *        level. totalWeight = weight + (quality * luck)
      * @param item The item to add.
      * @param conditions A list of loot conditions.
      * @param functions A list of loot functions.
@@ -296,10 +307,12 @@ public class RegistryHelper {
     }
 
     /**
-     * Creates a new loot entry that will be added to the loot pools when a world is loaded.
+     * Creates a new loot entry that will be added to the loot pools when a
+     * world is loaded.
      *
      * @param location The loot table to add the loot to. You can use
-     *        {@link net.minecraft.world.storage.loot.LootTableList} for convenience.
+     *        {@link net.minecraft.world.storage.loot.LootTableList} for
+     *        convenience.
      * @param builder The loot builder to add.
      * @return A builder object. It can be used to fine tune the loot entry.
      */
@@ -310,10 +323,10 @@ public class RegistryHelper {
     }
 
     /**
-     * This is an event hook which is used to inject the loot data to loot tables. This class is
-     * registered with the event bus using the
-     * {@link net.minecraftforge.fml.common.Mod.EventBusSubscriber} class level annotation. Don't
-     * call or use this method yourself!
+     * This is an event hook which is used to inject the loot data to loot
+     * tables. This class is registered with the event bus using the
+     * {@link net.minecraftforge.fml.common.Mod.EventBusSubscriber} class level
+     * annotation. Don't call or use this method yourself!
      *
      * @param event The event instance.
      */
@@ -337,8 +350,8 @@ public class RegistryHelper {
     }
 
     /**
-     * Registers a color handler for a block. This method is client side only, and should be called
-     * during the init stage.
+     * Registers a color handler for a block. This method is client side only,
+     * and should be called during the init stage.
      *
      * @param block The block to register the handler for.
      * @param color The color handler to register.
@@ -350,8 +363,8 @@ public class RegistryHelper {
     }
 
     /**
-     * Registers a color handler for an item. This method is client side only, and should be called
-     * during the init stage.
+     * Registers a color handler for an item. This method is client side only,
+     * and should be called during the init stage.
      *
      * @param item The item to register the handler for.
      * @param color The color handler to register.
@@ -363,8 +376,8 @@ public class RegistryHelper {
     }
 
     /**
-     * Registers an inventory model for a block. The model name is equal to the registry name of
-     * the block. Only set for meta 0.
+     * Registers an inventory model for a block. The model name is equal to the
+     * registry name of the block. Only set for meta 0.
      *
      * @param block The block to register the model for.
      */
@@ -375,8 +388,9 @@ public class RegistryHelper {
     }
 
     /**
-     * Registers an inventory model for a block with variants. The model name is equal to the
-     * registry name of the block, plus the variant string for the meta.
+     * Registers an inventory model for a block with variants. The model name is
+     * equal to the registry name of the block, plus the variant string for the
+     * meta.
      *
      * @param block The block to register models for.
      * @param prefix The prefix for the textures. Use empty string for none.
@@ -404,8 +418,8 @@ public class RegistryHelper {
     }
 
     /**
-     * Registers an inventory model for an item.The model name is equal to the registry name of the
-     * item. Only set for meta 0.
+     * Registers an inventory model for an item.The model name is equal to the
+     * registry name of the item. Only set for meta 0.
      *
      * @param item The item to register the model for.
      */
@@ -423,8 +437,9 @@ public class RegistryHelper {
     }
 
     /**
-     * Registers an inventory model for an item with variants. The model name is equal to the
-     * registry name of the item, plus the variant string for the meta.
+     * Registers an inventory model for an item with variants. The model name is
+     * equal to the registry name of the item, plus the variant string for the
+     * meta.
      *
      * @param item The item to register models for.
      * @param prefix Adds a prefix to each of the model variants.

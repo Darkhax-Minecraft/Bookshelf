@@ -18,8 +18,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * An alternative to {@link BlockContainer}. This version does not have the invisible render
- * type or weird invalid neighbor code.
+ * An alternative to {@link BlockContainer}. This version does not have the
+ * invisible render type or weird invalid neighbor code.
  */
 public abstract class BlockTileEntity extends Block implements ITileEntityProvider {
 

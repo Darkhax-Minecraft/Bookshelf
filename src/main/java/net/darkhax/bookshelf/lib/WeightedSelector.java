@@ -29,8 +29,8 @@ public class WeightedSelector<T> {
     private int total = 0;
 
     /**
-     * Adds an entry to the list. The entry is created from the value and weight passed. Only
-     * serves as a quality of life method.
+     * Adds an entry to the list. The entry is created from the value and weight
+     * passed. Only serves as a quality of life method.
      *
      * @param value The value to register.
      * @param weight The weight of the entry.
@@ -42,8 +42,8 @@ public class WeightedSelector<T> {
     }
 
     /**
-     * Adds an entry to the entry list. If the entry is added successfully, the total will
-     * automatically update.
+     * Adds an entry to the entry list. If the entry is added successfully, the
+     * total will automatically update.
      *
      * @param entry The entry to add to the entry pool.
      * @return Whether or not the entry was added successfully.
@@ -60,8 +60,8 @@ public class WeightedSelector<T> {
     }
 
     /**
-     * Removes an entry from the entry list. If the entry is removed successfully, the total will
-     * automatically update.
+     * Removes an entry from the entry list. If the entry is removed
+     * successfully, the total will automatically update.
      *
      * @param entry The entry to remove from the entry pool.
      * @return Whether or not the entry was removed successfully.
@@ -78,9 +78,9 @@ public class WeightedSelector<T> {
     }
 
     /**
-     * Provides access to the list of entries. If you add or remove anything, make sure to call
-     * {@link #updateTotal()} when you are done. It is critical that the total does not get messed
-     * up!
+     * Provides access to the list of entries. If you add or remove anything,
+     * make sure to call {@link #updateTotal()} when you are done. It is
+     * critical that the total does not get messed up!
      *
      * @return A list of weighted entries.
      */
@@ -90,8 +90,8 @@ public class WeightedSelector<T> {
     }
 
     /**
-     * Randomly selects an entry from the list. Makes use of the weighted values to give values
-     * with higher weight a better likelihood.
+     * Randomly selects an entry from the list. Makes use of the weighted values
+     * to give values with higher weight a better likelihood.
      *
      * @return The weighted entry that was selected.
      */
@@ -113,8 +113,8 @@ public class WeightedSelector<T> {
     }
 
     /**
-     * Updates the total weight value for the selector. This should be caused any time the list is
-     * altered.
+     * Updates the total weight value for the selector. This should be caused
+     * any time the list is altered.
      *
      * @return The new total weight.
      */
@@ -142,11 +142,12 @@ public class WeightedSelector<T> {
         private final int weight;
 
         /**
-         * Constructs a new WeightedEntry using a basic entry and weight parameter.
+         * Constructs a new WeightedEntry using a basic entry and weight
+         * parameter.
          *
          * @param entry The outcome to represent with the entry.
-         * @param weight The weight of the entry. Entries with a higher weight have a higher likelihood
-         *        of being selected.
+         * @param weight The weight of the entry. Entries with a higher weight
+         *        have a higher likelihood of being selected.
          */
         public WeightedEntry (T entry, int weight) {
 

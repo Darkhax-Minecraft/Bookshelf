@@ -7,8 +7,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface ICustomMesh {
 
     /**
-     * Gets a custom ItemMeshDefinition for the item. Keep in mind that the models still have to be
-     * baked.
+     * Gets a custom ItemMeshDefinition for the item. Keep in mind that the
+     * models still have to be baked.
      *
      * @return
      */

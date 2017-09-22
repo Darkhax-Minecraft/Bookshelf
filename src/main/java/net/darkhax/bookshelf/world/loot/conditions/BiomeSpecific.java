@@ -9,16 +9,16 @@ package net.darkhax.bookshelf.world.loot.conditions;
 
 import java.util.Random;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 
 public class BiomeSpecific implements LootCondition {
 
