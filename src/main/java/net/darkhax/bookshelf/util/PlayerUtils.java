@@ -14,11 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.common.io.Resources;
-import com.google.gson.stream.JsonReader;
-
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
@@ -38,6 +33,11 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.io.Resources;
+import com.google.gson.stream.JsonReader;
+
 public final class PlayerUtils {
 
     /**
@@ -46,9 +46,14 @@ public final class PlayerUtils {
     public static BiMap<String, UUID> PROFILE_CACHE = HashBiMap.<String, UUID> create();
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an implicit
-     * public constructor to every class which does not define at lease one explicitly. Hence why
-     * this constructor was added.
+     * The UUID of the player with the eternal birthday.
+     */
+    public static final String BIRTHDAY_BOY_UUID = "10755ea6-9721-467a-8b5c-92adf689072c";
+
+    /**
+     * Utility classes, such as this one, are not meant to be instantiated. Java
+     * adds an implicit public constructor to every class which does not define
+     * at lease one explicitly. Hence why this constructor was added.
      */
     private PlayerUtils () {
 
@@ -56,8 +61,9 @@ public final class PlayerUtils {
     }
 
     /**
-     * Checks if a specific player can sleep. For this to be true, a player must not already be in
-     * a bed, and the world time bust be greater than 12541, but less than 23458.
+     * Checks if a specific player can sleep. For this to be true, a player must
+     * not already be in a bed, and the world time bust be greater than 12541,
+     * but less than 23458.
      *
      * @param player: The player to check the sleepability of.
      * @return boolean: True if the player can sleep, false if they can not.
@@ -71,8 +77,8 @@ public final class PlayerUtils {
      * A simple check to make sure that an EntityPlayer actually exists.
      *
      * @param player: The instance of EntityPlayer to check.
-     * @return boolean: If the player exists true will be returned. If they don't false will be
-     *         returned.
+     * @return boolean: If the player exists true will be returned. If they
+     *         don't false will be returned.
      */
     public static boolean isPlayerReal (Entity player) {
 
@@ -80,14 +86,14 @@ public final class PlayerUtils {
     }
 
     /**
-     * Retrieves an instance of EntityPlayer based on a UUID. For this to work, the player must
-     * currently be online, and within the world.
+     * Retrieves an instance of EntityPlayer based on a UUID. For this to work,
+     * the player must currently be online, and within the world.
      *
      * @param world: The world in which the target player resides.
      * @param playerID: A unique identifier associated with the target player.
-     * @return EntityPlayer: If the target player is online and within the targeted world, their
-     *         EntityPlayer instance will be returned. If the player is not found, null will be
-     *         returned.
+     * @return EntityPlayer: If the target player is online and within the
+     *         targeted world, their EntityPlayer instance will be returned. If
+     *         the player is not found, null will be returned.
      */
     public static EntityPlayer getPlayerFromUUID (World world, UUID playerID) {
 
@@ -106,8 +112,9 @@ public final class PlayerUtils {
     }
 
     /**
-     * Attempts to get the username associated with a UUID from Mojang. If no username is detected
-     * or an exception takes place, the exception message will be returned.
+     * Attempts to get the username associated with a UUID from Mojang. If no
+     * username is detected or an exception takes place, the exception message
+     * will be returned.
      *
      * @param id The UUID to search for.
      * @return The name of the player associated to that uuid.
@@ -150,8 +157,8 @@ public final class PlayerUtils {
     }
 
     /**
-     * Attempts to get the UUID associated with a username from Mojang. If no uuid is found, null
-     * will return.
+     * Attempts to get the UUID associated with a username from Mojang. If no
+     * uuid is found, null will return.
      *
      * @param username The username to look for.
      * @return The UUID for the player, or null if it could not be found.
@@ -194,7 +201,8 @@ public final class PlayerUtils {
     }
 
     /**
-     * Attempts to fix a stripped UUID. Usually used to fix stripped uuid strings from Mojang.
+     * Attempts to fix a stripped UUID. Usually used to fix stripped uuid
+     * strings from Mojang.
      *
      * @param uuidString The UUID string to fix.
      * @return The fixed UUID, or null if the uuid string is invalid.
@@ -205,8 +213,8 @@ public final class PlayerUtils {
     }
 
     /**
-     * Gets the amount of an item in a players inventory. Only checks main inventory and hot bar.
-     * Checks the stack size of the items found.
+     * Gets the amount of an item in a players inventory. Only checks main
+     * inventory and hot bar. Checks the stack size of the items found.
      *
      * @param player The player to check the inventory of.
      * @param item The item to check for.
@@ -230,7 +238,8 @@ public final class PlayerUtils {
      *
      * @param player The player to check the inventory of.
      * @param item The item to check for.
-     * @param meta The metadata for the item to look for. Less than 0 can be used for any item.
+     * @param meta The metadata for the item to look for. Less than 0 can be
+     *        used for any item.
      * @return Whether or not the player has the item in their inventory.
      */
     public static boolean playerHasItem (EntityPlayer player, Item item, int meta) {
@@ -249,7 +258,8 @@ public final class PlayerUtils {
      *
      * @param player The player to search.
      * @param item The item to search for.
-     * @param meta The desired metadata for the item. If less than 0, any meta will work.
+     * @param meta The desired metadata for the item. If less than 0, any meta
+     *        will work.
      * @return The list of found items.
      */
     public static List<ItemStack> getStacksFromPlayer (EntityPlayer player, Item item, int meta) {
@@ -266,9 +276,10 @@ public final class PlayerUtils {
     }
 
     /**
-     * Changes the dimension a player is in, in a safe way. This will make sure the player is
-     * teleported to the dimension and all the correct packets are sent to keep the client in sync.
-     * It also gets around teleporter code which in some cases will crash the server.
+     * Changes the dimension a player is in, in a safe way. This will make sure
+     * the player is teleported to the dimension and all the correct packets are
+     * sent to keep the client in sync. It also gets around teleporter code
+     * which in some cases will crash the server.
      *
      * @param player The player to change the dimension of.
      * @param dimension The dimension to send the player to.
@@ -279,9 +290,10 @@ public final class PlayerUtils {
     }
 
     /**
-     * Changes the dimension a player is in, in a safe way. This will make sure the player is
-     * teleported to the dimension and all the correct packets are sent to keep the client in sync.
-     * It also gets around teleporter code which in some cases will crash the server.
+     * Changes the dimension a player is in, in a safe way. This will make sure
+     * the player is teleported to the dimension and all the correct packets are
+     * sent to keep the client in sync. It also gets around teleporter code
+     * which in some cases will crash the server.
      *
      * @param player The player to change the dimension of.
      * @param dimension The dimension to send the player to.
@@ -334,8 +346,8 @@ public final class PlayerUtils {
     }
 
     /**
-     * Retrieves an instance of the player from the client side. This code only exists in client
-     * side code and can not be used in server side code.
+     * Retrieves an instance of the player from the client side. This code only
+     * exists in client side code and can not be used in server side code.
      */
     @SideOnly(Side.CLIENT)
     public static EntityPlayer getClientPlayer () {
@@ -344,15 +356,16 @@ public final class PlayerUtils {
     }
 
     /**
-     * Sends a spamless message to the chat. A spamless message is one that only shows up in the
-     * chat once. If another version of the message were to be added to chat, the earlier one would
-     * be removed.
+     * Sends a spamless message to the chat. A spamless message is one that only
+     * shows up in the chat once. If another version of the message were to be
+     * added to chat, the earlier one would be removed.
      *
-     * @param messageID A unique message ID used to separate your message from the others. It is
-     *        highly recommended to use a random number to prevent conflicts with other mods doing
-     *        similar things. Each message type should have it's own ID.
-     * @param message The message to send to chat, this message will replace earlier messages in
-     *        the gui that use the same ID.
+     * @param messageID A unique message ID used to separate your message from
+     *        the others. It is highly recommended to use a random number to
+     *        prevent conflicts with other mods doing similar things. Each
+     *        message type should have it's own ID.
+     * @param message The message to send to chat, this message will replace
+     *        earlier messages in the gui that use the same ID.
      */
     @SideOnly(Side.CLIENT)
     public static void sendSpamlessMessage (int messageID, ITextComponent message) {
@@ -362,8 +375,9 @@ public final class PlayerUtils {
     }
 
     /**
-     * Checks if the player is currently in game. This is done by checking if the current world and
-     * player exist, and if the player exists in a valid world.
+     * Checks if the player is currently in game. This is done by checking if
+     * the current world and player exist, and if the player exists in a valid
+     * world.
      *
      * @return Whether or not the player is currently in game.
      */
@@ -383,5 +397,17 @@ public final class PlayerUtils {
     public static UUID getClientUUID () {
 
         return fixStrippedUUID(Minecraft.getMinecraft().getSession().getPlayerID());
+    }
+
+    /**
+     * Checks if it's the players birthday. A false does not necesarily mean
+     * it's not the players birthday.
+     *
+     * @param player The player to check.
+     * @return Whether or not we know it's their birthday.
+     */
+    public static boolean isPlayersBirthdate (EntityPlayer player) {
+
+        return player.getUniqueID().toString().equalsIgnoreCase(BIRTHDAY_BOY_UUID.toString());
     }
 }
