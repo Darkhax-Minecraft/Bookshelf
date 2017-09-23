@@ -7,6 +7,11 @@
  */
 package net.darkhax.bookshelf.lib;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -54,11 +59,11 @@ public class LoggingHelper {
     }
 
     /**
-     * Logs a debug message. Debug messages are not printed to the console, but
-     * they are added to the console file.
+     * Logs a debug message. Debug messages are not printed to the console, but they
+     * are added to the console file.
      *
-     * @param message The message to print. Likely uses log4J's format which is
-     *        {} for parameters.
+     * @param message The message to print. Likely uses log4J's format which is {}
+     *        for parameters.
      * @param params The parameters for the messages. This can be used to insert
      *        info directly to the message, or completely ignored.
      */
@@ -68,11 +73,11 @@ public class LoggingHelper {
     }
 
     /**
-     * Logs an error message. Error messages are printed to the console and the
-     * log file.
+     * Logs an error message. Error messages are printed to the console and the log
+     * file.
      *
-     * @param message The message to print. Likely uses log4J's format which is
-     *        {} for parameters.
+     * @param message The message to print. Likely uses log4J's format which is {}
+     *        for parameters.
      * @param params The parameters for the messages. This can be used to insert
      *        info directly to the message, or completely ignored.
      */
@@ -83,11 +88,11 @@ public class LoggingHelper {
 
     /**
      * Logs a fatal error message. This should be used to log errors which will
-     * prevent the game from working as expected and are likely to cause a
-     * crash. Fatal messages are printed to the console and the log file.
+     * prevent the game from working as expected and are likely to cause a crash.
+     * Fatal messages are printed to the console and the log file.
      *
-     * @param message The message to print. Likely uses log4J's format which is
-     *        {} for parameters.
+     * @param message The message to print. Likely uses log4J's format which is {}
+     *        for parameters.
      * @param params The parameters for the messages. This can be used to insert
      *        info directly to the message, or completely ignored.
      */
@@ -97,11 +102,11 @@ public class LoggingHelper {
     }
 
     /**
-     * Logs a generic info message. Info messages are printed to the console and
-     * the log file.
+     * Logs a generic info message. Info messages are printed to the console and the
+     * log file.
      *
-     * @param message The message to print. Likely uses log4J's format which is
-     *        {} for parameters.
+     * @param message The message to print. Likely uses log4J's format which is {}
+     *        for parameters.
      * @param params The parameters for the messages. This can be used to insert
      *        info directly to the message, or completely ignored.
      */
@@ -114,8 +119,8 @@ public class LoggingHelper {
      * Logs a message at any Level.
      *
      * @param level The level of the message to log.
-     * @param message The message to print. Likely uses log4J's format which is
-     *        {} for parameters.
+     * @param message The message to print. Likely uses log4J's format which is {}
+     *        for parameters.
      * @param params The parameters for the messages. This can be used to insert
      *        info directly to the message, or completely ignored.
      */
@@ -125,12 +130,11 @@ public class LoggingHelper {
     }
 
     /**
-     * Logs a trace message. This is for fine grained debug messages. Trace
-     * messages are not printed to the console, but they are added to the
-     * console file.
+     * Logs a trace message. This is for fine grained debug messages. Trace messages
+     * are not printed to the console, but they are added to the console file.
      *
-     * @param message The message to print. Likely uses log4J's format which is
-     *        {} for parameters.
+     * @param message The message to print. Likely uses log4J's format which is {}
+     *        for parameters.
      * @param params The parameters for the messages. This can be used to insert
      *        info directly to the message, or completely ignored.
      */
@@ -143,8 +147,8 @@ public class LoggingHelper {
      * Logs a warning message. These messages will also include a stacktrace.
      * Warning messages are printed to the console and the log file.
      *
-     * @param message The message to print. Likely uses log4J's format which is
-     *        {} for parameters.
+     * @param message The message to print. Likely uses log4J's format which is {}
+     *        for parameters.
      * @param params The parameters for the messages. This can be used to insert
      *        info directly to the message, or completely ignored.
      */
@@ -157,8 +161,8 @@ public class LoggingHelper {
      * Logs a warning message. These messages will also include a stacktrace.
      * Warning messages are printed to the console and the log file.
      *
-     * @param message The message to print. Likely uses log4J's format which is
-     *        {} for parameters.
+     * @param message The message to print. Likely uses log4J's format which is {}
+     *        for parameters.
      * @param params The parameters for the messages. This can be used to insert
      *        info directly to the message, or completely ignored.
      */
@@ -176,6 +180,50 @@ public class LoggingHelper {
     public Logger getLogger () {
 
         return this.logger;
+    }
+
+    /**
+     * Creates a noticeable warning, similar to the ones created by the FMLLog.
+     *
+     * @param trace If true, a small stack trace will be included in the error
+     *        message.
+     * @param lines Each entry will be printed as part of the error message. If any
+     *        entry is longer than 78 chars it will be auto wrapped into multiple
+     *        lines.
+     */
+    public void noticableWarning (boolean trace, List<String> lines) {
+
+        this.error("********************************************************************************");
+
+        for (final String line : lines) {
+
+            for (final String subline : wrapString(line, 78, false, new ArrayList<String>())) {
+
+                this.error("* " + subline);
+            }
+        }
+
+        if (trace) {
+
+            final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+
+            for (int i = 2; i < 8 && i < stackTrace.length; i++) {
+                this.warn("*  at {}{}", stackTrace[i].toString(), i == 7 ? "..." : "");
+            }
+        }
+
+        this.error("********************************************************************************");
+    }
+
+    public static List<String> wrapString (String string, int lnLength, boolean wrapLongWords, List<String> list) {
+
+        final String lines[] = WordUtils.wrap(string, lnLength, null, wrapLongWords).split(SystemUtils.LINE_SEPARATOR);
+
+        for (final String line : lines) {
+            list.add(line);
+        }
+
+        return list;
     }
 
     /**
