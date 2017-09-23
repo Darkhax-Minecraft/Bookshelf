@@ -154,7 +154,7 @@ public class LoggingHelper {
      */
     public void warn (String message, Object... params) {
 
-        this.warn(new LogWarningException(), message, params);
+        this.warn(message, params);
     }
 
     /**
@@ -224,18 +224,5 @@ public class LoggingHelper {
         }
 
         return list;
-    }
-
-    /**
-     * A wrapper for RuntimeException, used to print the current stacktrace.
-     */
-    private static class LogWarningException extends RuntimeException {
-
-        private static final long serialVersionUID = 1L;
-
-        public LogWarningException () {
-
-            super("An error was encountered. This is how!");
-        }
     }
 }
