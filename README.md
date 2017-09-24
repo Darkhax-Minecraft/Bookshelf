@@ -35,5 +35,5 @@ Credits
 [SanAndreasP](https://twitter.com/SanAndreasP)  
 [VikeStep](https://twitter.com/VikeStep)   
 [jaredlll08](https://twitter.com/jaredlll08)  
-[Vazkii](https://twitter.com/Vazkii)
+[Vazkii](https://twitter.com/Vazkii)    
 [Mezz](https://twitter.com/mezz_mc)
