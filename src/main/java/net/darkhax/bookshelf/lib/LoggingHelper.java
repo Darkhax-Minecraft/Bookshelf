@@ -154,7 +154,7 @@ public class LoggingHelper {
      */
     public void warn (String message, Object... params) {
 
-        this.warn(message, params);
+        this.logger.warn(message, params);
     }
 
     /**
