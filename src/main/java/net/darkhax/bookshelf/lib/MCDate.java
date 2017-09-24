@@ -56,7 +56,7 @@ public class MCDate {
     /**
      * The day represented.
      */
-    private final int day = 0;
+    private long day = 0;
 
     /**
      * Constructs a date for the current world time.
@@ -77,11 +77,11 @@ public class MCDate {
     public MCDate (long time) {
 
         this.totalDays = (time + DAY_LENGTH) / DAY_LENGTH;
-        long remainingDays = this.totalDays;
+        this.day = this.totalDays;
 
-        while (remainingDays > MONTH_LENGTHS[this.month]) {
+        while (this.day > MONTH_LENGTHS[this.month]) {
 
-            remainingDays -= MONTH_LENGTHS[this.month];
+            this.day -= MONTH_LENGTHS[this.month];
 
             this.month++;
 
@@ -118,7 +118,7 @@ public class MCDate {
      *
      * @return The represented day.
      */
-    public int getDay () {
+    public long getDay () {
 
         return this.day;
     }
@@ -140,7 +140,7 @@ public class MCDate {
      */
     public String getDayName () {
 
-        return NAMES_DAYS[this.day];
+        return NAMES_DAYS[(int) this.day];
     }
 
     /**
