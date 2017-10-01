@@ -109,7 +109,7 @@ public class RegistryHelper {
      * The creative tab used by the mod. This can be null.
      */
     private CreativeTabs tab;
-    
+
     private Object modInstance;
 
     /**
@@ -145,28 +145,28 @@ public class RegistryHelper {
         MinecraftForge.EVENT_BUS.register(new AutoRegistry(this));
         return this;
     }
-    
-    public void setModInstance(Object instance) {
-        
+
+    public void setModInstance (Object instance) {
+
         this.modInstance = instance;
     }
-    
-    public Object getModInstance() {
-        
+
+    public Object getModInstance () {
+
         if (this.modInstance == null) {
-            
+
             Constants.LOG.error("Registry helper for " + this.modid + " requires a mod instance be set. Attempting to get instance with mod ID. Please ask the mod author to set this themselves.");
 
-            for (ModContainer container : Loader.instance().getActiveModList()) {
-                
+            for (final ModContainer container : Loader.instance().getActiveModList()) {
+
                 if (this.modid.equalsIgnoreCase(container.getModId())) {
-                    
+
                     this.modInstance = container.getMod();
                     break;
                 }
             }
         }
-        
+
         return this.modInstance;
     }
 
@@ -358,6 +358,7 @@ public class RegistryHelper {
         final EntityEntry entry = new EntityEntry(entClass, id);
         entry.setRegistryName(this.modid, id);
         entry.setEgg(new EntityEggInfo(entry.getRegistryName(), primary, secondary));
+        this.entities.add(entry);
         return entry;
     }
 
@@ -372,6 +373,7 @@ public class RegistryHelper {
 
         final EntityEntry entry = new EntityEntry(entClass, id);
         entry.setRegistryName(this.modid, id);
+        this.entities.add(entry);
         return entry;
     }
 
