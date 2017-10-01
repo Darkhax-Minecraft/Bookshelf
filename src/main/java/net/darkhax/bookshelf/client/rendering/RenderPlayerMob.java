@@ -84,14 +84,7 @@ public abstract class RenderPlayerMob<T extends EntityPlayerMob> extends RenderL
         final ItemStack offhand = entity.getHeldItemOffhand();
 
         model.setVisible(true);
-
-        // In the case of player mobs you likely always want the thin skin overlay
-        model.bipedHeadwear.showModel = true;
-        model.bodyOverlay.showModel = true;
-        model.leftLegOverlay.showModel = true;
-        model.rightLegLverlay.showModel = true;
-        model.leftArmOverlay.showModel = true;
-        model.rightArmOverlay.showModel = true;
+        setOverlayVisibility(entity, model);
         model.isSneak = entity.isSneaking();
 
         final ModelBiped.ArmPose mainArm = this.getPoseForStack(entity, mainhand);
@@ -101,6 +94,16 @@ public abstract class RenderPlayerMob<T extends EntityPlayerMob> extends RenderL
 
         model.rightArmPose = isRightHanded ? mainArm : offhandArm;
         model.leftArmPose = isRightHanded ? offhandArm : mainArm;
+    }
+    
+    public void setOverlayVisibility(T entity, ModelPlayerMob model) {
+        
+        model.bipedHeadwear.showModel = true;
+        model.bodyOverlay.showModel = true;
+        model.leftLegOverlay.showModel = true;
+        model.rightLegLverlay.showModel = true;
+        model.leftArmOverlay.showModel = true;
+        model.rightArmOverlay.showModel = true;
     }
 
     public ArmPose getPoseForStack (T entity, ItemStack stack) {
