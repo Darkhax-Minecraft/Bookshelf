@@ -77,7 +77,7 @@ public abstract class RenderPlayerMob<T extends EntityPlayerMob> extends RenderL
         GlStateManager.scale(0.9375F, 0.9375F, 0.9375F);
     }
 
-    private void setModelVisibilities (T entity) {
+    public void setModelVisibilities (T entity) {
 
         final ModelPlayerMob model = this.getMainModel();
         final ItemStack mainhand = entity.getHeldItemMainhand();
@@ -103,7 +103,7 @@ public abstract class RenderPlayerMob<T extends EntityPlayerMob> extends RenderL
         model.leftArmPose = isRightHanded ? offhandArm : mainArm;
     }
 
-    private ArmPose getPoseForStack (T entity, ItemStack stack) {
+    public ArmPose getPoseForStack (T entity, ItemStack stack) {
 
         ModelBiped.ArmPose pose = ModelBiped.ArmPose.EMPTY;
 
