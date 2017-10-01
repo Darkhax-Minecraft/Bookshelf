@@ -27,7 +27,6 @@ import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList.EntityEggInfo;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.NonNullList;
@@ -42,7 +41,6 @@ import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -354,11 +352,31 @@ public class RegistryHelper {
      */
     public <T extends Entity> EntityEntryBuilder<T> registerEntity (Class<T> entClass, String id, int networkId) {
 
-        EntityEntryBuilder<T> builder = EntityEntryBuilder.create();
+        final EntityEntryBuilder<T> builder = EntityEntryBuilder.create();
         builder.id(new ResourceLocation(this.modid, id), networkId);
-        builder.name(id);
+        builder.name(this.modid + "." + id);
         builder.entity(entClass);
-        
+
+        this.entities.add(builder);
+        return builder;
+    }
+
+    /**
+     * Registers any sort of entity. Will not have a spawn egg.
+     *
+     * @param entClass The entity class.
+     * @param id The string id for the entity.
+     * @return The entity that was registered.
+     */
+    public <T extends Entity> EntityEntryBuilder<T> registerMob (Class<T> entClass, String id, int networkId, int primary, int seconday) {
+
+        final EntityEntryBuilder<T> builder = EntityEntryBuilder.create();
+        builder.id(new ResourceLocation(this.modid, id), networkId);
+        builder.name(this.modid + "." + id);
+        builder.entity(entClass);
+        builder.tracker(64, 1, true);
+        builder.egg(primary, seconday);
+
         this.entities.add(builder);
         return builder;
     }
