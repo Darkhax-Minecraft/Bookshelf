@@ -16,9 +16,8 @@ import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 
 /**
- * This serves as a builder for
- * {@link net.minecraft.world.storage.loot.LootEntryItem}. It allows for cleaner
- * building of loot entries, and for things to be done in a flexible way.
+ * This serves as a builder for {@link net.minecraft.world.storage.loot.LootEntryItem}. It
+ * allows for cleaner building of loot entries, and for things to be done in a flexible way.
  */
 public class LootBuilder {
 

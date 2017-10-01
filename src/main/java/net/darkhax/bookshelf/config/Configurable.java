@@ -19,8 +19,7 @@ import net.minecraftforge.common.config.Configuration;
 public @interface Configurable {
 
     /**
-     * The name for the entry. This defaults to an empty string, which will use
-     * the field name.
+     * The name for the entry. This defaults to an empty string, which will use the field name.
      *
      * @return The name for the entry.
      */

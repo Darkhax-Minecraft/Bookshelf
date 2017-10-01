@@ -67,6 +67,7 @@ processResources {
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
+
 jar {
 
     manifest {

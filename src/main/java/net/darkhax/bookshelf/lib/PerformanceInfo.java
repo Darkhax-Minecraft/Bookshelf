@@ -49,8 +49,8 @@ public class PerformanceInfo {
     private final long usedMemory;
 
     /**
-     * Constructs a PerformanceInfo snapshot. Once constructed it can be used to get get info about
-     * the game at time of construction.
+     * Constructs a PerformanceInfo snapshot. Once constructed it can be used to get get info
+     * about the game at time of construction.
      */
     public PerformanceInfo () {
 

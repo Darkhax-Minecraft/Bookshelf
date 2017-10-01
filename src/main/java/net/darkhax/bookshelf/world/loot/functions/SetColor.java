@@ -9,6 +9,10 @@ package net.darkhax.bookshelf.world.loot.functions;
 
 import java.util.Random;
 
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.MCColor;
 import net.darkhax.bookshelf.util.StackUtils;
@@ -17,10 +21,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
-
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
 
 public class SetColor extends LootFunction {
 
@@ -38,8 +38,7 @@ public class SetColor extends LootFunction {
     }
 
     /**
-     * Constructs a new SetColor function which uses a random color when
-     * applied.
+     * Constructs a new SetColor function which uses a random color when applied.
      *
      * @param conditions The traditional loot conditions.
      */
@@ -49,8 +48,7 @@ public class SetColor extends LootFunction {
     }
 
     /**
-     * Constructs a new SetColor function which uses the specified color when
-     * applied.
+     * Constructs a new SetColor function which uses the specified color when applied.
      *
      * @param color The color to use.
      * @param conditions The traditional loot conditions.

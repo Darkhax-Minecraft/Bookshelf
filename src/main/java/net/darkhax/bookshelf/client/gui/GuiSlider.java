@@ -7,11 +7,11 @@
  */
 package net.darkhax.bookshelf.client.gui;
 
+import org.lwjgl.opengl.GL11;
+
 import net.darkhax.bookshelf.util.MathsUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-
-import org.lwjgl.opengl.GL11;
 
 public class GuiSlider extends GuiButton {
 
@@ -58,11 +58,9 @@ public class GuiSlider extends GuiButton {
      * @param initialValue: The initial value to set the slider at.
      * @param xPos: The X position to start rendering.
      * @param yPos: The Y position to start rendering.
-     * @param repAsInt: Whether or not the value should be represented as an
-     *        integer.
-     * @param repValue: The total value to represent. For example if 100 us
-     *        used, 15% of the slider will show as 15, and if 1000 is used it
-     *        will be 150.
+     * @param repAsInt: Whether or not the value should be represented as an integer.
+     * @param repValue: The total value to represent. For example if 100 us used, 15% of the
+     *        slider will show as 15, and if 1000 is used it will be 150.
      */
     public GuiSlider (int id, String title, float initialValue, int xPos, int yPos, boolean repAsInt, int repValue) {
 
@@ -77,11 +75,9 @@ public class GuiSlider extends GuiButton {
      * @param initialValue: The initial value to set the slider at.
      * @param xPos: The X position to start rendering.
      * @param yPos: The Y position to start rendering.
-     * @param repAsInt: Whether or not the value should be represented as an
-     *        integer.
-     * @param repValue: The total value to represent. For example if 100 us
-     *        used, 15% of the slider will show as 15, and if 1000 is used it
-     *        will be 150.
+     * @param repAsInt: Whether or not the value should be represented as an integer.
+     * @param repValue: The total value to represent. For example if 100 us used, 15% of the
+     *        slider will show as 15, and if 1000 is used it will be 150.
      * @param invert: Whether or not the value should be inverted.
      */
     public GuiSlider (int id, String title, float initialValue, int xPos, int yPos, boolean repAsInt, int intValue, boolean invert) {
@@ -165,8 +161,8 @@ public class GuiSlider extends GuiButton {
     }
 
     /**
-     * Basic method for updating the display. If repAsInt is true, value will be
-     * an int. If not, it will be the actual value rounded to 2 decimal places.
+     * Basic method for updating the display. If repAsInt is true, value will be an int. If
+     * not, it will be the actual value rounded to 2 decimal places.
      */
     private void updateDisplay () {
 

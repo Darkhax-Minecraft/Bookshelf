@@ -45,8 +45,8 @@ public class ItemInventory extends Item implements IInventory {
     private final String name;
 
     /**
-     * Constructs a new Item Inventory. This is an inventory which is stored on
-     * an Item. Such an inventory can not contain items of the same type.
+     * Constructs a new Item Inventory. This is an inventory which is stored on an Item. Such
+     * an inventory can not contain items of the same type.
      *
      * @param invItem The item holding the inventory.
      * @param size The size of the inventory.
@@ -105,9 +105,9 @@ public class ItemInventory extends Item implements IInventory {
     }
 
     /**
-     * Gets a List of all the ItemStack inside the inventory from a stack.
-     * Allows for access without creating an entire inventory. Should only be
-     * used for reading, and never writing.
+     * Gets a List of all the ItemStack inside the inventory from a stack. Allows for access
+     * without creating an entire inventory. Should only be used for reading, and never
+     * writing.
      *
      * @param stack The stack to read from.
      * @return A List of the stored ItemStack.

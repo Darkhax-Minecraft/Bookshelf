@@ -31,8 +31,8 @@ public abstract class TileEntityBasicTickable extends TileEntityBasic implements
     }
 
     /**
-     * Handles the TileEntity update ticks. This method will only be called in a
-     * safe environment.
+     * Handles the TileEntity update ticks. This method will only be called in a safe
+     * environment.
      */
     public abstract void onEntityUpdate ();
 }

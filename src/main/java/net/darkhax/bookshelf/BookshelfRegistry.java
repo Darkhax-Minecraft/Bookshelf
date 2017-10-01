@@ -24,23 +24,21 @@ public class BookshelfRegistry {
     private static final ModTrackingList<IAnvilRecipe> anvilRecipes = new ModTrackingList<>();
 
     /**
-     * A list of commands to register. This exists to allow all depending mods
-     * to register/construct their commands during an earlier loading stage, and
-     * lower the amount of work and listeners slowing down the server starting
-     * event. It's both a quality of life, and very minor performance
-     * improvement.
+     * A list of commands to register. This exists to allow all depending mods to
+     * register/construct their commands during an earlier loading stage, and lower the amount
+     * of work and listeners slowing down the server starting event. It's both a quality of
+     * life, and very minor performance improvement.
      */
     private static final ModTrackingList<ICommand> commands = new ModTrackingList<>();
 
     /**
-     * A list of game rules registered through bookshelf. This takes some of the
-     * tediousness out of managing your own game rules.
+     * A list of game rules registered through bookshelf. This takes some of the tediousness
+     * out of managing your own game rules.
      */
     private static final ModTrackingList<GameRule> gameRules = new ModTrackingList<>();
 
     /**
-     * Adds a new oredict anvil recipe to the list. This recipe will have no
-     * name requirement.
+     * Adds a new oredict anvil recipe to the list. This recipe will have no name requirement.
      *
      * @param leftSlot The item required in the left slot.
      * @param rightSlot The item required in the right slot.
@@ -57,8 +55,7 @@ public class BookshelfRegistry {
     }
 
     /**
-     * Adds a new oredict anvil recipe to the list. This recipe will have no
-     * name requirement.
+     * Adds a new oredict anvil recipe to the list. This recipe will have no name requirement.
      *
      * @param leftSlot The item required in the left slot.
      * @param rightSlot The item required in the right slot.
@@ -75,8 +72,7 @@ public class BookshelfRegistry {
     }
 
     /**
-     * Adds a new oredict anvil recipe to the list. This recipe will have no
-     * name requirement.
+     * Adds a new oredict anvil recipe to the list. This recipe will have no name requirement.
      *
      * @param leftSlot The item required in the left slot.
      * @param rightSlot The item required in the right slot.
@@ -96,8 +92,7 @@ public class BookshelfRegistry {
     }
 
     /**
-     * Adds a new anvil recipe to the list. This recipe will have no name
-     * requirement.
+     * Adds a new anvil recipe to the list. This recipe will have no name requirement.
      *
      * @param leftSlot The item required in the left slot.
      * @param rightSlot The item required in the right slot.
@@ -138,8 +133,7 @@ public class BookshelfRegistry {
     /**
      * Retrieves the List of all registered anvil recipes.
      *
-     * @return A List of all AnvilRecipes that have been registered with
-     *         bookshelf.
+     * @return A List of all AnvilRecipes that have been registered with bookshelf.
      */
     public static ModTrackingList<IAnvilRecipe> getAnvilRecipes () {
 

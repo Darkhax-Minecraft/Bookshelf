@@ -8,8 +8,8 @@
 package net.darkhax.bookshelf.data;
 
 /**
- * Defines some of the common fluid volume values. Based on values from Tinkers
- * Construct, and many other mods which deal with fluid values.
+ * Defines some of the common fluid volume values. Based on values from Tinkers Construct, and
+ * many other mods which deal with fluid values.
  */
 public enum FluidVolume {
 
@@ -25,8 +25,7 @@ public enum FluidVolume {
     public int amount;
 
     /**
-     * A simple enumeration used to list how many milibuckets is in a given
-     * measurement.
+     * A simple enumeration used to list how many milibuckets is in a given measurement.
      *
      * @param amount The amount of milibuckets in the measurement.
      */

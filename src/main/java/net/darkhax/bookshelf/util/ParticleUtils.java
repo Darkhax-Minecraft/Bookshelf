@@ -23,9 +23,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public final class ParticleUtils {
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java
-     * adds an implicit public constructor to every class which does not define
-     * at lease one explicitly. Hence why this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
      */
     private ParticleUtils () {
 
@@ -33,13 +33,11 @@ public final class ParticleUtils {
     }
 
     /**
-     * Spawns the digging particles for a block, similarly to the normal block
-     * hit effect particle. The intended use of this method is to override the
-     * block hit effects.
+     * Spawns the digging particles for a block, similarly to the normal block hit effect
+     * particle. The intended use of this method is to override the block hit effects.
      *
      * @param manager The EffectRenderer, used to render the particle effect.
-     * @param state The BlockState for the block to render the breaking effect
-     *        of.
+     * @param state The BlockState for the block to render the breaking effect of.
      * @param world The World to spawn the particle effects in.
      * @param pos The position to spawn the particles at.
      * @param side The side offset for the effect.
@@ -85,13 +83,11 @@ public final class ParticleUtils {
     }
 
     /**
-     * Spawns the break particles for a block, similarly to the normal block
-     * break effect particle. The intended use of this method is to override the
-     * block break effects.
+     * Spawns the break particles for a block, similarly to the normal block break effect
+     * particle. The intended use of this method is to override the block break effects.
      *
      * @param manager The EffectRenderer, used to render the particle effect.
-     * @param state The BlockState for the block to render the breaking effect
-     *        of.
+     * @param state The BlockState for the block to render the breaking effect of.
      * @param world The World to spawn the particle effect in.
      * @param pos The position to spawn the particles at.
      * @return boolean Whether or not the effect actually spawned.
@@ -132,9 +128,8 @@ public final class ParticleUtils {
      * @param velocityX The velocity of the particle, in the x direction.
      * @param velocityY The velocity of the particle, in the y direction.
      * @param velocityZ The velocity of the particle, in the z direction.
-     * @param step The distance in degrees, between each particle. The maximum
-     *        is 2 * PI, which will create 1 particle per ring. 0.15 is a nice
-     *        value.
+     * @param step The distance in degrees, between each particle. The maximum is 2 * PI, which
+     *        will create 1 particle per ring. 0.15 is a nice value.
      */
     @SideOnly(Side.CLIENT)
     public static void spawnParticleRing (World world, EnumParticleTypes particle, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
@@ -145,9 +140,8 @@ public final class ParticleUtils {
     }
 
     /**
-     * Spawns particles in a ring, centered around a certain point. This method
-     * takes a percent argument which is used to calculate the amount of the
-     * ring to spawn.
+     * Spawns particles in a ring, centered around a certain point. This method takes a percent
+     * argument which is used to calculate the amount of the ring to spawn.
      *
      * @param world The world to spawn the particles in.
      * @param particle The type of particle to spawn.
@@ -158,9 +152,8 @@ public final class ParticleUtils {
      * @param velocityX The velocity of the particle, in the x direction.
      * @param velocityY The velocity of the particle, in the y direction.
      * @param velocityZ The velocity of the particle, in the z direction.
-     * @param step The distance in degrees, between each particle. The maximum
-     *        is 2 * PI, which will create 1 particle per ring. 0.15 is a nice
-     *        value.
+     * @param step The distance in degrees, between each particle. The maximum is 2 * PI, which
+     *        will create 1 particle per ring. 0.15 is a nice value.
      */
     public static void spawnPercentageParticleRing (World world, EnumParticleTypes particle, float percentage, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
 

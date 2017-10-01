@@ -14,6 +14,9 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.util.AnnotationUtils;
 import net.darkhax.bookshelf.util.CollectionUtils;
@@ -32,23 +35,19 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-
 public class ConfigurationHandler {
 
     /**
-     * A cache of all the config classes associated with a config file. Allows
-     * for multiple mods and config files to exist, without rebuilding the list
-     * every time. This is generated the first time {@link #init(ASMDataTable)}
-     * is called.
+     * A cache of all the config classes associated with a config file. Allows for multiple
+     * mods and config files to exist, without rebuilding the list every time. This is
+     * generated the first time {@link #init(ASMDataTable)} is called.
      */
     public static final Multimap<String, Class<?>> CLASS_CACHE = HashMultimap.create();
 
     /**
-     * A map of adapters. These are used to read/write a config option for a
-     * specific type. The key is the class of the type being handled, and the
-     * value is a functional interface which is used to process the config data.
+     * A map of adapters. These are used to read/write a config option for a specific type. The
+     * key is the class of the type being handled, and the value is a functional interface
+     * which is used to process the config data.
      */
     public static final Map<Class<?>, Adapter> handlers = new HashMap<>();
 
@@ -97,13 +96,13 @@ public class ConfigurationHandler {
     }
 
     /**
-     * Base constructor for a configuration handler. The purpose of this class
-     * is to provide a basic wrapper for Forge's configuration, but mostly to
-     * add support for special configuration based annotations.
+     * Base constructor for a configuration handler. The purpose of this class is to provide a
+     * basic wrapper for Forge's configuration, but mostly to add support for special
+     * configuration based annotations.
      *
-     * @param name The name of the config file to represent. This should be all
-     *        lower case and have no spaces. Basic file name rules. The .cfg
-     *        extension and forge config directory is added automatically.
+     * @param name The name of the config file to represent. This should be all lower case and
+     *        have no spaces. Basic file name rules. The .cfg extension and forge config
+     *        directory is added automatically.
      */
     public ConfigurationHandler (String name) {
 
@@ -113,11 +112,10 @@ public class ConfigurationHandler {
     }
 
     /**
-     * Initializes the ConfigurationHandler. This should be called after you
-     * create your configuration handler.
+     * Initializes the ConfigurationHandler. This should be called after you create your
+     * configuration handler.
      *
-     * @param table The ASMDataTable. You can get this from your fml
-     *        construction events.
+     * @param table The ASMDataTable. You can get this from your fml construction events.
      */
     public void init (ASMDataTable table) {
 

@@ -15,8 +15,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * A client side only class, which contains references to reusable color
- * handlers for items and blocks.
+ * A client side only class, which contains references to reusable color handlers for items and
+ * blocks.
  */
 @SideOnly(Side.CLIENT)
 public class ColorHandlers {

@@ -19,14 +19,12 @@ import net.minecraft.world.IBlockAccess;
 public final class Blockstates {
 
     /**
-     * Used to handle whether or not the block is on or off. Used mainly by
-     * redstone blocks.
+     * Used to handle whether or not the block is on or off. Used mainly by redstone blocks.
      */
     public static final PropertyBool POWERED = PropertyBool.create("powered");
 
     /**
-     * Used to hold another block state. This is useful for mimicking other
-     * blocks.
+     * Used to hold another block state. This is useful for mimicking other blocks.
      */
     public static final PropertyObject<IBlockState> HELD_STATE = new PropertyObject<>("held_state", IBlockState.class);
 
@@ -41,8 +39,7 @@ public final class Blockstates {
     public static final PropertyObject<BlockPos> BLOCKPOS = new PropertyObject<>("pos", BlockPos.class);
 
     /**
-     * Used to determine the color of a block. Only supports the 16 vanilla
-     * colors.
+     * Used to determine the color of a block. Only supports the 16 vanilla colors.
      */
     public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
 
@@ -87,9 +84,9 @@ public final class Blockstates {
     public static final PropertyBool ENABLED = PropertyBool.create("enabled");
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java
-     * adds an implicit public constructor to every class which does not define
-     * at lease one explicitly. Hence why this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
      */
     private Blockstates () {
 

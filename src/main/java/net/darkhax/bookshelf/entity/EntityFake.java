@@ -12,8 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 /**
- * An implementation of Entity which doesn't actually do anything. Useful when
- * you need to make references to an entity class for tricking registers.
+ * An implementation of Entity which doesn't actually do anything. Useful when you need to make
+ * references to an entity class for tricking registers.
  */
 public class EntityFake extends Entity {
 

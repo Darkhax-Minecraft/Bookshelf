@@ -14,9 +14,9 @@ import net.minecraft.world.World;
 public class OpenParticleDigging extends ParticleDigging {
 
     /**
-     * Constructs a new ParticleDigging. The constructor in ParticleDigging is
-     * not publicly available, so a work around is required if you want to spawn
-     * one of those. This version of the particle opens up that constructor.
+     * Constructs a new ParticleDigging. The constructor in ParticleDigging is not publicly
+     * available, so a work around is required if you want to spawn one of those. This version
+     * of the particle opens up that constructor.
      *
      * @param world The World instance to spawn the particle in.
      * @param x The X position for the particle.

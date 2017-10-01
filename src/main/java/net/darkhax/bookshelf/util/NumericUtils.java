@@ -17,9 +17,9 @@ public final class NumericUtils {
     public static final int[] NUMERIC_KEYS = new int[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 71, 72, 73, 75, 76, 77, 79, 80, 81 };
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java
-     * adds an implicit public constructor to every class which does not define
-     * at lease one explicitly. Hence why this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
      */
     private NumericUtils () {
 
@@ -27,8 +27,7 @@ public final class NumericUtils {
     }
 
     /**
-     * Checks if a keyCode is numeric, meaning 0-9 on the keyboard or number
-     * pad.
+     * Checks if a keyCode is numeric, meaning 0-9 on the keyboard or number pad.
      *
      * @param keyCode The key code to test.
      * @return boolean True, if the key is a number key.
@@ -60,12 +59,10 @@ public final class NumericUtils {
     }
 
     /**
-     * Checks if the code is being ran on a special day. If it is, the method
-     * will return true. this can be used to allow special events to happen on
-     * specific days.
+     * Checks if the code is being ran on a special day. If it is, the method will return true.
+     * this can be used to allow special events to happen on specific days.
      *
-     * @param month The month of the year to check for. January is 1 and
-     *        December is 12.
+     * @param month The month of the year to check for. January is 1 and December is 12.
      * @param start The first valid day of the month.
      * @param end The last valid day of the month.
      * @return Whether or not the current day is the one specified.

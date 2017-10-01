@@ -20,9 +20,9 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 public final class ModUtils {
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java
-     * adds an implicit public constructor to every class which does not define at
-     * lease one explicitly. Hence why this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
      */
     private ModUtils () {
 
@@ -30,14 +30,13 @@ public final class ModUtils {
     }
 
     /**
-     * Gets the name of a mod that registered the passed object. Has support for a
-     * wide range of registerable objects such as blocks, items, enchantments,
-     * potions, sounds, villagers, biomes, and so on.
+     * Gets the name of a mod that registered the passed object. Has support for a wide range
+     * of registerable objects such as blocks, items, enchantments, potions, sounds, villagers,
+     * biomes, and so on.
      *
      * @param registerable The registerable object. Accepts anything that extends
-     *        IForgeRegistryEntry.Impl. Current list includes BiomeGenBase, Block,
-     *        Enchantment, Item, Potion, PotionType, SoundEvent and
-     *        VillagerProfession.
+     *        IForgeRegistryEntry.Impl. Current list includes BiomeGenBase, Block, Enchantment,
+     *        Item, Potion, PotionType, SoundEvent and VillagerProfession.
      * @return String The name of the mod that registered the object.
      */
     public static String getModName (IForgeRegistryEntry.Impl<?> registerable) {
@@ -122,12 +121,12 @@ public final class ModUtils {
     }
 
     /**
-     * Searches through the array of CreativeTabs and finds the first tab with the
-     * same label as the one passed.
+     * Searches through the array of CreativeTabs and finds the first tab with the same label
+     * as the one passed.
      *
      * @param label: The label of the tab you are looking for.
-     * @return CreativeTabs: A CreativeTabs with the same label as the one passed.
-     *         If this is not found, you will get null.
+     * @return CreativeTabs: A CreativeTabs with the same label as the one passed. If this is
+     *         not found, you will get null.
      */
     @SideOnly(Side.CLIENT)
     public static CreativeTabs getTabFromLabel (String label) {

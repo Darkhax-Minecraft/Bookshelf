@@ -17,9 +17,9 @@ import net.minecraft.nbt.NBTTagCompound;
 public final class SkullUtils {
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java
-     * adds an implicit public constructor to every class which does not define
-     * at lease one explicitly. Hence why this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
      */
     private SkullUtils () {
 
@@ -30,8 +30,7 @@ public final class SkullUtils {
      * Create a skull from an instance of EntityPlayer.
      *
      * @param player The EntityPlayer to use the skin from.
-     * @return ItemStack An ItemStack containing a skull that represents the
-     *         passed player.
+     * @return ItemStack An ItemStack containing a skull that represents the passed player.
      */
     public static ItemStack createSkull (EntityPlayer player) {
 
@@ -42,8 +41,8 @@ public final class SkullUtils {
      * Creates a skull using a players UUID.
      *
      * @param uuid The UUID of the player to base the skull on.
-     * @return ItemStack An ItemStack containing a skull which represents the
-     *         owner of the passed UUID.
+     * @return ItemStack An ItemStack containing a skull which represents the owner of the
+     *         passed UUID.
      */
     public static ItemStack createSkull (String name, UUID uuid) {
 
@@ -60,8 +59,7 @@ public final class SkullUtils {
      * Creates a skull from the list of publicly provided MHF accounts.
      *
      * @param account The MHFAccount to create the skull from.
-     * @return ItemStack An ItemStack containing a skull which represents the
-     *         MHF account.
+     * @return ItemStack An ItemStack containing a skull which represents the MHF account.
      */
     public static ItemStack createSkull (MHFAccount account) {
 
@@ -72,8 +70,7 @@ public final class SkullUtils {
      * Creates a skull from the list of provided players.
      *
      * @param player The Player account to create the skull from
-     * @return ItemStack An ItemStack containing a skull which represents the
-     *         known Player.
+     * @return ItemStack An ItemStack containing a skull which represents the known Player.
      */
     public static ItemStack createSkull (Player player) {
 
@@ -81,15 +78,13 @@ public final class SkullUtils {
     }
 
     /**
-     * Creates a skull that represents a player. This method can use plain text
-     * usernames, or player UUID. It is recommended to use the UUID over the
-     * username, unless you are 100% certain that the username will never
-     * change.
+     * Creates a skull that represents a player. This method can use plain text usernames, or
+     * player UUID. It is recommended to use the UUID over the username, unless you are 100%
+     * certain that the username will never change.
      *
-     * @param owner The owner of the skull being created. Can be a username of a
-     *        UUID.
-     * @return ItemStack An ItemStack containing a skull which represents the
-     *         passed owner name.
+     * @param owner The owner of the skull being created. Can be a username of a UUID.
+     * @return ItemStack An ItemStack containing a skull which represents the passed owner
+     *         name.
      */
     public static ItemStack createSkull (String owner) {
 
@@ -102,8 +97,7 @@ public final class SkullUtils {
     /**
      * Creates a vanilla Wither Skeleton Skull.
      *
-     * @return ItemStack An ItemStack containing a vanilla wither skeleton
-     *         skull.
+     * @return ItemStack An ItemStack containing a vanilla wither skeleton skull.
      */
     public static ItemStack getWitherSkeletonSkull () {
 
@@ -153,8 +147,8 @@ public final class SkullUtils {
     /**
      * Creates an array of ItemStacks containing MHF Skulls.
      *
-     * @return ItemStack[] An array of ItemStack containing every skull from the
-     *         MHFAccount enum.
+     * @return ItemStack[] An array of ItemStack containing every skull from the MHFAccount
+     *         enum.
      */
     public static ItemStack[] getMHFSkulls () {
 
@@ -171,11 +165,9 @@ public final class SkullUtils {
     }
 
     /**
-     * Creates an array of ItemStacks containing the skulls of players from the
-     * Player enum.
+     * Creates an array of ItemStacks containing the skulls of players from the Player enum.
      *
-     * @return ItemStack[] An array of ItemStacks containing the skulls of known
-     *         players.
+     * @return ItemStack[] An array of ItemStacks containing the skulls of known players.
      */
     public static ItemStack[] getPlayerSkulls () {
 
@@ -243,8 +235,7 @@ public final class SkullUtils {
         private final String playerId;
 
         /**
-         * An enumeration of all accounts provided by Mojang under the MHF
-         * format.
+         * An enumeration of all accounts provided by Mojang under the MHF format.
          *
          * @param username The username tied to the account.
          * @param uuid The uuid tied to the account.
@@ -256,9 +247,8 @@ public final class SkullUtils {
         }
 
         /**
-         * Provides the base name for this skull. This is the base name, and not
-         * the full username. Use getMHFName to get an actual username that can
-         * be used.
+         * Provides the base name for this skull. This is the base name, and not the full
+         * username. Use getMHFName to get an actual username that can be used.
          *
          * @return String The skull name, without the MHF_ prefix.
          */
@@ -268,9 +258,9 @@ public final class SkullUtils {
         }
 
         /**
-         * Provides the username in the MHF format. The MHF format is a format
-         * used by Mojang to provide a series of additional player names which
-         * can reliably be used for things like skulls.
+         * Provides the username in the MHF format. The MHF format is a format used by Mojang
+         * to provide a series of additional player names which can reliably be used for things
+         * like skulls.
          *
          * @return String The basic username, with the MHF_ prefix.
          */
@@ -313,8 +303,7 @@ public final class SkullUtils {
         private final String playerId;
 
         /**
-         * An enumeration of a few player names. This list includes
-         * contributors, and friends.
+         * An enumeration of a few player names. This list includes contributors, and friends.
          *
          * @param username The last known username tied to the account.
          * @param uuid The UUID tied to the account.
