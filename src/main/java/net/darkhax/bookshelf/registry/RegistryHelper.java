@@ -30,6 +30,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
@@ -60,14 +61,19 @@ public class RegistryHelper {
     private final String modid;
 
     /**
-     * A list of all items registered by the helper instance.
+     * A list of all items registered by the helper.
      */
     private final NonNullList<Item> items = NonNullList.create();
 
     /**
-     * A list of all blocks registered by the helper instance.
+     * A list of all blocks registered by the helper.
      */
     private final NonNullList<Block> blocks = NonNullList.create();
+
+    /**
+     * A list of all the sounds registered by the helper.
+     */
+    private final NonNullList<SoundEvent> sounds = NonNullList.create();
 
     /**
      * A local map of all the entires that have been added. This is on a per instance basis,
@@ -171,6 +177,16 @@ public class RegistryHelper {
     }
 
     /**
+     * Gets all of the sounds registered with the helper.
+     *
+     * @return A NonNullList of sound events registered using the helper.
+     */
+    public NonNullList<SoundEvent> getSounds () {
+
+        return this.sounds;
+    }
+
+    /**
      * Registers a block to the game. This will also set the unlocalized name, and creative tab
      * if {@link #tab} has been set. The block will also be cached in {@link #blocks}.
      *
@@ -256,6 +272,20 @@ public class RegistryHelper {
         }
 
         return item;
+    }
+
+    /**
+     * Registers a new sound with the game. The sound must also exist in the sounds.json file.
+     *
+     * @param name The name of the sound file. No upper case chars!
+     * @return The sound event that was registered.
+     */
+    public SoundEvent registerSound (String name) {
+
+        final ResourceLocation id = new ResourceLocation(this.modid, name);
+        final SoundEvent sound = new SoundEvent(id).setRegistryName(id);
+        this.sounds.add(sound);
+        return sound;
     }
 
     /**
