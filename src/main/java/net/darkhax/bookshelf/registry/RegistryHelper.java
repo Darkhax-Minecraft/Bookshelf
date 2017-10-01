@@ -40,6 +40,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -108,6 +109,8 @@ public class RegistryHelper {
      * The creative tab used by the mod. This can be null.
      */
     private CreativeTabs tab;
+    
+    private Object modInstance;
 
     /**
      * Constructs a new RegistryHelper. The modid for the helper is equal to that of the active
@@ -141,6 +144,30 @@ public class RegistryHelper {
 
         MinecraftForge.EVENT_BUS.register(new AutoRegistry(this));
         return this;
+    }
+    
+    public void setModInstance(Object instance) {
+        
+        this.modInstance = instance;
+    }
+    
+    public Object getModInstance() {
+        
+        if (this.modInstance == null) {
+            
+            Constants.LOG.error("Registry helper for " + this.modid + " requires a mod instance be set. Attempting to get instance with mod ID. Please ask the mod author to set this themselves.");
+
+            for (ModContainer container : Loader.instance().getActiveModList()) {
+                
+                if (this.modid.equalsIgnoreCase(container.getModId())) {
+                    
+                    this.modInstance = container.getMod();
+                    break;
+                }
+            }
+        }
+        
+        return this.modInstance;
     }
 
     /**

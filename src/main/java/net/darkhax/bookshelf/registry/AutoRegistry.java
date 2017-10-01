@@ -14,6 +14,7 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -55,8 +56,23 @@ public class AutoRegistry {
     @SubscribeEvent
     public void registerEntitys (RegistryEvent.Register<EntityEntry> event) {
 
+        int entId = 0;
+        
         for (final EntityEntry entry : this.helper.getEntities()) {
-
+            
+            //TODO add some stuff for velocity updates and so on
+            if (entry.getEgg() != null) {
+                
+                EntityRegistry.registerModEntity(entry.getRegistryName(), entry.getEntityClass(), entry.getName(), entId, this.helper.getModInstance(), 64, 1, true, entry.getEgg().primaryColor, entry.getEgg().secondaryColor);
+            }
+            
+            else {
+                
+                EntityRegistry.registerModEntity(entry.getRegistryName(), entry.getEntityClass(), entry.getName(), entId, this.helper.getModInstance(), 64, 1, true);
+            }
+            
+            entId++;
+            
             event.getRegistry().register(entry);
         }
     }
