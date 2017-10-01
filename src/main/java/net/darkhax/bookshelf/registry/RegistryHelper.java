@@ -133,6 +133,17 @@ public class RegistryHelper {
     }
 
     /**
+     * Enables automatic registration for things like the event bus.
+     *
+     * @return The RegistryHelper, for convenience.
+     */
+    public RegistryHelper enableAutoRegistration () {
+
+        MinecraftForge.EVENT_BUS.register(new AutoRegistry(this));
+        return this;
+    }
+
+    /**
      * Gets the creative tab for the registry helper.
      *
      * @return The creative tab for the registry helper.
