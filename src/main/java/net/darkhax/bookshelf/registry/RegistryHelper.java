@@ -26,6 +26,8 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList.EntityEggInfo;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.NonNullList;
@@ -39,6 +41,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -74,6 +77,11 @@ public class RegistryHelper {
      * A list of all the sounds registered by the helper.
      */
     private final NonNullList<SoundEvent> sounds = NonNullList.create();
+
+    /**
+     * A list of all entities registered by the helper.
+     */
+    private final NonNullList<EntityEntry> entities = NonNullList.create();
 
     /**
      * A local map of all the entires that have been added. This is on a per instance basis,
@@ -187,6 +195,16 @@ public class RegistryHelper {
     }
 
     /**
+     * Gets all of the entities registered with the helper.
+     *
+     * @return A NonNullList of entities registered using the helper.
+     */
+    public NonNullList<EntityEntry> getEntities () {
+
+        return this.entities;
+    }
+
+    /**
      * Registers a block to the game. This will also set the unlocalized name, and creative tab
      * if {@link #tab} has been set. The block will also be cached in {@link #blocks}.
      *
@@ -286,6 +304,37 @@ public class RegistryHelper {
         final SoundEvent sound = new SoundEvent(id).setRegistryName(id);
         this.sounds.add(sound);
         return sound;
+    }
+
+    /**
+     * Registers a mob entity. Will create spawn egg.
+     *
+     * @param entClass The entity class.
+     * @param id The string id for the entity.
+     * @param primary The primary color of the spawn egg.
+     * @param secondary The secondary color of the spawn egg.
+     * @return The entity that was registered.
+     */
+    public EntityEntry registerEntity (Class<? extends Entity> entClass, String id, int primary, int secondary) {
+
+        final EntityEntry entry = new EntityEntry(entClass, id);
+        entry.setRegistryName(this.modid, id);
+        entry.setEgg(new EntityEggInfo(entry.getRegistryName(), primary, secondary));
+        return entry;
+    }
+
+    /**
+     * Registers any sort of entity. Will not have a spawn egg.
+     *
+     * @param entClass The entity class.
+     * @param id The string id for the entity.
+     * @return The entity that was registered.
+     */
+    public EntityEntry registerEntity (Class<? extends Entity> entClass, String id) {
+
+        final EntityEntry entry = new EntityEntry(entClass, id);
+        entry.setRegistryName(this.modid, id);
+        return entry;
     }
 
     /**
