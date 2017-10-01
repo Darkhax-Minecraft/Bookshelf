@@ -8,12 +8,14 @@
 package net.darkhax.bookshelf.registry;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -55,9 +57,9 @@ public class AutoRegistry {
     @SubscribeEvent
     public void registerEntitys (RegistryEvent.Register<EntityEntry> event) {
 
-        for (final EntityEntry entry : this.helper.getEntities()) {
+        for (final EntityEntryBuilder<? extends Entity> entry : this.helper.getEntities()) {
 
-            event.getRegistry().register(entry);
+            event.getRegistry().register(entry.build());
         }
     }
 

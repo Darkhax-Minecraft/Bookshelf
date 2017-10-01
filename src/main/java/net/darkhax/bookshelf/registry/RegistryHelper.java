@@ -43,6 +43,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -82,10 +83,10 @@ public class RegistryHelper {
     /**
      * A list of all entities registered by the helper.
      */
-    private final NonNullList<EntityEntry> entities = NonNullList.create();
+    private final NonNullList<EntityEntryBuilder<? extends Entity>> entities = NonNullList.create();
 
     /**
-     * A local map of all the entires that have been added. This is on a per instance basis,
+     * A local map of all the entries that have been added. This is on a per instance basis,
      * used to get mod-specific entries.
      */
     private final Multimap<ResourceLocation, LootBuilder> lootTableEntries = HashMultimap.create();
@@ -237,7 +238,7 @@ public class RegistryHelper {
      *
      * @return A NonNullList of entities registered using the helper.
      */
-    public NonNullList<EntityEntry> getEntities () {
+    public List<EntityEntryBuilder<? extends Entity>> getEntities () {
 
         return this.entities;
     }
@@ -345,36 +346,21 @@ public class RegistryHelper {
     }
 
     /**
-     * Registers a mob entity. Will create spawn egg.
-     *
-     * @param entClass The entity class.
-     * @param id The string id for the entity.
-     * @param primary The primary color of the spawn egg.
-     * @param secondary The secondary color of the spawn egg.
-     * @return The entity that was registered.
-     */
-    public EntityEntry registerEntity (Class<? extends Entity> entClass, String id, int primary, int secondary) {
-
-        final EntityEntry entry = new EntityEntry(entClass, id);
-        entry.setRegistryName(this.modid, id);
-        entry.setEgg(new EntityEggInfo(entry.getRegistryName(), primary, secondary));
-        this.entities.add(entry);
-        return entry;
-    }
-
-    /**
      * Registers any sort of entity. Will not have a spawn egg.
      *
      * @param entClass The entity class.
      * @param id The string id for the entity.
      * @return The entity that was registered.
      */
-    public EntityEntry registerEntity (Class<? extends Entity> entClass, String id) {
+    public <T extends Entity> EntityEntryBuilder<T> registerEntity (Class<T> entClass, String id, int networkId) {
 
-        final EntityEntry entry = new EntityEntry(entClass, id);
-        entry.setRegistryName(this.modid, id);
-        this.entities.add(entry);
-        return entry;
+        EntityEntryBuilder<T> builder = EntityEntryBuilder.create();
+        builder.id(new ResourceLocation(this.modid, id), networkId);
+        builder.name(id);
+        builder.entity(entClass);
+        
+        this.entities.add(builder);
+        return builder;
     }
 
     /**
