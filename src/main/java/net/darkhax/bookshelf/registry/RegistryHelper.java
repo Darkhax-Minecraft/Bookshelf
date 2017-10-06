@@ -581,6 +581,14 @@ public class RegistryHelper {
     }
 
     /**
+     * Provides a list of all known registry helpers.
+     * @return A list of all known registry helpers.
+     */
+    public static List<RegistryHelper> getAllHelpers() {
+        
+        return HELPERS;
+    }
+    /**
      * Handles color handlers for items and blocks.
      */
     @SideOnly(Side.CLIENT)
