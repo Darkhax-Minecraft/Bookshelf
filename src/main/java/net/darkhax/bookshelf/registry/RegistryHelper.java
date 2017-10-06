@@ -106,6 +106,9 @@ public class RegistryHelper {
      */
     private CreativeTabs tab;
 
+    /**
+     * The instance of the owning mod.
+     */
     private Object modInstance;
 
     /**
@@ -141,11 +144,22 @@ public class RegistryHelper {
         return this;
     }
 
+    /**
+     * Sets the owning mod instance.
+     *
+     * @param instance An instance of the owning mod.
+     */
     public void setModInstance (Object instance) {
 
         this.modInstance = instance;
     }
 
+    /**
+     * Get's the owning mod instance. If none is set, Bookshelf will attempt to auto-get it
+     * using Forge's loader.
+     *
+     * @return The owning mod's instance.
+     */
     public Object getModInstance () {
 
         if (this.modInstance == null) {
