@@ -1,0 +1,51 @@
+#Polish Language File by Kaperios
+
+#Misc
+itemGroup.bookshelfheads=Głowy Graczy
+
+#Blocks
+tile.bookshelf.bookshelf.spruce.name=Świerkowa Biblioteczka
+tile.bookshelf.bookshelf.birch.name=Brzozowa Biblioteczka
+tile.bookshelf.bookshelf.jungle.name=Tropikalna Biblioteczka
+tile.bookshelf.bookshelf.acacia.name=Akacjowa Biblioteczka
+tile.bookshelf.bookshelf.dark_oak.name=Biblioteczka z Ciemnego Dębu
+ 
+#Supporters
+supporters.developer=Deweloper
+supporters.patreon=Patron
+supporters.contributor=Współpracownik
+supporters.translator=Tłumacz
+supporters.other=Inne
+
+#Moon Phases
+moon.phase.full.name=Pełnia Księżyca
+moon.phase.waxing.gibbous.name=Młody Księżyc
+moon.phase.first.quarter.name=Pierwsza Kwadra
+moon.phase.waxing.crescent.name=Księżyc Grabaty
+moon.phase.new.name=Nów
+moon.phase.waning.crescent.name=Księżyc Garbaty
+moon.phase.last.quarter.name=Ostatnia Kwadra
+moon.phase.waning.gibbous.name=Stary Księżyc
+
+#Months
+time.bookshelf.month.january.name=Styczeń
+time.bookshelf.month.february.name=Luty
+time.bookshelf.month.march.name=Marzec
+time.bookshelf.month.april.name=Kwiecień
+time.bookshelf.month.may.name=Maj
+time.bookshelf.month.june.name=Czerwiec
+time.bookshelf.month.july.name=Lipiec
+time.bookshelf.month.august.name=Sierpień
+time.bookshelf.month.september.name=Wrzesień
+time.bookshelf.month.october.name=Październik
+time.bookshelf.month.november.name=Listopad
+time.bookshelf.month.december.name=Grudzień
+
+#Week
+time.bookshelf.day.sunday.name=Niedziela
+time.bookshelf.day.monday.name=Poniedziałek
+time.bookshelf.day.tuesday.name=Wtorek
+time.bookshelf.day.wednesday.name=Środa
+time.bookshelf.day.thursday.name=Czwartek
+time.bookshelf.day.friday.name=Piątek
+time.bookshelf.day.saturday.name=Sobota
