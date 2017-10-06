@@ -48,6 +48,11 @@ public class Bookshelf {
     public void Init (FMLInitializationEvent event) {
 
         OreDictUtils.initAdditionalVanillaEntries();
+        
+        for (RegistryHelper helper : RegistryHelper.getAllHelpers()) {
+            
+            helper.getAutoRegistry().init();
+        }
     }
 
     @EventHandler
