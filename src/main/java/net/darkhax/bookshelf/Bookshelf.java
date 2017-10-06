@@ -51,7 +51,10 @@ public class Bookshelf {
 
         for (final RegistryHelper helper : RegistryHelper.getAllHelpers()) {
 
-            helper.getAutoRegistry().init();
+            if (helper.hasAutoRegistry()) {
+
+                helper.getAutoRegistry().init();
+            }
         }
     }
 
@@ -60,8 +63,9 @@ public class Bookshelf {
     public void clientInit (FMLInitializationEvent event) {
 
         for (final RegistryHelper helper : RegistryHelper.getAllHelpers()) {
-
-            helper.getAutoRegistry().clientInit();
+            if (helper.hasAutoRegistry()) {
+                helper.getAutoRegistry().clientInit();
+            }
         }
     }
 
