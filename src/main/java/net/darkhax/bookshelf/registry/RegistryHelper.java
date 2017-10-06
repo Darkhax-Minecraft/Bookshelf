@@ -112,6 +112,11 @@ public class RegistryHelper {
     private Object modInstance;
 
     /**
+     * The auto registry for the helper.
+     */
+    private IAutoRegistry autoRegistry;
+
+    /**
      * Constructs a new RegistryHelper. The modid for the helper is equal to that of the active
      * mod container, and auto model registration is enabled.
      */
@@ -140,8 +145,29 @@ public class RegistryHelper {
      */
     public RegistryHelper enableAutoRegistration () {
 
-        MinecraftForge.EVENT_BUS.register(this.getNewAutoRegistry());
+        this.autoRegistry = this.getNewAutoRegistry();
+        MinecraftForge.EVENT_BUS.register(this.autoRegistry);
         return this;
+    }
+
+    /**
+     * Checks if the registry has automatic registration.
+     *
+     * @return Whether or not the helper has automatic registration.
+     */
+    public boolean hasAutoRegistry () {
+
+        return this.autoRegistry != null;
+    }
+
+    /**
+     * Gets the auto registry instance. Do not confuse with {@link #getNewAutoRegistry()};
+     *
+     * @return The auto registry for the helper.
+     */
+    public IAutoRegistry getAutoRegistry () {
+
+        return this.autoRegistry;
     }
 
     /**
@@ -581,30 +607,34 @@ public class RegistryHelper {
     }
 
     /**
-     * Provides a list of all known registry helpers.
-     * @return A list of all known registry helpers.
-     */
-    public static List<RegistryHelper> getAllHelpers() {
-        
-        return HELPERS;
-    }
-    /**
-     * Handles color handlers for items and blocks.
+     * Gets a list of all items registered that have custom color handlers.
+     *
+     * @return A list of all colored items.
      */
     @SideOnly(Side.CLIENT)
-    public static void initColorHandlers () {
+    public List<Item> getColoredItems () {
 
-        for (final RegistryHelper helper : HELPERS) {
+        return this.coloredItems;
+    }
 
-            for (final Block block : helper.coloredBlocks) {
+    /**
+     * Gets a list of all registered blocks that have custom color handlers.
+     *
+     * @return A list of all colored blocks.
+     */
+    @SideOnly(Side.CLIENT)
+    public List<Block> getColoredBlocks () {
 
-                helper.registerColorHandler(block, ((IColorfulBlock) block).getColorHandler());
-            }
+        return this.coloredBlocks;
+    }
 
-            for (final Item item : helper.coloredItems) {
+    /**
+     * Provides a list of all known registry helpers.
+     *
+     * @return A list of all known registry helpers.
+     */
+    public static List<RegistryHelper> getAllHelpers () {
 
-                helper.registerColorHandler(item, ((IColorfulItem) item).getColorHandler());
-            }
-        }
+        return HELPERS;
     }
 }
