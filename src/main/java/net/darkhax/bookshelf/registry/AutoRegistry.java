@@ -7,11 +7,15 @@
  */
 package net.darkhax.bookshelf.registry;
 
+import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.LootBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.storage.loot.LootPool;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
@@ -69,6 +73,25 @@ public class AutoRegistry {
         for (final SoundEvent sound : this.helper.getSounds()) {
 
             event.getRegistry().register(sound);
+        }
+    }
+    
+    @SubscribeEvent
+    public void onTableLoaded (LootTableLoadEvent event) {
+
+        for (final LootBuilder builder : this.helper.getLootTableEntries().get(event.getName())) {
+
+            final LootPool pool = event.getTable().getPool(builder.getPool());
+
+            if (pool != null) {
+
+                pool.addEntry(builder.build());
+            }
+
+            else {
+
+                Constants.LOG.info("The mod {} tried to add loot to {} but the pool was not found. {}", this.helper.getModid(), event.getName(), builder.toString());
+            }
         }
     }
 

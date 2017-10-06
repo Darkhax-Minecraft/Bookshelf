@@ -130,7 +130,6 @@ public class RegistryHelper {
     public RegistryHelper (@Nonnull String modid) {
 
         this.modid = modid;
-        MinecraftForge.EVENT_BUS.register(this);
         HELPERS.add(this);
     }
 
@@ -433,32 +432,10 @@ public class RegistryHelper {
         this.lootTableEntries.put(location, builder);
         return builder;
     }
-
-    /**
-     * This is an event hook which is used to inject the loot data to loot tables. This class
-     * is registered with the event bus using the
-     * {@link net.minecraftforge.fml.common.Mod.EventBusSubscriber} class level annotation.
-     * Don't call or use this method yourself!
-     *
-     * @param event The event instance.
-     */
-    @SubscribeEvent
-    public void onTableLoaded (LootTableLoadEvent event) {
-
-        for (final LootBuilder builder : this.lootTableEntries.get(event.getName())) {
-
-            final LootPool pool = event.getTable().getPool(builder.getPool());
-
-            if (pool != null) {
-
-                pool.addEntry(builder.build());
-            }
-
-            else {
-
-                Constants.LOG.info("The mod {} tried to add loot to {} but the pool was not found. {}", this.modid, event.getName(), builder.toString());
-            }
-        }
+    
+    public Multimap<ResourceLocation, LootBuilder> getLootTableEntries() {
+        
+        return this.lootTableEntries;
     }
 
     /**
