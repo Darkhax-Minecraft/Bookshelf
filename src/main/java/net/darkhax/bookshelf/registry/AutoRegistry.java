@@ -28,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * registering the event while the owner is active, Forge will shut up about harmless registry
  * entries being dangerous.
  */
-public class AutoRegistry {
+public class AutoRegistry implements IAutoRegistry {
 
     /**
      * The registry helper to register things from.
@@ -75,7 +75,7 @@ public class AutoRegistry {
             event.getRegistry().register(sound);
         }
     }
-    
+
     @SubscribeEvent
     public void onTableLoaded (LootTableLoadEvent event) {
 
@@ -103,5 +103,33 @@ public class AutoRegistry {
 
             this.helper.registerInventoryModel(item);
         }
+    }
+
+    @Override
+    public RegistryHelper getHelper () {
+
+        return this.helper;
+    }
+
+    @Override
+    public void init () {
+
+    }
+
+    @Override
+    public void postInit () {
+
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void clientInit () {
+
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void clientPostInit () {
+
     }
 }

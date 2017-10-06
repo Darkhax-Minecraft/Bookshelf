@@ -32,15 +32,12 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -140,7 +137,7 @@ public class RegistryHelper {
      */
     public RegistryHelper enableAutoRegistration () {
 
-        MinecraftForge.EVENT_BUS.register(new AutoRegistry(this));
+        MinecraftForge.EVENT_BUS.register(this.getNewAutoRegistry());
         return this;
     }
 
@@ -432,10 +429,26 @@ public class RegistryHelper {
         this.lootTableEntries.put(location, builder);
         return builder;
     }
-    
-    public Multimap<ResourceLocation, LootBuilder> getLootTableEntries() {
-        
+
+    /**
+     * Gets the loot tables registered for this helper.
+     *
+     * @return Multimap of registered loot table entries.
+     */
+    public Multimap<ResourceLocation, LootBuilder> getLootTableEntries () {
+
         return this.lootTableEntries;
+    }
+
+    /**
+     * Used to get a new auto registry instance. Only used if {@link #enableAutoRegistration()}
+     * is used.
+     *
+     * @return The new auto registry instance.
+     */
+    public IAutoRegistry getNewAutoRegistry () {
+
+        return new AutoRegistry(this);
     }
 
     /**
