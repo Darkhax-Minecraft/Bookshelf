@@ -7,6 +7,8 @@
  */
 package net.darkhax.bookshelf.registry;
 
+import net.darkhax.bookshelf.block.IColorfulBlock;
+import net.darkhax.bookshelf.item.IColorfulItem;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.LootBuilder;
 import net.minecraft.block.Block;
@@ -125,6 +127,15 @@ public class AutoRegistry implements IAutoRegistry {
     @SideOnly(Side.CLIENT)
     public void clientInit () {
 
+        for (final Block block : this.helper.getColoredBlocks()) {
+
+            this.helper.registerColorHandler(block, ((IColorfulBlock) block).getColorHandler());
+        }
+
+        for (final Item item : this.helper.getColoredItems()) {
+
+            this.helper.registerColorHandler(item, ((IColorfulItem) item).getColorHandler());
+        }
     }
 
     @Override

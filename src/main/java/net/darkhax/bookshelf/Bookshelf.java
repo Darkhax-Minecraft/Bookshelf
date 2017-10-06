@@ -51,6 +51,16 @@ public class Bookshelf {
     }
 
     @EventHandler
+    @SideOnly(Side.CLIENT)
+    public void clientInit (FMLInitializationEvent event) {
+
+        for (RegistryHelper helper : RegistryHelper.getAllHelpers()) {
+            
+            helper.getAutoRegistry().clientInit();
+        }
+    }
+
+    @EventHandler
     public void serverStarting (FMLServerStartingEvent event) {
 
         for (final ICommand command : BookshelfRegistry.getCommands()) {
@@ -97,14 +107,7 @@ public class Bookshelf {
             RenderUtils.markRenderersForReload(false);
         }
     }
-
-    @EventHandler
-    @SideOnly(Side.CLIENT)
-    public void clientInit (FMLInitializationEvent event) {
-
-        RegistryHelper.initColorHandlers();
-    }
-
+    
     @EventHandler
     public void onFingerprintViolation (FMLFingerprintViolationEvent event) {
 
