@@ -48,9 +48,9 @@ public class Bookshelf {
     public void Init (FMLInitializationEvent event) {
 
         OreDictUtils.initAdditionalVanillaEntries();
-        
-        for (RegistryHelper helper : RegistryHelper.getAllHelpers()) {
-            
+
+        for (final RegistryHelper helper : RegistryHelper.getAllHelpers()) {
+
             helper.getAutoRegistry().init();
         }
     }
@@ -59,8 +59,8 @@ public class Bookshelf {
     @SideOnly(Side.CLIENT)
     public void clientInit (FMLInitializationEvent event) {
 
-        for (RegistryHelper helper : RegistryHelper.getAllHelpers()) {
-            
+        for (final RegistryHelper helper : RegistryHelper.getAllHelpers()) {
+
             helper.getAutoRegistry().clientInit();
         }
     }
@@ -112,7 +112,7 @@ public class Bookshelf {
             RenderUtils.markRenderersForReload(false);
         }
     }
-    
+
     @EventHandler
     public void onFingerprintViolation (FMLFingerprintViolationEvent event) {
 
