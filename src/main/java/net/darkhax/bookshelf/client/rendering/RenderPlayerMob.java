@@ -12,6 +12,7 @@ import net.darkhax.bookshelf.entity.EntityPlayerMob;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelBiped.ArmPose;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.GlStateManager.Profile;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerArrow;
@@ -33,6 +34,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public abstract class RenderPlayerMob<T extends EntityPlayerMob> extends RenderLiving<T> {
 
+    /**
+     * The blend profile. If null, it will skip.
+     */
+    private GlStateManager.Profile blendProfile;
+    
     public RenderPlayerMob (RenderManager renderManager, ModelPlayerMob model) {
 
         super(renderManager, model, 0.5F);
@@ -41,6 +47,12 @@ public abstract class RenderPlayerMob<T extends EntityPlayerMob> extends RenderL
         this.addLayer(new LayerArrow(this));
         this.addLayer(new LayerCustomHead(this.getMainModel().bipedHead));
         this.addLayer(new LayerElytra(this));
+        this.blendProfile = Profile.PLAYER_SKIN;
+    }
+    
+    public void setBlendProfile(Profile profile) {
+        
+        this.blendProfile = profile;
     }
 
     @Override
@@ -60,9 +72,20 @@ public abstract class RenderPlayerMob<T extends EntityPlayerMob> extends RenderL
         }
 
         this.setModelVisibilities(entity);
-        GlStateManager.enableBlendProfile(GlStateManager.Profile.PLAYER_SKIN);
+        
+        final boolean hasProfile = this.blendProfile != null;
+        
+        if (hasProfile) {
+            
+            GlStateManager.enableBlendProfile(this.blendProfile);
+        }
+        
         super.doRender(entity, x, heightOffset, z, entityYaw, partialTicks);
-        GlStateManager.disableBlendProfile(GlStateManager.Profile.PLAYER_SKIN);
+        
+        if (hasProfile) {
+            
+            GlStateManager.disableBlendProfile(this.blendProfile);
+        }
     }
 
     @Override
