@@ -11,6 +11,8 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -283,5 +285,116 @@ public final class EntityUtils {
         }
 
         entity.setWorld(worldNew);
+    }
+
+    /**
+     * Gets the max health value of an entity.
+     *
+     * @param entity The entity to get the value from.
+     * @return The value of the attribute.
+     */
+    public static double getMaxHealth (EntityLivingBase entity) {
+
+        return entity.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue();
+    }
+
+    /**
+     * Gets the follow/tracking range value of an entity.
+     *
+     * @param entity The entity to get the value from.
+     * @return The value of the attribute.
+     */
+    public static double getFollowRange (EntityLivingBase entity) {
+
+        return entity.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
+    }
+
+    /**
+     * Gets the knockback resistance value of an entity.
+     *
+     * @param entity The entity to get the value from.
+     * @return The value of the attribute.
+     */
+    public static double getKnockbackResistance (EntityLivingBase entity) {
+
+        return entity.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getAttributeValue();
+    }
+
+    /**
+     * Gets the movement speed value of an entity.
+     *
+     * @param entity The entity to get the value from.
+     * @return The value of the attribute.
+     */
+    public static double getMovementSpeed (EntityLivingBase entity) {
+
+        return entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
+    }
+
+    /**
+     * Gets the attack value of an entity.
+     *
+     * @param entity The entity to get the value from.
+     * @return The value of the attribute.
+     */
+    public static double getAttackDamage (EntityLivingBase entity) {
+
+        return entity.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+    }
+
+    /**
+     * Gets the attack speed value of an entity.
+     *
+     * @param entity The entity to get the value from.
+     * @return The value of the attribute.
+     */
+    public static double getAttackSpeed (EntityLivingBase entity) {
+
+        return entity.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue();
+    }
+
+    /**
+     * Gets the armor value of an entity.
+     *
+     * @param entity The entity to get the value from.
+     * @return The value of the attribute.
+     */
+    public static double getArmor (EntityLivingBase entity) {
+
+        return entity.getEntityAttribute(SharedMonsterAttributes.ARMOR).getAttributeValue();
+    }
+
+    /**
+     * Gets the armor toughness value of an entity.
+     *
+     * @param entity The entity to get the value from.
+     * @return The value of the attribute.
+     */
+    public static double getArmorToughness (EntityLivingBase entity) {
+
+        return entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue();
+    }
+
+    /**
+     * Gets the luck value of an entity.
+     *
+     * @param entity The entity to get the value from.
+     * @return The value of the attribute.
+     */
+    public static double getLuck (EntityLivingBase entity) {
+
+        return entity.getEntityAttribute(SharedMonsterAttributes.LUCK).getAttributeValue();
+    }
+
+    /**
+     * Gets a value of an attribute for an entity.
+     *
+     * @param entity The entity to get the value of.
+     * @param attribute The attribute to get the value of.
+     * @return The value of the attribute.
+     */
+    public static double getAttributeValue (EntityLivingBase entity, IAttribute attribute) {
+
+        return entity.getEntityAttribute(attribute).getAttributeValue();
     }
 }
