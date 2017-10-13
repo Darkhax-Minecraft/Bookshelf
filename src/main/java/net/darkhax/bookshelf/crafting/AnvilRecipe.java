@@ -81,7 +81,8 @@ public class AnvilRecipe implements IAnvilRecipe {
     @Override
     public boolean isValidRecipe (ItemStack leftSlot, ItemStack rightSlot, String name) {
 
-        return StackUtils.areStacksSimilarWithSize(leftSlot, this.requiredLeft) && StackUtils.areStacksSimilarWithSize(rightSlot, this.requiredRight) && this.requiredName != null && !this.requiredName.isEmpty() ? this.requiredName.equals(name) : true;
+        final boolean nameCheck = this.requiredName != null ? this.requiredName.equals(name) : true;
+        return StackUtils.areStacksSimilarWithSize(leftSlot, this.requiredLeft) && StackUtils.areStacksSimilarWithSize(rightSlot, this.requiredRight) && nameCheck;
     }
 
     @Override
