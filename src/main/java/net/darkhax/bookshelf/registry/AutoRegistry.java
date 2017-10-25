@@ -8,10 +8,12 @@
 package net.darkhax.bookshelf.registry;
 
 import net.darkhax.bookshelf.block.IColorfulBlock;
+import net.darkhax.bookshelf.block.ITileEntityProvider;
 import net.darkhax.bookshelf.item.IColorfulItem;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.LootBuilder;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvent;
@@ -19,9 +21,11 @@ import net.minecraft.world.storage.loot.LootPool;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -48,6 +52,14 @@ public class AutoRegistry implements IAutoRegistry {
         for (final Block block : this.helper.getBlocks()) {
 
             event.getRegistry().register(block);
+        }
+
+        for (final ITileEntityProvider provider : this.helper.getTileProviders()) {
+
+            if (provider instanceof Block) {
+
+                GameRegistry.registerTileEntity(provider.getTileEntityClass(), ((Block) provider).getRegistryName().toString().replace(":", ".").replace("_", "."));
+            }
         }
     }
 
@@ -135,6 +147,16 @@ public class AutoRegistry implements IAutoRegistry {
         for (final Item item : this.helper.getColoredItems()) {
 
             this.helper.registerColorHandler(item, ((IColorfulItem) item).getColorHandler());
+        }
+
+        for (final ITileEntityProvider provider : this.helper.getTileProviders()) {
+
+            final TileEntitySpecialRenderer tesr = provider.getTileRenderer();
+
+            if (tesr != null) {
+
+                ClientRegistry.bindTileEntitySpecialRenderer(provider.getTileEntityClass(), tesr);
+            }
         }
     }
 

@@ -15,6 +15,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import net.darkhax.bookshelf.block.IColorfulBlock;
+import net.darkhax.bookshelf.block.ITileEntityProvider;
 import net.darkhax.bookshelf.item.IColorfulItem;
 import net.darkhax.bookshelf.item.ICustomMesh;
 import net.darkhax.bookshelf.lib.Constants;
@@ -100,6 +101,11 @@ public class RegistryHelper {
      * A list of all the colored blocks registered here.
      */
     private final List<Block> coloredBlocks = NonNullList.create();
+
+    /**
+     * A list of all the tile providers registered here.
+     */
+    private final List<ITileEntityProvider> tileRenderProviders = NonNullList.create();
 
     /**
      * The creative tab used by the mod. This can be null.
@@ -316,6 +322,11 @@ public class RegistryHelper {
             this.coloredBlocks.add(block);
         }
 
+        if (block instanceof ITileEntityProvider) {
+
+            this.tileRenderProviders.add((ITileEntityProvider) block);
+        }
+
         return block;
     }
 
@@ -489,6 +500,16 @@ public class RegistryHelper {
     public IAutoRegistry getNewAutoRegistry () {
 
         return new AutoRegistry(this);
+    }
+
+    /**
+     * Gets a list of all tile entity providers registered for the handler.
+     *
+     * @return A list of all the tile entity providers.
+     */
+    public List<ITileEntityProvider> getTileProviders () {
+
+        return this.tileRenderProviders;
     }
 
     /**
