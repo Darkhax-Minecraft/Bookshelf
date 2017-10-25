@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * This interface is used by blocks to automatically register a TileEntity for a block.
  */
-public interface ITileEntityProvider {
+public interface ITileEntityBlock {
 
     /**
      * Gets the class of the tile entity to associate with the block.

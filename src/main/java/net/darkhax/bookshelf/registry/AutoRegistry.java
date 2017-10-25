@@ -8,7 +8,7 @@
 package net.darkhax.bookshelf.registry;
 
 import net.darkhax.bookshelf.block.IColorfulBlock;
-import net.darkhax.bookshelf.block.ITileEntityProvider;
+import net.darkhax.bookshelf.block.ITileEntityBlock;
 import net.darkhax.bookshelf.item.IColorfulItem;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.LootBuilder;
@@ -54,7 +54,7 @@ public class AutoRegistry implements IAutoRegistry {
             event.getRegistry().register(block);
         }
 
-        for (final ITileEntityProvider provider : this.helper.getTileProviders()) {
+        for (final ITileEntityBlock provider : this.helper.getTileProviders()) {
 
             if (provider instanceof Block) {
 
@@ -149,7 +149,7 @@ public class AutoRegistry implements IAutoRegistry {
             this.helper.registerColorHandler(item, ((IColorfulItem) item).getColorHandler());
         }
 
-        for (final ITileEntityProvider provider : this.helper.getTileProviders()) {
+        for (final ITileEntityBlock provider : this.helper.getTileProviders()) {
 
             final TileEntitySpecialRenderer tesr = provider.getTileRenderer();
 
