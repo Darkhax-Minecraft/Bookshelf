@@ -1,0 +1,51 @@
+#Portuguese Language File 
+
+#Miscelânea
+itemGroup.bookshelfheads=Cabeças de Jogadores
+
+#Blocos
+tile.bookshelf.bookshelf.spruce.name=Estante de Livros de Pinheiro
+tile.bookshelf.bookshelf.birch.name=Estante de Livros de Eucalipto
+tile.bookshelf.bookshelf.jungle.name=Estante de Livros de Madeira da Selva
+tile.bookshelf.bookshelf.acacia.name=Estante de Livros de Acácia
+tile.bookshelf.bookshelf.dark_oak.name=Estante de Livros de Madeira de Carvalho Escuro
+ 
+#Apoiadores
+supporters.developer=Desenvolvedor
+supporters.patreon=Patrono
+supporters.contributor=Contribuidor
+supporters.translator=Tradutor
+supporters.other=Outro
+
+#Moon Phases
+moon.phase.full.name=Lua Cheia
+moon.phase.waxing.gibbous.name=Waxing Gibbous
+moon.phase.first.quarter.name=Quarto Crescente
+moon.phase.waxing.crescent.name=Lua Crescente
+moon.phase.new.name=Lua Nova
+moon.phase.waning.crescent.name=Lua Minguante
+moon.phase.last.quarter.name=Last Quarter
+moon.phase.waning.gibbous.name=Quarto Minguante
+
+#Meses
+time.bookshelf.month.january.name=Janeiro
+time.bookshelf.month.february.name=Fevereiro
+time.bookshelf.month.march.name=Março
+time.bookshelf.month.april.name=Abril
+time.bookshelf.month.may.name=Maio
+time.bookshelf.month.june.name=Junho
+time.bookshelf.month.july.name=Julho
+time.bookshelf.month.august.name=Agosto
+time.bookshelf.month.september.name=Setembro
+time.bookshelf.month.october.name=Outubro
+time.bookshelf.month.november.name=Novembro
+time.bookshelf.month.december.name=Dezembro
+
+#Dias da Semana
+time.bookshelf.day.sunday.name=Domingo
+time.bookshelf.day.monday.name=Segunda
+time.bookshelf.day.tuesday.name=Terça
+time.bookshelf.day.wednesday.name=Quarta
+time.bookshelf.day.thursday.name=Quinta
+time.bookshelf.day.friday.name=Sexta
+time.bookshelf.day.saturday.name=Sábado
