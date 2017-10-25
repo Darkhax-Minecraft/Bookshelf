@@ -28,9 +28,9 @@ import net.minecraftforge.oredict.OreDictionary;
 public final class StackUtils {
 
     /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an implicit
-     * public constructor to every class which does not define at lease one explicitly. Hence why
-     * this constructor was added.
+     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
+     * implicit public constructor to every class which does not define at lease one
+     * explicitly. Hence why this constructor was added.
      */
     private StackUtils () {
 
@@ -178,9 +178,9 @@ public final class StackUtils {
     }
 
     /**
-     * Writes an ItemStack as a String. This method is intended for use in configuration files, and
-     * allows for a damage sensitive item to be represented as a String. The format looks like
-     * "itemid#damage". This method is not intended for actually saving an ItemStack.
+     * Writes an ItemStack as a String. This method is intended for use in configuration files,
+     * and allows for a damage sensitive item to be represented as a String. The format looks
+     * like "itemid#damage". This method is not intended for actually saving an ItemStack.
      *
      * @param stack The instance of ItemStack to write.
      * @return String A string which can be used to represent a damage sensitive item.
@@ -191,9 +191,9 @@ public final class StackUtils {
     }
 
     /**
-     * Reads an ItemStack from a string This method is intended for use in reading information from
-     * a configuration file. The correct format is "itemid#damage". This method is intended for use
-     * with writeStackToString.
+     * Reads an ItemStack from a string This method is intended for use in reading information
+     * from a configuration file. The correct format is "itemid#damage". This method is
+     * intended for use with writeStackToString.
      *
      * @param stackStringThe string used to construct an ItemStack.
      * @return ItemStackAn ItemStack representation of a damage sensitive item.
@@ -212,8 +212,8 @@ public final class StackUtils {
      *
      * @param stackThe ItemStack to compare against.
      * @param oreNameThe ore dictionary name to compare to.
-     * @return booleanTrue if any of the ore dictionary entries for the provided stack match the
-     *         provided ore name.
+     * @return booleanTrue if any of the ore dictionary entries for the provided stack match
+     *         the provided ore name.
      */
     public static boolean compareStackToOreName (ItemStack stack, String oreName) {
 
@@ -227,8 +227,8 @@ public final class StackUtils {
     }
 
     /**
-     * Compares all applicable ore dictionary names for two item stacks, to see if either have a
-     * name in common.
+     * Compares all applicable ore dictionary names for two item stacks, to see if either have
+     * a name in common.
      *
      * @param firstStackThe first ItemStack to compare.
      * @param secondStackThe second ItemStack to compare.
@@ -248,8 +248,8 @@ public final class StackUtils {
     }
 
     /**
-     * Checks to see if two ItemStacks are similar. A similar stack has the same item, and the same
-     * damage.
+     * Checks to see if two ItemStacks are similar. A similar stack has the same item, and the
+     * same damage.
      *
      * @param firstStackThe first stack to check.
      * @param secondStackThe second stack to check.
@@ -261,8 +261,8 @@ public final class StackUtils {
     }
 
     /**
-     * Checks to see if two ItemStacks are similar. A similar stack has the same item, and the same
-     * damage and same size.
+     * Checks to see if two ItemStacks are similar. A similar stack has the same item, and the
+     * same damage and same size.
      *
      * @param firstStackThe first stack to check.
      * @param secondStackThe second stack to check.
@@ -314,10 +314,10 @@ public final class StackUtils {
     }
 
     /**
-     * Checks if two given ItemStack are equal. For them to be equal, both must be null, or both
-     * must have a null item, or both must share a damage value. If either stack has a wild card
-     * damage value, they will also be considered the same. If the checkNBT parameter is true, they
-     * will also need the same item nbt.
+     * Checks if two given ItemStack are equal. For them to be equal, both must be null, or
+     * both must have a null item, or both must share a damage value. If either stack has a
+     * wild card damage value, they will also be considered the same. If the checkNBT parameter
+     * is true, they will also need the same item nbt.
      *
      * @param firstStack The first ItemStack to compare.
      * @param secondStack The second ItemStack to compare.
@@ -373,8 +373,8 @@ public final class StackUtils {
      *
      * @param stack The ItemStack to copy.
      * @param size The new size to set for the stack.
-     * @return ItemStack A new ItemStack with the same item and meta as the original, but with a
-     *         new size.
+     * @return ItemStack A new ItemStack with the same item and meta as the original, but with
+     *         a new size.
      */
     public static ItemStack copyStackWithSize (ItemStack stack, int size) {
 
@@ -408,8 +408,8 @@ public final class StackUtils {
     }
 
     /**
-     * Safely gets a block instance from an ItemStack. If the ItemStack is not valid, null will be
-     * returned. Null can also be returned if the Item does not have a block form.
+     * Safely gets a block instance from an ItemStack. If the ItemStack is not valid, null will
+     * be returned. Null can also be returned if the Item does not have a block form.
      *
      * @param stack The ItemStack to get a block from.
      * @return The block version of the item contained in the ItemStack.
@@ -520,8 +520,8 @@ public final class StackUtils {
     }
 
     /**
-     * Gets the identifier for an ItemStack. If the stack is empty or null, the id for air will be
-     * given.
+     * Gets the identifier for an ItemStack. If the stack is empty or null, the id for air will
+     * be given.
      *
      * @param stack The ItemStack to get the identifier of.
      * @return The identifier for the item.

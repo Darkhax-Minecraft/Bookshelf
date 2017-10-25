@@ -38,7 +38,7 @@ public abstract class RenderPlayerMob<T extends EntityPlayerMob> extends RenderL
      * The blend profile. If null, it will skip.
      */
     private GlStateManager.Profile blendProfile;
-    
+
     public RenderPlayerMob (RenderManager renderManager, ModelPlayerMob model) {
 
         super(renderManager, model, 0.5F);
@@ -49,9 +49,9 @@ public abstract class RenderPlayerMob<T extends EntityPlayerMob> extends RenderL
         this.addLayer(new LayerElytra(this));
         this.blendProfile = Profile.PLAYER_SKIN;
     }
-    
-    public void setBlendProfile(Profile profile) {
-        
+
+    public void setBlendProfile (Profile profile) {
+
         this.blendProfile = profile;
     }
 
@@ -72,18 +72,18 @@ public abstract class RenderPlayerMob<T extends EntityPlayerMob> extends RenderL
         }
 
         this.setModelVisibilities(entity);
-        
+
         final boolean hasProfile = this.blendProfile != null;
-        
+
         if (hasProfile) {
-            
+
             GlStateManager.enableBlendProfile(this.blendProfile);
         }
-        
+
         super.doRender(entity, x, heightOffset, z, entityYaw, partialTicks);
-        
+
         if (hasProfile) {
-            
+
             GlStateManager.disableBlendProfile(this.blendProfile);
         }
     }
