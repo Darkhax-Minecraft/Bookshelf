@@ -105,7 +105,7 @@ public class RegistryHelper {
     /**
      * A list of all the tile providers registered here.
      */
-    private final List<ITileEntityBlock> tileRenderProviders = NonNullList.create();
+    private final List<ITileEntityBlock> tileProviders = NonNullList.create();
 
     /**
      * The creative tab used by the mod. This can be null.
@@ -324,7 +324,7 @@ public class RegistryHelper {
 
         if (block instanceof ITileEntityBlock) {
 
-            this.tileRenderProviders.add((ITileEntityBlock) block);
+            this.tileProviders.add((ITileEntityBlock) block);
         }
 
         return block;
@@ -509,7 +509,7 @@ public class RegistryHelper {
      */
     public List<ITileEntityBlock> getTileProviders () {
 
-        return this.tileRenderProviders;
+        return this.tileProviders;
     }
 
     /**
