@@ -33,8 +33,11 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
+import net.minecraft.world.storage.loot.functions.SetCount;
+import net.minecraft.world.storage.loot.functions.SetMetadata;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
@@ -426,6 +429,67 @@ public class RegistryHelper {
 
         this.entities.add(builder);
         return builder;
+    }
+
+    /**
+     * Creates a new loot entry that will be added to the loot pools when a world is loaded.
+     *
+     * @param location The loot table to add the loot to. You can use
+     *        {@link net.minecraft.world.storage.loot.LootTableList} for convenience.
+     * @param name The name of the entry being added. This will be prefixed with {@link #modid}
+     *        .
+     * @param pool The name of the pool to add the entry to. This pool must already exist.
+     * @param weight The weight of the entry.
+     * @param item The item to add.
+     * @param meta The metadata for the loot.
+     * @param amount The amount of the item to set.
+     * @return A builder object. It can be used to fine tune the loot entry.
+     */
+    public LootBuilder addLoot (ResourceLocation location, String name, String pool, int weight, Item item, int meta, int amount) {
+
+        return this.addLoot(location, name, pool, weight, item, meta, amount, amount);
+    }
+
+    /**
+     * Creates a new loot entry that will be added to the loot pools when a world is loaded.
+     *
+     * @param location The loot table to add the loot to. You can use
+     *        {@link net.minecraft.world.storage.loot.LootTableList} for convenience.
+     * @param name The name of the entry being added. This will be prefixed with {@link #modid}
+     *        .
+     * @param pool The name of the pool to add the entry to. This pool must already exist.
+     * @param weight The weight of the entry.
+     * @param item The item to add.
+     * @param meta The metadata for the loot.
+     * @param min The smallest item size.
+     * @param max The largest item size.
+     * @return A builder object. It can be used to fine tune the loot entry.
+     */
+    public LootBuilder addLoot (ResourceLocation location, String name, String pool, int weight, Item item, int meta, int min, int max) {
+
+        final LootBuilder loot = this.addLoot(location, name, pool, weight, item, meta);
+        loot.addFunction(new SetCount(new LootCondition[0], new RandomValueRange(min, max)));
+        return loot;
+    }
+
+    /**
+     * Creates a new loot entry that will be added to the loot pools when a world is loaded.
+     *
+     * @param location The loot table to add the loot to. You can use
+     *        {@link net.minecraft.world.storage.loot.LootTableList} for convenience.
+     * @param name The name of the entry being added. This will be prefixed with {@link #modid}
+     *        .
+     * @param pool The name of the pool to add the entry to. This pool must already exist.
+     * @param weight The weight of the entry.
+     * @param item The item to add.
+     * @param meta The metadata for the loot.
+     * @return A builder object. It can be used to fine tune the loot entry.
+     */
+    public LootBuilder addLoot (ResourceLocation location, String name, String pool, int weight, Item item, int meta) {
+
+        final LootBuilder loot = this.addLoot(location, name, pool, weight, item);
+        loot.addFunction(new SetMetadata(new LootCondition[0], new RandomValueRange(meta, meta)));
+        return loot;
     }
 
     /**
