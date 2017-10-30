@@ -98,6 +98,13 @@ public final class EnchantmentUtils {
         return firstEnchantment.isCompatibleWith(secondEnchantment);
     }
 
+    /**
+     * Gets a display string for a given amount of EXP. If the amount of EXP is less than 1
+     * level, it will be shown as XP, if it's enough to equal a level, it's shown as levels.
+     *
+     * @param xp The amount of exp to display.
+     * @return A formatted string for display.
+     */
     public static String getExpForDisplay (int xp) {
 
         final int levels = getLevelsFromExperience(xp);
