@@ -10,6 +10,9 @@ package net.darkhax.bookshelf.util;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 
 public final class EnchantmentUtils {
 
@@ -110,5 +113,44 @@ public final class EnchantmentUtils {
         final int levels = getLevelsFromExperience(xp);
 
         return levels > 0 ? levels + "L" : xp + "xp";
+    }
+
+    /**
+     * Gets the enchantment power for a given position in a world. This uses the enchantment
+     * table logic, so it searches for blocks that are two blocks out from the position passed.
+     *
+     * @param world The world to check in.
+     * @param pos The position to get the enchanting power of.
+     * @return The enchantment power for a given position in the world.
+     */
+    public float getEnchantingPower (World world, BlockPos pos) {
+
+        final int x = pos.getX();
+        final int y = pos.getY();
+        final int z = pos.getZ();
+
+        float power = 0;
+
+        for (int zOffset = -1; zOffset <= 1; zOffset++) {
+
+            for (int xOffset = -1; xOffset <= 1; xOffset++) {
+
+                if ((zOffset != 0 || xOffset != 0) && world.isAirBlock(new BlockPos(x + xOffset, y, z + zOffset)) && world.isAirBlock(new BlockPos(x + xOffset, y + 1, z + zOffset))) {
+
+                    power += ForgeHooks.getEnchantPower(world, new BlockPos(x + xOffset * 2, y, z + zOffset * 2));
+                    power += ForgeHooks.getEnchantPower(world, new BlockPos(x + xOffset * 2, y + 1, z + zOffset * 2));
+
+                    if (xOffset != 0 && zOffset != 0) {
+
+                        power += ForgeHooks.getEnchantPower(world, new BlockPos(x + xOffset * 2, y, z + zOffset));
+                        power += ForgeHooks.getEnchantPower(world, new BlockPos(x + xOffset * 2, y + 1, z + zOffset));
+                        power += ForgeHooks.getEnchantPower(world, new BlockPos(x + xOffset, y, z + zOffset * 2));
+                        power += ForgeHooks.getEnchantPower(world, new BlockPos(x + xOffset, y + 1, z + zOffset * 2));
+                    }
+                }
+            }
+        }
+
+        return power;
     }
 }
