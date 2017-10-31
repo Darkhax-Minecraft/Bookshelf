@@ -123,7 +123,7 @@ public final class EnchantmentUtils {
      * @param pos The position to get the enchanting power of.
      * @return The enchantment power for a given position in the world.
      */
-    public float getEnchantingPower (World world, BlockPos pos) {
+    public static float getEnchantingPower (World world, BlockPos pos) {
 
         final int x = pos.getX();
         final int y = pos.getY();
