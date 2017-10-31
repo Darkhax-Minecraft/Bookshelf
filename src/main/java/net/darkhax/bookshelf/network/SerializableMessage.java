@@ -32,6 +32,7 @@ import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;
 
 import io.netty.buffer.ByteBuf;
+import net.darkhax.bookshelf.lib.EnchantData;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentData;
@@ -56,12 +57,12 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
     /**
      * A map which holds all the serialization handlers.
      */
-    private static final Map<Class<?>, Pair<Reader, Writer>> handlers = new HashMap();
+    private static final Map<Class<?>, Pair<Reader, Writer>> handlers = new HashMap<>();
 
     /**
      * A cache of fields in a given class for faster lookup.
      */
-    private static final Map<Class<?>, Field[]> fieldCache = new HashMap();
+    private static final Map<Class<?>, Field[]> fieldCache = new HashMap<>();
 
     static {
 
@@ -93,6 +94,7 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
         addIOHandler(IBlockState.class, SerializableMessage::readState, SerializableMessage::writeState);
         addIOHandler(ResourceLocation.class, SerializableMessage::readResourceLocation, SerializableMessage::writeResourceLocation);
         addIOHandler(EnchantmentData.class, SerializableMessage::readEnchantmentData, SerializableMessage::writeEnchantmentData);
+        addIOHandler(EnchantData.class, SerializableMessage::readEnchantData, SerializableMessage::writeEnchantData);
 
         // Object Arrays
         addIOHandler(String[].class, SerializableMessage::readStringArray, SerializableMessage::writeStringArray);
@@ -102,6 +104,7 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
         addIOHandler(IBlockState[].class, SerializableMessage::readStateArray, SerializableMessage::writeStateArray);
         addIOHandler(ResourceLocation[].class, SerializableMessage::readResourceLocationArray, SerializableMessage::writeResourceLocationArray);
         addIOHandler(EnchantmentData[].class, SerializableMessage::readEnchantmentDataArray, SerializableMessage::writeEnchantmentDataArray);
+        addIOHandler(EnchantData[].class, SerializableMessage::readEnchantDataArray, SerializableMessage::writeEnchantDataArray);
     }
 
     /**
@@ -396,6 +399,19 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
     }
 
     private static void writeEnchantmentData (EnchantmentData data, ByteBuf buf) {
+
+        ByteBufUtils.writeUTF8String(buf, data.enchantment != null && data.enchantment.getRegistryName() != null ? data.enchantment.getRegistryName().toString() : "invalid");
+        buf.writeInt(data.enchantmentLevel);
+    }
+
+    private static EnchantData readEnchantData (ByteBuf buf) {
+
+        final ResourceLocation id = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
+        final int level = buf.readInt();
+        return new EnchantData(ForgeRegistries.ENCHANTMENTS.getValue(id), level);
+    }
+
+    private static void writeEnchantData (EnchantData data, ByteBuf buf) {
 
         ByteBufUtils.writeUTF8String(buf, data.enchantment != null && data.enchantment.getRegistryName() != null ? data.enchantment.getRegistryName().toString() : "invalid");
         buf.writeInt(data.enchantmentLevel);
@@ -729,6 +745,28 @@ public abstract class SerializableMessage<REQ extends SerializableMessage> imple
         for (final EnchantmentData object : objects) {
 
             writeEnchantmentData(object, buf);
+        }
+    }
+
+    private static EnchantData[] readEnchantDataArray (ByteBuf buf) {
+
+        final EnchantData[] objects = new EnchantData[buf.readInt()];
+
+        for (int index = 0; index < objects.length; index++) {
+
+            objects[index] = readEnchantData(buf);
+        }
+
+        return objects;
+    }
+
+    private static void writeEnchantDataArray (EnchantData[] objects, ByteBuf buf) {
+
+        buf.writeInt(objects.length);
+
+        for (final EnchantData object : objects) {
+
+            writeEnchantData(object, buf);
         }
     }
 
