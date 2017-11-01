@@ -37,11 +37,16 @@ public class EnchantData extends EnchantmentData {
     public boolean equals (Object other) {
 
         if (!(other instanceof EnchantmentData)) {
-
-            final EnchantmentData data = (EnchantmentData) other;
-            return this.enchantment == data.enchantment && this.enchantmentLevel == data.enchantmentLevel;
+            return false;
         }
-
-        return false;
+        final EnchantmentData data = (EnchantmentData) other;
+        boolean equal = false;
+        if (this.enchantment.getRegistryName().equals(data.enchantment.getRegistryName())) {
+            equal = true;
+        }
+        if (this.enchantmentLevel == data.enchantmentLevel) {
+            equal = true;
+        }
+        return equal || super.equals(other);
     }
 }
