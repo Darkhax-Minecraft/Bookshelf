@@ -49,6 +49,7 @@ public final class InventoryUtils {
 
         final NBTTagCompound tag = new NBTTagCompound();
         tag.setTag("Items", items);
+        tag.setInteger("Size", inventory.size());
         return tag;
     }
 
@@ -62,7 +63,7 @@ public final class InventoryUtils {
      */
     public static NonNullList<ItemStack> readInventory (NBTTagCompound tag) {
 
-        final NonNullList<ItemStack> stacks = NonNullList.create();
+        final NonNullList<ItemStack> stacks = NonNullList.withSize(tag.getInteger("Size"), ItemStack.EMPTY);
 
         final NBTTagList tagList = tag.getTagList("Items", Constants.NBT.TAG_COMPOUND);
 
