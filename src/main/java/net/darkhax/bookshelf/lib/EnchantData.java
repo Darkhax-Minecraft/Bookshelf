@@ -7,8 +7,10 @@
  */
 package net.darkhax.bookshelf.lib;
 
+import net.darkhax.bookshelf.util.RegistryUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * This class serves as a simple wrapper for net.minecraft.enchamtnet.EnchantmentData. The
@@ -22,9 +24,27 @@ public class EnchantData extends EnchantmentData {
         this(data.enchantment, data.enchantmentLevel);
     }
 
+    public EnchantData (NBTTagCompound tag) {
+
+        this(RegistryUtils.getEnchantment(tag.getString("EnchId")), tag.getInteger("Level"));
+    }
+
     public EnchantData (Enchantment enchantmentObj, int enchLevel) {
 
         super(enchantmentObj, enchLevel);
+    }
+
+    /**
+     * Writes the enchantment data to an NBTTagCompound.
+     *
+     * @return The data written to an nbt tag.
+     */
+    public NBTTagCompound toNBT () {
+
+        final NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("EnchId", RegistryUtils.getRegistryId(this.enchantment));
+        tag.setInteger("Level", this.enchantmentLevel);
+        return tag;
     }
 
     @Override
