@@ -10,6 +10,9 @@ package net.darkhax.bookshelf.util;
 import javax.annotation.Nonnull;
 
 import net.darkhax.bookshelf.lib.Constants;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public final class RegistryUtils {
@@ -22,6 +25,17 @@ public final class RegistryUtils {
     private RegistryUtils () {
 
         throw new IllegalAccessError("Utility class");
+    }
+
+    /**
+     * Gets an enchantment from an ID.
+     *
+     * @param id The id of the enchantment to find.
+     * @return The enchantment that was found. It can be null.
+     */
+    public static Enchantment getEnchantment (String id) {
+
+        return ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(id));
     }
 
     /**
