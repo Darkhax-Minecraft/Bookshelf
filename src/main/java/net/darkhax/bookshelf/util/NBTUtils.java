@@ -244,4 +244,24 @@ public final class NBTUtils {
 
         return StackUtils.prepareStackTag(stack).getInteger(key);
     }
+
+    /**
+     * Checks if one nbt tag contains all of the data in the second nbt tag.
+     *
+     * @param first The first tag, this is the one being checked.
+     * @param two The second tag, this is the one being checked for.
+     * @return Whether or not the first tag contains entries of the second tag.
+     */
+    public static boolean containsAllTags (NBTTagCompound first, NBTTagCompound two) {
+
+        for (final String key : two.getKeySet()) {
+
+            if (!first.hasKey(key) || !first.getTag(key).equals(two.getTag(key))) {
+
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
