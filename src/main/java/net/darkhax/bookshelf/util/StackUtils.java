@@ -273,6 +273,20 @@ public final class StackUtils {
         return firstStack == null && secondStack == null ? true : !firstStack.isEmpty() && !secondStack.isEmpty() && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem() && firstStack.getCount() == secondStack.getCount();
     }
 
+    /**
+     * Checks if two item stacks are similar, and the first stack contains all nbt of the
+     * second stack.
+     *
+     * @param firstStack The first stack to check.
+     * @param secondStack The second stack to check.
+     * @return Whether or not the stacks are similar.
+     */
+    public static boolean areStacksSimilarWithPartialNBT (ItemStack firstStack, ItemStack secondStack) {
+
+        final boolean similarStack = firstStack == null && secondStack == null ? true : !firstStack.isEmpty() && !secondStack.isEmpty() && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem();
+        return similarStack && NBTUtils.containsAllTags(prepareStackTag(firstStack), prepareStackTag(secondStack));
+    }
+
     public static ItemStack writePotionEffectsToStack (ItemStack stack, PotionEffect[] effects) {
 
         final NBTTagCompound stackTag = prepareStackTag(stack);
