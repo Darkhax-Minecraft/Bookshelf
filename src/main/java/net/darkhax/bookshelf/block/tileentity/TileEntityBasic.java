@@ -65,9 +65,9 @@ public abstract class TileEntityBasic extends TileEntity {
 
         this.markDirty();
 
-        if (this.hasWorld()) {
+        if (this.isLoaded()) {
 
-            final IBlockState state = this.getWorld().getBlockState(this.pos);
+            final IBlockState state = this.getState();
             this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
         }
     }
