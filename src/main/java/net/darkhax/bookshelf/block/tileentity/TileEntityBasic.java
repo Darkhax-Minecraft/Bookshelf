@@ -57,6 +57,22 @@ public abstract class TileEntityBasic extends TileEntity {
     }
 
     /**
+     * Marks the tile entity for a block update. This will mark the block as dirty, sync the
+     * NBT from server to client, and cause a block update. Keep in mind that this should be
+     * used only when necessary to prevent lag!
+     */
+    public void sync () {
+
+        this.markDirty();
+
+        if (this.hasWorld()) {
+
+            final IBlockState state = this.getWorld().getBlockState(this.pos);
+            this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
+        }
+    }
+
+    /**
      * Handles the ability to write custom NBT values to a TileEntity.
      *
      * @param dataTag: The NBTTagCompound for the TileEntity.
