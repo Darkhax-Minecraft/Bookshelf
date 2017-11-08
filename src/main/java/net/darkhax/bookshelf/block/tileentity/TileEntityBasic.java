@@ -73,6 +73,36 @@ public abstract class TileEntityBasic extends TileEntity {
     }
 
     /**
+     * Checks if the tile entity has a valid position.
+     *
+     * @return Whether or not the tile entity has a valid position.
+     */
+    public boolean hasPosition () {
+
+        return this.pos != null && this.pos != BlockPos.ORIGIN;
+    }
+
+    /**
+     * Checks if the tile entity has initialized, and is in a loaded chunk.
+     *
+     * @return Whether or not the tile entity is initialized and in a loaded chunk.
+     */
+    public boolean isLoaded () {
+
+        return this.hasWorld() && this.hasPosition() ? this.getWorld().isBlockLoaded(this.getPos()) : false;
+    }
+
+    /**
+     * Gets the block state of the tile entity. Can be null if the tile is not loaded.
+     *
+     * @return The block state of the tile.
+     */
+    public IBlockState getState () {
+
+        return this.isLoaded() ? this.getWorld().getBlockState(this.pos) : null;
+    }
+
+    /**
      * Handles the ability to write custom NBT values to a TileEntity.
      *
      * @param dataTag: The NBTTagCompound for the TileEntity.
