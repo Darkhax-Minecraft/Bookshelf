@@ -15,6 +15,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -548,7 +549,7 @@ public final class StackUtils {
 
         for (final CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
 
-            if (item.isInCreativeTab(tab)) {
+            if (item == Items.ENCHANTED_BOOK || item.isInCreativeTab(tab)) {
 
                 item.getSubItems(tab, items);
             }
