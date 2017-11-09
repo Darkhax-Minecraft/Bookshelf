@@ -12,6 +12,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -21,6 +22,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
@@ -531,6 +533,28 @@ public final class StackUtils {
 
         final Block block = Block.getBlockFromItem(stack.getItem());
         return block != null ? block.getStateFromMeta(stack.getMetadata()) : null;
+    }
+
+    /**
+     * Gets an array of all variations of an item. This method will grab items from the
+     * creative tab entries of an item, and can possibly be slow.
+     *
+     * @param item The item to get variations of.
+     * @return An array of all the variations of the item.
+     */
+    public static ItemStack[] getAllItems (Item item) {
+
+        final NonNullList<ItemStack> items = NonNullList.create();
+
+        for (final CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
+
+            if (item.isInCreativeTab(tab)) {
+
+                item.getSubItems(tab, items);
+            }
+        }
+
+        return items.toArray(new ItemStack[0]);
     }
 
     /**
