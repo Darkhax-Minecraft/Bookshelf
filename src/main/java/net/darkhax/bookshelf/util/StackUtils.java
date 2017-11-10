@@ -537,13 +537,13 @@ public final class StackUtils {
     }
 
     /**
-     * Gets an array of all variations of an item. This method will grab items from the
-     * creative tab entries of an item, and can possibly be slow.
+     * Finds all the variations of an item, but checking it's
+     * {@link Item#getSubItems(CreativeTabs, NonNullList)} results.
      *
-     * @param item The item to get variations of.
-     * @return An array of all the variations of the item.
+     * @param item The item to check for variations of.
+     * @return A list of all the variations that were found.
      */
-    public static ItemStack[] getAllItems (Item item) {
+    public static NonNullList<ItemStack> findVariations (Item item) {
 
         final NonNullList<ItemStack> items = NonNullList.create();
 
@@ -555,7 +555,19 @@ public final class StackUtils {
             }
         }
 
-        return items.toArray(new ItemStack[0]);
+        return items;
+    }
+
+    /**
+     * Gets an array of all variations of an item. This method will grab items from the
+     * creative tab entries of an item, and can possibly be slow.
+     *
+     * @param item The item to get variations of.
+     * @return An array of all the variations of the item.
+     */
+    public static ItemStack[] getAllItems (Item item) {
+
+        return findVariations(item).toArray(new ItemStack[0]);
     }
 
     /**
