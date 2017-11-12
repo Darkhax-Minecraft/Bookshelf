@@ -9,6 +9,9 @@ package net.darkhax.bookshelf.util;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.FMLContainer;
+import net.minecraftforge.fml.common.InjectedModContainer;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -138,5 +141,22 @@ public final class ModUtils {
         }
 
         return null;
+    }
+
+    /**
+     * Creates a ResourceLocation for a string, using the active mod container as the owner of
+     * the ID.
+     *
+     * @param id The id for the specific entry.
+     * @return A ResourceLocation for the entry.
+     */
+    public static ResourceLocation getIdForCurrentContainer (String id) {
+
+        final int index = id.lastIndexOf(':');
+        final String entryName = index == -1 ? id : id.substring(index + 1);
+        final ModContainer mod = Loader.instance().activeModContainer();
+        final String prefix = mod == null || mod instanceof InjectedModContainer && ((InjectedModContainer) mod).wrappedContainer instanceof FMLContainer ? "minecraft" : mod.getModId().toLowerCase();
+
+        return new ResourceLocation(prefix, entryName);
     }
 }
