@@ -12,14 +12,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.IForgeRegistryEntry.Impl;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
  * This class combines the weighted random selector class with some of the features of a forge
  * registry. This hybrid enforces that all entries have a forge registry name, and allows
  * entries to be retrieved accurately using it. It does not fire forge registry events though.
  */
-public class WeightedSelectorRegistry<T extends Impl<?>> extends WeightedSelector<T> {
+public class WeightedSelectorRegistry<T extends IForgeRegistryEntry<T>> extends WeightedSelector<T> {
 
     /**
      * This map is used to hold an ID to value reference for all entries in the weighted
@@ -37,7 +37,7 @@ public class WeightedSelectorRegistry<T extends Impl<?>> extends WeightedSelecto
      */
     public boolean addEntry (T value, int weight, String id) {
 
-        value.setRegistryName(id);
+        value.setRegistryName(new ResourceLocation(id));
         return this.addEntry(value, weight);
     }
 
