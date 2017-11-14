@@ -287,7 +287,7 @@ public final class StackUtils {
     public static boolean areStacksSimilarWithPartialNBT (ItemStack firstStack, ItemStack secondStack) {
 
         final boolean similarStack = firstStack == null && secondStack == null ? true : !firstStack.isEmpty() && !secondStack.isEmpty() && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem();
-        return similarStack && NBTUtils.containsAllTags(prepareStackTag(firstStack), prepareStackTag(secondStack));
+        return similarStack && NBTUtils.containsAllTags(getTagCleanly(firstStack), getTagCleanly(secondStack));
     }
 
     public static ItemStack writePotionEffectsToStack (ItemStack stack, PotionEffect[] effects) {
@@ -580,5 +580,18 @@ public final class StackUtils {
     public static String getStackIdentifier (ItemStack stack) {
 
         return stack != null && !stack.isEmpty() ? stack.getItem().getRegistryName().toString() : "minecraft:air";
+    }
+
+    /**
+     * Gets an NBTTagCompound from a stack without polluting the original input stack. If the
+     * stack does not have a tag, you will get a new one. This new tag will NOT be set to the
+     * stack automatically.
+     *
+     * @param stack The stack to check.
+     * @return The nbt data for the stack.
+     */
+    public static NBTTagCompound getTagCleanly (ItemStack stack) {
+
+        return stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
     }
 }
