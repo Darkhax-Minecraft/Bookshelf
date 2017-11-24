@@ -22,6 +22,17 @@ public interface IVariant {
     public String[] getVariant ();
 
     /**
+     * Checks if a meta value is within the valid metadata range.
+     *
+     * @param meta The meta value to validate.
+     * @return Whether or not the passed meta value is valid.
+     */
+    default public boolean isValidMeta (int meta) {
+
+        return meta >= 0 && meta < this.getVariant().length;
+    }
+
+    /**
      * Gets a string which is used to prefix the variants. For example, if you want to have
      * several fish, you could have fish be the prefix, and the type of fish be the variant
      * name.
