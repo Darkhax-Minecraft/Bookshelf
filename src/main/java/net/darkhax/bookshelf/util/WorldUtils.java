@@ -7,8 +7,10 @@
  */
 package net.darkhax.bookshelf.util;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 
 public final class WorldUtils {
 
@@ -61,5 +63,20 @@ public final class WorldUtils {
     public static int getDimId (WorldServer world) {
 
         return world.provider != null ? world.provider.getDimension() : 0;
+    }
+
+    /**
+     * Checks if two block positions are in the same chunk in a given world.
+     *
+     * @param world The world to check within.
+     * @param first The first position.
+     * @param second The second position.
+     * @return Whether or not the two positions are in the same chunk.
+     */
+    public static boolean areSameChunk (World world, BlockPos first, BlockPos second) {
+
+        final Chunk firstChunk = world.getChunkFromBlockCoords(first);
+        final Chunk secondChunk = world.getChunkFromBlockCoords(second);
+        return firstChunk.x == secondChunk.x && firstChunk.z == secondChunk.z;
     }
 }
