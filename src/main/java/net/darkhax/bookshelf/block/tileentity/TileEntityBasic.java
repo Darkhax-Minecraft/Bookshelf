@@ -115,4 +115,14 @@ public abstract class TileEntityBasic extends TileEntity {
      * @param dataTag: The NBTTagCompound for the TileEntity.
      */
     public abstract void readNBT (NBTTagCompound dataTag);
+
+    /**
+     * This is called when the tile block is removed. Other methods are seemingly unreliable,
+     * so this should be used over them.
+     *
+     * @param world The world instance.
+     * @param pos The position of the broken tile.
+     * @param state The state of the broken tile.
+     */
+    public abstract void onTileRemoved (World world, BlockPos pos, IBlockState state);
 }

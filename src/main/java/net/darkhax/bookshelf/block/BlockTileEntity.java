@@ -7,6 +7,7 @@
  */
 package net.darkhax.bookshelf.block;
 
+import net.darkhax.bookshelf.block.tileentity.TileEntityBasic;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
@@ -47,6 +48,12 @@ public abstract class BlockTileEntity extends Block implements ITileEntityProvid
 
     @Override
     public void breakBlock (World worldIn, BlockPos pos, IBlockState state) {
+
+        final TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile instanceof TileEntityBasic) {
+
+            ((TileEntityBasic) tile).onTileRemoved(worldIn, pos, state);
+        }
 
         super.breakBlock(worldIn, pos, state);
         worldIn.removeTileEntity(pos);
