@@ -124,5 +124,7 @@ public abstract class TileEntityBasic extends TileEntity {
      * @param pos The position of the broken tile.
      * @param state The state of the broken tile.
      */
-    public abstract void onTileRemoved (World world, BlockPos pos, IBlockState state);
+    public void onTileRemoved (World world, BlockPos pos, IBlockState state) {
+
+    }
 }
