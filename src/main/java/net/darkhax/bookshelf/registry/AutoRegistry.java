@@ -16,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -87,6 +88,15 @@ public class AutoRegistry implements IAutoRegistry {
         for (final SoundEvent sound : this.helper.getSounds()) {
 
             event.getRegistry().register(sound);
+        }
+    }
+
+    @SubscribeEvent
+    public void registerRecipes (RegistryEvent.Register<IRecipe> event) {
+
+        for (final IRecipe recipe : this.helper.getRecipes()) {
+
+            event.getRegistry().register(recipe);
         }
     }
 

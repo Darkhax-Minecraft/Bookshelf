@@ -30,6 +30,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -45,6 +47,8 @@ import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 /**
  * Mods can create new instances of this class, and use it to handle a lot of the registration
@@ -109,6 +113,11 @@ public class RegistryHelper {
      * A list of all the tile providers registered here.
      */
     private final List<ITileEntityBlock> tileProviders = NonNullList.create();
+
+    /**
+     * A list of all recipes registered.
+     */
+    private final List<IRecipe> recipes = NonNullList.create();
 
     /**
      * The creative tab used by the mod. This can be null.
@@ -391,6 +400,56 @@ public class RegistryHelper {
         final SoundEvent sound = new SoundEvent(id).setRegistryName(id);
         this.sounds.add(sound);
         return sound;
+    }
+
+    /**
+     * Adds a shaped recipe to the game.
+     *
+     * @param id The id of the recipe.
+     * @param output The output for the recipe.
+     * @param inputs The inputs. Pattern, then char followed by what it represents.
+     * @return The recipe registered.
+     */
+    public IRecipe addShapedRecipe (String id, ItemStack output, Object... inputs) {
+
+        return this.registerRecipe(id, new ShapedOreRecipe(null, output, inputs));
+    }
+
+    /**
+     * Adds a shapeless recipe to the game.
+     *
+     * @param id The id of the recipe.
+     * @param output The output of the recipe.
+     * @param inputs The inputs for the recipe.
+     * @return The recipe registered.
+     */
+    public IRecipe addShapelessRecipe (String id, ItemStack output, Object... inputs) {
+
+        return this.registerRecipe(id, new ShapelessOreRecipe(null, output, inputs));
+    }
+
+    /**
+     * Adds a recipe to the game.
+     *
+     * @param id The id of the recipe.
+     * @param recipe The recipe object.
+     * @return The registered registry object.
+     */
+    public IRecipe registerRecipe (String id, IRecipe recipe) {
+
+        recipe.setRegistryName(new ResourceLocation(this.modid, id));
+        this.recipes.add(recipe);
+        return recipe;
+    }
+
+    /**
+     * Gets all recipes registered.
+     *
+     * @return A list of all the recipes registered with the helper.
+     */
+    public List<IRecipe> getRecipes () {
+
+        return this.recipes;
     }
 
     /**
