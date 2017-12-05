@@ -7,22 +7,17 @@
  */
 package net.darkhax.bookshelf.item;
 
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * This interface is used by bookshelf's registry to automatically detect an item that has
- * custom mesh definitions. This can be used to register your own model stuff.
+ * This interface lets an item register their own models.
  */
-public interface ICustomMesh {
+public interface ICustomModel {
 
     /**
-     * Gets a custom ItemMeshDefinition for the item. Keep in mind that the models still have
-     * to be baked.
-     *
-     * @return
+     * Provides a hook for new models to be baked.
      */
     @SideOnly(Side.CLIENT)
-    public ItemMeshDefinition getCustomMesh ();
+    public void registerMeshModels ();
 }

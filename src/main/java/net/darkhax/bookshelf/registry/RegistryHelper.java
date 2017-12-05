@@ -18,6 +18,7 @@ import net.darkhax.bookshelf.block.IColorfulBlock;
 import net.darkhax.bookshelf.block.ITileEntityBlock;
 import net.darkhax.bookshelf.item.IColorfulItem;
 import net.darkhax.bookshelf.item.ICustomMesh;
+import net.darkhax.bookshelf.item.ICustomModel;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.LootBuilder;
 import net.darkhax.bookshelf.util.GameUtils;
@@ -716,12 +717,12 @@ public class RegistryHelper {
             final IVariant variant = (IVariant) item;
             this.registerInventoryModel(item, variant.getPrefix(), variant.getVariant());
         }
-        
-        else if (item instanceof ICustomMesh) {
-            
-            ((ICustomMesh) item).registerMeshModels();
+
+        else if (item instanceof ICustomModel) {
+
+            ((ICustomModel) item).registerMeshModels();
         }
-        
+
         else {
             this.registerInventoryModel(item, 0, item.getRegistryName().toString());
         }
