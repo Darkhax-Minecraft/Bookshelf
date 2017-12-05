@@ -716,6 +716,12 @@ public class RegistryHelper {
             final IVariant variant = (IVariant) item;
             this.registerInventoryModel(item, variant.getPrefix(), variant.getVariant());
         }
+        
+        else if (item instanceof ICustomMesh) {
+            
+            ((ICustomMesh) item).registerMeshModels();
+        }
+        
         else {
             this.registerInventoryModel(item, 0, item.getRegistryName().toString());
         }
