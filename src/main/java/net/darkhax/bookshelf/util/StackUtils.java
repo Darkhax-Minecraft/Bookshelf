@@ -549,7 +549,13 @@ public final class StackUtils {
 
         for (final CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
 
-            if (item == Items.ENCHANTED_BOOK || item.isInCreativeTab(tab)) {
+            // Skip the search tab
+            if (tab == CreativeTabs.SEARCH) {
+
+                continue;
+            }
+
+            else if (item == Items.ENCHANTED_BOOK || item.isInCreativeTab(tab)) {
 
                 item.getSubItems(tab, items);
             }
