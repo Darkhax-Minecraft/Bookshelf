@@ -34,6 +34,7 @@ import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -81,7 +82,7 @@ public final class PlayerUtils {
      */
     public static boolean isPlayerReal (Entity player) {
 
-        return player != null && player.world != null && player.getClass() == EntityPlayerMP.class;
+        return player != null && !(player instanceof FakePlayer) && player.world != null && FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers().contains(player);
     }
 
     /**
