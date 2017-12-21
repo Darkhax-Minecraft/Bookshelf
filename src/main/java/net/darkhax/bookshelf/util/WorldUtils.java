@@ -8,6 +8,7 @@
 package net.darkhax.bookshelf.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.darkhax.bookshelf.lib.Constants;
@@ -18,7 +19,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import scala.actors.threadpool.Arrays;
 
 public final class WorldUtils {
 
