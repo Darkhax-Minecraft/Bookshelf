@@ -131,7 +131,6 @@ public final class ParticleUtils {
      * @param step The distance in degrees, between each particle. The maximum is 2 * PI, which
      *        will create 1 particle per ring. 0.15 is a nice value.
      */
-    @SideOnly(Side.CLIENT)
     public static void spawnParticleRing (World world, EnumParticleTypes particle, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
 
         for (double degree = 0.0d; degree < 2 * Math.PI; degree += step) {
