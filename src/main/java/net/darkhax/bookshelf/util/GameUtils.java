@@ -7,8 +7,12 @@
  */
 package net.darkhax.bookshelf.util;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class GameUtils {
 
@@ -30,5 +34,26 @@ public final class GameUtils {
     public static boolean isClient () {
 
         return FMLCommonHandler.instance().getSide() == Side.CLIENT;
+    }
+
+    /**
+     * Static way to get the game settings.
+     *
+     * @return The current game settings.
+     */
+    @SideOnly(Side.CLIENT)
+    public static GameSettings getGameSettings () {
+
+        return Minecraft.getMinecraft().gameSettings;
+    }
+
+    /**
+     * Gets the current client difficulty.
+     *
+     * @return The difficulty for the client.
+     */
+    public static EnumDifficulty getClientDifficulty () {
+
+        return getGameSettings().difficulty;
     }
 }
