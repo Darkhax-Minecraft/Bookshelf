@@ -273,7 +273,7 @@ public final class StackUtils {
      */
     public static boolean areStacksSimilarWithSize (ItemStack firstStack, ItemStack secondStack) {
 
-        return firstStack == null && secondStack == null ? true : !firstStack.isEmpty() && !secondStack.isEmpty() && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem() && firstStack.getCount() == secondStack.getCount();
+        return areStacksSimilar(firstStack, secondStack) && firstStack.getCount() == secondStack.getCount();
     }
 
     /**
@@ -286,8 +286,7 @@ public final class StackUtils {
      */
     public static boolean areStacksSimilarWithPartialNBT (ItemStack firstStack, ItemStack secondStack) {
 
-        final boolean similarStack = firstStack == null && secondStack == null ? true : !firstStack.isEmpty() && !secondStack.isEmpty() && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem();
-        return similarStack && NBTUtils.containsAllTags(getTagCleanly(firstStack), getTagCleanly(secondStack));
+        return areStacksSimilar(firstStack, secondStack) && NBTUtils.containsAllTags(getTagCleanly(firstStack), getTagCleanly(secondStack));
     }
 
     public static ItemStack writePotionEffectsToStack (ItemStack stack, PotionEffect[] effects) {
