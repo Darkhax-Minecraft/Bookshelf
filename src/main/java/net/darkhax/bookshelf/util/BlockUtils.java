@@ -325,7 +325,7 @@ public final class BlockUtils {
      * @param pos The position to break it at.
      * @param state The block state to break.
      */
-    public void dropBlockSafely (World world, EntityPlayer player, BlockPos pos, IBlockState state) {
+    public static void dropBlockSafely (World world, EntityPlayer player, BlockPos pos, IBlockState state) {
 
         try {
 
@@ -334,7 +334,7 @@ public final class BlockUtils {
 
         catch (final Exception e) {
 
-            Constants.LOG.trace("Error correcting block drops", e);
+            Constants.LOG.trace("Could not harvest block!", e);
         }
     }
 
