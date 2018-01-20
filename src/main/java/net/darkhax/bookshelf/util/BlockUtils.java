@@ -317,6 +317,28 @@ public final class BlockUtils {
     }
 
     /**
+     * Attempts to harvest a block. This can be used in potentially unsafe situations, such as
+     * breaking a block at a position where it doesn't actually exist.
+     *
+     * @param world The world to break it in.
+     * @param player The player harvesting the block.
+     * @param pos The position to break it at.
+     * @param state The block state to break.
+     */
+    public void dropBlockSafely (World world, EntityPlayer player, BlockPos pos, IBlockState state) {
+
+        try {
+
+            state.getBlock().harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItemMainhand());
+        }
+
+        catch (final Exception e) {
+
+            Constants.LOG.trace("Error correcting block drops", e);
+        }
+    }
+
+    /**
      * Checks if a block position is in a slime chunk.
      *
      * @param world The world instance.
