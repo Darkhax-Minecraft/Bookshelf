@@ -313,7 +313,7 @@ public final class BlockUtils {
         final boolean currentCanHarvest = canHarvestSafely(current, player);
         final float targetSpeed = blockStrengthSafely(target, player, world, pos);
         final float currentSpeed = getModifiedBreakSpeed(targetSpeed, currentHardness, currentCanHarvest);
-        return currentSpeed;
+        return targetSpeed <= 0f ? 1f : currentSpeed;
     }
 
     /**
