@@ -279,7 +279,7 @@ public final class BlockUtils {
 
             final float hardness = getHardnessSafely(state, world, pos);
 
-            if (hardness < 0f) {
+            if (hardness <= 0f) {
 
                 return 0;
             }
