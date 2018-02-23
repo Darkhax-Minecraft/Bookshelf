@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -27,6 +28,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 public final class EntityUtils {
 
@@ -396,5 +398,11 @@ public final class EntityUtils {
     public static double getAttributeValue (EntityLivingBase entity, IAttribute attribute) {
 
         return entity.getEntityAttribute(attribute).getAttributeValue();
+    }
+
+    public static void addDrop (ItemStack stack, LivingDropsEvent event) {
+
+        final EntityLivingBase living = event.getEntityLiving();
+        event.getDrops().add(new EntityItem(living.getEntityWorld(), living.posX, living.posY, living.posZ, stack));
     }
 }
