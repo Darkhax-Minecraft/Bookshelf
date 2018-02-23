@@ -31,6 +31,7 @@ import net.minecraft.network.play.server.SPacketEntityEffect;
 import net.minecraft.network.play.server.SPacketRespawn;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.management.PlayerList;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -400,5 +401,16 @@ public final class PlayerUtils {
     public static boolean isPlayersBirthdate (EntityPlayer player) {
 
         return player.getUniqueID().toString().equalsIgnoreCase(BIRTHDAY_BOY_UUID.toString());
+    }
+
+    /**
+     * Checks if a DamageSource was caused by a player.
+     *
+     * @param source The damage source to check.
+     * @return Whether or not the source was caused by a player.
+     */
+    public static boolean isPlayerDamage (DamageSource source) {
+
+        return source != null && source.getTrueSource() instanceof EntityPlayer;
     }
 }
