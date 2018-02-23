@@ -45,7 +45,7 @@ public class Bookshelf {
     }
 
     @EventHandler
-    public void Init (FMLInitializationEvent event) {
+    public void init (FMLInitializationEvent event) {
 
         OreDictUtils.initAdditionalVanillaEntries();
 
