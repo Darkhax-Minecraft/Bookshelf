@@ -7,6 +7,9 @@
  */
 package net.darkhax.bookshelf.util;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -18,6 +21,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry.EntityRegistration;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public final class ModUtils {
@@ -158,5 +162,27 @@ public final class ModUtils {
         final String prefix = mod == null || mod instanceof InjectedModContainer && ((InjectedModContainer) mod).wrappedContainer instanceof FMLContainer ? "minecraft" : mod.getModId().toLowerCase();
 
         return new ResourceLocation(prefix, entryName);
+    }
+
+    /**
+     * Creates a sorted version of a ForgeRegistry. This will only contain entries that were
+     * present at the time of calling it. Entries are sorted by their owning modid.
+     *
+     * @param registry The registry to sort.
+     * @return A map of all entries sorted by the owning mod id.
+     */
+    public static <T extends IForgeRegistryEntry<T>> Multimap<String, T> getSortedEntries (IForgeRegistry<T> registry) {
+
+        final Multimap<String, T> map = ArrayListMultimap.create();
+
+        for (final T entry : registry.getValues()) {
+
+            if (entry.getRegistryName() != null) {
+
+                map.put(entry.getRegistryName().getResourceDomain(), entry);
+            }
+        }
+
+        return map;
     }
 }
