@@ -184,6 +184,17 @@ public class TableBuilder<T> {
         return builder.toString();
     }
 
+    /**
+     * Gets the list of entries. Can be used to do things like sort the entries before
+     * printing.
+     *
+     * @return The list of all entries.
+     */
+    public List<T> getEntries () {
+
+        return this.entries;
+    }
+
     public void setNewLine (String newline) {
 
         this.NEW_LINE = newline;
