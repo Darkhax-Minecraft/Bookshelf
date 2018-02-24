@@ -7,9 +7,17 @@
  */
 package net.darkhax.bookshelf.util;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.IntBuffer;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
@@ -693,5 +701,40 @@ public final class RenderUtils {
     public static IBakedModel getModelForState (IBlockState state) {
 
         return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
+    }
+
+    /**
+     * Finds and saves a texture from the game data to a file.
+     *
+     * @param textureId The ID of the texture to save.
+     * @param file The file to save the texture to.
+     */
+    public static void saveTextureToFile (int textureId, File file) {
+
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
+
+        GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
+        GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
+
+        final int width = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
+        final int height = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_HEIGHT);
+        final int size = width * height;
+
+        final BufferedImage bufferedimage = new BufferedImage(width, height, 2);
+
+        final IntBuffer buffer = BufferUtils.createIntBuffer(size);
+        final int[] data = new int[size];
+
+        GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, buffer);
+        buffer.get(data);
+        bufferedimage.setRGB(0, 0, width, height, data, 0, width);
+
+        try {
+            ImageIO.write(bufferedimage, "png", file);
+        }
+        catch (final IOException e) {
+
+            Constants.LOG.catching(e);
+        }
     }
 }
