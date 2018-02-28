@@ -1,0 +1,31 @@
+{
+"ambientocclusion": false,
+    "elements": [
+        {
+            "name": "base",
+            "from": [ 6.99, 0.0, 7.0 ], 
+            "to": [ 8.99, 7.0, 9.0 ], 
+            "faces": {
+                "north": { "texture": "#base", "uv": [ 0.0, 0.0, 2.0, 7.0 ] },
+                "east": { "texture": "#base", "uv": [ 0.0, 0.0, 2.0, 7.0 ] },
+                "south": { "texture": "#base", "uv": [ 0.0, 0.0, 2.0, 7.0 ] },
+                "west": { "texture": "#base", "uv": [ 0.0, 0.0, 2.0, 7.0 ] },
+                "up": { "texture": "#base", "uv": [ 0.0, 0.0, 2.0, 2.0 ] },
+                "down": { "texture": "#base", "uv": [ 0.0, 0.0, 2.0, 2.0 ] }
+            }
+        },
+        {
+            "name": "tip",
+            "from": [ 6.99, 7.0, 7.0 ], 
+            "to": [ 8.99, 9.0, 9.0 ], 
+            "faces": {
+                "north": { "texture": "#tip", "uv": [ 0.0, 0.0, 2.0, 2.0 ] },
+                "east": { "texture": "#tip", "uv": [ 0.0, 0.0, 2.0, 2.0 ] },
+                "south": { "texture": "#tip", "uv": [ 0.0, 0.0, 2.0, 2.0 ] },
+                "west": { "texture": "#tip", "uv": [ 0.0, 0.0, 2.0, 2.0 ] },
+                "up": { "texture": "#tip", "uv": [ 0.0, 0.0, 2.0, 2.0 ] },
+                "down": { "texture": "#tip", "uv": [ 0.0, 0.0, 2.0, 2.0 ] }
+            }
+        }
+    ]
+}
