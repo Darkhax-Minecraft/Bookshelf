@@ -7,6 +7,9 @@
  */
 package net.darkhax.bookshelf.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -25,6 +28,13 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public final class ModUtils {
+
+    /**
+     * This cache is used by {@link #getSortedEntries(IForgeRegistry)} to improve repeat
+     * performance of the method. Calling {@link #getSortedEntries(IForgeRegistry)} before all
+     * entries have been registered will lock out new ones from being found.
+     */
+    private static final Map<IForgeRegistry<?>, Multimap<String, ?>> REGISTRY_CACHE = new HashMap<>();
 
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
@@ -171,7 +181,13 @@ public final class ModUtils {
      * @param registry The registry to sort.
      * @return A map of all entries sorted by the owning mod id.
      */
+    @SuppressWarnings("unchecked")
     public static <T extends IForgeRegistryEntry<T>> Multimap<String, T> getSortedEntries (IForgeRegistry<T> registry) {
+
+        if (REGISTRY_CACHE.containsKey(registry)) {
+
+            return (Multimap<String, T>) REGISTRY_CACHE.get(registry);
+        }
 
         final Multimap<String, T> map = ArrayListMultimap.create();
 
@@ -183,6 +199,7 @@ public final class ModUtils {
             }
         }
 
+        REGISTRY_CACHE.put(registry, map);
         return map;
     }
 }
