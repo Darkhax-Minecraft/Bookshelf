@@ -10,16 +10,26 @@ package net.darkhax.bookshelf.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
+
+import javax.annotation.Nullable;
 
 import net.darkhax.bookshelf.lib.Constants;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
 public final class WorldUtils {
 
@@ -262,5 +272,97 @@ public final class WorldUtils {
         final int height = MathHelper.roundUp(chunk.getHeight(new BlockPos(posX, 0, posZ)) + 1, 16);
         final int posY = world.rand.nextInt(height > 0 ? height : chunk.getTopFilledSegment() + 16 - 1);
         return new BlockPos(posX, posY, posZ);
+    }
+
+    /**
+     * Attempts to spawn mobs in a chunk.
+     *
+     * @param world The world to spawn the mobs in.
+     * @param pos The position of the chunk to spawn in.
+     * @param mobType The type of mob to try and spawn.
+     * @param spawnHook A hook for running additional code on mob spawn.
+     */
+    public static void attemptChunkSpawn (WorldServer world, BlockPos pos, EnumCreatureType mobType, @Nullable Consumer<EntityLiving> spawnHook) {
+
+        final ChunkPos chunkPos = new ChunkPos(pos);
+        final BlockPos blockpos = getRandomChunkPosition(world, chunkPos.x, chunkPos.z);
+        final int randX = blockpos.getX();
+        final int randY = blockpos.getY();
+        final int randZ = blockpos.getZ();
+
+        // Checks if block is not a solid cube.
+        if (!world.getBlockState(blockpos).isNormalCube()) {
+
+            final int offsetX = randX + MathsUtils.nextIntInclusive(-6, 6);
+            final int spawnY = randY + MathsUtils.nextIntInclusive(-1, 1);
+            final int offsetY = randZ + MathsUtils.nextIntInclusive(-6, 6);
+
+            final BlockPos currentPos = new BlockPos(offsetX, spawnY, offsetY);
+
+            final float spawnX = offsetX + 0.5F;
+            final float spawnZ = offsetY + 0.5F;
+
+            // Get a random spawn list entry for the current chunk.
+            final SpawnListEntry spawnListEntry = world.getSpawnListEntryForTypeAt(mobType, currentPos);
+
+            if (spawnListEntry == null) {
+
+                return;
+            }
+
+            // Checks if the mob entry is valid for the current position.
+            if (world.canCreatureTypeSpawnHere(mobType, spawnListEntry, currentPos) && WorldEntitySpawner.canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.getPlacementForEntity(spawnListEntry.entityClass), world, currentPos)) {
+
+                // Get a random amount of mobs to spawn by using the pack size numbers.
+                final int amountToSpawn = MathsUtils.nextIntInclusive(spawnListEntry.minGroupCount, spawnListEntry.maxGroupCount);
+
+                for (int attempt = 0; attempt < amountToSpawn; attempt++) {
+
+                    EntityLiving spawnedMob;
+
+                    try {
+
+                        spawnedMob = spawnListEntry.newInstance(world);
+                    }
+
+                    catch (final Exception exception) {
+
+                        Constants.LOG.catching(exception);
+                        return;
+                    }
+
+                    if (spawnedMob != null) {
+
+                        spawnedMob.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0.0F);
+
+                        // Run forge's entity spawn check event
+                        final Result canSpawn = ForgeEventFactory.canEntitySpawn(spawnedMob, world, spawnX, spawnY, spawnZ, false);
+
+                        if (canSpawn == Result.ALLOW || canSpawn == Result.DEFAULT && spawnedMob.getCanSpawnHere() && spawnedMob.isNotColliding()) {
+
+                            if (!ForgeEventFactory.doSpecialSpawn(spawnedMob, world, spawnX, spawnY, spawnZ)) {
+
+                                spawnedMob.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(spawnedMob)), null);
+                            }
+
+                            if (spawnedMob.isNotColliding()) {
+
+                                world.spawnEntity(spawnedMob);
+
+                                if (spawnHook != null) {
+
+                                    spawnHook.accept(spawnedMob);
+                                }
+                            }
+
+                            else {
+
+                                spawnedMob.setDead();
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
