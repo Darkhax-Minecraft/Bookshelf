@@ -14,6 +14,7 @@ import java.util.List;
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -242,5 +243,24 @@ public final class WorldUtils {
         }
 
         return chunks;
+    }
+
+    /**
+     * Gets a random position within a chunk. This will load the chunk if it is not already
+     * loaded.
+     *
+     * @param world The world to get a position within.
+     * @param x The chunk X position.
+     * @param z The chunk Y position.
+     * @return A random position within the chunk.
+     */
+    public static BlockPos getRandomChunkPosition (World world, int x, int z) {
+
+        final Chunk chunk = world.getChunkFromChunkCoords(x, z);
+        final int posX = x * 16 + world.rand.nextInt(16);
+        final int posZ = z * 16 + world.rand.nextInt(16);
+        final int height = MathHelper.roundUp(chunk.getHeight(new BlockPos(posX, 0, posZ)) + 1, 16);
+        final int posY = world.rand.nextInt(height > 0 ? height : chunk.getTopFilledSegment() + 16 - 1);
+        return new BlockPos(posX, posY, posZ);
     }
 }
