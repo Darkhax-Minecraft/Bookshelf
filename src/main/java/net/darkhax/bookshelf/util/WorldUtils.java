@@ -76,16 +76,27 @@ public final class WorldUtils {
     /**
      * Checks if two block positions are in the same chunk in a given world.
      *
+     * @param first The first position.
+     * @param second The second position.
+     * @return Whether or not the two positions are in the same chunk.
+     */
+    public static boolean areSameChunk (BlockPos first, BlockPos second) {
+
+        return new ChunkPos(first).equals(new ChunkPos(second));
+    }
+
+    /**
+     * Checks if two block positions are in the same chunk in a given world.
+     *
      * @param world The world to check within.
      * @param first The first position.
      * @param second The second position.
      * @return Whether or not the two positions are in the same chunk.
      */
+    @Deprecated
     public static boolean areSameChunk (World world, BlockPos first, BlockPos second) {
 
-        final Chunk firstChunk = world.getChunkFromBlockCoords(first);
-        final Chunk secondChunk = world.getChunkFromBlockCoords(second);
-        return firstChunk.x == secondChunk.x && firstChunk.z == secondChunk.z;
+        return areSameChunk(first, second);
     }
 
     /**
