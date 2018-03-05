@@ -288,7 +288,7 @@ public final class WorldUtils {
     }
 
     /**
-     * Sets the WorldType for a WorldProvider. This is a wrapper for an access transfermer.
+     * Sets the WorldType for a WorldProvider. This is a wrapper for an access transformer.
      *
      * @param provider The provider to set the type of.
      * @param type The type to set the world to.
@@ -296,6 +296,22 @@ public final class WorldUtils {
     public static void setWorldType (WorldProvider provider, WorldType type) {
 
         provider.terrainType = type;
+    }
+
+    /**
+     * Gets the generator settings for a world. This is a wrapper for an access transformer.
+     *
+     * @param provider The provider to set the generator settings of.
+     * @return The settings to apply.
+     */
+    public static String getWorldSettings (WorldProvider provider) {
+
+        return provider.generatorSettings;
+    }
+
+    public static void setWorldSettings (WorldProvider provider, String settings) {
+
+        provider.generatorSettings = settings;
     }
 
     /**
