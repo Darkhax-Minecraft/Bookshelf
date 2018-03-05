@@ -24,7 +24,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEntitySpawner;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
@@ -272,6 +274,28 @@ public final class WorldUtils {
         final int height = MathHelper.roundUp(chunk.getHeight(new BlockPos(posX, 0, posZ)) + 1, 16);
         final int posY = world.rand.nextInt(height > 0 ? height : chunk.getTopFilledSegment() + 16 - 1);
         return new BlockPos(posX, posY, posZ);
+    }
+
+    /**
+     * Gets the WorldType for a WorldProvider. This is a wrapper for an access transformer.
+     *
+     * @param provider The world provider to pull info from.
+     * @return The WorldType of the provider.
+     */
+    public static WorldType getWorldType (WorldProvider provider) {
+
+        return provider.terrainType;
+    }
+
+    /**
+     * Sets the WorldType for a WorldProvider. This is a wrapper for an access transfermer.
+     *
+     * @param provider The provider to set the type of.
+     * @param type The type to set the world to.
+     */
+    public static void setWorldType (WorldProvider provider, WorldType type) {
+
+        provider.terrainType = type;
     }
 
     /**
