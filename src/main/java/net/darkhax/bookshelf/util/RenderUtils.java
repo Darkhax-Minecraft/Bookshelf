@@ -342,6 +342,32 @@ public final class RenderUtils {
     public static void renderFluid (FluidStack fluid, BlockPos pos, double x, double y, double z, double x1, double y1, double z1, double x2, double y2, double z2, int color) {
 
         final Minecraft mc = Minecraft.getMinecraft();
+        final TextureAtlasSprite still = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getStill(fluid).toString());
+        final TextureAtlasSprite flowing = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getFlowing(fluid).toString());
+        renderFluid(fluid, pos, x, y, z, x1, y1, z1, x2, y2, z2, color, still, flowing);
+    }
+
+    /**
+     * Renders a fluid at the given position.
+     *
+     * @param fluid The fluid to render.
+     * @param pos The position in the world to render the fluid.
+     * @param x The base X position.
+     * @param y The base Y position.
+     * @param z The base Z position.
+     * @param x1 The middle X position.
+     * @param y1 The middle Y position.
+     * @param z1 The middle Z position.
+     * @param x2 The max X position.
+     * @param y2 The max Y position.
+     * @param z2 The max Z position.
+     * @param color The color offset used by the fluid. Default is white.
+     * @param top The texture for the top.
+     * @param side The texture for the side.
+     */
+    public static void renderFluid (FluidStack fluid, BlockPos pos, double x, double y, double z, double x1, double y1, double z1, double x2, double y2, double z2, int color, TextureAtlasSprite top, TextureAtlasSprite side) {
+
+        final Minecraft mc = Minecraft.getMinecraft();
         final Tessellator tessellator = Tessellator.getInstance();
         final BufferBuilder buffer = tessellator.getBuffer();
         final int brightness = mc.world.getCombinedLight(pos, fluid.getFluid().getLuminosity());
@@ -351,15 +377,12 @@ public final class RenderUtils {
         setupRenderState(x, y, z);
         GlStateManager.translate(x, y, z);
 
-        final TextureAtlasSprite still = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getStill(fluid).toString());
-        final TextureAtlasSprite flowing = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getFlowing(fluid).toString());
-
-        addTexturedQuad(buffer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.DOWN, color, brightness);
-        addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.NORTH, color, brightness);
-        addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.EAST, color, brightness);
-        addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.SOUTH, color, brightness);
-        addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.WEST, color, brightness);
-        addTexturedQuad(buffer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.UP, color, brightness);
+        addTexturedQuad(buffer, top, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.DOWN, color, brightness);
+        addTexturedQuad(buffer, side, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.NORTH, color, brightness);
+        addTexturedQuad(buffer, side, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.EAST, color, brightness);
+        addTexturedQuad(buffer, side, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.SOUTH, color, brightness);
+        addTexturedQuad(buffer, side, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.WEST, color, brightness);
+        addTexturedQuad(buffer, top, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.UP, color, brightness);
         tessellator.draw();
 
         cleanupRenderState();
