@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
 
 public final class AnnotationUtils {
 
-    public static ASMDataTable asmData;
+    private static ASMDataTable asmData;
 
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
@@ -33,6 +33,16 @@ public final class AnnotationUtils {
     private AnnotationUtils () {
 
         throw new IllegalAccessError("Utility class");
+    }
+
+    public static ASMDataTable getASMDataTable () {
+
+        return asmData;
+    }
+
+    public static void setAnnotationData (ASMDataTable data) {
+
+        asmData = data;
     }
 
     /**

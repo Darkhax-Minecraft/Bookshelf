@@ -36,7 +36,7 @@ public class Bookshelf {
     @EventHandler
     public void onConstruction (FMLConstructionEvent event) {
 
-        AnnotationUtils.asmData = event.getASMHarvestedData();
+        AnnotationUtils.setAnnotationData(event.getASMHarvestedData());
         MinecraftForge.EVENT_BUS.register(this);
     }
 
