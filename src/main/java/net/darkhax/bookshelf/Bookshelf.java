@@ -21,7 +21,6 @@ import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -33,9 +32,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = "@VERSION@", certificateFingerprint = "@FINGERPRINT@")
 public class Bookshelf {
-
-    @Instance(Constants.MOD_ID)
-    public static Bookshelf instance;
 
     @EventHandler
     public void onConstruction (FMLConstructionEvent event) {
