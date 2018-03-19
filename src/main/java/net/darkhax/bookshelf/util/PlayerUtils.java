@@ -400,7 +400,7 @@ public final class PlayerUtils {
      */
     public static boolean isPlayersBirthdate (EntityPlayer player) {
 
-        return player.getUniqueID().toString().equalsIgnoreCase(BIRTHDAY_BOY_UUID.toString());
+        return player.getUniqueID().toString().equalsIgnoreCase(BIRTHDAY_BOY_UUID);
     }
 
     /**
