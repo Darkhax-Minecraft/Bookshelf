@@ -413,4 +413,19 @@ public final class PlayerUtils {
 
         return source != null && source.getTrueSource() instanceof EntityPlayer;
     }
+
+    public static void setPortalTimer (EntityPlayer player, int time) {
+
+        player.portalCounter = time;
+    }
+
+    public static void setSleepTimer (EntityPlayer player, int time) {
+
+        player.sleepTimer = time;
+    }
+
+    public static boolean inPortal (EntityPlayer player) {
+
+        return player.inPortal;
+    }
 }
