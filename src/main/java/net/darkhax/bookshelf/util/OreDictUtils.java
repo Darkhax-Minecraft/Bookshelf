@@ -7,6 +7,7 @@
  */
 package net.darkhax.bookshelf.util;
 
+import net.darkhax.bookshelf.BookshelfConfig;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraftforge.oredict.OreDictionary;
@@ -354,82 +355,100 @@ public final class OreDictUtils {
 
     public static void initAdditionalVanillaEntries () {
 
-        // TODO eventually PR this to forge
-        OreDictionary.registerOre(BED, Items.BED);
+        if (BookshelfConfig.oreDictMisc) {
 
-        OreDictionary.registerOre(HOPPER, Blocks.HOPPER);
+            OreDictionary.registerOre(BED, Items.BED);
 
-        OreDictionary.registerOre(BOOKSHELF, Blocks.BOOKSHELF);
+            OreDictionary.registerOre(HOPPER, Blocks.HOPPER);
 
-        OreDictionary.registerOre(CROP_BEETROOT, Items.BEETROOT);
+            OreDictionary.registerOre(BOOKSHELF, Blocks.BOOKSHELF);
 
-        OreDictionary.registerOre(BLOCK_MAGMA, Blocks.MAGMA);
+            OreDictionary.registerOre(CROP_BEETROOT, Items.BEETROOT);
 
-        OreDictionary.registerOre(BLOCK_NETHER_WART, Blocks.NETHER_WART_BLOCK);
+            OreDictionary.registerOre(BLOCK_MAGMA, Blocks.MAGMA);
 
-        OreDictionary.registerOre(BLOCK_BONE, Blocks.BONE_BLOCK);
+            OreDictionary.registerOre(BLOCK_NETHER_WART, Blocks.NETHER_WART_BLOCK);
 
-        OreDictionary.registerOre(SHULKER_SHELL, Items.SHULKER_SHELL);
-        OreDictionary.registerOre(FENCE_WOOD, Blocks.OAK_FENCE);
-        OreDictionary.registerOre(FENCE_WOOD, Blocks.SPRUCE_FENCE);
-        OreDictionary.registerOre(FENCE_WOOD, Blocks.BIRCH_FENCE);
-        OreDictionary.registerOre(FENCE_WOOD, Blocks.JUNGLE_FENCE);
-        OreDictionary.registerOre(FENCE_WOOD, Blocks.ACACIA_FENCE);
-        OreDictionary.registerOre(FENCE_WOOD, Blocks.DARK_OAK_FENCE);
+            OreDictionary.registerOre(BLOCK_BONE, Blocks.BONE_BLOCK);
 
-        OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.OAK_FENCE_GATE);
-        OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.SPRUCE_FENCE_GATE);
-        OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.BIRCH_FENCE_GATE);
-        OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.JUNGLE_FENCE_GATE);
-        OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.ACACIA_FENCE_GATE);
-        OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.DARK_OAK_FENCE_GATE);
+            OreDictionary.registerOre(SHULKER_SHELL, Items.SHULKER_SHELL);
+        }
 
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.WHITE_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.ORANGE_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.MAGENTA_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.LIGHT_BLUE_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.YELLOW_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.LIME_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.PINK_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.GRAY_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.SILVER_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.CYAN_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.PURPLE_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.BLUE_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.BROWN_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.GREEN_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.RED_SHULKER_BOX);
-        OreDictionary.registerOre(SHULKER_BOX, Blocks.BLACK_SHULKER_BOX);
+        if (BookshelfConfig.oreDictFence) {
 
-        OreDictionary.registerOre(CHEST, Blocks.WHITE_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.ORANGE_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.MAGENTA_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.LIGHT_BLUE_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.YELLOW_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.LIME_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.PINK_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.GRAY_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.SILVER_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.CYAN_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.PURPLE_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.BLUE_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.BROWN_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.GREEN_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.RED_SHULKER_BOX);
-        OreDictionary.registerOre(CHEST, Blocks.BLACK_SHULKER_BOX);
+            OreDictionary.registerOre(FENCE_WOOD, Blocks.OAK_FENCE);
+            OreDictionary.registerOre(FENCE_WOOD, Blocks.SPRUCE_FENCE);
+            OreDictionary.registerOre(FENCE_WOOD, Blocks.BIRCH_FENCE);
+            OreDictionary.registerOre(FENCE_WOOD, Blocks.JUNGLE_FENCE);
+            OreDictionary.registerOre(FENCE_WOOD, Blocks.ACACIA_FENCE);
+            OreDictionary.registerOre(FENCE_WOOD, Blocks.DARK_OAK_FENCE);
 
-        OreDictionary.registerOre(SEED, Items.WHEAT_SEEDS);
-        OreDictionary.registerOre(SEED, Items.PUMPKIN_SEEDS);
-        OreDictionary.registerOre(SEED, Items.MELON_SEEDS);
-        OreDictionary.registerOre(SEED, Items.BEETROOT_SEEDS);
+            OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.OAK_FENCE_GATE);
+            OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.SPRUCE_FENCE_GATE);
+            OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.BIRCH_FENCE_GATE);
+            OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.JUNGLE_FENCE_GATE);
+            OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.ACACIA_FENCE_GATE);
+            OreDictionary.registerOre(FENCE_GATE_WOOD, Blocks.DARK_OAK_FENCE_GATE);
+        }
 
-        OreDictionary.registerOre(RAIL, Blocks.RAIL);
-        OreDictionary.registerOre(RAIL, Blocks.ACTIVATOR_RAIL);
-        OreDictionary.registerOre(RAIL, Blocks.DETECTOR_RAIL);
-        OreDictionary.registerOre(RAIL, Blocks.GOLDEN_RAIL);
+        if (BookshelfConfig.oreDictShulker) {
 
-        OreDictionary.registerOre(ARROW, Items.ARROW);
-        OreDictionary.registerOre(ARROW, Items.SPECTRAL_ARROW);
-        OreDictionary.registerOre(ARROW, Items.TIPPED_ARROW);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.WHITE_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.ORANGE_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.MAGENTA_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.LIGHT_BLUE_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.YELLOW_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.LIME_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.PINK_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.GRAY_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.SILVER_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.CYAN_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.PURPLE_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.BLUE_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.BROWN_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.GREEN_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.RED_SHULKER_BOX);
+            OreDictionary.registerOre(SHULKER_BOX, Blocks.BLACK_SHULKER_BOX);
+
+            OreDictionary.registerOre(CHEST, Blocks.WHITE_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.ORANGE_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.MAGENTA_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.LIGHT_BLUE_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.YELLOW_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.LIME_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.PINK_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.GRAY_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.SILVER_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.CYAN_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.PURPLE_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.BLUE_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.BROWN_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.GREEN_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.RED_SHULKER_BOX);
+            OreDictionary.registerOre(CHEST, Blocks.BLACK_SHULKER_BOX);
+        }
+
+        if (BookshelfConfig.oreDictSeeds) {
+
+            OreDictionary.registerOre(SEED, Items.WHEAT_SEEDS);
+            OreDictionary.registerOre(SEED, Items.PUMPKIN_SEEDS);
+            OreDictionary.registerOre(SEED, Items.MELON_SEEDS);
+            OreDictionary.registerOre(SEED, Items.BEETROOT_SEEDS);
+        }
+
+        if (BookshelfConfig.oreDictRails) {
+
+            OreDictionary.registerOre(RAIL, Blocks.RAIL);
+            OreDictionary.registerOre(RAIL, Blocks.ACTIVATOR_RAIL);
+            OreDictionary.registerOre(RAIL, Blocks.DETECTOR_RAIL);
+            OreDictionary.registerOre(RAIL, Blocks.GOLDEN_RAIL);
+        }
+
+        if (BookshelfConfig.oreDictArrows) {
+
+            OreDictionary.registerOre(ARROW, Items.ARROW);
+            OreDictionary.registerOre(ARROW, Items.SPECTRAL_ARROW);
+            OreDictionary.registerOre(ARROW, Items.TIPPED_ARROW);
+        }
     }
 }

@@ -24,6 +24,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -38,6 +39,12 @@ public class Bookshelf {
 
         AnnotationUtils.setAnnotationData(event.getASMHarvestedData());
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @EventHandler
+    public void preInit (FMLPreInitializationEvent event) {
+
+        new BookshelfConfig(event.getSuggestedConfigurationFile());
     }
 
     @EventHandler
