@@ -10,6 +10,8 @@ package net.darkhax.bookshelf.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -258,9 +260,9 @@ public final class StackUtils {
      * @param secondStackThe second stack to check.
      * @return booleanTrue if stacks are similar, or if both are null.
      */
-    public static boolean areStacksSimilar (ItemStack firstStack, ItemStack secondStack) {
+    public static boolean areStacksSimilar (@Nonnull ItemStack firstStack, @Nonnull ItemStack secondStack) {
 
-        return firstStack == null && secondStack == null ? true : !firstStack.isEmpty() && !secondStack.isEmpty() && firstStack.getItemDamage() == secondStack.getItemDamage() && firstStack.getItem() == secondStack.getItem();
+        return firstStack.getItem() == secondStack.getItem() && areStacksSameMeta(firstStack, secondStack);
     }
 
     /**
@@ -287,6 +289,18 @@ public final class StackUtils {
     public static boolean areStacksSimilarWithPartialNBT (ItemStack firstStack, ItemStack secondStack) {
 
         return areStacksSimilar(firstStack, secondStack) && NBTUtils.containsAllTags(getTagCleanly(firstStack), getTagCleanly(secondStack));
+    }
+
+    /**
+     * Checks if both stacks have the same metadata, or either has the wildcard meta.
+     *
+     * @param first The first stack.
+     * @param second The second stack.
+     * @return Whether or not they have the same meta or wildcard meta.
+     */
+    public static boolean areStacksSameMeta (@Nonnull ItemStack first, @Nonnull ItemStack second) {
+
+        return first.getMetadata() == second.getMetadata() || first.getMetadata() == OreDictionary.WILDCARD_VALUE || second.getMetadata() == OreDictionary.WILDCARD_VALUE;
     }
 
     public static ItemStack writePotionEffectsToStack (ItemStack stack, PotionEffect[] effects) {
