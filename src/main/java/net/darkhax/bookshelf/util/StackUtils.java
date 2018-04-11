@@ -613,4 +613,36 @@ public final class StackUtils {
 
         return stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
     }
+
+    /**
+     * Gets all of the block stats for an oredict name. If entries have the wildcard meta, like
+     * wood logs, their sub blocks will all be added.
+     *
+     * @param oredict The ore dictionary name to look up files for.
+     * @return A NonNullList containing all of the found itemstacks.
+     */
+    public static NonNullList<ItemStack> getAllBlocksForOredict (String oredict) {
+
+        final NonNullList<ItemStack> subBlocks = NonNullList.create();
+
+        for (final ItemStack stack : OreDictionary.getOres(oredict)) {
+
+            final Block block = Block.getBlockFromItem(stack.getItem());
+            final int meta = stack.getItemDamage();
+
+            // If block is wildcard add sub blocks
+            if (meta == OreDictionary.WILDCARD_VALUE) {
+
+                block.getSubBlocks(null, subBlocks);
+            }
+
+            // Else just add the block.
+            else {
+
+                subBlocks.add(stack);
+            }
+        }
+
+        return subBlocks;
+    }
 }
