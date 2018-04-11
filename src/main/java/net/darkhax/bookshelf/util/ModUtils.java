@@ -202,4 +202,25 @@ public final class ModUtils {
         REGISTRY_CACHE.put(registry, map);
         return map;
     }
+
+    /**
+     * Gets a ResourceLocation where the domain/modid is pulled from the active mod id.
+     *
+     * @param name The name of the id to create.
+     * @return The ResourceLocation with the active mod as the domain/id.
+     */
+    public static ResourceLocation getIdForActiveMod (String name) {
+
+        if (!name.contains(":")) {
+
+            final ModContainer container = Loader.instance().activeModContainer();
+
+            if (container != null) {
+
+                return new ResourceLocation(container.getModId(), name);
+            }
+        }
+
+        return new ResourceLocation(name);
+    }
 }
