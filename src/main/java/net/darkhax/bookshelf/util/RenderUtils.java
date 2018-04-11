@@ -37,6 +37,7 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -759,5 +760,32 @@ public final class RenderUtils {
 
             Constants.LOG.catching(e);
         }
+    }
+
+    /**
+     * Builds a new copy of the transformations for a baked model.
+     *
+     * @param model The model to pull the transformation data from.
+     * @return An immutable map which maps transformation types to their transformation data in
+     *         the base model.
+     */
+    public static ImmutableMap<TransformType, TRSRTransformation> copyTransforms (IBakedModel model) {
+
+        final ImmutableMap.Builder<TransformType, TRSRTransformation> copiedTransforms = ImmutableMap.builder();
+
+        // Iterate through all the item transform types
+        for (final TransformType type : TransformType.values()) {
+
+            // Copies transformation for the transform type.
+            final TRSRTransformation transformation = new TRSRTransformation(model.handlePerspective(type).getRight());
+
+            // Filters out the base transformation.
+            if (!transformation.equals(TRSRTransformation.identity())) {
+
+                copiedTransforms.put(type, TRSRTransformation.blockCenterToCorner(transformation));
+            }
+        }
+
+        return copiedTransforms.build();
     }
 }
