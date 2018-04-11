@@ -303,6 +303,39 @@ public final class StackUtils {
         return first.getMetadata() == second.getMetadata() || first.getMetadata() == OreDictionary.WILDCARD_VALUE || second.getMetadata() == OreDictionary.WILDCARD_VALUE;
     }
 
+    /**
+     * Checks if an ItemStack matches a recipe ingredient object.
+     *
+     * @param stack The item stack to check.
+     * @param recipe The recipe ingredient object.
+     * @return Whether or not the stack and recipe requirements match.
+     */
+    public static boolean areStacksEqualForCrafting (ItemStack stack, Object recipe) {
+
+        if (recipe instanceof ItemStack) {
+
+            return areStacksSimilarWithSize(stack, (ItemStack) recipe);
+        }
+
+        if (recipe instanceof String) {
+
+            return hasOreName(stack, (String) recipe);
+        }
+        return false;
+    }
+
+    /**
+     * Checks is an ItemStack has an ore dictionary name.
+     *
+     * @param stack The item to check.
+     * @param name The ore dict name to look up.
+     * @return Whether or not the stack has that ore dictionary name.
+     */
+    public static boolean hasOreName (ItemStack stack, String name) {
+
+        return OreDictUtils.getOreNames(stack).contains(name);
+    }
+
     public static ItemStack writePotionEffectsToStack (ItemStack stack, PotionEffect[] effects) {
 
         final NBTTagCompound stackTag = prepareStackTag(stack);

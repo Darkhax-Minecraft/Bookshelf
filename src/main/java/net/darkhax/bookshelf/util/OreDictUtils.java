@@ -7,9 +7,13 @@
  */
 package net.darkhax.bookshelf.util;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.darkhax.bookshelf.BookshelfConfig;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public final class OreDictUtils {
@@ -450,5 +454,23 @@ public final class OreDictUtils {
             OreDictionary.registerOre(ARROW, Items.SPECTRAL_ARROW);
             OreDictionary.registerOre(ARROW, Items.TIPPED_ARROW);
         }
+    }
+
+    /**
+     * Gets all of the ore dictionary names for an ItemStack.
+     *
+     * @param stack The ItemStack to look at.
+     * @return A set of the ore names.
+     */
+    public static Set<String> getOreNames (ItemStack stack) {
+
+        final Set<String> names = new HashSet<>();
+
+        for (final int id : OreDictionary.getOreIDs(stack)) {
+
+            names.add(OreDictionary.getOreName(id));
+        }
+
+        return names;
     }
 }
