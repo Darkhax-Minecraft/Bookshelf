@@ -7,6 +7,8 @@
  */
 package net.darkhax.bookshelf.command;
 
+import java.util.StringJoiner;
+
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -25,7 +27,6 @@ public abstract class CommandTree extends CommandTreeBase {
 
         if (args.length == 0) {
 
-            // TODO build a better help screen
             sender.sendMessage(new TextComponentString(this.getSubCommandDescriptions(sender)));
         }
 
@@ -43,14 +44,14 @@ public abstract class CommandTree extends CommandTreeBase {
      */
     private String getSubCommandDescriptions (ICommandSender sender) {
 
-        final StringBuilder builder = new StringBuilder();
+        final StringJoiner joiner = new StringJoiner("\n");
 
         for (final ICommand command : this.getSubCommands()) {
 
-            builder.append("\n" + command.getUsage(sender));
+            joiner.add(command.getUsage(sender));
         }
 
-        return builder.toString();
+        return joiner.toString();
     }
 
     @Override
