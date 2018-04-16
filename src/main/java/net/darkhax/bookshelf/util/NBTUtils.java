@@ -7,7 +7,9 @@
  */
 package net.darkhax.bookshelf.util;
 
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.function.Function;
 
 import net.darkhax.bookshelf.lib.BookshelfException;
 import net.darkhax.bookshelf.lib.Constants;
@@ -16,6 +18,7 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 
 public final class NBTUtils {
 
@@ -263,5 +266,43 @@ public final class NBTUtils {
         }
 
         return true;
+    }
+
+    /**
+     * Reads a collection from an NBTTagList by deserializing strings into the elements.
+     *
+     * @param collection The collection to populate.
+     * @param list The NBTTagList to read.
+     * @param func The function used to deserialize elements.
+     * @return A collection containing all deserialized elements.
+     */
+    public static <T extends Object> Collection<T> readCollection (Collection<T> collection, NBTTagList list, Function<String, T> func) {
+
+        for (int index = 0; index < list.tagCount(); index++) {
+
+            final String string = list.getStringTagAt(index);
+            collection.add(func.apply(string));
+        }
+
+        return collection;
+    }
+
+    /**
+     * Writes a collection to an NBTTagList by serializing elements to a string.
+     *
+     * @param collection The collection to write.
+     * @param func The function used to serialize the elements.
+     * @return An NBTTagList containing the serialized string values.
+     */
+    public static <T extends Object> NBTTagList writeCollection (Collection<T> collection, Function<T, String> func) {
+
+        final NBTTagList tagList = new NBTTagList();
+
+        for (final T t : collection) {
+
+            tagList.appendTag(new NBTTagString(func.apply(t)));
+        }
+
+        return tagList;
     }
 }
