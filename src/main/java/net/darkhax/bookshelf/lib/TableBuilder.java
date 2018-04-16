@@ -66,7 +66,6 @@ public class TableBuilder<T> {
 
         for (final T entry : entries) {
 
-            // TODO cache
             final String data = function.apply(entry);
             maxWidth = Math.max(maxWidth, data.length());
         }
@@ -172,7 +171,7 @@ public class TableBuilder<T> {
 
                 final String format = "%-" + widths.get(columnIndex) + "s";
                 final Function<? super T, String> function = this.columnFunctions.get(columnIndex);
-                // TODO cache
+                
                 final String columnText = function.apply(entry);
                 builder.append(" " + String.format(format, columnText) + " ");
             }

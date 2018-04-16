@@ -35,6 +35,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+@Deprecated
 public final class RecipeGenerator {
 
     /**
@@ -194,7 +195,6 @@ public final class RecipeGenerator {
                 ret.put("count", stack.getCount());
             }
 
-            // TODO implement NBT
             if (stack.hasTagCompound()) {
 
                 throw new IllegalArgumentException("Too lazy to implement nbt support rn");
