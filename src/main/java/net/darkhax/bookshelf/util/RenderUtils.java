@@ -734,7 +734,7 @@ public final class RenderUtils {
      * @param file The file to save the texture to.
      */
     public static void saveTextureToFile (int textureId, File file) {
-
+        
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
 
         GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
@@ -756,8 +756,10 @@ public final class RenderUtils {
         try {
             ImageIO.write(bufferedimage, "png", file);
         }
-        catch (final IOException e) {
+        
+        catch (final Exception e) {
 
+            Constants.LOG.error("Failed to save texture {} to {}.", textureId, file.getName());
             Constants.LOG.catching(e);
         }
     }
