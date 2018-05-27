@@ -9,6 +9,7 @@ package net.darkhax.bookshelf.data;
 
 import net.darkhax.bookshelf.block.property.PropertyObject;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
@@ -47,6 +48,12 @@ public final class Blockstates {
      * Used to determine the direction a block is facing.
      */
     public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
+
+    /**
+     * Used to determine the direction a block is facing. Only includes horizontal directions.
+     * (N-S-W-E)
+     */
+    public static final PropertyDirection HORIZONTAL = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     /**
      * Used to determine if a block is connected on the bottom face.
