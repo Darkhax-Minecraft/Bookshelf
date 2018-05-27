@@ -18,6 +18,7 @@ import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -404,5 +405,10 @@ public final class WorldUtils {
                 }
             }
         }
+    }
+
+    public static boolean isHorizontal (EnumFacing facing) {
+
+        return facing != EnumFacing.DOWN && facing != EnumFacing.UP;
     }
 }
