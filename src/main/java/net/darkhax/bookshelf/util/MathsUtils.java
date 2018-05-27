@@ -186,4 +186,19 @@ public final class MathsUtils {
 
         return new AxisAlignedBB(getPixelDistance(minX), getPixelDistance(minY), getPixelDistance(minZ), getPixelDistance(maxX), getPixelDistance(maxY), getPixelDistance(maxZ));
     }
+
+    /**
+     * Takes an integer value and fits it within a range. If the initial value is less than the
+     * minimum it will be set to the minimum. If the initial value is greater than the maximum
+     * it will be lowered to the maximum.
+     *
+     * @param initial The initial value.
+     * @param min The minimum value.
+     * @param max The maximum value.
+     * @return The adjusted value.
+     */
+    public static int adjustToRange (int initial, int min, int max) {
+
+        return initial < min ? min : initial > max ? max : initial;
+    }
 }
