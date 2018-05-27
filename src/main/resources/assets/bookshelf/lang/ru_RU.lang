@@ -1,0 +1,51 @@
+#Russian Language File 
+
+#Misc
+itemGroup.bookshelfheads=Player Heads
+
+#Blocks
+tile.bookshelf.bookshelf.spruce.name=Книжная полка из ели
+tile.bookshelf.bookshelf.birch.name=Книжная полка из березы
+tile.bookshelf.bookshelf.jungle.name=Книжная полка из тропического дерева
+tile.bookshelf.bookshelf.acacia.name=Книжная полка из акации
+tile.bookshelf.bookshelf.dark_oak.name=Книжная полка из темного дуба
+ 
+#Supporters
+supporters.developer=Разработчик
+supporters.patreon=Patreon
+supporters.contributor=Помощник
+supporters.translator=Переводчик
+supporters.other=Другие
+
+#Moon Phases
+moon.phase.full.name=Полнолуние
+moon.phase.waxing.gibbous.name=Прибывающая луна
+moon.phase.first.quarter.name=Первая четверть
+moon.phase.waxing.crescent.name=Молодая луна
+moon.phase.new.name=Новолуние
+moon.phase.waning.crescent.name=Убывающая луна
+moon.phase.last.quarter.name=Последняя четверть
+moon.phase.waning.gibbous.name=Старая луна
+
+#Months
+time.bookshelf.month.january.name=Январь
+time.bookshelf.month.february.name=Февраль
+time.bookshelf.month.march.name=Март
+time.bookshelf.month.april.name=Апрель
+time.bookshelf.month.may.name=Май
+time.bookshelf.month.june.name=Июнь
+time.bookshelf.month.july.name=Июль
+time.bookshelf.month.august.name=Август
+time.bookshelf.month.september.name=Сентябрь
+time.bookshelf.month.october.name=Октябрь
+time.bookshelf.month.november.name=Ноябрь
+time.bookshelf.month.december.name=Декабрь
+
+#Week
+time.bookshelf.day.sunday.name=Воскресенье
+time.bookshelf.day.monday.name=Понедельник
+time.bookshelf.day.tuesday.name=Вторник
+time.bookshelf.day.wednesday.name=Среда
+time.bookshelf.day.thursday.name=Четверг
+time.bookshelf.day.friday.name=Пятница
+time.bookshelf.day.saturday.name=Суббота
