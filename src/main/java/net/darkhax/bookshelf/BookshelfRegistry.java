@@ -15,12 +15,6 @@ import net.minecraft.command.ICommand;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-/**
- * This class is deprecated. All of it's features are being moved to
- * net.darkhax.bookshelf.registry.RegistryHelper This class will be removed in the next MC
- * version update. Time of writing latest is 1.12.2.
- */
-@Deprecated
 public class BookshelfRegistry {
 
     /**

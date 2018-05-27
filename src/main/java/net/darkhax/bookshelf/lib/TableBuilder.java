@@ -171,7 +171,7 @@ public class TableBuilder<T> {
 
                 final String format = "%-" + widths.get(columnIndex) + "s";
                 final Function<? super T, String> function = this.columnFunctions.get(columnIndex);
-                
+
                 final String columnText = function.apply(entry);
                 builder.append(" " + String.format(format, columnText) + " ");
             }

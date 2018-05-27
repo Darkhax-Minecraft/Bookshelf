@@ -9,7 +9,6 @@ package net.darkhax.bookshelf.util;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.List;
 
@@ -734,7 +733,7 @@ public final class RenderUtils {
      * @param file The file to save the texture to.
      */
     public static void saveTextureToFile (int textureId, File file) {
-        
+
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
 
         GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
@@ -756,7 +755,7 @@ public final class RenderUtils {
         try {
             ImageIO.write(bufferedimage, "png", file);
         }
-        
+
         catch (final Exception e) {
 
             Constants.LOG.error("Failed to save texture {} to {}.", textureId, file.getName());
