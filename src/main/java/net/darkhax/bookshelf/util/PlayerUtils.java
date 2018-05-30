@@ -345,11 +345,22 @@ public final class PlayerUtils {
      * client side code and can not be used in server side code.
      */
     @SideOnly(Side.CLIENT)
-    public static EntityPlayerSP getClientPlayer () {
+    @Deprecated
+    public static EntityPlayer getClientPlayer () {
 
         return Minecraft.getMinecraft().player;
     }
 
+    /**
+     * Retrieves an instance of the player from the client side. This code only exists in
+     * client side code and can not be used in server side code.
+     */
+    @SideOnly(Side.CLIENT)
+    public static EntityPlayerSP getClientPlayerSP () {
+
+        return Minecraft.getMinecraft().player;
+    }
+    
     /**
      * Sends a spamless message to the chat. A spamless message is one that only shows up in
      * the chat once. If another version of the message were to be added to chat, the earlier
