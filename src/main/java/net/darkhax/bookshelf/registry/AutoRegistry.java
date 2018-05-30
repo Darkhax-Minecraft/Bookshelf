@@ -19,6 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.storage.loot.LootPool;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -128,7 +129,37 @@ public class AutoRegistry implements IAutoRegistry {
             this.helper.registerInventoryModel(item);
         }
     }
+    
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void registerBlockColor(ColorHandlerEvent.Block event) {
+        
+        for (final Block block : this.helper.getColoredBlocks()) {
 
+            event.getBlockColors().registerBlockColorHandler(((IColorfulBlock) block).getColorHandler(), block);
+        }
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void registerItemColor(ColorHandlerEvent.Item event) {
+
+        for (final Block block : this.helper.getColoredBlocks()) {
+
+            final IColorfulBlock colorfulBlock = (IColorfulBlock) block;
+            
+            if (colorfulBlock.getItemColorHandler() != null) {
+                
+                event.getItemColors().registerItemColorHandler(colorfulBlock.getItemColorHandler(), Item.getItemFromBlock(block));
+            }
+        }
+        
+        for (final Item item : this.helper.getColoredItems()) {
+
+            event.getItemColors().registerItemColorHandler(((IColorfulItem) item).getColorHandler(), item);
+        }
+    }
+    
     @Override
     public RegistryHelper getHelper () {
 
@@ -148,16 +179,6 @@ public class AutoRegistry implements IAutoRegistry {
     @Override
     @SideOnly(Side.CLIENT)
     public void clientInit () {
-
-        for (final Block block : this.helper.getColoredBlocks()) {
-
-            this.helper.registerColorHandler(block, ((IColorfulBlock) block).getColorHandler());
-        }
-
-        for (final Item item : this.helper.getColoredItems()) {
-
-            this.helper.registerColorHandler(item, ((IColorfulItem) item).getColorHandler());
-        }
 
         for (final ITileEntityBlock provider : this.helper.getTileProviders()) {
 

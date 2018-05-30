@@ -23,10 +23,7 @@ import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.LootBuilder;
 import net.darkhax.bookshelf.util.GameUtils;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -634,32 +631,6 @@ public class RegistryHelper {
     public List<ITileEntityBlock> getTileProviders () {
 
         return this.tileProviders;
-    }
-
-    /**
-     * Registers a color handler for a block. This method is client side only, and should be
-     * called during the init stage.
-     *
-     * @param block The block to register the handler for.
-     * @param color The color handler to register.
-     */
-    @SideOnly(Side.CLIENT)
-    public void registerColorHandler (@Nonnull Block block, @Nonnull IBlockColor color) {
-
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(color, block);
-    }
-
-    /**
-     * Registers a color handler for an item. This method is client side only, and should be
-     * called during the init stage.
-     *
-     * @param item The item to register the handler for.
-     * @param color The color handler to register.
-     */
-    @SideOnly(Side.CLIENT)
-    public void registerColorHandler (@Nonnull Item item, @Nonnull IItemColor color) {
-
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(color, item);
     }
 
     /**
