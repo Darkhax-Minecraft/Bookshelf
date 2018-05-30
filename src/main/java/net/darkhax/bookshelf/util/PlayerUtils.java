@@ -21,6 +21,7 @@ import com.google.gson.stream.JsonReader;
 
 import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -344,7 +345,7 @@ public final class PlayerUtils {
      * client side code and can not be used in server side code.
      */
     @SideOnly(Side.CLIENT)
-    public static EntityPlayer getClientPlayer () {
+    public static EntityPlayerSP getClientPlayer () {
 
         return Minecraft.getMinecraft().player;
     }
