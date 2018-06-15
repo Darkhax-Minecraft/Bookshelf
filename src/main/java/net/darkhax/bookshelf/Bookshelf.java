@@ -7,6 +7,7 @@
  */
 package net.darkhax.bookshelf;
 
+import net.darkhax.bookshelf.client.RomanNumerals;
 import net.darkhax.bookshelf.crafting.IAnvilRecipe;
 import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.registry.RegistryHelper;
@@ -15,6 +16,7 @@ import net.darkhax.bookshelf.util.OreDictUtils;
 import net.darkhax.bookshelf.util.RenderUtils;
 import net.darkhax.bookshelf.world.gamerule.GameRule;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.command.ICommand;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -24,6 +26,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -118,6 +121,18 @@ public class Bookshelf {
             Minecraft.getMinecraft().renderGlobal.loadRenderers();
             RenderUtils.markRenderersForReload(false);
         }
+    }
+
+    @EventHandler()
+    @SideOnly(Side.CLIENT)
+    public void onLoadComplete (FMLLoadCompleteEvent event) {
+
+        RomanNumerals.insertRomanNumerals();
+
+        ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(listener -> {
+
+            RomanNumerals.insertRomanNumerals();
+        });
     }
 
     @EventHandler
