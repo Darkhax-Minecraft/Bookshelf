@@ -1,22 +1,5 @@
 #Russian Language File 
 
-#Misc
-itemGroup.bookshelfheads=Player Heads
-
-#Blocks
-tile.bookshelf.bookshelf.spruce.name=Книжная полка из ели
-tile.bookshelf.bookshelf.birch.name=Книжная полка из березы
-tile.bookshelf.bookshelf.jungle.name=Книжная полка из тропического дерева
-tile.bookshelf.bookshelf.acacia.name=Книжная полка из акации
-tile.bookshelf.bookshelf.dark_oak.name=Книжная полка из темного дуба
- 
-#Supporters
-supporters.developer=Разработчик
-supporters.patreon=Patreon
-supporters.contributor=Помощник
-supporters.translator=Переводчик
-supporters.other=Другие
-
 #Moon Phases
 moon.phase.full.name=Полнолуние
 moon.phase.waxing.gibbous.name=Прибывающая луна
@@ -41,7 +24,7 @@ time.bookshelf.month.october.name=Октябрь
 time.bookshelf.month.november.name=Ноябрь
 time.bookshelf.month.december.name=Декабрь
 
-#Week
+#Days
 time.bookshelf.day.sunday.name=Воскресенье
 time.bookshelf.day.monday.name=Понедельник
 time.bookshelf.day.tuesday.name=Вторник

@@ -1,22 +1,5 @@
 #English Language File 
 
-#Misc
-itemGroup.bookshelfheads=Player Heads
-
-#Blocks
-tile.bookshelf.bookshelf.spruce.name=Spruce Bookshelf
-tile.bookshelf.bookshelf.birch.name=Birch Bookshelf
-tile.bookshelf.bookshelf.jungle.name=Jungle Bookshelf
-tile.bookshelf.bookshelf.acacia.name=Acacia Bookshelf
-tile.bookshelf.bookshelf.dark_oak.name=Dark Oak Bookshelf
- 
-#Supporters
-supporters.developer=Developer
-supporters.patreon=Patreon
-supporters.contributor=Contributor
-supporters.translator=Translator
-supporters.other=Other
-
 #Moon Phases
 moon.phase.full.name=Full Moon
 moon.phase.waxing.gibbous.name=Waxing Gibbous
@@ -41,7 +24,7 @@ time.bookshelf.month.october.name=October
 time.bookshelf.month.november.name=November
 time.bookshelf.month.december.name=December
 
-#Week
+#Days
 time.bookshelf.day.sunday.name=Sunday
 time.bookshelf.day.monday.name=Monday
 time.bookshelf.day.tuesday.name=Tuesday

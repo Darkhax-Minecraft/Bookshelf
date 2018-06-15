@@ -1,22 +1,5 @@
 #Polish Language File by Kaperios
 
-#Misc
-itemGroup.bookshelfheads=Głowy Graczy
-
-#Blocks
-tile.bookshelf.bookshelf.spruce.name=Świerkowa Biblioteczka
-tile.bookshelf.bookshelf.birch.name=Brzozowa Biblioteczka
-tile.bookshelf.bookshelf.jungle.name=Tropikalna Biblioteczka
-tile.bookshelf.bookshelf.acacia.name=Akacjowa Biblioteczka
-tile.bookshelf.bookshelf.dark_oak.name=Biblioteczka z Ciemnego Dębu
- 
-#Supporters
-supporters.developer=Deweloper
-supporters.patreon=Patron
-supporters.contributor=Współpracownik
-supporters.translator=Tłumacz
-supporters.other=Inne
-
 #Moon Phases
 moon.phase.full.name=Pełnia Księżyca
 moon.phase.waxing.gibbous.name=Młody Księżyc
@@ -41,7 +24,7 @@ time.bookshelf.month.october.name=Październik
 time.bookshelf.month.november.name=Listopad
 time.bookshelf.month.december.name=Grudzień
 
-#Week
+#Days
 time.bookshelf.day.sunday.name=Niedziela
 time.bookshelf.day.monday.name=Poniedziałek
 time.bookshelf.day.tuesday.name=Wtorek
