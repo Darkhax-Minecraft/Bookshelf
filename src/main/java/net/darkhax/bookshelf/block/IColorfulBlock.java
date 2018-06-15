@@ -9,10 +9,10 @@ public interface IColorfulBlock {
 
     @SideOnly(Side.CLIENT)
     public IBlockColor getColorHandler ();
-    
+
     @SideOnly(Side.CLIENT)
     public default IItemColor getItemColorHandler () {
-        
+
         return null;
     }
 }

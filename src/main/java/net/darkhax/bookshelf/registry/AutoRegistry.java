@@ -129,11 +129,11 @@ public class AutoRegistry implements IAutoRegistry {
             this.helper.registerInventoryModel(item);
         }
     }
-    
+
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
-    public void registerBlockColor(ColorHandlerEvent.Block event) {
-        
+    public void registerBlockColor (ColorHandlerEvent.Block event) {
+
         for (final Block block : this.helper.getColoredBlocks()) {
 
             event.getBlockColors().registerBlockColorHandler(((IColorfulBlock) block).getColorHandler(), block);
@@ -142,24 +142,24 @@ public class AutoRegistry implements IAutoRegistry {
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
-    public void registerItemColor(ColorHandlerEvent.Item event) {
+    public void registerItemColor (ColorHandlerEvent.Item event) {
 
         for (final Block block : this.helper.getColoredBlocks()) {
 
             final IColorfulBlock colorfulBlock = (IColorfulBlock) block;
-            
+
             if (colorfulBlock.getItemColorHandler() != null) {
-                
+
                 event.getItemColors().registerItemColorHandler(colorfulBlock.getItemColorHandler(), Item.getItemFromBlock(block));
             }
         }
-        
+
         for (final Item item : this.helper.getColoredItems()) {
 
             event.getItemColors().registerItemColorHandler(((IColorfulItem) item).getColorHandler(), item);
         }
     }
-    
+
     @Override
     public RegistryHelper getHelper () {
 

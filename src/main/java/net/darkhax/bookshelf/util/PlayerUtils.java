@@ -360,7 +360,7 @@ public final class PlayerUtils {
 
         return Minecraft.getMinecraft().player;
     }
-    
+
     /**
      * Sends a spamless message to the chat. A spamless message is one that only shows up in
      * the chat once. If another version of the message were to be added to chat, the earlier
