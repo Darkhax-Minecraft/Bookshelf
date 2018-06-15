@@ -1,0 +1,34 @@
+#German Language File
+
+#Moon Phases
+moon.phase.full.name=Full Moon
+moon.phase.waxing.gibbous.name=Waxing Gibbous
+moon.phase.first.quarter.name=First Quarter
+moon.phase.waxing.crescent.name=Waxing Crescent
+moon.phase.new.name=New Moon
+moon.phase.waning.crescent.name=Waning Crescent
+moon.phase.last.quarter.name=Last Quarter
+moon.phase.waning.gibbous.name=Waning Gibbous
+
+#Months
+time.bookshelf.month.january.name=Januar
+time.bookshelf.month.february.name=Februar
+time.bookshelf.month.march.name=März
+time.bookshelf.month.april.name=April
+time.bookshelf.month.may.name=Mai
+time.bookshelf.month.june.name=Juni
+time.bookshelf.month.july.name=Juli
+time.bookshelf.month.august.name=August
+time.bookshelf.month.september.name=September
+time.bookshelf.month.october.name=Oktober
+time.bookshelf.month.november.name=November
+time.bookshelf.month.december.name=Dezember
+
+#Days
+time.bookshelf.day.sunday.name=Sonntag
+time.bookshelf.day.monday.name=Montag
+time.bookshelf.day.tuesday.name=Dienstag
+time.bookshelf.day.wednesday.name=Mittwoch
+time.bookshelf.day.thursday.name=Donnerstag
+time.bookshelf.day.friday.name=Freitag
+time.bookshelf.day.saturday.name=Samstag
