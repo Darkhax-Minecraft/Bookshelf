@@ -448,16 +448,31 @@ public final class PlayerUtils {
         }
     }
 
+    /**
+     * Wrapper method for setting a players time in portal. Allows mods to change this without using an AT.
+     * @param player The player to modify.
+     * @param time The new portal time.
+     */
     public static void setPortalTimer (EntityPlayer player, int time) {
 
         player.portalCounter = time;
     }
 
+    /**
+     * Wrapper method for setting a players sleep timer value. Allows mods to change this without using an AT.
+     * @param player The player to modify.
+     * @param time The new sleep timer.
+     */
     public static void setSleepTimer (EntityPlayer player, int time) {
 
         player.sleepTimer = time;
     }
 
+    /**
+     * Wrapper method to check if a player is in a portal. Allows mods to check field without an AT.
+     * @param player The player to check.
+     * @return Whether or not the player was in the portal.
+     */
     public static boolean inPortal (EntityPlayer player) {
 
         return player.inPortal;
