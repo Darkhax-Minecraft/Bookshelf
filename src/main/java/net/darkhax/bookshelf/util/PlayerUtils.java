@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -28,6 +29,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketEntityEffect;
 import net.minecraft.network.play.server.SPacketRespawn;
 import net.minecraft.potion.PotionEffect;
@@ -424,6 +426,26 @@ public final class PlayerUtils {
     public static boolean isPlayerDamage (DamageSource source) {
 
         return source != null && source.getTrueSource() instanceof EntityPlayer;
+    }
+
+    /**
+     * Runs a task against a player entity, providing it with the context of the player's
+     * persistent data. Any modification to the persistent data will be re-applied to the
+     * player entity.
+     *
+     * @param player The player to modify. This most be a server side player entity, because
+     *        clients have no persistent data.
+     * @param task The task to run. You are given a player and nbt object to work with. This
+     *        can be a lambda or a direct method reference.
+     */
+    public static void runPersistantTask (EntityPlayer player, BiConsumer<EntityPlayer, NBTTagCompound> task) {
+
+        if (player instanceof EntityPlayerMP && player.getEntityData() != null) {
+
+            final NBTTagCompound persistTag = player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+            task.accept(player, persistTag);
+            player.getEntityData().setTag(EntityPlayer.PERSISTED_NBT_TAG, persistTag);
+        }
     }
 
     public static void setPortalTimer (EntityPlayer player, int time) {
