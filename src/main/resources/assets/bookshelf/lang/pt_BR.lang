@@ -1,14 +1,14 @@
-#Portuguese Language File 
+#Brazilian Portuguese language file
 
 #Moon Phases
-moon.phase.full.name=Lua Cheia
-moon.phase.waxing.gibbous.name=Waxing Gibbous
-moon.phase.first.quarter.name=Quarto Crescente
-moon.phase.waxing.crescent.name=Lua Crescente
-moon.phase.new.name=Lua Nova
-moon.phase.waning.crescent.name=Lua Minguante
-moon.phase.last.quarter.name=Last Quarter
-moon.phase.waning.gibbous.name=Quarto Minguante
+moon.phase.full.name=Lua cheia
+moon.phase.waxing.gibbous.name=Crescente-convexa
+moon.phase.first.quarter.name=Quarto-crescente
+moon.phase.waxing.crescent.name=Lua crescente
+moon.phase.new.name=Lua nova
+moon.phase.waning.crescent.name=Lua minguante
+moon.phase.last.quarter.name=Quarto-minguante
+moon.phase.waning.gibbous.name=Minguante-convexa
 
 #Months
 time.bookshelf.month.january.name=Janeiro
@@ -26,9 +26,9 @@ time.bookshelf.month.december.name=Dezembro
 
 #Days
 time.bookshelf.day.sunday.name=Domingo
-time.bookshelf.day.monday.name=Segunda
-time.bookshelf.day.tuesday.name=Terça
-time.bookshelf.day.wednesday.name=Quarta
-time.bookshelf.day.thursday.name=Quinta
-time.bookshelf.day.friday.name=Sexta
+time.bookshelf.day.monday.name=Segunda-feira
+time.bookshelf.day.tuesday.name=Terça-feira
+time.bookshelf.day.wednesday.name=Quarta-feira
+time.bookshelf.day.thursday.name=Quinta-feira
+time.bookshelf.day.friday.name=Sexta-feira
 time.bookshelf.day.saturday.name=Sábado
