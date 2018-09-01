@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -593,17 +594,36 @@ public final class StackUtils {
 
         final NonNullList<ItemStack> items = NonNullList.create();
 
-        for (final CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
+        for (final CreativeTabs tab : item.getCreativeTabs()) {
 
-            // Skip the search tab
-            if (tab == CreativeTabs.SEARCH) {
+            if (tab == null) {
 
-                continue;
+                // Enchanted books are a special case in vanilla
+                if (item == Items.ENCHANTED_BOOK) {
+
+                    item.getSubItems(CreativeTabs.SEARCH, items);
+                }
+
+                items.add(new ItemStack(item));
             }
 
-            else if (item == Items.ENCHANTED_BOOK || item.isInCreativeTab(tab)) {
+            else {
 
-                item.getSubItems(tab, items);
+                // Create a second list to prevent the item from modifying the harvested list.
+                final NonNullList<ItemStack> subItems = NonNullList.create();
+
+                try {
+
+                    item.getSubItems(tab, subItems);
+                }
+
+                catch (final Exception e) {
+
+                    Bookshelf.LOG.error("Caught the following exception while getting sub items for {}. It should be reported to that mod's author.", item.getRegistryName().toString());
+                    Bookshelf.LOG.catching(e);
+                }
+
+                items.addAll(subItems);
             }
         }
 
