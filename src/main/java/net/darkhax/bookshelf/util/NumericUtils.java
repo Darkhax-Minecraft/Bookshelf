@@ -14,7 +14,7 @@ public final class NumericUtils {
     /**
      * An array of all the LWJGL numeric key codes.
      */
-    public static final int[] NUMERIC_KEYS = new int[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 71, 72, 73, 75, 76, 77, 79, 80, 81 };
+    public static final int[] NUMERIC_KEYS = new int[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 71, 72, 73, 75, 76, 77, 79, 80, 81, 82 };
 
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
