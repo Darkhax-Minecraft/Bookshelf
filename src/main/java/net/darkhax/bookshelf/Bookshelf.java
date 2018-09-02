@@ -10,6 +10,7 @@ package net.darkhax.bookshelf;
 import net.darkhax.bookshelf.client.RomanNumerals;
 import net.darkhax.bookshelf.crafting.IAnvilRecipe;
 import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.lib.LoggingHelper;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.darkhax.bookshelf.util.AnnotationUtils;
 import net.darkhax.bookshelf.util.OreDictUtils;
@@ -36,6 +37,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = "@VERSION@", certificateFingerprint = "@FINGERPRINT@")
 public class Bookshelf {
+
+    public static final LoggingHelper LOG = new LoggingHelper("Bookshelf");
 
     @EventHandler
     public void onConstruction (FMLConstructionEvent event) {
