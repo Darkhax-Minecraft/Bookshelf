@@ -9,6 +9,7 @@ out/
 build/
 .gradle/
 run/
+/libs
 
 #Eclipse
 .classpath
