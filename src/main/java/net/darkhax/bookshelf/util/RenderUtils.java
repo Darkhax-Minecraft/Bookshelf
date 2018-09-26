@@ -30,6 +30,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ItemModelMesher;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
@@ -46,6 +47,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntitySheep;
@@ -788,5 +790,35 @@ public final class RenderUtils {
         }
 
         return copiedTransforms.build();
+    }
+    
+    public static VertexBuffer getSkyVBO(RenderGlobal render) {
+        
+        return render.skyVBO;
+    }
+    
+    public static int getSkyList(RenderGlobal render) {
+                
+        return render.glSkyList;
+    }
+    
+    public static VertexBuffer getStarVBO(RenderGlobal render) {
+        
+        return render.starVBO;
+    }
+    
+    public static int getStarGLCallList(RenderGlobal render) {
+        
+        return render.starGLCallList;
+    }
+    
+    public static VertexBuffer getSky2VBO(RenderGlobal render) {
+        
+        return render.sky2VBO;
+    }
+    
+    public static int getSkyList2(RenderGlobal render) {
+        
+        return render.glSkyList2;
     }
 }
