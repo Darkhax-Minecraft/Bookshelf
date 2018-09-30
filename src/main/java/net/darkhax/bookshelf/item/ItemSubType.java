@@ -38,11 +38,11 @@ public class ItemSubType extends Item implements IVariant {
     }
 
     @Override
-    public String getUnlocalizedName (ItemStack stack) {
+    public String getTranslationKey (ItemStack stack) {
 
         final int meta = stack.getMetadata();
         final String[] variants = this.getVariant();
-        return (super.getUnlocalizedName() + "." + this.getPrefix() + (!(meta >= 0 && meta < variants.length) ? variants[0] : variants[meta])).replace("_", ".");
+        return (super.getTranslationKey() + "." + this.getPrefix() + (!(meta >= 0 && meta < variants.length) ? variants[0] : variants[meta])).replace("_", ".");
     }
 
     @Override

@@ -60,13 +60,13 @@ public class ItemBlockBasic extends ItemBlock implements IVariant {
     }
 
     @Override
-    public String getUnlocalizedName (ItemStack stack) {
+    public String getTranslationKey (ItemStack stack) {
 
         if (stack.getMetadata() >= this.names.length) {
-            return super.getUnlocalizedName() + "." + this.names[0];
+            return super.getTranslationKey() + "." + this.names[0];
         }
 
-        return super.getUnlocalizedName() + "." + this.names[stack.getMetadata()];
+        return super.getTranslationKey() + "." + this.names[stack.getMetadata()];
     }
 
     @Override

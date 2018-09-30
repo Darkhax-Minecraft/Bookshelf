@@ -10,6 +10,7 @@ package net.darkhax.bookshelf.data;
 import net.darkhax.bookshelf.lib.MCColor;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -29,9 +30,9 @@ public class ColorHandlers {
 
     /**
      * A reusable color handler which uses the hash of
-     * {@link net.minecraft.item.ItemStack#getUnlocalizedName()}.
+     * {@link ItemStack#getTranslationKey()}.
      */
-    public static IItemColor ITEM_UNLOCALIZED_NAME = (stack, index) -> stack.getUnlocalizedName().hashCode();
+    public static IItemColor ITEM_UNLOCALIZED_NAME = (stack, index) -> stack.getTranslationKey().hashCode();
 
     /**
      * A reusable color handler which uses the hash of the
