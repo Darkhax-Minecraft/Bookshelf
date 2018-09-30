@@ -2,7 +2,7 @@ Bookshelf [![](http://cf.way2muchnoise.eu/228525.svg)](https://minecraft.cursefo
 =========
 Bookshelf is a mod that expands upon Forge and Minecraft by adding new utilities, hooks and events which are publicly available to mod authors. 
 
-[![Nodecraft](https://i.imgur.com/sz9PUmK.png)](https://nodecraft.com/r/darkhax)    
+[![Nodecraft](https://nodecraft.com/assets/images/logo-dark.png)](https://nodecraft.com/r/darkhax)
 This project is sponsored by Nodecraft. Use code [Darkhax](https://nodecraft.com/r/darkhax) for 30% off your first month of service!
 
 Compilation
