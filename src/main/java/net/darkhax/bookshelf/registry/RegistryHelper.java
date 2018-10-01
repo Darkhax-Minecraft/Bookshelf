@@ -146,7 +146,7 @@ public class RegistryHelper {
      * with the same id, but it's not recommended.
      *
      * @param modid The modid for the registry helper.
-     * @param autoModels Should models be auto loaded.
+     * @param auto Models Should models be auto loaded.
      */
     public RegistryHelper (@Nonnull String modid) {
 
@@ -318,7 +318,7 @@ public class RegistryHelper {
     public Block registerBlock (@Nonnull Block block, @Nonnull ItemBlock itemBlock, @Nonnull String id) {
 
         block.setRegistryName(this.modid, id);
-        block.setUnlocalizedName(this.modid + "." + id.toLowerCase().replace("_", "."));
+        block.setTranslationKey(this.modid + "." + id.toLowerCase().replace("_", "."));
         this.blocks.add(block);
 
         this.registerItem(itemBlock, id);
@@ -361,7 +361,7 @@ public class RegistryHelper {
     public Item registerItem (@Nonnull Item item, @Nonnull ResourceLocation id) {
 
         item.setRegistryName(id);
-        item.setUnlocalizedName(id.getResourceDomain().replaceAll("_", ".") + "." + id.getResourcePath().toLowerCase().replace("_", "."));
+        item.setTranslationKey(id.getNamespace().replaceAll("_", ".") + "." + id.getPath().toLowerCase().replace("_", "."));
         this.items.add(item);
 
         if (this.tab != null) {

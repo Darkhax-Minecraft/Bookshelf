@@ -58,7 +58,7 @@ public final class ModUtils {
      */
     public static String getModName (IForgeRegistryEntry.Impl<?> registerable) {
 
-        final String modID = registerable.getRegistryName().getResourceDomain();
+        final String modID = registerable.getRegistryName().getNamespace();
         final ModContainer mod = getModContainer(modID);
         return mod != null ? mod.getName() : "minecraft".equals(modID) ? "Minecraft" : "Unknown";
     }
@@ -195,7 +195,7 @@ public final class ModUtils {
 
             if (entry.getRegistryName() != null) {
 
-                map.put(entry.getRegistryName().getResourceDomain(), entry);
+                map.put(entry.getRegistryName().getNamespace(), entry);
             }
         }
 

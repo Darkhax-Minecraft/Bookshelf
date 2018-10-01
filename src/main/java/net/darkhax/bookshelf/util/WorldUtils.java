@@ -172,7 +172,7 @@ public final class WorldUtils {
 
         try {
 
-            final Chunk chunk = world.getChunkFromBlockCoords(pos);
+            final Chunk chunk = world.getChunk(pos);
             final byte[] biomes = chunk.getBiomeArray();
             Arrays.fill(biomes, (byte) Biome.getIdForBiome(biome));
             chunk.markDirty();
@@ -251,7 +251,7 @@ public final class WorldUtils {
 
             for (int offY = -1; offY < 2; offY++) {
 
-                chunks.add(world.getChunkFromChunkCoords(chunk.x + offX, chunk.z + offY));
+                chunks.add(world.getChunk(chunk.x + offX, chunk.z + offY));
             }
         }
 
@@ -269,7 +269,7 @@ public final class WorldUtils {
      */
     public static BlockPos getRandomChunkPosition (World world, int x, int z) {
 
-        final Chunk chunk = world.getChunkFromChunkCoords(x, z);
+        final Chunk chunk = world.getChunk(x, z);
         final int posX = x * 16 + world.rand.nextInt(16);
         final int posZ = z * 16 + world.rand.nextInt(16);
         final int height = MathHelper.roundUp(chunk.getHeight(new BlockPos(posX, 0, posZ)) + 1, 16);

@@ -347,6 +347,6 @@ public final class BlockUtils {
      */
     public static boolean isSlimeChunk (World world, BlockPos pos) {
 
-        return world.getChunkFromBlockCoords(pos).getRandomWithSeed(987234911L).nextInt(10) == 0;
+        return world.getChunk(pos).getRandomWithSeed(987234911L).nextInt(10) == 0;
     }
 }
