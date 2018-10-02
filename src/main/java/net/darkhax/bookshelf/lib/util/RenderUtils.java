@@ -326,7 +326,7 @@ public final class RenderUtils {
         final Minecraft mc = Minecraft.getMinecraft();
         final Tessellator tessellator = Tessellator.getInstance();
         final VertexBuffer buffer = tessellator.getBuffer();
-        final int brightness = mc.theWorld.getCombinedLight(pos, fluid.getFluid().getLuminosity());
+        final int brightness = mc.world.getCombinedLight(pos, fluid.getFluid().getLuminosity());
 
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);

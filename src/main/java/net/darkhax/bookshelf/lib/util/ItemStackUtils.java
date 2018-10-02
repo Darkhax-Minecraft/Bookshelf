@@ -374,7 +374,7 @@ public final class ItemStackUtils {
             final double offZ = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
             final EntityItem entityitem = new EntityItem(world, pos.getX() + offX, pos.getY() + offY, pos.getZ() + offZ, stack);
             entityitem.setPickupDelay(10);
-            world.spawnEntityInWorld(entityitem);
+            world.spawnEntity(entityitem);
         }
     }
 

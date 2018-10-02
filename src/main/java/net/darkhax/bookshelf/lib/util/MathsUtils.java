@@ -89,7 +89,7 @@ public final class MathsUtils {
         final Vec3d vec1 = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         final Vec3d vec2 = player.getLookVec();
         final Vec3d vec3 = vec1.addVector(vec2.xCoord * length, vec2.yCoord * length, vec2.zCoord * length);
-        return player.worldObj.rayTraceBlocks(vec1, vec3);
+        return player.world.rayTraceBlocks(vec1, vec3);
     }
 
     /**
