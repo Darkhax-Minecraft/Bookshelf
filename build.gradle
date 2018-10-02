@@ -24,9 +24,9 @@ buildscript {
     dependencies {
 
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
-        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.0.7"
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1"
-        classpath 'ModsIOUpload:ModsIOUpload:2.1.15'
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.1.0"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
+        classpath 'ModsIOUpload:ModsIOUpload:2.1.16'
     }
 }
 
@@ -57,13 +57,13 @@ repositories {
 
     maven {
     
-        url "https://jitpack.io"
+        url "https://maven.mcmoddev.com"
     }
 }
 
 dependencies {
 
-    deobfCompile 'com.github.Azanor:Baubles:803f411'
+    deobfCompile 'com.azanor:Baubles:1.11-1.4.6'
 }
 
 //Handles basic resources such as mcmod.info
