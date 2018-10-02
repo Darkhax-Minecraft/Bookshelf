@@ -50,13 +50,13 @@ repositories {
 
     maven {
     
-        url "https://jitpack.io"
+        url "https://maven.mcmoddev.com"
     }
 }
 
 dependencies {
 
-    deobfCompile 'com.github.Azanor:Baubles:3199790'
+    deobfCompile 'com.azanor:Baubles:1.10.2-1.3.13'
 }
 
 //Handles basic resources such as mcmod.info
