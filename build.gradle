@@ -19,8 +19,8 @@ buildscript {
     dependencies {
 
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1"
         classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.1.0"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
     }
 }
 
