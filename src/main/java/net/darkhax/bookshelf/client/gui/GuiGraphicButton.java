@@ -39,6 +39,6 @@ public class GuiGraphicButton extends GuiButton {
 
         super.drawButton(mc, posX, posY);
         mc.getTextureManager().bindTexture(this.buttonImage);
-        drawModalRectWithCustomSizedTexture(this.xPosition, this.yPosition, 0f, 0f, 20, 20, 20f, 20f);
+        drawModalRectWithCustomSizedTexture(this.x, this.y, 0f, 0f, 20, 20, 20f, 20f);
     }
 }
