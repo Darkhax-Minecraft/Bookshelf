@@ -28,7 +28,7 @@ public class RenderBasicChest extends TileEntitySpecialRenderer<TileEntityBasicC
         GlStateManager.depthMask(true);
         int i;
 
-        if (te.hasWorldObj()) {
+        if (te.hasWorld()) {
             final Block block = te.getBlockType();
             i = te.getBlockMetadata();
 

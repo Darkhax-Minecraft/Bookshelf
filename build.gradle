@@ -19,8 +19,8 @@ buildscript {
     dependencies {
 
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
-        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.0.7"
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1"
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.1.0"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
     }
 }
 
@@ -39,9 +39,9 @@ version = getVersionFromJava(file("src/main/java/net/darkhax/bookshelf/lib/Const
 //Defines the MC environment information.
 minecraft {
 
-    version = "1.10.2-12.18.1.2018"
+    version = "1.10.2-12.18.3.2185"
     runDir = "run"
-    mappings = "snapshot_20160731"
+    mappings = "stable_29"
     useDepAts = true
 }
 
@@ -50,13 +50,13 @@ repositories {
 
     maven {
     
-        url "https://jitpack.io"
+        url "https://maven.mcmoddev.com"
     }
 }
 
 dependencies {
 
-    deobfCompile 'com.github.Azanor:Baubles:3199790'
+    deobfCompile 'com.azanor:Baubles:1.10.2-1.3.13'
 }
 
 //Handles basic resources such as mcmod.info
