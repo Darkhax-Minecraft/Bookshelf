@@ -85,6 +85,11 @@ public class RegistryHelper {
      * A list of all entities registered by the helper.
      */
     private final NonNullList<EntityEntryBuilder<? extends Entity>> entities = NonNullList.create();
+    
+    /**
+     * A list of all entities registered by the helper.
+     */
+    private final NonNullList<ResourceLocation> entityIds = NonNullList.create();
 
     /**
      * A local map of all the entries that have been added. This is on a per instance basis,
@@ -459,12 +464,14 @@ public class RegistryHelper {
      */
     public <T extends Entity> EntityEntryBuilder<T> registerEntity (Class<T> entClass, String id, int networkId) {
 
+        final ResourceLocation entId = new ResourceLocation(this.modid, id);
         final EntityEntryBuilder<T> builder = EntityEntryBuilder.create();
-        builder.id(new ResourceLocation(this.modid, id), networkId);
+        builder.id(entId, networkId);
         builder.name(this.modid + "." + id);
         builder.entity(entClass);
 
         this.entities.add(builder);
+        this.entityIds.add(entId);
         return builder;
     }
 
@@ -477,10 +484,8 @@ public class RegistryHelper {
      */
     public <T extends Entity> EntityEntryBuilder<T> registerMob (Class<T> entClass, String id, int networkId, int primary, int seconday) {
 
-        final EntityEntryBuilder<T> builder = EntityEntryBuilder.create();
-        builder.id(new ResourceLocation(this.modid, id), networkId);
-        builder.name(this.modid + "." + id);
-        builder.entity(entClass);
+        final EntityEntryBuilder<T> builder = registerEntity(entClass, id, networkId);
+        
         builder.tracker(64, 1, true);
         builder.egg(primary, seconday);
 
@@ -758,5 +763,14 @@ public class RegistryHelper {
     public static List<RegistryHelper> getAllHelpers () {
 
         return HELPERS;
+    }
+    
+    /**
+     * Gets all the entity ids registered by this mod.
+     * @return All the entity ids registered by this mod.
+     */
+    public List<ResourceLocation> getEntityIds() {
+        
+        return this.entityIds;
     }
 }
