@@ -488,8 +488,6 @@ public class RegistryHelper {
         
         builder.tracker(64, 1, true);
         builder.egg(primary, seconday);
-
-        this.entities.add(builder);
         return builder;
     }
 
