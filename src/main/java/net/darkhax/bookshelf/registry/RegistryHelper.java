@@ -33,6 +33,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
@@ -85,7 +86,7 @@ public class RegistryHelper {
      * A list of all entities registered by the helper.
      */
     private final NonNullList<EntityEntryBuilder<? extends Entity>> entities = NonNullList.create();
-    
+
     /**
      * A list of all entities registered by the helper.
      */
@@ -484,8 +485,8 @@ public class RegistryHelper {
      */
     public <T extends Entity> EntityEntryBuilder<T> registerMob (Class<T> entClass, String id, int networkId, int primary, int seconday) {
 
-        final EntityEntryBuilder<T> builder = registerEntity(entClass, id, networkId);
-        
+        final EntityEntryBuilder<T> builder = this.registerEntity(entClass, id, networkId);
+
         builder.tracker(64, 1, true);
         builder.egg(primary, seconday);
         return builder;
@@ -637,6 +638,18 @@ public class RegistryHelper {
     }
 
     /**
+     * Registers a loot table with the loot table list. This needs to be called before a loot
+     * table can be used.
+     *
+     * @param name The name of the loot table to use.
+     * @return A ResourceLocation pointing to the table.
+     */
+    public ResourceLocation registerLootTable (String name) {
+
+        return LootTableList.register(new ResourceLocation(this.getModid(), name));
+    }
+
+    /**
      * Registers an inventory model for a block. The model name is equal to the registry name
      * of the block. Only set for meta 0.
      *
@@ -762,13 +775,14 @@ public class RegistryHelper {
 
         return HELPERS;
     }
-    
+
     /**
      * Gets all the entity ids registered by this mod.
+     *
      * @return All the entity ids registered by this mod.
      */
-    public List<ResourceLocation> getEntityIds() {
-        
+    public List<ResourceLocation> getEntityIds () {
+
         return this.entityIds;
     }
 }
