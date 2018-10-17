@@ -169,13 +169,18 @@ public final class AnnotationUtils {
         for (final ASMDataTable.ASMData asmData : getData(table, annotation)) {
 
             try {
-
+            	
                 final Class<?> asmClass = Class.forName(asmData.getClassName());
                 final Class<? extends T> asmInstanceClass = asmClass.asSubclass(instance);
                 map.put(asmInstanceClass.newInstance(), asmInstanceClass.getAnnotation(annotation));
             }
 
-            catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            catch (ClassNotFoundException e) {
+            	
+            	// Ignore missing clases, because Forge changed this behaviour to allow these.
+            }
+            
+            catch (InstantiationException | IllegalAccessException e) {
 
                 Constants.LOG.warn(e, "Could not load class {}", asmData.getClassName());
             }
