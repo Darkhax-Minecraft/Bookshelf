@@ -65,22 +65,22 @@ public abstract class TileEntityMessage<T extends TileEntity> extends Serializab
     }
 
     @Override
-    public final IMessage handleMessage (MessageContext context) {
+    public IMessage handleMessage (MessageContext context) {
 
         this.context = context;
         final World world = context.getServerHandler().player.getEntityWorld();
-        final TileEntity tile = world.getTileEntity(this.pos);
+        final TileEntity tileEntity = world.getTileEntity(this.pos);
 
-        if (tile != null && world.isBlockLoaded(this.pos)) {
+        if (tileEntity != null && world.isBlockLoaded(this.pos)) {
             try {
 
-                final T castTile = (T) tile;
+                final T castTile = (T) tileEntity;
                 this.tile = castTile;
-                ((WorldServer) world).addScheduledTask( () -> this.getAction());
+                ((WorldServer) world).addScheduledTask(this::getAction);
             }
             catch (final ClassCastException e) {
 
-                Constants.LOG.warn(e, "Tile entity could not be casted");
+                Constants.LOG.warn(e, "Tile entity could not be cast.");
             }
         }
 
