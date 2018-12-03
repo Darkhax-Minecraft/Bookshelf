@@ -29,6 +29,7 @@ apply plugin: 'maven-publish'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/artifacts.gradle'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/maven.gradle'
+apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/patreon.gradle'
 
 version = "${mod_version}" + getBuildNumber()
 group = "${mod_group}"
@@ -102,7 +103,7 @@ curseforge {
 
         id = "${curse_project}"
         releaseType = 'alpha'
-        changelog = getGitChangelog
+        changelog = getGitChangelog() + '\n\nHuge thanks to my supporters on [Patreon](https://www.patreon.com/Darkhax?MCChangelog)\n\n' + getPledgeLog()
         changelogType = 'markdown'
 
         versions.each {
