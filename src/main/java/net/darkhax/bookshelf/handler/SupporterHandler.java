@@ -29,7 +29,7 @@ public final class SupporterHandler {
 
     private static final List<SupporterData> supporterData = new ArrayList<>();
 
-    private static final String supporterLocation = "https://raw.githubusercontent.com/Darkhax-Minecraft/Bookshelf/master/supporters.json";
+    private static final String supporterLocation = "https://raw.githubusercontent.com/Darkhax-Minecraft/Bookshelf/1.10.2/supporters.json";
 
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
