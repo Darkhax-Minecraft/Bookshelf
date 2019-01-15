@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * custom mesh definitions. This can be used to register your own model stuff.
  */
 public interface ICustomMesh {
-
+    
     /**
      * Gets a custom ItemMeshDefinition for the item. Keep in mind that the models still have
      * to be baked.

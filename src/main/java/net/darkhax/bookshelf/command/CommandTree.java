@@ -21,21 +21,21 @@ import net.minecraftforge.server.command.CommandTreeBase;
  * screen.
  */
 public abstract class CommandTree extends CommandTreeBase {
-
+    
     @Override
     public void execute (MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-
+        
         if (args.length == 0) {
-
+            
             sender.sendMessage(new TextComponentString(this.getSubCommandDescriptions(sender)));
         }
-
+        
         else {
-
+            
             super.execute(server, sender, args);
         }
     }
-
+    
     /**
      * Creates a string with all the usage lines for the sub commands.
      *
@@ -43,20 +43,20 @@ public abstract class CommandTree extends CommandTreeBase {
      * @return A string with all the usage lines for sub commands.
      */
     private String getSubCommandDescriptions (ICommandSender sender) {
-
+        
         final StringJoiner joiner = new StringJoiner("\n");
-
+        
         for (final ICommand command : this.getSubCommands()) {
-
+            
             joiner.add(command.getUsage(sender));
         }
-
+        
         return joiner.toString();
     }
-
+    
     @Override
     public boolean checkPermission (MinecraftServer server, ICommandSender sender) {
-
+        
         return this.getRequiredPermissionLevel() <= 0 || super.checkPermission(server, sender);
     }
 }

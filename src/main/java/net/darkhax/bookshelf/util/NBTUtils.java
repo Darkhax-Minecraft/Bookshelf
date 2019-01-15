@@ -21,22 +21,22 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
 public final class NBTUtils {
-
+    
     /**
      * A Comparator used to compare NBTTagCompound.
      */
     public static final Comparator<NBTTagCompound> NBT_COMPARATOR = (firstTag, secondTag) -> firstTag != null ? firstTag.equals(secondTag) ? 0 : 1 : secondTag != null ? -1 : 0;
-
+    
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
-    private NBTUtils () {
-
+    private NBTUtils() {
+        
         throw new IllegalAccessError("Utility class");
     }
-
+    
     /**
      * Sets an unknown data type to an NBTTagCompound. If the type of the data can not be
      * identified, and exception will be thrown. Current supported data types include String,
@@ -47,7 +47,7 @@ public final class NBTUtils {
      * @param value: The unknown data you wish to write to the dataTag.
      */
     public static void setGenericNBTValue (NBTTagCompound dataTag, String tagName, Object value) {
-
+        
         if (value instanceof String) {
             dataTag.setString(tagName, (String) value);
         }
@@ -76,7 +76,7 @@ public final class NBTUtils {
             dataTag.setTag(tagName, ((ItemStack) value).writeToNBT(new NBTTagCompound()));
         }
         else if (value instanceof Entity) {
-
+            
             final NBTTagCompound newTag = new NBTTagCompound();
             ((Entity) value).writeToNBT(newTag);
             dataTag.setTag(tagName, newTag);
@@ -85,7 +85,7 @@ public final class NBTUtils {
             throw new BookshelfException("The data type of " + value.getClass().getName() + " is currently not supported." + Constants.NEW_LINE + "Raw Data: " + value.toString());
         }
     }
-
+    
     /**
      * Writes an inventory to an NBTTagCompound. Can be used to save an inventory in a
      * TileEntity, or perhaps an ItemStack.
@@ -95,31 +95,31 @@ public final class NBTUtils {
      * @return NBTTagCompound: The same NBTTagCompound that was passed to this method.
      */
     public static NBTTagCompound writeInventoryToNBT (NBTTagCompound tag, InventoryBasic inventory) {
-
+        
         if (inventory.hasCustomName()) {
             tag.setString("CustomName", inventory.getName());
         }
-
+        
         final NBTTagList nbttaglist = new NBTTagList();
-
+        
         for (int slotCount = 0; slotCount < inventory.getSizeInventory(); slotCount++) {
-
+            
             final ItemStack stackInSlot = inventory.getStackInSlot(slotCount);
-
+            
             if (!stackInSlot.isEmpty()) {
-
+                
                 final NBTTagCompound itemTag = new NBTTagCompound();
                 itemTag.setByte("Slot", (byte) slotCount);
                 stackInSlot.writeToNBT(itemTag);
                 nbttaglist.appendTag(itemTag);
             }
         }
-
+        
         tag.setTag("Items", nbttaglist);
-
+        
         return tag;
     }
-
+    
     /**
      * Reads an inventory from an NBTTagCompound. Can be used to load an Inventory from a
      * TileEntity or perhaps an ItemStak.
@@ -130,26 +130,26 @@ public final class NBTUtils {
      *         method.
      */
     public static InventoryBasic readInventoryFromNBT (NBTTagCompound tag, InventoryBasic inventory) {
-
+        
         if (tag.hasKey("CustomName", 8)) {
             inventory.setCustomName(tag.getString("CustomName"));
         }
-
+        
         final NBTTagList items = tag.getTagList("Items", 10);
-
+        
         for (int storedCount = 0; storedCount < items.tagCount(); storedCount++) {
-
+            
             final NBTTagCompound itemTag = items.getCompoundTagAt(storedCount);
             final int slotCount = itemTag.getByte("Slot") & 0xFF;
-
+            
             if (slotCount >= 0 && slotCount < inventory.getSizeInventory()) {
                 inventory.setInventorySlotContents(slotCount, new ItemStack(itemTag));
             }
         }
-
+        
         return inventory;
     }
-
+    
     /**
      * Retrieves an array of ItemStack from an NBTTagCompound. This method is intended to be
      * used with the NBT version of an IInventory and can be used when parsing things like
@@ -161,26 +161,26 @@ public final class NBTUtils {
      * @return ItemStack[]: An array of ItemStack stored on the NBTTagCompound.
      */
     public static ItemStack[] getStoredItems (NBTTagCompound tag, int invSize) {
-
+        
         ItemStack[] inventory = null;
-
+        
         if (tag.hasKey("Items")) {
-
+            
             final NBTTagList list = tag.getTagList("Items", 10);
             inventory = new ItemStack[invSize];
-
+            
             for (int i = 0; i < list.tagCount(); i++) {
                 if (!(i > list.tagCount())) {
-
+                    
                     final NBTTagCompound currentTag = list.getCompoundTagAt(i);
                     inventory[currentTag.getByte("Slot")] = new ItemStack(currentTag);
                 }
             }
         }
-
+        
         return inventory;
     }
-
+    
     /**
      * Provides a way to access an NBTTagCompound that is very deep within another
      * NBTTagCompound. This will allow you to use an array of strings which represent the
@@ -194,9 +194,9 @@ public final class NBTUtils {
      *         than all of the way.
      */
     public static NBTTagCompound getDeepTagCompound (NBTTagCompound tag, String[] tags) {
-
+        
         NBTTagCompound deepTag = tag;
-
+        
         if (tag != null) {
             for (final String tagName : tags) {
                 if (deepTag.hasKey(tagName)) {
@@ -204,10 +204,10 @@ public final class NBTUtils {
                 }
             }
         }
-
+        
         return deepTag;
     }
-
+    
     /**
      * Increments the value of an integer tag on an ItemStack.
      *
@@ -217,10 +217,10 @@ public final class NBTUtils {
      * @return The amount after adding.
      */
     public static int increment (ItemStack stack, String key, int amount) {
-
+        
         return incriment(StackUtils.prepareStackTag(stack), key, amount);
     }
-
+    
     /**
      * Increments the value of an integer tag.
      *
@@ -230,12 +230,12 @@ public final class NBTUtils {
      * @return The amount after adding.
      */
     public static int incriment (NBTTagCompound tag, String key, int amount) {
-
+        
         final int result = tag.getInteger(key) + amount;
         tag.setInteger(key, result);
         return result;
     }
-
+    
     /**
      * Gets the value of an integer tag on an ItemStack.
      *
@@ -244,10 +244,10 @@ public final class NBTUtils {
      * @return The value of the tag.
      */
     public static int getAmount (ItemStack stack, String key) {
-
+        
         return StackUtils.prepareStackTag(stack).getInteger(key);
     }
-
+    
     /**
      * Checks if one nbt tag contains all of the data in the second nbt tag.
      *
@@ -256,18 +256,18 @@ public final class NBTUtils {
      * @return Whether or not the first tag contains entries of the second tag.
      */
     public static boolean containsAllTags (NBTTagCompound first, NBTTagCompound two) {
-
+        
         for (final String key : two.getKeySet()) {
-
+            
             if (!first.hasKey(key) || !first.getTag(key).equals(two.getTag(key))) {
-
+                
                 return false;
             }
         }
-
+        
         return true;
     }
-
+    
     /**
      * Reads a collection from an NBTTagList by deserializing strings into the elements.
      *
@@ -277,16 +277,16 @@ public final class NBTUtils {
      * @return A collection containing all deserialized elements.
      */
     public static <T extends Object> Collection<T> readCollection (Collection<T> collection, NBTTagList list, Function<String, T> func) {
-
+        
         for (int index = 0; index < list.tagCount(); index++) {
-
+            
             final String string = list.getStringTagAt(index);
             collection.add(func.apply(string));
         }
-
+        
         return collection;
     }
-
+    
     /**
      * Writes a collection to an NBTTagList by serializing elements to a string.
      *
@@ -295,14 +295,14 @@ public final class NBTUtils {
      * @return An NBTTagList containing the serialized string values.
      */
     public static <T extends Object> NBTTagList writeCollection (Collection<T> collection, Function<T, String> func) {
-
+        
         final NBTTagList tagList = new NBTTagList();
-
+        
         for (final T t : collection) {
-
+            
             tagList.appendTag(new NBTTagString(func.apply(t)));
         }
-
+        
         return tagList;
     }
 }

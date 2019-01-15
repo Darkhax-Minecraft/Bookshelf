@@ -15,27 +15,27 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class GameUtils {
-
+    
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
-    private GameUtils () {
-
+    private GameUtils() {
+        
         throw new IllegalAccessError("Utility class");
     }
-
+    
     /**
      * Checks if the game is running on the client or not.
      *
      * @return Whether or not the current thread is client sided.
      */
     public static boolean isClient () {
-
+        
         return FMLCommonHandler.instance().getSide() == Side.CLIENT;
     }
-
+    
     /**
      * Static way to get the game settings.
      *
@@ -43,17 +43,17 @@ public final class GameUtils {
      */
     @SideOnly(Side.CLIENT)
     public static GameSettings getGameSettings () {
-
+        
         return Minecraft.getMinecraft().gameSettings;
     }
-
+    
     /**
      * Gets the current client difficulty.
      *
      * @return The difficulty for the client.
      */
     public static EnumDifficulty getClientDifficulty () {
-
+        
         return getGameSettings().difficulty;
     }
 }

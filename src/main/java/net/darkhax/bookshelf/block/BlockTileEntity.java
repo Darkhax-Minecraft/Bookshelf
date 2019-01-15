@@ -23,45 +23,45 @@ import net.minecraft.world.World;
  * type or weird invalid neighbor code.
  */
 public abstract class BlockTileEntity extends Block implements ITileEntityProvider {
-
+    
     /**
      * Basic block constructor.
      *
      * @param material The material type of the block.
      */
-    protected BlockTileEntity (Material material) {
-
+    protected BlockTileEntity(Material material) {
+        
         this(material, material.getMaterialMapColor());
     }
-
+    
     /**
      * Basic block constructor.
      *
      * @param material The material type of the block.
      * @param color The color to use for the block on the map.
      */
-    protected BlockTileEntity (Material material, MapColor color) {
-
+    protected BlockTileEntity(Material material, MapColor color) {
+        
         super(material, color);
         this.hasTileEntity = true;
     }
-
+    
     @Override
     public void breakBlock (World worldIn, BlockPos pos, IBlockState state) {
-
+        
         final TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileEntityBasic) {
-
+            
             ((TileEntityBasic) tile).onTileRemoved(worldIn, pos, state);
         }
-
+        
         super.breakBlock(worldIn, pos, state);
         worldIn.removeTileEntity(pos);
     }
-
+    
     @Override
     public boolean eventReceived (IBlockState state, World worldIn, BlockPos pos, int id, int param) {
-
+        
         super.eventReceived(state, worldIn, pos, id, param);
         final TileEntity tileentity = worldIn.getTileEntity(pos);
         return tileentity == null ? false : tileentity.receiveClientEvent(id, param);

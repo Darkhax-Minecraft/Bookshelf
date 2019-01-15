@@ -11,13 +11,13 @@ package net.darkhax.bookshelf.data;
  * Represents the different attribute modifiers in vanilla.
  */
 public enum AttributeOperation {
-
+    
     /**
      * Adds an amount directly to the base sum. For example if base is 2 and the value is 3,
      * the result would be 5. (2 + 3 = 5)
      */
     ADDITIVE,
-
+    
     /**
      * Multiplies the base value with the sum of the specified amount plus one. If multiple
      * modifiers of this type are together, their values are added together. For example if the
@@ -26,7 +26,7 @@ public enum AttributeOperation {
      * (1 + 3 + 4) = 15)
      */
     MULTIPLY,
-
+    
     /**
      * Similarly to {@link #MULTIPLY} the base value is multiplied by the sum of the specified
      * amount plus one, however each type is multiplied separately. For example, if the base

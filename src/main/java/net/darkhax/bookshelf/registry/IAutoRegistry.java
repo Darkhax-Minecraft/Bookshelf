@@ -15,30 +15,30 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * RegistryHelper.
  */
 public interface IAutoRegistry {
-
+    
     /**
      * Gets the registry helper that this auto registry is linked to.
      *
      * @return
      */
     RegistryHelper getHelper ();
-
+    
     /**
      * Called when Bookshelf enters the init phase.
      */
     void init ();
-
+    
     /**
      * Called when Bookshelf enters the postInit phase.
      */
     void postInit ();
-
+    
     /**
      * Called when Bookshelf enters the client init phase.
      */
     @SideOnly(Side.CLIENT)
     void clientInit ();
-
+    
     /**
      * Called when Bookshelf enters the client postInit phase.
      */

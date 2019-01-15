@@ -11,17 +11,17 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
 public final class PotionUtils {
-
+    
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
-    private PotionUtils () {
-
+    private PotionUtils() {
+        
         throw new IllegalAccessError("Utility class");
     }
-
+    
     /**
      * Checks if a potion if beneficial. This is a wrapper for the access transformer. The
      * vanilla method is client side only.
@@ -30,10 +30,10 @@ public final class PotionUtils {
      * @return Whether or not the potion was beneficial.
      */
     public static boolean isBeneficial (Potion potion) {
-
+        
         return potion.beneficial;
     }
-
+    
     /**
      * Deincrements the duration of a PotionEffect. This is a wrapper for the access
      * transformer.
@@ -41,7 +41,7 @@ public final class PotionUtils {
      * @param potionEffect The effect to deincrement.
      */
     public static void deincrementDuration (PotionEffect potionEffect) {
-
+        
         potionEffect.deincrementDuration();
     }
 }

@@ -16,17 +16,17 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public final class RegistryUtils {
-
+    
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
-    private RegistryUtils () {
-
+    private RegistryUtils() {
+        
         throw new IllegalAccessError("Utility class");
     }
-
+    
     /**
      * Gets an enchantment from an ID.
      *
@@ -34,10 +34,10 @@ public final class RegistryUtils {
      * @return The enchantment that was found. It can be null.
      */
     public static Enchantment getEnchantment (String id) {
-
+        
         return ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(id));
     }
-
+    
     /**
      * Gets a registry name from a forge registerable object. The object can not be null. If
      * the registry name is null or empty an error will be reported.
@@ -46,13 +46,13 @@ public final class RegistryUtils {
      * @return The id for the object.
      */
     public static String getRegistryId (@Nonnull IForgeRegistryEntry.Impl<?> registerable) {
-
+        
         if (registerable.getRegistryName() == null || registerable.getRegistryName().toString().isEmpty()) {
-
+            
             Constants.LOG.warn("Attempted to get ID for invalid registerable object. " + registerable.getClass().getName());
             return "";
         }
-
+        
         return registerable.getRegistryName().toString();
     }
 }

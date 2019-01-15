@@ -12,13 +12,13 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.ItemStack;
 
 public class GuiItemButton extends GuiButton {
-
+    
     /**
      * The ItemStack that is drawn over the button. By default nothing is rendered. This stack
      * can be changed in the constructor.
      */
     private ItemStack renderStack = ItemStack.EMPTY;
-
+    
     /**
      * Constructs a new graphic button. A graphic button is a 20x20 button that uses an image
      * rather than text.
@@ -28,18 +28,18 @@ public class GuiItemButton extends GuiButton {
      * @param yPosition The Y coordinate to position the button at.
      * @param texture The texture to use for the button. This should be a 20x20 image.
      */
-    public GuiItemButton (int buttonID, int xPosition, int yPosition, ItemStack renderStack) {
-
+    public GuiItemButton(int buttonID, int xPosition, int yPosition, ItemStack renderStack) {
+        
         super(buttonID, xPosition, yPosition, 20, 20, "");
         this.renderStack = renderStack;
     }
-
+    
     @Override
     public void drawButton (Minecraft mc, int mouseX, int mouseY, float partialTicks) {
-
+        
         super.drawButton(mc, mouseX, mouseY, partialTicks);
         Minecraft.getMinecraft().getRenderItem().renderItemOverlayIntoGUI(Minecraft.getMinecraft().fontRenderer, this.renderStack, this.x + 2, this.y + 2, "");
         Minecraft.getMinecraft().getRenderItem().renderItemAndEffectIntoGUI(this.renderStack, this.x + 2, this.y + 2);
-
+        
     }
 }

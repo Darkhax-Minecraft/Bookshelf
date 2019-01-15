@@ -18,44 +18,44 @@ import net.minecraft.nbt.NBTTagCompound;
  * can be very tedious.
  */
 public class EnchantData extends EnchantmentData {
-
-    public EnchantData (EnchantmentData data) {
-
+    
+    public EnchantData(EnchantmentData data) {
+        
         this(data.enchantment, data.enchantmentLevel);
     }
-
-    public EnchantData (NBTTagCompound tag) {
-
+    
+    public EnchantData(NBTTagCompound tag) {
+        
         this(RegistryUtils.getEnchantment(tag.getString("EnchId")), tag.getInteger("Level"));
     }
-
-    public EnchantData (Enchantment enchantmentObj, int enchLevel) {
-
+    
+    public EnchantData(Enchantment enchantmentObj, int enchLevel) {
+        
         super(enchantmentObj, enchLevel);
     }
-
+    
     /**
      * Writes the enchantment data to an NBTTagCompound.
      *
      * @return The data written to an nbt tag.
      */
     public NBTTagCompound toNBT () {
-
+        
         final NBTTagCompound tag = new NBTTagCompound();
         tag.setString("EnchId", RegistryUtils.getRegistryId(this.enchantment));
         tag.setInteger("Level", this.enchantmentLevel);
         return tag;
     }
-
+    
     @Override
     public String toString () {
-
+        
         return "EnchantData [enchantment=" + this.enchantment + ", enchantmentLevel=" + this.enchantmentLevel + "]";
     }
-
+    
     @Override
     public boolean equals (Object other) {
-
+        
         if (!(other instanceof EnchantmentData)) {
             return false;
         }

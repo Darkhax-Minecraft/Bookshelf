@@ -37,73 +37,73 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = "@VERSION@", certificateFingerprint = "@FINGERPRINT@")
 public class Bookshelf {
-
+    
     public static final LoggingHelper LOG = new LoggingHelper("Bookshelf");
-
+    
     @EventHandler
     public void onConstruction (FMLConstructionEvent event) {
-
+        
         AnnotationUtils.setAnnotationData(event.getASMHarvestedData());
         MinecraftForge.EVENT_BUS.register(this);
     }
-
+    
     @EventHandler
     public void preInit (FMLPreInitializationEvent event) {
-
+        
         new BookshelfConfig(event.getSuggestedConfigurationFile());
     }
-
+    
     @EventHandler
     public void init (FMLInitializationEvent event) {
-
+        
         OreDictUtils.initAdditionalVanillaEntries();
-
+        
         for (final RegistryHelper helper : RegistryHelper.getAllHelpers()) {
-
+            
             if (helper.hasAutoRegistry()) {
-
+                
                 helper.getAutoRegistry().init();
             }
         }
     }
-
+    
     @EventHandler
     @SideOnly(Side.CLIENT)
     public void clientInit (FMLInitializationEvent event) {
-
+        
         for (final RegistryHelper helper : RegistryHelper.getAllHelpers()) {
             if (helper.hasAutoRegistry()) {
                 helper.getAutoRegistry().clientInit();
             }
         }
     }
-
+    
     @EventHandler
     public void serverStarting (FMLServerStartingEvent event) {
-
+        
         for (final ICommand command : BookshelfRegistry.getCommands()) {
-
+            
             event.registerServerCommand(command);
         }
     }
-
+    
     // Handles game rule registry
     @SubscribeEvent
     public void onWorldLoaded (WorldEvent.Load event) {
-
+        
         if (!event.getWorld().isRemote) {
-
+            
             for (final GameRule rule : BookshelfRegistry.getGameRules()) {
-
+                
                 rule.initialize(event.getWorld());
             }
         }
     }
-
+    
     // Handles anvil stuff, for my anvil recipes.
     @SubscribeEvent
     public void onAnvilUpdate (AnvilUpdateEvent event) {
-
+        
         for (final IAnvilRecipe recipe : BookshelfRegistry.getAnvilRecipes()) {
             if (recipe.isValidRecipe(event.getLeft(), event.getRight(), event.getName())) {
                 event.setCost(recipe.getExperienceCost(event.getLeft(), event.getRight(), event.getName()));
@@ -113,34 +113,34 @@ public class Bookshelf {
             }
         }
     }
-
+    
     // Handles the render reload request in RenderUtils
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onClientTick (TickEvent.ClientTickEvent event) {
-
+        
         if (RenderUtils.requireRenderReload()) {
-
+            
             Minecraft.getMinecraft().renderGlobal.loadRenderers();
             RenderUtils.markRenderersForReload(false);
         }
     }
-
+    
     @EventHandler()
     @SideOnly(Side.CLIENT)
     public void onLoadComplete (FMLLoadCompleteEvent event) {
-
+        
         RomanNumerals.insertRomanNumerals();
-
+        
         ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(listener -> {
-
+            
             RomanNumerals.insertRomanNumerals();
         });
     }
-
+    
     @EventHandler
     public void onFingerprintViolation (FMLFingerprintViolationEvent event) {
-
+        
         Constants.LOG.error("Invalid fingerprint detected! The file " + event.getSource().getName() + " may have been tampered with. This version will NOT be supported by the author!");
     }
 }

@@ -15,54 +15,54 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class BlockSubType extends Block implements IVariant {
-
+    
     private final String[] variants;
-
-    public BlockSubType (Material blockMaterialIn, MapColor blockMapColorIn, String... variants) {
-
+    
+    public BlockSubType(Material blockMaterialIn, MapColor blockMapColorIn, String... variants) {
+        
         super(blockMaterialIn, blockMapColorIn);
         this.variants = variants;
     }
-
+    
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks (CreativeTabs tab, NonNullList<ItemStack> list) {
-
+        
         for (int meta = 0; meta < this.variants.length; meta++) {
-
+            
             list.add(new ItemStack(this, 1, meta));
         }
     }
-
+    
     @Override
     public IBlockState getStateFromMeta (int meta) {
-
+        
         return this.getDefaultState().withProperty(this.getVariantProp(), this.variants[meta]);
     }
-
+    
     @Override
     public int getMetaFromState (IBlockState state) {
-
+        
         return this.getVariantProp().getMetaData(state.getValue(this.getVariantProp()));
     }
-
+    
     @Override
     protected BlockStateContainer createBlockState () {
-
+        
         return new BlockStateContainer(this, new IProperty[] { this.getVariantProp() });
     }
-
+    
     @Override
     public int damageDropped (IBlockState state) {
-
+        
         return this.getMetaFromState(state);
     }
-
+    
     @Override
     public String[] getVariant () {
-
+        
         return this.variants;
     }
-
+    
     public abstract PropertyString getVariantProp ();
 }

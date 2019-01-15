@@ -19,63 +19,63 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfessio
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class VillagerUtils {
-
+    
     // Farmer
     public static final VillagerProfession PROFESSION_FARMER = getProfession("minecraft:farmer");
-
+    
     public static final int CAREER_ID_FARMER = 1;
     public static final int CAREER_ID_FISHERMAN = 2;
     public static final int CAREER_ID_SHEPHERD = 3;
     public static final int CAREER_ID_FLETCHER = 4;
-
+    
     public static final VillagerCareer CAREER_FLETCHER = PROFESSION_FARMER.getCareer(CAREER_ID_FLETCHER);
     public static final VillagerCareer CAREER_SHEPHERD = PROFESSION_FARMER.getCareer(CAREER_ID_SHEPHERD);
     public static final VillagerCareer CAREER_FISHERMAN = PROFESSION_FARMER.getCareer(CAREER_ID_FISHERMAN);
     public static final VillagerCareer CAREER_FARMER = PROFESSION_FARMER.getCareer(CAREER_ID_FARMER);
-
+    
     // Librarian
     public static final VillagerProfession PROFESSION_LIBRARIAN = getProfession("minecraft:librarian");
-
+    
     public static final int CAREER_ID_LIBRARIAN = 1;
     public static final int CAREER_ID_CARTOGRAPHER = 2;
-
+    
     public static final VillagerCareer CAREER_LIBRARIAN = PROFESSION_LIBRARIAN.getCareer(CAREER_ID_LIBRARIAN);
     public static final VillagerCareer CAREER_CARTOGRAPHER = PROFESSION_LIBRARIAN.getCareer(CAREER_ID_CARTOGRAPHER);
-
+    
     // Priest
     public static final VillagerProfession PROFESSION_PRIEST = getProfession("minecraft:priest");
-
+    
     public static final int CAREER_ID_CLERIC = 1;
-
+    
     public static final VillagerCareer CAREER_CLERIC = PROFESSION_PRIEST.getCareer(CAREER_ID_CLERIC);
-
+    
     // Blacksmith
     public static final VillagerProfession PROFESSION_SMITH = getProfession("minecraft:smith");
-
+    
     public static final int CAREER_ID_ARMOR_SMITH = 1;
     public static final int CAREER_ID_WEAPON_SMITH = 2;
     public static final int CAREER_ID_TOOL_SMITH = 3;
-
+    
     public static final VillagerCareer CAREER_TOOL_SMITH = PROFESSION_SMITH.getCareer(CAREER_ID_TOOL_SMITH);
     public static final VillagerCareer CAREER_ARMOR_SMITH = PROFESSION_SMITH.getCareer(CAREER_ID_ARMOR_SMITH);
     public static final VillagerCareer CAREER_WEAPON_SMITH = PROFESSION_SMITH.getCareer(CAREER_ID_WEAPON_SMITH);
-
+    
     // Butcher
     public static final VillagerProfession PROFESSION_BUTCHER = getProfession("minecraft:butcher");
-
+    
     public static final int CAREER_ID_BUTCHER = 1;
     public static final int CAREER_ID_LEATHER_WORKER = 2;
-
+    
     public static final VillagerCareer CAREER_BUTCHER = PROFESSION_BUTCHER.getCareer(CAREER_ID_BUTCHER);
     public static final VillagerCareer CAREER_LEATHER_WORKER = PROFESSION_BUTCHER.getCareer(CAREER_ID_LEATHER_WORKER);
-
+    
     // Nitwit
     public static final VillagerProfession PROFESSION_NITWIT = getProfession("minecraft:nitwit");
-
+    
     public static final int CAREER_ID_NITWIT = 1;
-
+    
     public static final VillagerCareer CAREER_NITWIT = PROFESSION_NITWIT.getCareer(CAREER_ID_NITWIT);
-
+    
     /**
      * Adds a trade to a villager career.
      *
@@ -85,10 +85,10 @@ public class VillagerUtils {
      * @param trades The trades to add to the villager.
      */
     public static void addVillagerTrade (VillagerCareer career, int level, ITradeList... trades) {
-
+        
         career.addTrade(level, trades);
     }
-
+    
     /**
      * Gets a villager from a string id. This method exists because ObjectHolder didn't work in
      * a dev env for me.
@@ -98,10 +98,10 @@ public class VillagerUtils {
      */
     @Nullable
     public static VillagerProfession getProfession (String id) {
-
+        
         return ForgeRegistries.VILLAGER_PROFESSIONS.getValue(new ResourceLocation(id));
     }
-
+    
     /**
      * Checks if a profession id exists.
      *
@@ -109,10 +109,10 @@ public class VillagerUtils {
      * @return Whether or not the profession exists.
      */
     public static boolean doesProfessionExist (String professionId) {
-
+        
         return ForgeRegistries.VILLAGER_PROFESSIONS.containsKey(new ResourceLocation(professionId));
     }
-
+    
     /**
      * Checks if a career belongs to a profession.
      *
@@ -121,10 +121,10 @@ public class VillagerUtils {
      * @return Whether or not the profession owns the passed career.
      */
     public static boolean hasCareer (VillagerProfession profession, VillagerCareer career) {
-
+        
         return getCareers(profession).contains(career);
     }
-
+    
     /**
      * Gets the list of careers for a profession. This list should be treated as read only!
      *
@@ -134,10 +134,10 @@ public class VillagerUtils {
      */
     @Deprecated
     public static List<VillagerCareer> getCareers (VillagerProfession profession) {
-
+        
         return ReflectionHelper.getPrivateValue(VillagerProfession.class, profession, "careers");
     }
-
+    
     /**
      * Gets the profession a career belongs to.
      *
@@ -147,10 +147,10 @@ public class VillagerUtils {
      */
     @Deprecated
     public static VillagerProfession getProfession (VillagerCareer career) {
-
+        
         return ReflectionHelper.getPrivateValue(VillagerCareer.class, career, "profession");
     }
-
+    
     /**
      * Gets the id of the profession a career belongs to.
      *
@@ -160,10 +160,10 @@ public class VillagerUtils {
      */
     @Deprecated
     public static int getProfessionId (VillagerCareer career) {
-
+        
         return ReflectionHelper.getPrivateValue(VillagerCareer.class, career, "id");
     }
-
+    
     /**
      * Gets the raw list of trades for a profession. This should be treated as read only!
      *
@@ -174,7 +174,7 @@ public class VillagerUtils {
      */
     @Deprecated
     public static List<List<ITradeList>> getRawTradeList (VillagerCareer career) {
-
+        
         return ReflectionHelper.getPrivateValue(VillagerCareer.class, career, "trades");
     }
 }

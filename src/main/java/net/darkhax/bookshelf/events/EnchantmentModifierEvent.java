@@ -16,22 +16,22 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 
 @Cancelable
 public class EnchantmentModifierEvent extends Event {
-
+    
     /**
      * The enchantment to calculate levels for.
      */
     private final Enchantment enchantment;
-
+    
     /**
      * The entity using the enchantment.
      */
     private final EntityLivingBase entity;
-
+    
     /**
      * The amount of levels to say the user has of the given enchantment.
      */
     private int levels;
-
+    
     /**
      * This event is fired every time
      * {@link EnchantmentHelper#getMaxEnchantmentLevel(Enchantment, EntityLivingBase)} would be
@@ -50,57 +50,57 @@ public class EnchantmentModifierEvent extends Event {
      * @param enchantment The enchantment that the level is being calculated for.
      * @param entity The entity that is using the enchantment.
      */
-    public EnchantmentModifierEvent (Enchantment enchantment, EntityLivingBase entity) {
-
+    public EnchantmentModifierEvent(Enchantment enchantment, EntityLivingBase entity) {
+        
         final Iterable<ItemStack> iterable = enchantment.getEntityEquipment(entity);
-
+        
         if (iterable != null) {
             for (final ItemStack stack : iterable) {
                 this.levels += EnchantmentHelper.getEnchantmentLevel(enchantment, stack);
             }
         }
-
+        
         this.enchantment = enchantment;
         this.entity = entity;
     }
-
+    
     /**
      * Gets the enchantment being calculated.
      *
      * @return The enchantment that is being calculated.
      */
     public Enchantment getEnchantment () {
-
+        
         return this.enchantment;
     }
-
+    
     /**
      * Gets the entity using the enchantment.
      *
      * @return The entity using the enchantment.
      */
     public EntityLivingBase getEntity () {
-
+        
         return this.entity;
     }
-
+    
     /**
      * Gets the amount of levels to return for the event. Can be no less than 0.
      *
      * @return The amount of levels to return.
      */
     public int getLevels () {
-
+        
         return Math.max(this.levels, 0);
     }
-
+    
     /**
      * Sets the amount of levels to return for the event.
      *
      * @param amount The amount of levels the event should return.
      */
     public void setLevels (int amount) {
-
+        
         this.levels = amount;
     }
 }

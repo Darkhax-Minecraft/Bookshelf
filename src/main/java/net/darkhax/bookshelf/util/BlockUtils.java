@@ -27,17 +27,17 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.oredict.OreDictionary;
 
 public final class BlockUtils {
-
+    
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
-    private BlockUtils () {
-
+    private BlockUtils() {
+        
         throw new IllegalAccessError("Utility class");
     }
-
+    
     /**
      * Checks if an ItemStack contains an ore item. This is done by checking the item extends
      * BlockOre, or if the ore dictionary for entries that start with 'ore'. It will also check
@@ -48,24 +48,24 @@ public final class BlockUtils {
      * @return Whether or not the ItemStack is an ore.
      */
     public static boolean isOre (@Nonnull ItemStack stack, boolean checkName) {
-
+        
         if (Block.getBlockFromItem(stack.getItem()) instanceof BlockOre) {
             return true;
         }
-
+        
         for (final int oreID : OreDictionary.getOreIDs(stack)) {
             if (OreDictionary.getOreName(oreID).startsWith("ore")) {
                 return true;
             }
         }
-
+        
         if (checkName && stack.getItem().getItemStackDisplayName(stack).matches(".*(^|\\s)([oO]re)($|\\s).")) {
             return true;
         }
-
+        
         return false;
     }
-
+    
     /**
      * Checks if a block is a fluid or not.
      *
@@ -73,10 +73,10 @@ public final class BlockUtils {
      * @return If the block is a fluid, true will be returned. If not, false will be returned.
      */
     public static boolean isFluid (Block block) {
-
+        
         return block == Blocks.LAVA || block == Blocks.WATER || block instanceof IFluidBlock;
     }
-
+    
     /**
      * Checks if the fluid level is full.
      *
@@ -85,10 +85,10 @@ public final class BlockUtils {
      * @return Whether or not the fluid is full.
      */
     public static boolean isFluidFull (World world, BlockPos pos) {
-
+        
         return isFluidFull(getActualState(world, pos));
     }
-
+    
     /**
      * Checks if the fluid level is full.
      *
@@ -96,10 +96,10 @@ public final class BlockUtils {
      * @return Whether or not the fluid is full.
      */
     public static boolean isFluidFull (IBlockState state) {
-
+        
         return getFluidLevel(state) == 0;
     }
-
+    
     /**
      * Get the fluid level.
      *
@@ -108,10 +108,10 @@ public final class BlockUtils {
      * @return The level of the fluid. 0 is full.
      */
     public static int getFluidLevel (World world, BlockPos pos) {
-
+        
         return getFluidLevel(getActualState(world, pos));
     }
-
+    
     /**
      * Get the fluid level.
      *
@@ -119,10 +119,10 @@ public final class BlockUtils {
      * @return The level of the fluid. 0 is full.
      */
     public static int getFluidLevel (IBlockState state) {
-
+        
         return state.getValue(BlockLiquid.LEVEL);
     }
-
+    
     /**
      * Attempts to get a fluid stack from a block pos.
      *
@@ -131,28 +131,28 @@ public final class BlockUtils {
      * @return The fluid stack.
      */
     public static FluidStack getFluid (World world, BlockPos pos) {
-
+        
         final IBlockState state = getActualState(world, pos);
         final Block block = state.getBlock();
-
+        
         if (block instanceof IFluidBlock && ((IFluidBlock) block).canDrain(world, pos)) {
-
+            
             return ((IFluidBlock) block).drain(world, pos, true);
         }
-
+        
         else if (block instanceof BlockStaticLiquid && isFluidFull(state)) {
-
+            
             final Fluid fluid = block == Blocks.WATER ? FluidRegistry.WATER : block == Blocks.LAVA ? FluidRegistry.LAVA : null;
-
+            
             if (fluid != null) {
-
+                
                 return new FluidStack(fluid, 1000);
             }
         }
-
+        
         return null;
     }
-
+    
     /**
      * Gets the actual state of the block.
      *
@@ -161,10 +161,10 @@ public final class BlockUtils {
      * @return The actual block state.
      */
     public static IBlockState getActualState (World world, BlockPos pos) {
-
+        
         return world.getBlockState(pos).getActualState(world, pos);
     }
-
+    
     /**
      * Creates a modified version of the break speed which already has the hardness and harvest
      * check factored in. This allows for the BreakSpeed event to change the final speed value,
@@ -177,13 +177,13 @@ public final class BlockUtils {
      *         harvestability.
      */
     public static float getModifiedBreakSpeed (float desiredBreakSpeed, float currentHardness, boolean canHarvest) {
-
+        
         float speed = desiredBreakSpeed;
         speed *= currentHardness;
         speed *= canHarvest ? 30f : 100f;
         return speed;
     }
-
+    
     /**
      * Checks if the player can harvest a block, without risk of crashes due to unsupported use
      * of the method.
@@ -193,41 +193,41 @@ public final class BlockUtils {
      * @return Whether or not the block can be harvested.
      */
     public static boolean canHarvestSafely (IBlockState state, EntityPlayer player) {
-
+        
         try {
-
+            
             final Block block = state.getBlock();
-
+            
             if (state.getMaterial().isToolNotRequired()) {
-
+                
                 return true;
             }
-
+            
             final ItemStack stack = player.getHeldItemMainhand();
             final String tool = block.getHarvestTool(state);
-
+            
             if (stack.isEmpty() || tool == null) {
-
+                
                 return player.canHarvestBlock(state);
             }
-
+            
             final int toolLevel = stack.getItem().getHarvestLevel(stack, tool, player, state);
-
+            
             if (toolLevel < 0) {
-
+                
                 return player.canHarvestBlock(state);
             }
-
+            
             return toolLevel >= block.getHarvestLevel(state);
         }
-
+        
         catch (final Exception e) {
-
+            
             Constants.LOG.trace("Error checking harvest for " + state.toString(), e);
             return false;
         }
     }
-
+    
     /**
      * Gets the hardness of a block without risk of a crash due to unsupported use.
      *
@@ -237,20 +237,20 @@ public final class BlockUtils {
      * @return The hardness of the block. If an exception occurs this will be 99999f.
      */
     public static float getHardnessSafely (IBlockState state, World world, BlockPos pos) {
-
+        
         try {
-
+            
             return state.getBlock().getBlockHardness(state, world, pos);
         }
-
+        
         catch (final Exception e) {
-
+            
             Constants.LOG.trace("Error checking hardness for " + state.toString(), e);
             // TODO better fallback code
             return 99999f;
         }
     }
-
+    
     /**
      * Calculates the break speed for a block.
      *
@@ -260,10 +260,10 @@ public final class BlockUtils {
      * @return The break speed for a block.
      */
     public static float getBreakSpeed (float playerDigSpeed, float hardness, boolean canHarvest) {
-
+        
         return playerDigSpeed / hardness / (canHarvest ? 30f : 100f);
     }
-
+    
     /**
      * Gets the block without risk of crash from unsupported use.
      *
@@ -274,26 +274,26 @@ public final class BlockUtils {
      * @return The strength of the block.
      */
     public static float blockStrengthSafely (@Nonnull IBlockState state, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-
+        
         try {
-
+            
             final float hardness = getHardnessSafely(state, world, pos);
-
+            
             if (hardness <= 0f) {
-
+                
                 return 0;
             }
-
+            
             return player.getDigSpeed(state, pos) / hardness / (canHarvestSafely(state, player) ? 30f : 100f);
         }
-
+        
         catch (final Exception e) {
-
+            
             Constants.LOG.trace("Exception getting block strength! " + state.toString(), e);
             return 99999f;
         }
     }
-
+    
     /**
      * This method is used to calculate and replicate the break speed of another block, in the
      * BreakSpeed event. This will take all the required values into effect and give you a
@@ -308,14 +308,14 @@ public final class BlockUtils {
      *         one block with the speed of another.
      */
     public static float getBreakSpeedToMatch (IBlockState current, IBlockState target, World world, EntityPlayer player, BlockPos pos) {
-
+        
         final float currentHardness = current.getBlockHardness(world, pos);
         final boolean currentCanHarvest = canHarvestSafely(current, player);
         final float targetSpeed = blockStrengthSafely(target, player, world, pos);
         final float currentSpeed = getModifiedBreakSpeed(targetSpeed, currentHardness, currentCanHarvest);
         return targetSpeed <= 0f ? 1f : currentSpeed;
     }
-
+    
     /**
      * Attempts to harvest a block. This can be used in potentially unsafe situations, such as
      * breaking a block at a position where it doesn't actually exist.
@@ -326,18 +326,18 @@ public final class BlockUtils {
      * @param state The block state to break.
      */
     public static void dropBlockSafely (World world, EntityPlayer player, BlockPos pos, IBlockState state) {
-
+        
         try {
-
+            
             state.getBlock().harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItemMainhand());
         }
-
+        
         catch (final Exception e) {
-
+            
             Constants.LOG.trace("Could not harvest block!", e);
         }
     }
-
+    
     /**
      * Checks if a block position is in a slime chunk.
      *
@@ -346,7 +346,7 @@ public final class BlockUtils {
      * @return Whether or not the chunk is a slime chunk.
      */
     public static boolean isSlimeChunk (World world, BlockPos pos) {
-
+        
         return world.getChunk(pos).getRandomWithSeed(987234911L).nextInt(10) == 0;
     }
 }

@@ -35,17 +35,17 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
 public final class WorldUtils {
-
+    
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
-    private WorldUtils () {
-
+    private WorldUtils() {
+        
         throw new IllegalAccessError("Utility class");
     }
-
+    
     /**
      * Gets the display name of a world.
      *
@@ -53,18 +53,18 @@ public final class WorldUtils {
      * @return The name of the world.
      */
     public static String getWorldName (World world) {
-
+        
         String result = "Unknown";
-
+        
         // TODO add more fallback options
         if (world.provider != null) {
-
+            
             result = world.provider.getDimensionType().getName();
         }
-
+        
         return result;
     }
-
+    
     /**
      * Gets the amount of loaded chunks.
      *
@@ -72,10 +72,10 @@ public final class WorldUtils {
      * @return The amount of chunks. -1 means it was unable to get the amount.
      */
     public static int getLoadedChunks (WorldServer world) {
-
+        
         return world.getChunkProvider() != null ? world.getChunkProvider().getLoadedChunkCount() : -1;
     }
-
+    
     /**
      * Gets the dimension id of a world.
      *
@@ -83,10 +83,10 @@ public final class WorldUtils {
      * @return The id of the world. 0 (surface) is used if none is found.
      */
     public static int getDimId (WorldServer world) {
-
+        
         return world.provider != null ? world.provider.getDimension() : 0;
     }
-
+    
     /**
      * Checks if two block positions are in the same chunk in a given world.
      *
@@ -95,10 +95,10 @@ public final class WorldUtils {
      * @return Whether or not the two positions are in the same chunk.
      */
     public static boolean areSameChunk (BlockPos first, BlockPos second) {
-
+        
         return new ChunkPos(first).equals(new ChunkPos(second));
     }
-
+    
     /**
      * Checks if two block positions are in the same chunk in a given world.
      *
@@ -109,10 +109,10 @@ public final class WorldUtils {
      */
     @Deprecated
     public static boolean areSameChunk (World world, BlockPos first, BlockPos second) {
-
+        
         return areSameChunk(first, second);
     }
-
+    
     /**
      * Checks if the dimension id of a world matches the provided dimension id.
      *
@@ -121,10 +121,10 @@ public final class WorldUtils {
      * @return Whether or not they are the same.
      */
     public static boolean isDimension (World world, int id) {
-
+        
         return getDimensionId(world) == id;
     }
-
+    
     /**
      * Checks if the dimension type of a world matches the provided dimension type.
      *
@@ -133,10 +133,10 @@ public final class WorldUtils {
      * @return Whether or not they are the same.
      */
     public static boolean isDimension (World world, DimensionType type) {
-
+        
         return getDimensionType(world) == type;
     }
-
+    
     /**
      * Gets the dimension id of a world.
      *
@@ -144,10 +144,10 @@ public final class WorldUtils {
      * @return The id of the world.
      */
     public static int getDimensionId (World world) {
-
+        
         return getDimensionType(world).getId();
     }
-
+    
     /**
      * Gets the dimension type of a world.
      *
@@ -155,10 +155,10 @@ public final class WorldUtils {
      * @return The type of the world.
      */
     public static DimensionType getDimensionType (World world) {
-
+        
         return world.provider.getDimensionType();
     }
-
+    
     /**
      * Attempts to set the biome of an entire chunk. Please note that this will also cause
      * conecting chunks to do an update, and will cause the targeted chunk to recieve a render
@@ -169,23 +169,23 @@ public final class WorldUtils {
      * @param biome The biome to set the chunk to.
      */
     public static void setBiomes (World world, BlockPos pos, Biome biome) {
-
+        
         try {
-
+            
             final Chunk chunk = world.getChunk(pos);
             final byte[] biomes = chunk.getBiomeArray();
             Arrays.fill(biomes, (byte) Biome.getIdForBiome(biome));
             chunk.markDirty();
-
+            
             updateNearbyChunks(world, chunk, true, true);
         }
-
+        
         catch (final Exception e) {
-
+            
             Constants.LOG.warn(e, "Unable to set biome for Pos: {}, Biome: {}", pos.toString(), biome.getRegistryName());
         }
     }
-
+    
     /**
      * Marks a chunk for an update. This will set it dirty, and potentially do a render update.
      *
@@ -194,16 +194,16 @@ public final class WorldUtils {
      * @param render Whether or not you want a render update.
      */
     public static void markChunkForUpdate (World world, Chunk chunk, boolean render) {
-
+        
         chunk.markDirty();
-
+        
         if (render) {
-
+            
             final BlockPos initial = chunk.getPos().getBlock(1, 1, 1);
             world.markBlockRangeForRenderUpdate(initial, initial);
         }
     }
-
+    
     /**
      * Updates all chunks near the provided chunk. This is a 3x3 area centered on the chunk.
      *
@@ -213,16 +213,16 @@ public final class WorldUtils {
      * @param render Whether or not you want a render update.
      */
     public static void updateNearbyChunks (World world, Chunk chunk, boolean includeSelf, boolean render) {
-
+        
         for (final Chunk other : getNearbyChunks(world, chunk)) {
-
+            
             if (other != chunk || includeSelf) {
-
+                
                 markChunkForUpdate(world, other, render);
             }
         }
     }
-
+    
     /**
      * Gets a list of 9 chunks in a 3x3 area, centered around the passed chunk.
      *
@@ -231,10 +231,10 @@ public final class WorldUtils {
      * @return A list of 9 chunks that are near the passed chunk, as well as the initial chunk.
      */
     public static List<Chunk> getNearbyChunks (World world, Chunk chunk) {
-
+        
         return getNearbyChunks(world, chunk.getPos());
     }
-
+    
     /**
      * Gets a list of 9 chunks in a 3x3 area, centered around the passed chunk position.
      *
@@ -244,20 +244,20 @@ public final class WorldUtils {
      *         the passed position.
      */
     public static List<Chunk> getNearbyChunks (World world, ChunkPos chunk) {
-
+        
         final List<Chunk> chunks = new ArrayList<>();
-
+        
         for (int offX = -1; offX < 2; offX++) {
-
+            
             for (int offY = -1; offY < 2; offY++) {
-
+                
                 chunks.add(world.getChunk(chunk.x + offX, chunk.z + offY));
             }
         }
-
+        
         return chunks;
     }
-
+    
     /**
      * Gets a random position within a chunk. This will load the chunk if it is not already
      * loaded.
@@ -268,7 +268,7 @@ public final class WorldUtils {
      * @return A random position within the chunk.
      */
     public static BlockPos getRandomChunkPosition (World world, int x, int z) {
-
+        
         final Chunk chunk = world.getChunk(x, z);
         final int posX = x * 16 + world.rand.nextInt(16);
         final int posZ = z * 16 + world.rand.nextInt(16);
@@ -276,7 +276,7 @@ public final class WorldUtils {
         final int posY = world.rand.nextInt(height > 0 ? height : chunk.getTopFilledSegment() + 16 - 1);
         return new BlockPos(posX, posY, posZ);
     }
-
+    
     /**
      * Gets the WorldType for a WorldProvider. This is a wrapper for an access transformer.
      *
@@ -284,10 +284,10 @@ public final class WorldUtils {
      * @return The WorldType of the provider.
      */
     public static WorldType getWorldType (WorldProvider provider) {
-
+        
         return provider.terrainType;
     }
-
+    
     /**
      * Sets the WorldType for a WorldProvider. This is a wrapper for an access transformer.
      *
@@ -295,10 +295,10 @@ public final class WorldUtils {
      * @param type The type to set the world to.
      */
     public static void setWorldType (WorldProvider provider, WorldType type) {
-
+        
         provider.terrainType = type;
     }
-
+    
     /**
      * Gets the generator settings for a world. This is a wrapper for an access transformer.
      *
@@ -306,15 +306,15 @@ public final class WorldUtils {
      * @return The settings to apply.
      */
     public static String getWorldSettings (WorldProvider provider) {
-
+        
         return provider.generatorSettings;
     }
-
+    
     public static void setWorldSettings (WorldProvider provider, String settings) {
-
+        
         provider.generatorSettings = settings;
     }
-
+    
     /**
      * Attempts to spawn mobs in a chunk.
      *
@@ -324,80 +324,80 @@ public final class WorldUtils {
      * @param spawnHook A hook for running additional code on mob spawn.
      */
     public static void attemptChunkSpawn (WorldServer world, BlockPos pos, EnumCreatureType mobType, @Nullable Consumer<EntityLiving> spawnHook) {
-
+        
         final ChunkPos chunkPos = new ChunkPos(pos);
         final BlockPos blockpos = getRandomChunkPosition(world, chunkPos.x, chunkPos.z);
         final int randX = blockpos.getX();
         final int randY = blockpos.getY();
         final int randZ = blockpos.getZ();
-
+        
         // Checks if block is not a solid cube.
         if (!world.getBlockState(blockpos).isNormalCube()) {
-
+            
             final int offsetX = randX + MathsUtils.nextIntInclusive(-6, 6);
             final int spawnY = randY + MathsUtils.nextIntInclusive(-1, 1);
             final int offsetY = randZ + MathsUtils.nextIntInclusive(-6, 6);
-
+            
             final BlockPos currentPos = new BlockPos(offsetX, spawnY, offsetY);
-
+            
             final float spawnX = offsetX + 0.5F;
             final float spawnZ = offsetY + 0.5F;
-
+            
             // Get a random spawn list entry for the current chunk.
             final SpawnListEntry spawnListEntry = world.getSpawnListEntryForTypeAt(mobType, currentPos);
-
+            
             if (spawnListEntry == null) {
-
+                
                 return;
             }
-
+            
             // Checks if the mob entry is valid for the current position.
             if (world.canCreatureTypeSpawnHere(mobType, spawnListEntry, currentPos) && WorldEntitySpawner.canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.getPlacementForEntity(spawnListEntry.entityClass), world, currentPos)) {
-
+                
                 // Get a random amount of mobs to spawn by using the pack size numbers.
                 final int amountToSpawn = MathsUtils.nextIntInclusive(spawnListEntry.minGroupCount, spawnListEntry.maxGroupCount);
-
+                
                 for (int attempt = 0; attempt < amountToSpawn; attempt++) {
-
+                    
                     EntityLiving spawnedMob;
-
+                    
                     try {
-
+                        
                         spawnedMob = spawnListEntry.newInstance(world);
                     }
-
+                    
                     catch (final Exception exception) {
-
+                        
                         Constants.LOG.catching(exception);
                         return;
                     }
-
+                    
                     if (spawnedMob != null) {
-
+                        
                         spawnedMob.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0.0F);
-
+                        
                         // Run forge's entity spawn check event
                         final Result canSpawn = ForgeEventFactory.canEntitySpawn(spawnedMob, world, spawnX, spawnY, spawnZ, false);
-
+                        
                         if (canSpawn == Result.ALLOW || canSpawn == Result.DEFAULT && spawnedMob.getCanSpawnHere() && spawnedMob.isNotColliding()) {
-
+                            
                             if (!ForgeEventFactory.doSpecialSpawn(spawnedMob, world, spawnX, spawnY, spawnZ)) {
-
+                                
                                 spawnedMob.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(spawnedMob)), null);
                             }
-
+                            
                             if (spawnedMob.isNotColliding()) {
-
+                                
                                 world.spawnEntity(spawnedMob);
-
+                                
                                 if (spawnHook != null) {
-
+                                    
                                     spawnHook.accept(spawnedMob);
                                 }
                             }
-
+                            
                             else {
-
+                                
                                 spawnedMob.setDead();
                             }
                         }
@@ -406,9 +406,9 @@ public final class WorldUtils {
             }
         }
     }
-
+    
     public static boolean isHorizontal (EnumFacing facing) {
-
+        
         return facing != EnumFacing.DOWN && facing != EnumFacing.UP;
     }
 }

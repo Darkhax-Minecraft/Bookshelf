@@ -11,25 +11,25 @@ import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.util.ITickable;
 
 public abstract class TileEntityBasicTickable extends TileEntityBasic implements ITickable {
-
+    
     @Override
     public void update () {
-
+        
         if (this.isInvalid() || !this.getWorld().isBlockLoaded(this.getPos())) {
             return;
         }
-
+        
         try {
-
+            
             this.onEntityUpdate();
         }
-
+        
         catch (final Exception exception) {
-
+            
             Constants.LOG.warn(exception, "A TileEntity at {} in world {} failed a client update tick!", this.getPos().toString(), this.getWorld().getWorldInfo().getWorldName());
         }
     }
-
+    
     /**
      * Handles the TileEntity update ticks. This method will only be called in a safe
      * environment.

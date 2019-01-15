@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * code.
  */
 public interface IColorfulItem {
-
+    
     /**
      * Gets the color handler for the item.
      *
