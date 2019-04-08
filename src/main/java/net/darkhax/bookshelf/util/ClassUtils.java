@@ -7,19 +7,9 @@
  */
 package net.darkhax.bookshelf.util;
 
-import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.Bookshelf;
 
 public final class ClassUtils {
-    
-    /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
-     * implicit public constructor to every class which does not define at lease one
-     * explicitly. Hence why this constructor was added.
-     */
-    private ClassUtils() {
-        
-        throw new IllegalAccessError("Utility class");
-    }
     
     /**
      * A basic check to see if two classes are the same. For the classes to be the same,
@@ -63,7 +53,7 @@ public final class ClassUtils {
         
         catch (final ClassNotFoundException e) {
             
-            Constants.LOG.catching(e);
+            Bookshelf.LOG.catching(e);
             return null;
         }
     }

@@ -7,27 +7,16 @@
  */
 package net.darkhax.bookshelf.util;
 
-import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Random;
 
-import net.darkhax.bookshelf.lib.Constants;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 
 public final class MathsUtils {
-    
-    /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
-     * implicit public constructor to every class which does not define at lease one
-     * explicitly. Hence why this constructor was added.
-     */
-    private MathsUtils() {
-        
-        throw new IllegalAccessError("Utility class");
-    }
     
     /**
      * Checks if a double is within range of two other doubles.
@@ -78,9 +67,9 @@ public final class MathsUtils {
      * @param min: The minimum value which can be returned by this method.
      * @param max: The maximum value which can be returned by this method.
      */
-    public static int nextIntInclusive (int min, int max) {
+    public static int nextIntInclusive (Random rand, int min, int max) {
         
-        return Constants.RANDOM.nextInt(max - min + 1) + min;
+        return rand.nextInt(max - min + 1) + min;
     }
     
     /**
@@ -110,16 +99,6 @@ public final class MathsUtils {
     public static boolean tryPercentage (double percent) {
         
         return Math.random() < percent;
-    }
-    
-    /**
-     * Generates a random color as an integer, from Color and three random floats.
-     *
-     * @return int: An integer based representation of a Color.
-     */
-    public static int getRandomColor () {
-        
-        return new Color(Constants.RANDOM.nextFloat(), Constants.RANDOM.nextFloat(), Constants.RANDOM.nextFloat()).getRGB();
     }
     
     /**

@@ -11,10 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import net.darkhax.bookshelf.Bookshelf;
+
 public class TableBuilder<T> {
-    
-    // TOOD make this stuff configurable
-    private String NEW_LINE = System.lineSeparator();
     
     private static final String DIVIDER_COLUMN = "|";
     
@@ -48,7 +47,7 @@ public class TableBuilder<T> {
     public void addColumn (String name, Function<? super T, ?> function) {
         
         this.columnNames.add(name);
-        this.columnFunctions.add( (p) -> String.valueOf(function.apply(p)));
+        this.columnFunctions.add(p -> String.valueOf(function.apply(p)));
     }
     
     /**
@@ -145,7 +144,7 @@ public class TableBuilder<T> {
         }
         
         builder.append(DIVIDER_COLUMN);
-        builder.append(this.NEW_LINE);
+        builder.append(Bookshelf.NEW_LINE);
         
         // Column Seperator
         builder.append(DIVIDER_COLUMN);
@@ -160,7 +159,7 @@ public class TableBuilder<T> {
         }
         
         builder.append(LINE_ENDING);
-        builder.append(this.NEW_LINE);
+        builder.append(Bookshelf.NEW_LINE);
         
         // Column Data
         for (final T entry : entries) {
@@ -177,7 +176,7 @@ public class TableBuilder<T> {
             }
             
             builder.append(DIVIDER_COLUMN);
-            builder.append(this.NEW_LINE);
+            builder.append(Bookshelf.NEW_LINE);
         }
         
         return builder.toString();
@@ -192,10 +191,5 @@ public class TableBuilder<T> {
     public List<T> getEntries () {
         
         return this.entries;
-    }
-    
-    public void setNewLine (String newline) {
-        
-        this.NEW_LINE = newline;
     }
 }

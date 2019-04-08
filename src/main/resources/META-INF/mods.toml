@@ -1,0 +1,28 @@
+modLoader="javafml"
+loaderVersion="[25,)"
+issueTrackerURL="https://github.com/Darkhax-Minecraft/Bookshelf/issues"
+
+[[mods]]
+modId="bookshelf"
+version="${version}"
+displayName="${mod_name}"
+displayURL="${mod_download}"
+credits="${mod_credits}"
+authors="${mod_authors}"
+description='''
+${mod_description}
+'''
+
+[[dependencies.bookshelf]]
+    modId="forge"
+    mandatory=true
+    versionRange="[25,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.bookshelf]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.13.2]"
+    ordering="NONE"
+    side="BOTH"

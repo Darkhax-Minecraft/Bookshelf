@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -58,7 +59,7 @@ public class WeightedSelectorRegistry<T extends IForgeRegistryEntry<T>> extends 
         // Prevent invalid registry attempts.
         if (value.getRegistryName() == null) {
             
-            Constants.LOG.noticableWarning(true, Arrays.asList("Attempted to register an item without setting it's ID! This is not allowed.", value.toString()));
+            Bookshelf.LOG.noticableWarning(true, Arrays.asList("Attempted to register an item without setting it's ID! This is not allowed.", value.toString()));
             return false;
         }
         

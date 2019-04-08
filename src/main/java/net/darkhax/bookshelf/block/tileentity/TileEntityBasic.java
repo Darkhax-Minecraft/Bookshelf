@@ -12,23 +12,28 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public abstract class TileEntityBasic extends TileEntity {
     
-    @Override
-    public void readFromNBT (NBTTagCompound dataTag) {
+	public TileEntityBasic(TileEntityType<?> tileEntityType) {
+		
+		super(tileEntityType);
+	}
+
+	@Override
+    public void read (NBTTagCompound dataTag) {
         
         this.readNBT(dataTag);
-        super.readFromNBT(dataTag);
+        super.read(dataTag);
     }
     
     @Override
-    public NBTTagCompound writeToNBT (NBTTagCompound dataTag) {
+    public NBTTagCompound write (NBTTagCompound dataTag) {
         
         this.writeNBT(dataTag);
-        return super.writeToNBT(dataTag);
+        return super.write(dataTag);
     }
     
     @Override
@@ -47,13 +52,7 @@ public abstract class TileEntityBasic extends TileEntity {
     @Override
     public NBTTagCompound getUpdateTag () {
         
-        return this.writeToNBT(new NBTTagCompound());
-    }
-    
-    @Override
-    public boolean shouldRefresh (World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-        
-        return oldState.getBlock() != newState.getBlock();
+        return this.write(new NBTTagCompound());
     }
     
     /**
@@ -115,16 +114,4 @@ public abstract class TileEntityBasic extends TileEntity {
      * @param dataTag: The NBTTagCompound for the TileEntity.
      */
     public abstract void readNBT (NBTTagCompound dataTag);
-    
-    /**
-     * This is called when the tile block is removed. Other methods are seemingly unreliable,
-     * so this should be used over them.
-     *
-     * @param world The world instance.
-     * @param pos The position of the broken tile.
-     * @param state The state of the broken tile.
-     */
-    public void onTileRemoved (World world, BlockPos pos, IBlockState state) {
-        
-    }
 }

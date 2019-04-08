@@ -7,9 +7,9 @@
  */
 package net.darkhax.bookshelf.client.model;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.model.ModelBiped;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityArmorStand;
@@ -17,10 +17,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public abstract class ModelArmorExtended extends ModelBiped {
     
     /**
@@ -37,19 +37,23 @@ public abstract class ModelArmorExtended extends ModelBiped {
     private void syncModel (Entity entity, float partialTicks) {
         
         final EntityLivingBase living = (EntityLivingBase) entity;
-        this.isSneak = living != null ? living.isSneaking() : false;
-        this.isChild = living != null ? living.isChild() : false;
         
-        if (living != null && living instanceof EntityPlayer) {
+        if (living != null) {
+        	
+            this.isSneak = living.isSneaking();
+            this.isChild = living.isChild();
             
-            final EntityPlayer player = (EntityPlayer) living;
-            final ArmPose poseMainhand = this.getArmPose(player.getHeldItemMainhand(), player);
-            final ArmPose poseOffhand = this.getArmPose(player.getHeldItemOffhand(), player);
-            final boolean isRightHanded = player.getPrimaryHand() == EnumHandSide.RIGHT;
-            
-            this.rightArmPose = isRightHanded ? poseMainhand : poseOffhand;
-            this.leftArmPose = isRightHanded ? poseOffhand : poseMainhand;
-            this.swingProgress = player.getSwingProgress(partialTicks);
+            if (living instanceof EntityPlayer) {
+                
+                final EntityPlayer player = (EntityPlayer) living;
+                final ArmPose poseMainhand = this.getArmPose(player.getHeldItemMainhand(), player);
+                final ArmPose poseOffhand = this.getArmPose(player.getHeldItemOffhand(), player);
+                final boolean isRightHanded = player.getPrimaryHand() == EnumHandSide.RIGHT;
+                
+                this.rightArmPose = isRightHanded ? poseMainhand : poseOffhand;
+                this.leftArmPose = isRightHanded ? poseOffhand : poseMainhand;
+                this.swingProgress = player.getSwingProgress(partialTicks);
+            }
         }
     }
     
@@ -85,7 +89,7 @@ public abstract class ModelArmorExtended extends ModelBiped {
         
         if (player.getItemInUseCount() > 0) {
             
-            final EnumAction action = stack.getItemUseAction();
+            final EnumAction action = stack.getUseAction();
             pose = action == EnumAction.BLOCK ? ArmPose.BLOCK : action == EnumAction.BOW ? ArmPose.BOW_AND_ARROW : pose;
         }
         
@@ -103,7 +107,7 @@ public abstract class ModelArmorExtended extends ModelBiped {
         if (entity instanceof EntityArmorStand) {
             
             netHeadYaw = 0;
-            GlStateManager.translate(0F, 0.15F, 0F);
+            GlStateManager.translatef(0F, 0.15F, 0F);
         }
         
         this.syncModel(entity, partialTicks);

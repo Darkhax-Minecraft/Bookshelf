@@ -2,8 +2,8 @@ package net.darkhax.bookshelf.data;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public enum MoonPhase {
     
@@ -42,15 +42,15 @@ public enum MoonPhase {
         return MoonPhase.values()[safePhase];
     }
     
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public String getPhaseName () {
         
         return I18n.format("moon.phase." + this.key + ".name");
     }
     
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static MoonPhase getCurrentPhase () {
         
-        return getPhase(Minecraft.getMinecraft().world.getMoonPhase());
+        return getPhase(Minecraft.getInstance().world.getMoonPhase());
     }
 }

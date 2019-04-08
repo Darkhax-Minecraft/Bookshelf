@@ -9,13 +9,10 @@ package net.darkhax.bookshelf.lib;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.chunk.RenderChunk;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * This class allows for snapshots of the game's performance to be created.
  */
-@SideOnly(Side.CLIENT)
 public class PerformanceInfo {
     
     /**

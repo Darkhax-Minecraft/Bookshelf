@@ -7,26 +7,31 @@
  */
 package net.darkhax.bookshelf.block.tileentity;
 
-import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.Bookshelf;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ITickable;
 
 public abstract class TileEntityBasicTickable extends TileEntityBasic implements ITickable {
     
-    @Override
-    public void update () {
+    public TileEntityBasicTickable(TileEntityType<?> tileEntityType) {
+    	
+		super(tileEntityType);
+	}
+
+	@Override
+    public void tick () {
         
-        if (this.isInvalid() || !this.getWorld().isBlockLoaded(this.getPos())) {
-            return;
-        }
-        
-        try {
+        if (this.hasWorld() && this.isLoaded() && !this.isRemoved()) {
+        	
+            try {
+                
+                this.onEntityUpdate();
+            }
             
-            this.onEntityUpdate();
-        }
-        
-        catch (final Exception exception) {
-            
-            Constants.LOG.warn(exception, "A TileEntity at {} in world {} failed a client update tick!", this.getPos().toString(), this.getWorld().getWorldInfo().getWorldName());
+            catch (final Exception exception) {
+                
+                Bookshelf.LOG.warn(exception, "A TileEntity with ID {} at {} in world {} failed a client update tick!", this.getType().getRegistryName().toString(), this.getPos().toString(), this.getWorld().getWorldInfo().getWorldName());
+            }
         }
     }
     

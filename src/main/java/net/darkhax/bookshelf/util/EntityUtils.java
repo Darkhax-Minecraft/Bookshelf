@@ -14,20 +14,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 public final class EntityUtils {
@@ -36,16 +30,6 @@ public final class EntityUtils {
      * An array of armor equipment slots.
      */
     private static final EntityEquipmentSlot[] EQUIPMENT_SLOTS = new EntityEquipmentSlot[] { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET };
-    
-    /**
-     * Utility classes, such as this one, are not meant to be instantiated. Java adds an
-     * implicit public constructor to every class which does not define at lease one
-     * explicitly. Hence why this constructor was added.
-     */
-    private EntityUtils() {
-        
-        throw new IllegalAccessError("Utility class");
-    }
     
     /**
      * Calculates the distance between two entities.
@@ -223,73 +207,6 @@ public final class EntityUtils {
     }
     
     /**
-     * Teleports an entity in an ender way. This takes into account changing dimensions, and
-     * firing the ender teleport event.
-     *
-     * @param entity The entity to teleport.
-     * @param dimension The dimension to teleport the entity to.
-     * @param x The x position.
-     * @param y The y position.
-     * @param z The z position.
-     * @param damage The amount of damage to deal. 0 is a valid damage amount.
-     */
-    public static void enderTeleport (EntityLivingBase entity, int dimension, double x, double y, double z, float damage) {
-        
-        final EnderTeleportEvent event = new EnderTeleportEvent(entity, x, y, z, damage);
-        
-        if (!event.isCanceled()) {
-            
-            entity.setPositionAndUpdate(event.getTargetX(), event.getTargetY(), event.getTargetZ());
-            entity.fallDistance = 0f;
-            
-            if (damage > 0f) {
-                
-                entity.attackEntityFrom(DamageSource.FALL, event.getAttackDamage());
-            }
-            
-            if (entity.dimension != dimension) {
-                
-                if (PlayerUtils.isPlayerReal(entity)) {
-                    
-                    final EntityPlayerMP player = (EntityPlayerMP) entity;
-                    PlayerUtils.changeDimension(player, dimension);
-                }
-                
-                else {
-                    
-                    entity.changeDimension(dimension);
-                }
-            }
-        }
-    }
-    
-    /**
-     * Changes the world that an entity is in. This allows for changing dimensions safer when
-     * working with other mods.
-     *
-     * @param entity The entity to change the world of.
-     * @param worldOld The old entity world.
-     * @param worldNew The new entity world.
-     */
-    public static void changeWorld (Entity entity, WorldServer worldOld, WorldServer worldNew) {
-        
-        final WorldProvider providerOld = worldOld.provider;
-        final WorldProvider providerNew = worldNew.provider;
-        final double moveFactor = providerOld.getMovementFactor() / providerNew.getMovementFactor();
-        final double x = MathHelper.clamp(entity.posX * moveFactor, -29999872, 29999872);
-        final double z = MathHelper.clamp(entity.posZ * moveFactor, -29999872, 29999872);
-        
-        if (entity.isEntityAlive()) {
-            
-            entity.setLocationAndAngles(x, entity.posY, z, entity.rotationYaw, entity.rotationPitch);
-            worldNew.spawnEntity(entity);
-            worldNew.updateEntityWithOptionalForce(entity, false);
-        }
-        
-        entity.setWorld(worldNew);
-    }
-    
-    /**
      * Gets the max health value of an entity.
      *
      * @param entity The entity to get the value from.
@@ -297,7 +214,7 @@ public final class EntityUtils {
      */
     public static double getMaxHealth (EntityLivingBase entity) {
         
-        return entity.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue();
+        return entity.getAttribute(SharedMonsterAttributes.MAX_HEALTH).getValue();
     }
     
     /**
@@ -308,7 +225,7 @@ public final class EntityUtils {
      */
     public static double getFollowRange (EntityLivingBase entity) {
         
-        return entity.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
+        return entity.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getValue();
     }
     
     /**
@@ -319,7 +236,7 @@ public final class EntityUtils {
      */
     public static double getKnockbackResistance (EntityLivingBase entity) {
         
-        return entity.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getAttributeValue();
+        return entity.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getValue();
     }
     
     /**
@@ -330,7 +247,7 @@ public final class EntityUtils {
      */
     public static double getMovementSpeed (EntityLivingBase entity) {
         
-        return entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
+        return entity.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
     }
     
     /**
@@ -341,7 +258,7 @@ public final class EntityUtils {
      */
     public static double getAttackDamage (EntityLivingBase entity) {
         
-        return entity.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        return entity.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue();
     }
     
     /**
@@ -352,7 +269,7 @@ public final class EntityUtils {
      */
     public static double getAttackSpeed (EntityLivingBase entity) {
         
-        return entity.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue();
+        return entity.getAttribute(SharedMonsterAttributes.ATTACK_SPEED).getValue();
     }
     
     /**
@@ -363,7 +280,7 @@ public final class EntityUtils {
      */
     public static double getArmor (EntityLivingBase entity) {
         
-        return entity.getEntityAttribute(SharedMonsterAttributes.ARMOR).getAttributeValue();
+        return entity.getAttribute(SharedMonsterAttributes.ARMOR).getValue();
     }
     
     /**
@@ -374,7 +291,7 @@ public final class EntityUtils {
      */
     public static double getArmorToughness (EntityLivingBase entity) {
         
-        return entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue();
+        return entity.getAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getValue();
     }
     
     /**
@@ -385,7 +302,7 @@ public final class EntityUtils {
      */
     public static double getLuck (EntityLivingBase entity) {
         
-        return entity.getEntityAttribute(SharedMonsterAttributes.LUCK).getAttributeValue();
+        return entity.getAttribute(SharedMonsterAttributes.LUCK).getValue();
     }
     
     /**
@@ -395,9 +312,9 @@ public final class EntityUtils {
      * @param attribute The attribute to get the value of.
      * @return The value of the attribute.
      */
-    public static double getAttributeValue (EntityLivingBase entity, IAttribute attribute) {
+    public static double getValue (EntityLivingBase entity, IAttribute attribute) {
         
-        return entity.getEntityAttribute(attribute).getAttributeValue();
+        return entity.getAttribute(attribute).getValue();
     }
     
     public static void addDrop (ItemStack stack, LivingDropsEvent event) {

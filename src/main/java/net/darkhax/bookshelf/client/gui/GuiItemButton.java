@@ -8,10 +8,13 @@
 package net.darkhax.bookshelf.client.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
 
-public class GuiItemButton extends GuiButton {
+@OnlyIn(Dist.CLIENT)
+public class GuiItemButton extends GuiButtonExt {
     
     /**
      * The ItemStack that is drawn over the button. By default nothing is rendered. This stack
@@ -35,11 +38,12 @@ public class GuiItemButton extends GuiButton {
     }
     
     @Override
-    public void drawButton (Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+    public void render (int mouseX, int mouseY, float partialTicks) {
         
-        super.drawButton(mc, mouseX, mouseY, partialTicks);
-        Minecraft.getMinecraft().getRenderItem().renderItemOverlayIntoGUI(Minecraft.getMinecraft().fontRenderer, this.renderStack, this.x + 2, this.y + 2, "");
-        Minecraft.getMinecraft().getRenderItem().renderItemAndEffectIntoGUI(this.renderStack, this.x + 2, this.y + 2);
+        super.render(mouseX, mouseY, partialTicks);
+        Minecraft minecraft = Minecraft.getInstance();
+        minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, this.renderStack, this.x + 2, this.y + 2, "");
+        minecraft.getItemRenderer().renderItemAndEffectIntoGUI(this.renderStack, this.x + 2, this.y + 2);
         
     }
 }

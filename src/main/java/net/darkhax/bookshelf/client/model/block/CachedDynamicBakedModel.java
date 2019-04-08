@@ -2,21 +2,21 @@ package net.darkhax.bookshelf.client.model.block;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.vecmath.Matrix4f;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.client.renderer.model.BakedQuad;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -110,13 +110,13 @@ public abstract class CachedDynamicBakedModel implements IBakedModel {
      *
      * @return The raw model data.
      */
-    public IModel getRaw () {
+    public IModel<?> getRaw () {
         
         return this.raw;
     }
     
     @Override
-    public List<BakedQuad> getQuads (IBlockState state, EnumFacing side, long rand) {
+    public List<BakedQuad> getQuads (IBlockState state, EnumFacing side, Random rand) {
         
         return this.getModel(this.getCacheKey(state, side)).getQuads(state, side, rand);
     }
@@ -200,13 +200,8 @@ public abstract class CachedDynamicBakedModel implements IBakedModel {
         
         public static final ItemOverrideList INSTANCE = new ItemOverrideListRetexturable();
         
-        private ItemOverrideListRetexturable() {
-            
-            super(ImmutableList.of());
-        }
-        
         @Override
-        public IBakedModel handleItemState (@Nonnull IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+        public IBakedModel getModelWithOverrides (@Nonnull IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
             
             if (originalModel instanceof CachedDynamicBakedModel) {
                 

@@ -9,8 +9,6 @@ package net.darkhax.bookshelf.lib;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * This class is used to represent a date in the minecraft world.
@@ -65,7 +63,7 @@ public class MCDate {
      */
     public MCDate(World world) {
         
-        this(world.getWorldTime());
+        this(world.getGameTime());
     }
     
     /**
@@ -147,7 +145,6 @@ public class MCDate {
      *
      * @return The localized day name.
      */
-    @SideOnly(Side.CLIENT)
     public String getLocalizedDayName () {
         
         return I18n.format("time.bookshelf.day." + this.getDayName() + ".name");
@@ -168,7 +165,6 @@ public class MCDate {
      *
      * @return The localized month name.
      */
-    @SideOnly(Side.CLIENT)
     public String getLocalizedMonthName () {
         
         return I18n.format("time.bookshelf.month." + this.getMonthName() + ".name");

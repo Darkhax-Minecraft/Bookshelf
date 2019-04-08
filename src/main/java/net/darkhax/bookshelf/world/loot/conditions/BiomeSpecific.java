@@ -13,12 +13,12 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
-import net.darkhax.bookshelf.lib.Constants;
+import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class BiomeSpecific implements LootCondition {
     
@@ -42,7 +42,7 @@ public class BiomeSpecific implements LootCondition {
         
         public Serializer() {
             
-            super(new ResourceLocation(Constants.MOD_ID, "biome_specific"), BiomeSpecific.class);
+            super(new ResourceLocation(Bookshelf.MOD_ID, "biome_specific"), BiomeSpecific.class);
         }
         
         @Override

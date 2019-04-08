@@ -8,10 +8,13 @@
 package net.darkhax.bookshelf.client.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
 
-public class GuiGraphicButton extends GuiButton {
+@OnlyIn(Dist.CLIENT)
+public class GuiGraphicButton extends GuiButtonExt {
     
     /**
      * The image to draw on the button. By default this image is a random file that probably
@@ -35,10 +38,10 @@ public class GuiGraphicButton extends GuiButton {
     }
     
     @Override
-    public void drawButton (Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+    public void render (int mouseX, int mouseY, float partialTicks) {
         
-        super.drawButton(mc, mouseX, mouseY, partialTicks);
-        mc.getTextureManager().bindTexture(this.buttonImage);
+        super.render(mouseX, mouseY, partialTicks);
+        Minecraft.getInstance().getTextureManager().bindTexture(this.buttonImage);
         drawModalRectWithCustomSizedTexture(this.x, this.y, 0f, 0f, 20, 20, 20f, 20f);
     }
 }

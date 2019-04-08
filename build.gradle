@@ -1,30 +1,20 @@
 buildscript {
-
     repositories {
-    
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url 'https://plugins.gradle.org/m2/' }
         jcenter()
-        
-        maven { 
-        
-            url = 'http://files.minecraftforge.net/maven'
-        }
-        
-        maven {
-
-            url 'https://plugins.gradle.org/m2/'
-        }
+        mavenCentral()
     }
-    
     dependencies {
-    
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.1.0'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.2.0'
     }
 }
 
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'com.matthewprenger.cursegradle'
 apply plugin: 'maven-publish' 
+apply plugin: 'eclipse'
 
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/secrets.gradle'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
@@ -33,79 +23,103 @@ apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Co
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/patreon.gradle'
 
 loadSecrets()
+
 version = "${mod_version}" + getBuildNumber()
 group = "${mod_group}"
 archivesBaseName = "${mod_name}-${version_minecraft}"
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
 
-    version = "${version_minecraft}-${version_forge}"
-    mappings = "${version_mcp}"
-    runDir = 'run'
-    
-    replace '@VERSION@', project.version
-    replace '@FINGERPRINT@', project.findProperty('signSHA1')
-    replaceIn "${mod_class}.java"
+    mappings channel: 'snapshot', version: "${version_mcp}".toString()
+	
+    runs {
+        client {
+		
+            workingDirectory project.file('run')
+
+            mods {
+                bookshelf {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            mods {
+                bookshelf {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
 }
 
-processResources {
+dependencies {
 
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    from(sourceSets.main.resources.srcDirs) {
-    
-        include 'mcmod.info'
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    from(sourceSets.main.resources.srcDirs) {
-    
-        exclude 'mcmod.info'
-    }
-
-    rename '(.+_at.cfg)', 'META-INF/$1'
+    minecraft "net.minecraftforge:forge:${version_forge}"
 }
-
 
 jar {
-
     manifest {
- 	
- 	    attributes 'FMLAT': 'bookshelf_at.cfg'
- 	}
- }
+        attributes([
+            "Specification-Title": "${mod_name}",
+            "Specification-Vendor": "${mod_vendor}",
+            "Specification-Version": "${version}",
+            "Implementation-Title": project.name,
+            "Implementation-Version": "${version}",
+            "Implementation-Vendor" :"${mod_vendor}",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
 
 String getBuildNumber() {
 
     return System.getenv('BUILD_NUMBER') ? System.getenv('BUILD_NUMBER') : System.getenv('TRAVIS_BUILD_NUMBER') ? System.getenv('TRAVIS_BUILD_NUMBER') : '0';
 }
 
-//Shuts up javadoc failures
-if (JavaVersion.current().isJava8Compatible()) {
+processResources {
 
-    allprojects {
-
-        tasks.withType(Javadoc) {
-
-            options.addStringOption('Xdoclint:none', '-quiet')
+    from(sourceSets.main.resources.srcDirs) {
+        include 'META-INF/mods.toml'
+        
+        def credits = "Thanks to my supporters on Patreon. "
+        
+        def patreonSupporters = new ArrayList<String>()
+        
+        for (entry in getPledges()) {
+          
+            def pledge = entry.getValue();
+            
+            if (pledge.isValid()) {
+            
+                patreonSupporters.add(pledge.getDisplayName())
+            }
         }
+        
+        credits += patreonSupporters.join(', ')
+        println credits
+        expand 'version': project.version, 'mod_id' : mod_id, 'mod_name': mod_name, 'mod_download': mod_download, 'mod_credits': credits, 'mod_authors': mod_authors, 'mod_description': mod_description
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'META-INF/mods.toml'
     }
 }
 
 curseforge {
 
-    apiKey = findProperty('curse_auth') ?: 0
+    apiKey = findProperty('curse_auth') ?: 0 
     def versions = "${curse_versions}".split(', ')
-
     project {
 
         id = "${curse_project}"
         releaseType = 'alpha'
-        changelog = getGitChangelog() + "\n\nHuge thanks to my supporters on [Patreon](https://www.patreon.com/Darkhax?MCChangelog?${mod_class})\n\n" + getPledgeLog()
+        changelog = getGitChangelog() + "\n\nHuge thanks to my supporters on [Patreon](https://www.patreon.com/Darkhax?MCChangelog?${mod_name})\n\n" + getPledgeLog()
         changelogType = 'markdown'
 
         versions.each {
@@ -143,20 +157,3 @@ curseforge {
         addArtifact(deobfJar)
     }
 }
-
-task signJar(type: SignJar, dependsOn: reobfJar) {
-
-    onlyIf {
-    
-        project.hasProperty('keyStore')
-    }
-    
-    keyStore = project.findProperty('keyStore')
-    alias = project.findProperty('keyStoreAlias')
-    storePass = project.findProperty('keyStorePass')
-    keyPass = project.findProperty('keyStoreKeyPass')
-    inputFile = jar.archivePath
-    outputFile = jar.archivePath
-}
-
-build.dependsOn signJar

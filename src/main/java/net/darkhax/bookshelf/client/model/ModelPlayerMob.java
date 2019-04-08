@@ -7,19 +7,19 @@
  */
 package net.darkhax.bookshelf.client.model;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.model.ModelBiped;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumHandSide;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * This class provides the basic model code for a player mob. A player mob is one that
  * resembles a player, like zombies. An entity and renderer class for this mob type also exist.
  */
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ModelPlayerMob extends ModelBiped {
     
     public ModelRenderer leftArmOverlay;
@@ -27,6 +27,7 @@ public class ModelPlayerMob extends ModelBiped {
     public ModelRenderer leftLegOverlay;
     public ModelRenderer rightLegLverlay;
     public ModelRenderer bodyOverlay;
+    
     private final boolean isFeminine;
     
     public ModelPlayerMob(float modelSize, boolean isFeminine) {
@@ -85,8 +86,8 @@ public class ModelPlayerMob extends ModelBiped {
         
         if (this.isChild) {
             
-            GlStateManager.scale(0.5F, 0.5F, 0.5F);
-            GlStateManager.translate(0.0F, 24.0F * scale, 0.0F);
+            GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+            GlStateManager.translatef(0.0F, 24.0F * scale, 0.0F);
             this.leftLegOverlay.render(scale);
             this.rightLegLverlay.render(scale);
             this.leftArmOverlay.render(scale);
@@ -98,7 +99,7 @@ public class ModelPlayerMob extends ModelBiped {
             
             if (entity.isSneaking()) {
                 
-                GlStateManager.translate(0.0F, 0.2F, 0.0F);
+                GlStateManager.translatef(0.0F, 0.2F, 0.0F);
             }
             
             this.leftLegOverlay.render(scale);
