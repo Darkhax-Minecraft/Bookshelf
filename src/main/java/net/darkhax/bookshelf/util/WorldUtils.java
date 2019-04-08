@@ -67,7 +67,8 @@ public final class WorldUtils {
         
         catch (final Exception e) {
             
-            Bookshelf.LOG.warn(e, "Unable to set biome for Pos: {}, Biome: {}", pos.toString(), biome.getRegistryName());
+        	Bookshelf.LOG.catching(e);
+            Bookshelf.LOG.warn("Unable to set biome for Pos: {}, Biome: {}", pos.toString(), biome.getRegistryName());
         }
     }
     

@@ -64,8 +64,11 @@ public final class MathsUtils {
      * Used to retrieve a random integer between the two provided integers. The integers
      * provided are also possible outcomes.
      *
-     * @param min: The minimum value which can be returned by this method.
-     * @param max: The maximum value which can be returned by this method.
+     * @param rand An instance of random.
+     * @param min The minimum value which can be returned by this method.
+     * @param max The maximum value which can be returned by this method.
+     * 
+     * @return An integer between the min and max, including the min and max.
      */
     public static int nextIntInclusive (Random rand, int min, int max) {
         

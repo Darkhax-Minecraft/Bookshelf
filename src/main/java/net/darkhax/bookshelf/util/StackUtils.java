@@ -21,6 +21,7 @@ public final class StackUtils {
      * Sets a stack compound to an ItemStack if it does not already have one.
      *
      * @param stack ItemStack having a tag set on it.
+     * @return The tag of the stack.
      */
     public static NBTTagCompound prepareStackTag (ItemStack stack) {
         

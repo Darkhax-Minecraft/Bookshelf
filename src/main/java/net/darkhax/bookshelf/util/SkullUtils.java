@@ -30,6 +30,7 @@ public final class SkullUtils {
     /**
      * Creates a skull using a players UUID.
      *
+     * @param name The name of the player.
      * @param uuid The UUID of the player to base the skull on.
      * @return ItemStack An ItemStack containing a skull which represents the owner of the
      *         passed UUID.

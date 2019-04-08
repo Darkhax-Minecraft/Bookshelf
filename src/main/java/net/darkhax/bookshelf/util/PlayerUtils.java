@@ -121,7 +121,6 @@ public final class PlayerUtils {
      *
      * @param player The player to check the inventory of.
      * @param item The item to check for.
-     * @param meta The metadata for the item to look for. Less than 0 can be used for any item.
      * @return Whether or not the player has the item in their inventory.
      */
     public static boolean playerHasItem (EntityPlayer player, Item item) {
@@ -140,7 +139,6 @@ public final class PlayerUtils {
      *
      * @param player The player to search.
      * @param item The item to search for.
-     * @param meta The desired metadata for the item. If less than 0, any meta will work.
      * @return The list of found items.
      */
     public static List<ItemStack> getStacksFromPlayer (EntityPlayer player, Item item) {
@@ -159,6 +157,8 @@ public final class PlayerUtils {
     /**
      * Retrieves an instance of the player from the client side. This code only exists in
      * client side code and can not be used in server side code.
+     * 
+     * @return The client side player. 
      */
     @OnlyIn(Dist.CLIENT)
     public static EntityPlayerSP getClientPlayer () {

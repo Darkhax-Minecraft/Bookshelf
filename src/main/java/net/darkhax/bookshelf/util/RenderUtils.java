@@ -178,6 +178,7 @@ public final class RenderUtils {
      * rendering at a static world position that is not tied to the player's position.
      *
      * @param pos The BlockPos The position to translate to within the world.
+     * @param offset If the position should be offset by half a block.
      */
     public static void translateAgainstPlayer (BlockPos pos, boolean offset) {
         

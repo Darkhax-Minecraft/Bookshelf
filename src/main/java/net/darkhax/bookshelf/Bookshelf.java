@@ -9,7 +9,9 @@ package net.darkhax.bookshelf;
 
 import java.util.Random;
 
-import net.darkhax.bookshelf.lib.LoggingHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.minecraftforge.fml.common.Mod;
 
 @Mod(Bookshelf.MOD_ID)
@@ -25,5 +27,5 @@ public class Bookshelf {
     
     public static final String MOD_NAME = "Bookshelf";
     
-    public static final LoggingHelper LOG = new LoggingHelper(MOD_NAME);
+    public static final Logger LOG = LogManager.getLogger(MOD_NAME);
 }

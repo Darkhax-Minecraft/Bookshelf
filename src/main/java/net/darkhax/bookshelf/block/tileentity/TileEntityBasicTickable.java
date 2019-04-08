@@ -30,7 +30,8 @@ public abstract class TileEntityBasicTickable extends TileEntityBasic implements
             
             catch (final Exception exception) {
                 
-                Bookshelf.LOG.warn(exception, "A TileEntity with ID {} at {} in world {} failed a client update tick!", this.getType().getRegistryName().toString(), this.getPos().toString(), this.getWorld().getWorldInfo().getWorldName());
+                Bookshelf.LOG.warn("A TileEntity with ID {} at {} in world {} failed a client update tick!", this.getType().getRegistryName().toString(), this.getPos().toString(), this.getWorld().getWorldInfo().getWorldName());
+            	Bookshelf.LOG.catching(exception);
             }
         }
     }

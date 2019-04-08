@@ -157,7 +157,7 @@ public final class EntityUtils {
      * @param world The world to search in.
      * @param pos The position to start the search around.
      * @param range The range of the search.
-     * @return List<Entity> A List containing all entities of the specified type that are
+     * @return A List containing all entities of the specified type that are
      *         within the range.
      */
     @SuppressWarnings("unchecked")

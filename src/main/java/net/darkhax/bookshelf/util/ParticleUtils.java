@@ -39,7 +39,7 @@ public final class ParticleUtils {
      *
      * @param world The world to spawn the particles in.
      * @param particle The type of particle to spawn.
-     * @param percent The percentage of the ring to render.
+     * @param percentage The percentage of the ring to render.
      * @param x The x position to spawn the particle around.
      * @param y The y position to spawn the particle around.
      * @param z The z position to spawn the particle around.
@@ -63,7 +63,7 @@ public final class ParticleUtils {
      *
      * @param world The world to spawn the particles in.
      * @param particle The type of particle to spawn.
-     * @param percent The percentage of the ring to render.
+     * @param percentage The percentage of the ring to render.
      * @param x The x position to spawn the particle around.
      * @param y The y position to spawn the particle around.
      * @param z The z position to spawn the particle around.

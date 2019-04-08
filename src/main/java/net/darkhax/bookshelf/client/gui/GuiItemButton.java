@@ -29,7 +29,7 @@ public class GuiItemButton extends GuiButtonExt {
      * @param buttonID The ID to set for the button. This ID is specific to the GUI instance.
      * @param xPosition The X coordinate to position the button at.
      * @param yPosition The Y coordinate to position the button at.
-     * @param texture The texture to use for the button. This should be a 20x20 image.
+     * @param renderStack The itemstack to render.
      */
     public GuiItemButton(int buttonID, int xPosition, int yPosition, ItemStack renderStack) {
         

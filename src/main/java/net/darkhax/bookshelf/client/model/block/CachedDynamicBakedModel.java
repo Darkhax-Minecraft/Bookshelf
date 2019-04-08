@@ -64,9 +64,7 @@ public abstract class CachedDynamicBakedModel implements IBakedModel {
      * result for the same input. The result is used by {@link #generateBlockModel(String)} to
      * create a new model version so the result should also be descriptive.
      *
-     * @param state The block state. If you use an extended block state this can contain
-     *        arbitrary objects from
-     *        {@link Block#getExtendedState(IBlockState, net.minecraft.world.IBlockAccess, net.minecraft.util.math.BlockPos)}.
+     * @param state The block state to pull data from.
      * @param side The side of the block.
      * @return A cache key which contains information based on the context.
      */
