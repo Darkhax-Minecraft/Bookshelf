@@ -38,6 +38,7 @@ minecraft {
         client {
 		
             workingDirectory project.file('run')
+			taskName "${mod_name} Client"
 
             mods {
                 bookshelf {
@@ -47,7 +48,9 @@ minecraft {
         }
 
         server {
+		
             workingDirectory project.file('run')
+			taskName "${mod_name} Server"
 
             mods {
                 bookshelf {
