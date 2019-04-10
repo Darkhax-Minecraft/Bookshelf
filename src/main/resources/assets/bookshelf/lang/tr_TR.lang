@@ -1,0 +1,34 @@
+#Turkish Language File 
+
+#Moon Phases
+moon.phase.full.name=Dolunay
+moon.phase.waxing.gibbous.name=Şişkin Ay
+moon.phase.first.quarter.name=İlkdördün
+moon.phase.waxing.crescent.name=Hilal
+moon.phase.new.name=Yeniay
+moon.phase.waning.crescent.name=Hilal
+moon.phase.last.quarter.name=Sondördün
+moon.phase.waning.gibbous.name=Şişkin Ay
+
+#Months
+time.bookshelf.month.january.name=Ocak
+time.bookshelf.month.february.name=Şubat
+time.bookshelf.month.march.name=Mart
+time.bookshelf.month.april.name=Nisan
+time.bookshelf.month.may.name=Mayıs
+time.bookshelf.month.june.name=Haziran
+time.bookshelf.month.july.name=Temmuz
+time.bookshelf.month.august.name=Ağustos
+time.bookshelf.month.september.name=Eylül
+time.bookshelf.month.october.name=Ekim
+time.bookshelf.month.november.name=Kasım
+time.bookshelf.month.december.name=Aralık
+
+#Days
+time.bookshelf.day.sunday.name=Pazar
+time.bookshelf.day.monday.name=Pazartesi
+time.bookshelf.day.tuesday.name=Salı
+time.bookshelf.day.wednesday.name=Çarşamba
+time.bookshelf.day.thursday.name=Perşembe
+time.bookshelf.day.friday.name=Cuma
+time.bookshelf.day.saturday.name=Cumartesi
