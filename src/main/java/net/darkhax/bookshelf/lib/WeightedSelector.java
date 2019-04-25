@@ -11,12 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class WeightedSelector<T> {
+import javax.annotation.Nullable;
 
-    /**
-     * A random object used only for weighted selectors.
-     */
-    private static final Random RANDOM = new Random();
+public class WeightedSelector<T> {
 
     /**
      * The list of entries held by the selector.
@@ -95,23 +92,32 @@ public class WeightedSelector<T> {
      *
      * @return The weighted entry that was selected.
      */
-    public WeightedEntry<T> getRandomEntry () {
+    @Nullable
+    public WeightedEntry<T> getRandomEntry (Random rand) {
 
-        final int selected = RANDOM.nextInt(this.total);
-        int current = 0;
+        if (!this.entries.isEmpty()) {
+            
+            final int selected = rand.nextInt(this.total);
+            int current = 0;
 
-        for (final WeightedEntry<T> entry : this.entries) {
+            for (final WeightedEntry<T> entry : this.entries) {
 
-            current += entry.weight;
+                current += entry.weight;
 
-            if (selected < current) {
-                return entry;
+                if (selected < current) {
+                    return entry;
+                }
             }
         }
 
         return null;
     }
 
+    public int getTotalWeight() {
+        
+        return this.total;
+    }
+    
     /**
      * Updates the total weight value for the selector. This should be caused any time the list
      * is altered.
@@ -120,7 +126,7 @@ public class WeightedSelector<T> {
      */
     public int updateTotal () {
 
-        int total = 0;
+        total = 0;
 
         for (final WeightedEntry<T> entry : this.entries) {
             total += entry.getWeight();
