@@ -183,4 +183,14 @@ public final class MathsUtils {
         
         return initial < min ? min : initial > max ? max : initial;
     }
+    
+    public static float remap(float value, float currentLow, float currentHigh, float newLow, float newHigh) {
+    	
+        return newLow + (value - currentLow) * (newHigh - newLow) / (currentHigh - currentLow);
+    }
+    
+    public static double easeInQuint(double percentage) {
+    	
+        return percentage * percentage * percentage * percentage;
+    }
 }
