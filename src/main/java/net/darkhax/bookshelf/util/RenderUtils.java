@@ -63,55 +63,55 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public final class RenderUtils {
-    
+
     public static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
-    
+
     /**
      * A flag used by
      */
     private static boolean requiresRenderReload = false;
-    
+
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
     private RenderUtils() {
-        
+
         throw new IllegalAccessError("Utility class");
     }
-    
+
     /**
      * Registers a LayerRenderer to both the Alex and Steve player renderers.
      *
      * @param layer The LayerRenderer to register.
      */
     public static void registerPlayerLayer (LayerRenderer<EntityLivingBase> layer) {
-        
+
         getSteveRenderer().addLayer(layer);
         getAlexRenderer().addLayer(layer);
     }
-    
+
     /**
      * Gets the RenderPlayer instance for the Steve model.
      *
      * @return RederPlayer The RenderPlayer instance for the Steve model.
      */
     public static RenderPlayer getSteveRenderer () {
-        
+
         return getPlayerRenderer("default");
     }
-    
+
     /**
      * Gets the RenderPlayer instance for the Alex model.
      *
      * @return RenderPlayer The RenderPlayer instance for the Alex model.
      */
     public static RenderPlayer getAlexRenderer () {
-        
+
         return getPlayerRenderer("slim");
     }
-    
+
     /**
      * Gets a RenderPlayer instance for the specified model type. Currently only Alex (slim)
      * and Steve (default) are added by vanilla. Can be null if no renderer was found.
@@ -120,10 +120,10 @@ public final class RenderUtils {
      * @return RenderPlayer The RenderPlayer instance for the specified model.
      */
     public static RenderPlayer getPlayerRenderer (String type) {
-        
+
         return Minecraft.getMinecraft().getRenderManager().skinMap.get(type);
     }
-    
+
     /**
      * Sets a player specific texture. This can be used to change the skin, cape or elytra
      * texture.
@@ -134,16 +134,16 @@ public final class RenderUtils {
      * @return boolean Whether or not the texture was succesfully applied.
      */
     public static boolean setPlayerTexture (Type type, AbstractClientPlayer player, ResourceLocation texture) {
-        
+
         if (player.hasPlayerInfo() && texture != null) {
-            
+
             player.getPlayerInfo().playerTextures.put(type, texture);
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Attempts to download a resource from the web and load it into the game. If the resource
      * can not be downloaded successfully. Wraps
@@ -160,11 +160,11 @@ public final class RenderUtils {
      * @return The output resource location.
      */
     public static ResourceLocation downloadResourceLocation (String url, ResourceLocation outputResource, ResourceLocation defaultResource, IImageBuffer buffer) {
-        
+
         downloadResource(url, outputResource, defaultResource, buffer);
         return outputResource;
     }
-    
+
     /**
      * Attempts to download a resource from the web and load it into the game. If the resource
      * can not be downloaded successfully.
@@ -179,20 +179,20 @@ public final class RenderUtils {
      * @return The downloaded image data.
      */
     public static ThreadDownloadImageData downloadResource (String url, ResourceLocation outputResource, ResourceLocation defaultResource, IImageBuffer buffer) {
-        
+
         final TextureManager manager = Minecraft.getMinecraft().getTextureManager();
-        
+
         ThreadDownloadImageData imageData = (ThreadDownloadImageData) manager.getTexture(outputResource);
-        
+
         if (imageData == null) {
-            
+
             imageData = new ThreadDownloadImageData(null, url, defaultResource, buffer);
             manager.loadTexture(outputResource, imageData);
         }
-        
+
         return imageData;
     }
-    
+
     /**
      * Gets the camera for a specific entity.
      *
@@ -201,16 +201,16 @@ public final class RenderUtils {
      * @return The camera for the entity.
      */
     public static Frustum getCamera (Entity entity, float partialTicks) {
-        
+
         final double cameraX = entity.prevPosX + (entity.posX - entity.prevPosX) * partialTicks;
         final double cameraY = entity.prevPosY + (entity.posY - entity.prevPosY) * partialTicks;
         final double cameraZ = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * partialTicks;
-        
+
         final Frustum camera = new Frustum();
         camera.setPosition(cameraX, cameraY, cameraZ);
         return camera;
     }
-    
+
     /**
      * Translates the render state to be relative to the player's position. Allows for
      * rendering at a static world position that is not tied to the player's position.
@@ -218,11 +218,11 @@ public final class RenderUtils {
      * @param pos The BlockPos The position to translate to within the world.
      */
     public static void translateAgainstPlayer (BlockPos pos, boolean offset) {
-        
+
         final float x = (float) (pos.getX() - TileEntityRendererDispatcher.staticPlayerX);
         final float y = (float) (pos.getY() - TileEntityRendererDispatcher.staticPlayerY);
         final float z = (float) (pos.getZ() - TileEntityRendererDispatcher.staticPlayerZ);
-        
+
         if (offset) {
             GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
         }
@@ -230,7 +230,7 @@ public final class RenderUtils {
             GlStateManager.translate(x, y, z);
         }
     }
-    
+
     /**
      * Gets the particle sprite for an ItemStack.
      *
@@ -238,10 +238,10 @@ public final class RenderUtils {
      * @return A TextureAtlasSprite that points to the particle texture for the ItemStack.
      */
     public static TextureAtlasSprite getParticleTexture (ItemStack stack) {
-        
+
         return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(stack).getParticleTexture();
     }
-    
+
     /**
      * Gets the TextureAtlasSprite for the ItemStack. Has support for both Items and Blocks.
      *
@@ -249,19 +249,19 @@ public final class RenderUtils {
      * @return The sprite for the ItemStack.
      */
     public static TextureAtlasSprite getSprite (ItemStack stack) {
-        
+
         final Minecraft mc = Minecraft.getMinecraft();
         final Block block = StackUtils.getBlockFromStack(stack);
-        
+
         if (block == null) {
-            
+
             final ItemModelMesher mesher = mc.getRenderItem().getItemModelMesher();
             return !stack.isEmpty() ? mesher.getParticleIcon(stack.getItem(), stack.getItemDamage()) : mesher.getItemModel(null).getParticleTexture();
         }
-        
+
         return mc.getBlockRendererDispatcher().getBlockModelShapes().getTexture(block.getStateFromMeta(stack.getItemDamage()));
     }
-    
+
     /**
      * Gets the baked model for a ModelResourceLocation.
      *
@@ -269,10 +269,10 @@ public final class RenderUtils {
      * @return The baked model that was found.
      */
     public static IBakedModel getBakedModel (ModelResourceLocation name) {
-        
+
         return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getModel(name);
     }
-    
+
     /**
      * Gets the baked model for an ItemStack.
      *
@@ -280,10 +280,10 @@ public final class RenderUtils {
      * @return The baked model for the ItemStack.
      */
     public static IBakedModel getBakedModel (ItemStack stack) {
-        
+
         return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(stack);
     }
-    
+
     /**
      * Renders a fluid at the given position.
      *
@@ -297,13 +297,13 @@ public final class RenderUtils {
      * @param length The length of the block. 1 = full block.
      */
     public static void renderFluid (FluidStack fluid, BlockPos pos, double x, double y, double z, double width, double height, double length) {
-        
+
         final double x1 = (1d - width) / 2d;
         final double y1 = (1d - height) / 2d;
         final double z1 = (1d - length) / 2d;
         renderFluid(fluid, pos, x, y, z, x1, y1, z1, 1d - x1, 1d - y1, 1d - z1);
     }
-    
+
     /**
      * Renders a fluid at the given position.
      *
@@ -320,11 +320,11 @@ public final class RenderUtils {
      * @param z2 The max Z position.
      */
     public static void renderFluid (FluidStack fluid, BlockPos pos, double x, double y, double z, double x1, double y1, double z1, double x2, double y2, double z2) {
-        
+
         final int color = fluid.getFluid().getColor(fluid);
         renderFluid(fluid, pos, x, y, z, x1, y1, z1, x2, y2, z2, color);
     }
-    
+
     /**
      * Renders a fluid at the given position.
      *
@@ -342,13 +342,13 @@ public final class RenderUtils {
      * @param color The color offset used by the fluid. Default is white.
      */
     public static void renderFluid (FluidStack fluid, BlockPos pos, double x, double y, double z, double x1, double y1, double z1, double x2, double y2, double z2, int color) {
-        
+
         final Minecraft mc = Minecraft.getMinecraft();
         final TextureAtlasSprite still = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getStill(fluid).toString());
         final TextureAtlasSprite flowing = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getFlowing(fluid).toString());
         renderFluid(fluid, pos, x, y, z, x1, y1, z1, x2, y2, z2, color, still, flowing);
     }
-    
+
     /**
      * Renders a fluid at the given position.
      *
@@ -368,17 +368,17 @@ public final class RenderUtils {
      * @param side The texture for the side.
      */
     public static void renderFluid (FluidStack fluid, BlockPos pos, double x, double y, double z, double x1, double y1, double z1, double x2, double y2, double z2, int color, TextureAtlasSprite top, TextureAtlasSprite side) {
-        
+
         final Minecraft mc = Minecraft.getMinecraft();
         final Tessellator tessellator = Tessellator.getInstance();
         final BufferBuilder buffer = tessellator.getBuffer();
         final int brightness = mc.world.getCombinedLight(pos, fluid.getFluid().getLuminosity());
-        
+
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         setupRenderState(x, y, z);
         GlStateManager.translate(x, y, z);
-        
+
         addTexturedQuad(buffer, top, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.DOWN, color, brightness);
         addTexturedQuad(buffer, side, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.NORTH, color, brightness);
         addTexturedQuad(buffer, side, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.EAST, color, brightness);
@@ -386,10 +386,10 @@ public final class RenderUtils {
         addTexturedQuad(buffer, side, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.WEST, color, brightness);
         addTexturedQuad(buffer, top, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.UP, color, brightness);
         tessellator.draw();
-        
+
         cleanupRenderState();
     }
-    
+
     /**
      * Adds a textured quad to a VertexBuffer. This is intended to be used for block rendering.
      *
@@ -406,23 +406,23 @@ public final class RenderUtils {
      * @param brightness The brightness of the cube.
      */
     public static void addTexturedQuad (BufferBuilder buffer, TextureAtlasSprite sprite, double x, double y, double z, double width, double height, double length, EnumFacing face, int color, int brightness) {
-        
+
         if (sprite == null) {
-            
+
             Constants.LOG.warn("Attempted to draw a textures quad with no texture!");
             return;
         }
-        
+
         final int firstLightValue = brightness >> 0x10 & 0xFFFF;
         final int secondLightValue = brightness & 0xFFFF;
         final int alpha = color >> 24 & 0xFF;
         final int red = color >> 16 & 0xFF;
         final int green = color >> 8 & 0xFF;
         final int blue = color & 0xFF;
-        
+
         addTextureQuad(buffer, sprite, x, y, z, width, height, length, face, red, green, blue, alpha, firstLightValue, secondLightValue);
     }
-    
+
     /**
      * Adds a textured quad to a VertexBuffer. This is intended to be used for block rendering.
      *
@@ -443,112 +443,112 @@ public final class RenderUtils {
      * @param light2 The second light map value.
      */
     public static void addTextureQuad (BufferBuilder buffer, TextureAtlasSprite sprite, double x, double y, double z, double width, double height, double length, EnumFacing face, int red, int green, int blue, int alpha, int light1, int light2) {
-        
+
         double minU;
         double maxU;
         double minV;
         double maxV;
-        
+
         final double size = 16f;
-        
+
         final double x2 = x + width;
         final double y2 = y + height;
         final double z2 = z + length;
-        
+
         final double u = x % 1d;
         double u1 = u + width;
-        
+
         while (u1 > 1f) {
             u1 -= 1f;
         }
-        
+
         final double vy = y % 1d;
         double vy1 = vy + height;
-        
+
         while (vy1 > 1f) {
             vy1 -= 1f;
         }
-        
+
         final double vz = z % 1d;
         double vz1 = vz + length;
-        
+
         while (vz1 > 1f) {
             vz1 -= 1f;
         }
-        
+
         switch (face) {
-            
+
             case DOWN:
-            
+
             case UP:
                 minU = sprite.getInterpolatedU(u * size);
                 maxU = sprite.getInterpolatedU(u1 * size);
                 minV = sprite.getInterpolatedV(vz * size);
                 maxV = sprite.getInterpolatedV(vz1 * size);
                 break;
-            
+
             case NORTH:
-            
+
             case SOUTH:
                 minU = sprite.getInterpolatedU(u1 * size);
                 maxU = sprite.getInterpolatedU(u * size);
                 minV = sprite.getInterpolatedV(vy * size);
                 maxV = sprite.getInterpolatedV(vy1 * size);
                 break;
-            
+
             case WEST:
-            
+
             case EAST:
                 minU = sprite.getInterpolatedU(vz1 * size);
                 maxU = sprite.getInterpolatedU(vz * size);
                 minV = sprite.getInterpolatedV(vy * size);
                 maxV = sprite.getInterpolatedV(vy1 * size);
                 break;
-            
+
             default:
                 minU = sprite.getMinU();
                 maxU = sprite.getMaxU();
                 minV = sprite.getMinV();
                 maxV = sprite.getMaxV();
         }
-        
+
         switch (face) {
-            
+
             case DOWN:
                 buffer.pos(x, y, z).color(red, green, blue, alpha).tex(minU, minV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y, z).color(red, green, blue, alpha).tex(maxU, minV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y, z2).color(red, green, blue, alpha).tex(maxU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x, y, z2).color(red, green, blue, alpha).tex(minU, maxV).lightmap(light1, light2).endVertex();
                 break;
-            
+
             case UP:
                 buffer.pos(x, y2, z).color(red, green, blue, alpha).tex(minU, minV).lightmap(light1, light2).endVertex();
                 buffer.pos(x, y2, z2).color(red, green, blue, alpha).tex(minU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y2, z2).color(red, green, blue, alpha).tex(maxU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y2, z).color(red, green, blue, alpha).tex(maxU, minV).lightmap(light1, light2).endVertex();
                 break;
-            
+
             case NORTH:
                 buffer.pos(x, y, z).color(red, green, blue, alpha).tex(minU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x, y2, z).color(red, green, blue, alpha).tex(minU, minV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y2, z).color(red, green, blue, alpha).tex(maxU, minV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y, z).color(red, green, blue, alpha).tex(maxU, maxV).lightmap(light1, light2).endVertex();
                 break;
-            
+
             case SOUTH:
                 buffer.pos(x, y, z2).color(red, green, blue, alpha).tex(maxU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y, z2).color(red, green, blue, alpha).tex(minU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y2, z2).color(red, green, blue, alpha).tex(minU, minV).lightmap(light1, light2).endVertex();
                 buffer.pos(x, y2, z2).color(red, green, blue, alpha).tex(maxU, minV).lightmap(light1, light2).endVertex();
                 break;
-            
+
             case WEST:
                 buffer.pos(x, y, z).color(red, green, blue, alpha).tex(maxU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x, y, z2).color(red, green, blue, alpha).tex(minU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x, y2, z2).color(red, green, blue, alpha).tex(minU, minV).lightmap(light1, light2).endVertex();
                 buffer.pos(x, y2, z).color(red, green, blue, alpha).tex(maxU, minV).lightmap(light1, light2).endVertex();
                 break;
-            
+
             case EAST:
                 buffer.pos(x2, y, z).color(red, green, blue, alpha).tex(minU, maxV).lightmap(light1, light2).endVertex();
                 buffer.pos(x2, y2, z).color(red, green, blue, alpha).tex(minU, minV).lightmap(light1, light2).endVertex();
@@ -557,7 +557,7 @@ public final class RenderUtils {
                 break;
         }
     }
-    
+
     /**
      * Handles all of the basic startup to minimize render conflicts with existing rendering.
      * Make sure to call {@link #cleanupRenderState()} after the rendering code, to return the
@@ -569,21 +569,21 @@ public final class RenderUtils {
      */
     @Deprecated
     public static void setupRenderState (double x, double y, double z) {
-        
+
         setupRenderState();
     }
-    
+
     /**
      * Handles all of the basic startup to minimize render conflicts with existing rendering.
      * Make sure to
      */
     public static void setupRenderState () {
-        
+
         GlStateManager.pushMatrix();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        
+
         if (Minecraft.isAmbientOcclusionEnabled()) {
             GL11.glShadeModel(GL11.GL_SMOOTH);
         }
@@ -591,18 +591,18 @@ public final class RenderUtils {
             GL11.glShadeModel(GL11.GL_FLAT);
         }
     }
-    
+
     /**
      * Counteracts the state changes caused by
      * {@link #setupRenderState(double, double, double)}. Should only be called after that.
      */
     public static void cleanupRenderState () {
-        
+
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
         RenderHelper.enableStandardItemLighting();
     }
-    
+
     /**
      * Gets the missing quads for a given state.
      *
@@ -612,10 +612,10 @@ public final class RenderUtils {
      * @return The missing quads for the missing model.
      */
     public static List<BakedQuad> getMissingquads (IBlockState state, EnumFacing side, long rand) {
-        
+
         return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel().getQuads(state, side, rand);
     }
-    
+
     /**
      * Attempts to get a block sprite from a block state.
      *
@@ -623,10 +623,10 @@ public final class RenderUtils {
      * @return The block sprite.
      */
     public static TextureAtlasSprite getSprite (IBlockState state) {
-        
+
         return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state);
     }
-    
+
     /**
      * Creates the basic TRSRTransformations for a perspective aware model.
      *
@@ -634,21 +634,21 @@ public final class RenderUtils {
      * @return An immutable map of all the transforms.
      */
     public static ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> getBasicTransforms (IBakedModel model) {
-        
+
         final ImmutableMap.Builder<ItemCameraTransforms.TransformType, TRSRTransformation> builder = ImmutableMap.builder();
-        
+
         for (final ItemCameraTransforms.TransformType type : ItemCameraTransforms.TransformType.values()) {
-            
+
             final TRSRTransformation transformation = new TRSRTransformation(model.handlePerspective(type).getRight());
-            
+
             if (!transformation.equals(TRSRTransformation.identity())) {
                 builder.put(type, TRSRTransformation.blockCenterToCorner(transformation));
             }
         }
-        
+
         return builder.build();
     }
-    
+
     /**
      * Applies a color to GL state based on the current tick. This is the same code used by
      * sheeps for their jeb color effect.
@@ -657,10 +657,10 @@ public final class RenderUtils {
      * @param partialTicks The partial ticks.
      */
     public static void colorRainbow (EntityLivingBase entity, float partialTicks) {
-        
+
         rainbowColor(entity.ticksExisted, entity.getEntityId(), partialTicks);
     }
-    
+
     /**
      * Applies a color to GL state based on the current tick. This is similar to the code used
      * by jeb sheeps.
@@ -670,7 +670,7 @@ public final class RenderUtils {
      * @param partialTicks The partial ticks.
      */
     public static void rainbowColor (int previousTicks, int offset, float partialTicks) {
-        
+
         final int ticks = previousTicks / 25 + offset;
         final int colorCount = EnumDyeColor.values().length;
         final int colorMeta1 = ticks % colorCount;
@@ -680,17 +680,17 @@ public final class RenderUtils {
         final float[] color2 = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colorMeta2));
         GlStateManager.color(color1[0] * (1.0F - f) + color2[0] * f, color1[1] * (1.0F - f) + color2[1] * f, color1[2] * (1.0F - f) + color2[2] * f);
     }
-    
+
     /**
      * Checks if the renderers should be reloaded.
      *
      * @return Whether or not the renderers should be reloaded.
      */
     public static boolean requireRenderReload () {
-        
+
         return requiresRenderReload;
     }
-    
+
     /**
      * Updates {@link #requiresRenderReload}. If true, the renderers will be reloaded the next
      * render tick.
@@ -698,10 +698,10 @@ public final class RenderUtils {
      * @param reload Whether or not things should be reloaded.
      */
     public static void markRenderersForReload (boolean reload) {
-        
+
         requiresRenderReload = reload;
     }
-    
+
     /**
      * Sets the model for a state in the block model store. This should be used after the
      * ModelBakeEvent has fired, and models have been fully initialized. After calling, you
@@ -712,10 +712,10 @@ public final class RenderUtils {
      * @param model The model to set the thing to.
      */
     public static void setModelForState (IBlockState state, IBakedModel model) {
-        
+
         Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().bakedModelStore.put(state, model);
     }
-    
+
     /**
      * Gets a baked model for the passed state. This model is pulled from the baked model
      * store.
@@ -724,10 +724,10 @@ public final class RenderUtils {
      * @return The model for that state.
      */
     public static IBakedModel getModelForState (IBlockState state) {
-        
+
         return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
     }
-    
+
     /**
      * Finds and saves a texture from the game data to a file.
      *
@@ -735,36 +735,42 @@ public final class RenderUtils {
      * @param file The file to save the texture to.
      */
     public static void saveTextureToFile (int textureId, File file) {
-        
+
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
-        
+
         GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
         GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
-        
+
         final int width = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
         final int height = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_HEIGHT);
         final int size = width * height;
-        
-        final BufferedImage bufferedimage = new BufferedImage(width, height, 2);
-        
-        final IntBuffer buffer = BufferUtils.createIntBuffer(size);
-        final int[] data = new int[size];
-        
-        GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, buffer);
-        buffer.get(data);
-        bufferedimage.setRGB(0, 0, width, height, data, 0, width);
-        
+
+        if (size < 1) {
+
+            Constants.LOG.error("Failed to save image {} to {}. Size is too big! W:{} H{}", textureId, file.getName(), width, height);
+            return;
+        }
+
         try {
+
+            final BufferedImage bufferedimage = new BufferedImage(width, height, 2);
+
+            final IntBuffer buffer = BufferUtils.createIntBuffer(size);
+            final int[] data = new int[size];
+
+            GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, buffer);
+            buffer.get(data);
+            bufferedimage.setRGB(0, 0, width, height, data, 0, width);
             ImageIO.write(bufferedimage, "png", file);
         }
-        
+
         catch (final Exception e) {
-            
+
             Constants.LOG.error("Failed to save texture {} to {}.", textureId, file.getName());
             Constants.LOG.catching(e);
         }
     }
-    
+
     /**
      * Builds a new copy of the transformations for a baked model.
      *
@@ -773,52 +779,52 @@ public final class RenderUtils {
      *         the base model.
      */
     public static ImmutableMap<TransformType, TRSRTransformation> copyTransforms (IBakedModel model) {
-        
+
         final ImmutableMap.Builder<TransformType, TRSRTransformation> copiedTransforms = ImmutableMap.builder();
-        
+
         // Iterate through all the item transform types
         for (final TransformType type : TransformType.values()) {
-            
+
             // Copies transformation for the transform type.
             final TRSRTransformation transformation = new TRSRTransformation(model.handlePerspective(type).getRight());
-            
+
             // Filters out the base transformation.
             if (!transformation.equals(TRSRTransformation.identity())) {
-                
+
                 copiedTransforms.put(type, TRSRTransformation.blockCenterToCorner(transformation));
             }
         }
-        
+
         return copiedTransforms.build();
     }
-    
+
     public static VertexBuffer getSkyVBO (RenderGlobal render) {
-        
+
         return render.skyVBO;
     }
-    
+
     public static int getSkyList (RenderGlobal render) {
-        
+
         return render.glSkyList;
     }
-    
+
     public static VertexBuffer getStarVBO (RenderGlobal render) {
-        
+
         return render.starVBO;
     }
-    
+
     public static int getStarGLCallList (RenderGlobal render) {
-        
+
         return render.starGLCallList;
     }
-    
+
     public static VertexBuffer getSky2VBO (RenderGlobal render) {
-        
+
         return render.sky2VBO;
     }
-    
+
     public static int getSkyList2 (RenderGlobal render) {
-        
+
         return render.glSkyList2;
     }
 }

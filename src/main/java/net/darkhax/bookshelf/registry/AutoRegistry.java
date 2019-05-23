@@ -14,6 +14,7 @@ import net.darkhax.bookshelf.lib.Constants;
 import net.darkhax.bookshelf.lib.LootBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -101,6 +102,15 @@ public class AutoRegistry implements IAutoRegistry {
         }
     }
 
+    @SubscribeEvent
+    public void registerEnchants (RegistryEvent.Register<Enchantment> event) {
+        
+        for (final Enchantment enchant : this.helper.getEnchantments()) {
+            
+            event.getRegistry().register(enchant);
+        }
+    }
+    
     @SubscribeEvent
     public void onTableLoaded (LootTableLoadEvent event) {
 

@@ -25,6 +25,7 @@ import net.darkhax.bookshelf.util.GameUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -122,6 +123,11 @@ public class RegistryHelper {
      * A list of all recipes registered.
      */
     private final List<IRecipe> recipes = NonNullList.create();
+    
+    /**
+     * A list of all enchantments registered.
+     */
+    private final List<Enchantment> enchantments = NonNullList.create();
 
     /**
      * The creative tab used by the mod. This can be null.
@@ -490,6 +496,27 @@ public class RegistryHelper {
         builder.tracker(64, 1, true);
         builder.egg(primary, seconday);
         return builder;
+    }
+    
+    /**
+     * Registers an enchantment.
+     * @param enchant The enchantment to register.
+     * @param id The ID of the enchantment.
+     * @return The enchantment that was registered.
+     */
+    public Enchantment registerEnchantment(Enchantment enchant, String id) {
+        
+        enchant.setRegistryName(new ResourceLocation(this.modid, id));
+        return enchant;
+    }
+    
+    /**
+     * Get a list of all registered enchantments.
+     * @return A list of the enchantments.
+     */
+    public List<Enchantment> getEnchantments() {
+        
+        return this.enchantments;
     }
 
     /**
