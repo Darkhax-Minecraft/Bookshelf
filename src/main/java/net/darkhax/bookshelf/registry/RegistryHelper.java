@@ -507,6 +507,7 @@ public class RegistryHelper {
     public Enchantment registerEnchantment(Enchantment enchant, String id) {
         
         enchant.setRegistryName(new ResourceLocation(this.modid, id));
+        this.enchantments.add(enchant);
         return enchant;
     }
     
