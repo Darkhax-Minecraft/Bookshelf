@@ -1,0 +1,34 @@
+#French Language File 
+
+#Moon Phases
+moon.phase.full.name=Pleine lune
+moon.phase.waxing.gibbous.name=Lune gibbeuse croissante
+moon.phase.first.quarter.name=Premier quartier
+moon.phase.waxing.crescent.name=Premier croissant
+moon.phase.new.name=Nouvelle lune
+moon.phase.waning.crescent.name=Dernier croissant
+moon.phase.last.quarter.name=Dernier quartier
+moon.phase.waning.gibbous.name=Lune gibbeuse décroissante
+
+#Months
+time.bookshelf.month.january.name=Janvier
+time.bookshelf.month.february.name=Février
+time.bookshelf.month.march.name=Mars
+time.bookshelf.month.april.name=Avril
+time.bookshelf.month.may.name=Mai
+time.bookshelf.month.june.name=Juin
+time.bookshelf.month.july.name=Juillet
+time.bookshelf.month.august.name=Août
+time.bookshelf.month.september.name=Septembre
+time.bookshelf.month.october.name=Octobre
+time.bookshelf.month.november.name=Novembre
+time.bookshelf.month.december.name=Décembre
+
+#Days
+time.bookshelf.day.sunday.name=Dimanche
+time.bookshelf.day.monday.name=Lundi
+time.bookshelf.day.tuesday.name=Mardi
+time.bookshelf.day.wednesday.name=Mercredi
+time.bookshelf.day.thursday.name=Jeudi
+time.bookshelf.day.friday.name=Vendredi
+time.bookshelf.day.saturday.name=Samedi
