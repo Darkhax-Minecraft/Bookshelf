@@ -1,0 +1,36 @@
+{
+    "_comment": "Turkish Language File",
+
+    "_comment": "Moon Phases",
+    "moon.phase.full": "Dolunay",
+    "moon.phase.waxing.gibbous": "Şişkin Ay",
+    "moon.phase.first.quarter": "İlkdördün",
+    "moon.phase.waxing.crescent": "Hilal",
+    "moon.phase.new": "Yeniay",
+    "moon.phase.waning.crescent": "Hilal",
+    "moon.phase.last.quarter": "Sondördün",
+    "moon.phase.waning.gibbous": "Şişkin Ay",
+
+    "_comment": "Months",
+    "time.bookshelf.month.january": "Ocak",
+    "time.bookshelf.month.february": "Şubat",
+    "time.bookshelf.month.march": "Mart",
+    "time.bookshelf.month.april": "Nisan",
+    "time.bookshelf.month.may": "Mayıs",
+    "time.bookshelf.month.june": "Haziran",
+    "time.bookshelf.month.july": "Temmuz",
+    "time.bookshelf.month.august": "Ağustos",
+    "time.bookshelf.month.september": "Eylül",
+    "time.bookshelf.month.october": "Ekim",
+    "time.bookshelf.month.november": "Kasım",
+    "time.bookshelf.month.december": "Aralık",
+
+    "_comment": "Days",
+    "time.bookshelf.day.sunday": "Pazar",
+    "time.bookshelf.day.monday": "Pazartesi",
+    "time.bookshelf.day.tuesday": "Salı",
+    "time.bookshelf.day.wednesday": "Çarşamba",
+    "time.bookshelf.day.thursday": "Perşembe",
+    "time.bookshelf.day.friday": "Cuma",
+    "time.bookshelf.day.saturday": "Cumartesi"
+}

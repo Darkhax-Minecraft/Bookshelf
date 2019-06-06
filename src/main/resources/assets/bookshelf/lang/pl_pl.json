@@ -1,0 +1,36 @@
+{
+    "_comment": "Polish Language File by Kaperios",
+
+    "_comment": "Moon Phases",
+    "moon.phase.full": "Pełnia Księżyca",
+    "moon.phase.waxing.gibbous": "Młody Księżyc",
+    "moon.phase.first.quarter": "Pierwsza Kwadra",
+    "moon.phase.waxing.crescent": "Księżyc Garbaty",
+    "moon.phase.new": "Nów",
+    "moon.phase.waning.crescent": "Księżyc Garbaty",
+    "moon.phase.last.quarter": "Ostatnia Kwadra",
+    "moon.phase.waning.gibbous": "Stary Księżyc",
+
+    "_comment": "Months",
+    "time.bookshelf.month.january": "Styczeń",
+    "time.bookshelf.month.february": "Luty",
+    "time.bookshelf.month.march": "Marzec",
+    "time.bookshelf.month.april": "Kwiecień",
+    "time.bookshelf.month.may": "Maj",
+    "time.bookshelf.month.june": "Czerwiec",
+    "time.bookshelf.month.july": "Lipiec",
+    "time.bookshelf.month.august": "Sierpień",
+    "time.bookshelf.month.september": "Wrzesień",
+    "time.bookshelf.month.october": "Październik",
+    "time.bookshelf.month.november": "Listopad",
+    "time.bookshelf.month.december": "Grudzień",
+
+    "_comment": "Days",
+    "time.bookshelf.day.sunday": "Niedziela",
+    "time.bookshelf.day.monday": "Poniedziałek",
+    "time.bookshelf.day.tuesday": "Wtorek",
+    "time.bookshelf.day.wednesday": "Środa",
+    "time.bookshelf.day.thursday": "Czwartek",
+    "time.bookshelf.day.friday": "Piątek",
+    "time.bookshelf.day.saturday": "Sobota"
+}
