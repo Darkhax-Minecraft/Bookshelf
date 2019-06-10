@@ -7,7 +7,6 @@
  */
 package net.darkhax.bookshelf.client.gui;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -31,9 +30,9 @@ public class GuiGraphicButton extends GuiButtonExt {
      * @param yPosition The Y coordinate to position the button at.
      * @param texture The texture to use for the button. This should be a 20x20 image.
      */
-    public GuiGraphicButton(int buttonID, int xPosition, int yPosition, ResourceLocation texture) {
+    public GuiGraphicButton(int xPosition, int yPosition, ResourceLocation texture, IPressable handler) {
         
-        super(buttonID, xPosition, yPosition, 20, 20, "");
+        super(xPosition, yPosition, 20, 20, "", handler);
         this.buttonImage = texture;
     }
     
@@ -41,7 +40,9 @@ public class GuiGraphicButton extends GuiButtonExt {
     public void render (int mouseX, int mouseY, float partialTicks) {
         
         super.render(mouseX, mouseY, partialTicks);
-        Minecraft.getInstance().getTextureManager().bindTexture(this.buttonImage);
-        drawModalRectWithCustomSizedTexture(this.x, this.y, 0f, 0f, 20, 20, 20f, 20f);
+        //TODO fix the rendering
+//        Minecraft.getInstance().getTextureManager().bindTexture(this.buttonImage);
+//        this.blit(p_blit_1_, p_blit_2_, p_blit_3_, p_blit_4_, p_blit_5_, p_blit_6_);
+//        drawModalRectWithCustomSizedTexture(this.x, this.y, 0f, 0f, 20, 20, 20f, 20f);
     }
 }

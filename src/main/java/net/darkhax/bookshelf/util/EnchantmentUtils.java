@@ -8,8 +8,8 @@
 package net.darkhax.bookshelf.util;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
 public final class EnchantmentUtils {
     

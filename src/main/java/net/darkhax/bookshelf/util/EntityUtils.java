@@ -10,14 +10,15 @@ package net.darkhax.bookshelf.util;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -25,11 +26,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 public final class EntityUtils {
-    
-    /**
-     * An array of armor equipment slots.
-     */
-    private static final EntityEquipmentSlot[] EQUIPMENT_SLOTS = new EntityEquipmentSlot[] { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET };
     
     /**
      * Calculates the distance between two entities.
@@ -62,7 +58,7 @@ public final class EntityUtils {
      * @param direction The direction to push the entity.
      * @param force The amount of force to push the entity with.
      */
-    public static void pushTowards (Entity entityToMove, EnumFacing direction, double force) {
+    public static void pushTowards (Entity entityToMove, Direction direction, double force) {
         
         pushTowards(entityToMove, entityToMove.getPosition().offset(direction.getOpposite(), 1), force);
     }
@@ -84,9 +80,7 @@ public final class EntityUtils {
         
         if (distance > 0) {
             
-            entityToMove.motionX = distanceX / distance * force;
-            entityToMove.motionY = distanceY / distance * force;
-            entityToMove.motionZ = distanceZ / distance * force;
+        	entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
         }
     }
     
@@ -107,9 +101,7 @@ public final class EntityUtils {
         
         if (distance > 0) {
             
-            entityToMove.motionX = distanceX / distance * force;
-            entityToMove.motionY = distanceY / distance * force;
-            entityToMove.motionZ = distanceZ / distance * force;
+        	entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
         }
     }
     
@@ -120,10 +112,9 @@ public final class EntityUtils {
      * @param entityToMove The entity to push.
      * @param direction The direction to push the entity.
      * @param force The amount of force to use.
-     * @return A Vec3d object that represents the motion of pushing the entity towards the
-     *         destination.
+
      */
-    public static Vec3d pushTowardsDirection (Entity entityToMove, EnumFacing direction, double force) {
+    public static void pushTowardsDirection (Entity entityToMove, Direction direction, double force) {
         
         final BlockPos entityPos = entityToMove.getPosition();
         final BlockPos destination = entityToMove.getPosition().offset(direction.getOpposite(), 1);
@@ -133,7 +124,10 @@ public final class EntityUtils {
         final double distanceZ = (double) destination.getZ() - entityPos.getZ();
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
-        return distance > 0 ? new Vec3d(entityToMove.motionX = distanceX / distance * force, entityToMove.motionY = distanceY / distance * force, entityToMove.motionZ = distanceZ / distance * force) : new Vec3d(0d, 0d, 0d);
+        if (distance > 0) {
+            
+        	entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+        }
     }
     
     /**
@@ -167,21 +161,6 @@ public final class EntityUtils {
     }
     
     /**
-     * Gets the type of equipment for slot index.
-     *
-     * @param index The index of the slot.
-     * @return EntityEquipmentSlot The slot for the index.
-     */
-    public static EntityEquipmentSlot getEquipmentSlot (int index) {
-        
-        if (index >= 0 && index < EQUIPMENT_SLOTS.length) {
-            return EQUIPMENT_SLOTS[index];
-        }
-        
-        return null;
-    }
-    
-    /**
      * A check to see if an entity is wearing a full suit of the armor. This check is based on
      * the class names of armor.
      *
@@ -190,10 +169,10 @@ public final class EntityUtils {
      * @return boolean: True if every piece of armor the entity is wearing are the same class
      *         as the provied armor class.
      */
-    public static boolean isWearingFullSet (EntityLivingBase living, Class<Item> armorClass) {
+    public static boolean isWearingFullSet (MobEntity living, Class<Item> armorClass) {
         
-        for (final EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
-            if (slot.getSlotType().equals(EntityEquipmentSlot.Type.ARMOR)) {
+        for (final EquipmentSlotType slot : EquipmentSlotType.values()) {
+            if (slot.getSlotType().equals(EquipmentSlotType.Group.ARMOR)) {
                 
                 final ItemStack armor = living.getItemStackFromSlot(slot);
                 
@@ -212,7 +191,7 @@ public final class EntityUtils {
      * @param entity The entity to get the value from.
      * @return The value of the attribute.
      */
-    public static double getMaxHealth (EntityLivingBase entity) {
+    public static double getMaxHealth (MobEntity entity) {
         
         return entity.getAttribute(SharedMonsterAttributes.MAX_HEALTH).getValue();
     }
@@ -223,7 +202,7 @@ public final class EntityUtils {
      * @param entity The entity to get the value from.
      * @return The value of the attribute.
      */
-    public static double getFollowRange (EntityLivingBase entity) {
+    public static double getFollowRange (MobEntity entity) {
         
         return entity.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getValue();
     }
@@ -234,7 +213,7 @@ public final class EntityUtils {
      * @param entity The entity to get the value from.
      * @return The value of the attribute.
      */
-    public static double getKnockbackResistance (EntityLivingBase entity) {
+    public static double getKnockbackResistance (MobEntity entity) {
         
         return entity.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getValue();
     }
@@ -245,7 +224,7 @@ public final class EntityUtils {
      * @param entity The entity to get the value from.
      * @return The value of the attribute.
      */
-    public static double getMovementSpeed (EntityLivingBase entity) {
+    public static double getMovementSpeed (MobEntity entity) {
         
         return entity.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
     }
@@ -256,7 +235,7 @@ public final class EntityUtils {
      * @param entity The entity to get the value from.
      * @return The value of the attribute.
      */
-    public static double getAttackDamage (EntityLivingBase entity) {
+    public static double getAttackDamage (MobEntity entity) {
         
         return entity.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue();
     }
@@ -267,7 +246,7 @@ public final class EntityUtils {
      * @param entity The entity to get the value from.
      * @return The value of the attribute.
      */
-    public static double getAttackSpeed (EntityLivingBase entity) {
+    public static double getAttackSpeed (MobEntity entity) {
         
         return entity.getAttribute(SharedMonsterAttributes.ATTACK_SPEED).getValue();
     }
@@ -278,7 +257,7 @@ public final class EntityUtils {
      * @param entity The entity to get the value from.
      * @return The value of the attribute.
      */
-    public static double getArmor (EntityLivingBase entity) {
+    public static double getArmor (MobEntity entity) {
         
         return entity.getAttribute(SharedMonsterAttributes.ARMOR).getValue();
     }
@@ -289,7 +268,7 @@ public final class EntityUtils {
      * @param entity The entity to get the value from.
      * @return The value of the attribute.
      */
-    public static double getArmorToughness (EntityLivingBase entity) {
+    public static double getArmorToughness (MobEntity entity) {
         
         return entity.getAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getValue();
     }
@@ -300,7 +279,7 @@ public final class EntityUtils {
      * @param entity The entity to get the value from.
      * @return The value of the attribute.
      */
-    public static double getLuck (EntityLivingBase entity) {
+    public static double getLuck (MobEntity entity) {
         
         return entity.getAttribute(SharedMonsterAttributes.LUCK).getValue();
     }
@@ -312,14 +291,19 @@ public final class EntityUtils {
      * @param attribute The attribute to get the value of.
      * @return The value of the attribute.
      */
-    public static double getValue (EntityLivingBase entity, IAttribute attribute) {
+    public static double getValue (MobEntity entity, IAttribute attribute) {
         
         return entity.getAttribute(attribute).getValue();
     }
     
+    /**
+     * Quickly creates a new entity item and adds it to the drops.
+     * @param stack The item to add.
+     * @param event The event list.
+     */
     public static void addDrop (ItemStack stack, LivingDropsEvent event) {
         
-        final EntityLivingBase living = event.getEntityLiving();
-        event.getDrops().add(new EntityItem(living.getEntityWorld(), living.posX, living.posY, living.posZ, stack));
+        final LivingEntity living = event.getEntityLiving();
+        event.getDrops().add(new ItemEntity(living.getEntityWorld(), living.posX, living.posY, living.posZ, stack));
     }
 }

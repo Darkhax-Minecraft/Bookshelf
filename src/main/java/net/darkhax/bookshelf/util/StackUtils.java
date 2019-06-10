@@ -7,11 +7,11 @@
  */
 package net.darkhax.bookshelf.util;
 
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -23,10 +23,10 @@ public final class StackUtils {
      * @param stack ItemStack having a tag set on it.
      * @return The tag of the stack.
      */
-    public static NBTTagCompound prepareStackTag (ItemStack stack) {
+    public static CompoundNBT prepareStackTag (ItemStack stack) {
         
         if (!stack.hasTag()) {
-            stack.setTag(new NBTTagCompound());
+            stack.setTag(new CompoundNBT());
         }
         
         return stack.getTag();
@@ -54,10 +54,10 @@ public final class StackUtils {
      */
     public static ItemStack setLore (ItemStack stack, String... lore) {
         
-        final NBTTagList loreList = new NBTTagList();
+        final ListNBT loreList = new ListNBT();
         
         for (final String line : lore) {
-            loreList.add(new NBTTagString(line));
+            loreList.add(new StringNBT(line));
         }
         
         return setLoreTag(stack, loreList);
@@ -72,10 +72,10 @@ public final class StackUtils {
      */
     public static ItemStack appendLore (ItemStack stack, String... lore) {
         
-        final NBTTagList loreTag = getLoreTag(stack);
+        final ListNBT loreTag = getLoreTag(stack);
         
         for (final String line : lore) {
-            loreTag.add(new NBTTagString(line));
+            loreTag.add(new StringNBT(line));
         }
         return stack;
     }
@@ -87,9 +87,9 @@ public final class StackUtils {
      * @param lore The lore tag.
      * @return The stack that was updated.
      */
-    public static ItemStack setLoreTag (ItemStack stack, NBTTagList lore) {
+    public static ItemStack setLoreTag (ItemStack stack, ListNBT lore) {
         
-        final NBTTagCompound displayTag = getDisplayTag(stack);
+        final CompoundNBT displayTag = getDisplayTag(stack);
         displayTag.put("Lore", lore);
         return stack;
     }
@@ -100,13 +100,13 @@ public final class StackUtils {
      * @param stack The stack to get the display tag of.
      * @return The display tag.
      */
-    public static NBTTagCompound getDisplayTag (ItemStack stack) {
+    public static CompoundNBT getDisplayTag (ItemStack stack) {
         
         prepareStackTag(stack);
-        final NBTTagCompound tag = stack.getTag();
+        final CompoundNBT tag = stack.getTag();
         
         if (!tag.hasUniqueId("display")) {
-            tag.put("display", new NBTTagCompound());
+            tag.put("display", new CompoundNBT());
         }
         
         return tag.getCompound("display");
@@ -118,28 +118,28 @@ public final class StackUtils {
      * @param stack The stack to get the lore tag of.
      * @return The lore tag list.
      */
-    public static NBTTagList getLoreTag (ItemStack stack) {
+    public static ListNBT getLoreTag (ItemStack stack) {
         
-        final NBTTagCompound displayTag = getDisplayTag(stack);
+        final CompoundNBT displayTag = getDisplayTag(stack);
         
         if (!displayTag.hasUniqueId("Lore")) {
             
-            displayTag.put("Lore", new NBTTagList());
+            displayTag.put("Lore", new ListNBT());
         }
         
         return displayTag.getList("Lore", 8);
     }
     
     /**
-     * Writes an ItemStack as a sub NBTTagCompound on a larger NBTTagCompound.
+     * Writes an ItemStack as a sub CompoundNBT on a larger CompoundNBT.
      *
      * @param stack The ItemStack to write to the tag.
-     * @param tag The NBTTagCompound to write the stack to.
-     * @param tagName The name for this new NBTTagCompound entry.
+     * @param tag The CompoundNBT to write the stack to.
+     * @param tagName The name for this new CompoundNBT entry.
      */
-    public static void writeStackToTag (ItemStack stack, NBTTagCompound tag, String tagName) {
+    public static void writeStackToTag (ItemStack stack, CompoundNBT tag, String tagName) {
         
-        final NBTTagCompound stackTag = new NBTTagCompound();
+        final CompoundNBT stackTag = new CompoundNBT();
         stack.write(stackTag);
         tag.put(tagName, stackTag);
     }
@@ -159,9 +159,9 @@ public final class StackUtils {
             final double offX = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
             final double offY = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
             final double offZ = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
-            final EntityItem entityitem = new EntityItem(world, pos.getX() + offX, pos.getY() + offY, pos.getZ() + offZ, stack);
+            final ItemEntity entityitem = new ItemEntity(world, pos.getX() + offX, pos.getY() + offY, pos.getZ() + offZ, stack);
             entityitem.setPickupDelay(10);
-            world.spawnEntity(entityitem);
+            world.addEntity(entityitem);
         }
     }
     
@@ -178,15 +178,15 @@ public final class StackUtils {
     }
     
     /**
-     * Gets an NBTTagCompound from a stack without polluting the original input stack. If the
+     * Gets an CompoundNBT from a stack without polluting the original input stack. If the
      * stack does not have a tag, you will get a new one. This new tag will NOT be set to the
      * stack automatically.
      *
      * @param stack The stack to check.
      * @return The nbt data for the stack.
      */
-    public static NBTTagCompound getTagCleanly (ItemStack stack) {
+    public static CompoundNBT getTagCleanly (ItemStack stack) {
         
-        return stack.hasTag() ? stack.getTag() : new NBTTagCompound();
+        return stack.hasTag() ? stack.getTag() : new CompoundNBT();
     }
 }

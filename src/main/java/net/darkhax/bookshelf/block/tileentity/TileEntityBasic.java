@@ -7,10 +7,10 @@
  */
 package net.darkhax.bookshelf.block.tileentity;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
@@ -23,36 +23,36 @@ public abstract class TileEntityBasic extends TileEntity {
 	}
 
 	@Override
-    public void read (NBTTagCompound dataTag) {
+    public void read (CompoundNBT dataTag) {
         
         this.readNBT(dataTag);
         super.read(dataTag);
     }
     
     @Override
-    public NBTTagCompound write (NBTTagCompound dataTag) {
+    public CompoundNBT write (CompoundNBT dataTag) {
         
         this.writeNBT(dataTag);
         return super.write(dataTag);
     }
     
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket () {
+    public SUpdateTileEntityPacket getUpdatePacket () {
         
-        return new SPacketUpdateTileEntity(this.pos, 0, this.getUpdateTag());
+        return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
     }
     
     @Override
-    public void onDataPacket (NetworkManager net, SPacketUpdateTileEntity packet) {
+    public void onDataPacket (NetworkManager net, SUpdateTileEntityPacket packet) {
         
         super.onDataPacket(net, packet);
         this.readNBT(packet.getNbtCompound());
     }
     
     @Override
-    public NBTTagCompound getUpdateTag () {
+    public CompoundNBT getUpdateTag () {
         
-        return this.write(new NBTTagCompound());
+        return this.write(new CompoundNBT());
     }
     
     /**
@@ -66,7 +66,7 @@ public abstract class TileEntityBasic extends TileEntity {
         
         if (this.isLoaded()) {
             
-            final IBlockState state = this.getState();
+            final BlockState state = this.getState();
             this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
         }
     }
@@ -78,7 +78,7 @@ public abstract class TileEntityBasic extends TileEntity {
      */
     public boolean hasPosition () {
         
-        return this.pos != null && this.pos != BlockPos.ORIGIN;
+        return this.pos != null && this.pos != BlockPos.ZERO;
     }
     
     /**
@@ -88,7 +88,7 @@ public abstract class TileEntityBasic extends TileEntity {
      */
     public boolean isLoaded () {
         
-        return this.hasWorld() && this.hasPosition() ? this.getWorld().isBlockLoaded(this.getPos()) : false;
+        return this.hasWorld() && this.hasPosition() && this.getWorld().isBlockLoaded(this.getPos());
     }
     
     /**
@@ -96,7 +96,7 @@ public abstract class TileEntityBasic extends TileEntity {
      *
      * @return The block state of the tile.
      */
-    public IBlockState getState () {
+    public BlockState getState () {
         
         return this.isLoaded() ? this.getWorld().getBlockState(this.pos) : null;
     }
@@ -106,12 +106,12 @@ public abstract class TileEntityBasic extends TileEntity {
      *
      * @param dataTag: The NBTTagCompound for the TileEntity.
      */
-    public abstract void writeNBT (NBTTagCompound dataTag);
+    public abstract void writeNBT (CompoundNBT dataTag);
     
     /**
      * Handles the ability to read custom NBT values from the TileEntity's NBTTagCompound.
      *
      * @param dataTag: The NBTTagCompound for the TileEntity.
      */
-    public abstract void readNBT (NBTTagCompound dataTag);
+    public abstract void readNBT (CompoundNBT dataTag);
 }

@@ -14,8 +14,8 @@ import java.util.List;
 import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 
@@ -27,7 +27,7 @@ public final class WorldUtils {
      * @param world The world to get the chunk count of.
      * @return The amount of chunks. -1 means it was unable to get the amount.
      */
-    public static int getLoadedChunks (WorldServer world) {
+    public static int getLoadedChunks (ServerWorld world) {
         
         return world.getChunkProvider() != null ? world.getChunkProvider().getLoadedChunkCount() : -1;
     }
@@ -83,11 +83,12 @@ public final class WorldUtils {
         
         chunk.markDirty();
         
-        if (render) {
-            
-            final BlockPos initial = chunk.getPos().getBlock(1, 1, 1);
-            world.markBlockRangeForRenderUpdate(initial, initial);
-        }
+        //TODO Re-implement rendering behaviour
+//        if (render) {
+//            
+//            final BlockPos initial = chunk.getPos().getBlock(1, 1, 1);
+//            world.markBlockRangeForRenderUpdate(initial, initial);
+//        }
     }
     
     /**

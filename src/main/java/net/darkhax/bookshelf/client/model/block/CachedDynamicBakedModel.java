@@ -11,16 +11,15 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.Maps;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.IModel;
 
@@ -51,9 +50,9 @@ public abstract class CachedDynamicBakedModel implements IBakedModel {
     /**
      * The raw model data.
      */
-    private final IModel raw;
+    private final IModel<?> raw;
     
-    public CachedDynamicBakedModel(IBakedModel standard, IModel tableModel) {
+    public CachedDynamicBakedModel(IBakedModel standard, IModel<?> tableModel) {
         
         this.bakedOriginal = standard;
         this.raw = tableModel;
@@ -68,7 +67,7 @@ public abstract class CachedDynamicBakedModel implements IBakedModel {
      * @param side The side of the block.
      * @return A cache key which contains information based on the context.
      */
-    public abstract String getCacheKey (IBlockState state, EnumFacing side);
+    public abstract String getCacheKey (BlockState state, Direction side);
     
     /**
      * Generates a cache key from an item context. This method should always return the same
@@ -81,7 +80,7 @@ public abstract class CachedDynamicBakedModel implements IBakedModel {
      *        holder.
      * @return A cache key which contains information based on the context.
      */
-    public abstract String getCacheKey (ItemStack stack, World world, EntityLivingBase entity);
+    public abstract String getCacheKey (ItemStack stack, World world, LivingEntity entity);
     
     /**
      * Generates a new baked model from a cache key.
@@ -114,7 +113,7 @@ public abstract class CachedDynamicBakedModel implements IBakedModel {
     }
     
     @Override
-    public List<BakedQuad> getQuads (IBlockState state, EnumFacing side, Random rand) {
+    public List<BakedQuad> getQuads (BlockState state, Direction side, Random rand) {
         
         return this.getModel(this.getCacheKey(state, side)).getQuads(state, side, rand);
     }
@@ -199,7 +198,7 @@ public abstract class CachedDynamicBakedModel implements IBakedModel {
         public static final ItemOverrideList INSTANCE = new ItemOverrideListRetexturable();
         
         @Override
-        public IBakedModel getModelWithOverrides (@Nonnull IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+        public IBakedModel getModelWithOverrides (@Nonnull IBakedModel originalModel, ItemStack stack, World world, LivingEntity entity) {
             
             if (originalModel instanceof CachedDynamicBakedModel) {
                 

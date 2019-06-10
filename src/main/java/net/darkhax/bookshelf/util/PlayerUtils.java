@@ -17,25 +17,19 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public final class PlayerUtils {
-    
-    /**
-     * The UUID of the player with the eternal birthday.
-     */
-    public static final String BIRTHDAY_BOY_UUID = "10755ea6-9721-467a-8b5c-92adf689072c";
     
     /**
      * Checks if a specific player can sleep. For this to be true, a player must not already be
@@ -44,44 +38,21 @@ public final class PlayerUtils {
      * @param player: The player to check the sleepability of.
      * @return boolean: True if the player can sleep, false if they can not.
      */
-    public static boolean canPlayerSleep (EntityPlayer player) {
+    public static boolean canPlayerSleep (PlayerEntity player) {
         
-        return !player.isPlayerSleeping() && player.isAlive() && player.world.getDayTime() > 12541 && player.world.getDayTime() < 23458;
+        return !player.isSleeping() && player.isAlive() && player.world.getDayTime() > 12541 && player.world.getDayTime() < 23458;
     }
     
     /**
-     * A simple check to make sure that an EntityPlayer actually exists.
+     * A simple check to make sure that an PlayerEntity actually exists.
      *
-     * @param player: The instance of EntityPlayer to check.
+     * @param player: The instance of PlayerEntity to check.
      * @return boolean: If the player exists true will be returned. If they don't false will be
      *         returned.
      */
     public static boolean isPlayerReal (Entity player) {
         
-        return player != null && player.world != null && player.getClass() == EntityPlayerMP.class;
-    }
-    
-    /**
-     * Retrieves an instance of EntityPlayer based on a UUID. For this to work, the player must
-     * currently be online, and within the world.
-     *
-     * @param world: The world in which the target player resides.
-     * @param playerID: A unique identifier associated with the target player.
-     * @return EntityPlayer: If the target player is online and within the targeted world,
-     *         their EntityPlayer instance will be returned. If the player is not found, null
-     *         will be returned.
-     */
-    public static EntityPlayer getPlayerFromUUID (World world, UUID playerID) {
-        
-        for (final EntityPlayer player : world.playerEntities) {
-
-            if (player != null && player.getUniqueID().equals(playerID)) {
-            	
-                return player;
-            }
-        }
-        
-        return null;
+        return player != null && player.world != null && player.getClass() == ServerPlayerEntity.class;
     }
     
     /**
@@ -103,7 +74,7 @@ public final class PlayerUtils {
      * @param item The item to check for.
      * @return The amount of the item being searched for.
      */
-    public static int getItemCountInInv (EntityPlayer player, Item item) {
+    public static int getItemCountInInv (PlayerEntity player, Item item) {
         
         int count = 0;
         
@@ -123,7 +94,7 @@ public final class PlayerUtils {
      * @param item The item to check for.
      * @return Whether or not the player has the item in their inventory.
      */
-    public static boolean playerHasItem (EntityPlayer player, Item item) {
+    public static boolean playerHasItem (PlayerEntity player, Item item) {
         
         for (final ItemStack stack : player.inventory.mainInventory) {
             if (stack != null && stack.getItem().equals(item)) {
@@ -141,7 +112,7 @@ public final class PlayerUtils {
      * @param item The item to search for.
      * @return The list of found items.
      */
-    public static List<ItemStack> getStacksFromPlayer (EntityPlayer player, Item item) {
+    public static List<ItemStack> getStacksFromPlayer (PlayerEntity player, Item item) {
         
         final List<ItemStack> items = new ArrayList<>();
         
@@ -161,7 +132,7 @@ public final class PlayerUtils {
      * @return The client side player. 
      */
     @OnlyIn(Dist.CLIENT)
-    public static EntityPlayerSP getClientPlayer () {
+    public static ClientPlayerEntity getClientPlayer () {
         
         return Minecraft.getInstance().player;
     }
@@ -191,18 +162,6 @@ public final class PlayerUtils {
     }
     
     /**
-     * Checks if it's the players birthday. A false does not necesarily mean it's not the
-     * players birthday.
-     *
-     * @param player The player to check.
-     * @return Whether or not we know it's their birthday.
-     */
-    public static boolean isPlayersBirthdate (EntityPlayer player) {
-        
-        return player.getUniqueID().toString().equalsIgnoreCase(BIRTHDAY_BOY_UUID);
-    }
-    
-    /**
      * Checks if a DamageSource was caused by a player.
      *
      * @param source The damage source to check.
@@ -210,7 +169,7 @@ public final class PlayerUtils {
      */
     public static boolean isPlayerDamage (DamageSource source) {
         
-        return source != null && source.getTrueSource() instanceof EntityPlayer;
+        return source != null && source.getTrueSource() instanceof PlayerEntity;
     }
     
     /**
@@ -239,7 +198,7 @@ public final class PlayerUtils {
             // Otherwise return a default skin for the player.
             else {
                 
-                return DefaultPlayerSkin.getDefaultSkin(EntityPlayer.getUUID(profile));
+                return DefaultPlayerSkin.getDefaultSkin(PlayerEntity.getUUID(profile));
             }
         }
         

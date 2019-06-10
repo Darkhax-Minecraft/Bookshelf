@@ -11,10 +11,13 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.RayTraceContext.BlockMode;
+import net.minecraft.util.math.RayTraceContext.FluidMode;
 
 public final class MathsUtils {
     
@@ -84,12 +87,12 @@ public final class MathsUtils {
      * @return MovingObjectPosition: A MovingObjectPosition containing the exact location where
      *         the player is looking.
      */
-    public static RayTraceResult rayTrace (EntityPlayer player, double length) {
+    public static RayTraceResult rayTrace (PlayerEntity player, double length, BlockMode mode, FluidMode fluidMode) {
         
         final Vec3d vec1 = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         final Vec3d vec2 = player.getLookVec();
         final Vec3d vec3 = vec1.add(vec2.x * length, vec2.y * length, vec2.z * length);
-        return player.world.rayTraceBlocks(vec1, vec3);
+        return player.world.rayTraceBlocks(new RayTraceContext(vec1, vec3, mode, fluidMode, player));
     }
     
     /**

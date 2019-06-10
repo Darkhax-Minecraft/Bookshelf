@@ -9,20 +9,20 @@ package net.darkhax.bookshelf.util;
 
 import java.util.UUID;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 
 public final class SkullUtils {
     
     /**
-     * Create a skull from an instance of EntityPlayer.
+     * Create a skull from an instance of PlayerEntity.
      *
-     * @param player The EntityPlayer to use the skin from.
+     * @param player The PlayerEntity to use the skin from.
      * @return ItemStack An ItemStack containing a skull that represents the passed player.
      */
-    public static ItemStack createSkull (EntityPlayer player) {
+    public static ItemStack createSkull (PlayerEntity player) {
         
         return createSkull(player.getGameProfile().getName(), player.getUniqueID());
     }
@@ -39,7 +39,7 @@ public final class SkullUtils {
         
         final ItemStack stack = new ItemStack(Items.PLAYER_HEAD, 1);
         StackUtils.prepareStackTag(stack);
-        final NBTTagCompound ownerTag = new NBTTagCompound();
+        final CompoundNBT ownerTag = new CompoundNBT();
         ownerTag.putString("Name", name);
         ownerTag.putString("Id", uuid.toString());
         stack.getTag().put("SkullOwner", ownerTag);

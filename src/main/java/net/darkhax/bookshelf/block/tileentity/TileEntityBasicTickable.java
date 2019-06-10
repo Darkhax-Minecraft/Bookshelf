@@ -8,10 +8,10 @@
 package net.darkhax.bookshelf.block.tileentity;
 
 import net.darkhax.bookshelf.Bookshelf;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ITickable;
 
-public abstract class TileEntityBasicTickable extends TileEntityBasic implements ITickable {
+public abstract class TileEntityBasicTickable extends TileEntityBasic implements ITickableTileEntity {
     
     public TileEntityBasicTickable(TileEntityType<?> tileEntityType) {
     	

@@ -13,8 +13,8 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -22,6 +22,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class RegistryHelper {
@@ -64,10 +65,10 @@ public class RegistryHelper {
     
     public Block registerBlock(Block block, String id) {
         
-        return this.registerBlock(block, new ItemBlock(block, new Item.Properties().group(this.group)), id);
+        return this.registerBlock(block, new BlockItem(block, new Item.Properties().group(this.group)), id);
     }
     
-    public Block registerBlock(Block block, ItemBlock item, String id) {
+    public Block registerBlock(Block block, BlockItem item, String id) {
         
         block.setRegistryName(new ResourceLocation(this.modid, id));
         this.blocks.add(block);
@@ -105,11 +106,10 @@ public class RegistryHelper {
      */
     private final List<TileEntityType<?>> tileEntityTypes = NonNullList.create();
     
-    public TileEntityType<?> registerTileEntity(Supplier<? extends TileEntity> factory, String id) {
+    public <T extends TileEntity> void registerTileEntity(Supplier<T> factory, String id, Block... blocks) {
         
-        ResourceLocation fullId = new ResourceLocation(modid, id);
-        final TileEntityType<TileEntity> type = TileEntityType.register(fullId.toString(), TileEntityType.Builder.create(factory));
-        tileEntityTypes.add(type);
-        return type;
+        TileEntityType<?> tileEntityType = TileEntityType.Builder.create(factory, blocks).build(null);
+        tileEntityType.setRegistryName(this.modid, id);
+        tileEntityTypes.add(tileEntityType);
     }
 }

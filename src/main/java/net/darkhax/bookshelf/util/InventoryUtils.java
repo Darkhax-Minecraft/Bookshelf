@@ -8,7 +8,7 @@
 package net.darkhax.bookshelf.util;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
@@ -18,7 +18,7 @@ import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class InventoryUtils {
 
-    public static IItemHandler getInventory(World world, BlockPos pos, EnumFacing side) {
+    public static IItemHandler getInventory(World world, BlockPos pos, Direction side) {
         
         final TileEntity tileEntity = world.getTileEntity(pos);
         

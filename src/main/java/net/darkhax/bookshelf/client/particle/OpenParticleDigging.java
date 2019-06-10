@@ -7,11 +7,11 @@
  */
 package net.darkhax.bookshelf.client.particle;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.particle.ParticleDigging;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.particle.DiggingParticle;
 import net.minecraft.world.World;
 
-public class OpenParticleDigging extends ParticleDigging {
+public class OpenParticleDigging extends DiggingParticle {
     
     /**
      * Constructs a new ParticleDigging. The constructor in ParticleDigging is not publicly
@@ -27,7 +27,7 @@ public class OpenParticleDigging extends ParticleDigging {
      * @param zSpeed The velocity of the particle on the Z axis.
      * @param state The IBlockState of the block to create the particle for.
      */
-    public OpenParticleDigging(World world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, IBlockState state) {
+    public OpenParticleDigging(World world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, BlockState state) {
         
         super(world, x, y, z, xSpeed, ySpeed, zSpeed, state);
     }

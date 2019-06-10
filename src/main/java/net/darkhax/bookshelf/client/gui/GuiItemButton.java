@@ -26,14 +26,14 @@ public class GuiItemButton extends GuiButtonExt {
      * Constructs a new graphic button. A graphic button is a 20x20 button that uses an image
      * rather than text.
      *
-     * @param buttonID The ID to set for the button. This ID is specific to the GUI instance.
      * @param xPosition The X coordinate to position the button at.
      * @param yPosition The Y coordinate to position the button at.
      * @param renderStack The itemstack to render.
+     * @param handler The pressable effect handler. Used to add logic to the button.
      */
-    public GuiItemButton(int buttonID, int xPosition, int yPosition, ItemStack renderStack) {
+    public GuiItemButton(int xPosition, int yPosition, ItemStack renderStack, IPressable handler) {
         
-        super(buttonID, xPosition, yPosition, 20, 20, "");
+        super(xPosition, yPosition, 20, 20, "", handler);
         this.renderStack = renderStack;
     }
     
