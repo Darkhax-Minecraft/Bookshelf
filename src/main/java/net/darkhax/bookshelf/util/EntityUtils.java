@@ -147,6 +147,7 @@ public final class EntityUtils {
     /**
      * Gets a List of entities that are within the provided area.
      *
+     * @param <T> The type of entities to look for.
      * @param entityClass The type of entity you are looking for.
      * @param world The world to search in.
      * @param pos The position to start the search around.

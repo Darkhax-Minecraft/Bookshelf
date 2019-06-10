@@ -81,11 +81,12 @@ public final class MathsUtils {
     /**
      * Creates a MovingObjectPosition based on where a player is looking.
      *
-     * @param player: The player to get the looking position of.
-     * @param length: The distance to go outwards from the player, the maximum "reach". Default
+     * @param player The player to get the looking position of.
+     * @param length The distance to go outwards from the player, the maximum "reach". Default
      *        reach is 4.5D.
-     * @return MovingObjectPosition: A MovingObjectPosition containing the exact location where
-     *         the player is looking.
+     * @param mode The mode of blocks being looked for.
+     * @param fluidMode The mod of searching through fluids.
+     * @return A RayTraceResult containing the exact location where the player is looking.
      */
     public static RayTraceResult rayTrace (PlayerEntity player, double length, BlockMode mode, FluidMode fluidMode) {
         

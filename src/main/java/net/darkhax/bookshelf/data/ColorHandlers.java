@@ -46,7 +46,7 @@ public class ColorHandlers {
     
     /**
      * A reusable color handler which uses the hash of the
-     * {@link net.minecraft.nbt.NBTTagCompound#toString()}.
+     * {@link net.minecraft.nbt.CompoundNBT#toString()}.
      */
     public static final IItemColor ITEM_NBT = (stack, index) -> stack.getTag().toString().hashCode();
     

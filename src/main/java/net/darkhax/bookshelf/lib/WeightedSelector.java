@@ -90,6 +90,7 @@ public class WeightedSelector<T> {
      * Randomly selects an entry from the list. Makes use of the weighted values to give values
      * with higher weight a better likelihood.
      *
+     * @param rand An instance of random used to weight things.
      * @return The weighted entry that was selected.
      */
     @Nullable
