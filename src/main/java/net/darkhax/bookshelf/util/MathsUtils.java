@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import net.darkhax.bookshelf.lib.Constants;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
@@ -84,20 +86,29 @@ public final class MathsUtils {
     }
     
     /**
-     * Creates a MovingObjectPosition based on where a player is looking.
-     *
-     * @param player: The player to get the looking position of.
-     * @param length: The distance to go outwards from the player, the maximum "reach". Default
-     *        reach is 4.5D.
-     * @return MovingObjectPosition: A MovingObjectPosition containing the exact location where
-     *         the player is looking.
+     * This method is deprecated, please use {@link #rayTrace(EntityLiving, double)} instead.
      */
+    @Deprecated
     public static RayTraceResult rayTrace (EntityPlayer player, double length) {
         
-        final Vec3d vec1 = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-        final Vec3d vec2 = player.getLookVec();
+        return rayTrace((EntityLivingBase) player, length);
+    }
+    
+    /**
+     * Performs a ray trace on where an entity is looking. This will return information about
+     * the blocks in their way.
+     *
+     * @param entity The entity to perform the ray trace on.
+     * @param length The amount of distance in world to perform the trace on. In survival mode
+     *        players have 4.5 blocks of length.
+     * @return An object containing the results of the ray trace that was performed.
+     */
+    public static RayTraceResult rayTrace (EntityLivingBase entity, double length) {
+        
+        final Vec3d vec1 = new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
+        final Vec3d vec2 = entity.getLookVec();
         final Vec3d vec3 = vec1.add(vec2.x * length, vec2.y * length, vec2.z * length);
-        return player.world.rayTraceBlocks(vec1, vec3);
+        return entity.world.rayTraceBlocks(vec1, vec3);
     }
     
     /**
