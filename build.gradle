@@ -105,7 +105,6 @@ processResources {
         }
         
         credits += patreonSupporters.join(', ')
-        println credits
         expand 'version': project.version, 'mod_id' : mod_id, 'mod_name': mod_name, 'mod_download': mod_download, 'mod_credits': credits, 'mod_authors': mod_authors, 'mod_description': mod_description
     }
 
