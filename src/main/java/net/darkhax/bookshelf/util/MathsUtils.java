@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceContext;
@@ -79,21 +80,20 @@ public final class MathsUtils {
     }
     
     /**
-     * Creates a MovingObjectPosition based on where a player is looking.
-     *
-     * @param player The player to get the looking position of.
-     * @param length The distance to go outwards from the player, the maximum "reach". Default
-     *        reach is 4.5D.
-     * @param mode The mode of blocks being looked for.
-     * @param fluidMode The mod of searching through fluids.
-     * @return A RayTraceResult containing the exact location where the player is looking.
+     * Performs a ray trace for the look vector of an entity.
+     * 
+     * @param entity The entity to perform a ray trace on.
+     * @param length The distance to cast the rays.
+     * @param blockMode The mode used when detecting blocks.
+     * @param fluidMode The mode used when detecting fluids.
+     * @return An object containing the results of the ray trace.
      */
-    public static RayTraceResult rayTrace (PlayerEntity player, double length, BlockMode mode, FluidMode fluidMode) {
+    public static RayTraceResult rayTrace (LivingEntity entity, double length, BlockMode blockMode, FluidMode fluidMode) {
         
-        final Vec3d vec1 = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-        final Vec3d vec2 = player.getLookVec();
-        final Vec3d vec3 = vec1.add(vec2.x * length, vec2.y * length, vec2.z * length);
-        return player.world.rayTraceBlocks(new RayTraceContext(vec1, vec3, mode, fluidMode, player));
+        final Vec3d startingPosition = new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
+        final Vec3d lookVector = entity.getLookVec();
+        final Vec3d endingPosition = startingPosition.add(lookVector.x * length, lookVector.y * length, lookVector.z * length);
+        return entity.world.rayTraceBlocks(new RayTraceContext(startingPosition, endingPosition, blockMode, fluidMode, entity));
     }
     
     /**
@@ -186,15 +186,5 @@ public final class MathsUtils {
     public static int adjustToRange (int initial, int min, int max) {
         
         return initial < min ? min : initial > max ? max : initial;
-    }
-    
-    public static float remap(float value, float currentLow, float currentHigh, float newLow, float newHigh) {
-    	
-        return newLow + (value - currentLow) * (newHigh - newLow) / (currentHigh - currentLow);
-    }
-    
-    public static double easeInQuint(double percentage) {
-    	
-        return percentage * percentage * percentage * percentage;
     }
 }
