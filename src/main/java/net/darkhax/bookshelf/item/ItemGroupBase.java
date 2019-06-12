@@ -12,19 +12,32 @@ import java.util.function.Supplier;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
+/**
+ * A basic creative tab class that can be used to quickly create a new creative tab for your
+ * mod.
+ */
 public class ItemGroupBase extends ItemGroup {
-
-    private final Supplier<ItemStack> iconProvider; 
     
-    public ItemGroupBase (String label, Supplier<ItemStack> iconProvider) {
+    /**
+     * A supplier for the icon of the creative tab.
+     */
+    private final Supplier<ItemStack> iconSupplier;
+    
+    /**
+     * The base constructor for creating a new ItemGroup.
+     * 
+     * @param label The translation string used for the name of the group.
+     * @param iconSupplier A supplier for the icon stack.
+     */
+    public ItemGroupBase(String label, Supplier<ItemStack> iconSupplier) {
         
         super(label);
-        this.iconProvider = iconProvider;
+        this.iconSupplier = iconSupplier;
     }
-
+    
     @Override
     public ItemStack createIcon () {
         
-        return this.iconProvider.get();
+        return this.iconSupplier.get();
     }
 }
