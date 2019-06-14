@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public final class StackUtils {
-    
+
     /**
      * Sets a stack compound to an ItemStack if it does not already have one.
      *
@@ -24,14 +24,14 @@ public final class StackUtils {
      * @return The tag of the stack.
      */
     public static NBTTagCompound prepareStackTag (ItemStack stack) {
-        
+
         if (!stack.hasTag()) {
             stack.setTag(new NBTTagCompound());
         }
-        
+
         return stack.getTag();
     }
-    
+
     /**
      * Sets a stack compound to an ItemStack if it does not have one.
      *
@@ -39,11 +39,11 @@ public final class StackUtils {
      * @return The stack, for convenience.
      */
     public static ItemStack prepareStack (ItemStack stack) {
-        
+
         prepareStackTag(stack);
         return stack;
     }
-    
+
     /**
      * Sets the lore for an ItemStack. This will completely override any existing lore for that
      * item.
@@ -53,16 +53,16 @@ public final class StackUtils {
      * @return The stack that was updated.
      */
     public static ItemStack setLore (ItemStack stack, String... lore) {
-        
+
         final NBTTagList loreList = new NBTTagList();
-        
+
         for (final String line : lore) {
             loreList.add(new NBTTagString(line));
         }
-        
+
         return setLoreTag(stack, loreList);
     }
-    
+
     /**
      * Adds lore to the ItemStack, preserving the old lore.
      *
@@ -71,15 +71,15 @@ public final class StackUtils {
      * @return The stack that was updated.
      */
     public static ItemStack appendLore (ItemStack stack, String... lore) {
-        
+
         final NBTTagList loreTag = getLoreTag(stack);
-        
+
         for (final String line : lore) {
             loreTag.add(new NBTTagString(line));
         }
         return stack;
     }
-    
+
     /**
      * Sets the lore tag for a stack.
      *
@@ -88,12 +88,12 @@ public final class StackUtils {
      * @return The stack that was updated.
      */
     public static ItemStack setLoreTag (ItemStack stack, NBTTagList lore) {
-        
+
         final NBTTagCompound displayTag = getDisplayTag(stack);
         displayTag.put("Lore", lore);
         return stack;
     }
-    
+
     /**
      * Gets the display tag from a stack, creates it if it does not exist.
      *
@@ -101,17 +101,17 @@ public final class StackUtils {
      * @return The display tag.
      */
     public static NBTTagCompound getDisplayTag (ItemStack stack) {
-        
+
         prepareStackTag(stack);
         final NBTTagCompound tag = stack.getTag();
-        
+
         if (!tag.hasUniqueId("display")) {
             tag.put("display", new NBTTagCompound());
         }
-        
+
         return tag.getCompound("display");
     }
-    
+
     /**
      * Gets the lore tag from a stack, creates it if it does not exist.
      *
@@ -119,17 +119,17 @@ public final class StackUtils {
      * @return The lore tag list.
      */
     public static NBTTagList getLoreTag (ItemStack stack) {
-        
+
         final NBTTagCompound displayTag = getDisplayTag(stack);
-        
+
         if (!displayTag.hasUniqueId("Lore")) {
-            
+
             displayTag.put("Lore", new NBTTagList());
         }
-        
+
         return displayTag.getList("Lore", 8);
     }
-    
+
     /**
      * Writes an ItemStack as a sub NBTTagCompound on a larger NBTTagCompound.
      *
@@ -138,12 +138,12 @@ public final class StackUtils {
      * @param tagName The name for this new NBTTagCompound entry.
      */
     public static void writeStackToTag (ItemStack stack, NBTTagCompound tag, String tagName) {
-        
+
         final NBTTagCompound stackTag = new NBTTagCompound();
         stack.write(stackTag);
         tag.put(tagName, stackTag);
     }
-    
+
     /**
      * Safely drops an ItemStack intot he world. Used for mob drops.
      *
@@ -152,9 +152,9 @@ public final class StackUtils {
      * @param stack The stack to drop.
      */
     public static void dropStackInWorld (World world, BlockPos pos, ItemStack stack) {
-        
+
         if (!world.isRemote && world.getGameRules().getBoolean("doTileDrops")) {
-            
+
             final float offset = 0.7F;
             final double offX = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
             final double offY = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
@@ -164,7 +164,7 @@ public final class StackUtils {
             world.spawnEntity(entityitem);
         }
     }
-    
+
     /**
      * Gets the identifier for an ItemStack. If the stack is empty or null, the id for air will
      * be given.
@@ -173,10 +173,10 @@ public final class StackUtils {
      * @return The identifier for the item.
      */
     public static String getStackIdentifier (ItemStack stack) {
-        
+
         return stack != null && !stack.isEmpty() ? stack.getItem().getRegistryName().toString() : "minecraft:air";
     }
-    
+
     /**
      * Gets an NBTTagCompound from a stack without polluting the original input stack. If the
      * stack does not have a tag, you will get a new one. This new tag will NOT be set to the
@@ -186,7 +186,7 @@ public final class StackUtils {
      * @return The nbt data for the stack.
      */
     public static NBTTagCompound getTagCleanly (ItemStack stack) {
-        
+
         return stack.hasTag() ? stack.getTag() : new NBTTagCompound();
     }
 }

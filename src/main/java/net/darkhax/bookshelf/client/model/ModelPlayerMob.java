@@ -21,22 +21,22 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 @OnlyIn(Dist.CLIENT)
 public class ModelPlayerMob extends ModelBiped {
-    
+
     public ModelRenderer leftArmOverlay;
     public ModelRenderer rightArmOverlay;
     public ModelRenderer leftLegOverlay;
     public ModelRenderer rightLegLverlay;
     public ModelRenderer bodyOverlay;
-    
+
     private final boolean isFeminine;
-    
-    public ModelPlayerMob(float modelSize, boolean isFeminine) {
-        
+
+    public ModelPlayerMob (float modelSize, boolean isFeminine) {
+
         super(modelSize, 0.0F, 64, 64);
         this.isFeminine = isFeminine;
-        
+
         if (isFeminine) {
-            
+
             this.bipedLeftArm = new ModelRenderer(this, 32, 48);
             this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, modelSize);
             this.bipedLeftArm.setRotationPoint(5.0F, 2.5F, 0.0F);
@@ -50,9 +50,9 @@ public class ModelPlayerMob extends ModelBiped {
             this.rightArmOverlay.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, modelSize + 0.25F);
             this.rightArmOverlay.setRotationPoint(-5.0F, 2.5F, 10.0F);
         }
-        
+
         else {
-            
+
             this.bipedLeftArm = new ModelRenderer(this, 32, 48);
             this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize);
             this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
@@ -63,7 +63,7 @@ public class ModelPlayerMob extends ModelBiped {
             this.rightArmOverlay.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, modelSize + 0.25F);
             this.rightArmOverlay.setRotationPoint(-5.0F, 2.0F, 10.0F);
         }
-        
+
         this.bipedLeftLeg = new ModelRenderer(this, 16, 48);
         this.bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, modelSize);
         this.bipedLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
@@ -77,15 +77,15 @@ public class ModelPlayerMob extends ModelBiped {
         this.bodyOverlay.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, modelSize + 0.25F);
         this.bodyOverlay.setRotationPoint(0.0F, 0.0F, 0.0F);
     }
-    
+
     @Override
     public void render (Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        
+
         super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         GlStateManager.pushMatrix();
-        
+
         if (this.isChild) {
-            
+
             GlStateManager.scalef(0.5F, 0.5F, 0.5F);
             GlStateManager.translatef(0.0F, 24.0F * scale, 0.0F);
             this.leftLegOverlay.render(scale);
@@ -94,27 +94,27 @@ public class ModelPlayerMob extends ModelBiped {
             this.rightArmOverlay.render(scale);
             this.bodyOverlay.render(scale);
         }
-        
+
         else {
-            
+
             if (entity.isSneaking()) {
-                
+
                 GlStateManager.translatef(0.0F, 0.2F, 0.0F);
             }
-            
+
             this.leftLegOverlay.render(scale);
             this.rightLegLverlay.render(scale);
             this.leftArmOverlay.render(scale);
             this.rightArmOverlay.render(scale);
             this.bodyOverlay.render(scale);
         }
-        
+
         GlStateManager.popMatrix();
     }
-    
+
     @Override
     public void setRotationAngles (float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
-        
+
         super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
         copyModelAngles(this.bipedLeftLeg, this.leftLegOverlay);
         copyModelAngles(this.bipedRightLeg, this.rightLegLverlay);
@@ -122,10 +122,10 @@ public class ModelPlayerMob extends ModelBiped {
         copyModelAngles(this.bipedRightArm, this.rightArmOverlay);
         copyModelAngles(this.bipedBody, this.bodyOverlay);
     }
-    
+
     @Override
     public void setVisible (boolean visible) {
-        
+
         super.setVisible(visible);
         this.leftArmOverlay.showModel = visible;
         this.rightArmOverlay.showModel = visible;
@@ -133,22 +133,22 @@ public class ModelPlayerMob extends ModelBiped {
         this.rightLegLverlay.showModel = visible;
         this.bodyOverlay.showModel = visible;
     }
-    
+
     @Override
     public void postRenderArm (float scale, EnumHandSide side) {
-        
+
         final ModelRenderer modelrenderer = this.getArmForSide(side);
-        
+
         if (this.isFeminine) {
-            
+
             final float f = 0.5F * (side == EnumHandSide.RIGHT ? 1 : -1);
             modelrenderer.rotationPointX += f;
             modelrenderer.postRender(scale);
             modelrenderer.rotationPointX -= f;
         }
-        
+
         else {
-            
+
             modelrenderer.postRender(scale);
         }
     }

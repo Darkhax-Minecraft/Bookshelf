@@ -96,7 +96,7 @@ public class WeightedSelector<T> {
     public WeightedEntry<T> getRandomEntry (Random rand) {
 
         if (!this.entries.isEmpty()) {
-            
+
             final int selected = rand.nextInt(this.total);
             int current = 0;
 
@@ -113,11 +113,11 @@ public class WeightedSelector<T> {
         return null;
     }
 
-    public int getTotalWeight() {
-        
+    public int getTotalWeight () {
+
         return this.total;
     }
-    
+
     /**
      * Updates the total weight value for the selector. This should be caused any time the list
      * is altered.
@@ -126,13 +126,13 @@ public class WeightedSelector<T> {
      */
     public int updateTotal () {
 
-        total = 0;
+        this.total = 0;
 
         for (final WeightedEntry<T> entry : this.entries) {
-            total += entry.getWeight();
+            this.total += entry.getWeight();
         }
 
-        return total;
+        return this.total;
     }
 
     public static class WeightedEntry<T> {

@@ -25,91 +25,91 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class RegistryHelper {
-    
+
     private final String modid;
     private final Logger logger;
     private final ItemGroup group;
-    
+
     public RegistryHelper (String modid, Logger logger, ItemGroup group) {
-        
+
         this.modid = modid;
         this.logger = logger;
         this.group = group;
     }
-    
-    public void initialize(IEventBus modBus) {
-        
+
+    public void initialize (IEventBus modBus) {
+
         modBus.addGenericListener(Block.class, this::registerBlocks);
         modBus.addGenericListener(Item.class, this::registerItems);
     }
-    
+
     /**
      * BLOCKS
      */
     private final List<Block> blocks = NonNullList.create();
-    
+
     private void registerBlocks (Register<Block> event) {
 
         if (!this.blocks.isEmpty()) {
-            
-            logger.info("Registering {} blocks.", blocks.size());
+
+            this.logger.info("Registering {} blocks.", this.blocks.size());
             final IForgeRegistry<Block> registry = event.getRegistry();
-            
-            for (Block block : blocks) {
-                
+
+            for (final Block block : this.blocks) {
+
                 registry.register(block);
             }
         }
     }
-    
-    public Block registerBlock(Block block, String id) {
-        
+
+    public Block registerBlock (Block block, String id) {
+
         return this.registerBlock(block, new ItemBlock(block, new Item.Properties().group(this.group)), id);
     }
-    
-    public Block registerBlock(Block block, ItemBlock item, String id) {
-        
+
+    public Block registerBlock (Block block, ItemBlock item, String id) {
+
         block.setRegistryName(new ResourceLocation(this.modid, id));
         this.blocks.add(block);
-        registerItem(item, id);
+        this.registerItem(item, id);
         return block;
     }
-    
+
     /**
      * ITEMS
      */
     private final List<Item> items = NonNullList.create();
-    
+
     private void registerItems (Register<Item> event) {
-        
+
         if (!this.items.isEmpty()) {
-            
-            logger.info("Registering {} items.", items.size());
+
+            this.logger.info("Registering {} items.", this.items.size());
             final IForgeRegistry<Item> registry = event.getRegistry();
-            
-            for (Item item : items) {
-                
+
+            for (final Item item : this.items) {
+
                 registry.register(item);
             }
         }
     }
-    
-    public void registerItem(Item item, String id) {
-        
+
+    public void registerItem (Item item, String id) {
+
         item.setRegistryName(new ResourceLocation(this.modid, id));
         this.items.add(item);
     }
-    
+
     /**
      * TILE ENTITIES
      */
     private final List<TileEntityType<?>> tileEntityTypes = NonNullList.create();
-    
-    public TileEntityType<?> registerTileEntity(Supplier<? extends TileEntity> factory, String id) {
-        
-        ResourceLocation fullId = new ResourceLocation(modid, id);
+
+    public TileEntityType<?> registerTileEntity (Supplier<? extends TileEntity> factory, String id) {
+
+        final ResourceLocation fullId = new ResourceLocation(this.modid, id);
         final TileEntityType<TileEntity> type = TileEntityType.register(fullId.toString(), TileEntityType.Builder.create(factory));
-        tileEntityTypes.add(type);
+        this.tileEntityTypes.add(type);
         return type;
     }
 }

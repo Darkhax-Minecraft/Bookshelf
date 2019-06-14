@@ -18,16 +18,16 @@ import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class InventoryUtils {
 
-    public static IItemHandler getInventory(World world, BlockPos pos, EnumFacing side) {
-        
+    public static IItemHandler getInventory (World world, BlockPos pos, EnumFacing side) {
+
         final TileEntity tileEntity = world.getTileEntity(pos);
-        
+
         if (tileEntity != null) {
-            
+
             final LazyOptional<IItemHandler> inventoryCap = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side);
             return inventoryCap.orElse(EmptyHandler.INSTANCE);
         }
-        
+
         return null;
     }
 }

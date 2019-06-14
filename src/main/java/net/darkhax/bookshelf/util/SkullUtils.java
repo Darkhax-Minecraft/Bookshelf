@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public final class SkullUtils {
-    
+
     /**
      * Create a skull from an instance of EntityPlayer.
      *
@@ -23,10 +23,10 @@ public final class SkullUtils {
      * @return ItemStack An ItemStack containing a skull that represents the passed player.
      */
     public static ItemStack createSkull (EntityPlayer player) {
-        
+
         return createSkull(player.getGameProfile().getName(), player.getUniqueID());
     }
-    
+
     /**
      * Creates a skull using a players UUID.
      *
@@ -36,7 +36,7 @@ public final class SkullUtils {
      *         passed UUID.
      */
     public static ItemStack createSkull (String name, UUID uuid) {
-        
+
         final ItemStack stack = new ItemStack(Items.PLAYER_HEAD, 1);
         StackUtils.prepareStackTag(stack);
         final NBTTagCompound ownerTag = new NBTTagCompound();
@@ -45,7 +45,7 @@ public final class SkullUtils {
         stack.getTag().put("SkullOwner", ownerTag);
         return stack;
     }
-    
+
     /**
      * Creates a skull that represents a player. This method can use plain text usernames, or
      * player UUID. It is recommended to use the UUID over the username, unless you are 100%
@@ -56,7 +56,7 @@ public final class SkullUtils {
      *         name.
      */
     public static ItemStack createSkull (String owner) {
-        
+
         final ItemStack stack = new ItemStack(Items.PLAYER_HEAD, 1);
         StackUtils.prepareStackTag(stack);
         stack.getTag().putString("SkullOwner", owner);

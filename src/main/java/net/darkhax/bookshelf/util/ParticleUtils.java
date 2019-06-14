@@ -11,7 +11,7 @@ import net.minecraft.particles.IParticleData;
 import net.minecraft.world.World;
 
 public final class ParticleUtils {
-    
+
     /**
      * Spawns particles in a ring, centered around a certain position.
      *
@@ -27,12 +27,12 @@ public final class ParticleUtils {
      *        will create 1 particle per ring. 0.15 is a nice value.
      */
     public static void spawnParticleRing (World world, IParticleData particle, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
-        
+
         for (double degree = 0.0d; degree < 2 * Math.PI; degree += step) {
             world.addParticle(particle, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
         }
     }
-    
+
     /**
      * Spawns particles in a ring, centered around a certain point. This method takes a percent
      * argument which is used to calculate the amount of the ring to spawn.
@@ -50,12 +50,12 @@ public final class ParticleUtils {
      *        will create 1 particle per ring. 0.15 is a nice value.
      */
     public static void spawnPercentageParticleRing (World world, IParticleData particle, float percentage, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
-        
+
         for (double degree = 0.0d; degree < 2 * Math.PI * percentage; degree += step) {
             world.addParticle(particle, x + Math.cos(degree), y, z + Math.sin(degree), velocityX, velocityY, velocityZ);
         }
     }
-    
+
     /**
      * Spawns particles in a ring, centered around a certain point. This method takes a percent
      * argument which is used to calculate the amount of the ring to spawn. The height of the
@@ -74,9 +74,9 @@ public final class ParticleUtils {
      *        will create 1 particle per ring. 0.15 is a nice value.
      */
     public static void spawnWavingParticleRing (World world, IParticleData particle, float percentage, double x, double y, double z, double velocityX, double velocityY, double velocityZ, double step) {
-        
+
         for (double degree = 0.0d; degree <= 2 * Math.PI * percentage; degree += 0.15) {
-            
+
             world.addParticle(particle, x + Math.cos(degree), y - Math.cos(Math.sin(degree)) + 0.5, z + Math.sin(degree), 0, 0, 0);
         }
     }

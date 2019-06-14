@@ -14,17 +14,17 @@ import net.minecraft.item.ItemStack;
 
 public class ItemGroupBase extends ItemGroup {
 
-    private final Supplier<ItemStack> iconProvider; 
-    
+    private final Supplier<ItemStack> iconProvider;
+
     public ItemGroupBase (String label, Supplier<ItemStack> iconProvider) {
-        
+
         super(label);
         this.iconProvider = iconProvider;
     }
 
     @Override
     public ItemStack createIcon () {
-        
+
         return this.iconProvider.get();
     }
 }

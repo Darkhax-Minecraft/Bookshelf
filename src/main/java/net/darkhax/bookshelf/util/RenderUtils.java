@@ -50,50 +50,50 @@ import net.minecraftforge.common.model.TRSRTransformation;
 
 @OnlyIn(Dist.CLIENT)
 public final class RenderUtils {
-    
+
     public static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
-    
+
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
      * implicit public constructor to every class which does not define at lease one
      * explicitly. Hence why this constructor was added.
      */
-    private RenderUtils() {
-        
+    private RenderUtils () {
+
         throw new IllegalAccessError("Utility class");
     }
-    
+
     /**
      * Registers a LayerRenderer to both the Alex and Steve player renderers.
      *
      * @param layer The LayerRenderer to register.
      */
     public static void registerPlayerLayer (LayerRenderer<EntityLivingBase> layer) {
-        
+
         getSteveRenderer().addLayer(layer);
         getAlexRenderer().addLayer(layer);
     }
-    
+
     /**
      * Gets the RenderPlayer instance for the Steve model.
      *
      * @return RederPlayer The RenderPlayer instance for the Steve model.
      */
     public static RenderPlayer getSteveRenderer () {
-        
+
         return getPlayerRenderer("default");
     }
-    
+
     /**
      * Gets the RenderPlayer instance for the Alex model.
      *
      * @return RenderPlayer The RenderPlayer instance for the Alex model.
      */
     public static RenderPlayer getAlexRenderer () {
-        
+
         return getPlayerRenderer("slim");
     }
-    
+
     /**
      * Gets a RenderPlayer instance for the specified model type. Currently only Alex (slim)
      * and Steve (default) are added by vanilla. Can be null if no renderer was found.
@@ -102,10 +102,10 @@ public final class RenderUtils {
      * @return RenderPlayer The RenderPlayer instance for the specified model.
      */
     public static RenderPlayer getPlayerRenderer (String type) {
-        
+
         return Minecraft.getInstance().getRenderManager().getSkinMap().get(type);
     }
-    
+
     /**
      * Attempts to download a resource from the web and load it into the game. If the resource
      * can not be downloaded successfully. Wraps
@@ -122,11 +122,11 @@ public final class RenderUtils {
      * @return The output resource location.
      */
     public static ResourceLocation downloadResourceLocation (String url, ResourceLocation outputResource, ResourceLocation defaultResource, IImageBuffer buffer) {
-        
+
         downloadResource(url, outputResource, defaultResource, buffer);
         return outputResource;
     }
-    
+
     /**
      * Attempts to download a resource from the web and load it into the game. If the resource
      * can not be downloaded successfully.
@@ -141,20 +141,20 @@ public final class RenderUtils {
      * @return The downloaded image data.
      */
     public static ThreadDownloadImageData downloadResource (String url, ResourceLocation outputResource, ResourceLocation defaultResource, IImageBuffer buffer) {
-        
+
         final TextureManager manager = Minecraft.getInstance().getTextureManager();
-        
+
         ThreadDownloadImageData imageData = (ThreadDownloadImageData) manager.getTexture(outputResource);
-        
+
         if (imageData == null) {
-            
+
             imageData = new ThreadDownloadImageData(null, url, defaultResource, buffer);
             manager.loadTexture(outputResource, imageData);
         }
-        
+
         return imageData;
     }
-    
+
     /**
      * Gets the camera for a specific entity.
      *
@@ -163,16 +163,16 @@ public final class RenderUtils {
      * @return The camera for the entity.
      */
     public static Frustum getCamera (Entity entity, float partialTicks) {
-        
+
         final double cameraX = entity.prevPosX + (entity.posX - entity.prevPosX) * partialTicks;
         final double cameraY = entity.prevPosY + (entity.posY - entity.prevPosY) * partialTicks;
         final double cameraZ = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * partialTicks;
-        
+
         final Frustum camera = new Frustum();
         camera.setPosition(cameraX, cameraY, cameraZ);
         return camera;
     }
-    
+
     /**
      * Translates the render state to be relative to the player's position. Allows for
      * rendering at a static world position that is not tied to the player's position.
@@ -181,11 +181,11 @@ public final class RenderUtils {
      * @param offset If the position should be offset by half a block.
      */
     public static void translateAgainstPlayer (BlockPos pos, boolean offset) {
-        
+
         final float x = (float) (pos.getX() - TileEntityRendererDispatcher.staticPlayerX);
         final float y = (float) (pos.getY() - TileEntityRendererDispatcher.staticPlayerY);
         final float z = (float) (pos.getZ() - TileEntityRendererDispatcher.staticPlayerZ);
-        
+
         if (offset) {
             GlStateManager.translatef(x + 0.5f, y + 0.5f, z + 0.5f);
         }
@@ -193,7 +193,7 @@ public final class RenderUtils {
             GlStateManager.translatef(x, y, z);
         }
     }
-    
+
     /**
      * Gets the particle sprite for an ItemStack.
      *
@@ -201,10 +201,10 @@ public final class RenderUtils {
      * @return A TextureAtlasSprite that points to the particle texture for the ItemStack.
      */
     public static TextureAtlasSprite getParticleTexture (ItemStack stack) {
-        
+
         return Minecraft.getInstance().getItemRenderer().getItemModelMesher().getItemModel(stack).getParticleTexture();
     }
-    
+
     /**
      * Gets the baked model for a ModelResourceLocation.
      *
@@ -212,10 +212,10 @@ public final class RenderUtils {
      * @return The baked model that was found.
      */
     public static IBakedModel getBakedModel (ModelResourceLocation name) {
-        
+
         return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getModel(name);
     }
-    
+
     /**
      * Gets the baked model for an ItemStack.
      *
@@ -223,10 +223,10 @@ public final class RenderUtils {
      * @return The baked model for the ItemStack.
      */
     public static IBakedModel getBakedModel (ItemStack stack) {
-        
+
         return Minecraft.getInstance().getItemRenderer().getItemModelMesher().getItemModel(stack);
     }
-    
+
     /**
      * Gets the missing quads for a given state.
      *
@@ -236,10 +236,10 @@ public final class RenderUtils {
      * @return The missing quads for the missing model.
      */
     public static List<BakedQuad> getMissingquads (IBlockState state, EnumFacing side, Random rand) {
-        
+
         return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel().getQuads(state, side, rand);
     }
-    
+
     /**
      * Attempts to get a block sprite from a block state.
      *
@@ -247,10 +247,10 @@ public final class RenderUtils {
      * @return The block sprite.
      */
     public static TextureAtlasSprite getSprite (IBlockState state) {
-        
+
         return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state);
     }
-    
+
     /**
      * Creates the basic TRSRTransformations for a perspective aware model.
      *
@@ -258,21 +258,21 @@ public final class RenderUtils {
      * @return An immutable map of all the transforms.
      */
     public static ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> getBasicTransforms (IBakedModel model) {
-        
+
         final ImmutableMap.Builder<ItemCameraTransforms.TransformType, TRSRTransformation> builder = ImmutableMap.builder();
-        
+
         for (final ItemCameraTransforms.TransformType type : ItemCameraTransforms.TransformType.values()) {
-            
+
             final TRSRTransformation transformation = new TRSRTransformation(model.handlePerspective(type).getRight());
-            
+
             if (!transformation.equals(TRSRTransformation.identity())) {
                 builder.put(type, TRSRTransformation.blockCenterToCorner(transformation));
             }
         }
-        
+
         return builder.build();
     }
-    
+
     /**
      * Gets a baked model for the passed state. This model is pulled from the baked model
      * store.
@@ -281,10 +281,10 @@ public final class RenderUtils {
      * @return The model for that state.
      */
     public static IBakedModel getModelForState (IBlockState state) {
-        
+
         return Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
     }
-    
+
     /**
      * Finds and saves a texture from the game data to a file.
      *
@@ -292,36 +292,36 @@ public final class RenderUtils {
      * @param file The file to save the texture to.
      */
     public static void saveTextureToFile (int textureId, File file) {
-        
+
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
-        
+
         GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
         GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
-        
+
         final int width = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
         final int height = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_HEIGHT);
         final int size = width * height;
-        
+
         final BufferedImage bufferedimage = new BufferedImage(width, height, 2);
-        
+
         final IntBuffer buffer = BufferUtils.createIntBuffer(size);
         final int[] data = new int[size];
-        
+
         GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, buffer);
         buffer.get(data);
         bufferedimage.setRGB(0, 0, width, height, data, 0, width);
-        
+
         try {
             ImageIO.write(bufferedimage, "png", file);
         }
-        
+
         catch (final Exception e) {
-            
+
             Bookshelf.LOG.error("Failed to save texture {} to {}.", textureId, file.getName());
             Bookshelf.LOG.catching(e);
         }
     }
-    
+
     /**
      * Builds a new copy of the transformations for a baked model.
      *
@@ -330,22 +330,22 @@ public final class RenderUtils {
      *         the base model.
      */
     public static ImmutableMap<TransformType, TRSRTransformation> copyTransforms (IBakedModel model) {
-        
+
         final ImmutableMap.Builder<TransformType, TRSRTransformation> copiedTransforms = ImmutableMap.builder();
-        
+
         // Iterate through all the item transform types
         for (final TransformType type : TransformType.values()) {
-            
+
             // Copies transformation for the transform type.
             final TRSRTransformation transformation = new TRSRTransformation(model.handlePerspective(type).getRight());
-            
+
             // Filters out the base transformation.
             if (!transformation.equals(TRSRTransformation.identity())) {
-                
+
                 copiedTransforms.put(type, TRSRTransformation.blockCenterToCorner(transformation));
             }
         }
-        
+
         return copiedTransforms.build();
     }
 }
