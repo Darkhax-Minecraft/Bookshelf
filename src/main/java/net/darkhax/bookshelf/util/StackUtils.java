@@ -154,7 +154,7 @@ public final class StackUtils {
             final double offY = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
             final double offZ = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
             final ItemEntity entityitem = new ItemEntity(world, pos.getX() + offX, pos.getY() + offY, pos.getZ() + offZ, stack);
-            entityitem.setPickupDelay(10);
+            entityitem.setDefaultPickupDelay();
             world.addEntity(entityitem);
         }
     }
