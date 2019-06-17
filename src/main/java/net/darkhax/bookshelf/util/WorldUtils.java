@@ -57,7 +57,7 @@ public final class WorldUtils {
         
         try {
             
-            final Chunk chunk = world.getChunk(pos);
+            final Chunk chunk = world.getChunkAt(pos);
             final Biome[] biomes = chunk.getBiomes();
             Arrays.fill(biomes, biome);
             chunk.markDirty();
@@ -67,7 +67,7 @@ public final class WorldUtils {
         
         catch (final Exception e) {
             
-        	Bookshelf.LOG.catching(e);
+            Bookshelf.LOG.catching(e);
             Bookshelf.LOG.warn("Unable to set biome for Pos: {}, Biome: {}", pos.toString(), biome.getRegistryName());
         }
     }
@@ -83,12 +83,12 @@ public final class WorldUtils {
         
         chunk.markDirty();
         
-        //TODO Re-implement rendering behaviour
-//        if (render) {
-//            
-//            final BlockPos initial = chunk.getPos().getBlock(1, 1, 1);
-//            world.markBlockRangeForRenderUpdate(initial, initial);
-//        }
+        // TODO Re-implement rendering behaviour
+        // if (render) {
+        //
+        // final BlockPos initial = chunk.getPos().getBlock(1, 1, 1);
+        // world.markBlockRangeForRenderUpdate(initial, initial);
+        // }
     }
     
     /**
@@ -101,13 +101,9 @@ public final class WorldUtils {
      */
     public static void updateNearbyChunks (World world, Chunk chunk, boolean includeSelf, boolean render) {
         
-        for (final Chunk other : getNearbyChunks(world, chunk)) {
-            
-            if (other != chunk || includeSelf) {
-                
+        for (final Chunk other : getNearbyChunks(world, chunk))
+            if (other != chunk || includeSelf)
                 markChunkForUpdate(world, other, render);
-            }
-        }
     }
     
     /**
@@ -134,14 +130,10 @@ public final class WorldUtils {
         
         final List<Chunk> chunks = new ArrayList<>();
         
-        for (int offX = -1; offX < 2; offX++) {
-            
-            for (int offY = -1; offY < 2; offY++) {
-                
+        for (int offX = -1; offX < 2; offX++)
+            for (int offY = -1; offY < 2; offY++)
                 chunks.add(world.getChunk(chunk.x + offX, chunk.z + offY));
-            }
-        }
-        
+            
         return chunks;
     }
 }
