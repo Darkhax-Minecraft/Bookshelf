@@ -297,6 +297,8 @@ public final class EntityUtils {
     public static void addDrop (ItemStack stack, LivingDropsEvent event) {
         
         final LivingEntity living = event.getEntityLiving();
-        event.getDrops().add(new ItemEntity(living.getEntityWorld(), living.posX, living.posY, living.posZ, stack));
+        ItemEntity droppedItemEntity = new ItemEntity(event.getEntityLiving().world, living.posX, living.posY, living.posZ, stack);
+        droppedItemEntity.setDefaultPickupDelay();
+        event.getDrops().add(droppedItemEntity);
     }
 }
