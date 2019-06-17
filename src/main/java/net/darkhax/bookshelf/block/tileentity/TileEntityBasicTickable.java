@@ -21,7 +21,7 @@ public abstract class TileEntityBasicTickable extends TileEntityBasic implements
     @Override
     public void tick () {
         
-        if (this.hasWorld() && this.isLoaded() && !this.isRemoved())
+        if (this.hasWorld() && this.isLoaded() && !this.isRemoved()) {
             try {
                 
                 this.onEntityUpdate();
@@ -32,6 +32,7 @@ public abstract class TileEntityBasicTickable extends TileEntityBasic implements
                 Bookshelf.LOG.warn("A TileEntity with ID {} at {} in world {} failed a client update tick!", this.getType().getRegistryName().toString(), this.getPos().toString(), this.getWorld().getWorldInfo().getWorldName());
                 Bookshelf.LOG.catching(exception);
             }
+        }
     }
     
     /**

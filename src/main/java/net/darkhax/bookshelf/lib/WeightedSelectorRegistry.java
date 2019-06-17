@@ -65,8 +65,9 @@ public class WeightedSelectorRegistry<T extends IForgeRegistryEntry<T>> extends 
         final boolean added = super.addEntry(value, weight);
         
         // If added successfully, store in backup map.
-        if (added)
+        if (added) {
             this.REGISTRY.put(value.getRegistryName(), value);
+        }
         
         return added;
     }
@@ -77,8 +78,9 @@ public class WeightedSelectorRegistry<T extends IForgeRegistryEntry<T>> extends 
         final boolean removed = super.removeEntry(entry);
         
         // If removed successfully remove from backup map.
-        if (removed)
+        if (removed) {
             this.REGISTRY.remove(entry.getEntry().getRegistryName());
+        }
         
         return removed;
     }

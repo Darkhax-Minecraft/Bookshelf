@@ -78,10 +78,12 @@ public final class PlayerUtils {
         
         int count = 0;
         
-        for (final ItemStack stack : player.inventory.mainInventory)
-            if (!stack.isEmpty() && stack.getItem().equals(item))
+        for (final ItemStack stack : player.inventory.mainInventory) {
+            if (!stack.isEmpty() && stack.getItem().equals(item)) {
                 count += stack.getCount();
-            
+            }
+        }
+        
         return count;
     }
     
@@ -94,10 +96,12 @@ public final class PlayerUtils {
      */
     public static boolean playerHasItem (PlayerEntity player, Item item) {
         
-        for (final ItemStack stack : player.inventory.mainInventory)
-            if (stack != null && stack.getItem().equals(item))
+        for (final ItemStack stack : player.inventory.mainInventory) {
+            if (stack != null && stack.getItem().equals(item)) {
                 return true;
-            
+            }
+        }
+        
         return false;
     }
     
@@ -112,10 +116,12 @@ public final class PlayerUtils {
         
         final List<ItemStack> items = new ArrayList<>();
         
-        for (final ItemStack stack : player.inventory.mainInventory)
-            if (stack != null && stack.getItem() == item)
+        for (final ItemStack stack : player.inventory.mainInventory) {
+            if (stack != null && stack.getItem() == item) {
                 items.add(stack);
-            
+            }
+        }
+        
         return items;
     }
     
@@ -184,10 +190,12 @@ public final class PlayerUtils {
             final Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().loadSkinFromCache(profile);
             
             // If the loaded data has a skin, return that.
-            if (map.containsKey(Type.SKIN))
+            if (map.containsKey(Type.SKIN)) {
                 return minecraft.getSkinManager().loadSkin(map.get(Type.SKIN), Type.SKIN);
-            else
+            }
+            else {
                 return DefaultPlayerSkin.getDefaultSkin(PlayerEntity.getUUID(profile));
+            }
         }
         
         // Default to the legacy steve skin.

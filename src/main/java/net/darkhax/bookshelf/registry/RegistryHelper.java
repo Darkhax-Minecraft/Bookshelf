@@ -55,8 +55,9 @@ public class RegistryHelper {
             this.logger.info("Registering {} blocks.", this.blocks.size());
             final IForgeRegistry<Block> registry = event.getRegistry();
             
-            for (final Block block : this.blocks)
+            for (final Block block : this.blocks) {
                 registry.register(block);
+            }
         }
     }
     
@@ -85,8 +86,9 @@ public class RegistryHelper {
             this.logger.info("Registering {} items.", this.items.size());
             final IForgeRegistry<Item> registry = event.getRegistry();
             
-            for (final Item item : this.items)
+            for (final Item item : this.items) {
                 registry.register(item);
+            }
         }
     }
     

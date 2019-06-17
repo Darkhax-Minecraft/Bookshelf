@@ -82,8 +82,9 @@ public class TableBuilder<T> {
      */
     private String padLeft (String string, String padCharacter, int length) {
         
-        while (string.length() < length)
+        while (string.length() < length) {
             string = padCharacter + string;
+        }
         
         return string;
     }
@@ -98,8 +99,9 @@ public class TableBuilder<T> {
         
         final List<Integer> columnWidths = new ArrayList<>();
         
-        for (int columnIndex = 0; columnIndex < this.columnNames.size(); columnIndex++)
+        for (int columnIndex = 0; columnIndex < this.columnNames.size(); columnIndex++) {
             columnWidths.add(this.getMaxWidth(columnIndex, entries));
+        }
         
         return columnWidths;
     }
@@ -146,8 +148,9 @@ public class TableBuilder<T> {
         builder.append(DIVIDER_COLUMN);
         for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
             
-            if (columnIndex > 0)
+            if (columnIndex > 0) {
                 builder.append(LINE_ENDING);
+            }
             
             builder.append(this.padLeft("", DIVIDER_ROW, widths.get(columnIndex)));
         }

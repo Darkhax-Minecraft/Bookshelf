@@ -101,9 +101,11 @@ public final class WorldUtils {
      */
     public static void updateNearbyChunks (World world, Chunk chunk, boolean includeSelf, boolean render) {
         
-        for (final Chunk other : getNearbyChunks(world, chunk))
-            if (other != chunk || includeSelf)
+        for (final Chunk other : getNearbyChunks(world, chunk)) {
+            if (other != chunk || includeSelf) {
                 markChunkForUpdate(world, other, render);
+            }
+        }
     }
     
     /**
@@ -130,10 +132,12 @@ public final class WorldUtils {
         
         final List<Chunk> chunks = new ArrayList<>();
         
-        for (int offX = -1; offX < 2; offX++)
-            for (int offY = -1; offY < 2; offY++)
+        for (int offX = -1; offX < 2; offX++) {
+            for (int offY = -1; offY < 2; offY++) {
                 chunks.add(world.getChunk(chunk.x + offX, chunk.z + offY));
-            
+            }
+        }
+        
         return chunks;
     }
 }

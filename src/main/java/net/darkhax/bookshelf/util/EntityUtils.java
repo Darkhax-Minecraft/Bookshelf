@@ -78,8 +78,9 @@ public final class EntityUtils {
         final double distanceZ = (double) pos.getZ() - entityPos.getZ();
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
-        if (distance > 0)
+        if (distance > 0) {
             entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+        }
     }
     
     /**
@@ -97,8 +98,9 @@ public final class EntityUtils {
         final double distanceZ = destination.posZ - entityToMove.posZ;
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
-        if (distance > 0)
+        if (distance > 0) {
             entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+        }
     }
     
     /**
@@ -120,8 +122,9 @@ public final class EntityUtils {
         final double distanceZ = (double) destination.getZ() - entityPos.getZ();
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
-        if (distance > 0)
+        if (distance > 0) {
             entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+        }
     }
     
     /**
@@ -165,14 +168,16 @@ public final class EntityUtils {
      */
     public static boolean isWearingFullSet (MobEntity living, Class<Item> armorClass) {
         
-        for (final EquipmentSlotType slot : EquipmentSlotType.values())
+        for (final EquipmentSlotType slot : EquipmentSlotType.values()) {
             if (slot.getSlotType().equals(EquipmentSlotType.Group.ARMOR)) {
                 
                 final ItemStack armor = living.getItemStackFromSlot(slot);
                 
-                if (armor.isEmpty() || !armor.getItem().getClass().equals(armorClass))
+                if (armor.isEmpty() || !armor.getItem().getClass().equals(armorClass)) {
                     return false;
+                }
             }
+        }
         
         return true;
     }
@@ -297,7 +302,7 @@ public final class EntityUtils {
     public static void addDrop (ItemStack stack, LivingDropsEvent event) {
         
         final LivingEntity living = event.getEntityLiving();
-        ItemEntity droppedItemEntity = new ItemEntity(event.getEntityLiving().world, living.posX, living.posY, living.posZ, stack);
+        final ItemEntity droppedItemEntity = new ItemEntity(event.getEntityLiving().world, living.posX, living.posY, living.posZ, stack);
         droppedItemEntity.setDefaultPickupDelay();
         event.getDrops().add(droppedItemEntity);
     }

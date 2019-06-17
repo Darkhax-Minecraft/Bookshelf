@@ -127,16 +127,18 @@ public abstract class CachedDynamicBakedModel implements IBakedModel {
             final IBakedModel cachedModel = this.cache.get(key);
             
             // If model is not null, return it's quads and be done.
-            if (cachedModel != null)
+            if (cachedModel != null) {
                 return cachedModel;
+            }
         }
         
         // No cached copy exists, so make a new one.
         final IBakedModel newModel = this.generateBlockModel(key);
         
         // If the cache key is not null, cache the newly made model.
-        if (key != null)
+        if (key != null) {
             this.cache.put(key, newModel);
+        }
         
         return newModel;
     }

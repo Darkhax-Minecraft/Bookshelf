@@ -34,10 +34,12 @@ public final class NumericUtils {
      */
     public static boolean isKeyCodeNumeric (int keyCode) {
         
-        for (final int validKey : NUMERIC_KEYS)
-            if (validKey == keyCode)
+        for (final int validKey : NUMERIC_KEYS) {
+            if (validKey == keyCode) {
                 return true;
-            
+            }
+        }
+        
         return false;
     }
     
