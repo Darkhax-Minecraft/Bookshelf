@@ -1,5 +1,7 @@
 package net.darkhax.bookshelf.data;
 
+import com.google.common.primitives.Ints;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,8 +18,14 @@ public enum MoonPhase {
     LAST_QUARTER(6, "last.quarter"),
     WANING_GIBBOUS(7, "waning.gibbous");
     
+    /**
+     * The phase value for the moon.
+     */
     private final int phase;
     
+    /**
+     * A translation key for the mood phase name.
+     */
     private final String key;
     
     MoonPhase(int phase, String key) {
@@ -38,8 +46,7 @@ public enum MoonPhase {
     
     public static MoonPhase getPhase (int phase) {
         
-        final int safePhase = phase < 0 ? 0 : phase > 7 ? 7 : phase;
-        return MoonPhase.values()[safePhase];
+        return MoonPhase.values()[Ints.constrainToRange(phase, 0, 7)];
     }
     
     @OnlyIn(Dist.CLIENT)

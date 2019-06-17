@@ -22,7 +22,7 @@ public enum FluidVolume {
     /**
      * The amount of mb which make up this amount.
      */
-    public int amount;
+    private final int amount;
     
     /**
      * A simple enumeration used to list how many milibuckets is in a given measurement.
@@ -32,5 +32,15 @@ public enum FluidVolume {
     FluidVolume(int amount) {
         
         this.amount = amount;
+    }
+    
+    /**
+     * Gets the amount of fluid for this volume.
+     * 
+     * @return The amount of fluid in this volume.
+     */
+    public int getAmount () {
+        
+        return this.amount;
     }
 }

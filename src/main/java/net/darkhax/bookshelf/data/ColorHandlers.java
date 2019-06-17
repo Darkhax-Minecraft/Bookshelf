@@ -30,7 +30,7 @@ public class ColorHandlers {
     /**
      * A reusable color handler which uses the hash of {@link ItemStack#getTranslationKey()}.
      */
-    public static final  IItemColor ITEM_UNLOCALIZED_NAME = (stack, index) -> stack.getTranslationKey().hashCode();
+    public static final IItemColor ITEM_UNLOCALIZED_NAME = (stack, index) -> stack.getTranslationKey().hashCode();
     
     /**
      * A reusable color handler which uses the hash of the
@@ -56,7 +56,7 @@ public class ColorHandlers {
      * A reusable color handler which applies the foliage color for the biome.
      */
     public static final IBlockColor BLOCK_FOLIAGE = (state, world, pos, index) -> BiomeColors.getFoliageColor(world, pos);
-
+    
     /**
      * A reusable color handler which applies the grass color for the biome.
      */

@@ -17,12 +17,12 @@ import net.minecraft.util.math.BlockPos;
 
 public abstract class TileEntityBasic extends TileEntity {
     
-	public TileEntityBasic(TileEntityType<?> tileEntityType) {
-		
-		super(tileEntityType);
-	}
-
-	@Override
+    public TileEntityBasic(TileEntityType<?> tileEntityType) {
+        
+        super(tileEntityType);
+    }
+    
+    @Override
     public void read (CompoundNBT dataTag) {
         
         this.readNBT(dataTag);

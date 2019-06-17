@@ -78,12 +78,10 @@ public final class PlayerUtils {
         
         int count = 0;
         
-        for (final ItemStack stack : player.inventory.mainInventory) {
-            if (!stack.isEmpty() && stack.getItem().equals(item)) {
+        for (final ItemStack stack : player.inventory.mainInventory)
+            if (!stack.isEmpty() && stack.getItem().equals(item))
                 count += stack.getCount();
-            }
-        }
-        
+            
         return count;
     }
     
@@ -96,12 +94,10 @@ public final class PlayerUtils {
      */
     public static boolean playerHasItem (PlayerEntity player, Item item) {
         
-        for (final ItemStack stack : player.inventory.mainInventory) {
-            if (stack != null && stack.getItem().equals(item)) {
+        for (final ItemStack stack : player.inventory.mainInventory)
+            if (stack != null && stack.getItem().equals(item))
                 return true;
-            }
-        }
-        
+            
         return false;
     }
     
@@ -116,12 +112,10 @@ public final class PlayerUtils {
         
         final List<ItemStack> items = new ArrayList<>();
         
-        for (final ItemStack stack : player.inventory.mainInventory) {
-            if (stack != null && stack.getItem() == item) {
+        for (final ItemStack stack : player.inventory.mainInventory)
+            if (stack != null && stack.getItem() == item)
                 items.add(stack);
-            }
-        }
-        
+            
         return items;
     }
     
@@ -129,7 +123,7 @@ public final class PlayerUtils {
      * Retrieves an instance of the player from the client side. This code only exists in
      * client side code and can not be used in server side code.
      * 
-     * @return The client side player. 
+     * @return The client side player.
      */
     @OnlyIn(Dist.CLIENT)
     public static ClientPlayerEntity getClientPlayer () {
@@ -190,16 +184,10 @@ public final class PlayerUtils {
             final Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().loadSkinFromCache(profile);
             
             // If the loaded data has a skin, return that.
-            if (map.containsKey(Type.SKIN)) {
-                
+            if (map.containsKey(Type.SKIN))
                 return minecraft.getSkinManager().loadSkin(map.get(Type.SKIN), Type.SKIN);
-            }
-            
-            // Otherwise return a default skin for the player.
-            else {
-                
+            else
                 return DefaultPlayerSkin.getDefaultSkin(PlayerEntity.getUUID(profile));
-            }
         }
         
         // Default to the legacy steve skin.

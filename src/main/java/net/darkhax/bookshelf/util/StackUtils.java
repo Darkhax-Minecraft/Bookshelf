@@ -25,9 +25,8 @@ public final class StackUtils {
      */
     public static CompoundNBT prepareStackTag (ItemStack stack) {
         
-        if (!stack.hasTag()) {
+        if (!stack.hasTag())
             stack.setTag(new CompoundNBT());
-        }
         
         return stack.getTag();
     }
@@ -56,9 +55,8 @@ public final class StackUtils {
         
         final ListNBT loreList = new ListNBT();
         
-        for (final String line : lore) {
+        for (final String line : lore)
             loreList.add(new StringNBT(line));
-        }
         
         return setLoreTag(stack, loreList);
     }
@@ -74,9 +72,8 @@ public final class StackUtils {
         
         final ListNBT loreTag = getLoreTag(stack);
         
-        for (final String line : lore) {
+        for (final String line : lore)
             loreTag.add(new StringNBT(line));
-        }
         return stack;
     }
     
@@ -105,9 +102,8 @@ public final class StackUtils {
         prepareStackTag(stack);
         final CompoundNBT tag = stack.getTag();
         
-        if (!tag.hasUniqueId("display")) {
+        if (!tag.hasUniqueId("display"))
             tag.put("display", new CompoundNBT());
-        }
         
         return tag.getCompound("display");
     }
@@ -122,10 +118,8 @@ public final class StackUtils {
         
         final CompoundNBT displayTag = getDisplayTag(stack);
         
-        if (!displayTag.hasUniqueId("Lore")) {
-            
+        if (!displayTag.hasUniqueId("Lore"))
             displayTag.put("Lore", new ListNBT());
-        }
         
         return displayTag.getList("Lore", 8);
     }

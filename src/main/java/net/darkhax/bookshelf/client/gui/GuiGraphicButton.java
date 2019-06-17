@@ -40,9 +40,9 @@ public class GuiGraphicButton extends GuiButtonExt {
     public void render (int mouseX, int mouseY, float partialTicks) {
         
         super.render(mouseX, mouseY, partialTicks);
-        //TODO fix the rendering
-//        Minecraft.getInstance().getTextureManager().bindTexture(this.buttonImage);
-//        this.blit(p_blit_1_, p_blit_2_, p_blit_3_, p_blit_4_, p_blit_5_, p_blit_6_);
-//        drawModalRectWithCustomSizedTexture(this.x, this.y, 0f, 0f, 20, 20, 20f, 20f);
+        // TODO fix the rendering
+        // Minecraft.getInstance().getTextureManager().bindTexture(this.buttonImage);
+        // this.blit(p_blit_1_, p_blit_2_, p_blit_3_, p_blit_4_, p_blit_5_, p_blit_6_);
+        // drawModalRectWithCustomSizedTexture(this.x, this.y, 0f, 0f, 20, 20, 20f, 20f);
     }
 }

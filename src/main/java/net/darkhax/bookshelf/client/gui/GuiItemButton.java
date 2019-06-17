@@ -41,7 +41,7 @@ public class GuiItemButton extends GuiButtonExt {
     public void render (int mouseX, int mouseY, float partialTicks) {
         
         super.render(mouseX, mouseY, partialTicks);
-        Minecraft minecraft = Minecraft.getInstance();
+        final Minecraft minecraft = Minecraft.getInstance();
         minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, this.renderStack, this.x + 2, this.y + 2, "");
         minecraft.getItemRenderer().renderItemAndEffectIntoGUI(this.renderStack, this.x + 2, this.y + 2);
         

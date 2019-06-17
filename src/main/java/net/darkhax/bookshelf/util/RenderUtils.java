@@ -139,7 +139,7 @@ public final class RenderUtils {
      *         the base model.
      */
     @SuppressWarnings("deprecation")
-	public static ImmutableMap<TransformType, TRSRTransformation> copyTransforms (IBakedModel model) {
+    public static ImmutableMap<TransformType, TRSRTransformation> copyTransforms (IBakedModel model) {
         
         final ImmutableMap.Builder<TransformType, TRSRTransformation> copiedTransforms = ImmutableMap.builder();
         
@@ -150,10 +150,8 @@ public final class RenderUtils {
             final TRSRTransformation transformation = new TRSRTransformation(model.handlePerspective(type).getRight());
             
             // Filters out the base transformation.
-            if (!transformation.equals(TRSRTransformation.identity())) {
-                
+            if (!transformation.equals(TRSRTransformation.identity()))
                 copiedTransforms.put(type, TRSRTransformation.blockCenterToCorner(transformation));
-            }
         }
         
         return copiedTransforms.build();
@@ -166,7 +164,7 @@ public final class RenderUtils {
      * @return An immutable map of all the transforms.
      */
     @SuppressWarnings("deprecation")
-	public static ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> getBasicTransforms (IBakedModel model) {
+    public static ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> getBasicTransforms (IBakedModel model) {
         
         final ImmutableMap.Builder<ItemCameraTransforms.TransformType, TRSRTransformation> builder = ImmutableMap.builder();
         
@@ -174,9 +172,8 @@ public final class RenderUtils {
             
             final TRSRTransformation transformation = new TRSRTransformation(model.handlePerspective(type).getRight());
             
-            if (!transformation.equals(TRSRTransformation.identity())) {
+            if (!transformation.equals(TRSRTransformation.identity()))
                 builder.put(type, TRSRTransformation.blockCenterToCorner(transformation));
-            }
         }
         
         return builder.build();

@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod(Bookshelf.MOD_ID)
 public class Bookshelf {
     
-    // System Constants  
+    // System Constants
     public static final Random RANDOM = new Random();
     
     public static final String NEW_LINE = System.getProperty("line.separator");

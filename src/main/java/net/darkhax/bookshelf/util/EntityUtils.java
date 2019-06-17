@@ -78,10 +78,8 @@ public final class EntityUtils {
         final double distanceZ = (double) pos.getZ() - entityPos.getZ();
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
-        if (distance > 0) {
-            
-        	entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
-        }
+        if (distance > 0)
+            entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
     }
     
     /**
@@ -99,10 +97,8 @@ public final class EntityUtils {
         final double distanceZ = destination.posZ - entityToMove.posZ;
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
-        if (distance > 0) {
-            
-        	entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
-        }
+        if (distance > 0)
+            entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
     }
     
     /**
@@ -112,7 +108,7 @@ public final class EntityUtils {
      * @param entityToMove The entity to push.
      * @param direction The direction to push the entity.
      * @param force The amount of force to use.
-
+     * 
      */
     public static void pushTowardsDirection (Entity entityToMove, Direction direction, double force) {
         
@@ -124,10 +120,8 @@ public final class EntityUtils {
         final double distanceZ = (double) destination.getZ() - entityPos.getZ();
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
-        if (distance > 0) {
-            
-        	entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
-        }
+        if (distance > 0)
+            entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
     }
     
     /**
@@ -152,8 +146,7 @@ public final class EntityUtils {
      * @param world The world to search in.
      * @param pos The position to start the search around.
      * @param range The range of the search.
-     * @return A List containing all entities of the specified type that are
-     *         within the range.
+     * @return A List containing all entities of the specified type that are within the range.
      */
     @SuppressWarnings("unchecked")
     public static <T> List<T> getEntitiesInArea (Class<? extends Entity> entityClass, World world, BlockPos pos, int range) {
@@ -172,16 +165,14 @@ public final class EntityUtils {
      */
     public static boolean isWearingFullSet (MobEntity living, Class<Item> armorClass) {
         
-        for (final EquipmentSlotType slot : EquipmentSlotType.values()) {
+        for (final EquipmentSlotType slot : EquipmentSlotType.values())
             if (slot.getSlotType().equals(EquipmentSlotType.Group.ARMOR)) {
                 
                 final ItemStack armor = living.getItemStackFromSlot(slot);
                 
-                if (armor.isEmpty() || !armor.getItem().getClass().equals(armorClass)) {
+                if (armor.isEmpty() || !armor.getItem().getClass().equals(armorClass))
                     return false;
-                }
             }
-        }
         
         return true;
     }
@@ -299,6 +290,7 @@ public final class EntityUtils {
     
     /**
      * Quickly creates a new entity item and adds it to the drops.
+     * 
      * @param stack The item to add.
      * @param event The event list.
      */

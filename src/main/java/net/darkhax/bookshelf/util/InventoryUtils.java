@@ -17,8 +17,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class InventoryUtils {
-
-    public static IItemHandler getInventory(World world, BlockPos pos, Direction side) {
+    
+    public static IItemHandler getInventory (World world, BlockPos pos, Direction side) {
         
         final TileEntity tileEntity = world.getTileEntity(pos);
         

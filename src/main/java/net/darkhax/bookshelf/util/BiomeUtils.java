@@ -13,10 +13,8 @@ public class BiomeUtils {
         
         final Set<Biome> biomes = new HashSet<>();
         
-        for (final Type type : types) {
-            
+        for (final Type type : types)
             biomes.addAll(BiomeDictionary.getBiomes(type));
-        }
         
         return biomes;
     }
