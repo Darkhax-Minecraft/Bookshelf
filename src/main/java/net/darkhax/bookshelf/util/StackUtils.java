@@ -29,6 +29,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.oredict.OreDictionary;
 
 public final class StackUtils {
@@ -158,7 +159,7 @@ public final class StackUtils {
         prepareStackTag(stack);
         final NBTTagCompound tag = stack.getTagCompound();
         
-        if (!tag.hasKey("display", 10)) {
+        if (!tag.hasKey("display", NBT.TAG_COMPOUND)) {
             tag.setTag("display", new NBTTagCompound());
         }
         
@@ -180,7 +181,7 @@ public final class StackUtils {
             displayTag.setTag("Lore", new NBTTagList());
         }
         
-        return displayTag.getTagList("Lore", 8);
+        return displayTag.getTagList("Lore", NBT.TAG_STRING);
     }
     
     /**
@@ -524,7 +525,7 @@ public final class StackUtils {
             final double offY = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
             final double offZ = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
             final EntityItem entityitem = new EntityItem(world, pos.getX() + offX, pos.getY() + offY, pos.getZ() + offZ, stack);
-            entityitem.setPickupDelay(10);
+            entityitem.setDefaultPickupDelay();
             world.spawnEntity(entityitem);
         }
     }
