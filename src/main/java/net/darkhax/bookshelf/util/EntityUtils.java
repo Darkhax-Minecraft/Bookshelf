@@ -7,6 +7,8 @@
  */
 package net.darkhax.bookshelf.util;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -14,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -29,6 +32,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public final class EntityUtils {
 
@@ -36,6 +40,12 @@ public final class EntityUtils {
      * An array of armor equipment slots.
      */
     private static final EntityEquipmentSlot[] EQUIPMENT_SLOTS = new EntityEquipmentSlot[] { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET };
+
+    /**
+     * A reflection reference to the EntityLivingBase#getExperiencePoints method. Used by
+     * {@link #getExperiencePoints(EntityLivingBase, EntityPlayer)}.
+     */
+    private static final Method GET_EXPERIENCE = ReflectionHelper.findMethod(EntityLivingBase.class, "getExperiencePoints", "func_70693_a", EntityPlayer.class);
 
     /**
      * Utility classes, such as this one, are not meant to be instantiated. Java adds an
@@ -413,5 +423,26 @@ public final class EntityUtils {
         final EntityItem itemEntity = new EntityItem(living.world, living.posX, living.posY, living.posZ, stack);
         itemEntity.setDefaultPickupDelay();
         event.getDrops().add(itemEntity);
+    }
+
+    /**
+     * Allows you to get the amount of experience that can be dropped by a mob when killed by a
+     * player. This uses reflection rather than access transformers because protected methods
+     * can not currently be modified with them.
+     *
+     * @param target The target mob.
+     * @param player The killing player.
+     * @return The amount of EXP dropped. This will return 0 if an issue happens.
+     */
+    public static int getExperiencePoints (EntityLivingBase target, EntityPlayer player) {
+
+        try {
+
+            return (int) GET_EXPERIENCE.invoke(target, player);
+        }
+
+        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            return 0;
+        }
     }
 }
