@@ -19,7 +19,7 @@ apply plugin: 'eclipse'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/secrets.gradle'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/artifacts.gradle'
-apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/maven.gradle'
+//apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/maven.gradle'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/patreon.gradle'
 
 loadSecrets()
@@ -157,5 +157,55 @@ curseforge {
         addArtifact(sourcesJar)
         addArtifact(javadocJar)
         addArtifact(deobfJar)
+    }
+}
+
+publishing {
+
+    publications {
+    
+        mavenJava(MavenPublication) {
+        
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            from components.java
+
+			pom.withXml {
+			    asNode().dependencies.dependency.each { dep ->
+				    assert dep.parent().remove(dep)
+				}
+			}
+			
+            // Adds the various artifacts 
+            artifact sourcesJar {
+            
+                classifier 'sources'
+            }
+            
+            artifact javadocJar {
+            
+                classifier 'javadoc'
+            }
+            
+            artifact deobfJar {
+            
+                classifier 'deobf'
+            }
+        }
+    }
+    
+    repositories {
+    
+        maven {
+        
+            credentials {
+            
+                username findProperty('userMaven')
+                password findProperty('authMaven')
+            }
+            
+            url findProperty('urlMaven')
+        }
     }
 }
