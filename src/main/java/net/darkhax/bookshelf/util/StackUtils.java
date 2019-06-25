@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 public final class StackUtils {
@@ -152,7 +153,7 @@ public final class StackUtils {
      */
     public static void dropStackInWorld (World world, BlockPos pos, ItemStack stack) {
         
-        if (!world.isRemote && world.getGameRules().getBoolean("doTileDrops")) {
+        if (!world.isRemote && world.getGameRules().func_223586_b(GameRules.field_223603_f)) {
             
             final float offset = 0.7F;
             final double offX = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
