@@ -174,7 +174,7 @@ publishing {
 			pom.withXml {
 			    asNode().dependencies.dependency.each { dep ->
 			    
-			        println dep.version
+			        println dep.version.last().value().last()
 				    assert dep.parent().remove(dep)
 				}
 			}
