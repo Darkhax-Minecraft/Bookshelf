@@ -1,5 +1,6 @@
 modLoader="javafml"
 loaderVersion="[27,)"
+logoFile="logo.png"
 issueTrackerURL="https://github.com/Darkhax-Minecraft/Bookshelf/issues"
 
 [[mods]]
