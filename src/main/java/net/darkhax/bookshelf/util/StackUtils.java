@@ -153,7 +153,7 @@ public final class StackUtils {
      */
     public static void dropStackInWorld (World world, BlockPos pos, ItemStack stack) {
         
-        if (!world.isRemote && world.getGameRules().func_223586_b(GameRules.field_223603_f)) {
+        if (!world.isRemote && world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS)) {
             
             final float offset = 0.7F;
             final double offX = world.rand.nextFloat() * offset + (1.0F - offset) * 0.5D;
