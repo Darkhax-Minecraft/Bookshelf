@@ -41,6 +41,7 @@ public class RegistryHelper {
         
         modBus.addGenericListener(Block.class, this::registerBlocks);
         modBus.addGenericListener(Item.class, this::registerItems);
+        modBus.addGenericListener(TileEntityType.class, this::registerTileEntities);
     }
     
     /**
@@ -109,5 +110,18 @@ public class RegistryHelper {
         tileEntityType.setRegistryName(this.modid, id);
         this.tileEntityTypes.add(tileEntityType);
         return tileEntityType;
+    }
+    
+    private void registerTileEntities(Register<TileEntityType<?>> event) {
+        
+        if (!this.tileEntityTypes.isEmpty()) {
+            
+            this.logger.info("Registering {} tile entity types.", this.items.size());
+            final IForgeRegistry<TileEntityType<?>> registry = event.getRegistry();
+            
+            for (final TileEntityType<?> tileEntityType : this.tileEntityTypes) {
+                registry.register(tileEntityType);
+            }
+        }
     }
 }
