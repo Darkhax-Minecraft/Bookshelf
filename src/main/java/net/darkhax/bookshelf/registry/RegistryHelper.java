@@ -116,7 +116,7 @@ public class RegistryHelper {
         
         if (!this.tileEntityTypes.isEmpty()) {
             
-            this.logger.info("Registering {} tile entity types.", this.items.size());
+            this.logger.info("Registering {} tile entity types.", this.tileEntityTypes.size());
             final IForgeRegistry<TileEntityType<?>> registry = event.getRegistry();
             
             for (final TileEntityType<?> tileEntityType : this.tileEntityTypes) {
