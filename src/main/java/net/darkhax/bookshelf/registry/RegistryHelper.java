@@ -103,10 +103,11 @@ public class RegistryHelper {
      */
     private final List<TileEntityType<?>> tileEntityTypes = NonNullList.create();
     
-    public <T extends TileEntity> void registerTileEntity (Supplier<T> factory, String id, Block... blocks) {
+    public <T extends TileEntity> TileEntityType<T> registerTileEntity (Supplier<T> factory, String id, Block... blocks) {
         
-        final TileEntityType<?> tileEntityType = TileEntityType.Builder.create(factory, blocks).build(null);
+        final TileEntityType<T> tileEntityType = TileEntityType.Builder.create(factory, blocks).build(null);
         tileEntityType.setRegistryName(this.modid, id);
         this.tileEntityTypes.add(tileEntityType);
+        return tileEntityType;
     }
 }
