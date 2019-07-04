@@ -16,10 +16,14 @@ import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -42,6 +46,7 @@ public class RegistryHelper {
         modBus.addGenericListener(Block.class, this::registerBlocks);
         modBus.addGenericListener(Item.class, this::registerItems);
         modBus.addGenericListener(TileEntityType.class, this::registerTileEntities);
+        modBus.addGenericListener(IRecipeSerializer.class, this::registerRecipeTypes);
     }
     
     /**
@@ -112,7 +117,7 @@ public class RegistryHelper {
         return tileEntityType;
     }
     
-    private void registerTileEntities(Register<TileEntityType<?>> event) {
+    private void registerTileEntities (Register<TileEntityType<?>> event) {
         
         if (!this.tileEntityTypes.isEmpty()) {
             
@@ -121,6 +126,60 @@ public class RegistryHelper {
             
             for (final TileEntityType<?> tileEntityType : this.tileEntityTypes) {
                 registry.register(tileEntityType);
+            }
+        }
+    }
+    
+    /**
+     * RECIPE TYPES
+     */
+    private final List<IRecipeType<?>> recipeTypes = NonNullList.create();
+    private final List<IRecipeSerializer<?>> recipeSerializers = NonNullList.create();
+    
+    public <T extends IRecipe<?>> IRecipeType<T> registerRecipeType (String typeId) {
+        
+        final IRecipeType<T> type = new IRecipeType<T>() {
+            
+            @Override
+            public String toString () {
+                
+                return RegistryHelper.this.modid + ":" + typeId;
+            }
+        };
+        
+        this.recipeTypes.add(type);
+        
+        return type;
+    }
+    
+    public <T extends IRecipe<?>> IRecipeSerializer<T> registerRecipeSerializer (IRecipeSerializer<T> serializer, String id) {
+        
+        this.recipeSerializers.add(serializer);
+        serializer.setRegistryName(new ResourceLocation(this.modid, id));
+        return serializer;
+    }
+    
+    private void registerRecipeTypes (Register<IRecipeSerializer<?>> event) {
+        
+        if (!this.recipeTypes.isEmpty()) {
+            
+            this.logger.info("Registering {} recipe types.", this.recipeTypes.size());
+            
+            for (final IRecipeType<?> recipeType : this.recipeTypes) {
+                
+                Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(recipeType.toString()), recipeType);
+            }
+        }
+        
+        if (!this.recipeSerializers.isEmpty()) {
+            
+            this.logger.info("Registering {} recipe serializers.", this.recipeSerializers.size());
+            
+            final IForgeRegistry<IRecipeSerializer<?>> registry = event.getRegistry();
+            
+            for (final IRecipeSerializer<?> serializer : this.recipeSerializers) {
+                
+                registry.register(serializer);
             }
         }
     }
