@@ -1,14 +1,14 @@
-#Polish Language File by Kaperios
+#Polish Language File
 
 #Moon Phases
 moon.phase.full.name=Pełnia Księżyca
-moon.phase.waxing.gibbous.name=Młody Księżyc
-moon.phase.first.quarter.name=Pierwsza Kwadra
-moon.phase.waxing.crescent.name=Księżyc Garbaty
-moon.phase.new.name=Nów
-moon.phase.waning.crescent.name=Księżyc Garbaty
-moon.phase.last.quarter.name=Ostatnia Kwadra
-moon.phase.waning.gibbous.name=Stary Księżyc
+moon.phase.waxing.gibbous.name=Przybywający Księżyc garbaty
+moon.phase.first.quarter.name=Pierwsza kwadra Księżyca
+moon.phase.waxing.crescent.name=Przybywający Księżyc sierpowaty
+moon.phase.new.name=Nów Księżyca
+moon.phase.waning.crescent.name=Ubywający Księżyc sierpowaty
+moon.phase.last.quarter.name=Ostatnia kwadra Księżyca
+moon.phase.waning.gibbous.name=Ubywający Księżyc garbaty
 
 #Months
 time.bookshelf.month.january.name=Styczeń
