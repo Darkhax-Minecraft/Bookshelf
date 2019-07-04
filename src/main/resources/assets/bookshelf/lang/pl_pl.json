@@ -1,15 +1,15 @@
 {
-    "_comment": "Polish Language File by Kaperios",
+    "_comment": "Polish Language File",
 
     "_comment": "Moon Phases",
     "moon.phase.full": "Pełnia Księżyca",
-    "moon.phase.waxing.gibbous": "Młody Księżyc",
-    "moon.phase.first.quarter": "Pierwsza Kwadra",
-    "moon.phase.waxing.crescent": "Księżyc Garbaty",
-    "moon.phase.new": "Nów",
-    "moon.phase.waning.crescent": "Księżyc Garbaty",
-    "moon.phase.last.quarter": "Ostatnia Kwadra",
-    "moon.phase.waning.gibbous": "Stary Księżyc",
+    "moon.phase.waxing.gibbous": "Przybywający Księżyc garbaty",
+    "moon.phase.first.quarter": "Pierwsza kwadra Księżyca",
+    "moon.phase.waxing.crescent": "Przybywający Księżyc sierpowaty",
+    "moon.phase.new": "Nów Księżyca",
+    "moon.phase.waning.crescent": "Ubywający Księżyc sierpowaty",
+    "moon.phase.last.quarter": "Ostatnia kwadra Księżyca",
+    "moon.phase.waning.gibbous": "Ubywający Księżyc garbaty",
 
     "_comment": "Months",
     "time.bookshelf.month.january": "Styczeń",
