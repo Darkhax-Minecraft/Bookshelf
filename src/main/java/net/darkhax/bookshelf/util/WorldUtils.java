@@ -10,8 +10,12 @@ package net.darkhax.bookshelf.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 import net.darkhax.bookshelf.Bookshelf;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.ServerWorld;
@@ -139,5 +143,19 @@ public final class WorldUtils {
         }
         
         return chunks;
+    }
+    
+    /**
+     * Checks if a player is within distance of a block, and they are able to use it.
+     * 
+     * @param worldPos The world and position to test for.
+     * @param player The player to test for.
+     * @param statePredicate A test that is performed on the block at the specified position.
+     * @param maxDistance The maximum distance allowed.
+     * @return Whether or not the distance and predicate are valid.
+     */
+    public static boolean isWithinDistanceAndUsable (IWorldPosCallable worldPos, PlayerEntity player, Predicate<BlockState> statePredicate, double maxDistance) {
+        
+        return worldPos.applyOrElse( (world, pos) -> statePredicate.test(world.getBlockState(pos)) && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= maxDistance, true);
     }
 }
