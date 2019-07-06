@@ -9,16 +9,26 @@ package net.darkhax.bookshelf.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
+
+import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public final class WorldUtils {
     
@@ -90,5 +100,20 @@ public final class WorldUtils {
     public static boolean isWithinDistanceAndUsable (IWorldPosCallable worldPos, PlayerEntity player, Predicate<BlockState> statePredicate, double maxDistance) {
         
         return worldPos.applyOrElse( (world, pos) -> statePredicate.test(world.getBlockState(pos)) && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= maxDistance, true);
+    }
+    
+    /**
+     * Gets a map of recipes for a given type from the recipe manager of the world.
+     * 
+     * @param recipeType The type of recipe to look for.
+     * @param manager The recipe manager instance.
+     * @return A map of all recipes for the provided recipe type. This will be null if no
+     *         recipes were registered.
+     */
+    @Nullable
+    public static Map<ResourceLocation, IRecipe<?>> getRecipes (IRecipeType<?> recipeType, RecipeManager manager) {
+        
+        final Map<IRecipeType<?>, Map<ResourceLocation, IRecipe<?>>> recipesMap = ObfuscationReflectionHelper.getPrivateValue(RecipeManager.class, manager, "field_199522_d");
+        return recipesMap.getOrDefault(recipeType, ImmutableMap.of());
     }
 }
