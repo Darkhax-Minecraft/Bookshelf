@@ -185,15 +185,15 @@ public class RegistryHelper {
      */
     private final List<ContainerType<?>> containers = NonNullList.create();
     
-    public <T extends Container> ContainerType<T> registerContainer(ContainerType.IFactory<T> factory, String id) {
+    public <T extends Container> ContainerType<T> registerContainer (ContainerType.IFactory<T> factory, String id) {
         
-        return registerContainer(new ContainerType<>(factory), id);
+        return this.registerContainer(new ContainerType<>(factory), id);
     }
     
-    public <T extends Container> ContainerType<T> registerContainer(ContainerType<T> type, String id) {
+    public <T extends Container> ContainerType<T> registerContainer (ContainerType<T> type, String id) {
         
         type.setRegistryName(this.modid, id);
-        containers.add(type);
+        this.containers.add(type);
         return type;
     }
     

@@ -27,6 +27,7 @@ public class RegistryHelperClient extends RegistryHelper {
         super(modid, logger, group);
     }
     
+    @Override
     public void initialize (IEventBus modBus) {
         
         super.initialize(modBus);
@@ -41,7 +42,7 @@ public class RegistryHelperClient extends RegistryHelper {
     /**
      * TILE ENTITY RENDERERS
      */
-    private Map<Class<? extends TileEntity>, TileEntityRenderer<? super TileEntity>> tileEntityRenderers = new HashMap<>();
+    private final Map<Class<? extends TileEntity>, TileEntityRenderer<? super TileEntity>> tileEntityRenderers = new HashMap<>();
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void setSpecialRenderer (Class<? extends TileEntity> tileEntityClass, TileEntityRenderer specialRenderer) {
@@ -55,7 +56,7 @@ public class RegistryHelperClient extends RegistryHelper {
             
             this.logger.info("Registering {} TileEntity Renderers.", this.tileEntityRenderers.size());
             
-            for (Map.Entry<Class<? extends TileEntity>, TileEntityRenderer<? super TileEntity>> entry : tileEntityRenderers.entrySet()) {
+            for (final Map.Entry<Class<? extends TileEntity>, TileEntityRenderer<? super TileEntity>> entry : this.tileEntityRenderers.entrySet()) {
                 
                 ClientRegistry.bindTileEntitySpecialRenderer(entry.getKey(), entry.getValue());
             }
@@ -66,11 +67,11 @@ public class RegistryHelperClient extends RegistryHelper {
      * GUI SCREENS
      */
     @SuppressWarnings("rawtypes")
-    private Map<ContainerType<? extends Container>, IScreenFactory> guis = new HashMap<>();
+    private final Map<ContainerType<? extends Container>, IScreenFactory> guis = new HashMap<>();
     
     public <M extends Container, U extends Screen & IHasContainer<M>> void registerGuiScreen (ContainerType<? extends M> containerType, IScreenFactory<M, U> factory) {
         
-        guis.put(containerType, factory);
+        this.guis.put(containerType, factory);
     }
     
     @Override
@@ -83,7 +84,7 @@ public class RegistryHelperClient extends RegistryHelper {
             
             this.logger.info("Registering {} GUI screens.", this.guis.size());
             
-            for (Entry<ContainerType<? extends Container>, IScreenFactory> entry : guis.entrySet()) {
+            for (final Entry<ContainerType<? extends Container>, IScreenFactory> entry : this.guis.entrySet()) {
                 
                 ScreenManager.registerFactory(entry.getKey(), entry.getValue());
             }
