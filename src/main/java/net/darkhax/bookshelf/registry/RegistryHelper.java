@@ -1,10 +1,3 @@
-/**
- * This class was created by <Darkhax>. It is distributed as part of Bookshelf. You can find
- * the original source here: https://github.com/Darkhax-Minecraft/Bookshelf
- *
- * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
- * 2.1.
- */
 package net.darkhax.bookshelf.registry;
 
 import java.util.List;
@@ -13,6 +6,8 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.block.Block;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -30,9 +25,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class RegistryHelper {
     
-    private final String modid;
-    private final Logger logger;
-    private final ItemGroup group;
+    protected final String modid;
+    protected final Logger logger;
+    protected final ItemGroup group;
     
     public RegistryHelper(String modid, Logger logger, ItemGroup group) {
         
@@ -47,6 +42,7 @@ public class RegistryHelper {
         modBus.addGenericListener(Item.class, this::registerItems);
         modBus.addGenericListener(TileEntityType.class, this::registerTileEntities);
         modBus.addGenericListener(IRecipeSerializer.class, this::registerRecipeTypes);
+        modBus.addGenericListener(ContainerType.class, this::registerContainerTypes);
     }
     
     /**
@@ -180,6 +176,38 @@ public class RegistryHelper {
             for (final IRecipeSerializer<?> serializer : this.recipeSerializers) {
                 
                 registry.register(serializer);
+            }
+        }
+    }
+    
+    /**
+     * CONTAINERS
+     */
+    private final List<ContainerType<?>> containers = NonNullList.create();
+    
+    public <T extends Container> ContainerType<T> registerContainer(ContainerType.IFactory<T> factory, String id) {
+        
+        return registerContainer(new ContainerType<>(factory), id);
+    }
+    
+    public <T extends Container> ContainerType<T> registerContainer(ContainerType<T> type, String id) {
+        
+        type.setRegistryName(this.modid, id);
+        containers.add(type);
+        return type;
+    }
+    
+    protected void registerContainerTypes (Register<ContainerType<?>> event) {
+        
+        if (!this.containers.isEmpty()) {
+            
+            this.logger.info("Registering {} containers.", this.containers.size());
+            
+            final IForgeRegistry<ContainerType<?>> registry = event.getRegistry();
+            
+            for (final ContainerType<?> containerType : this.containers) {
+                
+                registry.register(containerType);
             }
         }
     }
