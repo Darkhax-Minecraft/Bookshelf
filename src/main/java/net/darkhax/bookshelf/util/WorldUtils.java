@@ -8,13 +8,12 @@
 package net.darkhax.bookshelf.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-
-import javax.annotation.Nullable;
-
-import com.google.common.collect.ImmutableMap;
+import java.util.stream.Collectors;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -103,17 +102,44 @@ public final class WorldUtils {
     }
     
     /**
-     * Gets a map of recipes for a given type from the recipe manager of the world.
+     * Looks up the map of all known recipes for a given recipe type.
      * 
-     * @param recipeType The type of recipe to look for.
-     * @param manager The recipe manager instance.
-     * @return A map of all recipes for the provided recipe type. This will be null if no
-     *         recipes were registered.
+     * @param recipeType The recipe type to look up.
+     * @param manager The recipe manager to pull data from.
+     * @return A map of recipes for the provided recipe type. Key is ResourceLocation, value is
+     *         the recipe object.
      */
-    @Nullable
-    public static Map<ResourceLocation, IRecipe<?>> getRecipes (IRecipeType<?> recipeType, RecipeManager manager) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public static <T extends IRecipe<?>> Map<ResourceLocation, T> getRecipes (IRecipeType<T> recipeType, RecipeManager manager) {
         
         final Map<IRecipeType<?>, Map<ResourceLocation, IRecipe<?>>> recipesMap = ObfuscationReflectionHelper.getPrivateValue(RecipeManager.class, manager, "field_199522_d");
-        return recipesMap.getOrDefault(recipeType, ImmutableMap.of());
+        return (Map) recipesMap.getOrDefault(recipeType, Collections.emptyMap());
+    }
+    
+    /**
+     * Gets a list of all recipes for a given recipe type. This list will be sorted using the
+     * translation key of the output item.
+     * 
+     * @param recipeType The recipe type to look up.
+     * @param manager The recipe manager to pull data from.
+     * @return A list of recipes for the given recipe type.
+     */
+    public static <T extends IRecipe<?>> List<T> getRecipeList (IRecipeType<T> recipeType, RecipeManager manager) {
+        
+        return getRecipeList(recipeType, manager, Comparator.comparing(recipe -> recipe.getRecipeOutput().getTranslationKey()));
+    }
+    
+    /**
+     * Gets a list of all recipes for a given recipe type. This list will be sorted using the
+     * provided comparator.
+     * 
+     * @param recipeType The recipe type to look up.
+     * @param manager The recipe manager to pull data from.
+     * @param comparator A comparator that will be used to sort the map.
+     * @return A list of recipes for the given recipe type.
+     */
+    public static <T extends IRecipe<?>> List<T> getRecipeList (IRecipeType<T> recipeType, RecipeManager manager, Comparator<T> comparator) {
+        
+        return getRecipes(recipeType, manager).values().stream().sorted(comparator).collect(Collectors.toList());
     }
 }
