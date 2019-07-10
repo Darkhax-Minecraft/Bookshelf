@@ -5,6 +5,8 @@ import java.util.function.Supplier;
 
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
@@ -76,6 +78,11 @@ public class RegistryHelper {
         return block;
     }
     
+    public List<Block> getBlocks () {
+        
+        return ImmutableList.copyOf(this.blocks);
+    }
+    
     /**
      * ITEMS
      */
@@ -98,6 +105,11 @@ public class RegistryHelper {
         
         item.setRegistryName(new ResourceLocation(this.modid, id));
         this.items.add(item);
+    }
+    
+    public List<Item> getItems () {
+        
+        return ImmutableList.copyOf(this.items);
     }
     
     /**
@@ -124,6 +136,11 @@ public class RegistryHelper {
                 registry.register(tileEntityType);
             }
         }
+    }
+    
+    public List<TileEntityType<?>> getTileEntities () {
+        
+        return ImmutableList.copyOf(this.tileEntityTypes);
     }
     
     /**
@@ -180,6 +197,16 @@ public class RegistryHelper {
         }
     }
     
+    public List<IRecipeType<?>> getRecipeTypes () {
+        
+        return ImmutableList.copyOf(this.recipeTypes);
+    }
+    
+    public List<IRecipeSerializer<?>> getRecipeSerializers () {
+        
+        return ImmutableList.copyOf(this.recipeSerializers);
+    }
+    
     /**
      * CONTAINERS
      */
@@ -210,5 +237,10 @@ public class RegistryHelper {
                 registry.register(containerType);
             }
         }
+    }
+    
+    public List<ContainerType<?>> getContainers () {
+        
+        return ImmutableList.copyOf(this.containers);
     }
 }
