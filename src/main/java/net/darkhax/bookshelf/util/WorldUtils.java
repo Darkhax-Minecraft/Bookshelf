@@ -27,6 +27,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.storage.loot.LootTableManager;
 
 public final class WorldUtils {
     
@@ -139,5 +140,29 @@ public final class WorldUtils {
     public static <T extends IRecipe<?>> List<T> getRecipeList (IRecipeType<T> recipeType, RecipeManager manager, Comparator<T> comparator) {
         
         return getRecipes(recipeType, manager).values().stream().sorted(comparator).collect(Collectors.toList());
+    }
+    
+    /**
+     * Checks if a loot table exists within the World's loot table manager.
+     * 
+     * @param world The world to check for.
+     * @param tableId The Id to search for.
+     * @return Whether or not the provided loot table exists.
+     */
+    public static boolean doesLootTableExist (ServerWorld world, ResourceLocation tableId) {
+        
+        return doesLootTableExist(world.getServer().getLootTableManager(), tableId);
+    }
+    
+    /**
+     * Checks if a loot table exists for a given LootTableManager.
+     * 
+     * @param manager The loot table manager.
+     * @param tableId The Id to search for.
+     * @return Whether or not the provided loot table exists.
+     */
+    public static boolean doesLootTableExist (LootTableManager manager, ResourceLocation tableId) {
+        
+        return manager.registeredLootTables.containsKey(tableId);
     }
 }
