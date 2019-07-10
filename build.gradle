@@ -35,6 +35,11 @@ minecraft {
 
     mappings channel: 'snapshot', version: "${version_mcp}".toString()
     
+    if (project.hasProperty('mod_at')) {
+    
+        accessTransformer = file(findProperty('mod_at'))
+    }
+    
     runs {
         client {
         

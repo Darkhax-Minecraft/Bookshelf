@@ -27,7 +27,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public final class WorldUtils {
     
@@ -112,8 +111,7 @@ public final class WorldUtils {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static <T extends IRecipe<?>> Map<ResourceLocation, T> getRecipes (IRecipeType<T> recipeType, RecipeManager manager) {
         
-        final Map<IRecipeType<?>, Map<ResourceLocation, IRecipe<?>>> recipesMap = ObfuscationReflectionHelper.getPrivateValue(RecipeManager.class, manager, "field_199522_d");
-        return (Map) recipesMap.getOrDefault(recipeType, Collections.emptyMap());
+        return (Map) manager.recipes.getOrDefault(recipeType, Collections.emptyMap());
     }
     
     /**
