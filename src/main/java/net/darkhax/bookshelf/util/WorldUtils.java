@@ -104,6 +104,7 @@ public final class WorldUtils {
     /**
      * Looks up the map of all known recipes for a given recipe type.
      * 
+     * @param <T> The type of the IRecipe object.
      * @param recipeType The recipe type to look up.
      * @param manager The recipe manager to pull data from.
      * @return A map of recipes for the provided recipe type. Key is ResourceLocation, value is
@@ -119,6 +120,7 @@ public final class WorldUtils {
      * Gets a list of all recipes for a given recipe type. This list will be sorted using the
      * translation key of the output item.
      * 
+     * @param <T> The type of the IRecipe object.
      * @param recipeType The recipe type to look up.
      * @param manager The recipe manager to pull data from.
      * @return A list of recipes for the given recipe type.
@@ -132,6 +134,7 @@ public final class WorldUtils {
      * Gets a list of all recipes for a given recipe type. This list will be sorted using the
      * provided comparator.
      * 
+     * @param <T> The type of the IRecipe object.
      * @param recipeType The recipe type to look up.
      * @param manager The recipe manager to pull data from.
      * @param comparator A comparator that will be used to sort the map.

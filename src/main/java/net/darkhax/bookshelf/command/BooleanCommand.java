@@ -8,10 +8,9 @@ import net.minecraft.command.CommandSource;
 /**
  * This functional interface allows your commands to have an arbitrary boolean value passed
  * into them without requiring multiple references to be passed into the vanilla command API.
- * This is used with methods such as
- * {@link CommandUtils#createModCommand(String, int, net.darkhax.bookshelf.BookshelfCommands.CommandBoolean)}
- * where the bool value is used to determine if a wildcard value has been specified by the
- * command sender.
+ * This is used with {@link CommandUtils#createModCommand(String, int, BooleanCommand)} where
+ * the bool value is used to determine if a wildcard value has been specified by the command
+ * sender. It can also be used for similar purposes in other types of commands.
  */
 @FunctionalInterface
 public interface BooleanCommand {
