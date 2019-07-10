@@ -3,6 +3,8 @@ package net.darkhax.bookshelf.registry;
 import java.util.List;
 import java.util.function.Supplier;
 
+import javax.annotation.Nullable;
+
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.ImmutableList;
@@ -34,9 +36,11 @@ public class RegistryHelper {
     
     protected final String modid;
     protected final Logger logger;
+    
+    @Nullable
     protected final ItemGroup group;
     
-    public RegistryHelper(String modid, Logger logger, ItemGroup group) {
+    public RegistryHelper(String modid, Logger logger, @Nullable ItemGroup group) {
         
         this.modid = modid;
         this.logger = logger;
