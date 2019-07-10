@@ -6,8 +6,11 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import net.minecraft.block.Block;
+import net.minecraft.command.CommandSource;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
@@ -21,8 +24,10 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class RegistryHelper {
@@ -45,6 +50,7 @@ public class RegistryHelper {
         modBus.addGenericListener(TileEntityType.class, this::registerTileEntities);
         modBus.addGenericListener(IRecipeSerializer.class, this::registerRecipeTypes);
         modBus.addGenericListener(ContainerType.class, this::registerContainerTypes);
+        MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
     }
     
     /**
@@ -242,5 +248,35 @@ public class RegistryHelper {
     public List<ContainerType<?>> getContainers () {
         
         return ImmutableList.copyOf(this.containers);
+    }
+    
+    /**
+     * COMMANDS
+     */
+    private final NonNullList<LiteralArgumentBuilder<CommandSource>> commands = NonNullList.create();
+    
+    public LiteralArgumentBuilder<CommandSource> registerCommand (LiteralArgumentBuilder<CommandSource> command) {
+        
+        this.commands.add(command);
+        return command;
+    }
+    
+    private void registerCommands (FMLServerStartingEvent event) {
+        
+        if (!this.commands.isEmpty()) {
+            
+            this.logger.info("Registering {} commands.", this.commands.size());
+            final CommandDispatcher<CommandSource> dispatcher = event.getCommandDispatcher();
+            
+            for (final LiteralArgumentBuilder<CommandSource> command : this.commands) {
+                
+                dispatcher.register(command);
+            }
+        }
+    }
+    
+    public List<LiteralArgumentBuilder<CommandSource>> getCommands () {
+        
+        return ImmutableList.copyOf(this.commands);
     }
 }
