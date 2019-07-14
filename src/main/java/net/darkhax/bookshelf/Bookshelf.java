@@ -35,7 +35,8 @@ public class Bookshelf {
     
     public Bookshelf() {
         
-        this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
         new BookshelfCommands(this.registry);
+        
+        this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
     }
 }

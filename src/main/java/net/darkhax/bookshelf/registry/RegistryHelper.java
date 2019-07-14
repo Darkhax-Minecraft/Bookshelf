@@ -49,12 +49,35 @@ public class RegistryHelper {
     
     public void initialize (IEventBus modBus) {
         
-        modBus.addGenericListener(Block.class, this::registerBlocks);
-        modBus.addGenericListener(Item.class, this::registerItems);
-        modBus.addGenericListener(TileEntityType.class, this::registerTileEntities);
-        modBus.addGenericListener(IRecipeSerializer.class, this::registerRecipeTypes);
-        modBus.addGenericListener(ContainerType.class, this::registerContainerTypes);
-        MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
+        if (!this.blocks.isEmpty()) {
+            
+            modBus.addGenericListener(Block.class, this::registerBlocks);
+        }
+        
+        if (!this.items.isEmpty()) {
+            
+            modBus.addGenericListener(Item.class, this::registerItems);
+        }
+        
+        if (!this.tileEntityTypes.isEmpty()) {
+            
+            modBus.addGenericListener(TileEntityType.class, this::registerTileEntities);
+        }
+        
+        if (!this.recipeSerializers.isEmpty() || !this.recipeTypes.isEmpty()) {
+            
+            modBus.addGenericListener(IRecipeSerializer.class, this::registerRecipeTypes);
+        }
+        
+        if (!this.containers.isEmpty()) {
+            
+            modBus.addGenericListener(ContainerType.class, this::registerContainerTypes);
+        }
+        
+        if (!this.commands.isEmpty()) {
+            
+            MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
+        }
     }
     
     /**
@@ -257,7 +280,7 @@ public class RegistryHelper {
     /**
      * COMMANDS
      */
-    private final NonNullList<LiteralArgumentBuilder<CommandSource>> commands = NonNullList.create();
+    private final List<LiteralArgumentBuilder<CommandSource>> commands = NonNullList.create();
     
     public LiteralArgumentBuilder<CommandSource> registerCommand (LiteralArgumentBuilder<CommandSource> command) {
         

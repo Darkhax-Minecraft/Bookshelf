@@ -29,7 +29,6 @@ public class BookshelfCommands {
         
         final LiteralArgumentBuilder<CommandSource> root = Commands.literal("bookshelf");
         root.then(CommandUtils.createModCommand("validateLootTables", 2, this::validateLootTables));
-        
         registry.registerCommand(root);
     }
     
