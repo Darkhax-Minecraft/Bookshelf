@@ -13,11 +13,15 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandSource;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
@@ -77,6 +81,11 @@ public class RegistryHelper {
         if (!this.commands.isEmpty()) {
             
             MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
+        }
+        
+        if (!this.entityTypes.isEmpty()) {
+            
+            modBus.addGenericListener(EntityType.class, this::registerEntityTypes);
         }
     }
     
@@ -305,5 +314,73 @@ public class RegistryHelper {
     public List<LiteralArgumentBuilder<CommandSource>> getCommands () {
         
         return ImmutableList.copyOf(this.commands);
+    }
+    
+    /**
+     * ENTITIES
+     */
+    private final List<EntityType<?>> entityTypes = NonNullList.create();
+    private final List<Item> spawnEggs = NonNullList.create();
+    
+    public <T extends Entity> EntityType<T> registerMob (Class<T> entityClass, EntityType.IFactory<T> factory, EntityClassification classification, String id, float width, float height, int primary, int secondary) {
+        
+        return this.registerMob(entityClass, factory, classification, id, width, height, 64, 1, primary, secondary);
+    }
+    
+    public <T extends Entity> EntityType<T> registerMob (Class<T> entityClass, EntityType.IFactory<T> factory, EntityClassification classification, String id, float width, float height, int trackingRange, int updateInterval, int primary, int secondary) {
+        
+        final EntityType<T> type = this.registerEntityType(entityClass, factory, classification, id, width, height, trackingRange, updateInterval);
+        final Item spawnEgg = new SpawnEggItem(type, primary, secondary, new Item.Properties().group(ItemGroup.MISC));
+        spawnEgg.setRegistryName(this.modid, id + "_spawn_egg");
+        this.items.add(spawnEgg);
+        this.spawnEggs.add(spawnEgg);
+        return type;
+    }
+    
+    public <T extends Entity> EntityType<T> registerEntityType (Class<T> entityClass, EntityType.IFactory<T> factory, EntityClassification classification, String id, float width, float height) {
+        
+        return this.registerEntityType(entityClass, factory, classification, id, width, height, 64, 1);
+    }
+    
+    public <T extends Entity> EntityType<T> registerEntityType (Class<T> entityClass, EntityType.IFactory<T> factory, EntityClassification classification, String id, float width, float height, int trackingRange, int updateInterval) {
+        
+        final EntityType.Builder<T> builder = EntityType.Builder.create(factory, classification);
+        builder.size(width, height);
+        builder.setTrackingRange(trackingRange);
+        builder.setUpdateInterval(updateInterval);
+        
+        return this.registerEntityType(builder.build(this.modid + ":" + id), id);
+    }
+    
+    public <T extends Entity> EntityType<T> registerEntityType (EntityType<T> type, String id) {
+        
+        this.entityTypes.add(type);
+        type.setRegistryName(this.modid, id);
+        return type;
+    }
+    
+    public List<EntityType<?>> getEntityTypes () {
+        
+        return ImmutableList.copyOf(this.entityTypes);
+    }
+    
+    public List<Item> getSpawnEggs () {
+        
+        return ImmutableList.copyOf(this.spawnEggs);
+    }
+    
+    protected void registerEntityTypes (Register<EntityType<?>> event) {
+        
+        if (!this.entityTypes.isEmpty()) {
+            
+            this.logger.info("Registering {} entity types.", this.entityTypes.size());
+            
+            final IForgeRegistry<EntityType<?>> registry = event.getRegistry();
+            
+            for (final EntityType<?> containerType : this.entityTypes) {
+                
+                registry.register(containerType);
+            }
+        }
     }
 }

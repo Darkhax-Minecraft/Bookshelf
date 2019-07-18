@@ -11,6 +11,7 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.ScreenManager.IScreenFactory;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemGroup;
@@ -18,6 +19,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class RegistryHelperClient extends RegistryHelper {
@@ -37,6 +40,7 @@ public class RegistryHelperClient extends RegistryHelper {
     private void onClientSetup (FMLClientSetupEvent event) {
         
         this.registerTileEntityRenderers();
+        this.registerEntityRenderers();
     }
     
     /**
@@ -88,6 +92,26 @@ public class RegistryHelperClient extends RegistryHelper {
                 
                 ScreenManager.registerFactory(entry.getKey(), entry.getValue());
             }
+        }
+    }
+    
+    /**
+     * ENTITY RENDERERS
+     */
+    private final Map<Class<? extends Entity>, IRenderFactory<? super Entity>> entityRenderers = new HashMap<>();
+    
+    public void registerEntityRenderers (Class<? extends Entity> clazz, IRenderFactory<? super Entity> renderFactory) {
+        
+        this.entityRenderers.put(clazz, renderFactory);
+    }
+    
+    private void registerEntityRenderers () {
+        
+        this.logger.info("Registering {} entity renderers.", this.entityRenderers);
+        
+        for (final Entry<Class<? extends Entity>, IRenderFactory<? super Entity>> entry : this.entityRenderers.entrySet()) {
+            
+            RenderingRegistry.registerEntityRenderingHandler(entry.getKey(), entry.getValue());
         }
     }
 }
