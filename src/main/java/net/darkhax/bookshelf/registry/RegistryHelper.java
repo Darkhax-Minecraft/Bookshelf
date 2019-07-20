@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
+import net.darkhax.bookshelf.world.DimensionFactory;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
@@ -30,8 +31,17 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.world.biome.provider.BiomeProviderType;
+import net.minecraft.world.biome.provider.IBiomeProviderSettings;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.ChunkGeneratorType;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.event.world.RegisterDimensionsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -86,6 +96,22 @@ public class RegistryHelper {
         if (!this.entityTypes.isEmpty()) {
             
             modBus.addGenericListener(EntityType.class, this::registerEntityTypes);
+        }
+        
+        if (!this.dimensions.isEmpty()) {
+            
+            modBus.addGenericListener(ModDimension.class, this::registerDimensions);
+            MinecraftForge.EVENT_BUS.addListener(this::registerDimensionTypes);
+        }
+        
+        if (!this.biomeProviderTypes.isEmpty()) {
+            
+            modBus.addGenericListener(BiomeProviderType.class, this::registerBiomeProviders);
+        }
+        
+        if (!this.chunkGeneratorTypes.isEmpty()) {
+            
+            modBus.addGenericListener(ChunkGeneratorType.class, this::registerChunkGeneratorTypes);
         }
     }
     
@@ -380,6 +406,100 @@ public class RegistryHelper {
             for (final EntityType<?> containerType : this.entityTypes) {
                 
                 registry.register(containerType);
+            }
+        }
+    }
+    
+    /**
+     * CHUNK GENERATOR TYPES
+     */
+    private final List<ChunkGeneratorType<?, ?>> chunkGeneratorTypes = NonNullList.create();
+    
+    public <C extends GenerationSettings, T extends ChunkGenerator<C>> ChunkGeneratorType<C, T> registerChunkGeneratorType (ChunkGeneratorType<C, T> type, String id) {
+        
+        this.chunkGeneratorTypes.add(type);
+        type.setRegistryName(this.modid, id);
+        return type;
+    }
+    
+    private void registerChunkGeneratorTypes (Register<ChunkGeneratorType<?, ?>> event) {
+        
+        if (!this.chunkGeneratorTypes.isEmpty()) {
+            
+            this.logger.info("Registering {} chunk generator types.", this.chunkGeneratorTypes.size());
+            
+            final IForgeRegistry<ChunkGeneratorType<?, ?>> registry = event.getRegistry();
+            
+            for (final ChunkGeneratorType<?, ?> containerType : this.chunkGeneratorTypes) {
+                
+                registry.register(containerType);
+            }
+        }
+    }
+    
+    /**
+     * BIOME PROVIDER TYPES
+     */
+    private final List<BiomeProviderType<?, ?>> biomeProviderTypes = NonNullList.create();
+    
+    public <C extends IBiomeProviderSettings, T extends BiomeProvider> BiomeProviderType<C, T> registerBiomeProvider (BiomeProviderType<C, T> type, String id) {
+        
+        this.biomeProviderTypes.add(type);
+        type.setRegistryName(this.modid, id);
+        return type;
+    }
+    
+    private void registerBiomeProviders (Register<BiomeProviderType<?, ?>> event) {
+        
+        if (!this.biomeProviderTypes.isEmpty()) {
+            
+            this.logger.info("Registering {} biome provider types.", this.biomeProviderTypes.size());
+            
+            final IForgeRegistry<BiomeProviderType<?, ?>> registry = event.getRegistry();
+            
+            for (final BiomeProviderType<?, ?> containerType : this.biomeProviderTypes) {
+                
+                registry.register(containerType);
+            }
+        }
+    }
+    
+    /**
+     * DIMENSIONS
+     */
+    private final List<DimensionFactory> dimensions = NonNullList.create();
+    
+    public DimensionFactory registerDimension (DimensionFactory dimension, String id) {
+        
+        dimension.setRegistryName(this.modid, id);
+        this.dimensions.add(dimension);
+        return dimension;
+    }
+    
+    private void registerDimensions (Register<ModDimension> event) {
+        
+        if (!this.dimensions.isEmpty()) {
+            
+            this.logger.info("Registering {} dimensions.", this.dimensions.size());
+            
+            final IForgeRegistry<ModDimension> registry = event.getRegistry();
+            
+            for (final DimensionFactory dimension : this.dimensions) {
+                
+                // registry.register(dimension);
+            }
+        }
+    }
+    
+    private void registerDimensionTypes (RegisterDimensionsEvent event) {
+        
+        if (!this.dimensions.isEmpty()) {
+            
+            this.logger.info("Registering {} dimensions types.", this.dimensions.size());
+            
+            for (final DimensionFactory dimension : this.dimensions) {
+                
+                DimensionManager.registerDimension(dimension.getRegistryName(), dimension, dimension.getDefaultData(), dimension.hasSkylight());
             }
         }
     }
