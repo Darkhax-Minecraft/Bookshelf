@@ -26,32 +26,9 @@ pipeline {
 			    withCredentials([file(credentialsId: 'mod_build_secrets', variable: 'ORG_GRADLE_PROJECT_secretFile')]) {
 			
 			        echo 'Building project.'
-                    sh './gradlew build --stacktrace --warn'
+                    sh './gradlew build publish curseforge --stacktrace --warn'
 			    }
 			}
         }
-		
-		stage('Maven') {
-		
-		    steps {
-			
-			    withCredentials([file(credentialsId: 'mod_build_secrets', variable: 'ORG_GRADLE_PROJECT_secretFile')]) {
-			
-			        echo 'Deploying to Maven.'
-                    sh './gradlew publish --stacktrace --warn'
-			    }
-			}
-		}
-		
-		stage('CurseForge') {
-		    steps {
-			
-			    withCredentials([file(credentialsId: 'mod_build_secrets', variable: 'ORG_GRADLE_PROJECT_secretFile')]) {
-			
-			        echo 'Deploying to CurseForge.'
-                    sh './gradlew curseforge --stacktrace --warn'
-			    }
-			}
-		}
     }
 }

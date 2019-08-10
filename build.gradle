@@ -1,4 +1,3 @@
-
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
@@ -23,31 +22,31 @@ apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Co
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/maven_nomcp.gradle'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/patreon.gradle'
 
-if (project.hasProperty('secretFile')) {
+import net.minecraftforge.gradle.common.task.SignJar
 
+if (project.hasProperty('secretFile')) {
     loadSecrets(new File((String) findProperty('secretFile')))
 }
 
 version = "${mod_version}" + getBuildNumber()
-group = "${mod_group}"
-archivesBaseName = "${mod_name}-${version_minecraft}"
+archivesBaseName = "${mod_name}-${minecraft_version}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
 
-    mappings channel: 'snapshot', version: "${version_mcp}".toString()
-    
+    mappings channel: 'snapshot', version: "${mcp_version}".toString()
+	
     if (project.hasProperty('mod_at')) {
     
         accessTransformer = file(findProperty('mod_at'))
     }
-    
+	
     runs {
         client {
-        
+		
             workingDirectory project.file('run')
-            taskName "${mod_name} Client"
+			taskName "${mod_name} Client"
 
             mods {
                 bookshelf {
@@ -57,10 +56,9 @@ minecraft {
         }
 
         server {
-        
             workingDirectory project.file('run')
-            taskName "${mod_name} Server"
-
+			taskName "${mod_name} Server"
+			
             mods {
                 bookshelf {
                     source sourceSets.main
@@ -72,19 +70,22 @@ minecraft {
 
 dependencies {
 
-    minecraft "net.minecraftforge:forge:${version_forge}"
+    minecraft "net.minecraftforge:forge:${forge_version}"
 }
 
 jar {
     manifest {
         attributes([
-            "Specification-Title": "${mod_name}",
-            "Specification-Vendor": "${mod_vendor}",
-            "Specification-Version": "${version}",
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"${mod_vendor}",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            'Timestamp': System.currentTimeMillis(),
+            'Specification-Title': "${mod_name}",
+            'Specification-Vendor': "${mod_vendor}",
+            'Specification-Version': "${version}",
+            'Implementation-Title': project.archivesBaseName,
+            'Implementation-Version': project.version,
+            'Implementation-Vendor' :"${mod_vendor}",
+            'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            'Built-On-Java': "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+            'Built-On': "${forge_version}"
         ])
     }
 }
@@ -98,26 +99,28 @@ processResources {
 
     from(sourceSets.main.resources.srcDirs) {
         include 'META-INF/mods.toml'
-        
+
         def credits = "Thanks to my supporters on Patreon. "
-        
+
         def patreonSupporters = new ArrayList<String>()
-        
+
         for (entry in getPledges()) {
-          
+
             def pledge = entry.getValue();
-            
+
             if (pledge.isValid()) {
-            
+
                 patreonSupporters.add(pledge.getDisplayName())
             }
         }
-        
+
         credits += patreonSupporters.join(', ')
-        expand 'version': project.version, 'mod_id' : mod_id, 'mod_name': mod_name, 'mod_download': mod_download, 'mod_credits': credits, 'mod_authors': mod_authors, 'mod_description': mod_description
+
+        expand 'version': project.version, 'mod_name': mod_name, 'mod_download': mod_download, 'mod_credits': credits, 'mod_authors': mod_authors, 'mod_description': mod_description
     }
 
     from(sourceSets.main.resources.srcDirs) {
+    
         exclude 'META-INF/mods.toml'
     }
 }
@@ -168,3 +171,30 @@ curseforge {
         addArtifact(deobfJar)
     }
 }
+
+task signJar(type: SignJar, dependsOn: jar) {
+
+    onlyIf {
+    
+        project.hasProperty('keyStore')
+    }
+    
+	if (project.hasProperty('keyStore')) {
+	
+	    project.logger.lifecycle('Signing jar ' + jar.archivePath.getName());
+	
+        keyStore = project.findProperty('keyStore')
+        alias = project.findProperty('keyStoreAlias')
+        storePass = project.findProperty('keyStorePass')
+        keyPass = project.findProperty('keyStoreKeyPass')
+        inputFile = jar.archivePath
+        outputFile = jar.archivePath
+	}
+	
+	else {
+	
+	    project.logger.lifecycle('Could not sign ' + jar.archivePath.getName() + '. No keyStore property could be found')
+	}
+}
+
+build.dependsOn signJar
