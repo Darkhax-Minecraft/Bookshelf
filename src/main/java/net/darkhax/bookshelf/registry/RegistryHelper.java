@@ -169,11 +169,12 @@ public class RegistryHelper {
         }
     }
     
-    public void registerItem (Item item, String id) {
+    public Item registerItem (Item item, String id) {
         
         item.setRegistryName(new ResourceLocation(this.modid, id));
         item.group = this.group;
         this.items.add(item);
+        return item;
     }
     
     public List<Item> getItems () {
