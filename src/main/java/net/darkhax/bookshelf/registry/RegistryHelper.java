@@ -172,6 +172,7 @@ public class RegistryHelper {
     public void registerItem (Item item, String id) {
         
         item.setRegistryName(new ResourceLocation(this.modid, id));
+        item.group = this.group;
         this.items.add(item);
     }
     
