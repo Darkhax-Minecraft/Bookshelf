@@ -23,6 +23,8 @@ apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Co
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/patreon.gradle'
 
 import net.minecraftforge.gradle.common.task.SignJar
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
 
 if (project.hasProperty('secretFile')) {
     loadSecrets(new File((String) findProperty('secretFile')))
