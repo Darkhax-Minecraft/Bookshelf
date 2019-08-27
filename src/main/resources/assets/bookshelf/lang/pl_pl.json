@@ -32,5 +32,8 @@
     "time.bookshelf.day.wednesday": "Środa",
     "time.bookshelf.day.thursday": "Czwartek",
     "time.bookshelf.day.friday": "Piątek",
-    "time.bookshelf.day.saturday": "Sobota"
+    "time.bookshelf.day.saturday": "Sobota",
+
+    "_comment": "Commands",
+    "commands.bookshelf.loot_tables": "Znaleziono następującą liczbę brakujących tabel łupów: %d dla moda %s."
 }
