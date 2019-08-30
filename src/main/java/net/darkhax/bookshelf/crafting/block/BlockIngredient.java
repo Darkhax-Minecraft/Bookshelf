@@ -200,7 +200,7 @@ public class BlockIngredient implements Predicate<Block> {
             final JsonObject jsonObject = json.getAsJsonObject();
             blockResolvers = new IBlockResolver[1];
             final ResourceLocation typeId = ResourceLocation.tryCreate(jsonObject.get("type").getAsString());
-            blockResolvers[1] = jsonDeserializers.get(typeId).apply(jsonObject);
+            blockResolvers[0] = jsonDeserializers.get(typeId).apply(jsonObject);
         }
         
         else {
