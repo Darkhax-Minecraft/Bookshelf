@@ -150,6 +150,7 @@ public class BlockIngredient implements Predicate<Block> {
      */
     public List<Block> getValidBlocks () {
         
+        this.determineMatchingBlocks();
         return this.validBlocks;
     }
     
