@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.crafting.block;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,7 +93,7 @@ public class BlockIngredient implements Predicate<Block> {
         
         if (this.validBlocks == null) {
             
-            this.validBlocks = Arrays.stream(this.resolvers).flatMap(resolver -> resolver.resolveBlocks().stream()).distinct().collect(Collectors.toList());
+            this.validBlocks = Collections.unmodifiableList(Arrays.stream(this.resolvers).flatMap(resolver -> resolver.resolveBlocks().stream()).distinct().collect(Collectors.toList()));
         }
     }
     
@@ -140,6 +141,16 @@ public class BlockIngredient implements Predicate<Block> {
             
             resolver.serialize(buffer);
         }
+    }
+    
+    /**
+     * Gets a list of valid blocks. This list is unmodifiable.
+     * 
+     * @return An unmodifiable list of valid blocks.
+     */
+    public List<Block> getValidBlocks () {
+        
+        return this.validBlocks;
     }
     
     /**
