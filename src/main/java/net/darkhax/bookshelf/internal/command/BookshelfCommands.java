@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf;
+package net.darkhax.bookshelf.internal.command;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 
+import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.darkhax.bookshelf.util.CommandUtils;
@@ -29,8 +30,10 @@ public class BookshelfCommands {
         
         final LiteralArgumentBuilder<CommandSource> root = Commands.literal("bookshelf");
         root.then(CommandUtils.createModCommand("validateLootTables", 2, this::validateLootTables));
+        new CommandHand(root);
         registry.registerCommand(root);
     }
+    
     
     private int validateLootTables (CommandContext<CommandSource> context, boolean wildcard) {
         
