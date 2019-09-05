@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import com.google.gson.JsonObject;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -14,6 +15,9 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 
 import net.minecraft.command.ISuggestionProvider;
+import net.minecraft.command.arguments.ArgumentTypes;
+import net.minecraft.command.arguments.IArgumentSerializer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -69,5 +73,4 @@ public class ArgumentTypeMod implements ArgumentType<String> {
         final Map<String, ModContainer> map = ObfuscationReflectionHelper.getPrivateValue(ModList.class, ModList.get(), "indexedMods");
         return ISuggestionProvider.suggest(map.keySet(), builder);
     }
-    
 }
