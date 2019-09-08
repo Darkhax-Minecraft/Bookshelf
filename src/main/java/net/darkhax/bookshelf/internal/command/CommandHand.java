@@ -9,7 +9,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.darkhax.bookshelf.Bookshelf;
-import net.darkhax.bookshelf.command.ArgumentTypeEnum;
 import net.darkhax.bookshelf.internal.network.PacketSetClipboard;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -23,13 +22,13 @@ public class CommandHand {
     
     public CommandHand(LiteralArgumentBuilder<CommandSource> root) {
         
-        root.then(Commands.literal("hand").then(Commands.argument("type", ArgumentTypeEnum.enumArgument(OutputType.class)).then(Commands.argument("clipboard", BoolArgumentType.bool()).executes(this::hand))));
+        root.then(Commands.literal("hand").then(Commands.argument("type", new ArgumentTypeHandOutput()).executes(ctx -> this.hand(ctx, false)).then(Commands.argument("clipboard", BoolArgumentType.bool()).executes(ctx -> this.hand(ctx, true)))));
     }
     
-    private int hand (CommandContext<CommandSource> context) throws CommandSyntaxException {
+    private int hand (CommandContext<CommandSource> context, boolean hasClipboard) throws CommandSyntaxException {
          
         OutputType type = context.getArgument("type", OutputType.class);
-        boolean useClipboard = BoolArgumentType.getBool(context, "clipboard");
+        boolean useClipboard = hasClipboard && BoolArgumentType.getBool(context, "clipboard");
         
         ServerPlayerEntity player = context.getSource().asPlayer();
         String outputText = type.converter.apply(player.getHeldItemMainhand());        

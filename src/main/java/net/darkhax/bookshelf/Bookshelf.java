@@ -12,11 +12,11 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.darkhax.bookshelf.command.ArgumentTypeEnum;
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
 import net.darkhax.bookshelf.internal.BookshelfClient;
 import net.darkhax.bookshelf.internal.BookshelfServer;
 import net.darkhax.bookshelf.internal.ISidedProxy;
+import net.darkhax.bookshelf.internal.command.ArgumentTypeHandOutput;
 import net.darkhax.bookshelf.internal.command.BookshelfCommands;
 import net.darkhax.bookshelf.internal.network.PacketSetClipboard;
 import net.darkhax.bookshelf.network.NetworkHelper;
@@ -56,7 +56,7 @@ public class Bookshelf {
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
         
         NETWORK.registerEnqueuedMessage(PacketSetClipboard.class, PacketSetClipboard::encode, PacketSetClipboard::decode, PacketSetClipboard::handle);
-        ArgumentTypes.register("enum", ArgumentTypeEnum.class, new ArgumentTypeEnum.Serialzier());
+        ArgumentTypes.register("enum", ArgumentTypeHandOutput.class, new ArgumentTypeHandOutput.Serialzier());
         ArgumentTypes.register("mod", ArgumentTypeMod.class, new ArgumentSerializer<ArgumentTypeMod>(() -> ArgumentTypeMod.INSTACE));
     }
 }
