@@ -65,7 +65,15 @@ public class BookshelfCommands {
             }
         }
         
-        context.getSource().sendFeedback(new TranslationTextComponent("commands.bookshelf.loot_tables", foundIssues, modId), false);
+        if (wildcard) {
+            
+            context.getSource().sendFeedback(new TranslationTextComponent("commands.bookshelf.loot_tables.wildcard", foundIssues), false);
+        }
+        
+        else {
+            
+            context.getSource().sendFeedback(new TranslationTextComponent("commands.bookshelf.loot_tables", foundIssues, modId), false);
+        }
         return 0;
     }
 }
