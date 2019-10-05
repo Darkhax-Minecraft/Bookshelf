@@ -33,7 +33,7 @@
     "time.bookshelf.day.thursday": "Thursday",
     "time.bookshelf.day.friday": "Friday",
     "time.bookshelf.day.saturday": "Saturday",
-    
+
     "_comment": "Commands",
     "commands.bookshelf.loot_tables": "Found %d missing loot tables for %s.",
     "commands.bookshelf.loot_tables.wildcard": "Found %d missing loot tables for all mods."
