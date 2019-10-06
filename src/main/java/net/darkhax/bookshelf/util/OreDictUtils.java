@@ -366,7 +366,10 @@ public final class OreDictUtils {
 
         if (BookshelfConfig.oreDictMisc) {
 
-            registerOre(BED, Items.BED);
+        	for (ItemStack bedStack : StackUtils.getAllItems(Items.BED)) {
+        		
+                registerOre(BED, bedStack);
+        	}
 
             registerOre(HOPPER, Blocks.HOPPER);
 
