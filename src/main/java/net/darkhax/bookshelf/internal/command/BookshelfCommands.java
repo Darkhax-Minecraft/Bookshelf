@@ -34,7 +34,6 @@ public class BookshelfCommands {
         registry.registerCommand(root);
     }
     
-    
     private int validateLootTables (CommandContext<CommandSource> context, boolean wildcard) {
         
         final String modId = wildcard ? "every mod" : ArgumentTypeMod.getMod(context, "mod");

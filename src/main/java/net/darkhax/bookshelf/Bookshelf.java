@@ -57,6 +57,6 @@ public class Bookshelf {
         
         NETWORK.registerEnqueuedMessage(PacketSetClipboard.class, PacketSetClipboard::encode, PacketSetClipboard::decode, PacketSetClipboard::handle);
         ArgumentTypes.register("enum", ArgumentTypeHandOutput.class, new ArgumentTypeHandOutput.Serialzier());
-        ArgumentTypes.register("mod", ArgumentTypeMod.class, new ArgumentSerializer<ArgumentTypeMod>(() -> ArgumentTypeMod.INSTACE));
+        ArgumentTypes.register("mod", ArgumentTypeMod.class, new ArgumentSerializer<>( () -> ArgumentTypeMod.INSTACE));
     }
 }

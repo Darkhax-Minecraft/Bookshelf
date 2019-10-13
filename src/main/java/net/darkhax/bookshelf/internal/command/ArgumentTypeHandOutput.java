@@ -19,42 +19,41 @@ import net.minecraft.command.arguments.IArgumentSerializer;
 import net.minecraft.network.PacketBuffer;
 
 public class ArgumentTypeHandOutput implements ArgumentType<OutputType> {
-
+    
     @Override
-    public OutputType parse(final StringReader reader) throws CommandSyntaxException {
+    public OutputType parse (final StringReader reader) throws CommandSyntaxException {
         
         return Enum.valueOf(OutputType.class, reader.readUnquotedString());
     }
-
+    
     @Override
-    public <S> CompletableFuture<Suggestions> listSuggestions(final CommandContext<S> context, final SuggestionsBuilder builder) {
+    public <S> CompletableFuture<Suggestions> listSuggestions (final CommandContext<S> context, final SuggestionsBuilder builder) {
         
         return ISuggestionProvider.suggest(Stream.of(OutputType.class.getEnumConstants()).map(Object::toString), builder);
     }
-
+    
     @Override
-    public Collection<String> getExamples() {
+    public Collection<String> getExamples () {
         
         return Stream.of(OutputType.class.getEnumConstants()).map(Object::toString).collect(Collectors.toList());
     }
-
+    
     public static class Serialzier implements IArgumentSerializer<ArgumentTypeHandOutput> {
-
+        
         @Override
         public void write (ArgumentTypeHandOutput argument, PacketBuffer buffer) {
             
         }
-
+        
         @Override
         public ArgumentTypeHandOutput read (PacketBuffer buffer) {
-
+            
             return new ArgumentTypeHandOutput();
         }
-
+        
         @Override
         public void write (ArgumentTypeHandOutput arg, JsonObject json) {
             
-
         }
     }
 }

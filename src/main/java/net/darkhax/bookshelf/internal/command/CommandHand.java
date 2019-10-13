@@ -26,12 +26,12 @@ public class CommandHand {
     }
     
     private int hand (CommandContext<CommandSource> context, boolean hasClipboard) throws CommandSyntaxException {
-         
-        OutputType type = context.getArgument("type", OutputType.class);
-        boolean useClipboard = hasClipboard && BoolArgumentType.getBool(context, "clipboard");
         
-        ServerPlayerEntity player = context.getSource().asPlayer();
-        String outputText = type.converter.apply(player.getHeldItemMainhand());        
+        final OutputType type = context.getArgument("type", OutputType.class);
+        final boolean useClipboard = hasClipboard && BoolArgumentType.getBool(context, "clipboard");
+        
+        final ServerPlayerEntity player = context.getSource().asPlayer();
+        final String outputText = type.converter.apply(player.getHeldItemMainhand());
         context.getSource().sendFeedback(new StringTextComponent(outputText), true);
         
         if (useClipboard) {
@@ -47,7 +47,7 @@ public class CommandHand {
         STRING("string", stack -> stack.toString()),
         JSON("json", stack -> {
             
-            JsonObject json = new JsonObject();
+            final JsonObject json = new JsonObject();
             json.addProperty("type", CraftingHelper.getID(Serializer.INSTANCE).toString());
             json.addProperty("item", stack.getItem().getRegistryName().toString());
             json.addProperty("count", stack.getCount());
@@ -58,7 +58,6 @@ public class CommandHand {
             
         }),
         ID("id", stack -> stack.getItem().getRegistryName().toString());
-        
         
         private final String name;
         private final Function<ItemStack, String> converter;
