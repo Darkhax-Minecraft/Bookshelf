@@ -19,29 +19,21 @@ import net.minecraft.world.World;
 public final class StackUtils {
     
     /**
-     * Sets a stack compound to an ItemStack if it does not already have one.
-     *
-     * @param stack ItemStack having a tag set on it.
-     * @return The tag of the stack.
+     * Use {@link ItemStack#getOrCreateTag()} instead.
      */
+    @Deprecated
     public static CompoundNBT prepareStackTag (ItemStack stack) {
         
-        if (!stack.hasTag()) {
-            stack.setTag(new CompoundNBT());
-        }
-        
-        return stack.getTag();
+        return stack.getOrCreateTag();
     }
     
     /**
-     * Sets a stack compound to an ItemStack if it does not have one.
-     *
-     * @param stack The stack to set the tag of.
-     * @return The stack, for convenience.
+     * Use {@link ItemStack#getOrCreateTag()} instead.
      */
+    @Deprecated
     public static ItemStack prepareStack (ItemStack stack) {
         
-        prepareStackTag(stack);
+        stack.getOrCreateTag();
         return stack;
     }
     
