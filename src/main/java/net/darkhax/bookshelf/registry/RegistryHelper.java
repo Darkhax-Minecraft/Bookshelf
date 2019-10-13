@@ -405,9 +405,9 @@ public class RegistryHelper {
             
             final IForgeRegistry<EntityType<?>> registry = event.getRegistry();
             
-            for (final EntityType<?> containerType : this.entityTypes) {
+            for (final EntityType<?> entityType : this.entityTypes) {
                 
-                registry.register(containerType);
+                registry.register(entityType);
             }
         }
     }
