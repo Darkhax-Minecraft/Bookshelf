@@ -39,8 +39,15 @@ public class RegistryHelperClient extends RegistryHelper {
     
     private void onClientSetup (FMLClientSetupEvent event) {
         
-        this.registerTileEntityRenderers();
-        this.registerEntityRenderers();
+        if (!this.tileEntityRenderers.isEmpty()) {
+            
+            this.registerTileEntityRenderers();
+        }
+        
+        if (!this.entityRenderers.isEmpty()) {
+            
+            this.registerEntityRenderers();
+        }
     }
     
     /**
@@ -98,18 +105,21 @@ public class RegistryHelperClient extends RegistryHelper {
     /**
      * ENTITY RENDERERS
      */
-    private final Map<Class<? extends Entity>, IRenderFactory<? super Entity>> entityRenderers = new HashMap<>();
+    @SuppressWarnings("rawtypes")
+    private final Map<Class<? extends Entity>, IRenderFactory> entityRenderers = new HashMap<>();
     
-    public void registerEntityRenderers (Class<? extends Entity> clazz, IRenderFactory<? super Entity> renderFactory) {
+    @SuppressWarnings("rawtypes")
+    public void registerEntityRenderer (Class<? extends Entity> clazz, IRenderFactory renderFactory) {
         
         this.entityRenderers.put(clazz, renderFactory);
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private void registerEntityRenderers () {
         
-        this.logger.info("Registering {} entity renderers.", this.entityRenderers);
+        this.logger.info("Registering {} entity renderers.", this.entityRenderers.size());
         
-        for (final Entry<Class<? extends Entity>, IRenderFactory<? super Entity>> entry : this.entityRenderers.entrySet()) {
+        for (final Entry<Class<? extends Entity>, IRenderFactory> entry : this.entityRenderers.entrySet()) {
             
             RenderingRegistry.registerEntityRenderingHandler(entry.getKey(), entry.getValue());
         }
