@@ -10,6 +10,7 @@ package net.darkhax.bookshelf.util;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.IntBuffer;
+import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -28,6 +29,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.color.ItemColors;
+import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
@@ -353,13 +356,31 @@ public final class RenderUtils {
         for (final Direction direction : Direction.values()) {
             
             ITEM_RANDOM.setSeed(42L);
-            itemRenderer.renderQuads(bufferbuilder, model.getQuads((BlockState) null, direction, ITEM_RANDOM), color, stack);
+            renderQuads(bufferbuilder, model.getQuads((BlockState) null, direction, ITEM_RANDOM), color, stack);
         }
         
         ITEM_RANDOM.setSeed(42L);
-        itemRenderer.renderQuads(bufferbuilder, model.getQuads((BlockState) null, (Direction) null, ITEM_RANDOM), color, stack);
+        renderQuads(bufferbuilder, model.getQuads((BlockState) null, (Direction) null, ITEM_RANDOM), color, stack);
         tessellator.draw();
     }
+    
+    public static void renderQuads(BufferBuilder renderer, List<BakedQuad> quads, int color, ItemStack stack) {
+        
+        int i = 0;
+
+        for(int j = quads.size(); i < j; ++i) {
+           BakedQuad bakedquad = quads.get(i);
+           int k = color;
+           if (!stack.isEmpty() && bakedquad.hasTintIndex()) {
+               
+              k = Minecraft.getInstance().getItemColors().getColor(stack, bakedquad.getTintIndex());
+              k = k | -16777216;
+           }
+
+           net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(renderer, bakedquad, k);
+        }
+
+     }
     
     /**
      * Draws a textured rectangle onto the screen. Texture is taken from the currently bound
