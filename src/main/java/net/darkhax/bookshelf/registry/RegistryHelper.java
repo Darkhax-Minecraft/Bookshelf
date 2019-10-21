@@ -26,6 +26,8 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.stats.IStatFormatter;
+import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
@@ -504,5 +506,29 @@ public class RegistryHelper {
                 DimensionManager.registerDimension(dimension.getRegistryName(), dimension, dimension.getDefaultData(), dimension.hasSkylight());
             }
         }
+    }
+        
+    /**
+     * STATS
+     */
+    private final List<ResourceLocation> stats = NonNullList.create();
+    
+    public ResourceLocation registerStat (String key) {
+        
+        return this.registerStat(key, IStatFormatter.DEFAULT);
+    }
+    
+    public ResourceLocation registerStat (String key, IStatFormatter formatter) {
+        
+        final ResourceLocation statIdentifier = new ResourceLocation(this.modid, key);
+        Registry.register(Registry.CUSTOM_STAT, key, statIdentifier);
+        Stats.CUSTOM.get(statIdentifier, formatter);
+        this.stats.add(statIdentifier);
+        return statIdentifier;
+    }
+    
+    public List<ResourceLocation> getStatIdentifiers() {
+        
+        return ImmutableList.copyOf(this.stats);
     }
 }
