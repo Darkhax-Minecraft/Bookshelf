@@ -186,4 +186,22 @@ public final class MathsUtils {
         
         return initial < min ? min : initial > max ? max : initial;
     }
+    
+    /**
+     * Multiplies an int packed color and returns a new int packed number.
+     * 
+     * @param color The base color.
+     * @param factor The value to multiply the color by. Less than 1 will darken. Greater than
+     *        1 will lighten.
+     * @return The resulting color as a packed integer.
+     */
+    public static int multiplyColor (int color, float factor) {
+        
+        final int a = color >> 24 & 0xFF;
+        final int r = (int) ((color >> 16 & 0xFF) * factor);
+        final int g = (int) ((color >> 8 & 0xFF) * factor);
+        final int b = (int) ((color & 0xFF) * factor);
+        
+        return a << 24 | r << 16 | g << 8 | b;
+    }
 }
