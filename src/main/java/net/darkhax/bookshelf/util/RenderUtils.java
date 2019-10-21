@@ -29,7 +29,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -215,8 +214,23 @@ public final class RenderUtils {
      */
     public static void renderItemAndEffectIntoGUI (ItemStack stack, int xPosition, int yPosition, int color) {
         
+        renderItemAndEffectIntoGUI(stack, xPosition, yPosition, color, DEFAULT_QUAD_COLORS);
+    }
+    
+    /**
+     * Renders an item and it's effect layer int a GUI. Allows the color of the item to be
+     * changed.
+     * 
+     * @param stack The item to render.
+     * @param xPosition The x coordinate to render the item at.
+     * @param yPosition The y coordinate to render the item at.
+     * @param color The color to render the item. Supports alpha values.
+     * @param colorHandler A function that handles tint index colors.
+     */
+    public static void renderItemAndEffectIntoGUI (ItemStack stack, int xPosition, int yPosition, int color, IQuadColorHandler colorHandler) {
+        
         final Minecraft mc = Minecraft.getInstance();
-        renderItemAndEffectIntoGUI(mc.getTextureManager(), mc.getItemRenderer(), mc.player, stack, xPosition, yPosition, color);
+        renderItemAndEffectIntoGUI(mc.getTextureManager(), mc.getItemRenderer(), mc.player, stack, xPosition, yPosition, color, colorHandler);
     }
     
     /**
@@ -232,13 +246,30 @@ public final class RenderUtils {
      */
     public static void renderItemAndEffectIntoGUI (TextureManager textureManager, ItemRenderer itemRenderer, @Nullable LivingEntity entityIn, ItemStack itemIn, int x, int y, int color) {
         
+        renderItemAndEffectIntoGUI(textureManager, itemRenderer, entityIn, itemIn, x, y, color, DEFAULT_QUAD_COLORS);
+    }
+    
+    /**
+     * Renders an item into a gui.
+     * 
+     * @param textureManager The texture manager instance.
+     * @param itemRenderer The item renderer.
+     * @param entityIn The entity, usually the client player.
+     * @param itemIn The item to render.
+     * @param x The x coordinate of the item.
+     * @param y The y coordinate of the item.
+     * @param color The color of the item.
+     * @param colorHandler A function that handles tint index colors.
+     */
+    public static void renderItemAndEffectIntoGUI (TextureManager textureManager, ItemRenderer itemRenderer, @Nullable LivingEntity entityIn, ItemStack itemIn, int x, int y, int color, IQuadColorHandler colorHandler) {
+        
         if (!itemIn.isEmpty()) {
             
             itemRenderer.zLevel += 50f;
             
             try {
                 
-                renderItemModelIntoGUI(textureManager, itemRenderer, itemIn, x, y, color, itemRenderer.getItemModelWithOverrides(itemIn, (World) null, entityIn));
+                renderItemModelIntoGUI(textureManager, itemRenderer, itemIn, x, y, color, itemRenderer.getItemModelWithOverrides(itemIn, (World) null, entityIn), colorHandler);
             }
             
             catch (final Exception exception) {
@@ -271,6 +302,24 @@ public final class RenderUtils {
     @SuppressWarnings("deprecation")
     public static void renderItemModelIntoGUI (TextureManager textureManager, ItemRenderer itemRenderer, ItemStack stack, int x, int y, int color, IBakedModel bakedmodel) {
         
+        renderItemModelIntoGUI(textureManager, itemRenderer, stack, x, y, color, bakedmodel, DEFAULT_QUAD_COLORS);
+    }
+    
+    /**
+     * Renders an Item into a GUI.
+     * 
+     * @param textureManager The texture manager instance.
+     * @param itemRenderer The item renderer.
+     * @param stack The item to render.
+     * @param x The x coordinate of the item.
+     * @param y The y coordinate of the item.
+     * @param color The color of the item.
+     * @param bakedmodel The model of the item.
+     * @param colorHandler A function that handles tint index colors.
+     */
+    @SuppressWarnings("deprecation")
+    public static void renderItemModelIntoGUI (TextureManager textureManager, ItemRenderer itemRenderer, ItemStack stack, int x, int y, int color, IBakedModel bakedmodel, IQuadColorHandler colorHandler) {
+        
         GlStateManager.pushMatrix();
         textureManager.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         textureManager.getTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
@@ -282,7 +331,7 @@ public final class RenderUtils {
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         setupGuiTransform(x, y, bakedmodel.isGui3d(), itemRenderer.zLevel);
         bakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(bakedmodel, ItemCameraTransforms.TransformType.GUI, false);
-        renderItem(itemRenderer, stack, bakedmodel, color);
+        renderItem(itemRenderer, stack, bakedmodel, color, colorHandler);
         GlStateManager.disableAlphaTest();
         GlStateManager.disableRescaleNormal();
         GlStateManager.disableLighting();
@@ -329,11 +378,26 @@ public final class RenderUtils {
      */
     public static void renderItem (ItemRenderer itemRenderer, ItemStack stack, IBakedModel model, int color) {
         
+        renderItem(itemRenderer, stack, model, color, DEFAULT_QUAD_COLORS);
+    }
+    
+    /**
+     * Renders an item with an item renderer. Will not render if the item is empty. It also
+     * offsets the item.
+     * 
+     * @param itemRenderer The item renderer.
+     * @param model The model to render.
+     * @param color The color for the model.
+     * @param stack The ItemStack instance.
+     * @param colorHandler A function that handles tint index colors.
+     */
+    public static void renderItem (ItemRenderer itemRenderer, ItemStack stack, IBakedModel model, int color, IQuadColorHandler colorHandler) {
+        
         if (!stack.isEmpty()) {
             GlStateManager.pushMatrix();
             GlStateManager.translatef(-0.5F, -0.5F, -0.5F);
             
-            renderModel(itemRenderer, model, color, stack);
+            renderModel(itemRenderer, model, color, stack, colorHandler);
             
             GlStateManager.popMatrix();
         }
@@ -349,6 +413,20 @@ public final class RenderUtils {
      */
     public static void renderModel (ItemRenderer itemRenderer, IBakedModel model, int color, ItemStack stack) {
         
+        renderModel(itemRenderer, model, color, stack, DEFAULT_QUAD_COLORS);
+    }
+    
+    /**
+     * Renders the actual quads of an item using an ItemRenderer.
+     * 
+     * @param itemRenderer The item renderer.
+     * @param model The model to render.
+     * @param color The color for the model.
+     * @param stack The ItemStack instance.
+     * @param colorHandler A function that handles tint index colors.
+     */
+    public static void renderModel (ItemRenderer itemRenderer, IBakedModel model, int color, ItemStack stack, IQuadColorHandler colorHandler) {
+        
         final Tessellator tessellator = Tessellator.getInstance();
         final BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
@@ -356,31 +434,48 @@ public final class RenderUtils {
         for (final Direction direction : Direction.values()) {
             
             ITEM_RANDOM.setSeed(42L);
-            renderQuads(bufferbuilder, model.getQuads((BlockState) null, direction, ITEM_RANDOM), color, stack);
+            renderQuads(bufferbuilder, model.getQuads((BlockState) null, direction, ITEM_RANDOM), color, stack, colorHandler);
         }
         
         ITEM_RANDOM.setSeed(42L);
-        renderQuads(bufferbuilder, model.getQuads((BlockState) null, (Direction) null, ITEM_RANDOM), color, stack);
+        renderQuads(bufferbuilder, model.getQuads((BlockState) null, (Direction) null, ITEM_RANDOM), color, stack, colorHandler);
         tessellator.draw();
     }
     
     public static void renderQuads(BufferBuilder renderer, List<BakedQuad> quads, int color, ItemStack stack) {
         
-        int i = 0;
+        renderQuads(renderer, quads, color, stack, DEFAULT_QUAD_COLORS);
+    }
+    
+    public static void renderQuads(BufferBuilder renderer, List<BakedQuad> quads, int color, ItemStack stack, IQuadColorHandler colorHandler) {
 
-        for(int j = quads.size(); i < j; ++i) {
-           BakedQuad bakedquad = quads.get(i);
-           int k = color;
-           if (!stack.isEmpty() && bakedquad.hasTintIndex()) {
-               
-              k = Minecraft.getInstance().getItemColors().getColor(stack, bakedquad.getTintIndex());
-              k = k | -16777216;
-           }
-
-           net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(renderer, bakedquad, k);
+        for (BakedQuad quad : quads) {
+            
+            int quadColor = colorHandler.getColorForQuad(stack, quad, color);
+            net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(renderer, quad, quadColor);
         }
-
      }
+    
+    public static final IQuadColorHandler DEFAULT_QUAD_COLORS = (stack, quad, providedColor) -> {
+        
+        if (providedColor != -1 || stack.isEmpty() || !quad.hasTintIndex()) {
+            
+            return providedColor;
+        }
+        
+        else {
+            
+            int color = Minecraft.getInstance().getItemColors().getColor(stack, quad.getTintIndex());
+            color = color | -16777216;
+            return color;
+        }
+    };
+    
+    @FunctionalInterface
+    public static interface IQuadColorHandler {
+        
+        int getColorForQuad(ItemStack stack, BakedQuad quad, int providedColor);
+    }
     
     /**
      * Draws a textured rectangle onto the screen. Texture is taken from the currently bound
