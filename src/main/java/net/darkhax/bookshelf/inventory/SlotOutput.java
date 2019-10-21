@@ -7,7 +7,7 @@
  */
 package net.darkhax.bookshelf.inventory;
 
-import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,14 +29,14 @@ public class SlotOutput extends Slot {
     /**
      * A listener that is called when an item is removed from the slot.
      */
-    private final BiConsumer<PlayerEntity, ItemStack> takeListener;
+    private final BiFunction<PlayerEntity, ItemStack, ItemStack> takeListener;
     
-    public SlotOutput(IInventory inventory, int index, int xPosition, int yPosition, BiConsumer<PlayerEntity, ItemStack> takeListener) {
+    public SlotOutput(IInventory inventory, int index, int xPosition, int yPosition, BiFunction<PlayerEntity, ItemStack, ItemStack> takeListener) {
         
         this(inventory, index, xPosition, yPosition, stack -> false, takeListener);
     }
     
-    public SlotOutput(IInventory inventory, int index, int xPosition, int yPosition, Predicate<ItemStack> inputValidator, BiConsumer<PlayerEntity, ItemStack> takeListener) {
+    public SlotOutput(IInventory inventory, int index, int xPosition, int yPosition, Predicate<ItemStack> inputValidator, BiFunction<PlayerEntity, ItemStack, ItemStack> takeListener) {
         
         super(inventory, index, xPosition, yPosition);
         this.inputValidator = inputValidator;
@@ -52,7 +52,8 @@ public class SlotOutput extends Slot {
     @Override
     public ItemStack onTake (PlayerEntity player, ItemStack stack) {
         
-        this.takeListener.accept(player, stack);
-        return super.onTake(player, stack);
+        final ItemStack stackToTake = this.takeListener.apply(player, stack);
+        this.onSlotChanged();
+        return stackToTake;
     }
 }
