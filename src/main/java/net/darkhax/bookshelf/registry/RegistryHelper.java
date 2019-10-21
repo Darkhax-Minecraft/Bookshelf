@@ -26,6 +26,7 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.potion.Potion;
 import net.minecraft.stats.IStatFormatter;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
@@ -114,6 +115,11 @@ public class RegistryHelper {
         if (!this.chunkGeneratorTypes.isEmpty()) {
             
             modBus.addGenericListener(ChunkGeneratorType.class, this::registerChunkGeneratorTypes);
+        }
+        
+        if (!this.potions.isEmpty()) {
+            
+            modBus.addGenericListener(Potion.class, this::registerPotionTypes);
         }
     }
     
@@ -530,5 +536,33 @@ public class RegistryHelper {
     public List<ResourceLocation> getStatIdentifiers() {
         
         return ImmutableList.copyOf(this.stats);
+    }
+    
+    /**
+     * POTIONS
+     */
+    private final List<Potion> potions = NonNullList.create();
+    
+    public Potion registerPotion(Potion potion, String id) {
+        
+        potions.add(potion);
+        potion.setRegistryName(this.modid, id);
+        return potion;
+    }
+    
+    private void registerPotionTypes (Register<Potion> event) {
+        
+        final IForgeRegistry<Potion> registry = event.getRegistry(); 
+        this.logger.info("Registering {} potion types.", this.potions.size());
+        
+        for (Potion potion : this.potions) {
+            
+            registry.register(potion);
+        }
+    }
+    
+    public List<Potion> getPotions() {
+        
+        return ImmutableList.copyOf(this.potions);
     }
 }
