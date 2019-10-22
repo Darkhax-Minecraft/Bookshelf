@@ -22,6 +22,7 @@ import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -67,13 +68,15 @@ public final class PlayerUtils {
     }
     
     /**
-     * Gets the amount of an item in a players inventory. Only checks main inventory and hot
-     * bar. Checks the stack size of the items found.
+     * Gets the amount of an item in a players inventory or equipment slots.
      *
      * @param player The player to check the inventory of.
      * @param item The item to check for.
      * @return The amount of the item being searched for.
+     * @deprecated You should use the {@link List#size()} method from
+     *             {@link #getStacksFromPlayer(PlayerEntity, Item)} 's result.
      */
+    @Deprecated
     public static int getItemCountInInv (PlayerEntity player, Item item) {
         
         int count = 0;
@@ -84,11 +87,21 @@ public final class PlayerUtils {
             }
         }
         
+        for (final EquipmentSlotType slotType : EquipmentSlotType.values()) {
+            
+            final ItemStack stack = player.getItemStackFromSlot(slotType);
+            
+            if (stack.getItem() == item) {
+                
+                count += stack.getCount();
+            }
+        }
+        
         return count;
     }
     
     /**
-     * Checks if a player has an item in their inventory.
+     * Checks if a player has an item in their inventory or equipment slots.
      *
      * @param player The player to check the inventory of.
      * @param item The item to check for.
@@ -102,15 +115,23 @@ public final class PlayerUtils {
             }
         }
         
+        for (final EquipmentSlotType slotType : EquipmentSlotType.values()) {
+            
+            if (player.getItemStackFromSlot(slotType).getItem() == item) {
+                
+                return true;
+            }
+        }
+        
         return false;
     }
     
     /**
-     * Gets all stacks of a certain type from the player's inventory.
-     *
-     * @param player The player to search.
-     * @param item The item to search for.
-     * @return The list of found items.
+     * Gets all stacks that match a certain item from a player's inventory and equipment slots.
+     * 
+     * @param player The player to check.
+     * @param item The item to look for.
+     * @return A list of all matching item stacks.
      */
     public static List<ItemStack> getStacksFromPlayer (PlayerEntity player, Item item) {
         
@@ -118,6 +139,16 @@ public final class PlayerUtils {
         
         for (final ItemStack stack : player.inventory.mainInventory) {
             if (stack != null && stack.getItem() == item) {
+                items.add(stack);
+            }
+        }
+        
+        for (final EquipmentSlotType slotType : EquipmentSlotType.values()) {
+            
+            final ItemStack stack = player.getItemStackFromSlot(slotType);
+            
+            if (stack.getItem() == item) {
+                
                 items.add(stack);
             }
         }
