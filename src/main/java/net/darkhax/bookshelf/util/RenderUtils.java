@@ -442,19 +442,19 @@ public final class RenderUtils {
         tessellator.draw();
     }
     
-    public static void renderQuads(BufferBuilder renderer, List<BakedQuad> quads, int color, ItemStack stack) {
+    public static void renderQuads (BufferBuilder renderer, List<BakedQuad> quads, int color, ItemStack stack) {
         
         renderQuads(renderer, quads, color, stack, DEFAULT_QUAD_COLORS);
     }
     
-    public static void renderQuads(BufferBuilder renderer, List<BakedQuad> quads, int color, ItemStack stack, IQuadColorHandler colorHandler) {
-
-        for (BakedQuad quad : quads) {
+    public static void renderQuads (BufferBuilder renderer, List<BakedQuad> quads, int color, ItemStack stack, IQuadColorHandler colorHandler) {
+        
+        for (final BakedQuad quad : quads) {
             
-            int quadColor = colorHandler.getColorForQuad(stack, quad, color);
+            final int quadColor = colorHandler.getColorForQuad(stack, quad, color);
             net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(renderer, quad, quadColor);
         }
-     }
+    }
     
     public static final IQuadColorHandler DEFAULT_QUAD_COLORS = (stack, quad, providedColor) -> {
         
@@ -474,7 +474,7 @@ public final class RenderUtils {
     @FunctionalInterface
     public static interface IQuadColorHandler {
         
-        int getColorForQuad(ItemStack stack, BakedQuad quad, int providedColor);
+        int getColorForQuad (ItemStack stack, BakedQuad quad, int providedColor);
     }
     
     /**

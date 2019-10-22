@@ -513,7 +513,7 @@ public class RegistryHelper {
             }
         }
     }
-        
+    
     /**
      * STATS
      */
@@ -533,7 +533,7 @@ public class RegistryHelper {
         return statIdentifier;
     }
     
-    public List<ResourceLocation> getStatIdentifiers() {
+    public List<ResourceLocation> getStatIdentifiers () {
         
         return ImmutableList.copyOf(this.stats);
     }
@@ -543,25 +543,25 @@ public class RegistryHelper {
      */
     private final List<Potion> potions = NonNullList.create();
     
-    public Potion registerPotion(Potion potion, String id) {
+    public Potion registerPotion (Potion potion, String id) {
         
-        potions.add(potion);
+        this.potions.add(potion);
         potion.setRegistryName(this.modid, id);
         return potion;
     }
     
     private void registerPotionTypes (Register<Potion> event) {
         
-        final IForgeRegistry<Potion> registry = event.getRegistry(); 
+        final IForgeRegistry<Potion> registry = event.getRegistry();
         this.logger.info("Registering {} potion types.", this.potions.size());
         
-        for (Potion potion : this.potions) {
+        for (final Potion potion : this.potions) {
             
             registry.register(potion);
         }
     }
     
-    public List<Potion> getPotions() {
+    public List<Potion> getPotions () {
         
         return ImmutableList.copyOf(this.potions);
     }
