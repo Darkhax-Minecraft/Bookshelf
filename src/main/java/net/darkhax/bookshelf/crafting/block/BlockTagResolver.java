@@ -17,18 +17,25 @@ import net.minecraft.util.ResourceLocation;
  */
 public class BlockTagResolver implements IBlockResolver {
     
-    private final Tag<Block> blockTag;
+    private final ResourceLocation tagId;
     
-    public BlockTagResolver(Tag<Block> tag) {
+    public BlockTagResolver(ResourceLocation tagId) {
         
-        this.blockTag = tag;
+        this.tagId = tagId;
     }
     
     @Override
     public Collection<Block> resolveBlocks () {
         
         final List<Block> blocks = new ArrayList<>();
-        blocks.addAll(this.blockTag.getAllElements());
+        
+        Tag<Block> tag = BlockTags.getCollection().get(this.tagId);
+        
+        if (tag != null) {
+            
+            blocks.addAll(tag.getAllElements());
+        }
+        
         return blocks;
     }
     
@@ -37,7 +44,7 @@ public class BlockTagResolver implements IBlockResolver {
         
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("type", this.getTypeId().toString());
-        jsonObject.addProperty("tag", this.blockTag.getId().toString());
+        jsonObject.addProperty("tag", this.tagId.toString());
         return jsonObject;
     }
     
@@ -45,7 +52,7 @@ public class BlockTagResolver implements IBlockResolver {
     public void serialize (PacketBuffer buffer) {
         
         buffer.writeString(this.getTypeId().toString());
-        buffer.writeResourceLocation(this.blockTag.getId());
+        buffer.writeResourceLocation(this.tagId);
     }
     
     @Override
@@ -56,27 +63,13 @@ public class BlockTagResolver implements IBlockResolver {
     
     public static BlockTagResolver deserialize (JsonObject json) {
         
-        final ResourceLocation tagId = new ResourceLocation(json.get("tag").getAsString());
-        final Tag<Block> tag = BlockTags.getCollection().get(tagId);
-        
-        if (tag == null) {
-            
-            throw new IllegalArgumentException("Could not resolve block tag for " + tagId.toString());
-        }
-        
-        return new BlockTagResolver(tag);
+        final ResourceLocation tagId = ResourceLocation.tryCreate(json.get("tag").getAsString());       
+        return new BlockTagResolver(tagId);
     }
     
     public static BlockTagResolver deserialize (PacketBuffer buffer) {
         
-        final ResourceLocation tagId = buffer.readResourceLocation();
-        final Tag<Block> tag = BlockTags.getCollection().get(tagId);
-        
-        if (tag == null) {
-            
-            throw new IllegalArgumentException("Could not resolve block tag for " + tagId.toString());
-        }
-        
-        return new BlockTagResolver(tag);
+        final ResourceLocation tagId = buffer.readResourceLocation();        
+        return new BlockTagResolver(tagId);
     }
 }
