@@ -29,7 +29,7 @@ public class BlockTagResolver implements IBlockResolver {
         
         final List<Block> blocks = new ArrayList<>();
         
-        Tag<Block> tag = BlockTags.getCollection().get(this.tagId);
+        final Tag<Block> tag = BlockTags.getCollection().get(this.tagId);
         
         if (tag != null) {
             
@@ -63,13 +63,13 @@ public class BlockTagResolver implements IBlockResolver {
     
     public static BlockTagResolver deserialize (JsonObject json) {
         
-        final ResourceLocation tagId = ResourceLocation.tryCreate(json.get("tag").getAsString());       
+        final ResourceLocation tagId = ResourceLocation.tryCreate(json.get("tag").getAsString());
         return new BlockTagResolver(tagId);
     }
     
     public static BlockTagResolver deserialize (PacketBuffer buffer) {
         
-        final ResourceLocation tagId = buffer.readResourceLocation();        
+        final ResourceLocation tagId = buffer.readResourceLocation();
         return new BlockTagResolver(tagId);
     }
 }
