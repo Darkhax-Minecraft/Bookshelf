@@ -38,6 +38,7 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.crash.ReportedException;
@@ -48,6 +49,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeConfig;
 import net.minecraftforge.common.model.TRSRTransformation;
 
 @OnlyIn(Dist.CLIENT)
@@ -527,5 +529,54 @@ public final class RenderUtils {
         bufferbuilder.pos(x + width, y, z).tex((u + width) * widthRatio, v * heightRatio).color(red, green, blue, alpha).endVertex();
         bufferbuilder.pos(x, y, z).tex(u * widthRatio, v * heightRatio).color(red, green, blue, alpha).endVertex();
         tessellator.draw();
+    }
+    
+    /**
+     * A vertex format for items that has lightmaps enabled on it. This is used by
+     * {@link #getFormatWithLightMap(VertexFormat)} as a constant format for all items.
+     */
+    private static final VertexFormat ITEM_WITH_LIGHTMAP = new VertexFormat(DefaultVertexFormats.ITEM).addElement(DefaultVertexFormats.TEX_2S);
+    
+    /**
+     * Check if Forge's custom lighting pipeline has been enabled. This is required for
+     * features like emissive quads to work properly.
+     * 
+     * @return Whether or not Forge's custom lighting pipeline has been enabled.
+     */
+    public static boolean isForgeLightingPipeline () {
+        
+        return ForgeConfig.CLIENT.forgeLightPipelineEnabled.get();
+    }
+    
+    /**
+     * Recreates a vertex format with lightmaps enabled. If the format already has lightmaps
+     * enabled it will be ignored.
+     * 
+     * @param format The format to convert.
+     * @return The new format, or the old one if no changes are needed.
+     */
+    public static VertexFormat getFormatWithLightMap (VertexFormat format) {
+        
+        // Only modify if the forge lighting pipeline is enabled.
+        // Skip block format because it already has a lightmap.
+        if (isForgeLightingPipeline() && format != DefaultVertexFormats.BLOCK) {
+            
+            // Redirect default item format to a copy of the default with a lightmap.
+            if (format == DefaultVertexFormats.ITEM) {
+                
+                return ITEM_WITH_LIGHTMAP;
+            }
+            
+            // Check if the format doesn't have a lightmap
+            else if (!format.hasUv(1)) {
+                
+                final VertexFormat copy = new VertexFormat(format);
+                copy.addElement(DefaultVertexFormats.TEX_2S);
+                return copy;
+            }
+        }
+        
+        // Default to the provided format.
+        return format;
     }
 }
