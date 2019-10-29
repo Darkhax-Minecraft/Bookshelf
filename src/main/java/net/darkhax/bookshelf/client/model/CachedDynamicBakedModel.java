@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.client.model.block;
+package net.darkhax.bookshelf.client.model;
 
 import java.util.List;
 import java.util.Map;
