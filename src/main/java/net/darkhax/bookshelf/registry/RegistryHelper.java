@@ -1,6 +1,9 @@
 package net.darkhax.bookshelf.registry;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -11,12 +14,16 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.darkhax.bookshelf.world.DimensionFactory;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.merchant.villager.VillagerProfession;
+import net.minecraft.entity.merchant.villager.VillagerTrades.ITrade;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
@@ -44,6 +51,8 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.event.village.VillagerTradesEvent;
+import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.event.world.RegisterDimensionsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
@@ -120,6 +129,16 @@ public class RegistryHelper {
         if (!this.potions.isEmpty()) {
             
             modBus.addGenericListener(Potion.class, this::registerPotionTypes);
+        }
+        
+        if (!this.trades.isEmpty()) {
+            
+            MinecraftForge.EVENT_BUS.addListener(this::registerVillagerTrades);
+        }
+        
+        if (!this.basicTrades.isEmpty() || !this.rareTrades.isEmpty()) {
+            
+            MinecraftForge.EVENT_BUS.addListener(this::registerWanderingTrades);
         }
     }
     
@@ -564,5 +583,84 @@ public class RegistryHelper {
     public List<Potion> getPotions () {
         
         return ImmutableList.copyOf(this.potions);
+    }
+    
+    /**
+     * VILLAGER TRADES
+     */
+    private final Map<VillagerProfession, Int2ObjectMap<List<ITrade>>> trades = new HashMap<>();
+    
+    public ITrade registerVillagerTrade (VillagerProfession profession, int level, ITrade trade) {
+        
+        // Get or create a new int map
+        final Int2ObjectMap<List<ITrade>> tradesByLevel = this.trades.getOrDefault(profession, new Int2ObjectOpenHashMap<>());
+        
+        // Get or create a new list of trades for the level.
+        final List<ITrade> tradesForLevel = tradesByLevel.getOrDefault(level, new ArrayList<>());
+        
+        // Add the trades.
+        tradesForLevel.add(trade);
+        
+        // Add the various maps and lists to their parent collection.
+        tradesByLevel.put(level, tradesForLevel);
+        this.trades.put(profession, tradesByLevel);
+        return trade;
+    }
+    
+    private void registerVillagerTrades (VillagerTradesEvent event) {
+        
+        // Ensure type isn't null, because mods.
+        if (event.getType() != null) {
+            
+            // Get all trades for the current profession
+            final Int2ObjectMap<List<ITrade>> tradesByLevel = this.trades.get(event.getType());
+            
+            // Check to make sure a trade has been registered.
+            if (tradesByLevel != null && !tradesByLevel.isEmpty()) {
+                
+                // Iterate for the various profession levels
+                for (final int level : tradesByLevel.keySet()) {
+                    
+                    final List<ITrade> tradeRegistry = event.getTrades().get(level);
+                    
+                    // If the trade pool exists add all trades for that tier.
+                    if (tradeRegistry != null) {
+                        
+                        tradeRegistry.addAll(tradesByLevel.get(level));
+                    }
+                    
+                    else {
+                        
+                        // Level 1 through 5 should always exist, but this is modded so people
+                        // will inevitably mess this up.
+                        this.logger.error("The mod {} tried to register a trade at profession level {} for villager type {}. This profession level does not exist!", this.modid, level, event.getType().getRegistryName().toString());
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * WANDERER TRADES
+     */
+    private final List<ITrade> basicTrades = new ArrayList<>();
+    private final List<ITrade> rareTrades = new ArrayList<>();
+    
+    public ITrade addBasicWanderingTrade (ITrade trade) {
+        
+        this.basicTrades.add(trade);
+        return trade;
+    }
+    
+    public ITrade addRareWanderingTrade (ITrade trade) {
+        
+        this.rareTrades.add(trade);
+        return trade;
+    }
+    
+    private void registerWanderingTrades (WandererTradesEvent event) {
+        
+        event.getGenericTrades().addAll(this.basicTrades);
+        event.getRareTrades().addAll(this.rareTrades);
     }
 }
