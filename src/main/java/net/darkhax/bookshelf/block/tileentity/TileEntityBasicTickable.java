@@ -11,7 +11,7 @@ import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 
-public abstract class TileEntityBasicTickable extends TileEntityBasic implements ITickableTileEntity {
+public class TileEntityBasicTickable extends TileEntityBasic implements ITickableTileEntity {
     
     public TileEntityBasicTickable(TileEntityType<?> tileEntityType) {
         
@@ -24,12 +24,12 @@ public abstract class TileEntityBasicTickable extends TileEntityBasic implements
         if (this.hasWorld() && this.isLoaded() && !this.isRemoved()) {
             try {
                 
-                this.onEntityUpdate();
+                this.onTileTick();
             }
             
             catch (final Exception exception) {
                 
-                Bookshelf.LOG.warn("A TileEntity with ID {} at {} in world {} failed a client update tick!", this.getType().getRegistryName().toString(), this.getPos().toString(), this.getWorld().getWorldInfo().getWorldName());
+                Bookshelf.LOG.warn("A TileEntity with ID {} at {} in world {} failed a client update tick!", this.getType().getRegistryName(), this.getPos(), this.getWorld().getWorldInfo().getWorldName());
                 Bookshelf.LOG.catching(exception);
             }
         }
@@ -39,5 +39,7 @@ public abstract class TileEntityBasicTickable extends TileEntityBasic implements
      * Handles the TileEntity update ticks. This method will only be called in a safe
      * environment.
      */
-    public abstract void onEntityUpdate ();
+    public void onTileTick () {
+        
+    }
 }

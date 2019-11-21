@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 
-public abstract class TileEntityBasic extends TileEntity {
+public class TileEntityBasic extends TileEntity {
     
     public TileEntityBasic(TileEntityType<?> tileEntityType) {
         
@@ -25,14 +25,14 @@ public abstract class TileEntityBasic extends TileEntity {
     @Override
     public void read (CompoundNBT dataTag) {
         
-        this.readNBT(dataTag);
+        this.deserialize(dataTag);
         super.read(dataTag);
     }
     
     @Override
     public CompoundNBT write (CompoundNBT dataTag) {
         
-        this.writeNBT(dataTag);
+        this.serialize(dataTag);
         return super.write(dataTag);
     }
     
@@ -46,7 +46,7 @@ public abstract class TileEntityBasic extends TileEntity {
     public void onDataPacket (NetworkManager net, SUpdateTileEntityPacket packet) {
         
         super.onDataPacket(net, packet);
-        this.readNBT(packet.getNbtCompound());
+        this.deserialize(packet.getNbtCompound());
     }
     
     @Override
@@ -106,12 +106,16 @@ public abstract class TileEntityBasic extends TileEntity {
      *
      * @param dataTag: The NBTTagCompound for the TileEntity.
      */
-    public abstract void writeNBT (CompoundNBT dataTag);
+    public void serialize (CompoundNBT dataTag) {
+        
+    }
     
     /**
      * Handles the ability to read custom NBT values from the TileEntity's NBTTagCompound.
      *
      * @param dataTag: The NBTTagCompound for the TileEntity.
      */
-    public abstract void readNBT (CompoundNBT dataTag);
+    public void deserialize (CompoundNBT dataTag) {
+        
+    }
 }
