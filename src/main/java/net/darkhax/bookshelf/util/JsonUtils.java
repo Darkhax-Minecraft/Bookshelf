@@ -20,7 +20,6 @@ import net.minecraft.potion.Effect;
 import net.minecraft.potion.Potion;
 import net.minecraft.state.IProperty;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
@@ -29,11 +28,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public final class JsonUtils extends JSONUtils {
-    
-    private JsonUtils() {
-        
-    }
+public final class JsonUtils extends net.minecraft.util.JSONUtils {
     
     public static <T extends IForgeRegistryEntry<T>> T getRegistryEntry (JsonObject json, String memberName, IForgeRegistry<T> registry) {
         
