@@ -29,7 +29,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public final class MCJsonUtils extends JSONUtils {
+public final class MCJsonUtils {
     
     public static <T extends IForgeRegistryEntry<T>> T getRegistryEntry (JsonObject json, String memberName, IForgeRegistry<T> registry) {
         
@@ -79,7 +79,7 @@ public final class MCJsonUtils extends JSONUtils {
         
         else {
             
-            throw new JsonSyntaxException("Expected " + memberName + " to be a JSON primitive. was " + toString(json));
+            throw new JsonSyntaxException("Expected " + memberName + " to be a JSON primitive. was " + JSONUtils.toString(json));
         }
     }
     
@@ -203,7 +203,7 @@ public final class MCJsonUtils extends JSONUtils {
                         
                         else {
                             
-                            throw new JsonSyntaxException("Expected property value for " + property.getKey() + " to be primitive string. Got " + toString(property.getValue()));
+                            throw new JsonSyntaxException("Expected property value for " + property.getKey() + " to be primitive string. Got " + JSONUtils.toString(property.getValue()));
                         }
                     }
                     
@@ -216,7 +216,7 @@ public final class MCJsonUtils extends JSONUtils {
             
             else {
                 
-                throw new JsonSyntaxException("Expected properties to be an object. Got " + toString(propertiesElement));
+                throw new JsonSyntaxException("Expected properties to be an object. Got " + JSONUtils.toString(propertiesElement));
             }
         }
         
