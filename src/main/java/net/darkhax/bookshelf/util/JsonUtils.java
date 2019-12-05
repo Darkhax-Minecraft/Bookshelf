@@ -29,7 +29,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class JsonUtils extends JSONUtils {
+public final class JsonUtils extends JSONUtils {
+    
+    private JsonUtils() {
+        
+    }
     
     public static <T extends IForgeRegistryEntry<T>> T getRegistryEntry (JsonObject json, String memberName, IForgeRegistry<T> registry) {
         
