@@ -19,7 +19,7 @@ public final class RecipeUtils {
      * @param recipeType The recipe type you want to get.
      * @return A map of recipes keyed to their IDs.
      */
-    public <C extends IInventory, T extends IRecipe<C>> Map<ResourceLocation, IRecipe<C>> getRecipes (RecipeManager manager, IRecipeType<T> recipeType) {
+    public static <C extends IInventory, T extends IRecipe<C>> Map<ResourceLocation, IRecipe<C>> getRecipes (RecipeManager manager, IRecipeType<T> recipeType) {
         
         return manager.getRecipes(recipeType);
     }
