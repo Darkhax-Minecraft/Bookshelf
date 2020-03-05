@@ -33,18 +33,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public final class PlayerUtils {
     
     /**
-     * Checks if a specific player can sleep. For this to be true, a player must not already be
-     * in a bed, and the world time bust be greater than 12541, but less than 23458.
-     *
-     * @param player: The player to check the sleepability of.
-     * @return boolean: True if the player can sleep, false if they can not.
-     */
-    public static boolean canPlayerSleep (PlayerEntity player) {
-        
-        return !player.isSleeping() && player.isAlive() && player.world.getDayTime() > 12541 && player.world.getDayTime() < 23458;
-    }
-    
-    /**
      * A simple check to make sure that an PlayerEntity actually exists.
      *
      * @param player: The instance of PlayerEntity to check.
@@ -65,39 +53,6 @@ public final class PlayerUtils {
     public static UUID fixStrippedUUID (String uuidString) {
         
         return uuidString.length() != 32 ? null : UUID.fromString(uuidString.substring(0, 8) + "-" + uuidString.substring(8, 12) + "-" + uuidString.substring(12, 16) + "-" + uuidString.substring(16, 20) + "-" + uuidString.substring(20, 32));
-    }
-    
-    /**
-     * Gets the amount of an item in a players inventory or equipment slots.
-     *
-     * @param player The player to check the inventory of.
-     * @param item The item to check for.
-     * @return The amount of the item being searched for.
-     * @deprecated You should use the {@link List#size()} method from
-     *             {@link #getStacksFromPlayer(PlayerEntity, Item)} 's result.
-     */
-    @Deprecated
-    public static int getItemCountInInv (PlayerEntity player, Item item) {
-        
-        int count = 0;
-        
-        for (final ItemStack stack : player.inventory.mainInventory) {
-            if (!stack.isEmpty() && stack.getItem().equals(item)) {
-                count += stack.getCount();
-            }
-        }
-        
-        for (final EquipmentSlotType slotType : EquipmentSlotType.values()) {
-            
-            final ItemStack stack = player.getItemStackFromSlot(slotType);
-            
-            if (stack.getItem() == item) {
-                
-                count += stack.getCount();
-            }
-        }
-        
-        return count;
     }
     
     /**

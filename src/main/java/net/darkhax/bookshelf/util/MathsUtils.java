@@ -11,12 +11,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceContext.BlockMode;
-import net.minecraft.util.math.RayTraceContext.FluidMode;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 
 public final class MathsUtils {
@@ -76,23 +71,6 @@ public final class MathsUtils {
     public static int nextIntInclusive (Random rand, int min, int max) {
         
         return rand.nextInt(max - min + 1) + min;
-    }
-    
-    /**
-     * Performs a ray trace for the look vector of an entity.
-     * 
-     * @param entity The entity to perform a ray trace on.
-     * @param length The distance to cast the rays.
-     * @param blockMode The mode used when detecting blocks.
-     * @param fluidMode The mode used when detecting fluids.
-     * @return An object containing the results of the ray trace.
-     */
-    public static RayTraceResult rayTrace (LivingEntity entity, double length, BlockMode blockMode, FluidMode fluidMode) {
-        
-        final Vec3d startingPosition = new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
-        final Vec3d lookVector = entity.getLookVec();
-        final Vec3d endingPosition = startingPosition.add(lookVector.x * length, lookVector.y * length, lookVector.z * length);
-        return entity.world.rayTraceBlocks(new RayTraceContext(startingPosition, endingPosition, blockMode, fluidMode, entity));
     }
     
     /**

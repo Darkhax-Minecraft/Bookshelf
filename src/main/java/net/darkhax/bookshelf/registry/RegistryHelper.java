@@ -16,7 +16,6 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.darkhax.bookshelf.world.DimensionFactory;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
@@ -47,13 +46,10 @@ import net.minecraft.world.biome.provider.IBiomeProviderSettings;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.ChunkGeneratorType;
 import net.minecraft.world.gen.GenerationSettings;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
-import net.minecraftforge.event.world.RegisterDimensionsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -108,12 +104,6 @@ public class RegistryHelper {
         if (!this.entityTypes.isEmpty()) {
             
             modBus.addGenericListener(EntityType.class, this::registerEntityTypes);
-        }
-        
-        if (!this.dimensions.isEmpty()) {
-            
-            modBus.addGenericListener(ModDimension.class, this::registerDimensions);
-            MinecraftForge.EVENT_BUS.addListener(this::registerDimensionTypes);
         }
         
         if (!this.biomeProviderTypes.isEmpty()) {
@@ -489,46 +479,6 @@ public class RegistryHelper {
             for (final BiomeProviderType<?, ?> containerType : this.biomeProviderTypes) {
                 
                 registry.register(containerType);
-            }
-        }
-    }
-    
-    /**
-     * DIMENSIONS
-     */
-    private final List<DimensionFactory> dimensions = NonNullList.create();
-    
-    public DimensionFactory registerDimension (DimensionFactory dimension, String id) {
-        
-        dimension.setRegistryName(this.modid, id);
-        this.dimensions.add(dimension);
-        return dimension;
-    }
-    
-    private void registerDimensions (Register<ModDimension> event) {
-        
-        if (!this.dimensions.isEmpty()) {
-            
-            this.logger.info("Registering {} dimensions.", this.dimensions.size());
-            
-            final IForgeRegistry<ModDimension> registry = event.getRegistry();
-            
-            for (final DimensionFactory dimension : this.dimensions) {
-                
-                // registry.register(dimension);
-            }
-        }
-    }
-    
-    private void registerDimensionTypes (RegisterDimensionsEvent event) {
-        
-        if (!this.dimensions.isEmpty()) {
-            
-            this.logger.info("Registering {} dimensions types.", this.dimensions.size());
-            
-            for (final DimensionFactory dimension : this.dimensions) {
-                
-                DimensionManager.registerDimension(dimension.getRegistryName(), dimension, dimension.getDefaultData(), dimension.hasSkylight());
             }
         }
     }

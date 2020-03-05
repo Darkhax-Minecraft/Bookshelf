@@ -8,18 +8,11 @@
 package net.darkhax.bookshelf.util;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -99,50 +92,6 @@ public final class WorldUtils {
     public static boolean isWithinDistanceAndUsable (IWorldPosCallable worldPos, PlayerEntity player, Predicate<BlockState> statePredicate, double maxDistance) {
         
         return worldPos.applyOrElse( (world, pos) -> statePredicate.test(world.getBlockState(pos)) && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= maxDistance, true);
-    }
-    
-    /**
-     * Looks up the map of all known recipes for a given recipe type.
-     * 
-     * @param <T> The type of the IRecipe object.
-     * @param recipeType The recipe type to look up.
-     * @param manager The recipe manager to pull data from.
-     * @return A map of recipes for the provided recipe type. Key is ResourceLocation, value is
-     *         the recipe object.
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static <T extends IRecipe<?>> Map<ResourceLocation, T> getRecipes (IRecipeType<T> recipeType, RecipeManager manager) {
-        
-        return (Map) manager.recipes.getOrDefault(recipeType, Collections.emptyMap());
-    }
-    
-    /**
-     * Gets a list of all recipes for a given recipe type. This list will be sorted using the
-     * translation key of the output item.
-     * 
-     * @param <T> The type of the IRecipe object.
-     * @param recipeType The recipe type to look up.
-     * @param manager The recipe manager to pull data from.
-     * @return A list of recipes for the given recipe type.
-     */
-    public static <T extends IRecipe<?>> List<T> getRecipeList (IRecipeType<T> recipeType, RecipeManager manager) {
-        
-        return getRecipeList(recipeType, manager, Comparator.comparing(recipe -> recipe.getRecipeOutput().getTranslationKey()));
-    }
-    
-    /**
-     * Gets a list of all recipes for a given recipe type. This list will be sorted using the
-     * provided comparator.
-     * 
-     * @param <T> The type of the IRecipe object.
-     * @param recipeType The recipe type to look up.
-     * @param manager The recipe manager to pull data from.
-     * @param comparator A comparator that will be used to sort the map.
-     * @return A list of recipes for the given recipe type.
-     */
-    public static <T extends IRecipe<?>> List<T> getRecipeList (IRecipeType<T> recipeType, RecipeManager manager, Comparator<T> comparator) {
-        
-        return getRecipes(recipeType, manager).values().stream().sorted(comparator).collect(Collectors.toList());
     }
     
     /**

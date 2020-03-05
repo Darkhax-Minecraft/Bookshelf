@@ -38,28 +38,10 @@ public final class SkullUtils {
     public static ItemStack createSkull (String name, UUID uuid) {
         
         final ItemStack stack = new ItemStack(Items.PLAYER_HEAD, 1);
-        StackUtils.prepareStackTag(stack);
         final CompoundNBT ownerTag = new CompoundNBT();
         ownerTag.putString("Name", name);
         ownerTag.putString("Id", uuid.toString());
-        stack.getTag().put("SkullOwner", ownerTag);
-        return stack;
-    }
-    
-    /**
-     * Creates a skull that represents a player. This method can use plain text usernames, or
-     * player UUID. It is recommended to use the UUID over the username, unless you are 100%
-     * certain that the username will never change.
-     *
-     * @param owner The owner of the skull being created. Can be a username of a UUID.
-     * @return ItemStack An ItemStack containing a skull which represents the passed owner
-     *         name.
-     */
-    public static ItemStack createSkull (String owner) {
-        
-        final ItemStack stack = new ItemStack(Items.PLAYER_HEAD, 1);
-        StackUtils.prepareStackTag(stack);
-        stack.getTag().putString("SkullOwner", owner);
+        stack.getOrCreateTag().put("SkullOwner", ownerTag);
         return stack;
     }
 }

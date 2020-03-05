@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 
-public class TileEntityBasic extends TileEntity {
+public abstract class TileEntityBasic extends TileEntity {
     
     public TileEntityBasic(TileEntityType<?> tileEntityType) {
         
@@ -106,16 +106,12 @@ public class TileEntityBasic extends TileEntity {
      *
      * @param dataTag: The NBTTagCompound for the TileEntity.
      */
-    public void serialize (CompoundNBT dataTag) {
-        
-    }
+    public abstract void serialize (CompoundNBT dataTag);
     
     /**
      * Handles the ability to read custom NBT values from the TileEntity's NBTTagCompound.
      *
      * @param dataTag: The NBTTagCompound for the TileEntity.
      */
-    public void deserialize (CompoundNBT dataTag) {
-        
-    }
+    public abstract void deserialize (CompoundNBT dataTag);
 }

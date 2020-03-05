@@ -116,12 +116,8 @@ public class TableBuilder<T> {
         this.entries.add(entry);
     }
     
-    /**
-     * Creates the table string using the entries from {@link #entries}.
-     *
-     * @return A string which represents the table data as a markdown table.
-     */
-    public String createString () {
+    @Override
+    public String toString () {
         
         return this.createString(this.entries);
     }

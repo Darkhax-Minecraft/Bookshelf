@@ -11,7 +11,7 @@ import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 
-public class TileEntityBasicTickable extends TileEntityBasic implements ITickableTileEntity {
+public abstract class TileEntityBasicTickable extends TileEntityBasic implements ITickableTileEntity {
     
     public TileEntityBasicTickable(TileEntityType<?> tileEntityType) {
         
@@ -39,7 +39,5 @@ public class TileEntityBasicTickable extends TileEntityBasic implements ITickabl
      * Handles the TileEntity update ticks. This method will only be called in a safe
      * environment.
      */
-    public void onTileTick () {
-        
-    }
+    public abstract void onTileTick ();
 }

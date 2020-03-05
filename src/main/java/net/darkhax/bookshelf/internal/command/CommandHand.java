@@ -16,7 +16,8 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.IngredientNBT.Serializer;
+import net.minecraftforge.common.crafting.NBTIngredient;
+import net.minecraftforge.common.crafting.VanillaIngredientSerializer;
 
 public class CommandHand {
     
@@ -48,7 +49,7 @@ public class CommandHand {
         JSON("json", stack -> {
             
             final JsonObject json = new JsonObject();
-            json.addProperty("type", CraftingHelper.getID(Serializer.INSTANCE).toString());
+            json.addProperty("type", CraftingHelper.getID(stack.hasTag() ? NBTIngredient.Serializer.INSTANCE : VanillaIngredientSerializer.INSTANCE).toString());
             json.addProperty("item", stack.getItem().getRegistryName().toString());
             json.addProperty("count", stack.getCount());
             if (stack.hasTag()) {

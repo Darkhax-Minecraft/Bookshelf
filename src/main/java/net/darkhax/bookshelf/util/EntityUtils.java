@@ -14,16 +14,18 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceContext.BlockMode;
+import net.minecraft.util.math.RayTraceContext.FluidMode;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 public final class EntityUtils {
     
@@ -93,9 +95,9 @@ public final class EntityUtils {
      */
     public static void pushTowards (Entity entityToMove, Entity destination, double force) {
         
-        final double distanceX = destination.posX - entityToMove.posX;
-        final double distanceY = destination.posY - entityToMove.posY;
-        final double distanceZ = destination.posZ - entityToMove.posZ;
+        final double distanceX = destination.getPosX() - entityToMove.getPosX();
+        final double distanceY = destination.getPosY() - entityToMove.getPosY();
+        final double distanceZ = destination.getPosZ() - entityToMove.getPosZ();
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
         if (distance > 0) {
@@ -294,16 +296,19 @@ public final class EntityUtils {
     }
     
     /**
-     * Quickly creates a new entity item and adds it to the drops.
+     * Performs a ray trace for the look vector of an entity.
      * 
-     * @param stack The item to add.
-     * @param event The event list.
+     * @param entity The entity to perform a ray trace on.
+     * @param length The distance to cast the rays.
+     * @param blockMode The mode used when detecting blocks.
+     * @param fluidMode The mode used when detecting fluids.
+     * @return An object containing the results of the ray trace.
      */
-    public static void addDrop (ItemStack stack, LivingDropsEvent event) {
+    public static RayTraceResult rayTrace (LivingEntity entity, double length, BlockMode blockMode, FluidMode fluidMode) {
         
-        final LivingEntity living = event.getEntityLiving();
-        final ItemEntity droppedItemEntity = new ItemEntity(event.getEntityLiving().world, living.posX, living.posY, living.posZ, stack);
-        droppedItemEntity.setDefaultPickupDelay();
-        event.getDrops().add(droppedItemEntity);
+        final Vec3d startingPosition = new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ());
+        final Vec3d lookVector = entity.getLookVec();
+        final Vec3d endingPosition = startingPosition.add(lookVector.x * length, lookVector.y * length, lookVector.z * length);
+        return entity.world.rayTraceBlocks(new RayTraceContext(startingPosition, endingPosition, blockMode, fluidMode, entity));
     }
 }
