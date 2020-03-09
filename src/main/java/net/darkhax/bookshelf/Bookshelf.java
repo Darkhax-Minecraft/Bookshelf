@@ -45,9 +45,9 @@ public class Bookshelf {
     
     public static final NetworkHelper NETWORK = new NetworkHelper(new ResourceLocation(MOD_ID, "main"), "4.2.x");
     
-    private final RegistryHelper registry = new RegistryHelper(MOD_ID, LOG, null);
-    
     public static final ISidedProxy SIDED = DistExecutor.runForDist( () -> () -> new BookshelfClient(), () -> () -> new BookshelfServer());
+    
+    private final RegistryHelper registry = new RegistryHelper(MOD_ID, LOG, null);
     
     public Bookshelf() {
         
