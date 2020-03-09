@@ -238,17 +238,8 @@ public class RegistryHelper {
     
     public <T extends IRecipe<?>> IRecipeType<T> registerRecipeType (String typeId) {
         
-        final IRecipeType<T> type = new IRecipeType<T>() {
-            
-            @Override
-            public String toString () {
-                
-                return RegistryHelper.this.modid + ":" + typeId;
-            }
-        };
-        
+        final IRecipeType<T> type = IRecipeType.register(typeId);
         this.recipeTypes.add(type);
-        
         return type;
     }
     
