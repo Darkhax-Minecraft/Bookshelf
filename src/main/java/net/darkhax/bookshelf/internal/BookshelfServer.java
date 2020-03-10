@@ -7,7 +7,7 @@ import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 
 public class BookshelfServer implements ISidedProxy {
     
-    private RecipeManager recipeManager;
+    protected RecipeManager recipeManager;
     
     public BookshelfServer() {
         

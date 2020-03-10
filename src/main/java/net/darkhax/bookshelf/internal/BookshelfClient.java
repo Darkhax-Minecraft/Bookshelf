@@ -1,16 +1,14 @@
 package net.darkhax.bookshelf.internal;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.crafting.RecipeManager;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BookshelfClient implements ISidedProxy {
-    
-    private RecipeManager recipeManager;
+public class BookshelfClient extends BookshelfServer {
     
     public BookshelfClient() {
         
+        super();
         MinecraftForge.EVENT_BUS.addListener(this::onRecipesUpdated);
     }
     
@@ -18,12 +16,6 @@ public class BookshelfClient implements ISidedProxy {
     public void setClipboard (String text) {
         
         Minecraft.getInstance().keyboardListener.setClipboardString(text);
-    }
-    
-    @Override
-    public RecipeManager getActiveRecipeManager () {
-        
-        return this.recipeManager;
     }
     
     private void onRecipesUpdated (RecipesUpdatedEvent event) {
