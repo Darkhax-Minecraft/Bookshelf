@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -12,12 +13,15 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandSource;
+import net.minecraft.command.arguments.ArgumentTypes;
+import net.minecraft.command.arguments.IArgumentSerializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -39,6 +43,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.biome.provider.BiomeProviderType;
@@ -51,6 +56,7 @@ import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -129,6 +135,11 @@ public class RegistryHelper {
         if (!this.basicTrades.isEmpty() || !this.rareTrades.isEmpty()) {
             
             MinecraftForge.EVENT_BUS.addListener(this::registerWanderingTrades);
+        }
+        
+        if (!this.commandArguments.isEmpty()) {
+            
+            modBus.addListener(this::registerCommandArguments);
         }
     }
     
@@ -603,5 +614,25 @@ public class RegistryHelper {
         
         event.getGenericTrades().addAll(this.basicTrades);
         event.getRareTrades().addAll(this.rareTrades);
+    }
+    
+    /**
+     * COMMAND ARGUMENT TYPES
+     */
+    private final Map<String, Tuple<Class, IArgumentSerializer>> commandArguments = new HashMap<>();
+    
+    public <T extends ArgumentType<?>> void registerCommandArgument (String name, Class<T> clazz, IArgumentSerializer<T> serializer) {
+        
+        this.commandArguments.put(name, new Tuple<>(clazz, serializer));
+    }
+    
+    private void registerCommandArguments (FMLCommonSetupEvent event) {
+        
+        this.logger.info("Registering {} command argument types.", this.commandArguments.size());
+        
+        for (final Entry<String, Tuple<Class, IArgumentSerializer>> entry : this.commandArguments.entrySet()) {
+            
+            ArgumentTypes.register(entry.getKey(), entry.getValue().getA(), entry.getValue().getB());
+        }
     }
 }

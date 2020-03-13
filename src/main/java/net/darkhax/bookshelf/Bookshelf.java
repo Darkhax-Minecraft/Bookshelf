@@ -22,7 +22,6 @@ import net.darkhax.bookshelf.internal.network.PacketSetClipboard;
 import net.darkhax.bookshelf.network.NetworkHelper;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.minecraft.command.arguments.ArgumentSerializer;
-import net.minecraft.command.arguments.ArgumentTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -53,10 +52,11 @@ public class Bookshelf {
         
         new BookshelfCommands(this.registry);
         
+        this.registry.registerCommandArgument("enum", ArgumentTypeHandOutput.class, new ArgumentTypeHandOutput.Serialzier());
+        this.registry.registerCommandArgument("mod", ArgumentTypeMod.class, new ArgumentSerializer<>( () -> ArgumentTypeMod.INSTACE));
+        
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
         
         NETWORK.registerEnqueuedMessage(PacketSetClipboard.class, PacketSetClipboard::encode, PacketSetClipboard::decode, PacketSetClipboard::handle);
-        ArgumentTypes.register("enum", ArgumentTypeHandOutput.class, new ArgumentTypeHandOutput.Serialzier());
-        ArgumentTypes.register("mod", ArgumentTypeMod.class, new ArgumentSerializer<>( () -> ArgumentTypeMod.INSTACE));
     }
 }
