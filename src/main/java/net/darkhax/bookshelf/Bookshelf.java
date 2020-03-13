@@ -19,6 +19,12 @@ import net.darkhax.bookshelf.internal.ISidedProxy;
 import net.darkhax.bookshelf.internal.command.ArgumentTypeHandOutput;
 import net.darkhax.bookshelf.internal.command.BookshelfCommands;
 import net.darkhax.bookshelf.internal.network.PacketSetClipboard;
+import net.darkhax.bookshelf.loot.condition.CheckBiomeTag;
+import net.darkhax.bookshelf.loot.condition.CheckDimensionId;
+import net.darkhax.bookshelf.loot.condition.CheckRaid;
+import net.darkhax.bookshelf.loot.condition.CheckSlimeChunk;
+import net.darkhax.bookshelf.loot.condition.CheckStructure;
+import net.darkhax.bookshelf.loot.condition.CheckVillage;
 import net.darkhax.bookshelf.network.NetworkHelper;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.minecraft.command.arguments.ArgumentSerializer;
@@ -50,10 +56,20 @@ public class Bookshelf {
     
     public Bookshelf() {
         
+        // Commands
         new BookshelfCommands(this.registry);
         
+        // Command arguments
         this.registry.registerCommandArgument("enum", ArgumentTypeHandOutput.class, new ArgumentTypeHandOutput.Serialzier());
         this.registry.registerCommandArgument("mod", ArgumentTypeMod.class, new ArgumentSerializer<>( () -> ArgumentTypeMod.INSTACE));
+        
+        // Loot conditions
+        this.registry.registerLootCondition(CheckBiomeTag.SERIALIZER);
+        this.registry.registerLootCondition(CheckDimensionId.SERIALIZER);
+        this.registry.registerLootCondition(CheckRaid.SERIALIZER);
+        this.registry.registerLootCondition(CheckSlimeChunk.SERIALIZER);
+        this.registry.registerLootCondition(CheckStructure.SERIALIZER);
+        this.registry.registerLootCondition(CheckVillage.SERIALIZER);
         
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
         
