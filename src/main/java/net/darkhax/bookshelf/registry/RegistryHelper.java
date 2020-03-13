@@ -51,6 +51,8 @@ import net.minecraft.world.biome.provider.IBiomeProviderSettings;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.ChunkGeneratorType;
 import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.storage.loot.conditions.ILootCondition.AbstractSerializer;
+import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -140,6 +142,11 @@ public class RegistryHelper {
         if (!this.commandArguments.isEmpty()) {
             
             modBus.addListener(this::registerCommandArguments);
+        }
+        
+        if (!this.lootConditions.isEmpty()) {
+            
+            modBus.addListener(this::registerLootConditions);
         }
     }
     
@@ -633,6 +640,26 @@ public class RegistryHelper {
         for (final Entry<String, Tuple<Class, IArgumentSerializer>> entry : this.commandArguments.entrySet()) {
             
             ArgumentTypes.register(entry.getKey(), entry.getValue().getA(), entry.getValue().getB());
+        }
+    }
+    
+    /**
+     * LOOT CONDITION
+     */
+    private final List<AbstractSerializer<?>> lootConditions = NonNullList.create();
+    
+    public void registerLootCondition (AbstractSerializer<?> condition) {
+        
+        this.lootConditions.add(condition);
+    }
+    
+    private void registerLootConditions (FMLCommonSetupEvent event) {
+        
+        this.logger.info("Registering {} loot condition types.", this.lootConditions.size());
+        
+        for (final AbstractSerializer<?> entry : this.lootConditions) {
+            
+            LootConditionManager.registerCondition(entry);
         }
     }
 }
