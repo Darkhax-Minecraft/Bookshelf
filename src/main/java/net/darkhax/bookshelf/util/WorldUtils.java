@@ -15,6 +15,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -116,5 +117,18 @@ public final class WorldUtils {
     public static boolean doesLootTableExist (LootTableManager manager, ResourceLocation tableId) {
         
         return manager.registeredLootTables.containsKey(tableId);
+    }
+    
+    /**
+     * Checks if a given position is within a slime chunk.
+     * 
+     * @param world The server world. Server is specifically needed as client doesn't have the
+     *        seed.
+     * @param pos The position to check.
+     * @return Whether or not the given position is in a slime chunk.
+     */
+    public static boolean isSlimeChunk (ServerWorld world, BlockPos pos) {
+        
+        return SharedSeedRandom.seedSlimeChunk(pos.getX() >> 4, pos.getZ() >> 4, world.getSeed(), 987234911L).nextInt(10) == 0;
     }
 }
