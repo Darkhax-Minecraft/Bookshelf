@@ -7,9 +7,17 @@
  */
 package net.darkhax.bookshelf.util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import javax.annotation.Nullable;
+
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
@@ -25,18 +33,44 @@ import net.minecraft.item.Item;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.Potion;
+import net.minecraft.resources.IResourceManager;
 import net.minecraft.state.IProperty;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.LootTableManager;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public final class MCJsonUtils {
+    
+    @Nullable
+    public static LootTable loadLootTable (LootTableManager lootManager, IResourceManager resourceManager, ResourceLocation name) throws IOException {
+        
+        final JsonObject data = loadLootTable(resourceManager, name);
+        return ForgeHooks.loadLootTable(LootTableManager.GSON_INSTANCE, name, data, true, lootManager);
+    }
+    
+    @Nullable
+    public static JsonObject loadLootTable (IResourceManager manager, ResourceLocation name) throws IOException {
+        
+        return loadJson(LootTableManager.GSON_INSTANCE, manager, new ResourceLocation(name.getNamespace(), "loot_tables/" + name.getPath() + ".json"));
+    }
+    
+    @Nullable
+    public static JsonObject loadJson (Gson gson, IResourceManager manager, ResourceLocation name) throws IOException {
+        
+        try (Reader reader = new BufferedReader(new InputStreamReader(manager.getResource(name).getInputStream(), StandardCharsets.UTF_8));) {
+            
+            return JSONUtils.fromJson(gson, reader, JsonObject.class);
+        }
+    }
     
     public static <T extends IForgeRegistryEntry<T>> T getRegistryEntry (JsonObject json, String memberName, IForgeRegistry<T> registry) {
         
