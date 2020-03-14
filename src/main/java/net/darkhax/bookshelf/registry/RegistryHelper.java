@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.registry;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,9 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.darkhax.bookshelf.Bookshelf;
+import net.darkhax.bookshelf.util.LootUtils;
+import net.darkhax.bookshelf.util.MCJsonUtils;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.arguments.ArgumentTypes;
@@ -37,6 +41,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.potion.Potion;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.IStatFormatter;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
@@ -51,9 +56,12 @@ import net.minecraft.world.biome.provider.IBiomeProviderSettings;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.ChunkGeneratorType;
 import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.conditions.ILootCondition.AbstractSerializer;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
@@ -147,6 +155,11 @@ public class RegistryHelper {
         if (!this.lootConditions.isEmpty()) {
             
             modBus.addListener(this::registerLootConditions);
+        }
+        
+        if (!this.injectionTables.isEmpty()) {
+            
+            MinecraftForge.EVENT_BUS.addListener(this::loadTableInjections);
         }
     }
     
@@ -660,6 +673,86 @@ public class RegistryHelper {
         for (final AbstractSerializer<?> entry : this.lootConditions) {
             
             LootConditionManager.registerCondition(entry);
+        }
+    }
+    
+    /**
+     * LOOT TABLE INJECTION
+     */
+    private final Map<ResourceLocation, ResourceLocation> injectionTables = new HashMap<>();
+    
+    public ResourceLocation injectTable (ResourceLocation toInject) {
+        
+        final ResourceLocation injectId = new ResourceLocation(this.modid, "inject/" + toInject.getNamespace() + "/" + toInject.getPath());
+        this.injectionTables.put(toInject, injectId);
+        return injectId;
+    }
+    
+    private void loadTableInjections (LootTableLoadEvent event) {
+        
+        final ResourceLocation injectTableName = this.injectionTables.get(event.getName());
+        
+        // Checks if the table being loaded has a known injection table
+        if (injectTableName != null) {
+            
+            final LootTable originalTable = event.getTable();
+            final MinecraftServer server = Bookshelf.SIDED.getCurrentServer();
+            
+            if (server != null) {
+                
+                try {
+                    
+                    // Force load the injection table as it likely isn't loaded yet.
+                    final LootTable inject = MCJsonUtils.loadLootTable(event.getLootTableManager(), server.getResourceManager(), injectTableName);
+                    
+                    if (inject != null) {
+                        
+                        this.logger.info("Injecting loot table {} with {}.", event.getName(), injectTableName);
+                        this.mergeTables(originalTable, event.getName(), inject, injectTableName);
+                    }
+                }
+                
+                catch (final IOException e) {
+                    
+                    this.logger.error("Failed to load {} as a loot table.", injectTableName, e);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Merges all the loot pools of one table into another table. Pools with the same name will
+     * have their entries and conditions merged. Pools not present in the original will be
+     * injected in their entirety.
+     * 
+     * @param original The original loot table.
+     * @param originalName The name of the original loot table.
+     * @param mergeWith The table to merge into the original table.
+     * @param mergeWithName The name of the table to merge.
+     */
+    private void mergeTables (LootTable original, ResourceLocation originalName, LootTable mergeWith, ResourceLocation mergeWithName) {
+        
+        final List<LootPool> pools = LootUtils.getPools(original);
+        final Map<String, LootPool> mappedPools = LootUtils.mapPools(pools);
+        
+        for (final LootPool poolToInject : LootUtils.getPools(mergeWith)) {
+            
+            final String poolName = poolToInject.getName();
+            
+            if (mappedPools.containsKey(poolToInject.getName())) {
+                
+                final LootPool originalPool = mappedPools.get(poolName);
+                
+                this.logger.info("Merged pool {} into {} from {}.", originalPool.getName(), originalName, mergeWithName);
+                LootUtils.getEntries(originalPool).addAll(LootUtils.getEntries(poolToInject));
+                LootUtils.getConditions(originalPool).addAll(LootUtils.getConditions(poolToInject));
+            }
+            
+            else {
+                
+                pools.add(poolToInject);
+                this.logger.info("Injected new pool {} into table {}.", poolName, originalName);
+            }
         }
     }
 }
