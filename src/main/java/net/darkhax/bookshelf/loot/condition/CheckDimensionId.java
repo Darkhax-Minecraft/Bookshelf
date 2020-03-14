@@ -42,7 +42,7 @@ public class CheckDimensionId implements ILootCondition {
             
             if (type != null) {
                 
-                return type.getRegistryName() == this.dimensionId;
+                return type.getRegistryName().equals(this.dimensionId);
             }
         }
         
@@ -60,6 +60,7 @@ public class CheckDimensionId implements ILootCondition {
         public CheckDimensionId deserialize (JsonObject json, JsonDeserializationContext context) {
             
             final ResourceLocation id = ResourceLocation.tryCreate(JSONUtils.getString(json, "dimension"));
+            
             return new CheckDimensionId(id);
         }
         
