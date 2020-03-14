@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.internal;
 
 import net.minecraft.item.crafting.RecipeManager;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
@@ -8,6 +9,7 @@ import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 public class BookshelfServer implements ISidedProxy {
     
     protected RecipeManager recipeManager;
+    protected MinecraftServer server;
     
     public BookshelfServer() {
         
@@ -23,11 +25,13 @@ public class BookshelfServer implements ISidedProxy {
     
     private void onServerStart (FMLServerAboutToStartEvent event) {
         
+        this.server = event.getServer();
         this.recipeManager = event.getServer().getRecipeManager();
     }
     
     private void onServerStop (FMLServerStoppedEvent event) {
         
+        this.server = null;
         this.recipeManager = null;
     }
     
@@ -35,5 +39,11 @@ public class BookshelfServer implements ISidedProxy {
     public RecipeManager getActiveRecipeManager () {
         
         return this.recipeManager;
+    }
+    
+    @Override
+    public MinecraftServer getCurrentServer () {
+        
+        return this.server;
     }
 }
