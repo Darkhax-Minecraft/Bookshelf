@@ -21,10 +21,15 @@ import net.darkhax.bookshelf.internal.command.BookshelfCommands;
 import net.darkhax.bookshelf.internal.network.PacketSetClipboard;
 import net.darkhax.bookshelf.loot.condition.CheckBiomeTag;
 import net.darkhax.bookshelf.loot.condition.CheckDimensionId;
+import net.darkhax.bookshelf.loot.condition.CheckPower;
 import net.darkhax.bookshelf.loot.condition.CheckRaid;
 import net.darkhax.bookshelf.loot.condition.CheckSlimeChunk;
 import net.darkhax.bookshelf.loot.condition.CheckStructure;
 import net.darkhax.bookshelf.loot.condition.CheckVillage;
+import net.darkhax.bookshelf.loot.modifier.ModifierClear;
+import net.darkhax.bookshelf.loot.modifier.ModifierConvert;
+import net.darkhax.bookshelf.loot.modifier.ModifierRecipe;
+import net.darkhax.bookshelf.loot.modifier.ModifierSilkTouch;
 import net.darkhax.bookshelf.network.NetworkHelper;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.minecraft.command.arguments.ArgumentSerializer;
@@ -70,6 +75,18 @@ public class Bookshelf {
         this.registry.registerLootCondition(CheckSlimeChunk.SERIALIZER);
         this.registry.registerLootCondition(CheckStructure.SERIALIZER);
         this.registry.registerLootCondition(CheckVillage.SERIALIZER);
+        this.registry.registerLootCondition(CheckPower.SERIALIZER);
+        
+        // Loot Modifier
+        this.registry.registerGlobalModifier(ModifierClear::new, "clear");
+        this.registry.registerGlobalModifier(ModifierSilkTouch::new, "silk_touch");
+        this.registry.registerGlobalModifier(ModifierConvert.SERIALIZER, "convert");
+        this.registry.registerGlobalModifier(ModifierRecipe.CRAFTING, "crafting");
+        this.registry.registerGlobalModifier(ModifierRecipe.SMELTING, "smelting");
+        this.registry.registerGlobalModifier(ModifierRecipe.BLASTING, "blasting");
+        this.registry.registerGlobalModifier(ModifierRecipe.SMOKING, "smoking");
+        this.registry.registerGlobalModifier(ModifierRecipe.CAMPFIRE, "campfire_cooking");
+        this.registry.registerGlobalModifier(ModifierRecipe.STONECUT, "stonecutting");
         
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
         

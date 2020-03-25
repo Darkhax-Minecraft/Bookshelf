@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -20,6 +21,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.darkhax.bookshelf.Bookshelf;
+import net.darkhax.bookshelf.loot.modifier.SerializerFactory;
 import net.darkhax.bookshelf.util.LootUtils;
 import net.darkhax.bookshelf.util.MCJsonUtils;
 import net.minecraft.block.Block;
@@ -58,9 +60,12 @@ import net.minecraft.world.gen.ChunkGeneratorType;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.conditions.ILootCondition;
 import net.minecraft.world.storage.loot.conditions.ILootCondition.AbstractSerializer;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -160,6 +165,11 @@ public class RegistryHelper {
         if (!this.injectionTables.isEmpty()) {
             
             MinecraftForge.EVENT_BUS.addListener(this::loadTableInjections);
+        }
+        
+        if (!this.globalModifierSerializers.isEmpty()) {
+            
+            modBus.addGenericListener(GlobalLootModifierSerializer.class, this::registerGlobalLootModifierSerializers);
         }
     }
     
@@ -753,6 +763,35 @@ public class RegistryHelper {
                 pools.add(poolToInject);
                 this.logger.info("Injected new pool {} into table {}.", poolName, originalName);
             }
+        }
+    }
+    
+    /**
+     * LOOT MODIFIERS
+     */
+    private final List<GlobalLootModifierSerializer<?>> globalModifierSerializers = NonNullList.create();
+    
+    public <T extends IGlobalLootModifier> GlobalLootModifierSerializer<T> registerGlobalModifier (Function<ILootCondition[], T> factory, String id) {
+        
+        return this.registerGlobalModifier(new SerializerFactory<>(factory), id);
+    }
+    
+    public <T extends IGlobalLootModifier> GlobalLootModifierSerializer<T> registerGlobalModifier (GlobalLootModifierSerializer<T> serializer, String id) {
+        
+        serializer.setRegistryName(this.modid, id);
+        this.globalModifierSerializers.add(serializer);
+        return serializer;
+    }
+    
+    private void registerGlobalLootModifierSerializers (Register<GlobalLootModifierSerializer<?>> event) {
+        
+        this.logger.info("Registering {} global loot modifier serializers.", this.globalModifierSerializers.size());
+        
+        final IForgeRegistry<GlobalLootModifierSerializer<?>> registry = event.getRegistry();
+        
+        for (final GlobalLootModifierSerializer<?> entry : this.globalModifierSerializers) {
+            
+            registry.register(entry);
         }
     }
 }
