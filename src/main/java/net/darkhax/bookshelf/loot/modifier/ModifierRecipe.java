@@ -16,7 +16,8 @@ import net.minecraft.world.storage.loot.conditions.ILootCondition;
 import net.minecraftforge.common.loot.LootModifier;
 
 /**
- * This loot modifier will try to craft the item into something else using a defined recipe category.
+ * This loot modifier will try to craft the item into something else using a defined recipe
+ * category.
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ModifierRecipe extends LootModifier {

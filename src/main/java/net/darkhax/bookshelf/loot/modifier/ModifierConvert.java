@@ -38,8 +38,8 @@ public class ModifierConvert extends LootModifier {
         
         final LootTable table = ctx.getWorld().getServer().getLootTableManager().getLootTableFromLocation(this.tableName);
         
-        for (ItemStack item : loot) {
-             
+        for (final ItemStack item : loot) {
+            
             if (MathsUtils.tryPercentage(this.chance)) {
                 
                 outputs.addAll(table.generate(ctx));
@@ -55,7 +55,7 @@ public class ModifierConvert extends LootModifier {
     }
     
     static class Serializer extends GlobalLootModifierSerializer<ModifierConvert> {
-
+        
         @Override
         public ModifierConvert read (ResourceLocation location, JsonObject data, ILootCondition[] conditions) {
             
