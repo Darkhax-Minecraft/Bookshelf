@@ -10,14 +10,14 @@ package net.darkhax.bookshelf.enchantment;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.inventory.EquipmentSlotType;
 
-public class CurseEnchantmentModifier extends EnchantmentAttribute {
+public class EnchantmentModifierCurse extends EnchantmentAttribute {
     
-    public CurseEnchantmentModifier(EnchantmentType type, EquipmentSlotType... slots) {
+    public EnchantmentModifierCurse(EnchantmentType type, EquipmentSlotType... slots) {
         
         this(Rarity.VERY_RARE, type, slots);
     }
     
-    public CurseEnchantmentModifier(Rarity rarity, EnchantmentType type, EquipmentSlotType... slots) {
+    public EnchantmentModifierCurse(Rarity rarity, EnchantmentType type, EquipmentSlotType... slots) {
         
         super(rarity, type, slots);
     }
