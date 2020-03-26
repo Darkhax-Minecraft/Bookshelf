@@ -12,7 +12,11 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public final class ModUtils {
     
@@ -151,6 +155,34 @@ public final class ModUtils {
         else if (notPresent != null) {
             
             return notPresent.get().get();
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Returns the name of a mod as a text component.
+     * 
+     * @param mod The mod's container.
+     * @return The name of the mod as a text component.
+     */
+    public static ITextComponent getModName (ModContainer mod) {
+        
+        return new StringTextComponent(mod.getModInfo().getDisplayName());
+    }
+    
+    /**
+     * Gets the ModContainer which owns a registered thing.
+     * 
+     * @param registerable The thing to get the owner of.
+     * @return The owner of the thing. Will be null if no owner can be found.
+     */
+    @Nullable
+    public static ModContainer getOwner (IForgeRegistryEntry<?> registerable) {
+        
+        if (registerable != null && registerable.getRegistryName() != null) {
+            
+            return ModList.get().getModContainerById(registerable.getRegistryName().getNamespace()).orElse(null);
         }
         
         return null;
