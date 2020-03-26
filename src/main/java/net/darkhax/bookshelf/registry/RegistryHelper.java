@@ -28,6 +28,7 @@ import net.minecraft.block.Block;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.arguments.ArgumentTypes;
 import net.minecraft.command.arguments.IArgumentSerializer;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -170,6 +171,11 @@ public class RegistryHelper {
         if (!this.globalModifierSerializers.isEmpty()) {
             
             modBus.addGenericListener(GlobalLootModifierSerializer.class, this::registerGlobalLootModifierSerializers);
+        }
+        
+        if (!this.enchantments.isEmpty()) {
+            
+            modBus.addGenericListener(Enchantment.class, this::registerEnchantments);
         }
     }
     
@@ -790,6 +796,35 @@ public class RegistryHelper {
         final IForgeRegistry<GlobalLootModifierSerializer<?>> registry = event.getRegistry();
         
         for (final GlobalLootModifierSerializer<?> entry : this.globalModifierSerializers) {
+            
+            registry.register(entry);
+        }
+    }
+    
+    /**
+     * ENCHANTMENTS
+     */
+    private final List<Enchantment> enchantments = NonNullList.create();
+    
+    public <T extends Enchantment> T registerEnchantment (T enchantment, String id) {
+        
+        enchantment.setRegistryName(this.modid, id);
+        this.enchantments.add(enchantment);
+        return enchantment;
+    }
+    
+    public List<Enchantment> getEnchantments () {
+        
+        return ImmutableList.copyOf(this.enchantments);
+    }
+    
+    private void registerEnchantments (Register<Enchantment> event) {
+        
+        this.logger.info("Registering {} enchantments.", this.globalModifierSerializers.size());
+        
+        final IForgeRegistry<Enchantment> registry = event.getRegistry();
+        
+        for (final Enchantment entry : this.enchantments) {
             
             registry.register(entry);
         }
