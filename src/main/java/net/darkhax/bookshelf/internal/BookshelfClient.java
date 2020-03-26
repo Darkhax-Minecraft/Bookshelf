@@ -1,10 +1,13 @@
 package net.darkhax.bookshelf.internal;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.crafting.RecipeManager;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BookshelfClient extends BookshelfServer {
+    
+    private RecipeManager recipeManager;
     
     public BookshelfClient() {
         
@@ -21,5 +24,11 @@ public class BookshelfClient extends BookshelfServer {
     private void onRecipesUpdated (RecipesUpdatedEvent event) {
         
         this.recipeManager = event.getRecipeManager();
+    }
+    
+    @Override
+    public RecipeManager getActiveRecipeManager () {
+        
+        return this.recipeManager;
     }
 }
