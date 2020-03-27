@@ -32,6 +32,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.item.PaintingType;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.entity.merchant.villager.VillagerTrades.ITrade;
 import net.minecraft.inventory.container.Container;
@@ -176,6 +177,11 @@ public class RegistryHelper {
         if (!this.enchantments.isEmpty()) {
             
             modBus.addGenericListener(Enchantment.class, this::registerEnchantments);
+        }
+        
+        if (!this.paintings.isEmpty()) {
+            
+            modBus.addGenericListener(PaintingType.class, this::registerPaintings);
         }
     }
     
@@ -820,11 +826,45 @@ public class RegistryHelper {
     
     private void registerEnchantments (Register<Enchantment> event) {
         
-        this.logger.info("Registering {} enchantments.", this.globalModifierSerializers.size());
+        this.logger.info("Registering {} enchantments.", this.enchantments.size());
         
         final IForgeRegistry<Enchantment> registry = event.getRegistry();
         
         for (final Enchantment entry : this.enchantments) {
+            
+            registry.register(entry);
+        }
+    }
+    
+    /**
+     * PAINTINGS
+     */
+    private final List<PaintingType> paintings = NonNullList.create();
+    
+    public PaintingType registerPainting (String id, int width, int height) {
+        
+        return this.registerPainting(new PaintingType(width, height), id);
+    }
+    
+    public <T extends PaintingType> T registerPainting (T painting, String id) {
+        
+        painting.setRegistryName(this.modid, id);
+        this.paintings.add(painting);
+        return painting;
+    }
+    
+    public List<PaintingType> getPaintings () {
+        
+        return ImmutableList.copyOf(this.paintings);
+    }
+    
+    private void registerPaintings (Register<PaintingType> event) {
+        
+        this.logger.info("Registering {} paintings.", this.paintings.size());
+        
+        final IForgeRegistry<PaintingType> registry = event.getRegistry();
+        
+        for (final PaintingType entry : this.paintings) {
             
             registry.register(entry);
         }
