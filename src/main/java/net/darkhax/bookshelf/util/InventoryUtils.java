@@ -7,9 +7,18 @@
  */
 package net.darkhax.bookshelf.util;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ISidedInventoryProvider;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.PlayerContainer;
+import net.minecraft.inventory.container.WorkbenchContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -75,5 +84,55 @@ public class InventoryUtils {
         
         final IItemHandler handler = getInventory(world, pos, side);
         return handler != null && handler != EmptyHandler.INSTANCE;
+    }
+    
+    /**
+     * Gets the container backing a CraftingInventory. This is normally private however it has
+     * been made accessible through an access transformer.
+     * 
+     * @param craftingInv The crafting inventory.
+     * @return The container backing the crafting inventory.
+     */
+    @Nullable
+    public static Container getCraftingContainer (CraftingInventory craftingInv) {
+        
+        return craftingInv.eventHandler;
+    }
+    
+    /**
+     * Attempts to locate a player from an inventory. This method is specifically intended for
+     * crafting related inventories and is not guaranteed to work with every or even most
+     * inventories or containers.
+     * 
+     * @param inventory The inventory to search.
+     * @param world The world instance.
+     * @return The player that was found. This may be null if no player could be found.
+     */
+    @Nullable
+    public static PlayerEntity getCraftingPlayer (IInventory inventory, World world) {
+        
+        if (inventory instanceof PlayerInventory) {
+            
+            return ((PlayerInventory) inventory).player;
+        }
+        
+        else if (inventory instanceof CraftingInventory) {
+            
+            final Container container = getCraftingContainer((CraftingInventory) inventory);
+            
+            if (container instanceof WorkbenchContainer) {
+                
+                return ((WorkbenchContainer) container).player;
+            }
+            
+            else if (container instanceof PlayerContainer) {
+                
+                return ((PlayerContainer) container).player;
+            }
+        }
+        
+        // TODO add a way for other mods to add special handling for their inventories and
+        // containers if they want to.
+        return null;
     }
 }
