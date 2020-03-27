@@ -57,7 +57,7 @@ public class Bookshelf {
     
     public static final ISidedProxy SIDED = DistExecutor.runForDist( () -> () -> new BookshelfClient(), () -> () -> new BookshelfServer());
     
-    private final RegistryHelper registry = new RegistryHelper(MOD_ID, LOG, null);
+    private final RegistryHelper registry = RegistryHelper.create(MOD_ID, LOG, null);
     
     public Bookshelf() {
         

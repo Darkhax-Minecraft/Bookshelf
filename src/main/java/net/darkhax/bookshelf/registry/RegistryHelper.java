@@ -73,6 +73,7 @@ import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -84,6 +85,19 @@ public class RegistryHelper {
     
     @Nullable
     protected final ItemGroup group;
+    
+    /**
+     * Creates a new registry helper for the given side the mod is running on.
+     * 
+     * @param modid The mod id.
+     * @param logger A logger for the mod.
+     * @param group The item group if you have one.
+     * @return A registry helper that has been created for the given side.
+     */
+    public static RegistryHelper create (String modid, Logger logger, @Nullable ItemGroup group) {
+        
+        return DistExecutor.runForDist( () -> () -> new RegistryHelperClient(modid, logger, group), () -> () -> new RegistryHelper(modid, logger, group));
+    }
     
     public RegistryHelper(String modid, Logger logger, @Nullable ItemGroup group) {
         
