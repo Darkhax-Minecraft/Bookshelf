@@ -17,6 +17,7 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -324,5 +325,18 @@ public final class EntityUtils {
         final Vec3d lookVector = entity.getLookVec();
         final Vec3d endingPosition = startingPosition.add(lookVector.x * length, lookVector.y * length, lookVector.z * length);
         return entity.world.rayTraceBlocks(new RayTraceContext(startingPosition, endingPosition, blockMode, fluidMode, entity));
+    }
+    
+    /**
+     * Checks if an entity can be affected by fire. While fire immune entities can already
+     * negate the effects of fire doing prechecks using this method can be used to avoid
+     * rendering flickers or filter out these types of entities.
+     * 
+     * @param toCheck The entity to check.
+     * @return Whether or not this entity can be affected by fire.
+     */
+    public static boolean isAffectedByFire (LivingEntity toCheck) {
+        
+        return !toCheck.isImmuneToFire() && !toCheck.isPotionActive(Effects.FIRE_RESISTANCE);
     }
 }
