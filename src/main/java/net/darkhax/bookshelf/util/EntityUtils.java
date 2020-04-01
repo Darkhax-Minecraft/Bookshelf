@@ -153,10 +153,24 @@ public final class EntityUtils {
      * @param range The range of the search.
      * @return A List containing all entities of the specified type that are within the range.
      */
-    @SuppressWarnings("unchecked")
-    public static <T> List<T> getEntitiesInArea (Class<? extends Entity> entityClass, World world, BlockPos pos, int range) {
+    public static <T extends Entity> List<T> getEntitiesInArea (Class<T> entityClass, World world, BlockPos pos, int range) {
         
-        return (List<T>) world.getEntitiesWithinAABB(entityClass, new AxisAlignedBB(pos.add(-range, -range, -range), pos.add(range + 1, range + 1, range + 1)));
+        return getEntitiesInArea(entityClass, world, pos, (float) range);
+    }
+    
+    /**
+     * Gets a List of entities that are within the provided area.
+     *
+     * @param <T> The type of entities to look for.
+     * @param entityClass The type of entity you are looking for.
+     * @param world The world to search in.
+     * @param pos The position to start the search around.
+     * @param range The range of the search.
+     * @return A List containing all entities of the specified type that are within the range.
+     */
+    public static <T extends Entity> List<T> getEntitiesInArea (Class<T> entityClass, World world, BlockPos pos, float range) {
+        
+        return world.getEntitiesWithinAABB(entityClass, new AxisAlignedBB(pos.add(-range, -range, -range), pos.add(range + 1, range + 1, range + 1)));
     }
     
     /**
