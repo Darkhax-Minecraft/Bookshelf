@@ -33,6 +33,7 @@ public final class RecipeUtils {
      * @return The current recipe manager in use.
      */
     @Nullable
+    @Deprecated
     public static RecipeManager getActiveRecipeManager () {
         
         return Bookshelf.SIDED.getActiveRecipeManager();

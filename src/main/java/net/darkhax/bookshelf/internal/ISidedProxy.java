@@ -10,8 +10,10 @@ public interface ISidedProxy {
     void setClipboard (String text);
     
     @Nullable
+    @Deprecated
     RecipeManager getActiveRecipeManager ();
     
     @Nullable
+    @Deprecated
     MinecraftServer getCurrentServer ();
 }
