@@ -20,7 +20,6 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.loot.modifier.SerializerFactory;
 import net.darkhax.bookshelf.util.LootUtils;
 import net.darkhax.bookshelf.util.MCJsonUtils;
@@ -76,6 +75,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class RegistryHelper {
@@ -732,7 +732,7 @@ public class RegistryHelper {
         if (injectTableName != null) {
             
             final LootTable originalTable = event.getTable();
-            final MinecraftServer server = Bookshelf.SIDED.getCurrentServer();
+            final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             
             if (server != null) {
                 
