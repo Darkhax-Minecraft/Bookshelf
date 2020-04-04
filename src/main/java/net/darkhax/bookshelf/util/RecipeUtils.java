@@ -7,6 +7,7 @@
  */
 package net.darkhax.bookshelf.util;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -17,9 +18,12 @@ import javax.annotation.Nullable;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.RecipeManager;
+import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -109,5 +113,17 @@ public final class RecipeUtils {
     public static <C extends IInventory, T extends IRecipe<C>> Map<ResourceLocation, IRecipe<C>> getRecipes (RecipeManager manager, IRecipeType<T> recipeType) {
         
         return manager.getRecipes(recipeType);
+    }
+    
+    /**
+     * Creates an ingredient using an array of item tags.
+     * 
+     * @param tags The tags to create an ingredient for.
+     * @return An ingredient for these tags.
+     */
+    @SafeVarargs
+    public static Ingredient ingredientFromTags (Tag<Item>... tags) {
+        
+        return Ingredient.fromItems(Arrays.stream(tags).flatMap(t -> t.getAllElements().stream()).toArray(Item[]::new));
     }
 }
