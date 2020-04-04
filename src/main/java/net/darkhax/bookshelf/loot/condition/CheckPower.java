@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.advancements.criterion.MinMaxBounds.IntBound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.storage.loot.LootContext;
@@ -23,13 +23,11 @@ public class CheckPower implements ILootCondition {
      */
     public static final Serializer SERIALIZER = new Serializer();
     
-    private final int min;
-    private final int max;
+    private final IntBound power;
     
-    public CheckPower(int minPower, int maxPower) {
+    public CheckPower(IntBound power) {
         
-        this.min = minPower;
-        this.max = maxPower;
+        this.power = power;
     }
     
     @Override
@@ -40,7 +38,7 @@ public class CheckPower implements ILootCondition {
         if (pos != null) {
             
             final int power = ctx.getWorld().getRedstonePowerFromNeighbors(pos);
-            return this.min <= power && this.max >= power;
+            return this.power.test(power);
         }
         
         return false;
@@ -56,16 +54,13 @@ public class CheckPower implements ILootCondition {
         @Override
         public void serialize (JsonObject json, CheckPower value, JsonSerializationContext context) {
             
-            json.addProperty("min", value.min);
-            json.addProperty("max", value.max);
+            json.add("range", value.power.serialize());
         }
         
         @Override
         public CheckPower deserialize (JsonObject json, JsonDeserializationContext context) {
             
-            final int min = JSONUtils.getInt(json, "min", 1);
-            final int max = JSONUtils.getInt(json, "max", 15);
-            return new CheckPower(min, max);
+            return new CheckPower(IntBound.fromJson(json.get("range")));
         }
     }
 }
