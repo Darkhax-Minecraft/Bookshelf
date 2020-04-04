@@ -21,13 +21,35 @@ import net.minecraft.tags.Tag;
  */
 public class ItemTier implements IItemTier {
     
+    /**
+     * The maximum amount of durability.
+     */
     private final int maxUses;
+    
+    /**
+     * The block break efficiency.
+     */
     private final float efficiency;
+    
+    /**
+     * The base damage value.
+     */
     private final float damage;
+    
+    /**
+     * The block harvesting level.
+     */
     private final int harvestLevel;
+    
+    /**
+     * The material enchantability.
+     */
     private final int enchantability;
+    
+    /**
+     * A supplier used to check if an item can repair other items of this tier.
+     */
     private final Supplier<Ingredient> repairSupplier;
-    private Ingredient repairIngredient;
     
     @SafeVarargs
     public ItemTier(int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Tag<Item>... repairItems) {
@@ -93,11 +115,6 @@ public class ItemTier implements IItemTier {
     @Override
     public Ingredient getRepairMaterial () {
         
-        if (this.repairIngredient == null) {
-            
-            this.repairIngredient = this.repairSupplier.get();
-        }
-        
-        return this.repairIngredient;
+        return this.repairSupplier.get();
     }
 }
