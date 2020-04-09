@@ -33,7 +33,7 @@ public class CheckItem implements ILootCondition {
     public boolean test (LootContext ctx) {
         
         final ItemStack stack = LootUtils.getItemContext(ctx);
-        return stack != null ? this.predicate.test(stack) : false;
+        return stack != null && this.predicate.test(stack);
     }
     
     static class Serializer extends ILootCondition.AbstractSerializer<CheckItem> {
