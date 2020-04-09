@@ -12,8 +12,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
@@ -262,5 +266,32 @@ public final class MCJsonUtils {
         }
         
         return state;
+    }
+    
+    public static List<String> getStrings (JsonElement element) {
+        
+        if (JSONUtils.isString(element)) {
+            
+            return Collections.singletonList(element.getAsString());
+        }
+        
+        else if (element.isJsonArray()) {
+            
+            final List<String> entries = new ArrayList<>();
+            
+            for (final JsonElement entry : element.getAsJsonArray()) {
+                
+                entries.addAll(getStrings(entry));
+            }
+            
+            return entries;
+        }
+        
+        return Collections.emptyList();
+    }
+    
+    public static List<ResourceLocation> getIds (JsonElement element) {
+        
+        return getStrings(element).stream().map(ResourceLocation::tryCreate).collect(Collectors.toList());
     }
 }
