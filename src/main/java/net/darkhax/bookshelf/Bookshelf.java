@@ -22,6 +22,7 @@ import net.darkhax.bookshelf.internal.network.PacketSetClipboard;
 import net.darkhax.bookshelf.loot.condition.CheckBiomeTag;
 import net.darkhax.bookshelf.loot.condition.CheckDimensionId;
 import net.darkhax.bookshelf.loot.condition.CheckEnchantability;
+import net.darkhax.bookshelf.loot.condition.CheckEnergy;
 import net.darkhax.bookshelf.loot.condition.CheckHarvestLevel;
 import net.darkhax.bookshelf.loot.condition.CheckItem;
 import net.darkhax.bookshelf.loot.condition.CheckPower;
@@ -84,6 +85,7 @@ public class Bookshelf {
         this.registry.registerLootCondition(CheckHarvestLevel.SERIALIZER);
         this.registry.registerLootCondition(CheckEnchantability.SERIALIZER);
         this.registry.registerLootCondition(CheckRarity.SERIALIZER);
+        this.registry.registerLootCondition(CheckEnergy.SERIALIZER);
         
         // Loot Modifier
         this.registry.registerGlobalModifier(ModifierClear::new, "clear");
