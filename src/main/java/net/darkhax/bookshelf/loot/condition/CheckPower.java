@@ -37,8 +37,7 @@ public class CheckPower implements ILootCondition {
         
         if (pos != null) {
             
-            final int power = ctx.getWorld().getRedstonePowerFromNeighbors(pos);
-            return this.power.test(power);
+            return this.power.test(ctx.getWorld().getRedstonePowerFromNeighbors(pos));
         }
         
         return false;
@@ -54,13 +53,13 @@ public class CheckPower implements ILootCondition {
         @Override
         public void serialize (JsonObject json, CheckPower value, JsonSerializationContext context) {
             
-            json.add("range", value.power.serialize());
+            json.add("value", value.power.serialize());
         }
         
         @Override
         public CheckPower deserialize (JsonObject json, JsonDeserializationContext context) {
             
-            return new CheckPower(IntBound.fromJson(json.get("range")));
+            return new CheckPower(IntBound.fromJson(json));
         }
     }
 }
