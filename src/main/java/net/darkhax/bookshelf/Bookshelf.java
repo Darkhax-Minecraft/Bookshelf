@@ -58,7 +58,7 @@ public class Bookshelf {
     
     public static final Logger LOG = LogManager.getLogger(MOD_NAME);
     
-    public static final NetworkHelper NETWORK = new NetworkHelper(new ResourceLocation(MOD_ID, "main"), "4.2.x");
+    public static final NetworkHelper NETWORK = new NetworkHelper(new ResourceLocation(MOD_ID, "main"), "5.4.x");
     
     public static final ISidedProxy SIDED = DistExecutor.runForDist( () -> () -> new BookshelfClient(), () -> () -> new BookshelfServer());
     
