@@ -12,11 +12,14 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.Mutable;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -130,5 +133,40 @@ public final class WorldUtils {
     public static boolean isSlimeChunk (ServerWorld world, BlockPos pos) {
         
         return SharedSeedRandom.seedSlimeChunk(pos.getX() >> 4, pos.getZ() >> 4, world.getSeed(), 987234911L).nextInt(10) == 0;
+    }
+    
+    /**
+     * Gets the water depth of a given entity based on it's eye height position.
+     * 
+     * @param living The entity to check the depth of.
+     * @param toAir Whether or not non-air blocks also count.
+     * @return The depth of the given entity.
+     */
+    public static int getWaterDepth (LivingEntity living, boolean toAir) {
+        
+        return getWaterDepth(living.world, new BlockPos(living.getPosX(), living.getPosY() + living.getEyeHeight(), living.getPosZ()), toAir);
+    }
+    
+    /**
+     * Gets the depth of a given position within water. Scans upwards to find the surface.
+     * 
+     * @param world The world instance.
+     * @param startingPos The starting scan position.
+     * @param toAir Whether or not non-air blocks also count.
+     * @return The depth of the given position.
+     */
+    public static int getWaterDepth (World world, BlockPos startingPos, boolean toAir) {
+        
+        final BlockPos.Mutable depthPos = new Mutable(startingPos);
+        
+        int depth = 0;
+        
+        while (!World.isOutsideBuildHeight(depthPos) && (world.hasWater(depthPos) || toAir && !world.isAirBlock(depthPos))) {
+            
+            depth++;
+            depthPos.move(Direction.UP);
+        }
+        
+        return depth;
     }
 }
