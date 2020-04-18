@@ -53,7 +53,7 @@ public abstract class TileEntityBasic extends TileEntity {
     @Override
     public CompoundNBT getUpdateTag () {
         
-        return this.write(new CompoundNBT());
+        return this.write(super.getUpdateTag());
     }
     
     /**
