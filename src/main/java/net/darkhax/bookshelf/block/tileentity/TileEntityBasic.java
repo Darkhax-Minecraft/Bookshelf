@@ -14,6 +14,7 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 
 public abstract class TileEntityBasic extends TileEntity {
     
@@ -63,12 +64,8 @@ public abstract class TileEntityBasic extends TileEntity {
     public void sync () {
         
         this.markDirty();
-        
-        if (this.isLoaded()) {
-            
-            final BlockState state = this.getState();
-            this.getWorld().notifyBlockUpdate(this.pos, state, state, 3);
-        }
+        final BlockState state = this.getState();
+        this.getWorld().notifyBlockUpdate(this.pos, state, state, BlockFlags.DEFAULT_AND_RERENDER);
     }
     
     /**
