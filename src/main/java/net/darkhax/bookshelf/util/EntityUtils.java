@@ -7,7 +7,9 @@
  */
 package net.darkhax.bookshelf.util;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -17,6 +19,8 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -338,5 +342,33 @@ public final class EntityUtils {
     public static boolean isAffectedByFire (LivingEntity toCheck) {
         
         return !toCheck.isImmuneToFire() && !toCheck.isPotionActive(Effects.FIRE_RESISTANCE);
+    }
+    
+    /**
+     * Clears potion effect from an entity based on whether or not the effects are positive or
+     * negative.
+     * 
+     * @param entity The entity to remove effects from.
+     * @param removePositive Should positive effects be cleared?
+     * @param removeNegative Should negative effects be cleared?
+     */
+    public static void clearEffects (LivingEntity entity, boolean removePositive, boolean removeNegative) {
+        
+        final Set<Effect> toClear = new HashSet<>();
+        
+        for (final EffectInstance effect : entity.getActivePotionEffects()) {
+            
+            final boolean isGood = effect.getPotion().isBeneficial();
+            
+            if (isGood && removePositive || !isGood && removeNegative) {
+                
+                toClear.add(effect.getPotion());
+            }
+        }
+        
+        for (final Effect effect : toClear) {
+            
+            entity.removePotionEffect(effect);
+        }
     }
 }
