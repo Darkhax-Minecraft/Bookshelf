@@ -31,6 +31,7 @@ import net.darkhax.bookshelf.loot.condition.CheckRarity;
 import net.darkhax.bookshelf.loot.condition.CheckSlimeChunk;
 import net.darkhax.bookshelf.loot.condition.CheckStructure;
 import net.darkhax.bookshelf.loot.condition.CheckVillage;
+import net.darkhax.bookshelf.loot.condition.EntityIsMob;
 import net.darkhax.bookshelf.loot.modifier.ModifierAddItem;
 import net.darkhax.bookshelf.loot.modifier.ModifierClear;
 import net.darkhax.bookshelf.loot.modifier.ModifierConvert;
@@ -87,6 +88,7 @@ public class Bookshelf {
         this.registry.registerLootCondition(CheckEnchantability.SERIALIZER);
         this.registry.registerLootCondition(CheckRarity.SERIALIZER);
         this.registry.registerLootCondition(CheckEnergy.SERIALIZER);
+        this.registry.registerLootCondition(EntityIsMob.SERIALIZER);
         
         // Loot Modifier
         this.registry.registerGlobalModifier(ModifierClear::new, "clear");
