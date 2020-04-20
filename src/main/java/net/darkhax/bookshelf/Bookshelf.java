@@ -31,6 +31,7 @@ import net.darkhax.bookshelf.loot.condition.CheckRarity;
 import net.darkhax.bookshelf.loot.condition.CheckSlimeChunk;
 import net.darkhax.bookshelf.loot.condition.CheckStructure;
 import net.darkhax.bookshelf.loot.condition.CheckVillage;
+import net.darkhax.bookshelf.loot.modifier.ModifierAddItem;
 import net.darkhax.bookshelf.loot.modifier.ModifierClear;
 import net.darkhax.bookshelf.loot.modifier.ModifierConvert;
 import net.darkhax.bookshelf.loot.modifier.ModifierRecipe;
@@ -97,6 +98,7 @@ public class Bookshelf {
         this.registry.registerGlobalModifier(ModifierRecipe.SMOKING, "smoking");
         this.registry.registerGlobalModifier(ModifierRecipe.CAMPFIRE, "campfire_cooking");
         this.registry.registerGlobalModifier(ModifierRecipe.STONECUT, "stonecutting");
+        this.registry.registerGlobalModifier(ModifierAddItem.SERIALIZER, "add_item");
         
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
         
