@@ -223,6 +223,6 @@ import com.matthewprenger.cursegradle.CurseArtifact
 
 tasks.getByName("curseforge").doLast {
 
-    println (tasks.getByName("curseforge${curse_project}").property("mainArtifact") as CurseArtifact).fileID
-    project.logger.lifecycle((tasks.getByName("curseforge${curse_project}").property("mainArtifact") as CurseArtifact).fileID)
+    println (tasks.getByName("curseforge$curse_project").property("mainArtifact") as CurseArtifact).fileID
+    project.logger.lifecycle((tasks.getByName("curseforge$curse_project").property("mainArtifact") as CurseArtifact).fileID)
 }

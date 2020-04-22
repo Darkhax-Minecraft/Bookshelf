@@ -26,7 +26,7 @@ pipeline {
 			    withCredentials([file(credentialsId: 'mod_build_secrets', variable: 'ORG_GRADLE_PROJECT_secretFile')]) {
 			
 			        echo 'Building project.'
-                    sh './gradlew build publish curseforge --stacktrace --warn'
+                    sh './gradlew build publish curseforge --stacktrace --warn --debug'
 			    }
 			}
         }
