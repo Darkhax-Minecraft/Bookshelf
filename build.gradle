@@ -219,7 +219,12 @@ task signJar(type: SignJar, dependsOn: jar) {
 
 //build.dependsOn signJar
 
-tasks.getByName("curseforge").doLast {
+import com.matthewprenger.cursegradle.CurseArtifact
 
-    println tasks.getByName("curseforge${curse_project}").property('mainArtifact').property('fileID')
+tasks.getByName("curseforge").doLast {
+    
+    tasks.getByName("curseforge${curse_project}").property('mainArtifact').properties.each { prop, val ->
+    
+        println prop + ' - ' + val
+    }
 }
