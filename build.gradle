@@ -145,8 +145,6 @@ processResources {
 	}
 }
 
-import com.matthewprenger.cursegradle.CurseArtifact
-
 curseforge {
 
     apiKey = findProperty('curse_auth') ?: 0 
@@ -192,12 +190,6 @@ curseforge {
         addArtifact(javadocJar)
         addArtifact(deobfJar)
     }
-    
-    doLast {
-        
-        println (tasks.getByName("curseforge${curse_project}").property("mainArtifact") as CurseArtifact).fileID
-        project.logger.lifecycle((tasks.getByName("curseforge${curse_project}").property("mainArtifact") as CurseArtifact).fileID)
-    }
 }
 
 task signJar(type: SignJar, dependsOn: jar) {
@@ -226,3 +218,11 @@ task signJar(type: SignJar, dependsOn: jar) {
 }
 
 //build.dependsOn signJar
+
+import com.matthewprenger.cursegradle.CurseArtifact
+
+tasks.getByName("curseforge").doLast {
+
+    println (tasks.getByName("curseforge${curse_project}").property("mainArtifact") as CurseArtifact).fileID
+    project.logger.lifecycle((tasks.getByName("curseforge${curse_project}").property("mainArtifact") as CurseArtifact).fileID)
+}
