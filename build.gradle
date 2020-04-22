@@ -221,5 +221,40 @@ task signJar(type: SignJar, dependsOn: jar) {
 
 tasks.getByName("curseforge").doLast {
     
-    println tasks.getByName("curseforge${curse_project}").property('mainArtifact').fileID
+    def newFileId = tasks.getByName("curseforge${curse_project}").property('mainArtifact').fileID
+    
+    def body = [
+        'username': project.findProperty('mod_name'),
+        'embeds': [
+            [
+                'description': "A new update to ${project.findProperty('mod_name')} has been released! The download will be available once CurseForge has reviewed the file.",
+                'fields': [
+                    [
+                        'name': 'Download',
+                        'value': "https://www.curseforge.com/minecraft/mc-mods/${project.findProperty('curse_project')}/files/$newFileId",
+                        'inline': false
+                    ],
+                    [
+                        'name': 'Changelog',
+                        'value': "${getGitChangelog()}",
+                        'inline': false
+                    ]
+                ]
+            ]
+        ]
+    ]
+        
+    println JsonOutput.toJson(body) // debug
+		
+    def req = new URL(project.findProperty('discordCFWebhook')).openConnection()
+    req.setRequestMethod("POST")
+    req.setRequestProperty("Content-Type", "application/json; charset=UTF-8")
+    req.setRequestProperty("User-Agent", "Experimental Gradle Script")
+
+    req.setDoOutput(true)
+    req.getOutputStream().write(JsonOutput.toJson(body).getBytes("UTF-8"))
+		
+    println "Status code: ${req.getResponseCode()}"
+    def resp = new JsonSlurper().parseText(req.getInputStream().getText())
+    println "Response: ${resp}"
 }
