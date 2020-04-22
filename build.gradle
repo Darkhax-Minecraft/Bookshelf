@@ -225,9 +225,11 @@ tasks.getByName("curseforge").doLast {
 
     println "curseforge${curse_project}"
     println tasks.getByName("curseforge${curse_project}")
+    println tasks.getByName("curseforge${curse_project}").property("mainArtifact")
     
-    tasks.getByName("curseforge${curse_project}").properties.each { prop, val ->
+    tasks.getByName("curseforge${curse_project}").property('mainArtifact').properties.each { prop, val ->
         println prop
     }
+    
     println (tasks.getByName("curseforge${curse_project}").property("mainArtifact") as CurseArtifact).fileID
 }
