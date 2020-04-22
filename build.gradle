@@ -218,3 +218,11 @@ task signJar(type: SignJar, dependsOn: jar) {
 }
 
 //build.dependsOn signJar
+
+import com.matthewprenger.cursegradle.CurseArtifact
+
+task printFileId {
+
+    println (tasks.getByName("curseforge${curse_project}").property("mainArtifact") as CurseArtifact).fileID
+    project.logger.lifecycle((tasks.getByName("curseforge${curse_project}").property("mainArtifact") as CurseArtifact).fileID)
+}
