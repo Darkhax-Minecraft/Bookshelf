@@ -9,6 +9,8 @@ package net.darkhax.bookshelf.item;
 
 import java.util.function.Supplier;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
@@ -22,6 +24,16 @@ public class ItemGroupBase extends ItemGroup {
      * A supplier for the icon of the creative tab.
      */
     private final Supplier<ItemStack> iconSupplier;
+    
+    public ItemGroupBase(String label, Block block) {
+        
+        this(label, Item.getItemFromBlock(block));
+    }
+    
+    public ItemGroupBase(String label, Item item) {
+        
+        this(label, () -> new ItemStack(item));
+    }
     
     /**
      * The base constructor for creating a new ItemGroup.
