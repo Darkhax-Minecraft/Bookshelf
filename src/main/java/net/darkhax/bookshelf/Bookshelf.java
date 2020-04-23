@@ -18,7 +18,6 @@ import net.darkhax.bookshelf.internal.BookshelfServer;
 import net.darkhax.bookshelf.internal.ISidedProxy;
 import net.darkhax.bookshelf.internal.command.ArgumentTypeHandOutput;
 import net.darkhax.bookshelf.internal.command.BookshelfCommands;
-import net.darkhax.bookshelf.internal.network.PacketSetClipboard;
 import net.darkhax.bookshelf.loot.condition.CheckBiomeTag;
 import net.darkhax.bookshelf.loot.condition.CheckDimensionId;
 import net.darkhax.bookshelf.loot.condition.CheckEnchantability;
@@ -37,10 +36,8 @@ import net.darkhax.bookshelf.loot.modifier.ModifierClear;
 import net.darkhax.bookshelf.loot.modifier.ModifierConvert;
 import net.darkhax.bookshelf.loot.modifier.ModifierRecipe;
 import net.darkhax.bookshelf.loot.modifier.ModifierSilkTouch;
-import net.darkhax.bookshelf.network.NetworkHelper;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.minecraft.command.arguments.ArgumentSerializer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -59,8 +56,6 @@ public class Bookshelf {
     public static final String MOD_NAME = "Bookshelf";
     
     public static final Logger LOG = LogManager.getLogger(MOD_NAME);
-    
-    public static final NetworkHelper NETWORK = new NetworkHelper(new ResourceLocation(MOD_ID, "main"), "5.4.x");
     
     public static final ISidedProxy SIDED = DistExecutor.runForDist( () -> () -> new BookshelfClient(), () -> () -> new BookshelfServer());
     
@@ -103,7 +98,5 @@ public class Bookshelf {
         this.registry.registerGlobalModifier(ModifierAddItem.SERIALIZER, "add_item");
         
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
-        
-        NETWORK.registerEnqueuedMessage(PacketSetClipboard.class, PacketSetClipboard::encode, PacketSetClipboard::decode, PacketSetClipboard::handle);
     }
 }
