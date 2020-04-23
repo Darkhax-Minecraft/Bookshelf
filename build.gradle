@@ -233,7 +233,7 @@ tasks.getByName("curseforge").doLast {
                 'fields': [
                     [
                         'name': 'Download',
-                        'value': "https://www.curseforge.com/minecraft/mc-mods/${project.findProperty('curse_project')}/files/$newFileId",
+                        'value': "${project.findProperty('curse_page')}/files/$newFileId",
                         'inline': false
                     ],
                     [
