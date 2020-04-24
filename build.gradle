@@ -238,7 +238,7 @@ tasks.getByName("curseforge").doLast {
                     ],
                     [
                         'name': 'Changelog',
-                        'value': "${getGitChangelog()}",
+                        'value': "${getGitChangelog() ?: 'Unavailable :('}",
                         'inline': false
                     ]
                 ]
