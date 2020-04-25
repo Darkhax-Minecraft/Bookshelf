@@ -5,6 +5,7 @@ issueTrackerURL="https://github.com/Darkhax-Minecraft/Bookshelf/issues"
 
 [[mods]]
 modId="bookshelf"
+updateJSONURL="https://updates.blamejared.com/get?n=bookshelf&gv=1.14.4"
 version="${version}"
 displayName="${mod_name}"
 displayURL="${mod_download}"
