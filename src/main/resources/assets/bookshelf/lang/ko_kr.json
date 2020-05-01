@@ -1,0 +1,40 @@
+{
+    "_comment": "Korean Language File",
+
+    "_comment": "Moon Phases",
+    "moon.phase.full": "보름달",
+    "moon.phase.waxing.gibbous": "상현 볼록달",
+    "moon.phase.first.quarter": "상현 반달",
+    "moon.phase.waxing.crescent": "초승달",
+    "moon.phase.new": "신월",
+    "moon.phase.waning.crescent": "그믐달",
+    "moon.phase.last.quarter": "하현 반달",
+    "moon.phase.waning.gibbous": "하현 볼록달",
+
+    "_comment": "Months",
+    "time.bookshelf.month.january": "1월",
+    "time.bookshelf.month.february": "2월",
+    "time.bookshelf.month.march": "3월",
+    "time.bookshelf.month.april": "4월",
+    "time.bookshelf.month.may": "5월",
+    "time.bookshelf.month.june": "6월",
+    "time.bookshelf.month.july": "7월",
+    "time.bookshelf.month.august": "8월",
+    "time.bookshelf.month.september": "9월",
+    "time.bookshelf.month.october": "10월",
+    "time.bookshelf.month.november": "11월",
+    "time.bookshelf.month.december": "12월",
+
+    "_comment": "Days",
+    "time.bookshelf.day.sunday": "일요일",
+    "time.bookshelf.day.monday": "월요일",
+    "time.bookshelf.day.tuesday": "화요일",
+    "time.bookshelf.day.wednesday": "수요일",
+    "time.bookshelf.day.thursday": "목요일",
+    "time.bookshelf.day.friday": "금요일",
+    "time.bookshelf.day.saturday": "토요일",
+
+    "_comment": "Commands",
+    "commands.bookshelf.loot_tables": "%s에 대한 누락된 루트 테이블 %d개를 찾았습니다.",
+    "commands.bookshelf.loot_tables.wildcard": "모든 모드에 대해 루트 테이블 %d개가 누락되었습니다."
+}
