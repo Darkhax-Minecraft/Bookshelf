@@ -19,7 +19,7 @@ apply plugin: 'eclipse'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/secrets.gradle'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
 apply from: 'https://gist.githubusercontent.com/Darkhax/3921e16b804ddd49bfe5d42d715d405c/raw/0ff158f848a56559493ba9e4ad27b215a60b11d8/test.gradle'
-apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/maven_nomcp.gradle'
+apply from: 'https://gist.githubusercontent.com/Darkhax/6e1b74ba72e12cd8077826bc862efc8e/raw/2de5cab2bcfe8f770714fa6b0a1d96b2b85dee67/maven_nomcp.gradle'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/patreon.gradle'
 
 import net.minecraftforge.gradle.common.task.SignJar
