@@ -65,9 +65,12 @@ import net.minecraft.world.storage.loot.conditions.ILootCondition;
 import net.minecraft.world.storage.loot.conditions.ILootCondition.AbstractSerializer;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
@@ -196,6 +199,11 @@ public class RegistryHelper {
         if (!this.paintings.isEmpty()) {
             
             modBus.addGenericListener(PaintingType.class, this::registerPaintings);
+        }
+        
+        if (!this.ingredients.isEmpty()) {
+            
+            modBus.addGenericListener(IRecipeSerializer.class, this::registerIngredientTypes);
         }
     }
     
@@ -881,6 +889,26 @@ public class RegistryHelper {
         for (final PaintingType entry : this.paintings) {
             
             registry.register(entry);
+        }
+    }
+    
+    /**
+     * INGREDIENTS
+     */
+    private final Map<ResourceLocation, IIngredientSerializer<?>> ingredients = new HashMap<>();
+    
+    public void registerIngredientType (IIngredientSerializer<?> serializer, String id) {
+        
+        this.ingredients.put(new ResourceLocation(this.modid, id), serializer);
+    }
+    
+    private void registerIngredientTypes (RegistryEvent.Register<IRecipeSerializer<?>> event) {
+        
+        this.logger.info("Registering {} ingredient serializers.", this.ingredients.size());
+        
+        for (final Entry<ResourceLocation, IIngredientSerializer<?>> entry : this.ingredients.entrySet()) {
+            
+            CraftingHelper.register(entry.getKey(), entry.getValue());
         }
     }
 }
