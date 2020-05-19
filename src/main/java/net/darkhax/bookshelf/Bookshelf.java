@@ -13,7 +13,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
+import net.darkhax.bookshelf.crafting.recipes.ShapedRecipeDamaging;
+import net.darkhax.bookshelf.crafting.recipes.ShapelessRecipeDamage;
 import net.darkhax.bookshelf.internal.BookshelfClient;
+import net.darkhax.bookshelf.internal.BookshelfIngredients;
 import net.darkhax.bookshelf.internal.BookshelfServer;
 import net.darkhax.bookshelf.internal.ISidedProxy;
 import net.darkhax.bookshelf.internal.command.ArgumentTypeHandOutput;
@@ -96,6 +99,17 @@ public class Bookshelf {
         this.registry.registerGlobalModifier(ModifierRecipe.CAMPFIRE, "campfire_cooking");
         this.registry.registerGlobalModifier(ModifierRecipe.STONECUT, "stonecutting");
         this.registry.registerGlobalModifier(ModifierAddItem.SERIALIZER, "add_item");
+        
+        // Recipe Types
+        this.registry.registerRecipeSerializer(ShapedRecipeDamaging.SERIALIZER, "crafting_shaped_with_damage");
+        this.registry.registerRecipeSerializer(ShapelessRecipeDamage.SERIALIZER, "crafting_shapeless_with_damage");
+        
+        // Ingredient Serializer
+        this.registry.registerIngredientType(BookshelfIngredients.ANY_HOE, "any_hoe");
+        this.registry.registerIngredientType(BookshelfIngredients.ANY_PICKAXE, "any_pickaxe");
+        this.registry.registerIngredientType(BookshelfIngredients.ANY_AXE, "any_axe");
+        this.registry.registerIngredientType(BookshelfIngredients.ANY_SHOVEL, "any_shovel");
+        this.registry.registerIngredientType(BookshelfIngredients.ANY_SWORD, "any_sword");
         
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
     }
