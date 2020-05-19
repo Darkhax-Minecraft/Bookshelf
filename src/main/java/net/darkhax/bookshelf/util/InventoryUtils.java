@@ -7,11 +7,15 @@
  */
 package net.darkhax.bookshelf.util;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
+import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -19,8 +23,10 @@ import net.minecraft.inventory.ISidedInventoryProvider;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.inventory.container.WorkbenchContainer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
@@ -99,6 +105,12 @@ public class InventoryUtils {
         return craftingInv.eventHandler;
     }
     
+    @Nullable
+    public static PlayerEntity getCraftingPlayer (IInventory inventory) {
+        
+        return getCraftingPlayer(inventory, null);
+    }
+    
     /**
      * Attempts to locate a player from an inventory. This method is specifically intended for
      * crafting related inventories and is not guaranteed to work with every or even most
@@ -134,5 +146,56 @@ public class InventoryUtils {
         // TODO add a way for other mods to add special handling for their inventories and
         // containers if they want to.
         return null;
+    }
+    
+    /**
+     * An extension of the IRecipe getRemainingItems method which attempts to keep items that
+     * have durability. Instead of being consumed these items will attempt to have their
+     * durability decreased. Things like unbreaking and unbreakable nbt settings are considered
+     * depending on the input arguments.
+     * 
+     * @param inv The inventory doing the crafting.
+     * @param keptItems The list of items being kept.
+     * @param ignoreUnbreaking Whether or not unbreaking enchantments should be ignored.
+     * @param damageAmount The amount of damage to set on the item.
+     * @return The list of items being kept.
+     */
+    public static NonNullList<ItemStack> keepDamageableItems (CraftingInventory inv, NonNullList<ItemStack> keptItems, boolean ignoreUnbreaking, int damageAmount) {
+        
+        for (int i = 0; i < keptItems.size(); i++) {
+            
+            final ItemStack stack = inv.getStackInSlot(i);
+            
+            // Checks if the item has durability or has the unbreaking tag.
+            if (stack.getItem().isDamageable() || stack.hasTag() && stack.getTag().getBoolean("Unbreakable")) {
+                
+                @Nullable
+                final PlayerEntity player = InventoryUtils.getCraftingPlayer(inv);
+                final Random random = player != null ? player.getRNG() : Bookshelf.RANDOM;
+                final ItemStack retainedStack = stack.copy();
+                
+                // Sometimes you may want to ignore/bypass the unbreaking enchantment.
+                if (ignoreUnbreaking) {
+                    
+                    // Checks if the stack can be damaged. If so continue and bypass all the
+                    // other item damaging mechanics.
+                    if (retainedStack.isDamageable()) {
+                        
+                        retainedStack.setDamage(retainedStack.getDamage() + damageAmount);
+                    }
+                }
+                
+                else {
+                    
+                    // Attempts to damage the item, taking things like the unbreaking
+                    // enchantment into consideration.
+                    retainedStack.attemptDamageItem(damageAmount, random, player instanceof ServerPlayerEntity ? (ServerPlayerEntity) player : null);
+                }
+                
+                keptItems.set(i, retainedStack);
+            }
+        }
+        
+        return keptItems;
     }
 }
