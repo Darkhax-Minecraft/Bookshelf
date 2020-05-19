@@ -18,7 +18,7 @@ ${mod_description}
 [[dependencies.bookshelf]]
     modId="forge"
     mandatory=true
-    versionRange="[31.1.41,)"
+    versionRange="[31.2,)"
     ordering="NONE"
     side="BOTH"
 
