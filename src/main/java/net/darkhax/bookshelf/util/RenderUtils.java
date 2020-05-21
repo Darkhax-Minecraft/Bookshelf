@@ -7,19 +7,37 @@
  */
 package net.darkhax.bookshelf.util;
 
+import java.util.BitSet;
+import java.util.List;
+import java.util.Random;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockModelRenderer;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ILightReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraftforge.client.model.data.IModelData;
 
 @OnlyIn(Dist.CLIENT)
 public final class RenderUtils {
+    
+    private static final Random RANDOM = new Random();
+    private static final BitSet BITS = new BitSet(3);
     
     /**
      * Gets the particle texture for an item stack.
@@ -87,5 +105,45 @@ public final class RenderUtils {
     public static IBakedModel getModel (BlockState state) {
         
         return Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
+    }
+    
+    /**
+     * Renders a block model. Allows the sites rendered to be specifically controlled by the
+     * caller.
+     * 
+     * @param renderer The block model renderer instance.
+     * @param world The world instance.
+     * @param model The model to render.
+     * @param state The state of the block.
+     * @param pos The position of the block.
+     * @param matrix The render matrix.
+     * @param buffer The render buffer.
+     * @param sides The sides of the model to render.
+     */
+    public static void renderModel (BlockModelRenderer renderer, ILightReader world, IBakedModel model, BlockState state, BlockPos pos, MatrixStack matrix, IVertexBuilder buffer, Direction[] sides) {
+        
+        final IModelData modelData = model.getModelData(world, pos, state, EmptyModelData.INSTANCE);
+        
+        // Renders only the sided model quads.
+        for (final Direction side : sides) {
+            
+            RANDOM.setSeed(0L);
+            final List<BakedQuad> sidedQuads = model.getQuads(state, side, RANDOM, modelData);
+            
+            if (!sidedQuads.isEmpty()) {
+                
+                final int lightForSide = WorldRenderer.getPackedLightmapCoords(world, state, pos.offset(side));
+                renderer.renderQuadsFlat(world, state, pos, lightForSide, OverlayTexture.NO_OVERLAY, false, matrix, buffer, sidedQuads, BITS);
+            }
+        }
+        
+        // Renders the non-sided model quads.
+        RANDOM.setSeed(0L);
+        final List<BakedQuad> unsidedQuads = model.getQuads(state, null, RANDOM, modelData);
+        
+        if (!unsidedQuads.isEmpty()) {
+            
+            renderer.renderQuadsFlat(world, state, pos, -1, OverlayTexture.NO_OVERLAY, true, matrix, buffer, unsidedQuads, BITS);
+        }
     }
 }
