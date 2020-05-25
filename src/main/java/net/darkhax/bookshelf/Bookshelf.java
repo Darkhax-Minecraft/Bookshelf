@@ -14,6 +14,8 @@ import org.apache.logging.log4j.Logger;
 
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
 import net.darkhax.bookshelf.crafting.item.IngredientModid;
+import net.darkhax.bookshelf.crafting.predicate.ItemPredicateIngredient;
+import net.darkhax.bookshelf.crafting.predicate.ItemPredicateModid;
 import net.darkhax.bookshelf.crafting.recipes.ShapedRecipeDamaging;
 import net.darkhax.bookshelf.crafting.recipes.ShapelessRecipeDamage;
 import net.darkhax.bookshelf.internal.BookshelfClient;
@@ -41,7 +43,9 @@ import net.darkhax.bookshelf.loot.modifier.ModifierConvert;
 import net.darkhax.bookshelf.loot.modifier.ModifierRecipe;
 import net.darkhax.bookshelf.loot.modifier.ModifierSilkTouch;
 import net.darkhax.bookshelf.registry.RegistryHelper;
+import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.command.arguments.ArgumentSerializer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -112,6 +116,10 @@ public class Bookshelf {
         this.registry.registerIngredientType(BookshelfIngredients.ANY_SHOVEL, "any_shovel");
         this.registry.registerIngredientType(BookshelfIngredients.ANY_SWORD, "any_sword");
         this.registry.registerIngredientType(IngredientModid.SERIALIZER, "modid");
+        
+        // Item Predicates
+        ItemPredicate.register(new ResourceLocation("bookshelf", "modid"), ItemPredicateModid::fromJson);
+        ItemPredicate.register(new ResourceLocation("bookshelf", "ingredient"), ItemPredicateIngredient::fromJson);
         
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
     }
