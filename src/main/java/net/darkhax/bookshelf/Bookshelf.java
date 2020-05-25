@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
+import net.darkhax.bookshelf.crafting.item.IngredientModid;
 import net.darkhax.bookshelf.crafting.recipes.ShapedRecipeDamaging;
 import net.darkhax.bookshelf.crafting.recipes.ShapelessRecipeDamage;
 import net.darkhax.bookshelf.internal.BookshelfClient;
@@ -110,6 +111,7 @@ public class Bookshelf {
         this.registry.registerIngredientType(BookshelfIngredients.ANY_AXE, "any_axe");
         this.registry.registerIngredientType(BookshelfIngredients.ANY_SHOVEL, "any_shovel");
         this.registry.registerIngredientType(BookshelfIngredients.ANY_SWORD, "any_sword");
+        this.registry.registerIngredientType(IngredientModid.SERIALIZER, "modid");
         
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
     }
