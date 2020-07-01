@@ -8,9 +8,9 @@ import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.advancements.criterion.MinMaxBounds.IntBound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameters;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameters;
+import net.minecraft.loot.conditions.ILootCondition;
 
 /**
  * This loot condition checks if the position the loot is being generated at has redstone

@@ -5,7 +5,7 @@ import java.util.function.Function;
 import com.google.gson.JsonObject;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 

@@ -9,8 +9,8 @@ import net.darkhax.bookshelf.util.LootUtils;
 import net.minecraft.advancements.criterion.MinMaxBounds.IntBound;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.conditions.ILootCondition;
 
 /**
  * This loot condition checks the enchantability of the item used.

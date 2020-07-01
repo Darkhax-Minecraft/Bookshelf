@@ -8,9 +8,9 @@ import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootContext.EntityTarget;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootContext.EntityTarget;
+import net.minecraft.loot.conditions.ILootCondition;
 
 /**
  * This condition checks if a mob is an instance of the IMob type.

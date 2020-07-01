@@ -3,7 +3,7 @@ package net.darkhax.bookshelf.loot.condition;
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.util.WorldUtils;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.loot.LootContext;
 
 /**
  * A loot condition that checks for a slime chunk.

@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.loot.conditions.ILootCondition;
 
 /**
  * A serializer for loot table conditions which exist as a singleton.
