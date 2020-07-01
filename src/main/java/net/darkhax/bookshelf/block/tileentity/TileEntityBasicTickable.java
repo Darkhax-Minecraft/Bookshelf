@@ -10,6 +10,8 @@ package net.darkhax.bookshelf.block.tileentity;
 import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.storage.IServerWorldInfo;
+import net.minecraft.world.storage.IWorldInfo;
 
 public abstract class TileEntityBasicTickable extends TileEntityBasic implements ITickableTileEntity {
     
@@ -28,8 +30,13 @@ public abstract class TileEntityBasicTickable extends TileEntityBasic implements
             }
             
             catch (final Exception exception) {
-                
-                Bookshelf.LOG.warn("A TileEntity with ID {} at {} in world {} failed a client update tick!", this.getType().getRegistryName(), this.getPos(), this.getWorld().getWorldInfo().getWorldName());
+
+                String worldName = "?";
+                IWorldInfo worldInfo = this.getWorld().getWorldInfo();
+                if(worldInfo instanceof IServerWorldInfo) {
+                    worldName = ((IServerWorldInfo) worldInfo).getWorldName();
+                }
+                Bookshelf.LOG.warn("A TileEntity with ID {} at {} in world {} failed a client update tick!", this.getType().getRegistryName(), this.getPos(), worldName);
                 Bookshelf.LOG.catching(exception);
             }
         }
