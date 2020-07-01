@@ -24,10 +24,12 @@ public abstract class TileEntityBasic extends TileEntity {
     }
     
     @Override
-    public void read (CompoundNBT dataTag) {
-        
+    // TODO: mcp-name: public void read (CompoundNBT dataTag) {
+    public void func_230337_a_(BlockState p_230337_1_, CompoundNBT dataTag) {
+
         this.deserialize(dataTag);
-        super.read(dataTag);
+        // TODO: mcp-name: super.read(dataTag);
+        super.func_230337_a_(p_230337_1_, dataTag);
     }
     
     @Override
