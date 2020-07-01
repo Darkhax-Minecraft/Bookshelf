@@ -12,7 +12,7 @@ import java.math.RoundingMode;
 import java.util.Random;
 
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 public final class MathsUtils {
     
@@ -36,7 +36,7 @@ public final class MathsUtils {
      * @param secondPos: The second position to work with.
      * @return double: The distance between the two provided locations.
      */
-    public static double getDistanceBetweenPoints (Vec3d firstPos, Vec3d secondPos) {
+    public static double getDistanceBetweenPoints (Vector3d firstPos, Vector3d secondPos) {
         
         final double distanceX = firstPos.x - secondPos.x;
         final double distanceY = firstPos.y - secondPos.y;
