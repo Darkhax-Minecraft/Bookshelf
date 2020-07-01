@@ -7,8 +7,11 @@
  */
 package net.darkhax.bookshelf.client.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
@@ -26,10 +29,11 @@ public class ButtonItemStack extends ExtendedButton {
     
     public ButtonItemStack(int x, int y, ItemStack renderStack, IPressable handler) {
         
-        this(x, y, 20, 20, "", renderStack, handler);
+        // TODO: mcp-name guess: this(x, y, 20, 20, StringTextComponent.EMPTY, renderStack, handler);
+        this(x, y, 20, 20, StringTextComponent.field_240750_d_, renderStack, handler);
     }
     
-    public ButtonItemStack(int x, int y, int width, int height, String text, ItemStack renderStack, IPressable handler) {
+    public ButtonItemStack(int x, int y, int width, int height, ITextComponent text, ItemStack renderStack, IPressable handler) {
         
         super(x, y, width, height, text, handler);
         this.setRenderStack(renderStack);
