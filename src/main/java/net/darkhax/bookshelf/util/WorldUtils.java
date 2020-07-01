@@ -24,7 +24,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.loot.LootTableManager;
+import net.minecraft.loot.LootTableManager;
 
 public final class WorldUtils {
     
@@ -119,7 +119,7 @@ public final class WorldUtils {
      */
     public static boolean doesLootTableExist (LootTableManager manager, ResourceLocation tableId) {
         
-        return manager.registeredLootTables.containsKey(tableId);
+        return manager.getLootTableKeys().contains(tableId);
     }
     
     /**
