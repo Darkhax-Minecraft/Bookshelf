@@ -29,7 +29,7 @@ public class ButtonItemStack extends ExtendedButton {
     
     public ButtonItemStack(int x, int y, ItemStack renderStack, IPressable handler) {
         
-        // TODO: mcp-name guess: this(x, y, 20, 20, StringTextComponent.EMPTY, renderStack, handler);
+        // TODO MCP-name guess: StringTextComponent.field_240750_d_ -> StringTextComponent.EMPTY
         this(x, y, 20, 20, StringTextComponent.field_240750_d_, renderStack, handler);
     }
     
@@ -60,10 +60,10 @@ public class ButtonItemStack extends ExtendedButton {
     }
     
     @Override
-    // TODO MCP-name: public void render (int mouseX, int mouseY, float partialTicks) {
+    // TODO MCP-name: func_230430_a_ -> render
     public void func_230430_a_ (MatrixStack p_230430_1_, int mouseX, int mouseY, float partialTicks) {
 
-        // TODO MCP-name: super.render(mouseX, mouseY, partialTicks);
+        // TODO MCP-name: func_230430_a_ -> render
         super.func_230430_a_(p_230430_1_, mouseX, mouseY, partialTicks);
 
         final ItemStack stack = this.getRenderStack();
@@ -71,9 +71,11 @@ public class ButtonItemStack extends ExtendedButton {
         if (!stack.isEmpty()) {
             
             final Minecraft minecraft = Minecraft.getInstance();
-            // TODO MCP-name: minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, stack, this.x + 2, this.y + 2, "");
+            // TODO MCP-name: field_230690_l_ -> x
+            // TODO MCP-name: field_230691_m_ -> y
             minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, stack, this.field_230690_l_ + 2, this.field_230691_m_ + 2, "");
-            // TODO MCP-name: minecraft.getItemRenderer().renderItemAndEffectIntoGUI(stack, this.x + 2, this.y + 2);
+            // TODO MCP-name: field_230690_l_ -> x
+            // TODO MCP-name: field_230691_m_ -> y
             minecraft.getItemRenderer().renderItemAndEffectIntoGUI(stack, this.field_230690_l_ + 2, this.field_230691_m_ + 2);
         }
     }

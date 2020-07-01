@@ -43,14 +43,14 @@ public class CommandHand {
         final ITextComponent component = TextComponentUtils.func_240647_a_(
                 new StringTextComponent(outputText).func_240700_a_(
                         (style) -> style
-                                // TODO: MCP-name func_240721_b_ (?) -> setColor
+                                // TODO MCP-name: func_240721_b_ (?) -> setColor
                                 .func_240721_b_(TextFormatting.GREEN)
-                                // TODO: MCP-name func_240715_a_ -> setClickEvent
+                                // TODO MCP-name: func_240715_a_ -> setClickEvent
                                 .func_240715_a_(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, outputText))
-                                // TODO: MCP-name func_240716_a_ -> setHoverEvent
-                                // TODO: MCP-name field_230550_a_ -> SHOW_TEXT
+                                // TODO MCP-name: func_240716_a_ -> setHoverEvent
+                                // TODO MCP-name: field_230550_a_ -> SHOW_TEXT
                                 .func_240716_a_(new HoverEvent(HoverEvent.Action.field_230550_a_, new TranslationTextComponent("chat.copy.click")))
-                                // TODO: MCP-name func_240714_a_ -> setInsertion
+                                // TODO MCP-name: func_240714_a_ -> setInsertion
                                 .func_240714_a_(outputText)
                 )
         );

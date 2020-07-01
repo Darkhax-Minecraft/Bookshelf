@@ -41,12 +41,12 @@ public class EnchantmentAttribute extends EnchantmentTicking {
     
     protected void removeModifiers (LivingEntity living, int level) {
         
-        // TODO MCP_name: final AttributeModifierManager attributeMap = living.getAttributes();
+        // TODO MCP-name: func_233645_dx_ -> getAttributes
         final AttributeModifierManager attributeMap = living.func_233645_dx_();
 
         for (final Entry<Attribute, AttributeModifier> entry : this.getModifiers(level).entrySet()) {
             
-            // TODO MCP-name: final ModifiableAttributeInstance attribute = attributeMap.getAttributeInstance(entry.getKey());
+            // TODO MCP-name: func_233779_a_ -> getAttributeInstance
             final ModifiableAttributeInstance attribute = attributeMap.func_233779_a_(entry.getKey());
 
             if (attribute != null) {
@@ -58,20 +58,20 @@ public class EnchantmentAttribute extends EnchantmentTicking {
     }
     
     protected void applyModifiers (LivingEntity living, int level) {
-        
-        // TODO MCP-name: final AttributeModifierManager attributeMap = living.getAttributes();
+
+        // TODO MCP-name: func_233645_dx_ -> getAttributes
         final AttributeModifierManager attributeMap = living.func_233645_dx_();
 
         for (final Entry<Attribute, AttributeModifier> entry : this.getModifiers(level).entrySet()) {
-            
-            // TODO MCP-name: final ModifiableAttributeInstance attribute = attributeMap.getAttributeInstance(entry.getKey());
+
+            // TODO MCP-name: func_233779_a_ -> getAttributeInstance
             final ModifiableAttributeInstance attribute = attributeMap.func_233779_a_(entry.getKey());
 
             final AttributeModifier attributemodifier = entry.getValue();
             
             if (attribute != null && !attribute.hasModifier(entry.getValue())) {
                 
-                // TODO: private? MCP-name: attribute.applyModifier(attributemodifier);
+                // TODO private? MCP-name: func_233767_b_ -> applyModifier
                 attribute.func_233767_b_(attributemodifier);
             }
         }

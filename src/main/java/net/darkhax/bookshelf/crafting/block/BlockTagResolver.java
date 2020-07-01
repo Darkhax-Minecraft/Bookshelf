@@ -33,7 +33,7 @@ public class BlockTagResolver implements IBlockResolver {
         final ITag<Block> tag = BlockTags.getCollection().get(this.tagId);
         
         if (tag != null) {
-            // TODO MCP-name: blocks.addAll(tag.getAllElements());
+            // TODO MCP-name: func_230236_b_ -> getAllElements
             blocks.addAll(tag.func_230236_b_());
         }
         

@@ -19,7 +19,7 @@ public class BookshelfIngredients {
     private static final ITag<Item> TAG_TOOL_HOES = itemTag("tools/hoes");
     
     private static boolean isHoe (Item item) {
-        // TODO: MCP-name: func_230235_a_ -> contains
+        // TODO MCP-name: func_230235_a_ -> contains
         return item instanceof HoeItem || TAG_HOES.func_230235_a_(item) || TAG_TOOL_HOES.func_230235_a_(item);
     }
     
@@ -28,7 +28,7 @@ public class BookshelfIngredients {
     private static final ITag<Item> TAG_TOOL_PICKAXES = itemTag("tools/pickaxes");
     
     private static boolean isPickaxe (Item item) {
-        // TODO: MCP-name: func_230235_a_ -> contains
+        // TODO MCP-name: func_230235_a_ -> contains
         return item instanceof PickaxeItem || TAG_PICKAXES.func_230235_a_(item) || TAG_TOOL_PICKAXES.func_230235_a_(item);
     }
     
@@ -37,7 +37,7 @@ public class BookshelfIngredients {
     private static final ITag<Item> TAG_TOOL_AXES = itemTag("tools/axes");
     
     private static boolean isAxe (Item item) {
-        // TODO: MCP-name: func_230235_a_ -> contains
+        // TODO MCP-name: func_230235_a_ -> contains
         return item instanceof AxeItem || TAG_AXES.func_230235_a_(item) || TAG_TOOL_AXES.func_230235_a_(item);
     }
     
@@ -46,7 +46,7 @@ public class BookshelfIngredients {
     private static final ITag<Item> TAG_TOOL_SHOVELS = itemTag("tools/shovels");
     
     private static boolean isShovel (Item item) {
-        // TODO: MCP-name: func_230235_a_ -> contains
+        // TODO MCP-name: func_230235_a_ -> contains
         return item instanceof ShovelItem || TAG_SHOVELS.func_230235_a_(item) || TAG_TOOL_SHOVELS.func_230235_a_(item);
     }
     
@@ -55,7 +55,7 @@ public class BookshelfIngredients {
     private static final ITag<Item> TAG_TOOL_SWORDS = itemTag("tools/swords");
     
     private static boolean isSword (Item item) {
-        // TODO: MCP-name: func_230235_a_ -> contains
+        // TODO MCP-name: func_230235_a_ -> contains
         return item instanceof SwordItem || TAG_SWORDS.func_230235_a_(item) || TAG_TOOL_SWORDS.func_230235_a_(item);
     }
     
