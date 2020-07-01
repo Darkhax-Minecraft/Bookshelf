@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 
@@ -29,11 +30,11 @@ public class BlockTagResolver implements IBlockResolver {
         
         final List<Block> blocks = new ArrayList<>();
         
-        final Tag<Block> tag = BlockTags.getCollection().get(this.tagId);
+        final ITag<Block> tag = BlockTags.getCollection().get(this.tagId);
         
         if (tag != null) {
-            
-            blocks.addAll(tag.getAllElements());
+            // TODO MCP-name: blocks.addAll(tag.getAllElements());
+            blocks.addAll(tag.func_230236_b_());
         }
         
         return blocks;
