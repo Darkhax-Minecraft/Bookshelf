@@ -14,8 +14,8 @@ import java.util.Set;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,7 +29,7 @@ import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceContext.BlockMode;
 import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public final class EntityUtils {
@@ -43,7 +43,7 @@ public final class EntityUtils {
      */
     public static double getDistanceFromEntity (Entity firstEntity, Entity secondEntity) {
         
-        return MathsUtils.getDistanceBetweenPoints(firstEntity.getPositionVector(), secondEntity.getPositionVector());
+        return MathsUtils.getDistanceBetweenPoints(firstEntity.getPositionVec(), secondEntity.getPositionVec());
     }
     
     /**
@@ -55,7 +55,7 @@ public final class EntityUtils {
      */
     public static double getDistaceFromPos (Entity entity, BlockPos pos) {
         
-        return MathsUtils.getDistanceBetweenPoints(entity.getPositionVector(), new Vec3d(pos));
+        return MathsUtils.getDistanceBetweenPoints(entity.getPositionVec(), Vector3d.func_237491_b_(pos));
     }
     
     /**
@@ -66,8 +66,8 @@ public final class EntityUtils {
      * @param force The amount of force to push the entity with.
      */
     public static void pushTowards (Entity entityToMove, Direction direction, double force) {
-        
-        pushTowards(entityToMove, entityToMove.getPosition().offset(direction.getOpposite(), 1), force);
+        // TODO MCP-name: func_233580_cy_ -> getPosition
+        pushTowards(entityToMove, entityToMove.func_233580_cy_().offset(direction.getOpposite(), 1), force);
     }
     
     /**
@@ -78,15 +78,16 @@ public final class EntityUtils {
      * @param force The amount of force to push the entity with.
      */
     public static void pushTowards (Entity entityToMove, BlockPos pos, double force) {
-        
-        final BlockPos entityPos = entityToMove.getPosition();
+
+        // TODO MCP-name: func_233580_cy_ -> getPosition
+        final BlockPos entityPos = entityToMove.func_233580_cy_();
         final double distanceX = (double) pos.getX() - entityPos.getX();
         final double distanceY = (double) pos.getY() - entityPos.getY();
         final double distanceZ = (double) pos.getZ() - entityPos.getZ();
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
         if (distance > 0) {
-            entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+            entityToMove.setMotion(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
         }
     }
     
@@ -106,12 +107,12 @@ public final class EntityUtils {
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
         if (distance > 0) {
-            entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+            entityToMove.setMotion(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
         }
     }
     
     /**
-     * Creates a Vec3d that represents the additional motion that would be needed to push an
+     * Creates a Vector3d that represents the additional motion that would be needed to push an
      * entity towards a destination.
      *
      * @param entityToMove The entity to push.
@@ -120,9 +121,10 @@ public final class EntityUtils {
      * 
      */
     public static void pushTowardsDirection (Entity entityToMove, Direction direction, double force) {
-        
-        final BlockPos entityPos = entityToMove.getPosition();
-        final BlockPos destination = entityToMove.getPosition().offset(direction.getOpposite(), 1);
+        // TODO MCP-name: func_233580_cy_ -> getPosition
+        final BlockPos entityPos = entityToMove.func_233580_cy_();
+        // TODO MCP-name: func_233580_cy_ -> getPosition
+        final BlockPos destination = entityToMove.func_233580_cy_().offset(direction.getOpposite(), 1);
         
         final double distanceX = (double) destination.getX() - entityPos.getX();
         final double distanceY = (double) destination.getY() - entityPos.getY();
@@ -130,7 +132,7 @@ public final class EntityUtils {
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
         if (distance > 0) {
-            entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+            entityToMove.setMotion(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
         }
     }
     
@@ -210,8 +212,8 @@ public final class EntityUtils {
      * @return The value of the attribute.
      */
     public static double getMaxHealth (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.MAX_HEALTH).getValue();
+        // TODO MCP-name: field_233818_a_ -> MAX_HEALTH
+        return entity.getAttribute(Attributes.field_233818_a_).getValue();
     }
     
     /**
@@ -221,8 +223,8 @@ public final class EntityUtils {
      * @return The value of the attribute.
      */
     public static double getFollowRange (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getValue();
+        // TODO MCP-name: field_233819_b_ -> FOLLOW_RANGE
+        return entity.getAttribute(Attributes.field_233819_b_).getValue();
     }
     
     /**
@@ -232,8 +234,8 @@ public final class EntityUtils {
      * @return The value of the attribute.
      */
     public static double getKnockbackResistance (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getValue();
+        // TODO MCP-name: field_233820_c_ -> KNOCKBACK_RESISTANCE
+        return entity.getAttribute(Attributes.field_233820_c_).getValue();
     }
     
     /**
@@ -243,10 +245,12 @@ public final class EntityUtils {
      * @return The value of the attribute.
      */
     public static double getMovementSpeed (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
+        // TODO MCP-name: field_233821_d_ -> MOVEMENT_SPEED
+        return entity.getAttribute(Attributes.field_233821_d_).getValue();
     }
-    
+
+    // TODO Attributes.field_233824_e_	/ Attributes.FLYING_SPEED
+
     /**
      * Gets the attack value of an entity.
      *
@@ -254,10 +258,12 @@ public final class EntityUtils {
      * @return The value of the attribute.
      */
     public static double getAttackDamage (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue();
+        // TODO MCP-name: field_233823_f_ -> ATTACK_DAMAGE
+        return entity.getAttribute(Attributes.field_233823_f_).getValue();
     }
-    
+
+    // TODO Attributes.field_233824_g_	/ Attributes.ATTACK_KNOCKBACK
+
     /**
      * Gets the attack speed value of an entity.
      *
@@ -265,8 +271,8 @@ public final class EntityUtils {
      * @return The value of the attribute.
      */
     public static double getAttackSpeed (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.ATTACK_SPEED).getValue();
+        // TODO MCP-name: field_233825_h_ -> ATTACK_SPEED
+        return entity.getAttribute(Attributes.field_233825_h_).getValue();
     }
     
     /**
@@ -276,8 +282,8 @@ public final class EntityUtils {
      * @return The value of the attribute.
      */
     public static double getArmor (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.ARMOR).getValue();
+        // TODO MCP-name: field_233826_i_ -> ARMOR
+        return entity.getAttribute(Attributes.field_233826_i_).getValue();
     }
     
     /**
@@ -287,8 +293,8 @@ public final class EntityUtils {
      * @return The value of the attribute.
      */
     public static double getArmorToughness (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getValue();
+        // TODO MCP-name: field_233827_j_ -> ARMOR_TOUGHNESS
+        return entity.getAttribute(Attributes.field_233827_j_).getValue();
     }
     
     /**
@@ -298,8 +304,8 @@ public final class EntityUtils {
      * @return The value of the attribute.
      */
     public static double getLuck (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.LUCK).getValue();
+        // TODO MCP-name: field_233828_k_ -> LUCK
+        return entity.getAttribute(Attributes.field_233828_k_).getValue();
     }
     
     /**
@@ -309,7 +315,7 @@ public final class EntityUtils {
      * @param attribute The attribute to get the value of.
      * @return The value of the attribute.
      */
-    public static double getValue (MobEntity entity, IAttribute attribute) {
+    public static double getValue (MobEntity entity, Attribute attribute) {
         
         return entity.getAttribute(attribute).getValue();
     }
@@ -325,9 +331,9 @@ public final class EntityUtils {
      */
     public static RayTraceResult rayTrace (LivingEntity entity, double length, BlockMode blockMode, FluidMode fluidMode) {
         
-        final Vec3d startingPosition = new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ());
-        final Vec3d lookVector = entity.getLookVec();
-        final Vec3d endingPosition = startingPosition.add(lookVector.x * length, lookVector.y * length, lookVector.z * length);
+        final Vector3d startingPosition = new Vector3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ());
+        final Vector3d lookVector = entity.getLookVec();
+        final Vector3d endingPosition = startingPosition.add(lookVector.x * length, lookVector.y * length, lookVector.z * length);
         return entity.world.rayTraceBlocks(new RayTraceContext(startingPosition, endingPosition, blockMode, fluidMode, entity));
     }
     
@@ -340,8 +346,8 @@ public final class EntityUtils {
      * @return Whether or not this entity can be affected by fire.
      */
     public static boolean isAffectedByFire (LivingEntity toCheck) {
-        
-        return !toCheck.isImmuneToFire() && !toCheck.isPotionActive(Effects.FIRE_RESISTANCE);
+        // TODO MCP-name: func_230279_az_ -> isImmuneToFire
+        return !toCheck.func_230279_az_() && !toCheck.isPotionActive(Effects.FIRE_RESISTANCE);
     }
     
     /**
