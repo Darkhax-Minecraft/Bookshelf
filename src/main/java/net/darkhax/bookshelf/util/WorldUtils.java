@@ -19,7 +19,6 @@ import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockPos.Mutable;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -156,8 +155,9 @@ public final class WorldUtils {
      * @return The depth of the given position.
      */
     public static int getWaterDepth (World world, BlockPos startingPos, boolean toAir) {
-        
-        final BlockPos.Mutable depthPos = new Mutable(startingPos);
+
+        // TODO: MCP-name guess: func_239590_i_ -> toMutable
+        final BlockPos.Mutable depthPos = startingPos.func_239590_i_();
         
         int depth = 0;
         
