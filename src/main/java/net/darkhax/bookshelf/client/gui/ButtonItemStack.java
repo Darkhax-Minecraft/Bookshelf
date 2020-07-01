@@ -60,17 +60,21 @@ public class ButtonItemStack extends ExtendedButton {
     }
     
     @Override
-    public void render (int mouseX, int mouseY, float partialTicks) {
-        
-        super.render(mouseX, mouseY, partialTicks);
-        
+    // TODO MCP-name: public void render (int mouseX, int mouseY, float partialTicks) {
+    public void func_230430_a_ (MatrixStack p_230430_1_, int mouseX, int mouseY, float partialTicks) {
+
+        // TODO MCP-name: super.render(mouseX, mouseY, partialTicks);
+        super.func_230430_a_(p_230430_1_, mouseX, mouseY, partialTicks);
+
         final ItemStack stack = this.getRenderStack();
         
         if (!stack.isEmpty()) {
             
             final Minecraft minecraft = Minecraft.getInstance();
-            minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, stack, this.x + 2, this.y + 2, "");
-            minecraft.getItemRenderer().renderItemAndEffectIntoGUI(stack, this.x + 2, this.y + 2);
+            // TODO MCP-name: minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, stack, this.x + 2, this.y + 2, "");
+            minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, stack, this.field_230690_l_ + 2, this.field_230691_m_ + 2, "");
+            // TODO MCP-name: minecraft.getItemRenderer().renderItemAndEffectIntoGUI(stack, this.x + 2, this.y + 2);
+            minecraft.getItemRenderer().renderItemAndEffectIntoGUI(stack, this.field_230690_l_ + 2, this.field_230691_m_ + 2);
         }
     }
 }
