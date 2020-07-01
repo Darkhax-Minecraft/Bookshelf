@@ -123,7 +123,7 @@ public final class RecipeUtils {
      */
     @SafeVarargs
     public static Ingredient ingredientFromTags (Tag<Item>... tags) {
-        
-        return Ingredient.fromItems(Arrays.stream(tags).flatMap(t -> t.getAllElements().stream()).toArray(Item[]::new));
+        // TODO MCP-name: func_230236_b_ -> getAllElements
+        return Ingredient.fromItems(Arrays.stream(tags).flatMap(t -> t.func_230236_b_().stream()).toArray(Item[]::new));
     }
 }
