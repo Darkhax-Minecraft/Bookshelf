@@ -38,14 +38,14 @@ import net.minecraft.particles.ParticleType;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.Potion;
 import net.minecraft.resources.IResourceManager;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.Property;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.storage.loot.LootTable;
-import net.minecraft.world.storage.loot.LootTableManager;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.LootTableManager;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -215,7 +215,7 @@ public final class MCJsonUtils {
                 for (final Entry<String, JsonElement> property : props.entrySet()) {
                     
                     // Check the block for the property. Keys = property names.
-                    final IProperty blockProperty = block.getStateContainer().getProperty(property.getKey());
+                    final Property blockProperty = block.getStateContainer().getProperty(property.getKey());
                     
                     if (blockProperty != null) {
                         
