@@ -16,7 +16,6 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -144,32 +143,7 @@ public class NetworkHelper {
         this.send(PacketDistributor.PLAYER.with( () -> player), message);
     }
     
-    /**
-     * Sends a packet to all players in a dimension.
-     *
-     * @param dimension The dimension to send the packet to.
-     * @param message The message to send.
-     */
-    public void sendToDimension (DimensionType dimension, Object message) {
-        
-        this.send(PacketDistributor.DIMENSION.with( () -> dimension), message);
-    }
-    
-    /**
-     * Sends a packet message to all players near a certain position.
-     *
-     * @param x The X position of the message.
-     * @param y The X position of the message.
-     * @param z The X position of the message.
-     * @param radius The radius/reach of the message.
-     * @param dimension The dimension the message originated from.
-     * @param message The message to send.
-     */
-    public void sendToNearbyPlayers (double x, double y, double z, double radius, DimensionType dimension, Object message) {
-        
-        this.sendToNearbyPlayers(new TargetPoint(x, y, z, radius, dimension), message);
-    }
-    
+
     /**
      * Sends a packet message to all players near a certain position.
      *
