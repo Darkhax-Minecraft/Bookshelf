@@ -10,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.common.crafting.StackList;
@@ -71,12 +70,6 @@ public class IngredientPredicate extends Ingredient {
         private IngredientPredicate ingredient;
         
         /**
-         * The tag generation of when the {@link #ingredient} cache was generated. This is used
-         * to check if the game has been reloaded and the cache must be invalidated.
-         */
-        private int generation;
-        
-        /**
          * This constructor is intentionally restricted. Use
          * {@link IngredientPredicate#create(Predicate)}.
          */
@@ -100,7 +93,7 @@ public class IngredientPredicate extends Ingredient {
             // This code is where the server creates the ingredient from the JSON data. We only
             // need one instance per data/resource load so we make and use a cache of the
             // ingredient.
-            if (this.ingredient == null || this.generation != ItemTags.getGeneration()) {
+            if (this.ingredient == null) {
                 
                 this.ingredient = new IngredientPredicate(this, Stream.of(new StackList(this.getMatchingItems())));
             }
