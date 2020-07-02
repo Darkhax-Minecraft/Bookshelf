@@ -13,6 +13,7 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.loot.conditions.ILootCondition;
+import net.minecraft.world.server.ServerWorld;
 
 /**
  * A loot condition for checking if it is inside a structure.
@@ -45,8 +46,12 @@ public class CheckStructure implements ILootCondition {
         final BlockPos pos = ctx.get(LootParameters.POSITION);
         
         if (pos != null && this.loadStructure()) {
-            
-            return this.structure.isPositionInsideStructure(ctx.getWorld(), pos);
+
+            ServerWorld world = ctx.getWorld();
+            // return this.structure.isPositionInsideStructure(world, pos);
+            // TODO: MCP-name func_241112_a_ -> getStructureManager
+            return world.func_241112_a_().func_235010_a_(pos, true, this.structure).isValid();
+
         }
         
         return false;
@@ -56,8 +61,8 @@ public class CheckStructure implements ILootCondition {
         
         if (this.structure == null) {
             
-            this.structure = Feature.STRUCTURES.get(this.structureName);
-            
+            this.structure = Structure.field_236365_a_.get(this.structureName);
+
             if (this.structure == null) {
                 
                 Bookshelf.LOG.error("Loot table condition is looking for structure {} which doesn't exist.", this.structureName);
