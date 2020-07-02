@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
+import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -48,14 +49,25 @@ public class CheckDimensionId implements ILootCondition {
         
         return false;
     }
-    
-    static class Serializer extends ILootCondition.AbstractSerializer<CheckDimensionId> {
-        
-        Serializer() {
-            
-            super(new ResourceLocation(Bookshelf.MOD_ID, "check_dimension"), CheckDimensionId.class);
+
+    @Override
+    public LootConditionType func_230419_b_() {
+        return SERIALIZER.lootConditionType;
+    }
+
+    static class Serializer implements LootCondtionSerializer<CheckDimensionId> {
+        public LootConditionType lootConditionType = null;
+
+        @Override
+        public void setType(LootConditionType lcType) {
+            lootConditionType = lcType;
         }
-        
+
+        @Override
+        public String getName() {
+            return Bookshelf.MOD_ID + ":check_dimension";
+        }
+
         @Override
         public CheckDimensionId deserialize (JsonObject json, JsonDeserializationContext context) {
             

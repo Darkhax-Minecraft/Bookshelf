@@ -9,6 +9,7 @@ import net.darkhax.bookshelf.util.LootUtils;
 import net.minecraft.advancements.criterion.MinMaxBounds.IntBound;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.TieredItem;
+import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.conditions.ILootCondition;
@@ -42,14 +43,25 @@ public class CheckHarvestLevel implements ILootCondition {
         
         return false;
     }
-    
-    static class Serializer extends ILootCondition.AbstractSerializer<CheckHarvestLevel> {
-        
-        Serializer() {
-            
-            super(new ResourceLocation(Bookshelf.MOD_ID, "check_harvest_level"), CheckHarvestLevel.class);
+
+    @Override
+    public LootConditionType func_230419_b_() {
+        return SERIALIZER.lootConditionType;
+    }
+
+    static class Serializer implements LootCondtionSerializer<CheckHarvestLevel> {
+        public LootConditionType lootConditionType = null;
+
+        @Override
+        public void setType(LootConditionType lcType) {
+            lootConditionType = lcType;
         }
-        
+
+        @Override
+        public String getName() {
+            return Bookshelf.MOD_ID + ":check_harvest_level";
+        }
+
         @Override
         public void serialize (JsonObject json, CheckHarvestLevel value, JsonSerializationContext context) {
             

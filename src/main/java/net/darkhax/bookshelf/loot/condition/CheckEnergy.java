@@ -6,6 +6,7 @@ import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.advancements.criterion.MinMaxBounds.IntBound;
+import net.minecraft.loot.LootConditionType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -57,14 +58,25 @@ public class CheckEnergy implements ILootCondition {
         
         return false;
     }
-    
-    static class Serializer extends ILootCondition.AbstractSerializer<CheckEnergy> {
-        
-        Serializer() {
-            
-            super(new ResourceLocation(Bookshelf.MOD_ID, "check_forge_energy"), CheckEnergy.class);
+
+    @Override
+    public LootConditionType func_230419_b_() {
+        return SERIALIZER.lootConditionType;
+    }
+
+    static class Serializer implements LootCondtionSerializer<CheckEnergy> {
+        public LootConditionType lootConditionType = null;
+
+        @Override
+        public void setType(LootConditionType lcType) {
+            lootConditionType = lcType;
         }
-        
+
+        @Override
+        public String getName() {
+            return Bookshelf.MOD_ID + ":check_forge_energy";
+        }
+
         @Override
         public void serialize (JsonObject json, CheckEnergy value, JsonSerializationContext context) {
             

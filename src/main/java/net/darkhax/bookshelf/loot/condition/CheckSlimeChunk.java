@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.loot.condition;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.util.WorldUtils;
+import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.loot.LootContext;
 
@@ -18,7 +19,7 @@ public class CheckSlimeChunk extends LootConditionPositional {
     /**
      * A serializer for the condition.
      */
-    public static final AbstractSerializer<CheckSlimeChunk> SERIALIZER = new SerializerSingleton<>(Bookshelf.MOD_ID, "slime_chunk", CheckSlimeChunk.class, INSTANCE);
+    public static final SerializerSingleton<CheckSlimeChunk> SERIALIZER = new SerializerSingleton<>(Bookshelf.MOD_ID, "slime_chunk", CheckSlimeChunk.class, INSTANCE);
     
     private CheckSlimeChunk() {
         
@@ -28,5 +29,10 @@ public class CheckSlimeChunk extends LootConditionPositional {
     private static boolean test (LootContext ctx, BlockPos pos) {
         
         return WorldUtils.isSlimeChunk(ctx.getWorld(), pos);
+    }
+
+    @Override
+    public LootConditionType func_230419_b_() {
+        return SERIALIZER.lootConditionType;
     }
 }

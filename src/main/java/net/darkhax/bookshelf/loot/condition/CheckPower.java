@@ -6,6 +6,7 @@ import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.advancements.criterion.MinMaxBounds.IntBound;
+import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.loot.LootContext;
@@ -42,14 +43,25 @@ public class CheckPower implements ILootCondition {
         
         return false;
     }
-    
-    static class Serializer extends ILootCondition.AbstractSerializer<CheckPower> {
-        
-        Serializer() {
-            
-            super(new ResourceLocation(Bookshelf.MOD_ID, "check_redstone_power"), CheckPower.class);
+
+    @Override
+    public LootConditionType func_230419_b_() {
+        return SERIALIZER.lootConditionType;
+    }
+
+    static class Serializer implements LootCondtionSerializer<CheckPower> {
+        public LootConditionType lootConditionType = null;
+
+        @Override
+        public void setType(LootConditionType lcType) {
+            lootConditionType = lcType;
         }
-        
+
+        @Override
+        public String getName() {
+            return Bookshelf.MOD_ID + ":check_redstone_power";
+        }
+
         @Override
         public void serialize (JsonObject json, CheckPower value, JsonSerializationContext context) {
             

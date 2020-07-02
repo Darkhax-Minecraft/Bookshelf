@@ -11,6 +11,9 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+import net.darkhax.bookshelf.loot.condition.LootCondtionSerializer;
+import net.minecraft.loot.ILootSerializer;
+import net.minecraft.loot.LootConditionType;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.ImmutableList;
@@ -53,16 +56,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.biome.provider.BiomeProviderType;
-import net.minecraft.world.biome.provider.IBiomeProviderSettings;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.ChunkGeneratorType;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.loot.conditions.ILootCondition.AbstractSerializer;
 import net.minecraft.loot.conditions.LootConditionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -144,16 +140,6 @@ public class RegistryHelper {
         if (!this.entityTypes.isEmpty()) {
             
             modBus.addGenericListener(EntityType.class, this::registerEntityTypes);
-        }
-        
-        if (!this.biomeProviderTypes.isEmpty()) {
-            
-            modBus.addGenericListener(BiomeProviderType.class, this::registerBiomeProviders);
-        }
-        
-        if (!this.chunkGeneratorTypes.isEmpty()) {
-            
-            modBus.addGenericListener(ChunkGeneratorType.class, this::registerChunkGeneratorTypes);
         }
         
         if (!this.potions.isEmpty()) {
@@ -496,60 +482,6 @@ public class RegistryHelper {
     }
     
     /**
-     * CHUNK GENERATOR TYPES
-     */
-    private final List<ChunkGeneratorType<?, ?>> chunkGeneratorTypes = NonNullList.create();
-    
-    public <C extends GenerationSettings, T extends ChunkGenerator<C>> ChunkGeneratorType<C, T> registerChunkGeneratorType (ChunkGeneratorType<C, T> type, String id) {
-        
-        this.chunkGeneratorTypes.add(type);
-        type.setRegistryName(this.modid, id);
-        return type;
-    }
-    
-    private void registerChunkGeneratorTypes (Register<ChunkGeneratorType<?, ?>> event) {
-        
-        if (!this.chunkGeneratorTypes.isEmpty()) {
-            
-            this.logger.info("Registering {} chunk generator types.", this.chunkGeneratorTypes.size());
-            
-            final IForgeRegistry<ChunkGeneratorType<?, ?>> registry = event.getRegistry();
-            
-            for (final ChunkGeneratorType<?, ?> containerType : this.chunkGeneratorTypes) {
-                
-                registry.register(containerType);
-            }
-        }
-    }
-    
-    /**
-     * BIOME PROVIDER TYPES
-     */
-    private final List<BiomeProviderType<?, ?>> biomeProviderTypes = NonNullList.create();
-    
-    public <C extends IBiomeProviderSettings, T extends BiomeProvider> BiomeProviderType<C, T> registerBiomeProvider (BiomeProviderType<C, T> type, String id) {
-        
-        this.biomeProviderTypes.add(type);
-        type.setRegistryName(this.modid, id);
-        return type;
-    }
-    
-    private void registerBiomeProviders (Register<BiomeProviderType<?, ?>> event) {
-        
-        if (!this.biomeProviderTypes.isEmpty()) {
-            
-            this.logger.info("Registering {} biome provider types.", this.biomeProviderTypes.size());
-            
-            final IForgeRegistry<BiomeProviderType<?, ?>> registry = event.getRegistry();
-            
-            for (final BiomeProviderType<?, ?> containerType : this.biomeProviderTypes) {
-                
-                registry.register(containerType);
-            }
-        }
-    }
-    
-    /**
      * STATS
      */
     private final List<ResourceLocation> stats = NonNullList.create();
@@ -703,20 +635,29 @@ public class RegistryHelper {
     /**
      * LOOT CONDITION
      */
-    private final List<AbstractSerializer<?>> lootConditions = NonNullList.create();
-    
-    public void registerLootCondition (AbstractSerializer<?> condition) {
-        
-        this.lootConditions.add(condition);
+    private final HashMap<String, ILootSerializer<? extends ILootCondition>> lootConditions = new HashMap<>();
+
+    public void registerLootCondition(LootCondtionSerializer lootSerializer) {
+        this.lootConditions.put(lootSerializer.getName(), lootSerializer);
     }
-    
+
+    public void registerLootCondition (String name, ILootSerializer<? extends ILootCondition> lootSerializer) {
+        this.lootConditions.put(name, lootSerializer);
+    }
+
     private void registerLootConditions (FMLCommonSetupEvent event) {
         
         this.logger.info("Registering {} loot condition types.", this.lootConditions.size());
         
-        for (final AbstractSerializer<?> entry : this.lootConditions) {
+        for (final Map.Entry<String, ILootSerializer<? extends ILootCondition>> entry : this.lootConditions.entrySet()) {
             
-            LootConditionManager.registerCondition(entry);
+            // TODO MCP-name: func_237475_a_ -> registerConditionType / registerCondition
+            String name = entry.getKey();
+            ILootSerializer<? extends ILootCondition> lootSerializer = entry.getValue();
+            LootConditionType lcType = LootConditionManager.func_237475_a_(name, lootSerializer);
+            if(lootSerializer instanceof LootCondtionSerializer) {
+                ((LootCondtionSerializer) lootSerializer).setType(lcType);
+            }
         }
     }
     

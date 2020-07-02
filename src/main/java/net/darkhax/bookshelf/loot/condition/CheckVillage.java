@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.loot.condition;
 
 import net.darkhax.bookshelf.Bookshelf;
+import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.loot.LootContext;
 
@@ -17,7 +18,7 @@ public class CheckVillage extends LootConditionPositional {
     /**
      * A serializer for the condition.
      */
-    public static final AbstractSerializer<CheckVillage> SERIALIZER = new SerializerSingleton<>(Bookshelf.MOD_ID, "check_village", CheckVillage.class, INSTANCE);
+    public static final SerializerSingleton<CheckVillage> SERIALIZER = new SerializerSingleton<>(Bookshelf.MOD_ID, "check_village", CheckVillage.class, INSTANCE);
     
     private CheckVillage() {
         
@@ -27,5 +28,10 @@ public class CheckVillage extends LootConditionPositional {
     private static boolean test (LootContext ctx, BlockPos pos) {
         
         return ctx.getWorld().isVillage(pos);
+    }
+
+    @Override
+    public LootConditionType func_230419_b_() {
+        return SERIALIZER.lootConditionType;
     }
 }

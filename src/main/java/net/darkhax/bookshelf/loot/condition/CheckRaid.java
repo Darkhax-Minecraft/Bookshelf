@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.loot.condition;
 
 import net.darkhax.bookshelf.Bookshelf;
+import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.loot.LootContext;
 
@@ -17,7 +18,7 @@ public class CheckRaid extends LootConditionPositional {
     /**
      * A serializer for the condition.
      */
-    public static final AbstractSerializer<CheckRaid> SERIALIZER = new SerializerSingleton<>(Bookshelf.MOD_ID, "check_raid", CheckRaid.class, INSTANCE);
+    public static final SerializerSingleton<CheckRaid> SERIALIZER = new SerializerSingleton<>(Bookshelf.MOD_ID, "check_raid", CheckRaid.class, INSTANCE);
     
     private CheckRaid() {
         
@@ -27,5 +28,10 @@ public class CheckRaid extends LootConditionPositional {
     private static boolean test (LootContext ctx, BlockPos pos) {
         
         return ctx.getWorld().hasRaid(pos);
+    }
+
+    @Override
+    public LootConditionType func_230419_b_() {
+        return SERIALIZER.lootConditionType;
     }
 }

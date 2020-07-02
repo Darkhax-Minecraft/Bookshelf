@@ -11,7 +11,7 @@ import net.minecraft.loot.conditions.ILootCondition;
  * The base class for a loot condition that requires a world position. If no position is found
  * the test will fail.
  */
-public class LootConditionPositional implements ILootCondition {
+abstract class LootConditionPositional implements ILootCondition {
     
     /**
      * The predicate to apply at the given position.

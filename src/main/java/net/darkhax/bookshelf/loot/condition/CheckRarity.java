@@ -8,6 +8,7 @@ import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.util.LootUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
+import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.loot.LootContext;
@@ -43,14 +44,25 @@ public class CheckRarity implements ILootCondition {
         
         return false;
     }
-    
-    static class Serializer extends ILootCondition.AbstractSerializer<CheckRarity> {
-        
-        Serializer() {
-            
-            super(new ResourceLocation(Bookshelf.MOD_ID, "check_rarity"), CheckRarity.class);
+
+    @Override
+    public LootConditionType func_230419_b_() {
+        return SERIALIZER.lootConditionType;
+    }
+
+    static class Serializer implements LootCondtionSerializer<CheckRarity> {
+        public LootConditionType lootConditionType = null;
+
+        @Override
+        public void setType(LootConditionType lcType) {
+            lootConditionType = lcType;
         }
-        
+
+        @Override
+        public String getName() {
+            return Bookshelf.MOD_ID + ":check_rarity";
+        }
+
         @Override
         public void serialize (JsonObject json, CheckRarity value, JsonSerializationContext context) {
             

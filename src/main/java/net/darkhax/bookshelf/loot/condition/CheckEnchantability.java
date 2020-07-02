@@ -8,6 +8,7 @@ import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.util.LootUtils;
 import net.minecraft.advancements.criterion.MinMaxBounds.IntBound;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.conditions.ILootCondition;
@@ -41,14 +42,25 @@ public class CheckEnchantability implements ILootCondition {
         
         return false;
     }
-    
-    static class Serializer extends ILootCondition.AbstractSerializer<CheckEnchantability> {
-        
-        Serializer() {
-            
-            super(new ResourceLocation(Bookshelf.MOD_ID, "check_enchantability"), CheckEnchantability.class);
+
+    @Override
+    public LootConditionType func_230419_b_() {
+        return SERIALIZER.lootConditionType;
+    }
+
+    static class Serializer implements LootCondtionSerializer<CheckEnchantability> {
+        public LootConditionType lootConditionType = null;
+
+        @Override
+        public void setType(LootConditionType lcType) {
+            lootConditionType = lcType;
         }
-        
+
+        @Override
+        public String getName() {
+            return Bookshelf.MOD_ID + ":check_enchantability";
+        }
+
         @Override
         public void serialize (JsonObject json, CheckEnchantability value, JsonSerializationContext context) {
             

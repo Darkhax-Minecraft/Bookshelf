@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
+import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +25,7 @@ public class CheckBiomeTag implements ILootCondition {
      * The serializer for this function.
      */
     public static final Serializer SERIALIZER = new Serializer();
-    
+
     /**
      * The biome type to search for.
      */
@@ -52,14 +53,25 @@ public class CheckBiomeTag implements ILootCondition {
         
         return false;
     }
-    
-    static class Serializer extends ILootCondition.AbstractSerializer<CheckBiomeTag> {
-        
-        Serializer() {
-            
-            super(new ResourceLocation(Bookshelf.MOD_ID, "check_biome_tag"), CheckBiomeTag.class);
+
+    @Override
+    public LootConditionType func_230419_b_() {
+        return SERIALIZER.lootConditionType;
+    }
+
+    static class Serializer implements LootCondtionSerializer<CheckBiomeTag> {
+        public LootConditionType lootConditionType = null;
+
+        @Override
+        public void setType(LootConditionType lcType) {
+            lootConditionType = lcType;
         }
-        
+
+        @Override
+        public String getName() {
+            return Bookshelf.MOD_ID + ":check_biome_tag";
+        }
+
         @Override
         public void serialize (JsonObject json, CheckBiomeTag value, JsonSerializationContext context) {
             
@@ -68,7 +80,7 @@ public class CheckBiomeTag implements ILootCondition {
         
         @Override
         public CheckBiomeTag deserialize (JsonObject json, JsonDeserializationContext context) {
-            
+
             final Type tag = Type.getType(JSONUtils.getString(json, "tag"));
             return new CheckBiomeTag(tag);
         }

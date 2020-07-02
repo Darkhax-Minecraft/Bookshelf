@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
+import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -72,14 +73,25 @@ public class CheckStructure implements ILootCondition {
         
         return true;
     }
-    
-    static class Serializer extends ILootCondition.AbstractSerializer<CheckStructure> {
-        
-        Serializer() {
-            
-            super(new ResourceLocation(Bookshelf.MOD_ID, "check_structure"), CheckStructure.class);
+
+    @Override
+    public LootConditionType func_230419_b_() {
+        return SERIALIZER.lootConditionType;
+    }
+
+    static class Serializer implements LootCondtionSerializer<CheckStructure> {
+        public LootConditionType lootConditionType = null;
+
+        @Override
+        public void setType(LootConditionType lcType) {
+            lootConditionType = lcType;
         }
-        
+
+        @Override
+        public String getName() {
+            return Bookshelf.MOD_ID + ":check_structure";
+        }
+
         @Override
         public void serialize (JsonObject json, CheckStructure value, JsonSerializationContext context) {
             

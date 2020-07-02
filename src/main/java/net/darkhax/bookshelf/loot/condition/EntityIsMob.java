@@ -6,6 +6,7 @@ import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.loot.LootContext;
@@ -31,14 +32,25 @@ public class EntityIsMob implements ILootCondition {
         
         return ctx.get(this.target.getParameter()) instanceof IMob;
     }
-    
-    private static class Serializer extends ILootCondition.AbstractSerializer<EntityIsMob> {
-        
-        protected Serializer() {
-            
-            super(new ResourceLocation(Bookshelf.MOD_ID, "entity_is_mob"), EntityIsMob.class);
+
+    @Override
+    public LootConditionType func_230419_b_() {
+        return SERIALIZER.lootConditionType;
+    }
+
+    private static class Serializer implements LootCondtionSerializer<EntityIsMob> {
+        public LootConditionType lootConditionType = null;
+
+        @Override
+        public void setType(LootConditionType lcType) {
+            lootConditionType = lcType;
         }
-        
+
+        @Override
+        public String getName() {
+            return Bookshelf.MOD_ID + ":entity_is_mob";
+        }
+
         @Override
         public void serialize (JsonObject json, EntityIsMob value, JsonSerializationContext context) {
             
