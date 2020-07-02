@@ -25,7 +25,6 @@ import net.darkhax.bookshelf.internal.ISidedProxy;
 import net.darkhax.bookshelf.internal.command.ArgumentTypeHandOutput;
 import net.darkhax.bookshelf.internal.command.BookshelfCommands;
 import net.darkhax.bookshelf.loot.condition.CheckBiomeTag;
-import net.darkhax.bookshelf.loot.condition.CheckDimensionId;
 import net.darkhax.bookshelf.loot.condition.CheckEnchantability;
 import net.darkhax.bookshelf.loot.condition.CheckEnergy;
 import net.darkhax.bookshelf.loot.condition.CheckHarvestLevel;
@@ -80,7 +79,6 @@ public class Bookshelf {
         
         // Loot conditions
         this.registry.registerLootCondition(CheckBiomeTag.SERIALIZER);
-        this.registry.registerLootCondition(CheckDimensionId.SERIALIZER);
         this.registry.registerLootCondition(CheckRaid.SERIALIZER);
         this.registry.registerLootCondition(CheckSlimeChunk.SERIALIZER);
         this.registry.registerLootCondition(CheckStructure.SERIALIZER);
