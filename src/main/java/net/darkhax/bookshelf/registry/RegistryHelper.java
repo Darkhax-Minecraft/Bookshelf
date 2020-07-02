@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.darkhax.bookshelf.loot.condition.LootCondtionSerializer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.loot.ILootSerializer;
 import net.minecraft.loot.LootConditionType;
 import org.apache.logging.log4j.Logger;
@@ -681,26 +682,21 @@ public class RegistryHelper {
         if (injectTableName != null) {
             
             final LootTable originalTable = event.getTable();
-            final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-            
-            if (server != null) {
-                
-                try {
-                    
-                    // Force load the injection table as it likely isn't loaded yet.
-                    final LootTable inject = MCJsonUtils.loadLootTable(event.getLootTableManager(), server.getResourceManager(), injectTableName);
-                    
-                    if (inject != null) {
-                        
-                        this.logger.info("Injecting loot table {} with {}.", event.getName(), injectTableName);
-                        this.mergeTables(originalTable, event.getName(), inject, injectTableName);
-                    }
+            try {
+
+                // Force load the injection table as it likely isn't loaded yet.
+                final LootTable inject = MCJsonUtils.loadLootTable(event.getLootTableManager(), Minecraft.getInstance().getResourceManager(), injectTableName);
+
+                if (inject != null) {
+
+                    this.logger.info("Injecting loot table {} with {}.", event.getName(), injectTableName);
+                    this.mergeTables(originalTable, event.getName(), inject, injectTableName);
                 }
+            }
                 
-                catch (final IOException e) {
-                    
-                    this.logger.error("Failed to load {} as a loot table.", injectTableName, e);
-                }
+            catch (final IOException e) {
+
+                this.logger.error("Failed to load {} as a loot table.", injectTableName, e);
             }
         }
     }
