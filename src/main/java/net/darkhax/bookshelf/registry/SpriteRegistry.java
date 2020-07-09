@@ -49,6 +49,6 @@ public class SpriteRegistry {
             event.addSprite(toAdd);
         }
         
-        logger.info("Registered {} sprite injections.", this.sprites.size());
+        this.logger.info("Registered {} sprite injections.", this.sprites.size());
     }
 }

@@ -31,12 +31,12 @@ public class RegistryHelper {
     public final ForgeRegistryHelper<EntityType<?>> entityTypes;
     public final ForgeRegistryHelper<PaintingType> paintings;
     public final ForgeRegistryHelper<Effect> effects;
-    public final ForgeRegistryHelper<Potion> potions; 
+    public final ForgeRegistryHelper<Potion> potions;
     public final ForgeRegistryHelper<Enchantment> enchantments;
     public final ForgeRegistryHelper<GlobalLootModifierSerializer<?>> lootModifiers;
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public RegistryHelper(String modid, Logger logger) {      
+    public RegistryHelper(String modid, Logger logger) {
         
         this.commands = new CommandRegistry(logger);
         this.trades = new TradeRegistry(logger);
@@ -46,7 +46,10 @@ public class RegistryHelper {
         this.tileEntities = new ForgeRegistryHelper(logger, modid, TileEntityType.class);
         this.recipeSerializers = new ForgeRegistryHelper(logger, modid, IRecipeSerializer.class);
         this.containerTypes = new ForgeRegistryHelper(logger, modid, ContainerType.class);
-        this.entityTypes = new ForgeRegistryHelper(logger, modid, EntityType.class); // TODO mob and spawn egg
+        this.entityTypes = new ForgeRegistryHelper(logger, modid, EntityType.class); // TODO
+                                                                                     // mob and
+                                                                                     // spawn
+                                                                                     // egg
         this.paintings = new ForgeRegistryHelper<>(logger, modid, PaintingType.class);
         this.effects = new ForgeRegistryHelper<>(logger, modid, Effect.class);
         this.potions = new ForgeRegistryHelper<>(logger, modid, Potion.class);
@@ -54,37 +57,37 @@ public class RegistryHelper {
         this.lootModifiers = new ForgeRegistryHelper(logger, modid, GlobalLootModifierSerializer.class);
         
         this.blocks.addRegisterListener(this::generateBlockItem);
-        //TODO IRecipeType
-        //TODO Ingredient
-        //TODO Loot Condition
-        //TODO Loot Injection
+        // TODO IRecipeType
+        // TODO Ingredient
+        // TODO Loot Condition
+        // TODO Loot Injection
     }
     
-    public RegistryHelper withItemGroup(ItemGroup group) {
+    public RegistryHelper withItemGroup (ItemGroup group) {
         
-        this.items.addRegisterListener((registry, item) -> item.group = group);
+        this.items.addRegisterListener( (registry, item) -> item.group = group);
         return this;
     }
     
     public void initialize (IEventBus modBus) {
-
-        this.blocks.initialize(modBus);           
-        this.items.initialize(modBus);            
-        this.tileEntities.initialize(modBus);     
+        
+        this.blocks.initialize(modBus);
+        this.items.initialize(modBus);
+        this.tileEntities.initialize(modBus);
         this.recipeSerializers.initialize(modBus);
-        this.containerTypes.initialize(modBus);   
-        this.entityTypes.initialize(modBus);      
-        this.paintings.initialize(modBus);        
-        this.effects.initialize(modBus);          
-        this.potions.initialize(modBus);          
-        this.enchantments.initialize(modBus);     
-        this.lootModifiers.initialize(modBus);    
+        this.containerTypes.initialize(modBus);
+        this.entityTypes.initialize(modBus);
+        this.paintings.initialize(modBus);
+        this.effects.initialize(modBus);
+        this.potions.initialize(modBus);
+        this.enchantments.initialize(modBus);
+        this.lootModifiers.initialize(modBus);
     }
     
-    private void generateBlockItem(ForgeRegistryHelper<Block> registry, Block block) {
+    private void generateBlockItem (ForgeRegistryHelper<Block> registry, Block block) {
         
-        final Item.Properties itemProps = (block instanceof IBookshelfBlock) ? ((IBookshelfBlock) block).getItemBlockProperties() : new Item.Properties();
-
+        final Item.Properties itemProps = block instanceof IBookshelfBlock ? ((IBookshelfBlock) block).getItemBlockProperties() : new Item.Properties();
+        
         if (itemProps != null) {
             
             this.items.register(new BlockItem(block, itemProps));

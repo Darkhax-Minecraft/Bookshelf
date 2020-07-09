@@ -80,10 +80,10 @@ public class ModifierRecipe extends LootModifier {
         return stack;
     }
     
-    public static GlobalLootModifierSerializer<ModifierRecipe> createModifier(Function<ILootCondition[], ModifierRecipe> function) {
+    public static GlobalLootModifierSerializer<ModifierRecipe> createModifier (Function<ILootCondition[], ModifierRecipe> function) {
         
         return new GlobalLootModifierSerializer<ModifierRecipe>() {
-
+            
             @Override
             public ModifierRecipe read (ResourceLocation location, JsonObject object, ILootCondition[] ailootcondition) {
                 

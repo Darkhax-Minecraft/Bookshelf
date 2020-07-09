@@ -16,15 +16,12 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockPos.Mutable;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.loot.LootTableManager;
 
 public final class WorldUtils {
     
@@ -99,30 +96,6 @@ public final class WorldUtils {
     }
     
     /**
-     * Checks if a loot table exists within the World's loot table manager.
-     * 
-     * @param world The world to check for.
-     * @param tableId The Id to search for.
-     * @return Whether or not the provided loot table exists.
-     */
-    public static boolean doesLootTableExist (ServerWorld world, ResourceLocation tableId) {
-        
-        return doesLootTableExist(world.getServer().getLootTableManager(), tableId);
-    }
-    
-    /**
-     * Checks if a loot table exists for a given LootTableManager.
-     * 
-     * @param manager The loot table manager.
-     * @param tableId The Id to search for.
-     * @return Whether or not the provided loot table exists.
-     */
-    public static boolean doesLootTableExist (LootTableManager manager, ResourceLocation tableId) {
-        
-        return manager.registeredLootTables.containsKey(tableId);
-    }
-    
-    /**
      * Checks if a given position is within a slime chunk.
      * 
      * @param world The server world. Server is specifically needed as client doesn't have the
@@ -157,7 +130,7 @@ public final class WorldUtils {
      */
     public static int getWaterDepth (World world, BlockPos startingPos, boolean toAir) {
         
-        final BlockPos.Mutable depthPos = new Mutable(startingPos);
+        final BlockPos.Mutable depthPos = startingPos.func_239590_i_();
         
         int depth = 0;
         

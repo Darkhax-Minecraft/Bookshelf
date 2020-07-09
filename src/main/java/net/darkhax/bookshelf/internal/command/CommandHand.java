@@ -38,8 +38,8 @@ public class CommandHand {
         final ServerPlayerEntity player = context.getSource().asPlayer();
         final String outputText = type.converter.apply(player.getHeldItemMainhand());
         
-        final ITextComponent component = TextComponentUtils.wrapInSquareBrackets(new StringTextComponent(outputText).applyTextStyle( (style) -> {
-            style.setColor(TextFormatting.GREEN).setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, outputText)).setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("chat.copy.click"))).setInsertion(outputText);
+        final ITextComponent component = TextComponentUtils.func_240647_a_(new StringTextComponent(outputText).func_240700_a_( (style) -> {
+            return style.setFormatting(TextFormatting.GREEN).setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, outputText)).setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("chat.copy.click"))).setInsertion(outputText);
         }));
         
         context.getSource().sendFeedback(component, false);

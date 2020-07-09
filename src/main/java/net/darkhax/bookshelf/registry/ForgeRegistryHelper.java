@@ -195,12 +195,12 @@ public class ForgeRegistryHelper<T extends IForgeRegistryEntry<T>> {
         return this.registered;
     }
     
-    public void addRegisterListener(BiConsumer<ForgeRegistryHelper<T>, T> listener) {
+    public void addRegisterListener (BiConsumer<ForgeRegistryHelper<T>, T> listener) {
         
         this.registerListeners.add(listener);
     }
     
-    public void addRegistryListener(BiConsumer<ForgeRegistryHelper<T>, IForgeRegistry<T>> listener) {
+    public void addRegistryListener (BiConsumer<ForgeRegistryHelper<T>, IForgeRegistry<T>> listener) {
         
         this.registryListeners.add(listener);
     }

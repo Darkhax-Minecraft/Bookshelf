@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 public interface IBookshelfBlock {
     
     @Nullable
-    default Item.Properties getItemBlockProperties() {
+    default Item.Properties getItemBlockProperties () {
         
         return new Item.Properties();
     }

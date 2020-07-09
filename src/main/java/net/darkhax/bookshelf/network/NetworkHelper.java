@@ -14,9 +14,10 @@ import java.util.function.Supplier;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -150,7 +151,7 @@ public class NetworkHelper {
      * @param dimension The dimension to send the packet to.
      * @param message The message to send.
      */
-    public void sendToDimension (DimensionType dimension, Object message) {
+    public void sendToDimension (RegistryKey<World> dimension, Object message) {
         
         this.send(PacketDistributor.DIMENSION.with( () -> dimension), message);
     }
@@ -165,7 +166,7 @@ public class NetworkHelper {
      * @param dimension The dimension the message originated from.
      * @param message The message to send.
      */
-    public void sendToNearbyPlayers (double x, double y, double z, double radius, DimensionType dimension, Object message) {
+    public void sendToNearbyPlayers (double x, double y, double z, double radius, RegistryKey<World> dimension, Object message) {
         
         this.sendToNearbyPlayers(new TargetPoint(x, y, z, radius, dimension), message);
     }

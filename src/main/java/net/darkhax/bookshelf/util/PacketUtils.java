@@ -15,7 +15,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.Property;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -39,7 +39,7 @@ public class PacketUtils {
                 final String value = buffer.readString();
                 
                 // Check the block for the property. Keys = property names.
-                final IProperty blockProperty = block.getStateContainer().getProperty(propName);
+                final Property blockProperty = block.getStateContainer().getProperty(propName);
                 
                 if (blockProperty != null) {
                     
@@ -74,11 +74,11 @@ public class PacketUtils {
         
         buffer.writeResourceLocation(state.getBlock().getRegistryName());
         
-        final Collection<IProperty<?>> properties = state.getProperties();
+        final Collection<Property<?>> properties = state.func_235904_r_();
         
         buffer.writeInt(properties.size());
         
-        for (final IProperty property : properties) {
+        for (final Property property : properties) {
             
             buffer.writeString(property.getName());
             buffer.writeString(state.get(property).toString());

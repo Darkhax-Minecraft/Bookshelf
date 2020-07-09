@@ -35,7 +35,7 @@ public class CommandRegistry {
     public CommandRegistry(Logger logger) {
         
         this.logger = logger;
-        this.commands = NonNullList.create();   
+        this.commands = NonNullList.create();
         this.commandArguments = new HashMap<>();
     }
     

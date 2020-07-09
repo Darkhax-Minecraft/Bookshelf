@@ -14,9 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.annotation.Nullable;
-
-import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -28,20 +25,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public final class RecipeUtils {
-    
-    /**
-     * Gets the active recipe manager. One the client this is updated from the recipe updated
-     * event. On the server this is updated when the server first launches and when it is
-     * stopped.
-     * 
-     * @return The current recipe manager in use.
-     */
-    @Nullable
-    @Deprecated
-    public static RecipeManager getActiveRecipeManager () {
-        
-        return Bookshelf.SIDED.getActiveRecipeManager();
-    }
     
     /**
      * Looks up the map of all known recipes for a given recipe type.

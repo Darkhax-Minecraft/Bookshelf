@@ -24,12 +24,12 @@ import net.minecraftforge.common.loot.LootModifier;
 public class ModifierSilkTouch extends LootModifier {
     
     public static final GlobalLootModifierSerializer<ModifierSilkTouch> SERIALIZER = new GlobalLootModifierSerializer<ModifierSilkTouch>() {
-
+        
         @Override
         public ModifierSilkTouch read (ResourceLocation location, JsonObject object, ILootCondition[] ailootcondition) {
             
             return new ModifierSilkTouch(ailootcondition);
-        }        
+        }
     };
     
     private ModifierSilkTouch(ILootCondition[] conditionsIn) {

@@ -14,8 +14,6 @@ import java.util.Set;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,7 +27,7 @@ import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceContext.BlockMode;
 import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public final class EntityUtils {
@@ -43,7 +41,7 @@ public final class EntityUtils {
      */
     public static double getDistanceFromEntity (Entity firstEntity, Entity secondEntity) {
         
-        return MathsUtils.getDistanceBetweenPoints(firstEntity.getPositionVector(), secondEntity.getPositionVector());
+        return MathsUtils.getDistanceBetweenPoints(firstEntity.getPositionVec(), secondEntity.getPositionVec());
     }
     
     /**
@@ -55,7 +53,7 @@ public final class EntityUtils {
      */
     public static double getDistaceFromPos (Entity entity, BlockPos pos) {
         
-        return MathsUtils.getDistanceBetweenPoints(entity.getPositionVector(), new Vec3d(pos));
+        return MathsUtils.getDistanceBetweenPoints(entity.getPositionVec(), Vector3d.func_237489_a_(pos));
     }
     
     /**
@@ -67,7 +65,7 @@ public final class EntityUtils {
      */
     public static void pushTowards (Entity entityToMove, Direction direction, double force) {
         
-        pushTowards(entityToMove, entityToMove.getPosition().offset(direction.getOpposite(), 1), force);
+        pushTowards(entityToMove, entityToMove.func_233580_cy_().offset(direction.getOpposite(), 1), force);
     }
     
     /**
@@ -79,14 +77,14 @@ public final class EntityUtils {
      */
     public static void pushTowards (Entity entityToMove, BlockPos pos, double force) {
         
-        final BlockPos entityPos = entityToMove.getPosition();
+        final BlockPos entityPos = entityToMove.func_233580_cy_();
         final double distanceX = (double) pos.getX() - entityPos.getX();
         final double distanceY = (double) pos.getY() - entityPos.getY();
         final double distanceZ = (double) pos.getZ() - entityPos.getZ();
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
         if (distance > 0) {
-            entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+            entityToMove.setMotion(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
         }
     }
     
@@ -106,12 +104,12 @@ public final class EntityUtils {
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
         if (distance > 0) {
-            entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+            entityToMove.setMotion(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
         }
     }
     
     /**
-     * Creates a Vec3d that represents the additional motion that would be needed to push an
+     * Creates a Vector3d that represents the additional motion that would be needed to push an
      * entity towards a destination.
      *
      * @param entityToMove The entity to push.
@@ -121,8 +119,8 @@ public final class EntityUtils {
      */
     public static void pushTowardsDirection (Entity entityToMove, Direction direction, double force) {
         
-        final BlockPos entityPos = entityToMove.getPosition();
-        final BlockPos destination = entityToMove.getPosition().offset(direction.getOpposite(), 1);
+        final BlockPos entityPos = entityToMove.func_233580_cy_();
+        final BlockPos destination = entityToMove.func_233580_cy_().offset(direction.getOpposite(), 1);
         
         final double distanceX = (double) destination.getX() - entityPos.getX();
         final double distanceY = (double) destination.getY() - entityPos.getY();
@@ -130,7 +128,7 @@ public final class EntityUtils {
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
         if (distance > 0) {
-            entityToMove.setMotion(new Vec3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+            entityToMove.setMotion(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
         }
     }
     
@@ -204,117 +202,6 @@ public final class EntityUtils {
     }
     
     /**
-     * Gets the max health value of an entity.
-     *
-     * @param entity The entity to get the value from.
-     * @return The value of the attribute.
-     */
-    public static double getMaxHealth (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.MAX_HEALTH).getValue();
-    }
-    
-    /**
-     * Gets the follow/tracking range value of an entity.
-     *
-     * @param entity The entity to get the value from.
-     * @return The value of the attribute.
-     */
-    public static double getFollowRange (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getValue();
-    }
-    
-    /**
-     * Gets the knockback resistance value of an entity.
-     *
-     * @param entity The entity to get the value from.
-     * @return The value of the attribute.
-     */
-    public static double getKnockbackResistance (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getValue();
-    }
-    
-    /**
-     * Gets the movement speed value of an entity.
-     *
-     * @param entity The entity to get the value from.
-     * @return The value of the attribute.
-     */
-    public static double getMovementSpeed (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
-    }
-    
-    /**
-     * Gets the attack value of an entity.
-     *
-     * @param entity The entity to get the value from.
-     * @return The value of the attribute.
-     */
-    public static double getAttackDamage (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue();
-    }
-    
-    /**
-     * Gets the attack speed value of an entity.
-     *
-     * @param entity The entity to get the value from.
-     * @return The value of the attribute.
-     */
-    public static double getAttackSpeed (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.ATTACK_SPEED).getValue();
-    }
-    
-    /**
-     * Gets the armor value of an entity.
-     *
-     * @param entity The entity to get the value from.
-     * @return The value of the attribute.
-     */
-    public static double getArmor (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.ARMOR).getValue();
-    }
-    
-    /**
-     * Gets the armor toughness value of an entity.
-     *
-     * @param entity The entity to get the value from.
-     * @return The value of the attribute.
-     */
-    public static double getArmorToughness (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getValue();
-    }
-    
-    /**
-     * Gets the luck value of an entity.
-     *
-     * @param entity The entity to get the value from.
-     * @return The value of the attribute.
-     */
-    public static double getLuck (MobEntity entity) {
-        
-        return entity.getAttribute(SharedMonsterAttributes.LUCK).getValue();
-    }
-    
-    /**
-     * Gets a value of an attribute for an entity.
-     *
-     * @param entity The entity to get the value of.
-     * @param attribute The attribute to get the value of.
-     * @return The value of the attribute.
-     */
-    public static double getValue (MobEntity entity, IAttribute attribute) {
-        
-        return entity.getAttribute(attribute).getValue();
-    }
-    
-    /**
      * Performs a ray trace for the look vector of an entity.
      * 
      * @param entity The entity to perform a ray trace on.
@@ -325,9 +212,9 @@ public final class EntityUtils {
      */
     public static RayTraceResult rayTrace (LivingEntity entity, double length, BlockMode blockMode, FluidMode fluidMode) {
         
-        final Vec3d startingPosition = new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ());
-        final Vec3d lookVector = entity.getLookVec();
-        final Vec3d endingPosition = startingPosition.add(lookVector.x * length, lookVector.y * length, lookVector.z * length);
+        final Vector3d startingPosition = new Vector3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ());
+        final Vector3d lookVector = entity.getLookVec();
+        final Vector3d endingPosition = startingPosition.add(lookVector.x * length, lookVector.y * length, lookVector.z * length);
         return entity.world.rayTraceBlocks(new RayTraceContext(startingPosition, endingPosition, blockMode, fluidMode, entity));
     }
     
@@ -341,7 +228,7 @@ public final class EntityUtils {
      */
     public static boolean isAffectedByFire (LivingEntity toCheck) {
         
-        return !toCheck.isImmuneToFire() && !toCheck.isPotionActive(Effects.FIRE_RESISTANCE);
+        return !toCheck.func_230279_az_() && !toCheck.isPotionActive(Effects.FIRE_RESISTANCE);
     }
     
     /**

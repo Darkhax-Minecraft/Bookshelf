@@ -18,12 +18,12 @@ import net.minecraftforge.common.loot.LootModifier;
 public class ModifierClear extends LootModifier {
     
     public static final GlobalLootModifierSerializer<ModifierClear> SERIALIZER = new GlobalLootModifierSerializer<ModifierClear>() {
-
+        
         @Override
         public ModifierClear read (ResourceLocation location, JsonObject object, ILootCondition[] ailootcondition) {
             
             return new ModifierClear(ailootcondition);
-        }        
+        }
     };
     
     private ModifierClear(ILootCondition[] conditionsIn) {
