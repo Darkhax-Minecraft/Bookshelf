@@ -15,9 +15,6 @@ import org.apache.logging.log4j.Logger;
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
 import net.darkhax.bookshelf.crafting.predicate.ItemPredicateIngredient;
 import net.darkhax.bookshelf.crafting.predicate.ItemPredicateModid;
-import net.darkhax.bookshelf.internal.BookshelfClient;
-import net.darkhax.bookshelf.internal.BookshelfServer;
-import net.darkhax.bookshelf.internal.ISidedProxy;
 import net.darkhax.bookshelf.internal.command.ArgumentTypeHandOutput;
 import net.darkhax.bookshelf.internal.command.BookshelfCommands;
 import net.darkhax.bookshelf.loot.modifier.ModifierAddItem;
@@ -29,7 +26,6 @@ import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.command.arguments.ArgumentSerializer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -47,8 +43,6 @@ public class Bookshelf {
     public static final String MOD_NAME = "Bookshelf";
     
     public static final Logger LOG = LogManager.getLogger(MOD_NAME);
-    
-    public static final ISidedProxy SIDED = DistExecutor.safeRunForDist( () -> () -> new BookshelfClient(), () -> () -> new BookshelfServer());
     
     private final RegistryHelper registry = new RegistryHelper(MOD_ID, LOG);
     
