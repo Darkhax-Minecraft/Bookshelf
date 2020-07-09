@@ -24,10 +24,10 @@ public abstract class TileEntityBasic extends TileEntity {
     }
     
     @Override
-    public void read (CompoundNBT dataTag) {
+    public void read (BlockState state, CompoundNBT dataTag) {
         
         this.deserialize(dataTag);
-        super.read(dataTag);
+        super.read(state, dataTag);
     }
     
     @Override
