@@ -4,14 +4,18 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.google.gson.JsonObject;
+
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameterSets;
-import net.minecraft.world.storage.loot.LootParameters;
-import net.minecraft.world.storage.loot.LootTable;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameterSets;
+import net.minecraft.loot.LootParameters;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.conditions.ILootCondition;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 
 /**
@@ -19,7 +23,16 @@ import net.minecraftforge.common.loot.LootModifier;
  */
 public class ModifierSilkTouch extends LootModifier {
     
-    public ModifierSilkTouch(ILootCondition[] conditionsIn) {
+    public static final GlobalLootModifierSerializer<ModifierSilkTouch> SERIALIZER = new GlobalLootModifierSerializer<ModifierSilkTouch>() {
+
+        @Override
+        public ModifierSilkTouch read (ResourceLocation location, JsonObject object, ILootCondition[] ailootcondition) {
+            
+            return new ModifierSilkTouch(ailootcondition);
+        }        
+    };
+    
+    private ModifierSilkTouch(ILootCondition[] conditionsIn) {
         
         super(conditionsIn);
     }

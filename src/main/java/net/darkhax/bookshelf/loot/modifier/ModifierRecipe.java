@@ -6,13 +6,17 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import com.google.gson.JsonObject;
+
 import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.conditions.ILootCondition;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 
 /**
@@ -22,12 +26,13 @@ import net.minecraftforge.common.loot.LootModifier;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ModifierRecipe extends LootModifier {
     
-    public static final Function<ILootCondition[], ModifierRecipe> CRAFTING = conditions -> new ModifierRecipe(conditions, IRecipeType.CRAFTING);
-    public static final Function<ILootCondition[], ModifierRecipe> SMELTING = conditions -> new ModifierRecipe(conditions, IRecipeType.SMELTING);
-    public static final Function<ILootCondition[], ModifierRecipe> BLASTING = conditions -> new ModifierRecipe(conditions, IRecipeType.BLASTING);
-    public static final Function<ILootCondition[], ModifierRecipe> SMOKING = conditions -> new ModifierRecipe(conditions, IRecipeType.SMOKING);
-    public static final Function<ILootCondition[], ModifierRecipe> CAMPFIRE = conditions -> new ModifierRecipe(conditions, IRecipeType.CAMPFIRE_COOKING);
-    public static final Function<ILootCondition[], ModifierRecipe> STONECUT = conditions -> new ModifierRecipe(conditions, IRecipeType.STONECUTTING);
+    public static final GlobalLootModifierSerializer CRAFTING = createModifier(conditions -> new ModifierRecipe(conditions, IRecipeType.CRAFTING));
+    public static final GlobalLootModifierSerializer SMELTING = createModifier(conditions -> new ModifierRecipe(conditions, IRecipeType.SMELTING));
+    public static final GlobalLootModifierSerializer BLASTING = createModifier(conditions -> new ModifierRecipe(conditions, IRecipeType.BLASTING));
+    public static final GlobalLootModifierSerializer SMOKING = createModifier(conditions -> new ModifierRecipe(conditions, IRecipeType.SMOKING));
+    public static final GlobalLootModifierSerializer CAMPFIRE = createModifier(conditions -> new ModifierRecipe(conditions, IRecipeType.CAMPFIRE_COOKING));
+    public static final GlobalLootModifierSerializer STONECUT = createModifier(conditions -> new ModifierRecipe(conditions, IRecipeType.STONECUTTING));
+    public static final GlobalLootModifierSerializer SMITHING = createModifier(conditions -> new ModifierRecipe(conditions, IRecipeType.SMITHING));
     
     private final IRecipeType recipeType;
     
@@ -73,5 +78,17 @@ public class ModifierRecipe extends LootModifier {
         }
         
         return stack;
+    }
+    
+    public static GlobalLootModifierSerializer<ModifierRecipe> createModifier(Function<ILootCondition[], ModifierRecipe> function) {
+        
+        return new GlobalLootModifierSerializer<ModifierRecipe>() {
+
+            @Override
+            public ModifierRecipe read (ResourceLocation location, JsonObject object, ILootCondition[] ailootcondition) {
+                
+                return function.apply(ailootcondition);
+            }
+        };
     }
 }

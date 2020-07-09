@@ -3,9 +3,13 @@ package net.darkhax.bookshelf.loot.modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonObject;
+
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.conditions.ILootCondition;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 
 /**
@@ -13,7 +17,16 @@ import net.minecraftforge.common.loot.LootModifier;
  */
 public class ModifierClear extends LootModifier {
     
-    public ModifierClear(ILootCondition[] conditionsIn) {
+    public static final GlobalLootModifierSerializer<ModifierClear> SERIALIZER = new GlobalLootModifierSerializer<ModifierClear>() {
+
+        @Override
+        public ModifierClear read (ResourceLocation location, JsonObject object, ILootCondition[] ailootcondition) {
+            
+            return new ModifierClear(ailootcondition);
+        }        
+    };
+    
+    private ModifierClear(ILootCondition[] conditionsIn) {
         
         super(conditionsIn);
     }
