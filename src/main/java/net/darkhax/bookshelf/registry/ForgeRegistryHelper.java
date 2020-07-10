@@ -130,7 +130,7 @@ public class ForgeRegistryHelper<T extends IForgeRegistryEntry<T>> {
         
         if (value.getRegistryName() == null) {
             
-            throw new IllegalStateException("Attempted to register value without registry name: " + value.toString());
+            throw new IllegalStateException("Attempted to register " + this.type.getSimpleName() + " without registry name: " + value.toString());
         }
         
         this.register( () -> value);
