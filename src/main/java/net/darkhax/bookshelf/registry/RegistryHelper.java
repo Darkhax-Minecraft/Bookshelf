@@ -91,7 +91,9 @@ public class RegistryHelper {
         
         if (itemProps != null) {
             
-            this.items.register(new BlockItem(block, itemProps));
+            final Item item = new BlockItem(block, itemProps);
+            item.setRegistryName(block.getRegistryName());
+            this.items.register(item);
         }
     }
 }
