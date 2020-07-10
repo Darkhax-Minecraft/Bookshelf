@@ -46,10 +46,7 @@ public class RegistryHelper {
         this.tileEntities = new ForgeRegistryHelper(logger, modid, TileEntityType.class);
         this.recipeSerializers = new ForgeRegistryHelper(logger, modid, IRecipeSerializer.class);
         this.containerTypes = new ForgeRegistryHelper(logger, modid, ContainerType.class);
-        this.entityTypes = new ForgeRegistryHelper(logger, modid, EntityType.class); // TODO
-                                                                                     // mob and
-                                                                                     // spawn
-                                                                                     // egg
+        this.entityTypes = new ForgeRegistryHelper(logger, modid, EntityType.class);
         this.paintings = new ForgeRegistryHelper<>(logger, modid, PaintingType.class);
         this.effects = new ForgeRegistryHelper<>(logger, modid, Effect.class);
         this.potions = new ForgeRegistryHelper<>(logger, modid, Potion.class);
@@ -61,6 +58,8 @@ public class RegistryHelper {
         // TODO Ingredient
         // TODO Loot Condition
         // TODO Loot Injection
+        // TODO Mobs
+        // TODO Spawn Eggs
     }
     
     public RegistryHelper withItemGroup (ItemGroup group) {
@@ -71,6 +70,8 @@ public class RegistryHelper {
     
     public void initialize (IEventBus modBus) {
         
+        this.commands.initialize(modBus);
+        this.trades.initialize(modBus);
         this.blocks.initialize(modBus);
         this.items.initialize(modBus);
         this.tileEntities.initialize(modBus);
