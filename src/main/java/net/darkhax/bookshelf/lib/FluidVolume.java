@@ -5,7 +5,7 @@
  * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
  * 2.1.
  */
-package net.darkhax.bookshelf.data;
+package net.darkhax.bookshelf.lib;
 
 /**
  * Defines some of the common fluid volume values. Based on values from Tinkers Construct, and

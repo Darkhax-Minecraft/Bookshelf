@@ -5,7 +5,7 @@
  * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
  * 2.1.
  */
-package net.darkhax.bookshelf.data;
+package net.darkhax.bookshelf.lib;
 
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;

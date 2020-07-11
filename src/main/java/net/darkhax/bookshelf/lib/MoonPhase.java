@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.data;
+package net.darkhax.bookshelf.lib;
 
 import com.google.common.primitives.Ints;
 
