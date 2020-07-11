@@ -5,11 +5,12 @@
  * Bookshelf is Open Source and distributed under the GNU Lesser General Public License version
  * 2.1.
  */
-package net.darkhax.bookshelf.item.crafting;
+package net.darkhax.bookshelf.crafting;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 /**
@@ -20,7 +21,11 @@ import net.minecraft.world.World;
  */
 public abstract class RecipeDataBase implements IRecipe<IInventory> {
     
-    public RecipeDataBase() {
+    private final ResourceLocation identifier;
+    
+    public RecipeDataBase(ResourceLocation identifier) {
+        
+        this.identifier = identifier;
         
         if (this.getSerializer() == null) {
             
@@ -31,6 +36,12 @@ public abstract class RecipeDataBase implements IRecipe<IInventory> {
             
             throw new IllegalStateException("No recipe type found for " + this.getClass().getName());
         }
+    }
+    
+    @Override
+    public ResourceLocation getId () {
+        
+        return this.identifier;
     }
     
     @Override
