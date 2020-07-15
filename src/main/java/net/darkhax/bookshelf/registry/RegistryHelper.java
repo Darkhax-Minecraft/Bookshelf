@@ -22,6 +22,7 @@ public class RegistryHelper {
     
     public final CommandRegistry commands;
     public final TradeRegistry trades;
+    public final RecipeTypeRegistry recipeTypes;
     
     public final ForgeRegistryHelper<Block> blocks;
     public final ForgeRegistryHelper<Item> items;
@@ -40,6 +41,7 @@ public class RegistryHelper {
         
         this.commands = new CommandRegistry(logger);
         this.trades = new TradeRegistry(logger);
+        this.recipeTypes = new RecipeTypeRegistry(modid, logger);
         
         this.blocks = new ForgeRegistryHelper<>(logger, modid, Block.class);
         this.items = new ForgeRegistryHelper<>(logger, modid, Item.class);
@@ -54,7 +56,6 @@ public class RegistryHelper {
         this.lootModifiers = new ForgeRegistryHelper(logger, modid, GlobalLootModifierSerializer.class);
         
         this.blocks.addRegisterListener(this::generateBlockItem);
-        // TODO IRecipeType
         // TODO Ingredient
         // TODO Loot Condition
         // TODO Loot Injection
@@ -72,6 +73,8 @@ public class RegistryHelper {
         
         this.commands.initialize(modBus);
         this.trades.initialize(modBus);
+        this.recipeTypes.initialize(modBus);
+        
         this.blocks.initialize(modBus);
         this.items.initialize(modBus);
         this.tileEntities.initialize(modBus);

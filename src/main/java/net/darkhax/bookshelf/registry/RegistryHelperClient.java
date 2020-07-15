@@ -20,6 +20,5 @@ public class RegistryHelperClient extends RegistryHelper {
         super.initialize(modBus);
         
         this.sprites.initialize(modBus);
-        ;
     }
 }
