@@ -18,9 +18,9 @@ import net.minecraft.command.arguments.IArgumentSerializer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
 public class CommandRegistry {
     
@@ -58,12 +58,12 @@ public class CommandRegistry {
         return command;
     }
     
-    private void registerCommands (FMLServerStartingEvent event) {
+    private void registerCommands (RegisterCommandsEvent event) {
         
         if (!this.commands.isEmpty()) {
             
             this.logger.info("Registering {} commands.", this.commands.size());
-            final CommandDispatcher<CommandSource> dispatcher = event.getCommandDispatcher();
+            final CommandDispatcher<CommandSource> dispatcher = event.getDispatcher();
             
             for (final LiteralArgumentBuilder<CommandSource> command : this.commands) {
                 
