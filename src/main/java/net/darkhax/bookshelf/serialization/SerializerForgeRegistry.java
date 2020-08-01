@@ -42,7 +42,7 @@ public final class SerializerForgeRegistry<V extends IForgeRegistryEntry<V>> imp
     @Override
     public V read (PacketBuffer buffer) {
         
-        final ResourceLocation id = Serializers.RESOURCE_LOCATION.read(buffer);
+        final ResourceLocation id = buffer.readResourceLocation();
         
         if (this.registry.containsKey(id)) {
             
@@ -58,6 +58,6 @@ public final class SerializerForgeRegistry<V extends IForgeRegistryEntry<V>> imp
     @Override
     public void write (PacketBuffer buffer, V toWrite) {
         
-        Serializers.RESOURCE_LOCATION.write(buffer, toWrite.getRegistryName());
+        buffer.writeResourceLocation(toWrite.getRegistryName());
     }
 }

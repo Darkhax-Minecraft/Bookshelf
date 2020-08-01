@@ -60,20 +60,12 @@ public final class SerializerResourceLocation implements ISerializer<ResourceLoc
     @Override
     public ResourceLocation read (PacketBuffer buffer) {
         
-        try {
-            
-            return new ResourceLocation(buffer.readString());
-        }
-        
-        catch (final ResourceLocationException e) {
-            
-            throw new IllegalStateException("Failed to read ResourceLocation from packet buffer.", e);
-        }
+        return buffer.readResourceLocation();
     }
     
     @Override
     public void write (PacketBuffer buffer, ResourceLocation toWrite) {
         
-        buffer.writeString(toWrite.toString());
+        buffer.writeResourceLocation(toWrite);
     }
 }
