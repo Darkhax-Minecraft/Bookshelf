@@ -15,6 +15,8 @@ import org.apache.logging.log4j.Logger;
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
 import net.darkhax.bookshelf.crafting.predicate.ItemPredicateIngredient;
 import net.darkhax.bookshelf.crafting.predicate.ItemPredicateModid;
+import net.darkhax.bookshelf.crafting.recipes.ShapedRecipeDamaging;
+import net.darkhax.bookshelf.crafting.recipes.ShapelessRecipeDamage;
 import net.darkhax.bookshelf.internal.command.ArgumentTypeHandOutput;
 import net.darkhax.bookshelf.internal.command.BookshelfCommands;
 import net.darkhax.bookshelf.loot.modifier.ModifierAddItem;
@@ -71,6 +73,10 @@ public class Bookshelf {
         // Item Predicates
         ItemPredicate.register(new ResourceLocation("bookshelf", "modid"), ItemPredicateModid::fromJson);
         ItemPredicate.register(new ResourceLocation("bookshelf", "ingredient"), ItemPredicateIngredient::fromJson);
+        
+        // Recipe Serializers
+        this.registry.recipeSerializers.register(ShapedRecipeDamaging.SERIALIZER, "crafting_shaped_with_damage");
+        this.registry.recipeSerializers.register(ShapelessRecipeDamage.SERIALIZER, "crafting_shapeless_with_damage");
         
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
     }
