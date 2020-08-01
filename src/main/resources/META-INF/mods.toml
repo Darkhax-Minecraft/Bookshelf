@@ -2,6 +2,7 @@ modLoader="javafml"
 loaderVersion="[32,)"
 logoFile="logo.png"
 issueTrackerURL="https://github.com/Darkhax-Minecraft/Bookshelf/issues"
+license="LGPL v2.1"
 
 [[mods]]
 modId="bookshelf"
