@@ -17,6 +17,7 @@ import net.darkhax.bookshelf.crafting.predicate.ItemPredicateIngredient;
 import net.darkhax.bookshelf.crafting.predicate.ItemPredicateModid;
 import net.darkhax.bookshelf.crafting.recipes.ShapedRecipeDamaging;
 import net.darkhax.bookshelf.crafting.recipes.ShapelessRecipeDamage;
+import net.darkhax.bookshelf.crafting.recipes.smithing.SmithingRecipeEnchantment;
 import net.darkhax.bookshelf.crafting.recipes.smithing.SmithingRecipeFont;
 import net.darkhax.bookshelf.crafting.recipes.smithing.SmithingRecipeRepairCost;
 import net.darkhax.bookshelf.internal.command.ArgumentTypeHandOutput;
@@ -81,6 +82,7 @@ public class Bookshelf {
         this.registry.recipeSerializers.register(ShapelessRecipeDamage.SERIALIZER, "crafting_shapeless_with_damage");
         this.registry.recipeSerializers.register(SmithingRecipeFont.SERIALIZER, "smithing_font");
         this.registry.recipeSerializers.register(SmithingRecipeRepairCost.SERIALIZER, "smithing_repair_cost");
+        this.registry.recipeSerializers.register(SmithingRecipeEnchantment.SERIALIZER, "smithing_enchant");
         
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
     }
