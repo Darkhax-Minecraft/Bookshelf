@@ -74,7 +74,7 @@ public class PacketUtils {
         
         buffer.writeResourceLocation(state.getBlock().getRegistryName());
         
-        final Collection<Property<?>> properties = state.func_235904_r_();
+        final Collection<Property<?>> properties = state.getProperties();
         
         buffer.writeInt(properties.size());
         

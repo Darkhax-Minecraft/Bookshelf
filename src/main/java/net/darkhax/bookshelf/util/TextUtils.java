@@ -29,7 +29,7 @@ public final class TextUtils {
         
         if (text instanceof IFormattableTextComponent) {
             
-            ((IFormattableTextComponent) text).func_230530_a_(text.getStyle().setFontId(font));
+            ((IFormattableTextComponent) text).setStyle(text.getStyle().setFontId(font));
         }
         
         text.getSiblings().forEach(sib -> applyFont(sib, font));
@@ -73,11 +73,11 @@ public final class TextUtils {
         
         while (toJoin.hasNext()) {
             
-            joined.func_230529_a_(toJoin.next());
+            joined.append(toJoin.next());
             
             if (toJoin.hasNext()) {
                 
-                joined.func_230529_a_(separator);
+                joined.append(separator);
             }
         }
         

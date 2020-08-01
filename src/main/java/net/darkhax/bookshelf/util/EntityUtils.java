@@ -53,7 +53,7 @@ public final class EntityUtils {
      */
     public static double getDistaceFromPos (Entity entity, BlockPos pos) {
         
-        return MathsUtils.getDistanceBetweenPoints(entity.getPositionVec(), Vector3d.func_237489_a_(pos));
+        return MathsUtils.getDistanceBetweenPoints(entity.getPositionVec(), Vector3d.copyCentered(pos));
     }
     
     /**
@@ -65,7 +65,7 @@ public final class EntityUtils {
      */
     public static void pushTowards (Entity entityToMove, Direction direction, double force) {
         
-        pushTowards(entityToMove, entityToMove.func_233580_cy_().offset(direction.getOpposite(), 1), force);
+        pushTowards(entityToMove, entityToMove.getPosition().offset(direction.getOpposite(), 1), force);
     }
     
     /**
@@ -77,7 +77,7 @@ public final class EntityUtils {
      */
     public static void pushTowards (Entity entityToMove, BlockPos pos, double force) {
         
-        final BlockPos entityPos = entityToMove.func_233580_cy_();
+        final BlockPos entityPos = entityToMove.getPosition();
         final double distanceX = (double) pos.getX() - entityPos.getX();
         final double distanceY = (double) pos.getY() - entityPos.getY();
         final double distanceZ = (double) pos.getZ() - entityPos.getZ();
@@ -119,8 +119,8 @@ public final class EntityUtils {
      */
     public static void pushTowardsDirection (Entity entityToMove, Direction direction, double force) {
         
-        final BlockPos entityPos = entityToMove.func_233580_cy_();
-        final BlockPos destination = entityToMove.func_233580_cy_().offset(direction.getOpposite(), 1);
+        final BlockPos entityPos = entityToMove.getPosition();
+        final BlockPos destination = entityToMove.getPosition().offset(direction.getOpposite(), 1);
         
         final double distanceX = (double) destination.getX() - entityPos.getX();
         final double distanceY = (double) destination.getY() - entityPos.getY();
@@ -228,7 +228,7 @@ public final class EntityUtils {
      */
     public static boolean isAffectedByFire (LivingEntity toCheck) {
         
-        return !toCheck.func_230279_az_() && !toCheck.isPotionActive(Effects.FIRE_RESISTANCE);
+        return !toCheck.isImmuneToFire() && !toCheck.isPotionActive(Effects.FIRE_RESISTANCE);
     }
     
     /**

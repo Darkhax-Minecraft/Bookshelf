@@ -130,7 +130,7 @@ public final class WorldUtils {
      */
     public static int getWaterDepth (World world, BlockPos startingPos, boolean toAir) {
         
-        final BlockPos.Mutable depthPos = startingPos.func_239590_i_();
+        final BlockPos.Mutable depthPos = startingPos.toMutable();
         
         int depth = 0;
         

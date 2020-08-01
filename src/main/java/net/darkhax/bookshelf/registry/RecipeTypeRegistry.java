@@ -10,7 +10,6 @@ import net.darkhax.bookshelf.util.RecipeUtils;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -34,14 +33,7 @@ public class RecipeTypeRegistry {
     public <T extends IRecipe<?>> IRecipeType<T> register (final String key) {
         
         final ResourceLocation id = new ResourceLocation(this.ownerId, key);
-        final IRecipeType<T> type = new IRecipeType<T>() {
-            @Override
-            public String toString () {
-                
-                return id.toString();
-            }
-        };
-        Registry.register(Registry.RECIPE_TYPE, id, type);
+        final IRecipeType<T> type = IRecipeType.register(this.ownerId + ":" + key);
         this.recipeTypes.put(id, type);
         return type;
     }
