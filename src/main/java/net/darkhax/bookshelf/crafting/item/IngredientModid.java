@@ -30,7 +30,7 @@ public class IngredientModid extends Ingredient {
     @Override
     public boolean test (ItemStack stack) {
         
-        return stack.getItem().getRegistryName().getNamespace().equals(this.modid);
+        return !stack.isEmpty() && stack.getItem().getRegistryName().getNamespace().equals(this.modid);
     }
     
     @Override
