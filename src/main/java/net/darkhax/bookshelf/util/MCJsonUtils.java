@@ -49,6 +49,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+/**
+ * Use net.darkhax.bookshelf.serialization.Serializers instead.
+ */
+@Deprecated
 public final class MCJsonUtils {
     
     @Nullable
