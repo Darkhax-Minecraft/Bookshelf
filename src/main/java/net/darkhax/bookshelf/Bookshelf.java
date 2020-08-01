@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
 import net.darkhax.bookshelf.crafting.item.IngredientModid;
+import net.darkhax.bookshelf.crafting.item.IngredientToolType;
 import net.darkhax.bookshelf.crafting.predicate.ItemPredicateIngredient;
 import net.darkhax.bookshelf.crafting.predicate.ItemPredicateModid;
 import net.darkhax.bookshelf.crafting.recipes.ShapedRecipeDamaging;
@@ -31,7 +32,13 @@ import net.darkhax.bookshelf.loot.modifier.ModifierSilkTouch;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.command.arguments.ArgumentSerializer;
+import net.minecraft.item.AxeItem;
+import net.minecraft.item.HoeItem;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ShovelItem;
+import net.minecraft.item.SwordItem;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -87,6 +94,11 @@ public class Bookshelf {
         
         // Ingredients
         this.registry.ingredients.register("modid", IngredientModid.SERIALIZER);
+        this.registry.ingredients.register("any_axe", IngredientToolType.create(i -> i instanceof AxeItem, ToolType.AXE));
+        this.registry.ingredients.register("any_hoe", IngredientToolType.create(i -> i instanceof HoeItem, ToolType.HOE));
+        this.registry.ingredients.register("any_pickaxe", IngredientToolType.create(i -> i instanceof PickaxeItem, ToolType.PICKAXE));
+        this.registry.ingredients.register("any_shovel", IngredientToolType.create(i -> i instanceof ShovelItem, ToolType.SHOVEL));
+        this.registry.ingredients.register("any_sword", IngredientToolType.create(i -> i instanceof SwordItem, null));
         
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
     }
