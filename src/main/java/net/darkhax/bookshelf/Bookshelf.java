@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
+import net.darkhax.bookshelf.crafting.item.IngredientEnchantmentType;
 import net.darkhax.bookshelf.crafting.item.IngredientModid;
 import net.darkhax.bookshelf.crafting.item.IngredientToolType;
 import net.darkhax.bookshelf.crafting.predicate.ItemPredicateIngredient;
@@ -32,6 +33,7 @@ import net.darkhax.bookshelf.loot.modifier.ModifierSilkTouch;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.command.arguments.ArgumentSerializer;
+import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.PickaxeItem;
@@ -99,6 +101,20 @@ public class Bookshelf {
         this.registry.ingredients.register("any_pickaxe", IngredientToolType.create(i -> i instanceof PickaxeItem, ToolType.PICKAXE));
         this.registry.ingredients.register("any_shovel", IngredientToolType.create(i -> i instanceof ShovelItem, ToolType.SHOVEL));
         this.registry.ingredients.register("any_sword", IngredientToolType.create(i -> i instanceof SwordItem, null));
+        this.registry.ingredients.register("enchant_armor", IngredientEnchantmentType.create(EnchantmentType.ARMOR));
+        this.registry.ingredients.register("enchant_armor_feet", IngredientEnchantmentType.create(EnchantmentType.ARMOR_FEET));
+        this.registry.ingredients.register("enchant_armor_legs", IngredientEnchantmentType.create(EnchantmentType.ARMOR_LEGS));
+        this.registry.ingredients.register("enchant_armor_chest", IngredientEnchantmentType.create(EnchantmentType.ARMOR_CHEST));
+        this.registry.ingredients.register("enchant_armor_head", IngredientEnchantmentType.create(EnchantmentType.ARMOR_HEAD));
+        this.registry.ingredients.register("enchant_weapon", IngredientEnchantmentType.create(EnchantmentType.WEAPON));
+        this.registry.ingredients.register("enchant_digger", IngredientEnchantmentType.create(EnchantmentType.DIGGER));
+        this.registry.ingredients.register("enchant_fishing_rod", IngredientEnchantmentType.create(EnchantmentType.FISHING_ROD));
+        this.registry.ingredients.register("enchant_trident", IngredientEnchantmentType.create(EnchantmentType.TRIDENT));
+        this.registry.ingredients.register("enchant_breakable", IngredientEnchantmentType.create(EnchantmentType.BREAKABLE));
+        this.registry.ingredients.register("enchant_bow", IngredientEnchantmentType.create(EnchantmentType.BOW));
+        this.registry.ingredients.register("enchant_wearable", IngredientEnchantmentType.create(EnchantmentType.WEARABLE));
+        this.registry.ingredients.register("enchant_crossbow", IngredientEnchantmentType.create(EnchantmentType.CROSSBOW));
+        this.registry.ingredients.register("enchant_vanishable", IngredientEnchantmentType.create(EnchantmentType.VANISHABLE));
         
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
     }
