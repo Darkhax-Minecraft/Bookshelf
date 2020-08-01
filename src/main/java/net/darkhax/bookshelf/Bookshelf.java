@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
+import net.darkhax.bookshelf.crafting.item.IngredientModid;
 import net.darkhax.bookshelf.crafting.predicate.ItemPredicateIngredient;
 import net.darkhax.bookshelf.crafting.predicate.ItemPredicateModid;
 import net.darkhax.bookshelf.crafting.recipes.ShapedRecipeDamaging;
@@ -83,6 +84,9 @@ public class Bookshelf {
         this.registry.recipeSerializers.register(SmithingRecipeFont.SERIALIZER, "smithing_font");
         this.registry.recipeSerializers.register(SmithingRecipeRepairCost.SERIALIZER, "smithing_repair_cost");
         this.registry.recipeSerializers.register(SmithingRecipeEnchantment.SERIALIZER, "smithing_enchant");
+        
+        // Ingredients
+        this.registry.ingredients.register("modid", IngredientModid.SERIALIZER);
         
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
     }
