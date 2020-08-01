@@ -42,6 +42,7 @@ import net.minecraft.state.Property;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.ResourceLocationException;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -271,5 +272,40 @@ public final class MCJsonUtils {
     public static List<ResourceLocation> getIds (JsonElement element) {
         
         return getStrings(element).stream().map(ResourceLocation::tryCreate).collect(Collectors.toList());
+    }
+    
+    @Nullable
+    public static ResourceLocation readResourceLocation (JsonObject json, String memberName) {
+        
+        return readResourceLocation(json, memberName, null);
+    }
+    
+    @Nullable
+    public static ResourceLocation readResourceLocation (JsonObject json, String memberName, @Nullable ResourceLocation fallback) {
+        
+        if (json.has(memberName)) {
+            
+            if (json.isJsonPrimitive()) {
+                
+                final String input = json.getAsString();
+                
+                try {
+                    
+                    return new ResourceLocation(input);
+                }
+                
+                catch (final ResourceLocationException e) {
+                    
+                    throw new JsonSyntaxException("Expected " + memberName + " to be a valid resource location.", e);
+                }
+            }
+            
+            else {
+                
+                throw new JsonSyntaxException("Expected " + memberName + " to be a string, was " + JSONUtils.toString(json));
+            }
+        }
+        
+        return fallback;
     }
 }

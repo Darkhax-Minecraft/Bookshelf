@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.crafting.recipes.smithing;
 
 import com.google.gson.JsonObject;
 
+import net.darkhax.bookshelf.util.MCJsonUtils;
 import net.darkhax.bookshelf.util.TextUtils;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -52,7 +53,7 @@ public class SmithingRecipeFont extends SmithingRecipe {
             
             final Ingredient base = Ingredient.deserialize(JSONUtils.getJsonObject(json, "base"));
             final Ingredient addition = Ingredient.deserialize(JSONUtils.getJsonObject(json, "addition"));
-            final ResourceLocation font = ResourceLocation.tryCreate(JSONUtils.getString(json, "font"));
+            final ResourceLocation font = MCJsonUtils.readResourceLocation(json, "font");
             return new SmithingRecipeFont(recipeId, base, addition, font);
         }
         
