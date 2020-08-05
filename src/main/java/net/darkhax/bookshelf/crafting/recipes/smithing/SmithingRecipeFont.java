@@ -3,7 +3,6 @@ package net.darkhax.bookshelf.crafting.recipes.smithing;
 import com.google.gson.JsonObject;
 
 import net.darkhax.bookshelf.serialization.Serializers;
-import net.darkhax.bookshelf.util.MCJsonUtils;
 import net.darkhax.bookshelf.util.TextUtils;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
