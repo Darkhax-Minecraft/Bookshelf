@@ -12,6 +12,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.Potion;
@@ -28,6 +29,7 @@ public class Serializers {
     public static final ISerializer<ResourceLocation> RESOURCE_LOCATION = SerializerResourceLocation.SERIALIZER;
     public static final ISerializer<EnchantmentData> ENCHANTMENT_DATA = SerializerEnchantmentData.SERIALIZER;
     public static final ISerializer<BlockState> BLOCK_STATE = SerializerBlockState.SERIALIZER;
+    public static final ISerializer<Ingredient> INGREDIENT = SerializerIngredient.SERIALIZER;
     
     public static final ISerializer<Block> BLOCK = new SerializerForgeRegistry<>(ForgeRegistries.BLOCKS);
     public static final ISerializer<Fluid> FLUID = new SerializerForgeRegistry<>(ForgeRegistries.FLUIDS);
