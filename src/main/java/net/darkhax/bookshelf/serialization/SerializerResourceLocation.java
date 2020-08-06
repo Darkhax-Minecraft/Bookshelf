@@ -3,6 +3,7 @@ package net.darkhax.bookshelf.serialization;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSyntaxException;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
@@ -22,32 +23,22 @@ public final class SerializerResourceLocation implements ISerializer<ResourceLoc
         
         if (json.isJsonPrimitive()) {
             
-            final JsonPrimitive primitive = json.getAsJsonPrimitive();
+            final String string = json.getAsString();
             
-            if (primitive.isString()) {
+            try {
                 
-                final String text = primitive.getAsString();
-                
-                try {
-                    
-                    return new ResourceLocation(text);
-                }
-                
-                catch (final ResourceLocationException e) {
-                    
-                    throw new JsonParseException("Expected a valid resource location.", e);
-                }
+                return new ResourceLocation(string);
             }
             
-            else {
+            catch (final ResourceLocationException e) {
                 
-                throw new JsonParseException("Expected a string, got " + JSONUtils.toString(json));
+                throw new JsonParseException("Expected a valid resource location.", e);
             }
         }
         
         else {
             
-            throw new JsonParseException("Expected a string, got " + JSONUtils.toString(json));
+            throw new JsonSyntaxException("Expected a string, was " + JSONUtils.toString(json));
         }
     }
     
