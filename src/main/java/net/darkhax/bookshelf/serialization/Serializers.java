@@ -11,6 +11,7 @@ import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
@@ -32,6 +33,7 @@ public class Serializers {
     public static final ISerializer<BlockState> BLOCK_STATE = SerializerBlockState.SERIALIZER;
     public static final ISerializer<Ingredient> INGREDIENT = SerializerIngredient.SERIALIZER;
     public static final ISerializer<CompoundNBT> NBT = SerializerNBT.SERIALIZER;
+    public static final ISerializer<ItemStack> ITEMSTACK = SerializerItemStack.SERIALIZER;
     
     public static final ISerializer<Block> BLOCK = new SerializerForgeRegistry<>(ForgeRegistries.BLOCKS);
     public static final ISerializer<Fluid> FLUID = new SerializerForgeRegistry<>(ForgeRegistries.FLUIDS);
