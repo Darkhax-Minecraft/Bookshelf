@@ -8,11 +8,11 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
-import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.serialization.Serializers;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -25,6 +25,10 @@ import net.minecraft.util.text.event.HoverEvent;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.common.crafting.VanillaIngredientSerializer;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 public class CommandHand {
     
@@ -56,7 +60,8 @@ public class CommandHand {
         STACKJSON(OutputType::getAsStackJson),
         ID(OutputType::getAsID),
         HOLDER(OutputType::getAsHolder),
-        TAGS(OutputType::getTags);
+        TAGS(OutputType::getTags),
+        FLUIDS(OutputType::getFluids);
         
         private final Function<ItemStack, String> converter;
         
@@ -105,10 +110,32 @@ public class CommandHand {
             
             final StringJoiner joiner = new StringJoiner("\n");
             
-            for (ResourceLocation tag : stack.getItem().getTags()) {
+            for (final ResourceLocation tag : stack.getItem().getTags()) {
                 
                 joiner.add(tag.toString());
             }
+            
+            return joiner.toString();
+        }
+        
+        public static String getFluids (ItemStack stack) {
+            
+            final StringJoiner joiner = new StringJoiner("\n");
+            
+            final LazyOptional<IFluidHandlerItem> fluidCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+            
+            fluidCap.ifPresent(fluidHandler -> {
+                
+                for (int i = 0; i < fluidHandler.getTanks(); i++) {
+                    
+                    final FluidStack fluidStack = fluidHandler.getFluidInTank(i);
+                    
+                    if (!fluidStack.isEmpty()) {
+                        
+                        joiner.add(fluidStack.getRawFluid().getRegistryName().toString());
+                    }
+                }
+            });
             
             return joiner.toString();
         }
