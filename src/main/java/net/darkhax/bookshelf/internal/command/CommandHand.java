@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.internal.command;
 
+import java.util.StringJoiner;
 import java.util.function.Function;
 
 import com.google.gson.JsonObject;
@@ -54,7 +55,8 @@ public class CommandHand {
         INGREDIENT(OutputType::getAsIngredient),
         STACKJSON(OutputType::getAsStackJson),
         ID(OutputType::getAsID),
-        HOLDER(OutputType::getAsHolder);
+        HOLDER(OutputType::getAsHolder),
+        TAGS(OutputType::getTags);
         
         private final Function<ItemStack, String> converter;
         
@@ -97,6 +99,18 @@ public class CommandHand {
             
             final ResourceLocation itemId = stack.getItem().getRegistryName();
             return "@ObjectHolder(\"" + itemId.toString() + "\")" + Bookshelf.NEW_LINE + "public static final Item " + itemId.getPath().toUpperCase() + " = null;";
+        }
+        
+        public static String getTags (ItemStack stack) {
+            
+            final StringJoiner joiner = new StringJoiner("\n");
+            
+            for (ResourceLocation tag : stack.getItem().getTags()) {
+                
+                joiner.add(tag.toString());
+            }
+            
+            return joiner.toString();
         }
     }
 }
