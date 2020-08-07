@@ -98,7 +98,7 @@ public class CommandHand {
         public static String getAsHolder (ItemStack stack) {
             
             final ResourceLocation itemId = stack.getItem().getRegistryName();
-            return "@ObjectHolder(\"" + itemId.toString() + "\")" + Bookshelf.NEW_LINE + "public static final Item " + itemId.getPath().toUpperCase() + " = null;";
+            return "@ObjectHolder(\"" + itemId.toString() + "\")\npublic static final Item " + itemId.getPath().toUpperCase() + " = null;";
         }
         
         public static String getTags (ItemStack stack) {
