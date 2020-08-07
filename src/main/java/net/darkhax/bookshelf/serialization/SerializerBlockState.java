@@ -7,12 +7,15 @@ import java.util.Optional;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.Property;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
@@ -68,7 +71,20 @@ public class SerializerBlockState implements ISerializer<BlockState> {
         
         for (final Property prop : toWrite.getProperties()) {
             
-            properties.addProperty(prop.getName(), prop.getName(toWrite.get(prop)));
+            if (prop instanceof IntegerProperty) {
+                               
+                properties.addProperty(prop.getName(), (int) toWrite.get(((IntegerProperty) prop)));
+            }
+            
+            else if (prop instanceof BooleanProperty) {
+                
+                properties.addProperty(prop.getName(), (boolean) toWrite.get(((BooleanProperty) prop)));
+            }
+            
+            else {
+                
+                properties.addProperty(prop.getName(), prop.getName(toWrite.get(prop)));
+            }
         }
         
         json.add("properties", properties);
