@@ -71,6 +71,7 @@ public class SerializerBlockState implements ISerializer<BlockState> {
             properties.addProperty(prop.getName(), prop.getName(toWrite.get(prop)));
         }
         
+        json.add("properties", properties);
         return json;
     }
     
