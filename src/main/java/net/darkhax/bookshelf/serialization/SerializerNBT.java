@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.minecraft.nbt.CompoundNBT;
@@ -27,6 +28,8 @@ public class SerializerNBT implements ISerializer<CompoundNBT> {
             
             if (json.isJsonObject()) {
                 
+                // Some numbers like shorts and array tags like IntArrayNBT can not be
+                // deserialized from objects due to NBT spec being dumb.
                 return JsonToNBT.getTagFromJson(GSON.toJson(json));
             }
             
@@ -45,7 +48,8 @@ public class SerializerNBT implements ISerializer<CompoundNBT> {
     @Override
     public JsonElement write (CompoundNBT toWrite) {
         
-        return GSON.toJsonTree(toWrite);
+        // While object is supported, some objects can never be deserialized properly.
+        return new JsonPrimitive(toWrite.toString());
     }
     
     @Override
