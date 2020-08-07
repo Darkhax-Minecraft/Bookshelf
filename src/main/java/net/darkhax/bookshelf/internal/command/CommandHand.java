@@ -8,6 +8,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.darkhax.bookshelf.Bookshelf;
+import net.darkhax.bookshelf.serialization.Serializers;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -50,7 +51,8 @@ public class CommandHand {
     public enum OutputType {
         
         STRING(OutputType::getAsString),
-        JSON(OutputType::getAsJson),
+        INGREDIENT(OutputType::getAsIngredient),
+        STACKJSON(OutputType::getAsStackJson),
         ID(OutputType::getAsID),
         HOLDER(OutputType::getAsHolder);
         
@@ -66,7 +68,7 @@ public class CommandHand {
             return stack.toString();
         }
         
-        private static String getAsJson (ItemStack stack) {
+        private static String getAsIngredient (ItemStack stack) {
             
             final JsonObject json = new JsonObject();
             json.addProperty("type", CraftingHelper.getID(stack.hasTag() ? NBTIngredient.Serializer.INSTANCE : VanillaIngredientSerializer.INSTANCE).toString());
@@ -79,6 +81,11 @@ public class CommandHand {
             }
             
             return json.toString();
+        }
+        
+        private static String getAsStackJson (ItemStack stack) {
+            
+            return Serializers.ITEMSTACK.write(stack).toString();
         }
         
         public static String getAsID (ItemStack stack) {
