@@ -1,5 +1,7 @@
 package net.darkhax.bookshelf.serialization;
 
+import java.util.UUID;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -27,6 +29,15 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class Serializers {
+    
+    public static final ISerializer<Byte> BYTE = SerializerByte.SERIALIZER;
+    public static final ISerializer<Short> SHORT = SerializerShort.SERIALIZER;
+    public static final ISerializer<Integer> INT = SerializerInteger.SERIALIZER;
+    public static final ISerializer<Long> LONG = SerializerLong.SERIALIZER;
+    public static final ISerializer<Float> FLOAT = SerializerFloat.SERIALIZER;
+    public static final ISerializer<Double> DOUBLE = SerializerDouble.SERIALIZER;
+    public static final ISerializer<String> STRING = SerializerString.SERIALIZER;
+    public static final ISerializer<UUID> UUID = SerializerUUID.SERIALIZER;
     
     public static final ISerializer<ResourceLocation> RESOURCE_LOCATION = SerializerResourceLocation.SERIALIZER;
     public static final ISerializer<EnchantmentData> ENCHANTMENT_DATA = SerializerEnchantmentData.SERIALIZER;
