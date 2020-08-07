@@ -1,7 +1,9 @@
 package net.darkhax.bookshelf.serialization;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -90,6 +92,66 @@ public interface ISerializer<T> {
     }
     
     default void writeList (PacketBuffer buffer, List<T> toWrite) {
+        
+        buffer.writeInt(toWrite.size());
+        toWrite.forEach(t -> this.write(buffer, t));
+    }
+    
+    default Set<T> readSet (JsonElement json) {
+        
+        final Set<T> set = new HashSet<>();
+        
+        if (json.isJsonArray()) {
+            
+            for (final JsonElement element : json.getAsJsonArray()) {
+                
+                set.add(this.read(element));
+            }
+        }
+        
+        else {
+            set.add(this.read(json));
+        }
+        
+        return set;
+    }
+    
+    default Set<T> readSet (JsonObject json, String memberName) {
+        
+        if (json.has(memberName)) {
+            
+            return this.readSet(json.get(memberName));
+        }
+        
+        throw new JsonParseException("Expected member " + memberName + " was not found.");
+    }
+    
+    default Set<T> readSet (JsonObject json, String memberName, Set<T> fallback) {
+        
+        return json.has(memberName) ? this.readSet(json, memberName) : fallback;
+    }
+    
+    default JsonElement writeSet (Set<T> toWrite) {
+        
+        final JsonArray json = new JsonArray();
+        toWrite.forEach(t -> json.add(this.write(t)));
+        return json;
+    }
+    
+    default Set<T> readSet (PacketBuffer buffer) {
+        
+        final int size = buffer.readInt();
+        final Set<T> set = new HashSet<>(size);
+        
+        for (int i = 0; i < size; i++) {
+            
+            set.add(this.read(buffer));
+        }
+        
+        return set;
+    }
+    
+    default void writeSet (PacketBuffer buffer, Set<T> toWrite) {
         
         buffer.writeInt(toWrite.size());
         toWrite.forEach(t -> this.write(buffer, t));
