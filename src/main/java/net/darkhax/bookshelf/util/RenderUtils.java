@@ -17,6 +17,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelRenderer;
+import net.minecraft.client.renderer.RenderState;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
@@ -145,5 +146,18 @@ public final class RenderUtils {
             
             renderer.renderQuadsFlat(world, state, pos, -1, OverlayTexture.NO_OVERLAY, true, matrix, buffer, unsidedQuads, BITS);
         }
+    }
+    
+    /**
+     * Directly get the name of a render state such as a RenderType. This field is normally
+     * private and has been made accessible through access transformers. This method is
+     * required for use in dev environments.
+     * 
+     * @param state The state to get the name of.
+     * @return The name of the state.
+     */
+    public static String getName (RenderState state) {
+        
+        return state.name;
     }
 }
