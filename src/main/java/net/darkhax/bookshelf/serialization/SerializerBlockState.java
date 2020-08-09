@@ -7,7 +7,6 @@ import java.util.Optional;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
 import net.darkhax.bookshelf.Bookshelf;
@@ -72,13 +71,13 @@ public class SerializerBlockState implements ISerializer<BlockState> {
         for (final Property prop : toWrite.getProperties()) {
             
             if (prop instanceof IntegerProperty) {
-                               
-                properties.addProperty(prop.getName(), (int) toWrite.get(((IntegerProperty) prop)));
+                
+                properties.addProperty(prop.getName(), (int) toWrite.get((IntegerProperty) prop));
             }
             
             else if (prop instanceof BooleanProperty) {
                 
-                properties.addProperty(prop.getName(), (boolean) toWrite.get(((BooleanProperty) prop)));
+                properties.addProperty(prop.getName(), (boolean) toWrite.get((BooleanProperty) prop));
             }
             
             else {
