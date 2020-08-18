@@ -38,17 +38,17 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 minecraft {
 
     mappings channel: 'snapshot', version: "${mcp_version}".toString()
-	
+    
     if (project.hasProperty('mod_at')) {
     
         accessTransformer = file(findProperty('mod_at'))
     }
-	
+    
     runs {
         client {
-		
+        
             workingDirectory project.file('run')
-			taskName "${mod_name}".replaceAll("\\s","") + 'Client'
+            taskName "${mod_name}".replaceAll("\\s","") + 'Client'
 
             mods {
                 bookshelf {
@@ -59,8 +59,8 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-			taskName "${mod_name}".replaceAll("\\s","") + 'Server'
-			
+            taskName "${mod_name}".replaceAll("\\s","") + 'Server'
+            
             mods {
                 bookshelf {
                     source sourceSets.main
@@ -126,23 +126,23 @@ processResources {
         exclude 'META-INF/mods.toml'
     }
     
-	doLast {
-	
-	    def jsonMinifyStart = System.currentTimeMillis()
-	    def jsonMinified = 0
-		def jsonBytesSaved = 0
-		
-	    fileTree(dir: outputs.files.asPath, include: '**/*.json').each {
-		
-			File file = it
-			jsonMinified++
-			def oldLength = file.length()
-			file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
-			jsonBytesSaved += oldLength - file.length()
-		}
-		
-		println('Minified ' + jsonMinified + ' json files. Saved ' + jsonBytesSaved + ' bytes. Took ' + (System.currentTimeMillis() - jsonMinifyStart) + 'ms.')
-	}
+    doLast {
+    
+        def jsonMinifyStart = System.currentTimeMillis()
+        def jsonMinified = 0
+        def jsonBytesSaved = 0
+        
+        fileTree(dir: outputs.files.asPath, include: '**/*.json').each {
+        
+            File file = it
+            jsonMinified++
+            def oldLength = file.length()
+            file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+            jsonBytesSaved += oldLength - file.length()
+        }
+        
+        println('Minified ' + jsonMinified + ' json files. Saved ' + jsonBytesSaved + ' bytes. Took ' + (System.currentTimeMillis() - jsonMinifyStart) + 'ms.')
+    }
 }
 
 curseforge {
@@ -192,72 +192,45 @@ curseforge {
     }
 }
 
-task signJar(type: SignJar, dependsOn: jar) {
-
-    onlyIf {
-    
-        project.hasProperty('keyStore')
-    }
-    
-	if (project.hasProperty('keyStore')) {
-	
-	    project.logger.lifecycle('Signing jar ' + jar.archivePath.getName());
-	
-        keyStore = project.findProperty('keyStore')
-        alias = project.findProperty('keyStoreAlias')
-        storePass = project.findProperty('keyStorePass')
-        keyPass = project.findProperty('keyStoreKeyPass')
-        inputFile = jar.archivePath
-        outputFile = jar.archivePath
-	}
-	
-	else {
-	
-	    project.logger.lifecycle('Could not sign ' + jar.archivePath.getName() + '. No keyStore property could be found')
-	}
-}
-
-//build.dependsOn signJar
-
 tasks.getByName("curseforge").doLast {
     
-	try {
-		// Reads the file ID given to us by CurseForge
-		def newFileId = tasks.getByName("curseforge${curse_project}").property('mainArtifact').fileID
+    try {
+        // Reads the file ID given to us by CurseForge
+        def newFileId = tasks.getByName("curseforge${curse_project}").property('mainArtifact').fileID
     
-		// The payload body for the message sent to the Discord webhook.
-		def body = [
-			'username': project.findProperty('mod_name'),
-			'embeds': [
-				[
-					'description': "${project.findProperty('mod_name')} ${version} for Minecraft ${project.findProperty('curse_versions')} has been released! The download will be available once CurseForge has reviewed the file.",
-					'fields': [
-						[
-							'name': 'Download',
-							'value': "${project.findProperty('curse_page')}/files/$newFileId",
-							'inline': false
-						],
-						[
-							'name': 'Changelog',
-							'value': "${getGitChangelog() ?: 'Unavailable :('}",
-							'inline': false
-						]
-					]
-				]
-			]
-		]
+        // The payload body for the message sent to the Discord webhook.
+        def body = [
+            'username': project.findProperty('mod_name'),
+            'embeds': [
+                [
+                    'description': "${project.findProperty('mod_name')} ${version} for Minecraft ${project.findProperty('curse_versions')} has been released! The download will be available once CurseForge has reviewed the file.",
+                    'fields': [
+                        [
+                            'name': 'Download',
+                            'value': "${project.findProperty('curse_page')}/files/$newFileId",
+                            'inline': false
+                        ],
+                        [
+                            'name': 'Changelog',
+                            'value': "${getGitChangelog() ?: 'Unavailable :('}",
+                            'inline': false
+                        ]
+                    ]
+                ]
+            ]
+        ]
 
-		// Opens a connection to Discord's webhook and writes the payload JSON.
-		def req = new URL(project.findProperty('discordCFWebhook')).openConnection()
-		req.setRequestMethod('POST')
-		req.setRequestProperty('Content-Type', 'application/json; charset=UTF-8')
-		req.setRequestProperty('User-Agent', "${project.findProperty('mod_name')} CF Gradle Webhook")
-		req.setDoOutput(true)
-		req.getOutputStream().write(JsonOutput.toJson(body).getBytes("UTF-8"))
+        // Opens a connection to Discord's webhook and writes the payload JSON.
+        def req = new URL(project.findProperty('discordCFWebhook')).openConnection()
+        req.setRequestMethod('POST')
+        req.setRequestProperty('Content-Type', 'application/json; charset=UTF-8')
+        req.setRequestProperty('User-Agent', "${project.findProperty('mod_name')} CF Gradle Webhook")
+        req.setDoOutput(true)
+        req.getOutputStream().write(JsonOutput.toJson(body).getBytes("UTF-8"))
 
-		// We need to attempt a read in order to actually send the message.
-		println "Discord Status code: ${req.getResponseCode()}"
-	    println "Discord Webhook Response: ${req.getInputStream().getText()}"
+        // We need to attempt a read in order to actually send the message.
+        println "Discord Status code: ${req.getResponseCode()}"
+        println "Discord Webhook Response: ${req.getInputStream().getText()}"
     }
     
     catch (IOException e) {

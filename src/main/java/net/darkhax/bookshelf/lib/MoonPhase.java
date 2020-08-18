@@ -4,6 +4,7 @@ import com.google.common.primitives.Ints;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -58,6 +59,6 @@ public enum MoonPhase {
     @OnlyIn(Dist.CLIENT)
     public static MoonPhase getCurrentPhase () {
         
-        return getPhase(Minecraft.getInstance().world.getMoonPhase());
+        return getPhase(Minecraft.getInstance().world.func_242414_af());
     }
 }
