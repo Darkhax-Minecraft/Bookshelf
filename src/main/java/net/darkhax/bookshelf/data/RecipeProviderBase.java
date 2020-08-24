@@ -46,6 +46,7 @@ public abstract class RecipeProviderBase<T extends IFinishedRecipe> extends Reci
      * 
      * @return The recipe consumer used to add recipes to the generator.
      */
+    @Nullable
     public Consumer<IFinishedRecipe> getRecipeConsumer () {
         
         return this.recipes;
@@ -68,7 +69,7 @@ public abstract class RecipeProviderBase<T extends IFinishedRecipe> extends Reci
      * @param recipes The normal recipe consumer. This will be the same value as
      *        {@link #getRecipeConsumer()}.
      */
-    abstract void register (Consumer<IFinishedRecipe> recipes);
+    public abstract void register (Consumer<IFinishedRecipe> recipes);
     
     /**
      * Gets the modid that owns the recipes being generated. Can be used by helper functions to
@@ -76,5 +77,5 @@ public abstract class RecipeProviderBase<T extends IFinishedRecipe> extends Reci
      * 
      * @return The modid that owns the recipe provider.
      */
-    abstract String getModId ();
+    public abstract String getModId ();
 }
