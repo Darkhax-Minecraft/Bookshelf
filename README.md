@@ -1,16 +1,15 @@
-Bookshelf [![](http://cf.way2muchnoise.eu/228525.svg)](https://minecraft.curseforge.com/projects/bookshelf) [![](http://cf.way2muchnoise.eu/versions/228525.svg)](https://minecraft.curseforge.com/projects/bookshelf)
-=========
+# Bookshelf [![](http://cf.way2muchnoise.eu/228525.svg)](https://minecraft.curseforge.com/projects/bookshelf) [![](http://cf.way2muchnoise.eu/versions/228525.svg)](https://minecraft.curseforge.com/projects/bookshelf)
+
 Bookshelf is a mod that expands upon Forge and Minecraft by adding new utilities, hooks and events which are publicly available to mod authors. 
 
 [![Nodecraft](https://nodecraft.com/assets/images/logo-dark.png)](https://nodecraft.com/r/darkhax)
 This project is sponsored by Nodecraft. Use code [Darkhax](https://nodecraft.com/r/darkhax) for 30% off your first month of service!
 
-Compilation
-===========
+# Compilation
+
 It is easy to build Bookshelf from the repository by using Forge Gradle. Bookshelf makes use of the Forge Gradle Wrapper, which is included as part of the repository. To compile the mod, simply clone or download the repository and run the 'gradlew build' command from the command line, from within the project directory. An obfuscated jar and a dev jar will be generated in the build/libs folder. 
 
-Dependency Management
-=====================
+# Dependency Management
 
 If you are using [Gradle](https://gradle.org) to manage your dependencies, add the following into your `build.gradle` file. Make sure to replace the version with the correct one. All versions can be viewed [here](https://maven.mcmoddev.com/net/darkhax/bookshelf/Bookshelf-1.12.2/).
 ```
@@ -25,8 +24,8 @@ dependencies {
 }
 ```
 
-Credits
-=======
+# Credits
+
 [ChickenBones](https://twitter.com/ChickenBones2)  
 [CyanideX](https://twitter.com/theCyanideX)  
 [Darkhax](https://twitter.com/Darkh4x)  
