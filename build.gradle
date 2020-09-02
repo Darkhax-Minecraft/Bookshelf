@@ -314,7 +314,8 @@ task publishDiluv (type: TaskDiluvUpload) {
 			if (errorInfo != null) {
 			
 			    def embed = new Embed();
-				embed.addField("Project Version", version, false);
+				embed.addField("Project Version", version, true);
+				embed.addField("Project ID", findProperty('diluv_project'), true);
 				embed.addField("Type", errorInfo.type, false);
 				embed.addField("Message", errorInfo.message, false);
 				embed.setColor(0xcf000f);
