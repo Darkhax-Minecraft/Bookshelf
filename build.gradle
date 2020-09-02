@@ -288,42 +288,42 @@ task publishDiluv (type: TaskDiluvUpload) {
     
     doLast {
     
-	    def webhook = new Webhook(findProperty('diluv_discord_webhook'), "${project.findProperty('mod_name')} Gradle Upload");
+        def webhook = new Webhook(findProperty('diluv_discord_webhook'), "${project.findProperty('mod_name')} Gradle Upload");
         def message = new Message();
-		
-		message.setUsername(findProperty('mod_name'));
+        
+        message.setUsername(findProperty('mod_name'));
         message.setAvatarUrl("https://download.nodecdn.net/containers/diluvstaging/games/minecraft-je/forge-mods/${findProperty('diluv_project')}/logo.png");
-			
-	    if (wasUploadSuccessful()) {
-		
+            
+        if (wasUploadSuccessful()) {
+        
             message.setContent("${project.findProperty('mod_name')} ${version} for Minecraft ${findProperty('minecraft_version')} has been released! The download will be publicly usable soon.");
         
             def embed = new Embed();
             embed.addField('Download', "[**NodeCDN Download Link**](${uploadInfo.downloadURL})", false);
             embed.addField('Change Log', "${getGitChangelog() ?: 'Unavailable :('}", false);
             embed.setFooter(new Footer("Uploaded by ${uploadInfo.uploaderDisplayName}"));
-			embed.setColor(0x009944);
-			
+            embed.setColor(0x009944);
+            
             message.addEmbed(embed);
-		}
-		
-		else {
-		    
-			message.setContent("There was an error uploading to Diluv :(");
-			
-			if (errorInfo != null) {
-			
-			    def embed = new Embed();
-				embed.addField("Project Version", version, true);
-				embed.addField("Project ID", findProperty('diluv_project'), true);
-				embed.addField("Type", errorInfo.type, false);
-				embed.addField("Message", errorInfo.message, false);
-				embed.setColor(0xcf000f);
-				
-				message.addEmbed(embed);
-			}
-		}
-		
-		webhook.sendMessage(message);
+        }
+        
+        else {
+            
+            message.setContent("There was an error uploading to Diluv :(");
+            
+            if (errorInfo != null) {
+            
+                def embed = new Embed();
+                embed.addField("Project Version", version, true);
+                embed.addField("Project ID", findProperty('diluv_project'), true);
+                embed.addField("Type", errorInfo.type, false);
+                embed.addField("Message", errorInfo.message, false);
+                embed.setColor(0xcf000f);
+                
+                message.addEmbed(embed);
+            }
+        }
+        
+        webhook.sendMessage(message);
     }
 }
