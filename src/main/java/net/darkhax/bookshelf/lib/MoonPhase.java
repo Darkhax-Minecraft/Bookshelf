@@ -4,7 +4,6 @@ import com.google.common.primitives.Ints;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
