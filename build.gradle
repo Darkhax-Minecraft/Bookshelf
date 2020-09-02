@@ -279,7 +279,7 @@ import com.diluv.schoomp.message.embed.Footer
 
 task publishDiluv (type: TaskDiluvUpload) {
 
-    failSilently = true;
+    //failSilently = true;
     apiURL = findProperty('diluv_api')
     token = findProperty('diluv_token')
     projectId = findProperty('diluv_project')
