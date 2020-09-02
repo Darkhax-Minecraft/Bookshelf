@@ -205,7 +205,7 @@ tasks.getByName("curseforge").doLast {
         // Reads the file ID given to us by CurseForge
         def newFileId = tasks.getByName("curseforge${curse_project}").property('mainArtifact').fileID
     
-        def webhook = new Webhook(findProperty('diluv_discord_webhook'), "${project.findProperty('mod_name')} Gradle Upload");
+        def webhook = new Webhook(findProperty('discordCFWebhook'), "${project.findProperty('mod_name')} Gradle Upload");
         
         def message = new Message();        
         message.setUsername(findProperty('mod_name'));
