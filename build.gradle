@@ -8,7 +8,7 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
         classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
-        classpath group: 'com.diluv.diluvgradle', name: 'DiluvGradle', version: '1.2.1'
+        classpath group: 'gradle.plugin.com.diluv.diluvgradle', name: 'DiluvGradle', version: '1.2.1'
         classpath group: 'com.diluv.schoomp', name: 'Schoomp', version: '1.1.0'
     }
 }
