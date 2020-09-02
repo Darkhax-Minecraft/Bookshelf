@@ -27,6 +27,10 @@ apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Co
 import net.minecraftforge.gradle.common.task.SignJar
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
+import com.diluv.schoomp.Webhook
+import com.diluv.schoomp.message.Message
+import com.diluv.schoomp.message.embed.Embed
+import com.diluv.schoomp.message.embed.Footer
 
 if (project.hasProperty('secretFile')) {
     loadSecrets(new File((String) findProperty('secretFile')))
@@ -197,42 +201,23 @@ curseforge {
 tasks.getByName("curseforge").doLast {
     
     try {
+    
         // Reads the file ID given to us by CurseForge
         def newFileId = tasks.getByName("curseforge${curse_project}").property('mainArtifact').fileID
     
-        // The payload body for the message sent to the Discord webhook.
-        def body = [
-            'username': project.findProperty('mod_name'),
-            'embeds': [
-                [
-                    'description': "${project.findProperty('mod_name')} ${version} for Minecraft ${project.findProperty('curse_versions')} has been released! The download will be available once CurseForge has reviewed the file.",
-                    'fields': [
-                        [
-                            'name': 'Download',
-                            'value': "${project.findProperty('curse_page')}/files/$newFileId",
-                            'inline': false
-                        ],
-                        [
-                            'name': 'Changelog',
-                            'value': "${getGitChangelog() ?: 'Unavailable :('}",
-                            'inline': false
-                        ]
-                    ]
-                ]
-            ]
-        ]
+        def webhook = new Webhook(findProperty('diluv_discord_webhook'), "${project.findProperty('mod_name')} Gradle Upload");
+        
+        def message = new Message();        
+        message.setUsername(findProperty('mod_name'));
+        message.setContent("${project.findProperty('mod_name')} ${version} for Minecraft ${findProperty('minecraft_version')} has been released! The download will be public soon.");
+        
+        def embed = new Embed();
+        embed.addField('Download', "${project.findProperty('curse_page')}/files/$newFileId", false);
+        embed.addField('Change Log', "${getGitChangelog() ?: 'Unavailable :('}", false);
+        embed.setColor(0xFF8000);           
+        message.addEmbed(embed);
 
-        // Opens a connection to Discord's webhook and writes the payload JSON.
-        def req = new URL(project.findProperty('discordCFWebhook')).openConnection()
-        req.setRequestMethod('POST')
-        req.setRequestProperty('Content-Type', 'application/json; charset=UTF-8')
-        req.setRequestProperty('User-Agent', "${project.findProperty('mod_name')} CF Gradle Webhook")
-        req.setDoOutput(true)
-        req.getOutputStream().write(JsonOutput.toJson(body).getBytes("UTF-8"))
-
-        // We need to attempt a read in order to actually send the message.
-        println "Discord Status code: ${req.getResponseCode()}"
-        println "Discord Webhook Response: ${req.getInputStream().getText()}"
+        webhook.sendMessage(message);
     }
     
     catch (IOException e) {
@@ -272,10 +257,6 @@ task updateVersionTracker {
 }
 
 import com.diluv.diluvgradle.TaskDiluvUpload
-import com.diluv.schoomp.Webhook
-import com.diluv.schoomp.message.Message
-import com.diluv.schoomp.message.embed.Embed
-import com.diluv.schoomp.message.embed.Footer
 
 task publishDiluv (type: TaskDiluvUpload) {
 
