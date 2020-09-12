@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 
+import net.darkhax.bookshelf.serialization.Serializers;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.loot.LootContext;
@@ -38,6 +39,14 @@ public class ModifierAddItem extends LootModifier {
             
             final ItemStack item = ShapedRecipe.deserializeItem(data.getAsJsonObject("item"));
             return new ModifierAddItem(conditions, item);
+        }
+        
+        @Override
+        public JsonObject write (ModifierAddItem instance) {
+            
+            final JsonObject json = new JsonObject();
+            json.add("item", Serializers.ITEMSTACK.write(instance.toAdd));
+            return json;
         }
     }
 }

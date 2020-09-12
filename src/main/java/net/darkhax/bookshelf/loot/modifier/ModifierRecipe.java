@@ -89,6 +89,12 @@ public class ModifierRecipe extends LootModifier {
                 
                 return function.apply(ailootcondition);
             }
+            
+            @Override
+            public JsonObject write (ModifierRecipe instance) {
+                
+                return new JsonObject();
+            }
         };
     }
 }

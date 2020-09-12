@@ -24,6 +24,12 @@ public class ModifierClear extends LootModifier {
             
             return new ModifierClear(ailootcondition);
         }
+        
+        @Override
+        public JsonObject write (ModifierClear instance) {
+            
+            return new JsonObject();
+        }
     };
     
     private ModifierClear(ILootCondition[] conditionsIn) {

@@ -30,6 +30,12 @@ public class ModifierSilkTouch extends LootModifier {
             
             return new ModifierSilkTouch(ailootcondition);
         }
+        
+        @Override
+        public JsonObject write (ModifierSilkTouch instance) {
+            
+            return new JsonObject();
+        }
     };
     
     private ModifierSilkTouch(ILootCondition[] conditionsIn) {

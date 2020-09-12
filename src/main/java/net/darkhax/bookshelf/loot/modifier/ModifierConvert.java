@@ -63,5 +63,19 @@ public class ModifierConvert extends LootModifier {
             final float chance = JSONUtils.getFloat(data, "chance", 1f);
             return new ModifierConvert(conditions, tableName, chance);
         }
+        
+        @Override
+        public JsonObject write (ModifierConvert instance) {
+            
+            final JsonObject json = new JsonObject();
+            json.addProperty("table", instance.tableName.toString());
+            
+            if (instance.chance > 0f) {
+                
+                json.addProperty("chance", instance.chance);
+            }
+            
+            return json;
+        }
     }
 }
