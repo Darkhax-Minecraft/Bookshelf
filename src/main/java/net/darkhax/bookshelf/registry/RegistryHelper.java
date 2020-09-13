@@ -20,10 +20,13 @@ import net.minecraftforge.eventbus.api.IEventBus;
 
 public class RegistryHelper {
     
+    public final String modid;
+    
     public final CommandRegistry commands;
     public final TradeRegistry trades;
     public final RecipeTypeRegistry recipeTypes;
     public final IngredientRegistry ingredients;
+    public final ForgeRegistryRegistryHelper registries;
     
     public final ForgeRegistryHelper<Block> blocks;
     public final ForgeRegistryHelper<Item> items;
@@ -40,10 +43,13 @@ public class RegistryHelper {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public RegistryHelper(String modid, Logger logger) {
         
+        this.modid = modid;
+        
         this.commands = new CommandRegistry(logger);
         this.trades = new TradeRegistry(logger);
         this.recipeTypes = new RecipeTypeRegistry(modid, logger);
         this.ingredients = new IngredientRegistry(modid, logger);
+        this.registries = new ForgeRegistryRegistryHelper(modid, logger);
         
         this.blocks = new ForgeRegistryHelper<>(logger, modid, Block.class);
         this.items = new ForgeRegistryHelper<>(logger, modid, Item.class);
@@ -76,6 +82,7 @@ public class RegistryHelper {
         this.trades.initialize(modBus);
         this.recipeTypes.initialize(modBus);
         this.ingredients.initialize(modBus);
+        this.registries.initialize(modBus);
         
         this.blocks.initialize(modBus);
         this.items.initialize(modBus);
