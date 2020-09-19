@@ -17,6 +17,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
@@ -41,20 +42,16 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 /**
- * This class is released for public use via the Waive Clause of the Botania License.<br /> You
+ * This class is released for public use via the Waive Clause of the Botania License. You
  * are encouraged to copy and use it. Keep the marker file path the same so multiple mods don't
- * show the screen at once.<br /> If you are uncomfortable with the network access to ip-api,
- * feel free to remove it. The fallback is to examine the computer's current locale.<br /> <br
- * /> Quick Usage Guide: <li>Copy to your mod</li> <li>Call {@link #init} from
- * {@link net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent}</li> <li>Replace
- * {@link #BRAND} with your mod or group name.</li> 
+ * show the screen at once. If you are uncomfortable with the network access to ip-api,
+ * feel free to remove it. The fallback is to examine the computer's current locale.
  * 
- * <br><br> 
- * Note: This is a modified version of the original class. These are the main changes. 
- * <li>Automatically registers itself, no need for calling init.</li>
- * <li>Better setup handling that minimizes usage when the screen is disabled.</li> 
- * <li>Removed ip-api code for privacy and request volume concerns.</li>
- * <li>Slightly decreased the time each message takes to display.</li>
+ * Note: This is a modified version of the original class. These are the main changes.
+ * - Automatically registers itself, no need for calling init.
+ * - Better setup handling that minimizes usage when the screen is disabled.
+ * - Removed ip-api code for privacy and request volume concerns.
+ * - Slightly decreased the time each message takes to display.
  */
 @EventBusSubscriber(modid = Bookshelf.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class GoVoteHandler {
@@ -66,7 +63,7 @@ public class GoVoteHandler {
     private static boolean shownThisSession = false;
     
     private static volatile boolean markerAlreadyExists = false;
-    private static volatile String countryCode = "US"; // Locale.getDefault().getCountry();
+    private static volatile String countryCode = Locale.getDefault().getCountry();
     
     @SubscribeEvent
     public static void init (FMLClientSetupEvent event) {
