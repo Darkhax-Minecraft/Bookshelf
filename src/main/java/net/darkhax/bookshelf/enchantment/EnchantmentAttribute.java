@@ -25,7 +25,6 @@ public class EnchantmentAttribute extends EnchantmentTicking {
     
     public EnchantmentAttribute(Rarity rarity, EnchantmentType type, EquipmentSlotType... slots) {
         
-        
         super(rarity, type, slots);
     }
     
@@ -44,32 +43,32 @@ public class EnchantmentAttribute extends EnchantmentTicking {
         
         final AttributeModifierManager attributeMap = living.getAttributeManager();
         
-        for(Entry<Attribute, AttributeModifier> entry : this.getModifiers(level).entrySet()) {
+        for (final Entry<Attribute, AttributeModifier> entry : this.getModifiers(level).entrySet()) {
             
             final ModifiableAttributeInstance modifiable = attributeMap.createInstanceIfAbsent(entry.getKey());
             
             if (modifiable != null) {
                 
-               modifiable.removeModifier(entry.getValue());
+                modifiable.removeModifier(entry.getValue());
             }
-         }        
+        }
     }
     
     protected void applyModifiers (LivingEntity living, int level) {
         
         final AttributeModifierManager attributeMap = living.getAttributeManager();
         
-        for(Entry<Attribute, AttributeModifier> entry : this.getModifiers(level).entrySet()) {
+        for (final Entry<Attribute, AttributeModifier> entry : this.getModifiers(level).entrySet()) {
             
             final ModifiableAttributeInstance modifiable = attributeMap.createInstanceIfAbsent(entry.getKey());
             
             if (modifiable != null) {
                 
-               final AttributeModifier effectModifier = entry.getValue();
-               modifiable.removeModifier(effectModifier);
-               modifiable.applyPersistentModifier(effectModifier);
+                final AttributeModifier effectModifier = entry.getValue();
+                modifiable.removeModifier(effectModifier);
+                modifiable.applyPersistentModifier(effectModifier);
             }
-         }
+        }
     }
     
     @Override
