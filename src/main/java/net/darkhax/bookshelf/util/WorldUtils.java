@@ -14,6 +14,7 @@ import java.util.function.Predicate;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.SharedSeedRandom;
@@ -141,5 +142,18 @@ public final class WorldUtils {
         }
         
         return depth;
+    }
+    
+    /**
+     * Sends a vanilla packet to all players who are aware of a chunk.
+     * 
+     * @param world The world to send within.
+     * @param chunkPos The position of the chunk to send to.
+     * @param packet The packet to send to all players.
+     * @param boundaryOnly Whether or not you only want chunks at the end of the view distance.
+     */
+    public static void sendToTracking (ServerWorld world, ChunkPos chunkPos, IPacket<?> packet, boolean boundaryOnly) {
+        
+        world.getChunkProvider().chunkManager.getTrackingPlayers(chunkPos, boundaryOnly).forEach(p -> p.connection.sendPacket(packet));
     }
 }
