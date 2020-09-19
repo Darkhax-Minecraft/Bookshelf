@@ -20,6 +20,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelRenderer;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderState;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -29,6 +31,9 @@ import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.crash.ReportedException;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -36,6 +41,7 @@ import net.minecraft.world.IBlockDisplayReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
 
@@ -200,5 +206,102 @@ public final class RenderUtils {
         }
         
         return RenderTypeLookup.func_239221_b_(state);
+    }
+    
+    /**
+     * Renders a block state into the world.
+     * @param state The state to render.
+     * @param world The world context to render into.
+     * @param pos The position of the block.
+     * @param matrix The render matrix.
+     * @param buffer The render buffer.
+     * @param preferredSides The sides to render, allows faces to be culled. Will be ignored if Optifine is installed.
+     */
+    public static void renderState (BlockState state, World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer, Direction[] preferredSides) {
+        
+        if (!ModUtils.isOptifineLoaded()) {
+            
+            renderBlock(state, world, pos, matrix, buffer, preferredSides);
+        }
+        
+        else {
+            
+            renderBlock(state, world, pos, matrix, buffer);
+        }
+    }
+    
+    /**
+     * Renders a block state into the world.
+     * @param state The state to render.
+     * @param world The world context to render into.
+     * @param pos The position of the block.
+     * @param matrix The render matrix.
+     * @param buffer The render buffer.
+     * @param preferredSides The sides to render, allows faces to be culled.
+     */
+    private static void renderBlock (BlockState state, World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer, Direction[] renderSides) {
+        
+        final BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
+        final IBakedModel model = dispatcher.getModelForState(state);
+        
+        final RenderType type = RenderUtils.findRenderType(state);
+        
+        if (type != null) {
+            
+            ForgeHooksClient.setRenderLayer(type);
+            
+            final IVertexBuilder builder = buffer.getBuffer(type);
+            RenderUtils.renderModel(dispatcher.getBlockModelRenderer(), world, model, state, pos, matrix, builder, renderSides);
+            
+            ForgeHooksClient.setRenderLayer(null);
+        }
+    }
+    
+    /**
+     * Renders a block state into the world. This only exists for optifine compatibility mode.
+     * @param state The state to render.
+     * @param world The world context to render into.
+     * @param pos The position of the block.
+     * @param matrix The render matrix.
+     * @param buffer The render buffer.
+     */
+    private static void renderBlock (BlockState state, World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer) {
+        
+        final BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
+        final IBakedModel model = dispatcher.getModelForState(state);
+        final boolean useAO = Minecraft.isAmbientOcclusionEnabled() && state.getLightValue(world, pos) == 0 && model.isAmbientOcclusion();
+        
+        final RenderType type = RenderUtils.findRenderType(state);
+        
+        if (type != null) {
+            
+            ForgeHooksClient.setRenderLayer(type);
+            
+            final IVertexBuilder builder = buffer.getBuffer(type);
+            renderModel(dispatcher.getBlockModelRenderer(), useAO, world, model, state, pos, matrix, builder, false, OverlayTexture.NO_OVERLAY);
+            
+            ForgeHooksClient.setRenderLayer(null);
+        }
+    }
+    
+    /**
+     * This only exists for optifine compatibility mode.
+     */
+    private static boolean renderModel (BlockModelRenderer renderer, boolean useAO, IBlockDisplayReader world, IBakedModel model, BlockState state, BlockPos pos, MatrixStack matrix, IVertexBuilder buffer, boolean checkSides, int overlay) {
+        
+        try {
+            
+            final IModelData modelData = model.getModelData(world, pos, state, EmptyModelData.INSTANCE);
+            return useAO ? renderer.renderModelSmooth(world, model, state, pos, matrix, buffer, checkSides, RANDOM, 0L, overlay, modelData) : renderer.renderModelFlat(world, model, state, pos, matrix, buffer, checkSides, RANDOM, 0L, overlay, modelData);
+        }
+        
+        catch (final Throwable throwable) {
+            
+            final CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Tesselating block model");
+            final CrashReportCategory crashreportcategory = crashreport.makeCategory("Block model being tesselated");
+            CrashReportCategory.addBlockInfo(crashreportcategory, pos, state);
+            crashreportcategory.addDetail("Using AO", useAO);
+            throw new ReportedException(crashreport);
+        }
     }
 }
