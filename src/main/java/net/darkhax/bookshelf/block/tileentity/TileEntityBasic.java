@@ -7,8 +7,10 @@
  */
 package net.darkhax.bookshelf.block.tileentity;
 
+import net.darkhax.bookshelf.util.WorldUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
@@ -16,6 +18,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.LazyValue;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 
 public abstract class TileEntityBasic extends TileEntity {
@@ -62,15 +65,35 @@ public abstract class TileEntityBasic extends TileEntity {
     }
     
     /**
-     * Marks the tile entity for a block update. This will mark the block as dirty, sync the
-     * NBT from server to client, and cause a block update. Keep in mind that this should be
-     * used only when necessary to prevent lag!
+     * Please use {@link #sync(boolean)} instead. There are performance issues caused by
+     * updating the renderer every time.
      */
+    @Deprecated
     public void sync () {
         
-        this.markDirty();
-        final BlockState state = this.getState();
-        this.getWorld().notifyBlockUpdate(this.pos, state, state, BlockFlags.DEFAULT_AND_RERENDER);
+        this.sync(true);
+    }
+    
+    /**
+     * Synchronizes the server state of the tile with all clients tracking it.
+     * 
+     * @param renderUpdate Whether or not a render update should happen as well. Only use this
+     *        if you need to change the block model.
+     */
+    public void sync (boolean renderUpdate) {
+        
+        if (renderUpdate) {
+            
+            this.markDirty();
+            final BlockState state = this.getState();
+            this.world.notifyBlockUpdate(this.pos, state, state, BlockFlags.DEFAULT_AND_RERENDER);
+        }
+        
+        else if (this.world instanceof ServerWorld) {
+            
+            final IPacket<?> packet = this.getUpdatePacket();
+            WorldUtils.sendToTracking((ServerWorld) this.world, this.getChunkPos(), packet, false);
+        }
     }
     
     /**
