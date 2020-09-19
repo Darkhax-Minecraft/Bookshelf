@@ -13,14 +13,19 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.LazyValue;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 
 public abstract class TileEntityBasic extends TileEntity {
     
+    private final LazyValue<ChunkPos> chunkPos;
+    
     public TileEntityBasic(TileEntityType<?> tileEntityType) {
         
         super(tileEntityType);
+        this.chunkPos = new LazyValue<>( () -> new ChunkPos(this.pos));
     }
     
     @Override
@@ -96,6 +101,18 @@ public abstract class TileEntityBasic extends TileEntity {
     public BlockState getState () {
         
         return this.isLoaded() ? this.getWorld().getBlockState(this.pos) : null;
+    }
+    
+    /**
+     * Gets the current chunk position of the tile. This is used to optimize chunk related
+     * calculations. The chunk position is not serialized with the tile entity and is
+     * initialized on demand.
+     * 
+     * @return The ChunkPos that this tile entity is within.
+     */
+    public ChunkPos getChunkPos () {
+        
+        return this.chunkPos.getValue();
     }
     
     /**
