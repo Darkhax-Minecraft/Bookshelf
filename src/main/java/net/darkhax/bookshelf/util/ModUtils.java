@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.util.LazyValue;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.ModContainer;
@@ -19,6 +20,34 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public final class ModUtils {
+    
+    /**
+     * Tracks whether or not Optifine is installed. Allows for better compatibility with
+     * Optifine.
+     */
+    private static LazyValue<Boolean> isOptifinePresent = new LazyValue<>( () -> {
+        
+        try {
+            
+            final Class<?> clazz = Class.forName("net.optifine.Config");
+            return clazz != null;
+        }
+        
+        catch (final Exception e) {
+            
+            return false;
+        }
+    });
+    
+    /**
+     * Checks whether or not Optifine is loaded.
+     * 
+     * @return Whether or not optifine is loaded.
+     */
+    public static boolean isOptifineLoaded () {
+        
+        return isOptifinePresent.getValue();
+    }
     
     /**
      * Checks if a mod is present in the mod list.
