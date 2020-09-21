@@ -210,12 +210,14 @@ public final class RenderUtils {
     
     /**
      * Renders a block state into the world.
+     * 
      * @param state The state to render.
      * @param world The world context to render into.
      * @param pos The position of the block.
      * @param matrix The render matrix.
      * @param buffer The render buffer.
-     * @param preferredSides The sides to render, allows faces to be culled. Will be ignored if Optifine is installed.
+     * @param preferredSides The sides to render, allows faces to be culled. Will be ignored if
+     *        Optifine is installed.
      */
     public static void renderState (BlockState state, World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer, Direction[] preferredSides) {
         
@@ -232,6 +234,7 @@ public final class RenderUtils {
     
     /**
      * Renders a block state into the world.
+     * 
      * @param state The state to render.
      * @param world The world context to render into.
      * @param pos The position of the block.
@@ -259,6 +262,7 @@ public final class RenderUtils {
     
     /**
      * Renders a block state into the world. This only exists for optifine compatibility mode.
+     * 
      * @param state The state to render.
      * @param world The world context to render into.
      * @param pos The position of the block.
