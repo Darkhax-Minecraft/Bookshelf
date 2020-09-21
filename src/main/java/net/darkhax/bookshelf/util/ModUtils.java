@@ -17,6 +17,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public final class ModUtils {
@@ -215,5 +216,16 @@ public final class ModUtils {
         }
         
         return null;
+    }
+    
+    /**
+     * Gets the name of the currently active mod. This should be used for debugging only as it
+     * only works during certain load phases.
+     * 
+     * @return The name of the currently active mod.
+     */
+    public static String getActiveMod () {
+        
+        return ModLoadingContext.get().getActiveNamespace();
     }
 }
