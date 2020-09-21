@@ -54,7 +54,6 @@ minecraft {
         
             workingDirectory project.file('run')
             taskName "${mod_name}".replaceAll("\\s","") + 'Client'
-            property 'forge.logging.console.level', 'debug'
 
             mods {
                 bookshelf {
@@ -64,10 +63,8 @@ minecraft {
         }
 
         server {
-        
             workingDirectory project.file('run')
             taskName "${mod_name}".replaceAll("\\s","") + 'Server'
-            property 'forge.logging.console.level', 'debug'
             
             mods {
                 bookshelf {
@@ -265,6 +262,7 @@ task publishDiluv (type: TaskDiluvUpload) {
     //failSilently = true;
     apiURL = findProperty('diluv_api')
     token = findProperty('diluv_token')
+	changelog = getGitChangelog() + "\n\nHuge thanks to my supporters on [Patreon](https://www.patreon.com/Darkhax?MCChangelog?${mod_name})\n\n" + getPledgeLog()
     projectId = findProperty('diluv_project')
     projectVersion = project.version
     uploadFile = jar
