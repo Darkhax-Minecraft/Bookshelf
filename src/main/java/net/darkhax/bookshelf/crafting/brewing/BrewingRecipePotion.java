@@ -13,7 +13,7 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraftforge.common.brewing.BrewingRecipe;
 
 public class BrewingRecipePotion extends BrewingRecipe {
-
+    
     public BrewingRecipePotion(Item input, EffectInstance... effects) {
         
         super(IngredientPotion.AWKWARD, Ingredient.fromItems(input), PotionUtils.appendEffects(new ItemStack(Items.POTION), Arrays.asList(effects)));
