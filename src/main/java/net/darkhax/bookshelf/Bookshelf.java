@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
 import net.darkhax.bookshelf.crafting.item.IngredientEnchantmentType;
 import net.darkhax.bookshelf.crafting.item.IngredientModid;
+import net.darkhax.bookshelf.crafting.item.IngredientPotion;
 import net.darkhax.bookshelf.crafting.item.IngredientToolType;
 import net.darkhax.bookshelf.crafting.predicate.ItemPredicateIngredient;
 import net.darkhax.bookshelf.crafting.predicate.ItemPredicateModid;
@@ -95,6 +96,7 @@ public class Bookshelf {
         this.registry.recipeSerializers.register(SmithingRecipeEnchantment.SERIALIZER, "smithing_enchant");
         
         // Ingredients
+        this.registry.ingredients.register("potion", IngredientPotion.SERIALIZER);
         this.registry.ingredients.register("modid", IngredientModid.SERIALIZER);
         this.registry.ingredients.register("any_axe", IngredientToolType.create(i -> i instanceof AxeItem, ToolType.AXE));
         this.registry.ingredients.register("any_hoe", IngredientToolType.create(i -> i instanceof HoeItem, ToolType.HOE));
