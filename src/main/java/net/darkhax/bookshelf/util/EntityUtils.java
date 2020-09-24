@@ -7,20 +7,26 @@
  */
 package net.darkhax.bookshelf.util;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceContext;
@@ -31,6 +37,12 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public final class EntityUtils {
+    
+    /**
+     * A cache of spawn egg colors mapped to the entity type. Populated by
+     * {@link #getEggColors(EntityType)}.
+     */
+    private static Map<EntityType<?>, Tuple<Integer, Integer>> eggColorCache = new HashMap<>();
     
     /**
      * Calculates the distance between two entities.
@@ -257,5 +269,28 @@ public final class EntityUtils {
             
             entity.removePotionEffect(effect);
         }
+    }
+    
+    /**
+     * Get the egg color associated with an entity type. If the entity does not have an egg
+     * type this will be 0 for both values.
+     * 
+     * @param type The entity type to get a color for.
+     * @return A Tuple containing the primary and secondary egg colors.
+     */
+    public static Tuple<Integer, Integer> getEggColors (EntityType<?> type) {
+        
+        return eggColorCache.computeIfAbsent(type, key -> {
+            
+            final SpawnEggItem item = SpawnEggItem.getEgg(key);
+            
+            if (item != null) {
+                
+                Bookshelf.LOG.debug("Updating color cache for {} to primary={} secondary={}", type.getRegistryName(), item.primaryColor, item.secondaryColor);
+                return new Tuple<>(item.primaryColor, item.secondaryColor);
+            }
+            
+            return new Tuple<>(0, 0);
+        });
     }
 }
