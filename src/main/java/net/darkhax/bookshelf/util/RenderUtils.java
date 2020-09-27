@@ -19,6 +19,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BlockModelRenderer;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -36,7 +37,9 @@ import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.crash.ReportedException;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockDisplayReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -307,5 +310,48 @@ public final class RenderUtils {
             crashreportcategory.addDetail("Using AO", useAO);
             throw new ReportedException(crashreport);
         }
+    }
+    
+    public static void renderLinesWrapped (MatrixStack matrix, int x, int y, ITextComponent text, int textWidth) {
+        
+        final FontRenderer font = Minecraft.getInstance().fontRenderer;
+        renderLinesWrapped(matrix, font, x, y, font.FONT_HEIGHT, 0, text, textWidth);
+    }
+    
+    public static void renderLinesWrapped (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, ITextComponent text, int textWidth) {
+        
+        renderLinesWrapped(matrix, fontRenderer, x, y, spacing, defaultColor, fontRenderer.func_238425_b_(text, textWidth));
+    }
+    
+    public static void renderLinesWrapped (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, List<IReorderingProcessor> lines) {
+        
+        for (int lineNum = 0; lineNum < lines.size(); lineNum++) {
+            
+            final IReorderingProcessor lineFragment = lines.get(lineNum);
+            fontRenderer.func_238422_b_(matrix, lineFragment, x, y + lineNum * spacing, defaultColor);
+        }
+    }
+    
+    public static int renderLinesReversed (MatrixStack matrix, int x, int y, ITextComponent text, int textWidth) {
+        
+        final FontRenderer font = Minecraft.getInstance().fontRenderer;
+        return renderLinesReversed(matrix, font, x, y, font.FONT_HEIGHT, 0xffffff, text, textWidth);
+    }
+    
+    public static int renderLinesReversed (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, ITextComponent text, int textWidth) {
+        
+        return renderLinesReversed(matrix, fontRenderer, x, y, spacing, defaultColor, fontRenderer.func_238425_b_(text, textWidth));
+    }
+    
+    public static int renderLinesReversed (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, List<IReorderingProcessor> lines) {
+        
+        final int lineCount = lines.size();
+        for (int lineNum = lineCount - 1; lineNum >= 0; lineNum--) {
+            
+            final IReorderingProcessor lineFragment = lines.get(lineCount - 1 - lineNum);
+            fontRenderer.func_238422_b_(matrix, lineFragment, x, y - (lineNum + 1) * (spacing + 1), defaultColor);
+        }
+        
+        return lineCount * (spacing + 1);
     }
 }
