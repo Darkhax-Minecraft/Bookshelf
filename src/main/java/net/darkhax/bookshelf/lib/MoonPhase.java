@@ -58,6 +58,6 @@ public enum MoonPhase {
     @OnlyIn(Dist.CLIENT)
     public static MoonPhase getCurrentPhase () {
         
-        return getPhase(Minecraft.getInstance().world.func_242414_af());
+        return getPhase(Minecraft.getInstance().world.getMoonPhase());
     }
 }

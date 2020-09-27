@@ -12,7 +12,7 @@ public final class SerializerText implements ISerializer<ITextComponent> {
     @Override
     public ITextComponent read (JsonElement json) {
         
-        return ITextComponent.Serializer.func_240641_a_(json);
+        return ITextComponent.Serializer.getComponentFromJson(json);
     }
     
     @Override
@@ -25,7 +25,7 @@ public final class SerializerText implements ISerializer<ITextComponent> {
     public ITextComponent read (PacketBuffer buffer) {
         
         final String jsonString = buffer.readString();
-        return ITextComponent.Serializer.func_240643_a_(jsonString);
+        return ITextComponent.Serializer.getComponentFromJson(jsonString);
     }
     
     @Override

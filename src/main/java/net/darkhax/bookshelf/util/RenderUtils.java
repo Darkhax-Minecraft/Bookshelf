@@ -320,7 +320,8 @@ public final class RenderUtils {
     
     public static void renderLinesWrapped (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, ITextComponent text, int textWidth) {
         
-        renderLinesWrapped(matrix, fontRenderer, x, y, spacing, defaultColor, fontRenderer.func_238425_b_(text, textWidth));
+        // trimStringToWidth is actually wrapToWidth
+        renderLinesWrapped(matrix, fontRenderer, x, y, spacing, defaultColor, fontRenderer.trimStringToWidth(text, textWidth));
     }
     
     public static void renderLinesWrapped (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, List<IReorderingProcessor> lines) {
@@ -340,7 +341,8 @@ public final class RenderUtils {
     
     public static int renderLinesReversed (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, ITextComponent text, int textWidth) {
         
-        return renderLinesReversed(matrix, fontRenderer, x, y, spacing, defaultColor, fontRenderer.func_238425_b_(text, textWidth));
+        // trimStringToWidth is actually wrapToWidth
+        return renderLinesReversed(matrix, fontRenderer, x, y, spacing, defaultColor, fontRenderer.trimStringToWidth(text, textWidth));
     }
     
     public static int renderLinesReversed (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, List<IReorderingProcessor> lines) {
