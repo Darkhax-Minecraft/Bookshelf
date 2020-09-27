@@ -24,6 +24,7 @@ import net.minecraft.stats.StatType;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.village.PointOfInterestType;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -37,7 +38,7 @@ public class Serializers {
     public static final ISerializer<Double> DOUBLE = SerializerDouble.SERIALIZER;
     public static final ISerializer<String> STRING = SerializerString.SERIALIZER;
     public static final ISerializer<UUID> UUID = SerializerUUID.SERIALIZER;
-    
+    public static final ISerializer<ITextComponent> TEXT = SerializerText.SERIALIZER;
     public static final ISerializer<ResourceLocation> RESOURCE_LOCATION = SerializerResourceLocation.SERIALIZER;
     public static final ISerializer<EnchantmentData> ENCHANTMENT_DATA = SerializerEnchantmentData.SERIALIZER;
     public static final ISerializer<BlockState> BLOCK_STATE = SerializerBlockState.SERIALIZER;
@@ -49,8 +50,6 @@ public class Serializers {
     public static final ISerializer<Fluid> FLUID = new SerializerForgeRegistry<>(ForgeRegistries.FLUIDS);
     public static final ISerializer<Item> ITEM = new SerializerForgeRegistry<>(ForgeRegistries.ITEMS);
     public static final ISerializer<Effect> EFFECT = new SerializerForgeRegistry<>(ForgeRegistries.POTIONS);
-    // TODO public static final ISerializer<Biome> BIOME = new
-    // SerializerForgeRegistry<>(ForgeRegistries.BIOMES);
     public static final ISerializer<SoundEvent> SOUND = new SerializerForgeRegistry<>(ForgeRegistries.SOUND_EVENTS);
     public static final ISerializer<Potion> POTION = new SerializerForgeRegistry<>(ForgeRegistries.POTION_TYPES);
     public static final ISerializer<Enchantment> ENCHANTMENT = new SerializerForgeRegistry<>(ForgeRegistries.ENCHANTMENTS);
