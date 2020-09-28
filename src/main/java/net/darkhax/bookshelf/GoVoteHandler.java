@@ -73,9 +73,7 @@ public class GoVoteHandler {
             try {
                 
                 final Path path = Paths.get(MARKER_PATH);
-                Files.createFile(path);
-                Files.setAttribute(path, "dos:hidden", true);
-                
+                Files.createFile(path);               
                 MinecraftForge.EVENT_BUS.addListener(GoVoteHandler::clientTick);
             }
             
