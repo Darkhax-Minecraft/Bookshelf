@@ -38,7 +38,7 @@ public class MCDate {
     /**
      * The total amount of days.
      */
-    private long totalDays = 0;
+    private long totalDays;
     
     /**
      * The year represented.
@@ -54,7 +54,7 @@ public class MCDate {
     /**
      * The day represented.
      */
-    private long day = 0;
+    private long day;
     
     /**
      * Constructs a date for the current world time.
