@@ -1,0 +1,40 @@
+{
+    "_comment": "Spanish Language File",
+
+    "_comment": "Moon Phases",
+    "moon.phase.full": "Luna llena",
+    "moon.phase.waxing.gibbous": "Luna Menguante",
+    "moon.phase.first.quarter": "Primer Cuarto",
+    "moon.phase.waxing.crescent": "Cuarto Creciente",
+    "moon.phase.new": "Luna Nueva",
+    "moon.phase.waning.crescent": "Creciente Menguante",
+    "moon.phase.last.quarter": "Último Cuarto",
+    "moon.phase.waning.gibbous": "Cuarto Menguante",
+
+    "_comment": "Months",
+    "time.bookshelf.month.january": "Enero",
+    "time.bookshelf.month.february": "Febrero",
+    "time.bookshelf.month.march": "Marzo",
+    "time.bookshelf.month.april": "Abril",
+    "time.bookshelf.month.may": "Mayo",
+    "time.bookshelf.month.june": "Junio",
+    "time.bookshelf.month.july": "Julio",
+    "time.bookshelf.month.august": "Agosto",
+    "time.bookshelf.month.september": "Septiembre",
+    "time.bookshelf.month.october": "Octubre",
+    "time.bookshelf.month.november": "Noviembre",
+    "time.bookshelf.month.december": "Diciembre",
+
+    "_comment": "Days",
+    "time.bookshelf.day.sunday": "Domingo",
+    "time.bookshelf.day.monday": "Lunes",
+    "time.bookshelf.day.tuesday": "Martes",
+    "time.bookshelf.day.wednesday": "Miércoles",
+    "time.bookshelf.day.thursday": "Jueves",
+    "time.bookshelf.day.friday": "Viernes",
+    "time.bookshelf.day.saturday": "Sábado",
+
+    "_comment": "Commands",
+    "commands.bookshelf.loot_tables": "Hay %d tablas de recompenzas faltantes para %s.",
+    "commands.bookshelf.loot_tables.wildcard": "Faltan %d tablas de recompenza para todos los mods."
+}
