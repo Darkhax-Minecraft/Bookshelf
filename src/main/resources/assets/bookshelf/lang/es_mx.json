@@ -36,5 +36,5 @@
 
     "_comment": "Commands",
     "commands.bookshelf.loot_tables": "Hay %d tablas de recompenzas faltantes para %s.",
-    "commands.bookshelf.loot_tables.wildcard": "Faltan %d tablas de recompenza para todos los mods."
+    "commands.bookshelf.loot_tables.wildcard": "Faltan %d tablas de recompensa para todos los mods."
 }
