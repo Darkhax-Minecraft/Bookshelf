@@ -35,10 +35,15 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.crash.ReportedException;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IReorderingProcessor;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockDisplayReader;
 import net.minecraft.world.World;
@@ -221,7 +226,9 @@ public final class RenderUtils {
      * @param buffer The render buffer.
      * @param preferredSides The sides to render, allows faces to be culled. Will be ignored if
      *        Optifine is installed.
+     * @deprecated Use water logging version below.
      */
+    @Deprecated
     public static void renderState (BlockState state, World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer, Direction[] preferredSides) {
         
         if (!ModUtils.isOptifineLoaded()) {
@@ -232,6 +239,46 @@ public final class RenderUtils {
         else {
             
             renderBlock(state, world, pos, matrix, buffer);
+        }
+    }
+    
+    /**
+     * Renders a block state into the world.
+     * 
+     * @param state The state to render.
+     * @param world The world context to render into.
+     * @param pos The position of the block.
+     * @param matrix The render matrix.
+     * @param buffer The render buffer.
+     * @param preferredSides The sides to render, allows faces to be culled. Will be ignored if
+     *        Optifine is installed.
+     * @param withFluid Should fluid states also be rendered?
+     */
+    public static void renderState (BlockState state, World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay, boolean withFluid, Direction... preferredSides) {
+        
+        if (!ModUtils.isOptifineLoaded()) {
+            
+            renderBlock(state, world, pos, matrix, buffer, preferredSides);
+        }
+        
+        else {
+            
+            renderBlock(state, world, pos, matrix, buffer);
+        }
+        
+        if (withFluid) {
+            
+            // Handle fluids and waterlogging.
+            final FluidState fluidState = state.getFluidState();
+            
+            if (fluidState != null && !fluidState.isEmpty()) {
+                
+                final Fluid fluid = fluidState.getFluid();
+                final ResourceLocation texture = fluid.getAttributes().getStillTexture();
+                final int[] color = unpackColor(fluid.getAttributes().getColor(world, pos));
+                final TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(texture);
+                renderBlockSprite(buffer.getBuffer(RenderType.getTranslucent()), matrix, sprite, light, overlay, color);
+            }
         }
     }
     
@@ -371,5 +418,161 @@ public final class RenderUtils {
         colors[2] = color >> 8 & 0xff; // green
         colors[3] = color & 0xff; // blue
         return colors;
+    }
+    
+    /**
+     * Renders a block sprite as a cube.
+     * 
+     * @param builder The vertex builder.
+     * @param stack The render stack.
+     * @param sprite The sprite to render.
+     * @param light The packed lighting data.
+     * @param overlay The packed overlay data.
+     * @param color RGBA color to render.
+     */
+    public static void renderBlockSprite (IVertexBuilder builder, MatrixStack stack, TextureAtlasSprite sprite, int light, int overlay, int[] color) {
+        
+        renderBlockSprite(builder, stack.getLast().getMatrix(), sprite, light, overlay, 0f, 1f, 0f, 1f, 0f, 1f, color);
+    }
+    
+    /**
+     * Renders a block sprite as a cube.
+     * 
+     * @param builder The vertex builder.
+     * @param stack The render stack.
+     * @param sprite The sprite to render.
+     * @param light The packed lighting data.
+     * @param overlay The packed overlay data.
+     * @param x1 The min x width of the cube to render. Between 0 and 1.
+     * @param x2 The max x width of the cube to render. Between 0 and 1.
+     * @param y1 The min y width of the cube to render. Between 0 and 1.
+     * @param y2 The max y width of the cube to render. Between 0 and 1.
+     * @param z1 The min z width of the cube to render. Between 0 and 1.
+     * @param z2 The max z width of the cube to render. Between 0 and 1.
+     * @param color RGBA color to render.
+     */
+    public static void renderBlockSprite (IVertexBuilder builder, MatrixStack stack, TextureAtlasSprite sprite, int light, int overlay, float x1, float x2, float y1, float y2, float z1, float z2, int[] color) {
+        
+        renderBlockSprite(builder, stack.getLast().getMatrix(), sprite, light, overlay, x1, x2, y1, y2, z1, z2, color);
+    }
+    
+    /**
+     * Renders a block sprite as a cube.
+     * 
+     * @param builder The vertex builder.
+     * @param pos The render position.
+     * @param sprite The sprite to render.
+     * @param light The packed lighting data.
+     * @param overlay The packed overlay data.
+     * @param x1 The min x width of the cube to render. Between 0 and 1.
+     * @param x2 The max x width of the cube to render. Between 0 and 1.
+     * @param y1 The min y width of the cube to render. Between 0 and 1.
+     * @param y2 The max y width of the cube to render. Between 0 and 1.
+     * @param z1 The min z width of the cube to render. Between 0 and 1.
+     * @param z2 The max z width of the cube to render. Between 0 and 1.
+     * @param color RGBA color to render.
+     */
+    public static void renderBlockSprite (IVertexBuilder builder, Matrix4f pos, TextureAtlasSprite sprite, int light, int overlay, float x1, float x2, float y1, float y2, float z1, float z2, int[] color) {
+        
+        renderSpriteSide(builder, pos, sprite, Direction.DOWN, light, overlay, x1, x2, y1, y2, z1, z2, color);
+        renderSpriteSide(builder, pos, sprite, Direction.UP, light, overlay, x1, x2, y1, y2, z1, z2, color);
+        renderSpriteSide(builder, pos, sprite, Direction.NORTH, light, overlay, x1, x2, y1, y2, z1, z2, color);
+        renderSpriteSide(builder, pos, sprite, Direction.SOUTH, light, overlay, x1, x2, y1, y2, z1, z2, color);
+        renderSpriteSide(builder, pos, sprite, Direction.WEST, light, overlay, x1, x2, y1, y2, z1, z2, color);
+        renderSpriteSide(builder, pos, sprite, Direction.EAST, light, overlay, x1, x2, y1, y2, z1, z2, color);
+    }
+    
+    /**
+     * Renders a block sprite as a side of a cube.
+     * 
+     * @param builder The vertex builder.
+     * @param pos The render position.
+     * @param sprite The sprite to render.
+     * @param side The side of the cube to render.
+     * @param light The packed lighting data.
+     * @param overlay The packed overlay data.
+     * @param x1 The min x width of the cube to render. Between 0 and 1.
+     * @param x2 The max x width of the cube to render. Between 0 and 1.
+     * @param y1 The min y width of the cube to render. Between 0 and 1.
+     * @param y2 The max y width of the cube to render. Between 0 and 1.
+     * @param z1 The min z width of the cube to render. Between 0 and 1.
+     * @param z2 The max z width of the cube to render. Between 0 and 1.
+     * @param color RGBA color to render.
+     */
+    public static void renderSpriteSide (IVertexBuilder builder, Matrix4f pos, TextureAtlasSprite sprite, Direction side, int light, int overlay, float x1, float x2, float y1, float y2, float z1, float z2, int[] color) {
+        
+        // Convert block size to pixel size
+        final double px1 = x1 * 16;
+        final double px2 = x2 * 16;
+        final double py1 = y1 * 16;
+        final double py2 = y2 * 16;
+        final double pz1 = z1 * 16;
+        final double pz2 = z2 * 16;
+        
+        if (side == Direction.DOWN) {
+            final float u1 = sprite.getInterpolatedU(px1);
+            final float u2 = sprite.getInterpolatedU(px2);
+            final float v1 = sprite.getInterpolatedV(pz1);
+            final float v2 = sprite.getInterpolatedV(pz2);
+            builder.pos(pos, x1, y1, z2).color(color[1], color[2], color[3], color[0]).tex(u1, v2).overlay(overlay).lightmap(light).normal(0f, -1f, 0f).endVertex();
+            builder.pos(pos, x1, y1, z1).color(color[1], color[2], color[3], color[0]).tex(u1, v1).overlay(overlay).lightmap(light).normal(0f, -1f, 0f).endVertex();
+            builder.pos(pos, x2, y1, z1).color(color[1], color[2], color[3], color[0]).tex(u2, v1).overlay(overlay).lightmap(light).normal(0f, -1f, 0f).endVertex();
+            builder.pos(pos, x2, y1, z2).color(color[1], color[2], color[3], color[0]).tex(u2, v2).overlay(overlay).lightmap(light).normal(0f, -1f, 0f).endVertex();
+        }
+        
+        if (side == Direction.UP) {
+            final float u1 = sprite.getInterpolatedU(px1);
+            final float u2 = sprite.getInterpolatedU(px2);
+            final float v1 = sprite.getInterpolatedV(pz1);
+            final float v2 = sprite.getInterpolatedV(pz2);
+            builder.pos(pos, x1, y2, z2).color(color[1], color[2], color[3], color[0]).tex(u1, v2).overlay(overlay).lightmap(light).normal(0f, 1f, 0f).endVertex();
+            builder.pos(pos, x2, y2, z2).color(color[1], color[2], color[3], color[0]).tex(u2, v2).overlay(overlay).lightmap(light).normal(0f, 1f, 0f).endVertex();
+            builder.pos(pos, x2, y2, z1).color(color[1], color[2], color[3], color[0]).tex(u2, v1).overlay(overlay).lightmap(light).normal(0f, 1f, 0f).endVertex();
+            builder.pos(pos, x1, y2, z1).color(color[1], color[2], color[3], color[0]).tex(u1, v1).overlay(overlay).lightmap(light).normal(0f, 1f, 0f).endVertex();
+        }
+        
+        if (side == Direction.NORTH) {
+            final float u1 = sprite.getInterpolatedU(px1);
+            final float u2 = sprite.getInterpolatedU(px2);
+            final float v1 = sprite.getInterpolatedV(py1);
+            final float v2 = sprite.getInterpolatedV(py2);
+            builder.pos(pos, x1, y1, z1).color(color[1], color[2], color[3], color[0]).tex(u1, v1).overlay(overlay).lightmap(light).normal(0f, 0f, -1f).endVertex();
+            builder.pos(pos, x1, y2, z1).color(color[1], color[2], color[3], color[0]).tex(u1, v2).overlay(overlay).lightmap(light).normal(0f, 0f, -1f).endVertex();
+            builder.pos(pos, x2, y2, z1).color(color[1], color[2], color[3], color[0]).tex(u2, v2).overlay(overlay).lightmap(light).normal(0f, 0f, -1f).endVertex();
+            builder.pos(pos, x2, y1, z1).color(color[1], color[2], color[3], color[0]).tex(u2, v1).overlay(overlay).lightmap(light).normal(0f, 0f, -1f).endVertex();
+        }
+        
+        if (side == Direction.SOUTH) {
+            final float u1 = sprite.getInterpolatedU(px1);
+            final float u2 = sprite.getInterpolatedU(px2);
+            final float v1 = sprite.getInterpolatedV(py1);
+            final float v2 = sprite.getInterpolatedV(py2);
+            builder.pos(pos, x2, y1, z2).color(color[1], color[2], color[3], color[0]).tex(u2, v1).overlay(overlay).lightmap(light).normal(0f, 0f, 1f).endVertex();
+            builder.pos(pos, x2, y2, z2).color(color[1], color[2], color[3], color[0]).tex(u2, v2).overlay(overlay).lightmap(light).normal(0f, 0f, 1f).endVertex();
+            builder.pos(pos, x1, y2, z2).color(color[1], color[2], color[3], color[0]).tex(u1, v2).overlay(overlay).lightmap(light).normal(0f, 0f, 1f).endVertex();
+            builder.pos(pos, x1, y1, z2).color(color[1], color[2], color[3], color[0]).tex(u1, v1).overlay(overlay).lightmap(light).normal(0f, 0f, 1f).endVertex();
+        }
+        
+        if (side == Direction.WEST) {
+            final float u1 = sprite.getInterpolatedU(py1);
+            final float u2 = sprite.getInterpolatedU(py2);
+            final float v1 = sprite.getInterpolatedV(pz1);
+            final float v2 = sprite.getInterpolatedV(pz2);
+            builder.pos(pos, x1, y1, z2).color(color[1], color[2], color[3], color[0]).tex(u1, v2).overlay(overlay).lightmap(light).normal(-1f, 0f, 0f).endVertex();
+            builder.pos(pos, x1, y2, z2).color(color[1], color[2], color[3], color[0]).tex(u2, v2).overlay(overlay).lightmap(light).normal(-1f, 0f, 0f).endVertex();
+            builder.pos(pos, x1, y2, z1).color(color[1], color[2], color[3], color[0]).tex(u2, v1).overlay(overlay).lightmap(light).normal(-1f, 0f, 0f).endVertex();
+            builder.pos(pos, x1, y1, z1).color(color[1], color[2], color[3], color[0]).tex(u1, v1).overlay(overlay).lightmap(light).normal(-1f, 0f, 0f).endVertex();
+        }
+        
+        if (side == Direction.EAST) {
+            final float u1 = sprite.getInterpolatedU(py1);
+            final float u2 = sprite.getInterpolatedU(py2);
+            final float v1 = sprite.getInterpolatedV(pz1);
+            final float v2 = sprite.getInterpolatedV(pz2);
+            builder.pos(pos, x2, y1, z1).color(color[1], color[2], color[3], color[0]).tex(u1, v1).overlay(overlay).lightmap(light).normal(1f, 0f, 0f).endVertex();
+            builder.pos(pos, x2, y2, z1).color(color[1], color[2], color[3], color[0]).tex(u2, v1).overlay(overlay).lightmap(light).normal(1f, 0f, 0f).endVertex();
+            builder.pos(pos, x2, y2, z2).color(color[1], color[2], color[3], color[0]).tex(u2, v2).overlay(overlay).lightmap(light).normal(1f, 0f, 0f).endVertex();
+            builder.pos(pos, x2, y1, z2).color(color[1], color[2], color[3], color[0]).tex(u1, v2).overlay(overlay).lightmap(light).normal(1f, 0f, 0f).endVertex();
+        }
     }
 }
