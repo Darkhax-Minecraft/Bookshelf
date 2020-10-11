@@ -3,7 +3,10 @@ package net.darkhax.bookshelf.serialization;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+
+import javax.annotation.Nullable;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -155,5 +158,39 @@ public interface ISerializer<T> {
         
         buffer.writeInt(toWrite.size());
         toWrite.forEach(t -> this.write(buffer, t));
+    }
+    
+    default Optional<T> readOptional (JsonObject json, String memberName) {
+        
+        return json.has(memberName) ? Optional.of(this.read(json.get(memberName))) : Optional.empty();
+    }
+    
+    default Optional<T> readOptional (PacketBuffer buffer) {
+        
+        return buffer.readBoolean() ? Optional.of(this.read(buffer)) : Optional.empty();
+    }
+    
+    default void writeOptional (PacketBuffer buffer, Optional<T> optional) {
+        
+        final boolean isPresent = optional.isPresent();
+        buffer.writeBoolean(isPresent);
+        
+        if (isPresent) {
+            this.write(buffer, optional.get());
+        }
+    }
+    
+    default void writeOptional (JsonObject json, String memberName, Optional<T> optional) {
+        
+        if (optional.isPresent()) {
+            
+            json.add(memberName, this.write(optional.get()));
+        }
+    }
+    
+    @Nullable
+    default JsonElement writeOptional (Optional<T> optional) {
+        
+        return optional.isPresent() ? this.write(optional.get()) : null;
     }
 }
