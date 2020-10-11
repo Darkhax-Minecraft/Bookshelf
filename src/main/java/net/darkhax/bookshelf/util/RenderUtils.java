@@ -356,4 +356,20 @@ public final class RenderUtils {
         
         return lineCount * (spacing + 1);
     }
+    
+    /**
+     * Unpacks a color into ARGB byte channels.
+     * 
+     * @param color The color to unpack.
+     * @return An array containing the ARGB color channels.
+     */
+    public static int[] unpackColor (int color) {
+        
+        final int[] colors = new int[4];
+        colors[0] = color >> 24 & 0xff; // alpha
+        colors[1] = color >> 16 & 0xff; // red
+        colors[2] = color >> 8 & 0xff; // green
+        colors[3] = color & 0xff; // blue
+        return colors;
+    }
 }
