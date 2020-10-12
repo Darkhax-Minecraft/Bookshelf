@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.serialization;
 
 import java.util.UUID;
 
+import net.darkhax.bookshelf.block.DisplayableBlockState;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -24,12 +25,15 @@ import net.minecraft.stats.StatType;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.village.PointOfInterestType;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class Serializers {
     
+    public static final ISerializer<Boolean> BOOLEAN = SerializerBoolean.SERIALIZER;
     public static final ISerializer<Byte> BYTE = SerializerByte.SERIALIZER;
     public static final ISerializer<Short> SHORT = SerializerShort.SERIALIZER;
     public static final ISerializer<Integer> INT = SerializerInteger.SERIALIZER;
@@ -45,6 +49,9 @@ public class Serializers {
     public static final ISerializer<Ingredient> INGREDIENT = SerializerIngredient.SERIALIZER;
     public static final ISerializer<CompoundNBT> NBT = SerializerNBT.SERIALIZER;
     public static final ISerializer<ItemStack> ITEMSTACK = SerializerItemStack.SERIALIZER;
+    public static final ISerializer<Vector3f> VEC3F = SerializerVec3f.SERIALIZER;
+    public static final ISerializer<Vector3d> VEC3D = SerializerVec3d.SERIALIZER;
+    public static final ISerializer<DisplayableBlockState> DISPLAY_STATE = DisplayableBlockState.SERIALIZER;
     
     public static final ISerializer<Block> BLOCK = new SerializerForgeRegistry<>(ForgeRegistries.BLOCKS);
     public static final ISerializer<Fluid> FLUID = new SerializerForgeRegistry<>(ForgeRegistries.FLUIDS);
