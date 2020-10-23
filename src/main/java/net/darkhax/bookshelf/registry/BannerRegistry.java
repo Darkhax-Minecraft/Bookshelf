@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.registry;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,5 +75,15 @@ public class BannerRegistry {
         final BannerPattern pattern = BannerPattern.create(snakeName.toUpperCase(), snakeName, snakeName, hasItem);
         this.patterns.put(regId, pattern);
         return pattern;
+    }
+    
+    public Collection<Item> getStencilItems() {
+        
+        return this.patternItems.values();
+    }
+    
+    public Collection<BannerPattern> getPatterns() {
+        
+        return this.patterns.values();
     }
 }
