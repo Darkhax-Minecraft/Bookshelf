@@ -27,6 +27,7 @@ public class RegistryHelper {
     public final RecipeTypeRegistry recipeTypes;
     public final IngredientRegistry ingredients;
     public final ForgeRegistryRegistryHelper registries;
+    public final BannerRegistry banners;
     
     public final ForgeRegistryHelper<Block> blocks;
     public final ForgeRegistryHelper<Item> items;
@@ -62,6 +63,7 @@ public class RegistryHelper {
         this.potions = new ForgeRegistryHelper<>(logger, modid, Potion.class);
         this.enchantments = new ForgeRegistryHelper<>(logger, modid, Enchantment.class);
         this.lootModifiers = new ForgeRegistryHelper(logger, modid, GlobalLootModifierSerializer.class);
+        this.banners = new BannerRegistry(modid, logger, this.items);
         
         this.blocks.addRegisterListener(this::generateBlockItem);
         // TODO Loot Condition
