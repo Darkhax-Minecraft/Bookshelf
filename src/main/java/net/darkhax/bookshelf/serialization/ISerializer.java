@@ -8,11 +8,14 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import net.minecraft.nbt.INBT;
 import net.minecraft.network.PacketBuffer;
 
 /**
@@ -39,6 +42,16 @@ public interface ISerializer<T> {
     T read (PacketBuffer buffer);
     
     void write (PacketBuffer buffer, T toWrite);
+    
+    public default INBT writeNBT (T toWrite) {
+        
+        throw new NotImplementedException("NBT serialization is not yet implemented for " + this.getClass().getName());
+    }
+    
+    public default T read (INBT nbt) {
+        
+        throw new NotImplementedException("NBT serialization is not yet implemented for " + this.getClass().getName());
+    }
     
     default List<T> readList (JsonElement json) {
         

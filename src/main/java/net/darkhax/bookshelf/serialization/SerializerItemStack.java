@@ -6,6 +6,8 @@ import com.google.gson.JsonParseException;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapedRecipe;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 
@@ -54,5 +56,22 @@ public class SerializerItemStack implements ISerializer<ItemStack> {
     public void write (PacketBuffer buffer, ItemStack toWrite) {
         
         buffer.writeItemStack(toWrite);
+    }
+    
+    @Override
+    public INBT writeNBT (ItemStack toWrite) {
+        
+        return toWrite.write(new CompoundNBT());
+    }
+    
+    @Override
+    public ItemStack read (INBT nbt) {
+        
+        if (nbt instanceof CompoundNBT) {
+            
+            return ItemStack.read((CompoundNBT) nbt);
+        }
+        
+        throw new IllegalArgumentException("Expected NBT to be a compound tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");
     }
 }

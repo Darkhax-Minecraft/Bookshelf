@@ -8,6 +8,7 @@ import com.google.gson.JsonPrimitive;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
@@ -62,5 +63,22 @@ public class SerializerNBT implements ISerializer<CompoundNBT> {
     public void write (PacketBuffer buffer, CompoundNBT toWrite) {
         
         buffer.writeCompoundTag(toWrite);
+    }
+    
+    @Override
+    public INBT writeNBT (CompoundNBT toWrite) {
+        
+        return toWrite;
+    }
+    
+    @Override
+    public CompoundNBT read (INBT nbt) {
+        
+        if (nbt instanceof CompoundNBT) {
+            
+            return (CompoundNBT) nbt;
+        }
+        
+        throw new IllegalArgumentException("Expected NBT to be a compound tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");
     }
 }

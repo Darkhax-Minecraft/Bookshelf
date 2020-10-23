@@ -7,6 +7,8 @@ import java.util.List;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -50,5 +52,30 @@ public class SerializerVec3d implements ISerializer<Vector3d> {
     public void write (PacketBuffer buffer, Vector3d toWrite) {
         
         Serializers.DOUBLE.writeList(buffer, new ArrayList<>(Arrays.asList(toWrite.x, toWrite.y, toWrite.z)));
+    }
+    
+    @Override
+    public INBT writeNBT (Vector3d toWrite) {
+        
+        final CompoundNBT tag = new CompoundNBT();
+        tag.putDouble("x", toWrite.getX());
+        tag.putDouble("y", toWrite.getY());
+        tag.putDouble("z", toWrite.getZ());
+        return tag;
+    }
+    
+    @Override
+    public Vector3d read (INBT nbt) {
+        
+        if (nbt instanceof CompoundNBT) {
+            
+            final CompoundNBT tag = (CompoundNBT) nbt;
+            final double x = tag.getDouble("x");
+            final double y = tag.getDouble("y");
+            final double z = tag.getDouble("z");
+            return new Vector3d(x, y, z);
+        }
+        
+        throw new IllegalArgumentException("Expected NBT to be a compound tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");
     }
 }

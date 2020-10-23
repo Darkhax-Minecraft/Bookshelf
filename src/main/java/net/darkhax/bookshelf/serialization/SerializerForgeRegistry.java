@@ -3,6 +3,7 @@ package net.darkhax.bookshelf.serialization;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
+import net.minecraft.nbt.INBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -21,16 +22,7 @@ public final class SerializerForgeRegistry<V extends IForgeRegistryEntry<V>> imp
     public V read (JsonElement json) {
         
         final ResourceLocation id = Serializers.RESOURCE_LOCATION.read(json);
-        
-        if (this.registry.containsKey(id)) {
-            
-            return this.registry.getValue(id);
-        }
-        
-        else {
-            
-            throw new JsonParseException("Could not find " + this.registry.getRegistryName().toString() + " with ID " + id.toString());
-        }
+        return this.getFromId(id);
     }
     
     @Override
@@ -43,21 +35,35 @@ public final class SerializerForgeRegistry<V extends IForgeRegistryEntry<V>> imp
     public V read (PacketBuffer buffer) {
         
         final ResourceLocation id = buffer.readResourceLocation();
-        
-        if (this.registry.containsKey(id)) {
-            
-            return this.registry.getValue(id);
-        }
-        
-        else {
-            
-            throw new IllegalStateException("Could not find " + this.registry.getRegistryName().toString() + " with ID " + id.toString());
-        }
+        return this.getFromId(id);
     }
     
     @Override
     public void write (PacketBuffer buffer, V toWrite) {
         
         buffer.writeResourceLocation(toWrite.getRegistryName());
+    }
+    
+    @Override
+    public INBT writeNBT (V toWrite) {
+        
+        return Serializers.RESOURCE_LOCATION.writeNBT(toWrite.getRegistryName());
+    }
+    
+    @Override
+    public V read (INBT nbt) {
+        
+        final ResourceLocation id = Serializers.RESOURCE_LOCATION.read(nbt);
+        return this.getFromId(id);
+    }
+    
+    private final V getFromId (ResourceLocation id) {
+        
+        if (this.registry.containsKey(id)) {
+            
+            return this.registry.getValue(id);
+        }
+        
+        throw new JsonParseException("Could not find " + this.registry.getRegistryName().toString() + " with ID " + id.toString());
     }
 }

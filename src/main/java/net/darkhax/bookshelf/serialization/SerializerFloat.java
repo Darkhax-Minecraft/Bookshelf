@@ -3,6 +3,9 @@ package net.darkhax.bookshelf.serialization;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
+import net.minecraft.nbt.FloatNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.NumberNBT;
 import net.minecraft.network.PacketBuffer;
 
 public final class SerializerFloat implements ISerializer<Float> {
@@ -35,5 +38,22 @@ public final class SerializerFloat implements ISerializer<Float> {
     public void write (PacketBuffer buffer, Float toWrite) {
         
         buffer.writeFloat(toWrite);
+    }
+    
+    @Override
+    public INBT writeNBT (Float toWrite) {
+        
+        return FloatNBT.valueOf(toWrite);
+    }
+    
+    @Override
+    public Float read (INBT nbt) {
+        
+        if (nbt instanceof NumberNBT) {
+            
+            return ((NumberNBT) nbt).getFloat();
+        }
+        
+        throw new IllegalArgumentException("Expected NBT to be a number tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");
     }
 }

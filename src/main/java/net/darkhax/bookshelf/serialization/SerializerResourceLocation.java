@@ -5,6 +5,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
@@ -58,5 +60,22 @@ public final class SerializerResourceLocation implements ISerializer<ResourceLoc
     public void write (PacketBuffer buffer, ResourceLocation toWrite) {
         
         buffer.writeResourceLocation(toWrite);
+    }
+    
+    @Override
+    public INBT writeNBT (ResourceLocation toWrite) {
+        
+        return StringNBT.valueOf(toWrite.toString());
+    }
+    
+    @Override
+    public ResourceLocation read (INBT nbt) {
+        
+        if (nbt instanceof StringNBT) {
+            
+            return new ResourceLocation(((StringNBT) nbt).getString());
+        }
+        
+        throw new IllegalArgumentException("Expected NBT to be a double tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");
     }
 }

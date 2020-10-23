@@ -12,6 +12,9 @@ import com.google.gson.JsonSyntaxException;
 import net.darkhax.bookshelf.Bookshelf;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
@@ -194,5 +197,22 @@ public class SerializerBlockState implements ISerializer<BlockState> {
             
             throw new JsonSyntaxException("The property " + propName + " is not valid for block " + state.getBlock().getRegistryName());
         }
+    }
+    
+    @Override
+    public INBT writeNBT (BlockState toWrite) {
+        
+        return NBTUtil.writeBlockState(toWrite);
+    }
+    
+    @Override
+    public BlockState read (INBT nbt) {
+        
+        if (nbt instanceof CompoundNBT) {
+            
+            return NBTUtil.readBlockState((CompoundNBT) nbt);
+        }
+        
+        throw new IllegalArgumentException("Expected NBT to be a compound tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");
     }
 }
