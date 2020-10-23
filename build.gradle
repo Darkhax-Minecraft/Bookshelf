@@ -99,6 +99,18 @@ jar {
     }
 }
 
+//Shuts up javadoc failures
+if (JavaVersion.current().isJava8Compatible()) {
+
+    allprojects {
+
+        tasks.withType(Javadoc) {
+
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
 String getBuildNumber() {
 
     return System.getenv('BUILD_NUMBER') ? System.getenv('BUILD_NUMBER') : System.getenv('TRAVIS_BUILD_NUMBER') ? System.getenv('TRAVIS_BUILD_NUMBER') : '0';
