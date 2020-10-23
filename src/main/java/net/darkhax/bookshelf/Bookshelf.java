@@ -38,6 +38,7 @@ import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ShearsItem;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.ResourceLocation;
@@ -103,6 +104,8 @@ public class Bookshelf {
         this.registry.ingredients.register("any_pickaxe", IngredientToolType.create(i -> i instanceof PickaxeItem, ToolType.PICKAXE));
         this.registry.ingredients.register("any_shovel", IngredientToolType.create(i -> i instanceof ShovelItem, ToolType.SHOVEL));
         this.registry.ingredients.register("any_sword", IngredientToolType.create(i -> i instanceof SwordItem, null));
+        this.registry.ingredients.register("any_shear", IngredientToolType.create(i -> i instanceof ShearsItem, null));
+        
         this.registry.ingredients.register("enchant_armor", IngredientEnchantmentType.create(EnchantmentType.ARMOR));
         this.registry.ingredients.register("enchant_armor_feet", IngredientEnchantmentType.create(EnchantmentType.ARMOR_FEET));
         this.registry.ingredients.register("enchant_armor_legs", IngredientEnchantmentType.create(EnchantmentType.ARMOR_LEGS));
