@@ -77,43 +77,6 @@ public class ItemTier implements IItemTier {
     	return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.fromStacks(Stream.of(repairItems).map(Supplier::get).toArray(ItemStack[]::new)));
     }
     
-    /**
-     * Use {@link ItemTier#createFromTags(int, float, float, int, int, Supplier)} instead.
-     */
-    @Deprecated
-    @SafeVarargs
-    public ItemTier(int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Tag<Item>... repairItems) {
-        
-        this(maxUses, efficiency, damage, harvestLevel, enchantability, () -> RecipeUtils.ingredientFromTags(repairItems));
-    }
-    
-    /**
-     * Use {@link ItemTier#createFromTag(int, float, float, int, int, Supplier)} instead.
-     */
-    @Deprecated
-    public ItemTier(int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Tag<Item> repairItems) {
-        
-        this(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.fromTag(repairItems));
-    }
-    
-    /**
-     * Use {@link ItemTier#createFromItem(int, float, float, int, int, Supplier)} instead.
-     */
-    @Deprecated
-    public ItemTier(int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Item... repairItems) {
-        
-        this(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.fromItems(repairItems));
-    }
-    
-    /**
-     * Use {@link ItemTier#createFromItemStack(int, float, float, int, int, Supplier)} instead.
-     */
-    @Deprecated
-    public ItemTier(int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, ItemStack... repairItems) {
-        
-        this(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.fromStacks(repairItems));
-    }
-    
     public ItemTier(int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<Ingredient> repairItems) {
         
         this.maxUses = maxUses;

@@ -226,32 +226,6 @@ public final class RenderUtils {
      * @param buffer The render buffer.
      * @param preferredSides The sides to render, allows faces to be culled. Will be ignored if
      *        Optifine is installed.
-     * @deprecated Use water logging version below.
-     */
-    @Deprecated
-    public static void renderState (BlockState state, World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer, Direction[] preferredSides) {
-        
-        if (!ModUtils.isOptifineLoaded()) {
-            
-            renderBlock(state, world, pos, matrix, buffer, preferredSides);
-        }
-        
-        else {
-            
-            renderBlock(state, world, pos, matrix, buffer);
-        }
-    }
-    
-    /**
-     * Renders a block state into the world.
-     * 
-     * @param state The state to render.
-     * @param world The world context to render into.
-     * @param pos The position of the block.
-     * @param matrix The render matrix.
-     * @param buffer The render buffer.
-     * @param preferredSides The sides to render, allows faces to be culled. Will be ignored if
-     *        Optifine is installed.
      * @param withFluid Should fluid states also be rendered?
      */
     public static void renderState (BlockState state, World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay, boolean withFluid, Direction... preferredSides) {

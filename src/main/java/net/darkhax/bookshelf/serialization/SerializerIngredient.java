@@ -3,7 +3,6 @@ package net.darkhax.bookshelf.serialization;
 import com.google.gson.JsonElement;
 
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.INBT;
 import net.minecraft.network.PacketBuffer;
 
 public class SerializerIngredient implements ISerializer<Ingredient> {

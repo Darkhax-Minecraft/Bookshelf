@@ -65,16 +65,6 @@ public abstract class TileEntityBasic extends TileEntity {
     }
     
     /**
-     * Please use {@link #sync(boolean)} instead. There are performance issues caused by
-     * updating the renderer every time.
-     */
-    @Deprecated
-    public void sync () {
-        
-        this.sync(true);
-    }
-    
-    /**
      * Synchronizes the server state of the tile with all clients tracking it.
      * 
      * @param renderUpdate Whether or not a render update should happen as well. Only use this
