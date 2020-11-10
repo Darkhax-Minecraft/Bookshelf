@@ -164,6 +164,7 @@ processResources {
     }
 }
 
+// CurseForge Publishing
 curseforge {
 
     apiKey = findProperty('curse_auth') ?: 0 
@@ -238,6 +239,7 @@ tasks.getByName("curseforge").doLast {
     }
 }
 
+// Update Version Tracker
 task updateVersionTracker {
 
     onlyIf {
@@ -269,6 +271,7 @@ task updateVersionTracker {
     }
 }
 
+// Diluv Publishing
 import com.diluv.diluvgradle.TaskDiluvUpload
 
 task publishDiluv (type: TaskDiluvUpload) {
@@ -276,7 +279,7 @@ task publishDiluv (type: TaskDiluvUpload) {
     //failSilently = true;
     apiURL = findProperty('diluv_api')
     token = findProperty('diluv_token')
-	changelog = getGitChangelog() + "\n\nHuge thanks to my supporters on [Patreon](https://www.patreon.com/Darkhax?MCChangelog?${mod_name})\n\n" + getPledgeLog()
+    changelog = getGitChangelog() + "\n\nHuge thanks to my supporters on [Patreon](https://www.patreon.com/Darkhax?MCChangelog?${mod_name})\n\n" + getPledgeLog()
     projectId = findProperty('diluv_project')
     projectVersion = project.version
     uploadFile = jar
@@ -322,3 +325,33 @@ task publishDiluv (type: TaskDiluvUpload) {
         webhook.sendMessage(message);
     }
 }
+
+// Jar Signing
+import net.minecraftforge.gradle.common.task.SignJar
+
+task signJar(type: SignJar, dependsOn: jar) {
+
+    onlyIf {
+    
+        project.hasProperty('keyStore')
+    }
+    
+    if (project.hasProperty('keyStore')) {
+    
+        project.logger.info('Signing jar ' + jar.archivePath.getName());
+    
+        keyStore = project.findProperty('keyStore')
+        alias = project.findProperty('keyStoreAlias')
+        storePass = project.findProperty('keyStorePass')
+        keyPass = project.findProperty('keyStoreKeyPass')
+        inputFile = jar.archivePath
+        outputFile = jar.archivePath
+    }
+    
+    else {
+    
+        project.logger.warn('Could not sign ' + jar.archivePath.getName() + '. No keyStore property could be found')
+    }
+}
+
+build.dependsOn signJar
