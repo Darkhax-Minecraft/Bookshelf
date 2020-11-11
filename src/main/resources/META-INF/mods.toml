@@ -1,6 +1,7 @@
 modLoader="javafml"
-loaderVersion="[34, 36)"
+loaderVersion="[35,)"
 logoFile="logo.png"
+logoBlur=false
 issueTrackerURL="https://github.com/Darkhax-Minecraft/Bookshelf/issues"
 license="LGPL v2.1"
 
@@ -19,13 +20,13 @@ ${mod_description}
 [[dependencies.bookshelf]]
     modId="forge"
     mandatory=true
-    versionRange="[34, 36)"
+    versionRange="[35,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.bookshelf]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.3, 1.16.4]"
+    versionRange="[1.16.4]"
     ordering="NONE"
     side="BOTH"
