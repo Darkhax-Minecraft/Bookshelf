@@ -12,6 +12,7 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.darkhax.bookshelf.command.ArgumentTypeLootTable;
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
 import net.darkhax.bookshelf.crafting.item.IngredientEnchantmentType;
 import net.darkhax.bookshelf.crafting.item.IngredientModid;
@@ -71,6 +72,7 @@ public class Bookshelf {
         // Command arguments
         this.registry.commands.registerCommandArgument("enum", ArgumentTypeHandOutput.class, new ArgumentTypeHandOutput.Serialzier());
         this.registry.commands.registerCommandArgument("mod", ArgumentTypeMod.class, new ArgumentSerializer<>( () -> ArgumentTypeMod.INSTACE));
+        this.registry.commands.registerCommandArgument("loot", ArgumentTypeLootTable.class, new ArgumentSerializer<>( () -> ArgumentTypeLootTable.INSTACE));
         
         // Loot Modifier
         this.registry.lootModifiers.register(ModifierClear.SERIALIZER, "clear");
