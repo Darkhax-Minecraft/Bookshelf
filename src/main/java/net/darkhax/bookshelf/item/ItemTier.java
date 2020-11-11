@@ -54,27 +54,27 @@ public class ItemTier implements IItemTier {
     private final Lazy<Ingredient> repairSupplier;
     
     @SuppressWarnings("unchecked")
-	@SafeVarargs
-    public static ItemTier createFromTags(int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<Tag<Item>>... repairItems) {
+    @SafeVarargs
+    public static ItemTier createFromTags (int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<Tag<Item>>... repairItems) {
         
         return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> RecipeUtils.ingredientFromTags(Stream.of(repairItems).map(Supplier::get).toArray(Tag[]::new)));
     }
     
-    public static ItemTier createFromTag(int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<Tag<Item>> repairItems) {
+    public static ItemTier createFromTag (int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<Tag<Item>> repairItems) {
         
-    	return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.fromTag(repairItems.get()));
+        return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.fromTag(repairItems.get()));
     }
     
     @SafeVarargs
-	public static ItemTier createFromItem(int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<Item>... repairItems) {
+    public static ItemTier createFromItem (int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<Item>... repairItems) {
         
-    	return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.fromItems(Stream.of(repairItems).map(Supplier::get).toArray(Item[]::new)));
+        return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.fromItems(Stream.of(repairItems).map(Supplier::get).toArray(Item[]::new)));
     }
     
     @SafeVarargs
-	public static ItemTier createFromStack(int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<ItemStack>... repairItems) {
+    public static ItemTier createFromStack (int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<ItemStack>... repairItems) {
         
-    	return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.fromStacks(Stream.of(repairItems).map(Supplier::get).toArray(ItemStack[]::new)));
+        return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.fromStacks(Stream.of(repairItems).map(Supplier::get).toArray(ItemStack[]::new)));
     }
     
     public ItemTier(int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<Ingredient> repairItems) {

@@ -77,12 +77,12 @@ public class BannerRegistry {
         return pattern;
     }
     
-    public Collection<Item> getStencilItems() {
+    public Collection<Item> getStencilItems () {
         
         return this.patternItems.values();
     }
     
-    public Collection<BannerPattern> getPatterns() {
+    public Collection<BannerPattern> getPatterns () {
         
         return this.patterns.values();
     }
