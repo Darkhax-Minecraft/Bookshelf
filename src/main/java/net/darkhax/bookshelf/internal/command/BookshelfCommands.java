@@ -13,6 +13,7 @@ public class BookshelfCommands {
         final LiteralArgumentBuilder<CommandSource> root = Commands.literal("bookshelf");
         new CommandHand(root);
         new CommandTranslate(root);
+        new CommandLootChest(root);
         registry.commands.registerCommand(root);
     }
 }
