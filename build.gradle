@@ -303,7 +303,7 @@ task publishDiluv (type: TaskDiluvUpload) {
             
             try {
                 
-                def connection = new URL("${apiURL}/projects/${projectId}").openConnection() as HttpURLConnection;
+                def connection = new URL("${apiURL}/v1/projects/${projectId}").openConnection() as HttpURLConnection;
                 connection.setRequestProperty('User-Agent', 'Gradle Webhook');
                 connection.setRequestProperty('Accept', 'application/json');
                 
