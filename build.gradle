@@ -290,7 +290,6 @@ task publishDiluv (type: TaskDiluvUpload) {
         def message = new Message();
         
         message.setUsername(findProperty('mod_name'));
-        message.setAvatarUrl("https://download.nodecdn.net/containers/diluvstaging/games/minecraft-je/forge-mods/${findProperty('diluv_project')}/logo.png");
             
         if (wasUploadSuccessful()) {
         
@@ -301,6 +300,22 @@ task publishDiluv (type: TaskDiluvUpload) {
             embed.addField('Change Log', "${getGitChangelog() ?: 'Unavailable :('}", false);
             embed.setFooter(new Footer("Uploaded by ${uploadInfo.uploaderDisplayName}"));
             embed.setColor(0x009944);
+            
+            try {
+                
+                def connection = new URL("${apiURL}/projects/${projectId}").openConnection() as HttpURLConnection;
+                connection.setRequestProperty('User-Agent', 'Gradle Webhook');
+                connection.setRequestProperty('Accept', 'application/json');
+                
+                def response = connection.inputStream.withCloseable {inStream -> new JsonSlurper().parse(inStream as InputStream)};
+                
+                if (connection.responseCode == 200) {
+                    
+                    message.setAvatarUrl(response.logo);
+                }
+            }
+            
+            catch (IOException e) {}
             
             message.addEmbed(embed);
         }
@@ -347,7 +362,7 @@ task signJar(type: SignJar, dependsOn: jar) {
         inputFile = jar.archivePath
         outputFile = jar.archivePath
     }
-    
+
     else {
     
         project.logger.warn('Could not sign ' + jar.archivePath.getName() + '. No keyStore property could be found')
