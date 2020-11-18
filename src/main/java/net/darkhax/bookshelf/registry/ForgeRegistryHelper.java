@@ -153,7 +153,6 @@ public class ForgeRegistryHelper<T extends IForgeRegistryEntry<T>> {
         }
         
         this.valueSuppliers.add(value);
-        this.logger.debug("Registered {} entry as {}.", this.type.getSimpleName(), value);
     }
     
     /**
@@ -225,6 +224,7 @@ public class ForgeRegistryHelper<T extends IForgeRegistryEntry<T>> {
             if (value != null) {
                 
                 registry.register(value);
+                this.logger.debug("Registered {} entry \"{}\" as type {}.", this.type.getSimpleName(), value.getRegistryName(), value.getClass().getName());
                 this.values.add(value);
             }
         }
