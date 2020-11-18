@@ -11,10 +11,17 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
+import com.ibm.icu.text.DecimalFormat;
+
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
 
 public final class MathsUtils {
+    
+    /**
+     * A decimal format that only preserves two decimal places.
+     */
+    public static final DecimalFormat DECIMAL_2 = new DecimalFormat("##.##");
     
     /**
      * Checks if a double is within range of two other doubles.
