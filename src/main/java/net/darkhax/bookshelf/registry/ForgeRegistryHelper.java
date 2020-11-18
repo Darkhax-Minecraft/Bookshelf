@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 import org.apache.logging.log4j.Logger;
 
+import net.darkhax.bookshelf.util.MathsUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent.Register;
@@ -216,6 +217,7 @@ public class ForgeRegistryHelper<T extends IForgeRegistryEntry<T>> {
         this.registered = false;
         
         final IForgeRegistry<T> registry = event.getRegistry();
+        final long startTime = System.nanoTime();
         
         for (final Supplier<T> supplier : this.valueSuppliers) {
             
@@ -229,9 +231,11 @@ public class ForgeRegistryHelper<T extends IForgeRegistryEntry<T>> {
             }
         }
         
+        final long endTime = System.nanoTime();
+        
         this.registryListeners.forEach(listener -> listener.accept(this, registry));
         
-        this.logger.info("Registered {} {} entries.", this.values.size(), this.type.getSimpleName());
+        this.logger.info("Registered {} {} entries in {}ms.", this.values.size(), this.type.getSimpleName(), MathsUtils.DECIMAL_2.format((endTime - startTime) / 1000000f));
         
         this.registered = true;
     }
