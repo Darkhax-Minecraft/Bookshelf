@@ -9,9 +9,8 @@ package net.darkhax.bookshelf.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Random;
-
-import com.ibm.icu.text.DecimalFormat;
 
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
