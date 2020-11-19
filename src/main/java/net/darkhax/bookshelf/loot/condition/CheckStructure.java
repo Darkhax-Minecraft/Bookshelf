@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
+import net.darkhax.bookshelf.util.WorldUtils;
 import net.minecraft.loot.ILootSerializer;
 import net.minecraft.loot.LootConditionType;
 import net.minecraft.loot.LootContext;
@@ -47,7 +48,7 @@ public class CheckStructure implements ILootCondition {
         
         if (pos != null && this.loadStructure()) {
             
-            return ctx.getWorld().func_241112_a_().getStructureStart(new BlockPos(pos), true, this.structure).isValid();
+            return WorldUtils.isInStructure(ctx.getWorld(), new BlockPos(pos), this.structure);
         }
         
         return false;

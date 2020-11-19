@@ -22,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
 
 public final class WorldUtils {
@@ -155,5 +156,18 @@ public final class WorldUtils {
     public static void sendToTracking (ServerWorld world, ChunkPos chunkPos, IPacket<?> packet, boolean boundaryOnly) {
         
         world.getChunkProvider().chunkManager.getTrackingPlayers(chunkPos, boundaryOnly).forEach(p -> p.connection.sendPacket(packet));
+    }
+    
+    /**
+     * Checks if a given BlockPos is within the bounds of a structure.
+     * 
+     * @param world The world to check within.
+     * @param pos The position to check.
+     * @param structure The structure to look for.
+     * @return Whether or not the position was within that structure.
+     */
+    public static boolean isInStructure (ServerWorld world, BlockPos pos, Structure<?> structure) {
+        
+        return world.func_241112_a_().getStructureStart(pos, true, structure).isValid();
     }
 }
