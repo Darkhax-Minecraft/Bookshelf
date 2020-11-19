@@ -114,4 +114,26 @@ public final class SidedExecutor {
             throw new RuntimeException(e);
         }
     }
+    
+    /**
+     * Invokes a runnable only when executed on the client. Makes no attempt to safeguard class
+     * loading.
+     * 
+     * @param toRun The code to run.
+     */
+    public static void runOnClient (Runnable toRun) {
+        
+        runOnSide(LogicalSide.CLIENT, () -> toRun);
+    }
+    
+    /**
+     * Invokes a runnable only when executed on the server. Makes no attempt to safeguard class
+     * loading.
+     * 
+     * @param toRun The code to run.
+     */
+    public static void runOnServer (Runnable toRun) {
+        
+        runOnSide(LogicalSide.SERVER, () -> toRun);
+    }
 }
