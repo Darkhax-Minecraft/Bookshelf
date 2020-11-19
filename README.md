@@ -27,7 +27,17 @@ repositories {
 
 dependencies {
 
-    // Example: compile "net.darkhax.bookshelf:Bookshelf-1.16.4:9.0.2"
+    // Example: compile "net.darkhax.bookshelf:Bookshelf-1.16.4:9.0.8"
     compile "net.darkhax.bookshelf:Bookshelf-MCVERSION:PUT_BOOKSHELH_VERSION_HERE"
 }
 ```
+
+## Jar Signing
+
+As of November 10th 2020 all published builds will be signed. You can validate the integrity of these builds by comparing their signatures against one of our public fingerprint.
+
+| Hash   | Fingerprint                                                        |
+|--------|--------------------------------------------------------------------|
+| MD5    | `C16B4015313EAFEF042A91E504ACB6F1`                                 |
+| SHA1   | `1031A1AFF3F542C507EA07D08CB6A1DC7DA7A4D4`                         |
+| SHA256 | `EA45B382B69D501695E72E34E192D5B49B6990D34F2E7199B0BE4080271F3EB0` |
