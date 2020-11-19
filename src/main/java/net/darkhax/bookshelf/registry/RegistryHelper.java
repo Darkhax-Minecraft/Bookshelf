@@ -28,6 +28,7 @@ public class RegistryHelper {
     public final IngredientRegistry ingredients;
     public final ForgeRegistryRegistryHelper registries;
     public final BannerRegistry banners;
+    public final LootConditionRegistry lootConditions;
     
     public final ForgeRegistryHelper<Block> blocks;
     public final ForgeRegistryHelper<Item> items;
@@ -51,6 +52,7 @@ public class RegistryHelper {
         this.recipeTypes = new RecipeTypeRegistry(modid, logger);
         this.ingredients = new IngredientRegistry(modid, logger);
         this.registries = new ForgeRegistryRegistryHelper(modid, logger);
+        this.lootConditions = new LootConditionRegistry(modid, logger);
         
         this.blocks = new ForgeRegistryHelper<>(logger, modid, Block.class);
         this.items = new ForgeRegistryHelper<>(logger, modid, Item.class);
@@ -66,8 +68,6 @@ public class RegistryHelper {
         this.banners = new BannerRegistry(modid, logger, this.items);
         
         this.blocks.addRegisterListener(this::generateBlockItem);
-        // TODO Loot Condition
-        // TODO Loot Injection
         // TODO Mobs
         // TODO Spawn Eggs
     }
@@ -85,6 +85,7 @@ public class RegistryHelper {
         this.recipeTypes.initialize(modBus);
         this.ingredients.initialize(modBus);
         this.registries.initialize(modBus);
+        this.lootConditions.initialize(modBus);
         
         this.blocks.initialize(modBus);
         this.items.initialize(modBus);
