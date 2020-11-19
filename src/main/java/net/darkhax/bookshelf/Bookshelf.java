@@ -27,6 +27,19 @@ import net.darkhax.bookshelf.crafting.recipes.smithing.SmithingRecipeFont;
 import net.darkhax.bookshelf.crafting.recipes.smithing.SmithingRecipeRepairCost;
 import net.darkhax.bookshelf.internal.command.ArgumentTypeHandOutput;
 import net.darkhax.bookshelf.internal.command.BookshelfCommands;
+import net.darkhax.bookshelf.loot.condition.CheckBiomeTag;
+import net.darkhax.bookshelf.loot.condition.CheckDimensionId;
+import net.darkhax.bookshelf.loot.condition.CheckEnchantability;
+import net.darkhax.bookshelf.loot.condition.CheckEnergy;
+import net.darkhax.bookshelf.loot.condition.CheckHarvestLevel;
+import net.darkhax.bookshelf.loot.condition.CheckItem;
+import net.darkhax.bookshelf.loot.condition.CheckPower;
+import net.darkhax.bookshelf.loot.condition.CheckRaid;
+import net.darkhax.bookshelf.loot.condition.CheckRarity;
+import net.darkhax.bookshelf.loot.condition.CheckSlimeChunk;
+import net.darkhax.bookshelf.loot.condition.CheckStructure;
+import net.darkhax.bookshelf.loot.condition.CheckVillage;
+import net.darkhax.bookshelf.loot.condition.EntityIsMob;
 import net.darkhax.bookshelf.loot.modifier.ModifierAddItem;
 import net.darkhax.bookshelf.loot.modifier.ModifierClear;
 import net.darkhax.bookshelf.loot.modifier.ModifierConvert;
@@ -42,13 +55,16 @@ import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ShearsItem;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.item.SwordItem;
+import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(Bookshelf.MOD_ID)
-public class Bookshelf {
+public final class Bookshelf {
+    
+    public static Bookshelf instance;
     
     // System Constants
     public static final Random RANDOM = new Random();
@@ -63,6 +79,20 @@ public class Bookshelf {
     public static final Logger LOG = LogManager.getLogger(MOD_NAME);
     
     private final RegistryHelper registry = new RegistryHelper(MOD_ID, LOG);
+    
+    public final LootConditionType conditionIsMob;
+    public final LootConditionType conditionCheckVillage;
+    public final LootConditionType conditionCheckStructure;
+    public final LootConditionType conditionCheckSlimeChunk;
+    public final LootConditionType conditionCheckRarity;
+    public final LootConditionType conditionCheckRaid;
+    public final LootConditionType conditionCheckPower;
+    public final LootConditionType conditionCheckItem;
+    public final LootConditionType conditionCheckHarvestLevel;
+    public final LootConditionType conditionCheckEnergy;
+    public final LootConditionType conditionCheckEnchantability;
+    public final LootConditionType conditionCheckBiomeTag;
+    public final LootConditionType conditionCheckDimension;
     
     public Bookshelf() {
         
@@ -86,6 +116,21 @@ public class Bookshelf {
         this.registry.lootModifiers.register(ModifierRecipe.STONECUT, "stonecutting");
         this.registry.lootModifiers.register(ModifierRecipe.SMITHING, "smithing");
         this.registry.lootModifiers.register(ModifierAddItem.SERIALIZER, "add_item");
+        
+        // Loot Conditions
+        this.conditionIsMob = this.registry.lootConditions.register(EntityIsMob.SERIALIZER, "is_mob");
+        this.conditionCheckVillage = this.registry.lootConditions.register(CheckVillage.SERIALIZER, "check_village");
+        this.conditionCheckStructure = this.registry.lootConditions.register(CheckStructure.SERIALIZER, "check_structure");
+        this.conditionCheckSlimeChunk = this.registry.lootConditions.register(CheckSlimeChunk.SERIALIZER, "slime_chunk");
+        this.conditionCheckRarity = this.registry.lootConditions.register(CheckRarity.SERIALIZER, "check_rarity");
+        this.conditionCheckRaid = this.registry.lootConditions.register(CheckRaid.SERIALIZER, "check_raid");
+        this.conditionCheckPower = this.registry.lootConditions.register(CheckPower.SERIALIZER, "check_power");
+        this.conditionCheckItem = this.registry.lootConditions.register(CheckItem.SERIALIZER, "check_item");
+        this.conditionCheckHarvestLevel = this.registry.lootConditions.register(CheckHarvestLevel.SERIALIZER, "check_harvest_level");
+        this.conditionCheckEnergy = this.registry.lootConditions.register(CheckEnergy.SERIALIZER, "check_forge_energy");
+        this.conditionCheckEnchantability = this.registry.lootConditions.register(CheckEnchantability.SERIALIZER, "check_enchantability");
+        this.conditionCheckBiomeTag = this.registry.lootConditions.register(CheckBiomeTag.SERIALIZER, "check_biome_tag");
+        this.conditionCheckDimension = this.registry.lootConditions.register(CheckDimensionId.SERIALIZER, "check_dimension");
         
         // Item Predicates
         ItemPredicate.register(new ResourceLocation("bookshelf", "modid"), ItemPredicateModid::fromJson);
