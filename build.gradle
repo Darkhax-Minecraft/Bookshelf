@@ -381,3 +381,16 @@ task signJar(type: SignJar, dependsOn: jar) {
 }
 
 build.dependsOn signJar
+
+// Detatched Signature
+apply plugin: 'signing'
+
+signing {
+    if (project.hasProperty('signing.keyId') && project.hasProperty('signing.password') && project.hasProperty('signing.secretKeyRingFile')) {
+        sign configurations.archives
+        project.logger.warn('Artifacts will be PGP signed.')
+    }    
+    else {
+        project.logger.warn('Could not make detatched signatures. One or more PGP args is missing.')
+    }
+}
