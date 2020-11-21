@@ -206,9 +206,20 @@ curseforge {
             }
         }
 
-        addArtifact(sourcesJar)
-        addArtifact(javadocJar)
-        addArtifact(deobfJar)
+        addArtifact(sourcesJar) {
+            
+            changelog = 'This Sources JAR file contains the raw source code for the mod. This file is intended for other mod developers who are curious or wish to learn from this mod. This file is not required to play with the mod and is often best to ignore.\n\n' + getGitChangelog()
+        }
+        
+        addArtifact(javadocJar) {
+            
+            changelog = 'This Javadoc file contains documentation of the code for the mod. This file is intended for other mod developers who are curious or wish to learn from this mod. This file is not required to play with the mod and is often best to ignore.\n\n' + getGitChangelog()
+        }
+        
+        addArtifact(deobfJar) {
+            
+            changelog = 'This DEOBF JAR file contains unobfuscated compiled code for the mod. This file is intended for other mod developers who want to run the mod in their development environment. This file is not required to play with the mod and is often best to ignore.\n\n' + getGitChangelog()
+        }
     }
 }
 
