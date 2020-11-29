@@ -12,8 +12,16 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import net.darkhax.bookshelf.command.ArgumentTypeLootTable;
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
+import net.darkhax.bookshelf.crafting.block.BlockIngredient;
+import net.darkhax.bookshelf.crafting.block.BlockIngredientAny;
+import net.darkhax.bookshelf.crafting.block.BlockIngredientCheckBlock;
+import net.darkhax.bookshelf.crafting.block.BlockIngredientCheckState;
+import net.darkhax.bookshelf.crafting.block.BlockIngredientCheckTag;
 import net.darkhax.bookshelf.crafting.item.IngredientEnchantmentType;
 import net.darkhax.bookshelf.crafting.item.IngredientModid;
 import net.darkhax.bookshelf.crafting.item.IngredientPotion;
@@ -46,7 +54,9 @@ import net.darkhax.bookshelf.loot.modifier.ModifierConvert;
 import net.darkhax.bookshelf.loot.modifier.ModifierRecipe;
 import net.darkhax.bookshelf.loot.modifier.ModifierSilkTouch;
 import net.darkhax.bookshelf.registry.RegistryHelper;
+import net.darkhax.bookshelf.serialization.Serializers;
 import net.minecraft.advancements.criterion.ItemPredicate;
+import net.minecraft.block.BlockState;
 import net.minecraft.command.arguments.ArgumentSerializer;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.item.AxeItem;
@@ -57,7 +67,9 @@ import net.minecraft.item.ShovelItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -94,8 +106,25 @@ public final class Bookshelf {
     public final LootConditionType conditionCheckBiomeTag;
     public final LootConditionType conditionCheckDimension;
     
+    private void onClick (PlayerInteractEvent.RightClickBlock event) {
+        
+        try {
+            
+            final JsonElement element = new JsonParser().parse("{\"type\":\"bookshelf:or\",\"ingredients\":[{\"type\":\"bookshelf:tag\",\"tag\":\"forge:dirt\"},{\"type\":\"bookshelf:exact_block\",\"block\":\"minecraft:oak_stairs\"}]}");
+            final BlockIngredient ingredient = Serializers.BLOCK_INGREDIENT.read(element);
+            final BlockState state = event.getWorld().getBlockState(event.getPos());
+            System.out.println(state.toString() + " = " + ingredient.test(state));
+        }
+        
+        catch (final Exception e) {
+            
+            e.printStackTrace();
+        }
+    }
+    
     public Bookshelf() {
         
+        MinecraftForge.EVENT_BUS.addListener(this::onClick);
         // Commands
         new BookshelfCommands(this.registry);
         
@@ -167,6 +196,12 @@ public final class Bookshelf {
         this.registry.ingredients.register("enchant_wearable", IngredientEnchantmentType.create(EnchantmentType.WEARABLE));
         this.registry.ingredients.register("enchant_crossbow", IngredientEnchantmentType.create(EnchantmentType.CROSSBOW));
         this.registry.ingredients.register("enchant_vanishable", IngredientEnchantmentType.create(EnchantmentType.VANISHABLE));
+        
+        // Block Ingredients
+        BlockIngredient.register(BlockIngredientAny.SERIALIZER, BlockIngredientAny.ID);
+        BlockIngredient.register(BlockIngredientCheckState.SERIALIZER, BlockIngredientCheckState.ID);
+        BlockIngredient.register(BlockIngredientCheckBlock.SERIALIZER, BlockIngredientCheckBlock.ID);
+        BlockIngredient.register(BlockIngredientCheckTag.SERIALIZER, BlockIngredientCheckTag.ID);
         
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
     }

@@ -3,6 +3,7 @@ package net.darkhax.bookshelf.serialization;
 import java.util.UUID;
 
 import net.darkhax.bookshelf.block.DisplayableBlockState;
+import net.darkhax.bookshelf.crafting.block.BlockIngredient;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -52,6 +53,7 @@ public class Serializers {
     public static final ISerializer<Vector3f> VEC3F = SerializerVec3f.SERIALIZER;
     public static final ISerializer<Vector3d> VEC3D = SerializerVec3d.SERIALIZER;
     public static final ISerializer<DisplayableBlockState> DISPLAY_STATE = DisplayableBlockState.SERIALIZER;
+    public static final ISerializer<BlockIngredient> BLOCK_INGREDIENT = BlockIngredientSerializer.SERIALIZER;
     
     public static final ISerializer<Block> BLOCK = new SerializerForgeRegistry<>(ForgeRegistries.BLOCKS);
     public static final ISerializer<Fluid> FLUID = new SerializerForgeRegistry<>(ForgeRegistries.FLUIDS);
