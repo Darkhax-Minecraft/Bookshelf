@@ -23,6 +23,11 @@ import net.minecraft.particles.ParticleType;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.Potion;
 import net.minecraft.stats.StatType;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ITag.INamedTag;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -30,6 +35,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.village.PointOfInterestType;
+import net.minecraftforge.common.ForgeTagHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class Serializers {
@@ -54,6 +60,14 @@ public class Serializers {
     public static final ISerializer<Vector3d> VEC3D = SerializerVec3d.SERIALIZER;
     public static final ISerializer<DisplayableBlockState> DISPLAY_STATE = DisplayableBlockState.SERIALIZER;
     public static final ISerializer<BlockIngredient> BLOCK_INGREDIENT = BlockIngredientSerializer.SERIALIZER;
+    
+    public static final ISerializer<INamedTag<Block>> BLOCK_TAG = new SerializerINamedTag<>(BlockTags::createOptional);
+    public static final ISerializer<INamedTag<Item>> ITEM_TAG = new SerializerINamedTag<>(ItemTags::createOptional);
+    public static final ISerializer<INamedTag<EntityType<?>>> ENTITY_TAG = new SerializerINamedTag<>(EntityTypeTags::createOptional);
+    public static final ISerializer<INamedTag<Fluid>> FLUID_TAG = new SerializerINamedTag<>(FluidTags::createOptional);
+    public static final ISerializer<INamedTag<Enchantment>> ENCHANTMENT_TAG = new SerializerINamedTag<>(rl -> ForgeTagHandler.createOptionalTag(ForgeRegistries.ENCHANTMENTS, rl));
+    public static final ISerializer<INamedTag<Potion>> POTION_TAG = new SerializerINamedTag<>(rl -> ForgeTagHandler.createOptionalTag(ForgeRegistries.POTION_TYPES, rl));
+    public static final ISerializer<INamedTag<TileEntityType<?>>> TILE_ENTITY_TAG = new SerializerINamedTag<>(rl -> ForgeTagHandler.createOptionalTag(ForgeRegistries.TILE_ENTITIES, rl));
     
     public static final ISerializer<Block> BLOCK = new SerializerForgeRegistry<>(ForgeRegistries.BLOCKS);
     public static final ISerializer<Fluid> FLUID = new SerializerForgeRegistry<>(ForgeRegistries.FLUIDS);
