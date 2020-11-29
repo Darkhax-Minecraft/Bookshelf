@@ -12,19 +12,18 @@ import net.darkhax.bookshelf.serialization.Serializers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ITag.INamedTag;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
 public class BlockIngredientCheckTag extends BlockIngredient {
     
     public static final ResourceLocation ID = new ResourceLocation(Bookshelf.MOD_ID, "check_tag");
     public static final Serializer SERIALIZER = new Serializer();
     
-    private final IOptionalNamedTag<Block> tag;
+    private final INamedTag<Block> tag;
     private List<BlockState> cache;
     
-    public BlockIngredientCheckTag(IOptionalNamedTag<Block> tag) {
+    public BlockIngredientCheckTag(INamedTag<Block> tag) {
         
         this.tag = tag;
     }
@@ -73,29 +72,29 @@ public class BlockIngredientCheckTag extends BlockIngredient {
         @Override
         public BlockIngredientCheckTag read (JsonElement json) {
             
-            final ResourceLocation tagName = Serializers.RESOURCE_LOCATION.read(json.getAsJsonObject(), "tag");
-            return new BlockIngredientCheckTag(BlockTags.createOptional(tagName));
+            final INamedTag<Block> tag = Serializers.BLOCK_TAG.read(json.getAsJsonObject(), "tag");
+            return new BlockIngredientCheckTag(tag);
         }
         
         @Override
         public JsonElement write (BlockIngredientCheckTag ingredient) {
             
             final JsonObject obj = new JsonObject();
-            obj.add("tag", Serializers.RESOURCE_LOCATION.write(ingredient.tag.getName()));
+            obj.add("tag", Serializers.BLOCK_TAG.write(ingredient.tag));
             return obj;
         }
         
         @Override
         public BlockIngredientCheckTag read (PacketBuffer buf) {
             
-            final ResourceLocation tagName = Serializers.RESOURCE_LOCATION.read(buf);
-            return new BlockIngredientCheckTag(BlockTags.createOptional(tagName));
+            final INamedTag<Block> tag = Serializers.BLOCK_TAG.read(buf);
+            return new BlockIngredientCheckTag(tag);
         }
         
         @Override
         public void write (PacketBuffer buf, BlockIngredientCheckTag ingredient) {
             
-            Serializers.RESOURCE_LOCATION.write(buf, ingredient.tag.getName());
+            Serializers.BLOCK_TAG.write(buf, ingredient.tag);
         }
     }
 }
