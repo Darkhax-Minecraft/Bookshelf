@@ -39,12 +39,12 @@ public final class BlockIngredientSerializer implements ISerializer<BlockIngredi
         if (element.isJsonObject()) {
             
             final JsonObject obj = element.getAsJsonObject();
-            obj.add("type", Serializers.RESOURCE_LOCATION.write(ingredient.getId()));
+            obj.add("type", Serializers.RESOURCE_LOCATION.write(ingredient.getSerializeId()));
         }
         
         else {
             
-            throw new IllegalStateException("Ingredient serializer " + ingredient.getId() + " returned " + element.getClass().getSimpleName() + " but expected " + JsonObject.class.getSimpleName() + ". This is a mod issue that needs to be fixed.");
+            throw new IllegalStateException("Ingredient serializer " + ingredient.getSerializeId() + " returned " + element.getClass().getSimpleName() + " but expected " + JsonObject.class.getSimpleName() + ". This is a mod issue that needs to be fixed.");
         }
         
         return element;
@@ -53,21 +53,21 @@ public final class BlockIngredientSerializer implements ISerializer<BlockIngredi
     @Override
     public void write (PacketBuffer buf, BlockIngredient ingredient) {
         
-        Serializers.RESOURCE_LOCATION.write(buf, ingredient.getId());
+        Serializers.RESOURCE_LOCATION.write(buf, ingredient.getSerializeId());
         this.writeUnsafe(buf, ingredient);
     }
     
     @SuppressWarnings("unchecked")
     private <T extends BlockIngredient> JsonElement writeUnsafe (T ingredient) {
         
-        final IBlockIngredientSerializer<T> serializer = (IBlockIngredientSerializer<T>) BlockIngredient.getSerializer(ingredient.getId());
+        final IBlockIngredientSerializer<T> serializer = (IBlockIngredientSerializer<T>) BlockIngredient.getSerializer(ingredient.getSerializeId());
         return serializer.write(ingredient);
     }
     
     @SuppressWarnings("unchecked")
     private <T extends BlockIngredient> void writeUnsafe (PacketBuffer buf, T ingredient) {
         
-        final IBlockIngredientSerializer<T> serializer = (IBlockIngredientSerializer<T>) BlockIngredient.getSerializer(ingredient.getId());
+        final IBlockIngredientSerializer<T> serializer = (IBlockIngredientSerializer<T>) BlockIngredient.getSerializer(ingredient.getSerializeId());
         serializer.write(buf, ingredient);
     }
 }

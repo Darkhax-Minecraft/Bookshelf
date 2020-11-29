@@ -31,19 +31,13 @@ public class BlockIngredientCheckState extends BlockIngredient {
     }
     
     @Override
-    public boolean isEmpty () {
-        
-        return this.validStates.isEmpty();
-    }
-    
-    @Override
     public Collection<BlockState> getValidStates () {
         
         return this.validStates;
     }
     
     @Override
-    public ResourceLocation getId () {
+    public ResourceLocation getSerializeId () {
         
         return ID;
     }

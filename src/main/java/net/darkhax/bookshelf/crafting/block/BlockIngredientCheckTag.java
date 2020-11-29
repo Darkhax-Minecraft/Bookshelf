@@ -37,13 +37,6 @@ public class BlockIngredientCheckTag extends BlockIngredient {
     }
     
     @Override
-    public boolean isEmpty () {
-        
-        this.buildCache();
-        return this.cache.isEmpty();
-    }
-    
-    @Override
     public Collection<BlockState> getValidStates () {
         
         this.buildCache();
@@ -51,7 +44,7 @@ public class BlockIngredientCheckTag extends BlockIngredient {
     }
     
     @Override
-    public ResourceLocation getId () {
+    public ResourceLocation getSerializeId () {
         
         return ID;
     }

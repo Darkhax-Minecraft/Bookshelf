@@ -37,12 +37,6 @@ public class BlockIngredientAny extends BlockIngredient {
     }
     
     @Override
-    public boolean isEmpty () {
-        
-        return this.components.stream().allMatch(BlockIngredient::isEmpty);
-    }
-    
-    @Override
     public Collection<BlockState> getValidStates () {
         
         this.buildCache();
@@ -50,7 +44,7 @@ public class BlockIngredientAny extends BlockIngredient {
     }
     
     @Override
-    public ResourceLocation getId () {
+    public ResourceLocation getSerializeId () {
         
         return ID;
     }
