@@ -12,9 +12,6 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
 import net.darkhax.bookshelf.command.ArgumentTypeLootTable;
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
 import net.darkhax.bookshelf.crafting.block.BlockIngredient;
@@ -54,9 +51,7 @@ import net.darkhax.bookshelf.loot.modifier.ModifierConvert;
 import net.darkhax.bookshelf.loot.modifier.ModifierRecipe;
 import net.darkhax.bookshelf.loot.modifier.ModifierSilkTouch;
 import net.darkhax.bookshelf.registry.RegistryHelper;
-import net.darkhax.bookshelf.serialization.Serializers;
 import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.block.BlockState;
 import net.minecraft.command.arguments.ArgumentSerializer;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.item.AxeItem;
@@ -67,9 +62,7 @@ import net.minecraft.item.ShovelItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -106,25 +99,8 @@ public final class Bookshelf {
     public final LootConditionType conditionCheckBiomeTag;
     public final LootConditionType conditionCheckDimension;
     
-    private void onClick (PlayerInteractEvent.RightClickBlock event) {
-        
-        try {
-            
-            final JsonElement element = new JsonParser().parse("{\"type\":\"bookshelf:or\",\"ingredients\":[{\"type\":\"bookshelf:tag\",\"tag\":\"forge:dirt\"},{\"type\":\"bookshelf:exact_block\",\"block\":\"minecraft:oak_stairs\"}]}");
-            final BlockIngredient ingredient = Serializers.BLOCK_INGREDIENT.read(element);
-            final BlockState state = event.getWorld().getBlockState(event.getPos());
-            System.out.println(state.toString() + " = " + ingredient.test(state));
-        }
-        
-        catch (final Exception e) {
-            
-            e.printStackTrace();
-        }
-    }
-    
     public Bookshelf() {
         
-        MinecraftForge.EVENT_BUS.addListener(this::onClick);
         // Commands
         new BookshelfCommands(this.registry);
         
