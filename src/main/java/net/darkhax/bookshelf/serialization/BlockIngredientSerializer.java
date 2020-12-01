@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.serialization;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 
 import net.darkhax.bookshelf.crafting.block.BlockIngredient;
 import net.darkhax.bookshelf.crafting.block.IBlockIngredientSerializer;
@@ -21,14 +22,29 @@ public final class BlockIngredientSerializer implements ISerializer<BlockIngredi
         
         final JsonObject obj = json.getAsJsonObject();
         final ResourceLocation id = Serializers.RESOURCE_LOCATION.read(obj.get("type"));
-        return BlockIngredient.getSerializer(id).read(obj);
+        
+        final IBlockIngredientSerializer<?> serializer = BlockIngredient.getSerializer(id);
+        
+        if (serializer != null) {
+            
+            return serializer.read(obj);
+        }
+        
+        throw new JsonParseException("Block ingredient type " + id + " could not be found!");
     }
     
     @Override
     public BlockIngredient read (PacketBuffer buf) {
         
         final ResourceLocation id = Serializers.RESOURCE_LOCATION.read(buf);
-        return BlockIngredient.getSerializer(id).read(buf);
+        final IBlockIngredientSerializer<?> serializer = BlockIngredient.getSerializer(id);
+        
+        if (serializer != null) {
+            
+            return serializer.read(buf);
+        }
+        
+        throw new IllegalStateException("Block ingredient type " + id + " could not be found!");
     }
     
     @Override
