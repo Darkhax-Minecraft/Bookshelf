@@ -27,7 +27,7 @@ public class SerializerItemStack implements ISerializer<ItemStack> {
             return ShapedRecipe.deserializeItem(json.getAsJsonObject());
         }
         
-        else if (json.isJsonPrimitive()){
+        else if (json.isJsonPrimitive()) {
             
             return new ItemStack(Serializers.ITEM.read(json));
         }
