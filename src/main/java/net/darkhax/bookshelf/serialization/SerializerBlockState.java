@@ -1,6 +1,5 @@
 package net.darkhax.bookshelf.serialization;
 
-import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.Optional;
 
@@ -20,8 +19,6 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.Property;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class SerializerBlockState implements ISerializer<BlockState> {
     
@@ -45,12 +42,9 @@ public class SerializerBlockState implements ISerializer<BlockState> {
                 
                 final JsonElement properties = obj.get("properties");
                 
-                if (properties.isJsonObject()) {
+                for (final Entry<String, JsonElement> property : properties.getAsJsonObject().entrySet()) {
                     
-                    for (final Entry<String, JsonElement> property : properties.getAsJsonObject().entrySet()) {
-                        
-                        state = this.readProperty(state, property.getKey(), property.getValue());
-                    }
+                    state = this.readProperty(state, property.getKey(), property.getValue());
                 }
             }
             
@@ -96,63 +90,13 @@ public class SerializerBlockState implements ISerializer<BlockState> {
     @Override
     public BlockState read (PacketBuffer buffer) {
         
-        final ResourceLocation id = buffer.readResourceLocation();
-        final Block block = ForgeRegistries.BLOCKS.getValue(id);
-        
-        if (block != null) {
-            
-            final int size = buffer.readInt();
-            
-            BlockState state = block.getDefaultState();
-            
-            for (int i = 0; i < size; i++) {
-                
-                final String propName = buffer.readString();
-                final String value = buffer.readString();
-                
-                final Property blockProperty = block.getStateContainer().getProperty(propName);
-                
-                if (blockProperty != null) {
-                    
-                    final Optional<Comparable> propValue = blockProperty.parseValue(value);
-                    
-                    if (propValue.isPresent()) {
-                        
-                        try {
-                            
-                            state = state.with(blockProperty, propValue.get());
-                        }
-                        
-                        catch (final Exception e) {
-                            
-                            Bookshelf.LOG.error("Failed to read state for block {}. The mod that adds this block may have issues.", block.getRegistryName());
-                            Bookshelf.LOG.catching(e);
-                            throw e;
-                        }
-                    }
-                }
-            }
-            
-            return state;
-        }
-        
-        throw new IllegalStateException("Tried to read null block " + id.toString());
+        return Block.getStateById(buffer.readInt());
     }
     
     @Override
     public void write (PacketBuffer buffer, BlockState toWrite) {
         
-        buffer.writeResourceLocation(toWrite.getBlock().getRegistryName());
-        
-        final Collection<Property<?>> properties = toWrite.getProperties();
-        
-        buffer.writeInt(properties.size());
-        
-        for (final Property property : properties) {
-            
-            buffer.writeString(property.getName());
-            buffer.writeString(toWrite.get(property).toString());
-        }
+        buffer.writeInt(Block.getStateId(toWrite));
     }
     
     private BlockState readProperty (BlockState state, String propName, JsonElement propValue) {
