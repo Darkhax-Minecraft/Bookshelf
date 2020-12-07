@@ -49,12 +49,6 @@ public class BlockIngredientAny extends BlockIngredient {
         return ID;
     }
     
-    @Override
-    public void invalidate () {
-        
-        this.stateCache = null;
-    }
-    
     public void buildCache () {
         
         if (this.stateCache == null) {

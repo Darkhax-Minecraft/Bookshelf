@@ -48,12 +48,6 @@ public class BlockIngredientCheckTag extends BlockIngredient {
         return ID;
     }
     
-    @Override
-    public void invalidate () {
-        
-        this.cache = null;
-    }
-    
     private void buildCache () {
         
         if (this.cache == null) {

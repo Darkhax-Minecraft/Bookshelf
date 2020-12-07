@@ -67,9 +67,4 @@ public abstract class BlockIngredient implements Predicate<BlockState> {
      * @return The ID of the serializer used to read/write this ingredient.
      */
     public abstract ResourceLocation getSerializeId ();
-    
-    /**
-     * Invalidates any cached data held by the ingredient.
-     */
-    public abstract void invalidate ();
 }

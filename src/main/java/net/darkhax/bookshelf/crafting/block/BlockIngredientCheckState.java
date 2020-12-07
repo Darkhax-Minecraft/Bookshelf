@@ -42,12 +42,6 @@ public class BlockIngredientCheckState extends BlockIngredient {
         return ID;
     }
     
-    @Override
-    public void invalidate () {
-        
-        // No Op
-    }
-    
     static class Serializer implements IBlockIngredientSerializer<BlockIngredientCheckState> {
         
         @Override
