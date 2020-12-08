@@ -19,6 +19,7 @@ import net.darkhax.bookshelf.crafting.block.BlockIngredientAny;
 import net.darkhax.bookshelf.crafting.block.BlockIngredientCheckBlock;
 import net.darkhax.bookshelf.crafting.block.BlockIngredientCheckState;
 import net.darkhax.bookshelf.crafting.block.BlockIngredientCheckTag;
+import net.darkhax.bookshelf.crafting.block.BlockIngredientTestState;
 import net.darkhax.bookshelf.crafting.item.IngredientEnchantmentType;
 import net.darkhax.bookshelf.crafting.item.IngredientModid;
 import net.darkhax.bookshelf.crafting.item.IngredientPotion;
@@ -178,6 +179,7 @@ public final class Bookshelf {
         BlockIngredient.register(BlockIngredientCheckState.SERIALIZER, BlockIngredientCheckState.ID);
         BlockIngredient.register(BlockIngredientCheckBlock.SERIALIZER, BlockIngredientCheckBlock.ID);
         BlockIngredient.register(BlockIngredientCheckTag.SERIALIZER, BlockIngredientCheckTag.ID);
+        BlockIngredient.register(BlockIngredientTestState.SERIALIZER, BlockIngredientTestState.ID);
         
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
     }
