@@ -56,7 +56,6 @@ public class ItemHandler<T extends ItemHandler<T>> extends ItemStackHandler {
     public ItemHandler(int invSize) {
         
         super(invSize);
-        this.withChangeListener(super::onContentsChanged);
     }
     
     /**
@@ -215,6 +214,7 @@ public class ItemHandler<T extends ItemHandler<T>> extends ItemStackHandler {
     @Override
     public void onContentsChanged (int slot) {
         
+        super.onContentsChanged(slot);
         this.changeListener.forEach(listener -> listener.accept(slot));
     }
     
