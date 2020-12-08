@@ -10,9 +10,14 @@ package net.darkhax.bookshelf.util;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Random;
 
+import net.minecraft.block.Block;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
 
 public final class MathsUtils {
@@ -187,5 +192,54 @@ public final class MathsUtils {
         final int b = (int) ((color & 0xFF) * factor);
         
         return a << 24 | r << 16 | g << 8 | b;
+    }
+    
+    /**
+     * Creates a rotated variant of a voxel shape for each horizontal direction. The
+     * default/base input is expected to be oriented north.
+     * 
+     * @param x1 The min x coordinate.
+     * @param y1 The min y coordinate.
+     * @param z1 The min z coordinate.
+     * @param x2 The max x coordinate.
+     * @param y2 The max y coordinate.
+     * @param z2 The max z coordinate.
+     * @return A map containing rotated shape variants for each horizontal direction.
+     */
+    public static Map<Direction, VoxelShape> createHorizontalShapes (double x1, double y1, double z1, double x2, double y2, double z2) {
+        
+        final Map<Direction, VoxelShape> shapes = new EnumMap<>(Direction.class);
+        Direction.Plane.HORIZONTAL.forEach(dir -> shapes.put(dir, rotateShape(dir, x1, y1, z1, x2, y2, z2)));
+        return shapes;
+    }
+    
+    /**
+     * Creates a voxel shape that has been rotated a given direction. The default/base input is
+     * expected to be oriented north. Thanks to Gigaherz for writing the original version of
+     * this code.
+     * 
+     * @param facing The direction to rotate the shape.
+     * @param x1 The min x coordinate.
+     * @param y1 The min y coordinate.
+     * @param z1 The min z coordinate.
+     * @param x2 The max x coordinate.
+     * @param y2 The max y coordinate.
+     * @param z2 The max z coordinate.
+     * @return A voxel shape that has been rotated in the specified direction.
+     */
+    public static VoxelShape rotateShape (Direction facing, double x1, double y1, double z1, double x2, double y2, double z2) {
+        
+        switch (facing) {
+            case NORTH:
+                return Block.makeCuboidShape(x1, y1, z1, x2, y2, z2);
+            case EAST:
+                return Block.makeCuboidShape(16 - z2, y1, x1, 16 - z1, y2, x2);
+            case SOUTH:
+                return Block.makeCuboidShape(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
+            case WEST:
+                return Block.makeCuboidShape(z1, y1, 16 - x2, z2, y2, 16 - x1);
+            default:
+                throw new IllegalArgumentException("Can not rotate face in direction " + facing.name());
+        }
     }
 }
