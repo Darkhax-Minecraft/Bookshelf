@@ -22,22 +22,22 @@ If you are using [Gradle](https://gradle.org) to manage your dependencies, add t
 ```
 repositories {
 
-    maven { url 'https://maven.mcmoddev.com' }
+    maven { url 'https://maven.blamejared.com' }
 }
 
 dependencies {
 
-    // Example: compile "net.darkhax.bookshelf:Bookshelf-1.16.4:9.0.8"
+    // Example: compile "net.darkhax.bookshelf:Bookshelf-1.16.4:9.3.23"
     compile "net.darkhax.bookshelf:Bookshelf-MCVERSION:PUT_BOOKSHELH_VERSION_HERE"
 }
 ```
 
 ## Jar Signing
 
-As of November 10th 2020 all published builds will be signed. You can validate the integrity of these builds by comparing their signatures against one of our public fingerprint.
+As of January 11th 2021 officially published builds will be signed. You can validate the integrity of these builds by comparing their signatures with the public fingerprints.
 
 | Hash   | Fingerprint                                                        |
 |--------|--------------------------------------------------------------------|
-| MD5    | `C16B4015313EAFEF042A91E504ACB6F1`                                 |
-| SHA1   | `1031A1AFF3F542C507EA07D08CB6A1DC7DA7A4D4`                         |
-| SHA256 | `EA45B382B69D501695E72E34E192D5B49B6990D34F2E7199B0BE4080271F3EB0` |
+| MD5    | `12F89108EF8DCC223D6723275E87208F`                                 |
+| SHA1   | `46D93AD2DC8ADED38A606D3C36A80CB33EFA69D1`                         |
+| SHA256 | `EBC4B1678BF90CDBDC4F01B18E6164394C10850BA6C4C748F0FA95F2CB083AE5` |
