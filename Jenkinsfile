@@ -17,6 +17,7 @@ pipeline {
                 ]) {
             
                     echo 'Building project.'
+                    sh 'chmod +x gradlew'
                     sh './gradlew clean build publish curseforge publishDiluv updateVersionTracker --stacktrace --warn'
                 }
             }
