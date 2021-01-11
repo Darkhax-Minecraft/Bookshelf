@@ -390,7 +390,7 @@ build.dependsOn signJar
 apply plugin: 'signing'
 
 signing {
-    if (project.hasProperty('signing.keyId') && project.hasProperty('signing.password') && project.hasProperty('signing.secretKeyRingFile')) {
+    if (project.hasProperty('signing.keyId') && project.hasProperty('signing.password')) {
         sign publishing.publications
         project.logger.warn('Artifacts will be PGP signed.')
     }    
