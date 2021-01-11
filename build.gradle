@@ -220,10 +220,6 @@ curseforge {
             
             changelog = 'This DEOBF JAR file contains unobfuscated compiled code for the mod. This file is intended for other mod developers who want to run the mod in their development environment. This file is not required to play with the mod and is often best to ignore.\n\n' + getGitChangelog()
         }
-        
-        addArtifact(jar.archivePath.toString() + '.asc') {
-            changelog = 'This ASC file contains a detached signature for the main JAR file. If you are familiar with PGP you can use this file to verify the integrity of the JAR and confirm that it was generated on our build server. Our public key is available [here](https://mcmoddev.com/data/mmd-mods.pub.gpg).\n\n' + getGitChangelog()
-        }
     }
 }
 
@@ -385,16 +381,3 @@ task signJar(type: SignJar, dependsOn: jar) {
 }
 
 build.dependsOn signJar
-
-// Detatched Signature
-apply plugin: 'signing'
-
-signing {
-    if (project.hasProperty('signing.keyId') && project.hasProperty('signing.password')) {
-        sign publishing.publications
-        project.logger.warn('Artifacts will be PGP signed.')
-    }    
-    else {
-        project.logger.warn('Could not make detatched signatures. One or more PGP args is missing.')
-    }
-}
