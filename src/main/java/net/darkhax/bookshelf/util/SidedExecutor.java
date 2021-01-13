@@ -55,7 +55,7 @@ public final class SidedExecutor {
                 return client.get().call();
             }
             
-            else if (server != null) {
+            else if (EffectiveSide.get().isServer() && server != null) {
                 
                 return server.get().call();
             }
@@ -82,7 +82,7 @@ public final class SidedExecutor {
             runForSide(toRun, null);
         }
         
-        else {
+        else if (side.isServer()) {
             
             runForSide(null, toRun);
         }
@@ -103,7 +103,7 @@ public final class SidedExecutor {
                 client.get().run();
             }
             
-            else if (server != null) {
+            else if (EffectiveSide.get().isServer() && server != null) {
                 
                 server.get().run();
             }
