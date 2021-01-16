@@ -68,9 +68,9 @@ public class BlockIngredientTestState extends BlockIngredient {
             final List<BlockState> validStates = new ArrayList<>();
             final Map<Property<?>, Object> expectedProps = new HashMap<>();
             
-            for (Entry<String, JsonElement> propValue : properties.entrySet()) {
+            for (final Entry<String, JsonElement> propValue : properties.entrySet()) {
                 
-                Property<?> property = block.getStateContainer().getProperty(propValue.getKey());
+                final Property<?> property = block.getStateContainer().getProperty(propValue.getKey());
                 
                 if (property != null) {
                     
@@ -93,7 +93,7 @@ public class BlockIngredientTestState extends BlockIngredient {
                 }
             }
             
-            for (BlockState state : block.getStateContainer().getValidStates()) {
+            for (final BlockState state : block.getStateContainer().getValidStates()) {
                 
                 if (expectedProps.entrySet().stream().allMatch(e -> state.get(e.getKey()).equals(e.getValue()))) {
                     
@@ -113,7 +113,7 @@ public class BlockIngredientTestState extends BlockIngredient {
             final JsonObject props = new JsonObject();
             obj.add("properties", props);
             
-            for (Entry<Property<?>, Object> propEntry : ingredient.props.entrySet()) {
+            for (final Entry<Property<?>, Object> propEntry : ingredient.props.entrySet()) {
                 
                 props.addProperty(propEntry.getKey().getName(), propEntry.getValue().toString());
             }
