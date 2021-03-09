@@ -22,7 +22,7 @@ apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Co
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/artifacts.gradle'
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/patreon.gradle'
-apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/maven_local_nomcp.gradle'
+//apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/maven_local_nomcp.gradle'
 
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
@@ -381,3 +381,42 @@ task signJar(type: SignJar, dependsOn: jar) {
 }
 
 build.dependsOn signJar
+
+publishing {
+
+    tasks.publish.dependsOn 'build'
+    
+    publications {
+
+        mavenJava(MavenPublication) {
+        
+            artifactId project.archivesBaseName
+
+            // Adds the sources as an artifact.
+            artifact sourcesJar {
+                classifier 'sources'
+            }
+
+            // Adds the javadocs as an artifact.
+            artifact javadocJar {
+                classifier 'javadoc'
+            }
+
+            // Adds the deobfuscated jar as an artifact.
+            artifact deobfJar {
+                classifier 'deobf'
+            }
+            
+            artifact forgelibJar {
+                classifier 'forgelib'
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            // Sets the maven URL
+            url findProperty('localMaven')
+        }
+    }
+}
