@@ -392,6 +392,9 @@ publishing {
         
             artifactId project.archivesBaseName
 
+            // Base mod archive.
+            artifact jar
+            
             // Adds the sources as an artifact.
             artifact sourcesJar {
                 classifier 'sources'
@@ -407,6 +410,7 @@ publishing {
                 classifier 'deobf'
             }
             
+            // A non-obfuscated jar containing the src.
             artifact forgelibJar {
                 classifier 'forgelib'
             }
