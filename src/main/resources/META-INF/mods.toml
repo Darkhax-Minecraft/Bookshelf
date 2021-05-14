@@ -16,6 +16,7 @@ authors="${mod_authors}"
 description='''
 ${mod_description}
 '''
+itemIcon="minecraft:bookshelf"
 
 [[dependencies.bookshelf]]
     modId="forge"
