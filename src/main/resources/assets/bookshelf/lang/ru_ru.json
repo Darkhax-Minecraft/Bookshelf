@@ -32,7 +32,8 @@
     "time.bookshelf.day.wednesday": "Среда",
     "time.bookshelf.day.thursday": "Четверг",
     "time.bookshelf.day.friday": "Пятница",
-    "time.bookshelf.day.saturday": "Суббота"
+    "time.bookshelf.day.saturday": "Суббота",
+    
     "_comment": "Commands",
     "commands.bookshelf.loot_tables": "Найдено %d потерянных таблиц лута для %s.",
     "commands.bookshelf.loot_tables.wildcard": "Найдено %d потерянных таблиц лута для всего списка модов."
