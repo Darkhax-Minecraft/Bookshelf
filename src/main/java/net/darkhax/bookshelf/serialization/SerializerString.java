@@ -30,13 +30,13 @@ public final class SerializerString implements ISerializer<String> {
     @Override
     public String read (PacketBuffer buffer) {
         
-        return buffer.readString();
+        return buffer.readUtf();
     }
     
     @Override
     public void write (PacketBuffer buffer, String toWrite) {
         
-        buffer.writeString(toWrite);
+        buffer.writeUtf(toWrite);
     }
     
     @Override
@@ -50,7 +50,7 @@ public final class SerializerString implements ISerializer<String> {
         
         if (nbt instanceof StringNBT) {
             
-            return ((StringNBT) nbt).getString();
+            return ((StringNBT) nbt).getAsString();
         }
         
         throw new IllegalArgumentException("Expected NBT to be a string tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

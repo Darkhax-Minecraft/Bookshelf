@@ -20,13 +20,13 @@ public class CommandLootChest {
     
     public CommandLootChest(LiteralArgumentBuilder<CommandSource> root) {
         
-        root.requires(s -> s.hasPermissionLevel(2)).then(Commands.literal("lootchest").then(Commands.argument("targets", EntityArgument.players()).then(Commands.argument("table", ArgumentTypeLootTable.INSTACE).executes(this::translate).then(Commands.argument("seed", StringArgumentType.string()).executes(this::translate)))));
+        root.requires(s -> s.hasPermission(2)).then(Commands.literal("lootchest").then(Commands.argument("targets", EntityArgument.players()).then(Commands.argument("table", ArgumentTypeLootTable.INSTACE).executes(this::translate).then(Commands.argument("seed", StringArgumentType.string()).executes(this::translate)))));
     }
     
     private int translate (CommandContext<CommandSource> context) throws CommandSyntaxException {
         
         final ItemStack item = new ItemStack(Items.CHEST);
-        final CompoundNBT tag = item.getOrCreateChildTag("BlockEntityTag");
+        final CompoundNBT tag = item.getOrCreateTagElement("BlockEntityTag");
         tag.putString("LootTable", ArgumentTypeLootTable.getTableId(context, "table"));
         
         if (CommandUtils.hasArgument(context, "seed")) {

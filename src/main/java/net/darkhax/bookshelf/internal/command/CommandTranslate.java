@@ -19,7 +19,7 @@ public class CommandTranslate {
     private int translate (CommandContext<CommandSource> context) throws CommandSyntaxException {
         
         final String translationKey = StringArgumentType.getString(context, "key");
-        context.getSource().sendFeedback(new TranslationTextComponent(translationKey), false);
+        context.getSource().sendSuccess(new TranslationTextComponent(translationKey), false);
         return 0;
     }
 }

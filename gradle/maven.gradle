@@ -1,0 +1,82 @@
+apply from: 'gradle/property_helper.gradle'
+apply plugin: 'maven-publish' 
+
+def canLoad = true
+
+if (!project.hasProperty('mavenURL')) {
+    
+    canLoad = false;
+    project.logger.warn('Skipping maven module. mavenURL property not specified.')
+}
+
+if (!(project.hasProperty('group') || project.hasProperty('groupId'))) {
+    
+    canLoad = false;
+    project.logger.warn('Skipping maven module. group property not specified.')
+}
+
+if (canLoad) {
+
+    project.logger.lifecycle('Loading maven module.')
+    
+    project.publishing {
+
+        tasks.publish.dependsOn 'build'
+        
+        publications {
+
+            mavenJava(MavenPublication) {
+            
+                artifactId project.archivesBaseName
+
+                // Base mod archive.
+                artifact jar
+                
+                // Adds the sources as an artifact.
+                artifact project.sourcesJar {
+                    classifier 'sources'
+                }
+
+                // Adds the javadocs as an artifact.
+                artifact project.javadocJar {
+                    classifier 'javadoc'
+                }
+            }
+        }
+
+        repositories {
+        
+            maven {
+            
+                // Sets maven credentials if they are provided. This is generally
+                // only used for external/remote uploads.
+                if (project.hasProperty('mavenUsername') && project.hasProperty('mavenPassword')) {
+                
+                    credentials {
+                    
+                        username findProperty('mavenUsername')
+                        password findProperty('mavenPassword')
+                    }
+                }
+
+                url getRequiredString('mavenURL')
+            }
+        }
+    }
+}
+
+def getMavenCoordinateString() {
+
+    return "group: '${project.group}', name: '${project.name}', version: '${project.version}'"
+}
+
+def getMavenCoordinateStringCompact() {
+
+    return "${project.group}:${project.name}:${project.version}"
+}
+
+ext {
+
+    getMavenCoordinateString = this.&getMavenCoordinateString
+    getMavenCoordinateStringCompact = this.&getMavenCoordinateStringCompact
+}

@@ -51,7 +51,7 @@ public final class SerializerFloat implements ISerializer<Float> {
         
         if (nbt instanceof NumberNBT) {
             
-            return ((NumberNBT) nbt).getFloat();
+            return ((NumberNBT) nbt).getAsFloat();
         }
         
         throw new IllegalArgumentException("Expected NBT to be a number tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

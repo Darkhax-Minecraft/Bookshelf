@@ -35,7 +35,7 @@ public class IngredientEnchantmentType extends Ingredient {
     @Override
     public boolean test (ItemStack stack) {
         
-        return this.type.canEnchantItem(stack.getItem());
+        return this.type.canEnchant(stack.getItem());
     }
     
     @Override
@@ -63,7 +63,7 @@ public class IngredientEnchantmentType extends Ingredient {
         @Override
         public IngredientEnchantmentType parse (PacketBuffer buffer) {
             
-            return new IngredientEnchantmentType(this.type, this, Stream.generate( () -> new Ingredient.SingleItemList(buffer.readItemStack())).limit(buffer.readVarInt()));
+            return new IngredientEnchantmentType(this.type, this, Stream.generate( () -> new Ingredient.SingleItemList(buffer.readItem())).limit(buffer.readVarInt()));
         }
         
         @Override
@@ -80,12 +80,12 @@ public class IngredientEnchantmentType extends Ingredient {
         @Override
         public void write (PacketBuffer buffer, IngredientEnchantmentType ingredient) {
             
-            final ItemStack[] items = ingredient.getMatchingStacks();
+            final ItemStack[] items = ingredient.getItems();
             buffer.writeVarInt(items.length);
             
             for (final ItemStack stack : items) {
                 
-                buffer.writeItemStack(stack);
+                buffer.writeItem(stack);
             }
         }
         
@@ -95,7 +95,7 @@ public class IngredientEnchantmentType extends Ingredient {
             
             for (final Item item : ForgeRegistries.ITEMS.getValues()) {
                 
-                if (this.type.canEnchantItem(item)) {
+                if (this.type.canEnchant(item)) {
                     
                     matchingItems.add(new ItemStack(item));
                 }

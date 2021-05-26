@@ -38,14 +38,14 @@ public class CheckHarvestLevel implements ILootCondition {
         
         if (stack != null && stack.getItem() instanceof TieredItem) {
             
-            return this.level.test(((TieredItem) stack.getItem()).getTier().getHarvestLevel());
+            return this.level.matches(((TieredItem) stack.getItem()).getTier().getLevel());
         }
         
         return false;
     }
     
     @Override
-    public LootConditionType func_230419_b_ () {
+    public LootConditionType getType () {
         
         return Bookshelf.instance.conditionCheckHarvestLevel;
     }
@@ -55,7 +55,7 @@ public class CheckHarvestLevel implements ILootCondition {
         @Override
         public void serialize (JsonObject json, CheckHarvestLevel value, JsonSerializationContext context) {
             
-            json.add("value", value.level.serialize());
+            json.add("value", value.level.serializeToJson());
         }
         
         @Override

@@ -50,36 +50,36 @@ public class ShapedRecipeDamaging extends ShapedRecipe {
         }
         
         @Override
-        public ShapedRecipeDamaging read (ResourceLocation recipeId, JsonObject json) {
+        public ShapedRecipeDamaging fromJson (ResourceLocation recipeId, JsonObject json) {
             
-            final String group = JSONUtils.getString(json, "group", "");
-            final Map<String, Ingredient> ingredients = ShapedRecipe.deserializeKey(JSONUtils.getJsonObject(json, "key"));
-            final String[] pattern = ShapedRecipe.shrink(ShapedRecipe.patternFromJson(JSONUtils.getJsonArray(json, "pattern")));
+            final String group = JSONUtils.getAsString(json, "group", "");
+            final Map<String, Ingredient> ingredients = ShapedRecipe.keyFromJson(JSONUtils.getAsJsonObject(json, "key"));
+            final String[] pattern = ShapedRecipe.shrink(ShapedRecipe.patternFromJson(JSONUtils.getAsJsonArray(json, "pattern")));
             final int width = pattern[0].length();
             final int height = pattern.length;
-            final NonNullList<Ingredient> inputs = ShapedRecipe.deserializeIngredients(pattern, ingredients, width, height);
-            final ItemStack output = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
-            final int damageAmount = JSONUtils.getInt(json, "damageAmount", 1);
-            final boolean ignoreUnbreaking = JSONUtils.getBoolean(json, "ignoreUnbreaking", false);
+            final NonNullList<Ingredient> inputs = ShapedRecipe.dissolvePattern(pattern, ingredients, width, height);
+            final ItemStack output = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
+            final int damageAmount = JSONUtils.getAsInt(json, "damageAmount", 1);
+            final boolean ignoreUnbreaking = JSONUtils.getAsBoolean(json, "ignoreUnbreaking", false);
             
             return new ShapedRecipeDamaging(recipeId, group, width, height, inputs, output, damageAmount, ignoreUnbreaking);
         }
         
         @Override
-        public ShapedRecipeDamaging read (ResourceLocation recipeId, PacketBuffer buffer) {
+        public ShapedRecipeDamaging fromNetwork (ResourceLocation recipeId, PacketBuffer buffer) {
             
             final int width = buffer.readInt();
             final int height = buffer.readInt();
-            final String group = buffer.readString();
+            final String group = buffer.readUtf();
             
             final NonNullList<Ingredient> input = NonNullList.withSize(width * height, Ingredient.EMPTY);
             
             for (int i = 0; i < input.size(); i++) {
                 
-                input.set(i, Ingredient.read(buffer));
+                input.set(i, Ingredient.fromNetwork(buffer));
             }
             
-            final ItemStack output = buffer.readItemStack();
+            final ItemStack output = buffer.readItem();
             final int damageAmount = buffer.readInt();
             final boolean ignoreUnbreaking = buffer.readBoolean();
             
@@ -87,18 +87,18 @@ public class ShapedRecipeDamaging extends ShapedRecipe {
         }
         
         @Override
-        public void write (PacketBuffer buffer, ShapedRecipeDamaging recipe) {
+        public void toNetwork (PacketBuffer buffer, ShapedRecipeDamaging recipe) {
             
             buffer.writeInt(recipe.getWidth());
             buffer.writeInt(recipe.getHeight());
-            buffer.writeString(recipe.getGroup());
+            buffer.writeUtf(recipe.getGroup());
             
             for (final Ingredient ingredient : recipe.getIngredients()) {
                 
-                ingredient.write(buffer);
+                ingredient.toNetwork(buffer);
             }
             
-            buffer.writeItemStack(recipe.getRecipeOutput());
+            buffer.writeItem(recipe.getResultItem());
             buffer.writeInt(recipe.damageAmount);
             buffer.writeBoolean(recipe.ignoreUnbreaking);
         }

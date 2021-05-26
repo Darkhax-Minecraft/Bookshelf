@@ -58,9 +58,9 @@ public class SerializerVec3d implements ISerializer<Vector3d> {
     public INBT writeNBT (Vector3d toWrite) {
         
         final CompoundNBT tag = new CompoundNBT();
-        tag.putDouble("x", toWrite.getX());
-        tag.putDouble("y", toWrite.getY());
-        tag.putDouble("z", toWrite.getZ());
+        tag.putDouble("x", toWrite.x());
+        tag.putDouble("y", toWrite.y());
+        tag.putDouble("z", toWrite.z());
         return tag;
     }
     

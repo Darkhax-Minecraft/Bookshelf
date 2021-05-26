@@ -41,18 +41,18 @@ public class ArgumentTypeHandOutput implements ArgumentType<OutputType> {
     public static class Serialzier implements IArgumentSerializer<ArgumentTypeHandOutput> {
         
         @Override
-        public void write (ArgumentTypeHandOutput argument, PacketBuffer buffer) {
+        public void serializeToNetwork (ArgumentTypeHandOutput argument, PacketBuffer buffer) {
             
         }
         
         @Override
-        public ArgumentTypeHandOutput read (PacketBuffer buffer) {
+        public ArgumentTypeHandOutput deserializeFromNetwork (PacketBuffer buffer) {
             
             return new ArgumentTypeHandOutput();
         }
         
         @Override
-        public void write (ArgumentTypeHandOutput arg, JsonObject json) {
+        public void serializeToJson (ArgumentTypeHandOutput arg, JsonObject json) {
             
         }
     }

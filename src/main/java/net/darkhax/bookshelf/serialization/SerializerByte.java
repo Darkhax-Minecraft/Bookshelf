@@ -51,7 +51,7 @@ public final class SerializerByte implements ISerializer<Byte> {
         
         if (nbt instanceof NumberNBT) {
             
-            return ((NumberNBT) nbt).getByte();
+            return ((NumberNBT) nbt).getAsByte();
         }
         
         throw new IllegalArgumentException("Expected NBT to be a number tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

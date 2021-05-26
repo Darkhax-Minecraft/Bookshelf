@@ -32,7 +32,7 @@ public class CheckRarity implements ILootCondition {
     }
     
     @Override
-    public LootConditionType func_230419_b_ () {
+    public LootConditionType getType () {
         
         return Bookshelf.instance.conditionCheckRarity;
     }
@@ -62,7 +62,7 @@ public class CheckRarity implements ILootCondition {
         @Override
         public CheckRarity deserialize (JsonObject json, JsonDeserializationContext context) {
             
-            return new CheckRarity(JSONUtils.getString(json, "rarity"));
+            return new CheckRarity(JSONUtils.getAsString(json, "rarity"));
         }
     }
 }

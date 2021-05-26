@@ -1,0 +1,71 @@
+def String getString(name, defaultValue, warn = false) {
+
+    return getProperty(name, defaultValue, warn).toString()
+}
+
+def getProperty(name, defaultValue, warn = false) {
+
+    // Ensure it's a string, to handle Gradle Strings.
+    name = name.toString();
+    
+    if (project.hasProperty(name)) {
+    
+        return project.findProperty(name)
+    }
+    
+    if (warn) {
+    
+        project.logger.warn("Property ${name} was not found. Defaulting to ${defaultValue}.")
+    }
+    
+    return defaultValue
+}
+
+def getOptionalString(name) {
+
+    return getString(name, '')
+}
+
+def getRequiredString(name) {
+
+    return getRequiredProperty(name).toString()
+}
+
+def getRequiredProperty(name) {
+
+    if (project.hasProperty(name)) {
+    
+        return project.findProperty(name)
+    }
+    
+    project.logger.error("The ${name} property is required!")
+    throw new RuntimeException("The ${name} property is required!")
+}
+
+def getExecOutput(commands) {
+
+    def out = new ByteArrayOutputStream()
+        
+    exec {
+        commandLine commands
+        standardOutput out
+    }
+        
+    return out.toString().trim();
+}
+
+def getDefaultBoolean(name, defaultEnabled = true) {
+
+    return project.hasProperty(name) ? project.findProperty(name).toBoolean() : defaultEnabled
+}
+
+ext {
+
+    getDefaultString = this.&getString
+    getDefaultProperty = this.&getProperty
+    getRequiredString = this.&getRequiredString
+    getRequiredProperty = this.&getRequiredProperty
+    getExecOutput = this.&getExecOutput
+    getOptionalString = this.&getOptionalString
+    getDefaultBoolean = this.&getDefaultBoolean
+}

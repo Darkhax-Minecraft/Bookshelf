@@ -37,7 +37,7 @@ public class ModifierAddItem extends LootModifier {
         @Override
         public ModifierAddItem read (ResourceLocation location, JsonObject data, ILootCondition[] conditions) {
             
-            final ItemStack item = ShapedRecipe.deserializeItem(data.getAsJsonObject("item"));
+            final ItemStack item = ShapedRecipe.itemFromJson(data.getAsJsonObject("item"));
             return new ModifierAddItem(conditions, item);
         }
         

@@ -70,7 +70,7 @@ public class BlockIngredientAny extends BlockIngredient {
             
             final ArrayList<BlockIngredient> ingredients = new ArrayList<>();
             
-            for (final JsonElement elem : JSONUtils.getJsonArray(json.getAsJsonObject(), "ingredients")) {
+            for (final JsonElement elem : JSONUtils.getAsJsonArray(json.getAsJsonObject(), "ingredients")) {
                 
                 ingredients.add(Serializers.BLOCK_INGREDIENT.read(elem));
             }

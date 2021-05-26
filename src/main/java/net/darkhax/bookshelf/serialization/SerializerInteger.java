@@ -51,7 +51,7 @@ public final class SerializerInteger implements ISerializer<Integer> {
         
         if (nbt instanceof NumberNBT) {
             
-            return ((NumberNBT) nbt).getInt();
+            return ((NumberNBT) nbt).getAsInt();
         }
         
         throw new IllegalArgumentException("Expected NBT to be a number tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

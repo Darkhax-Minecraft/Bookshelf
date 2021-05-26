@@ -51,7 +51,7 @@ public final class SerializerShort implements ISerializer<Short> {
         
         if (nbt instanceof NumberNBT) {
             
-            return ((NumberNBT) nbt).getShort();
+            return ((NumberNBT) nbt).getAsShort();
         }
         
         throw new IllegalArgumentException("Expected NBT to be a number tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

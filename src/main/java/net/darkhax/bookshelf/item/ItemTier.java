@@ -62,19 +62,19 @@ public class ItemTier implements IItemTier {
     
     public static ItemTier createFromTag (int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<Tag<Item>> repairItems) {
         
-        return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.fromTag(repairItems.get()));
+        return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.of(repairItems.get()));
     }
     
     @SafeVarargs
     public static ItemTier createFromItem (int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<Item>... repairItems) {
         
-        return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.fromItems(Stream.of(repairItems).map(Supplier::get).toArray(Item[]::new)));
+        return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.of(Stream.of(repairItems).map(Supplier::get).toArray(Item[]::new)));
     }
     
     @SafeVarargs
     public static ItemTier createFromStack (int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<ItemStack>... repairItems) {
         
-        return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.fromStacks(Stream.of(repairItems).map(Supplier::get).toArray(ItemStack[]::new)));
+        return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.of(Stream.of(repairItems).map(Supplier::get).toArray(ItemStack[]::new)));
     }
     
     public ItemTier(int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<Ingredient> repairItems) {
@@ -88,37 +88,37 @@ public class ItemTier implements IItemTier {
     }
     
     @Override
-    public int getMaxUses () {
+    public int getUses () {
         
         return this.maxUses;
     }
     
     @Override
-    public float getEfficiency () {
+    public float getSpeed () {
         
         return this.efficiency;
     }
     
     @Override
-    public float getAttackDamage () {
+    public float getAttackDamageBonus () {
         
         return this.damage;
     }
     
     @Override
-    public int getHarvestLevel () {
+    public int getLevel () {
         
         return this.harvestLevel;
     }
     
     @Override
-    public int getEnchantability () {
+    public int getEnchantmentValue () {
         
         return this.enchantability;
     }
     
     @Override
-    public Ingredient getRepairMaterial () {
+    public Ingredient getRepairIngredient () {
         
         return this.repairSupplier.get();
     }

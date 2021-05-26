@@ -67,7 +67,7 @@ public final class RenderUtils {
      */
     public static TextureAtlasSprite getParticleSprite (ItemStack stack) {
         
-        return Minecraft.getInstance().getItemRenderer().getItemModelMesher().getItemModel(stack).getParticleTexture();
+        return Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(stack).getParticleIcon();
     }
     
     /**
@@ -80,7 +80,7 @@ public final class RenderUtils {
      */
     public TextureAtlasSprite getParticleSprite (BlockState state, World world, BlockPos pos) {
         
-        return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state, world, pos);
+        return Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getTexture(state, world, pos);
     }
     
     /**
@@ -91,7 +91,7 @@ public final class RenderUtils {
      */
     public static TextureAtlasSprite getParticleSprite (BlockState state) {
         
-        return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state);
+        return Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getParticleIcon(state);
     }
     
     /**
@@ -102,7 +102,7 @@ public final class RenderUtils {
      */
     public static IBakedModel getModel (ModelResourceLocation name) {
         
-        return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getModel(name);
+        return Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getModelManager().getModel(name);
     }
     
     /**
@@ -113,7 +113,7 @@ public final class RenderUtils {
      */
     public static IBakedModel getModel (ItemStack stack) {
         
-        return Minecraft.getInstance().getItemRenderer().getItemModelMesher().getItemModel(stack);
+        return Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(stack);
     }
     
     /**
@@ -124,7 +124,7 @@ public final class RenderUtils {
      */
     public static IBakedModel getModel (BlockState state) {
         
-        return Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
+        return Minecraft.getInstance().getBlockRenderer().getBlockModel(state);
     }
     
     /**
@@ -152,8 +152,8 @@ public final class RenderUtils {
             
             if (!sidedQuads.isEmpty()) {
                 
-                final int lightForSide = WorldRenderer.getPackedLightmapCoords(world, state, pos.offset(side));
-                renderer.renderQuadsFlat(world, state, pos, lightForSide, OverlayTexture.NO_OVERLAY, false, matrix, buffer, sidedQuads, BITS);
+                final int lightForSide = WorldRenderer.getLightColor(world, state, pos.relative(side));
+                renderer.renderModelFaceFlat(world, state, pos, lightForSide, OverlayTexture.NO_OVERLAY, false, matrix, buffer, sidedQuads, BITS);
             }
         }
         
@@ -163,7 +163,7 @@ public final class RenderUtils {
         
         if (!unsidedQuads.isEmpty()) {
             
-            renderer.renderQuadsFlat(world, state, pos, -1, OverlayTexture.NO_OVERLAY, true, matrix, buffer, unsidedQuads, BITS);
+            renderer.renderModelFaceFlat(world, state, pos, -1, OverlayTexture.NO_OVERLAY, true, matrix, buffer, unsidedQuads, BITS);
         }
     }
     
@@ -207,13 +207,13 @@ public final class RenderUtils {
      */
     public static RenderType findRenderType (BlockState state) {
         
-        for (final RenderType blockType : RenderType.getBlockRenderTypes()) {
+        for (final RenderType blockType : RenderType.chunkBufferLayers()) {
             if (RenderTypeLookup.canRenderInLayer(state, blockType)) {
                 return blockType;
             }
         }
         
-        return RenderTypeLookup.func_239221_b_(state);
+        return RenderTypeLookup.getMovingBlockRenderType(state);
     }
     
     /**
@@ -247,11 +247,11 @@ public final class RenderUtils {
             
             if (fluidState != null && !fluidState.isEmpty()) {
                 
-                final Fluid fluid = fluidState.getFluid();
+                final Fluid fluid = fluidState.getType();
                 final ResourceLocation texture = fluid.getAttributes().getStillTexture();
                 final int[] color = unpackColor(fluid.getAttributes().getColor(world, pos));
-                final TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(texture);
-                renderBlockSprite(buffer.getBuffer(RenderType.getTranslucent()), matrix, sprite, light, overlay, color);
+                final TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS).apply(texture);
+                renderBlockSprite(buffer.getBuffer(RenderType.translucent()), matrix, sprite, light, overlay, color);
             }
         }
     }
@@ -268,8 +268,8 @@ public final class RenderUtils {
      */
     private static void renderBlock (BlockState state, World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer, Direction[] renderSides) {
         
-        final BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-        final IBakedModel model = dispatcher.getModelForState(state);
+        final BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
+        final IBakedModel model = dispatcher.getBlockModel(state);
         
         final RenderType type = RenderUtils.findRenderType(state);
         
@@ -278,7 +278,7 @@ public final class RenderUtils {
             ForgeHooksClient.setRenderLayer(type);
             
             final IVertexBuilder builder = buffer.getBuffer(type);
-            RenderUtils.renderModel(dispatcher.getBlockModelRenderer(), world, model, state, pos, matrix, builder, renderSides);
+            RenderUtils.renderModel(dispatcher.getModelRenderer(), world, model, state, pos, matrix, builder, renderSides);
             
             ForgeHooksClient.setRenderLayer(null);
         }
@@ -295,9 +295,9 @@ public final class RenderUtils {
      */
     private static void renderBlock (BlockState state, World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer) {
         
-        final BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-        final IBakedModel model = dispatcher.getModelForState(state);
-        final boolean useAO = Minecraft.isAmbientOcclusionEnabled() && state.getLightValue(world, pos) == 0 && model.isAmbientOcclusion();
+        final BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
+        final IBakedModel model = dispatcher.getBlockModel(state);
+        final boolean useAO = Minecraft.useAmbientOcclusion() && state.getLightValue(world, pos) == 0 && model.useAmbientOcclusion();
         
         final RenderType type = RenderUtils.findRenderType(state);
         
@@ -306,7 +306,7 @@ public final class RenderUtils {
             ForgeHooksClient.setRenderLayer(type);
             
             final IVertexBuilder builder = buffer.getBuffer(type);
-            renderModel(dispatcher.getBlockModelRenderer(), useAO, world, model, state, pos, matrix, builder, false, OverlayTexture.NO_OVERLAY);
+            renderModel(dispatcher.getModelRenderer(), useAO, world, model, state, pos, matrix, builder, false, OverlayTexture.NO_OVERLAY);
             
             ForgeHooksClient.setRenderLayer(null);
         }
@@ -325,24 +325,24 @@ public final class RenderUtils {
         
         catch (final Throwable throwable) {
             
-            final CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Tesselating block model");
-            final CrashReportCategory crashreportcategory = crashreport.makeCategory("Block model being tesselated");
-            CrashReportCategory.addBlockInfo(crashreportcategory, pos, state);
-            crashreportcategory.addDetail("Using AO", useAO);
+            final CrashReport crashreport = CrashReport.forThrowable(throwable, "Tesselating block model");
+            final CrashReportCategory crashreportcategory = crashreport.addCategory("Block model being tesselated");
+            CrashReportCategory.populateBlockDetails(crashreportcategory, pos, state);
+            crashreportcategory.setDetail("Using AO", useAO);
             throw new ReportedException(crashreport);
         }
     }
     
     public static void renderLinesWrapped (MatrixStack matrix, int x, int y, ITextComponent text, int textWidth) {
         
-        final FontRenderer font = Minecraft.getInstance().fontRenderer;
-        renderLinesWrapped(matrix, font, x, y, font.FONT_HEIGHT, 0, text, textWidth);
+        final FontRenderer font = Minecraft.getInstance().font;
+        renderLinesWrapped(matrix, font, x, y, font.lineHeight, 0, text, textWidth);
     }
     
     public static void renderLinesWrapped (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, ITextComponent text, int textWidth) {
         
         // trimStringToWidth is actually wrapToWidth
-        renderLinesWrapped(matrix, fontRenderer, x, y, spacing, defaultColor, fontRenderer.trimStringToWidth(text, textWidth));
+        renderLinesWrapped(matrix, fontRenderer, x, y, spacing, defaultColor, fontRenderer.split(text, textWidth));
     }
     
     public static void renderLinesWrapped (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, List<IReorderingProcessor> lines) {
@@ -350,20 +350,20 @@ public final class RenderUtils {
         for (int lineNum = 0; lineNum < lines.size(); lineNum++) {
             
             final IReorderingProcessor lineFragment = lines.get(lineNum);
-            fontRenderer.func_238422_b_(matrix, lineFragment, x, y + lineNum * spacing, defaultColor);
+            fontRenderer.draw(matrix, lineFragment, x, y + lineNum * spacing, defaultColor);
         }
     }
     
     public static int renderLinesReversed (MatrixStack matrix, int x, int y, ITextComponent text, int textWidth) {
         
-        final FontRenderer font = Minecraft.getInstance().fontRenderer;
-        return renderLinesReversed(matrix, font, x, y, font.FONT_HEIGHT, 0xffffff, text, textWidth);
+        final FontRenderer font = Minecraft.getInstance().font;
+        return renderLinesReversed(matrix, font, x, y, font.lineHeight, 0xffffff, text, textWidth);
     }
     
     public static int renderLinesReversed (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, ITextComponent text, int textWidth) {
         
         // trimStringToWidth is actually wrapToWidth
-        return renderLinesReversed(matrix, fontRenderer, x, y, spacing, defaultColor, fontRenderer.trimStringToWidth(text, textWidth));
+        return renderLinesReversed(matrix, fontRenderer, x, y, spacing, defaultColor, fontRenderer.split(text, textWidth));
     }
     
     public static int renderLinesReversed (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, List<IReorderingProcessor> lines) {
@@ -372,7 +372,7 @@ public final class RenderUtils {
         for (int lineNum = lineCount - 1; lineNum >= 0; lineNum--) {
             
             final IReorderingProcessor lineFragment = lines.get(lineCount - 1 - lineNum);
-            fontRenderer.func_238422_b_(matrix, lineFragment, x, y - (lineNum + 1) * (spacing + 1), defaultColor);
+            fontRenderer.draw(matrix, lineFragment, x, y - (lineNum + 1) * (spacing + 1), defaultColor);
         }
         
         return lineCount * (spacing + 1);
@@ -406,7 +406,7 @@ public final class RenderUtils {
      */
     public static void renderBlockSprite (IVertexBuilder builder, MatrixStack stack, TextureAtlasSprite sprite, int light, int overlay, int[] color) {
         
-        renderBlockSprite(builder, stack.getLast().getMatrix(), sprite, light, overlay, 0f, 1f, 0f, 1f, 0f, 1f, color);
+        renderBlockSprite(builder, stack.last().pose(), sprite, light, overlay, 0f, 1f, 0f, 1f, 0f, 1f, color);
     }
     
     /**
@@ -427,7 +427,7 @@ public final class RenderUtils {
      */
     public static void renderBlockSprite (IVertexBuilder builder, MatrixStack stack, TextureAtlasSprite sprite, int light, int overlay, float x1, float x2, float y1, float y2, float z1, float z2, int[] color) {
         
-        renderBlockSprite(builder, stack.getLast().getMatrix(), sprite, light, overlay, x1, x2, y1, y2, z1, z2, color);
+        renderBlockSprite(builder, stack.last().pose(), sprite, light, overlay, x1, x2, y1, y2, z1, z2, color);
     }
     
     /**
@@ -484,69 +484,69 @@ public final class RenderUtils {
         final double pz2 = z2 * 16;
         
         if (side == Direction.DOWN) {
-            final float u1 = sprite.getInterpolatedU(px1);
-            final float u2 = sprite.getInterpolatedU(px2);
-            final float v1 = sprite.getInterpolatedV(pz1);
-            final float v2 = sprite.getInterpolatedV(pz2);
-            builder.pos(pos, x1, y1, z2).color(color[1], color[2], color[3], color[0]).tex(u1, v2).overlay(overlay).lightmap(light).normal(0f, -1f, 0f).endVertex();
-            builder.pos(pos, x1, y1, z1).color(color[1], color[2], color[3], color[0]).tex(u1, v1).overlay(overlay).lightmap(light).normal(0f, -1f, 0f).endVertex();
-            builder.pos(pos, x2, y1, z1).color(color[1], color[2], color[3], color[0]).tex(u2, v1).overlay(overlay).lightmap(light).normal(0f, -1f, 0f).endVertex();
-            builder.pos(pos, x2, y1, z2).color(color[1], color[2], color[3], color[0]).tex(u2, v2).overlay(overlay).lightmap(light).normal(0f, -1f, 0f).endVertex();
+            final float u1 = sprite.getU(px1);
+            final float u2 = sprite.getU(px2);
+            final float v1 = sprite.getV(pz1);
+            final float v2 = sprite.getV(pz2);
+            builder.vertex(pos, x1, y1, z2).color(color[1], color[2], color[3], color[0]).uv(u1, v2).overlayCoords(overlay).uv2(light).normal(0f, -1f, 0f).endVertex();
+            builder.vertex(pos, x1, y1, z1).color(color[1], color[2], color[3], color[0]).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(0f, -1f, 0f).endVertex();
+            builder.vertex(pos, x2, y1, z1).color(color[1], color[2], color[3], color[0]).uv(u2, v1).overlayCoords(overlay).uv2(light).normal(0f, -1f, 0f).endVertex();
+            builder.vertex(pos, x2, y1, z2).color(color[1], color[2], color[3], color[0]).uv(u2, v2).overlayCoords(overlay).uv2(light).normal(0f, -1f, 0f).endVertex();
         }
         
         if (side == Direction.UP) {
-            final float u1 = sprite.getInterpolatedU(px1);
-            final float u2 = sprite.getInterpolatedU(px2);
-            final float v1 = sprite.getInterpolatedV(pz1);
-            final float v2 = sprite.getInterpolatedV(pz2);
-            builder.pos(pos, x1, y2, z2).color(color[1], color[2], color[3], color[0]).tex(u1, v2).overlay(overlay).lightmap(light).normal(0f, 1f, 0f).endVertex();
-            builder.pos(pos, x2, y2, z2).color(color[1], color[2], color[3], color[0]).tex(u2, v2).overlay(overlay).lightmap(light).normal(0f, 1f, 0f).endVertex();
-            builder.pos(pos, x2, y2, z1).color(color[1], color[2], color[3], color[0]).tex(u2, v1).overlay(overlay).lightmap(light).normal(0f, 1f, 0f).endVertex();
-            builder.pos(pos, x1, y2, z1).color(color[1], color[2], color[3], color[0]).tex(u1, v1).overlay(overlay).lightmap(light).normal(0f, 1f, 0f).endVertex();
+            final float u1 = sprite.getU(px1);
+            final float u2 = sprite.getU(px2);
+            final float v1 = sprite.getV(pz1);
+            final float v2 = sprite.getV(pz2);
+            builder.vertex(pos, x1, y2, z2).color(color[1], color[2], color[3], color[0]).uv(u1, v2).overlayCoords(overlay).uv2(light).normal(0f, 1f, 0f).endVertex();
+            builder.vertex(pos, x2, y2, z2).color(color[1], color[2], color[3], color[0]).uv(u2, v2).overlayCoords(overlay).uv2(light).normal(0f, 1f, 0f).endVertex();
+            builder.vertex(pos, x2, y2, z1).color(color[1], color[2], color[3], color[0]).uv(u2, v1).overlayCoords(overlay).uv2(light).normal(0f, 1f, 0f).endVertex();
+            builder.vertex(pos, x1, y2, z1).color(color[1], color[2], color[3], color[0]).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(0f, 1f, 0f).endVertex();
         }
         
         if (side == Direction.NORTH) {
-            final float u1 = sprite.getInterpolatedU(px1);
-            final float u2 = sprite.getInterpolatedU(px2);
-            final float v1 = sprite.getInterpolatedV(py1);
-            final float v2 = sprite.getInterpolatedV(py2);
-            builder.pos(pos, x1, y1, z1).color(color[1], color[2], color[3], color[0]).tex(u1, v1).overlay(overlay).lightmap(light).normal(0f, 0f, -1f).endVertex();
-            builder.pos(pos, x1, y2, z1).color(color[1], color[2], color[3], color[0]).tex(u1, v2).overlay(overlay).lightmap(light).normal(0f, 0f, -1f).endVertex();
-            builder.pos(pos, x2, y2, z1).color(color[1], color[2], color[3], color[0]).tex(u2, v2).overlay(overlay).lightmap(light).normal(0f, 0f, -1f).endVertex();
-            builder.pos(pos, x2, y1, z1).color(color[1], color[2], color[3], color[0]).tex(u2, v1).overlay(overlay).lightmap(light).normal(0f, 0f, -1f).endVertex();
+            final float u1 = sprite.getU(px1);
+            final float u2 = sprite.getU(px2);
+            final float v1 = sprite.getV(py1);
+            final float v2 = sprite.getV(py2);
+            builder.vertex(pos, x1, y1, z1).color(color[1], color[2], color[3], color[0]).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(0f, 0f, -1f).endVertex();
+            builder.vertex(pos, x1, y2, z1).color(color[1], color[2], color[3], color[0]).uv(u1, v2).overlayCoords(overlay).uv2(light).normal(0f, 0f, -1f).endVertex();
+            builder.vertex(pos, x2, y2, z1).color(color[1], color[2], color[3], color[0]).uv(u2, v2).overlayCoords(overlay).uv2(light).normal(0f, 0f, -1f).endVertex();
+            builder.vertex(pos, x2, y1, z1).color(color[1], color[2], color[3], color[0]).uv(u2, v1).overlayCoords(overlay).uv2(light).normal(0f, 0f, -1f).endVertex();
         }
         
         if (side == Direction.SOUTH) {
-            final float u1 = sprite.getInterpolatedU(px1);
-            final float u2 = sprite.getInterpolatedU(px2);
-            final float v1 = sprite.getInterpolatedV(py1);
-            final float v2 = sprite.getInterpolatedV(py2);
-            builder.pos(pos, x2, y1, z2).color(color[1], color[2], color[3], color[0]).tex(u2, v1).overlay(overlay).lightmap(light).normal(0f, 0f, 1f).endVertex();
-            builder.pos(pos, x2, y2, z2).color(color[1], color[2], color[3], color[0]).tex(u2, v2).overlay(overlay).lightmap(light).normal(0f, 0f, 1f).endVertex();
-            builder.pos(pos, x1, y2, z2).color(color[1], color[2], color[3], color[0]).tex(u1, v2).overlay(overlay).lightmap(light).normal(0f, 0f, 1f).endVertex();
-            builder.pos(pos, x1, y1, z2).color(color[1], color[2], color[3], color[0]).tex(u1, v1).overlay(overlay).lightmap(light).normal(0f, 0f, 1f).endVertex();
+            final float u1 = sprite.getU(px1);
+            final float u2 = sprite.getU(px2);
+            final float v1 = sprite.getV(py1);
+            final float v2 = sprite.getV(py2);
+            builder.vertex(pos, x2, y1, z2).color(color[1], color[2], color[3], color[0]).uv(u2, v1).overlayCoords(overlay).uv2(light).normal(0f, 0f, 1f).endVertex();
+            builder.vertex(pos, x2, y2, z2).color(color[1], color[2], color[3], color[0]).uv(u2, v2).overlayCoords(overlay).uv2(light).normal(0f, 0f, 1f).endVertex();
+            builder.vertex(pos, x1, y2, z2).color(color[1], color[2], color[3], color[0]).uv(u1, v2).overlayCoords(overlay).uv2(light).normal(0f, 0f, 1f).endVertex();
+            builder.vertex(pos, x1, y1, z2).color(color[1], color[2], color[3], color[0]).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(0f, 0f, 1f).endVertex();
         }
         
         if (side == Direction.WEST) {
-            final float u1 = sprite.getInterpolatedU(py1);
-            final float u2 = sprite.getInterpolatedU(py2);
-            final float v1 = sprite.getInterpolatedV(pz1);
-            final float v2 = sprite.getInterpolatedV(pz2);
-            builder.pos(pos, x1, y1, z2).color(color[1], color[2], color[3], color[0]).tex(u1, v2).overlay(overlay).lightmap(light).normal(-1f, 0f, 0f).endVertex();
-            builder.pos(pos, x1, y2, z2).color(color[1], color[2], color[3], color[0]).tex(u2, v2).overlay(overlay).lightmap(light).normal(-1f, 0f, 0f).endVertex();
-            builder.pos(pos, x1, y2, z1).color(color[1], color[2], color[3], color[0]).tex(u2, v1).overlay(overlay).lightmap(light).normal(-1f, 0f, 0f).endVertex();
-            builder.pos(pos, x1, y1, z1).color(color[1], color[2], color[3], color[0]).tex(u1, v1).overlay(overlay).lightmap(light).normal(-1f, 0f, 0f).endVertex();
+            final float u1 = sprite.getU(py1);
+            final float u2 = sprite.getU(py2);
+            final float v1 = sprite.getV(pz1);
+            final float v2 = sprite.getV(pz2);
+            builder.vertex(pos, x1, y1, z2).color(color[1], color[2], color[3], color[0]).uv(u1, v2).overlayCoords(overlay).uv2(light).normal(-1f, 0f, 0f).endVertex();
+            builder.vertex(pos, x1, y2, z2).color(color[1], color[2], color[3], color[0]).uv(u2, v2).overlayCoords(overlay).uv2(light).normal(-1f, 0f, 0f).endVertex();
+            builder.vertex(pos, x1, y2, z1).color(color[1], color[2], color[3], color[0]).uv(u2, v1).overlayCoords(overlay).uv2(light).normal(-1f, 0f, 0f).endVertex();
+            builder.vertex(pos, x1, y1, z1).color(color[1], color[2], color[3], color[0]).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(-1f, 0f, 0f).endVertex();
         }
         
         if (side == Direction.EAST) {
-            final float u1 = sprite.getInterpolatedU(py1);
-            final float u2 = sprite.getInterpolatedU(py2);
-            final float v1 = sprite.getInterpolatedV(pz1);
-            final float v2 = sprite.getInterpolatedV(pz2);
-            builder.pos(pos, x2, y1, z1).color(color[1], color[2], color[3], color[0]).tex(u1, v1).overlay(overlay).lightmap(light).normal(1f, 0f, 0f).endVertex();
-            builder.pos(pos, x2, y2, z1).color(color[1], color[2], color[3], color[0]).tex(u2, v1).overlay(overlay).lightmap(light).normal(1f, 0f, 0f).endVertex();
-            builder.pos(pos, x2, y2, z2).color(color[1], color[2], color[3], color[0]).tex(u2, v2).overlay(overlay).lightmap(light).normal(1f, 0f, 0f).endVertex();
-            builder.pos(pos, x2, y1, z2).color(color[1], color[2], color[3], color[0]).tex(u1, v2).overlay(overlay).lightmap(light).normal(1f, 0f, 0f).endVertex();
+            final float u1 = sprite.getU(py1);
+            final float u2 = sprite.getU(py2);
+            final float v1 = sprite.getV(pz1);
+            final float v2 = sprite.getV(pz2);
+            builder.vertex(pos, x2, y1, z1).color(color[1], color[2], color[3], color[0]).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(1f, 0f, 0f).endVertex();
+            builder.vertex(pos, x2, y2, z1).color(color[1], color[2], color[3], color[0]).uv(u2, v1).overlayCoords(overlay).uv2(light).normal(1f, 0f, 0f).endVertex();
+            builder.vertex(pos, x2, y2, z2).color(color[1], color[2], color[3], color[0]).uv(u2, v2).overlayCoords(overlay).uv2(light).normal(1f, 0f, 0f).endVertex();
+            builder.vertex(pos, x2, y1, z2).color(color[1], color[2], color[3], color[0]).uv(u1, v2).overlayCoords(overlay).uv2(light).normal(1f, 0f, 0f).endVertex();
         }
     }
 }

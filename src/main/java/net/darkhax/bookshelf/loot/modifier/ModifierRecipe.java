@@ -53,15 +53,15 @@ public class ModifierRecipe extends LootModifier {
         
         try {
             
-            final List<IRecipe> matchingRecipes = ctx.getWorld().getRecipeManager().getRecipes(this.recipeType, new Inventory(stack), ctx.getWorld());
+            final List<IRecipe> matchingRecipes = ctx.getLevel().getRecipeManager().getRecipesFor(this.recipeType, new Inventory(stack), ctx.getLevel());
             
             if (!matchingRecipes.isEmpty()) {
                 
-                final IRecipe recipe = matchingRecipes.get(ctx.getWorld().rand.nextInt(matchingRecipes.size()));
+                final IRecipe recipe = matchingRecipes.get(ctx.getLevel().random.nextInt(matchingRecipes.size()));
                 
                 if (recipe != null) {
                     
-                    final ItemStack output = recipe.getRecipeOutput();
+                    final ItemStack output = recipe.getResultItem();
                     
                     if (output != null && !output.isEmpty()) {
                         

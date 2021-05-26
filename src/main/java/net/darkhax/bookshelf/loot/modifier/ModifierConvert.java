@@ -36,13 +36,13 @@ public class ModifierConvert extends LootModifier {
         
         final List<ItemStack> outputs = NonNullList.create();
         
-        final LootTable table = ctx.getWorld().getServer().getLootTableManager().getLootTableFromLocation(this.tableName);
+        final LootTable table = ctx.getLevel().getServer().getLootTables().get(this.tableName);
         
         for (final ItemStack item : loot) {
             
             if (MathsUtils.tryPercentage(this.chance)) {
                 
-                outputs.addAll(table.generate(ctx));
+                outputs.addAll(table.getRandomItems(ctx));
             }
             
             else {
@@ -59,8 +59,8 @@ public class ModifierConvert extends LootModifier {
         @Override
         public ModifierConvert read (ResourceLocation location, JsonObject data, ILootCondition[] conditions) {
             
-            final ResourceLocation tableName = ResourceLocation.tryCreate(JSONUtils.getString(data, "table"));
-            final float chance = JSONUtils.getFloat(data, "chance", 1f);
+            final ResourceLocation tableName = ResourceLocation.tryParse(JSONUtils.getAsString(data, "table"));
+            final float chance = JSONUtils.getAsFloat(data, "chance", 1f);
             return new ModifierConvert(conditions, tableName, chance);
         }
         

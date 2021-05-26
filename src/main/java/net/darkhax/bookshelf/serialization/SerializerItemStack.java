@@ -24,7 +24,7 @@ public class SerializerItemStack implements ISerializer<ItemStack> {
         
         if (json.isJsonObject()) {
             
-            return ShapedRecipe.deserializeItem(json.getAsJsonObject());
+            return ShapedRecipe.itemFromJson(json.getAsJsonObject());
         }
         
         else if (json.isJsonPrimitive()) {
@@ -32,7 +32,7 @@ public class SerializerItemStack implements ISerializer<ItemStack> {
             return new ItemStack(Serializers.ITEM.read(json));
         }
         
-        throw new JsonParseException("Expected JSON object, got " + JSONUtils.toString(json));
+        throw new JsonParseException("Expected JSON object, got " + JSONUtils.getType(json));
     }
     
     @Override
@@ -54,19 +54,19 @@ public class SerializerItemStack implements ISerializer<ItemStack> {
     @Override
     public ItemStack read (PacketBuffer buffer) {
         
-        return buffer.readItemStack();
+        return buffer.readItem();
     }
     
     @Override
     public void write (PacketBuffer buffer, ItemStack toWrite) {
         
-        buffer.writeItemStack(toWrite);
+        buffer.writeItem(toWrite);
     }
     
     @Override
     public INBT writeNBT (ItemStack toWrite) {
         
-        return toWrite.write(new CompoundNBT());
+        return toWrite.save(new CompoundNBT());
     }
     
     @Override
@@ -74,7 +74,7 @@ public class SerializerItemStack implements ISerializer<ItemStack> {
         
         if (nbt instanceof CompoundNBT) {
             
-            return ItemStack.read((CompoundNBT) nbt);
+            return ItemStack.of((CompoundNBT) nbt);
         }
         
         throw new IllegalArgumentException("Expected NBT to be a compound tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

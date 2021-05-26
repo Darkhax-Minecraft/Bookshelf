@@ -19,6 +19,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
+import net.minecraft.enchantment.Enchantment.Rarity;
+
 /**
  * An enchantment with hooks for when the user and enchanted items tick.
  */
@@ -91,8 +93,8 @@ public class EnchantmentTicking extends Enchantment {
             for (final EquipmentSlotType validSlot : tickingEnch.validSlots) {
                 
                 // Get the item and add to the total level
-                final ItemStack stack = event.getEntityLiving().getItemStackFromSlot(validSlot);
-                final int level = EnchantmentHelper.getEnchantmentLevel(tickingEnch, stack);
+                final ItemStack stack = event.getEntityLiving().getItemBySlot(validSlot);
+                final int level = EnchantmentHelper.getItemEnchantmentLevel(tickingEnch, stack);
                 
                 if (level > 0) {
                     

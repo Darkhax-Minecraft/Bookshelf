@@ -27,7 +27,7 @@ public class ItemGroupBase extends ItemGroup {
     
     public ItemGroupBase(String label, Block block) {
         
-        this(label, Item.getItemFromBlock(block));
+        this(label, Item.byBlock(block));
     }
     
     public ItemGroupBase(String label, Item item) {
@@ -48,7 +48,7 @@ public class ItemGroupBase extends ItemGroup {
     }
     
     @Override
-    public ItemStack createIcon () {
+    public ItemStack makeIcon () {
         
         return this.iconSupplier.get();
     }

@@ -52,12 +52,12 @@ public enum MoonPhase {
     @OnlyIn(Dist.CLIENT)
     public String getPhaseName () {
         
-        return I18n.format("moon.phase." + this.key + ".name");
+        return I18n.get("moon.phase." + this.key + ".name");
     }
     
     @OnlyIn(Dist.CLIENT)
     public static MoonPhase getCurrentPhase () {
         
-        return getPhase(Minecraft.getInstance().world.getMoonPhase());
+        return getPhase(Minecraft.getInstance().level.getMoonPhase());
     }
 }

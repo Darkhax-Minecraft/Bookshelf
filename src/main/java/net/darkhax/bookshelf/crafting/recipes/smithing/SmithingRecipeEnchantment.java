@@ -31,15 +31,15 @@ public class SmithingRecipeEnchantment extends SmithingRecipe {
     }
     
     @Override
-    public ItemStack getCraftingResult (IInventory inv) {
+    public ItemStack assemble (IInventory inv) {
         
-        final ItemStack stack = inv.getStackInSlot(0).copy();
+        final ItemStack stack = inv.getItem(0).copy();
         
         for (final EnchantmentData data : this.enchantments) {
             
-            if (EnchantmentHelper.getEnchantmentLevel(data.enchantment, stack) < data.enchantmentLevel) {
+            if (EnchantmentHelper.getItemEnchantmentLevel(data.enchantment, stack) < data.level) {
                 
-                stack.addEnchantment(data.enchantment, data.enchantmentLevel);
+                stack.enchant(data.enchantment, data.level);
             }
         }
         
@@ -49,11 +49,11 @@ public class SmithingRecipeEnchantment extends SmithingRecipe {
     @Override
     public boolean matches (IInventory inv, World world) {
         
-        final ItemStack input = inv.getStackInSlot(0);
+        final ItemStack input = inv.getItem(0);
         
         for (final EnchantmentData data : this.enchantments) {
             
-            if (EnchantmentHelper.getEnchantmentLevel(data.enchantment, input) < data.enchantmentLevel) {
+            if (EnchantmentHelper.getItemEnchantmentLevel(data.enchantment, input) < data.level) {
                 
                 return super.matches(inv, world);
             }
@@ -63,7 +63,7 @@ public class SmithingRecipeEnchantment extends SmithingRecipe {
     }
     
     @Override
-    public boolean isDynamic () {
+    public boolean isSpecial () {
         
         return true;
     }
@@ -77,28 +77,28 @@ public class SmithingRecipeEnchantment extends SmithingRecipe {
     private static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<SmithingRecipeEnchantment> {
         
         @Override
-        public SmithingRecipeEnchantment read (ResourceLocation recipeId, JsonObject json) {
+        public SmithingRecipeEnchantment fromJson (ResourceLocation recipeId, JsonObject json) {
             
-            final Ingredient base = Ingredient.deserialize(JSONUtils.getJsonObject(json, "base"));
-            final Ingredient addition = Ingredient.deserialize(JSONUtils.getJsonObject(json, "addition"));
+            final Ingredient base = Ingredient.fromJson(JSONUtils.getAsJsonObject(json, "base"));
+            final Ingredient addition = Ingredient.fromJson(JSONUtils.getAsJsonObject(json, "addition"));
             final List<EnchantmentData> enchants = Serializers.ENCHANTMENT_DATA.readList(json, "enchantments");
             return new SmithingRecipeEnchantment(recipeId, base, addition, enchants);
         }
         
         @Override
-        public SmithingRecipeEnchantment read (ResourceLocation recipeId, PacketBuffer buffer) {
+        public SmithingRecipeEnchantment fromNetwork (ResourceLocation recipeId, PacketBuffer buffer) {
             
-            final Ingredient base = Ingredient.read(buffer);
-            final Ingredient addition = Ingredient.read(buffer);
+            final Ingredient base = Ingredient.fromNetwork(buffer);
+            final Ingredient addition = Ingredient.fromNetwork(buffer);
             final List<EnchantmentData> enchants = Serializers.ENCHANTMENT_DATA.readList(buffer);
             return new SmithingRecipeEnchantment(recipeId, base, addition, enchants);
         }
         
         @Override
-        public void write (PacketBuffer buffer, SmithingRecipeEnchantment recipe) {
+        public void toNetwork (PacketBuffer buffer, SmithingRecipeEnchantment recipe) {
             
-            recipe.base.write(buffer);
-            recipe.addition.write(buffer);
+            recipe.base.toNetwork(buffer);
+            recipe.addition.toNetwork(buffer);
             Serializers.ENCHANTMENT_DATA.writeList(buffer, recipe.enchantments);
         }
     }

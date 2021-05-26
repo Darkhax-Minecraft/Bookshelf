@@ -24,7 +24,7 @@ public final class SkullUtils {
      */
     public static ItemStack createSkull (PlayerEntity player) {
         
-        return createSkull(player.getGameProfile().getName(), player.getUniqueID());
+        return createSkull(player.getGameProfile().getName(), player.getUUID());
     }
     
     /**

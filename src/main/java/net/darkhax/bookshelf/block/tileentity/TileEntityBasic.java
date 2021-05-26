@@ -28,40 +28,40 @@ public abstract class TileEntityBasic extends TileEntity {
     public TileEntityBasic(TileEntityType<?> tileEntityType) {
         
         super(tileEntityType);
-        this.chunkPos = new LazyValue<>( () -> new ChunkPos(this.pos));
+        this.chunkPos = new LazyValue<>( () -> new ChunkPos(this.worldPosition));
     }
     
     @Override
-    public void read (BlockState state, CompoundNBT dataTag) {
+    public void load (BlockState state, CompoundNBT dataTag) {
         
         this.deserialize(dataTag);
-        super.read(state, dataTag);
+        super.load(state, dataTag);
     }
     
     @Override
-    public CompoundNBT write (CompoundNBT dataTag) {
+    public CompoundNBT save (CompoundNBT dataTag) {
         
         this.serialize(dataTag);
-        return super.write(dataTag);
+        return super.save(dataTag);
     }
     
     @Override
     public SUpdateTileEntityPacket getUpdatePacket () {
         
-        return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
+        return new SUpdateTileEntityPacket(this.worldPosition, 0, this.getUpdateTag());
     }
     
     @Override
     public void onDataPacket (NetworkManager net, SUpdateTileEntityPacket packet) {
         
         super.onDataPacket(net, packet);
-        this.deserialize(packet.getNbtCompound());
+        this.deserialize(packet.getTag());
     }
     
     @Override
     public CompoundNBT getUpdateTag () {
         
-        return this.write(super.getUpdateTag());
+        return this.save(super.getUpdateTag());
     }
     
     /**
@@ -74,15 +74,15 @@ public abstract class TileEntityBasic extends TileEntity {
         
         if (renderUpdate) {
             
-            this.markDirty();
+            this.setChanged();
             final BlockState state = this.getState();
-            this.world.notifyBlockUpdate(this.pos, state, state, BlockFlags.DEFAULT_AND_RERENDER);
+            this.level.sendBlockUpdated(this.worldPosition, state, state, BlockFlags.DEFAULT_AND_RERENDER);
         }
         
-        else if (this.world instanceof ServerWorld) {
+        else if (this.level instanceof ServerWorld) {
             
             final IPacket<?> packet = this.getUpdatePacket();
-            WorldUtils.sendToTracking((ServerWorld) this.world, this.getChunkPos(), packet, false);
+            WorldUtils.sendToTracking((ServerWorld) this.level, this.getChunkPos(), packet, false);
         }
     }
     
@@ -93,7 +93,7 @@ public abstract class TileEntityBasic extends TileEntity {
      */
     public boolean hasPosition () {
         
-        return this.pos != null && this.pos != BlockPos.ZERO;
+        return this.worldPosition != null && this.worldPosition != BlockPos.ZERO;
     }
     
     /**
@@ -103,7 +103,7 @@ public abstract class TileEntityBasic extends TileEntity {
      */
     public boolean isLoaded () {
         
-        return this.hasWorld() && this.hasPosition() && this.getWorld().isBlockLoaded(this.getPos());
+        return this.hasLevel() && this.hasPosition() && this.getLevel().hasChunkAt(this.getBlockPos());
     }
     
     /**
@@ -113,7 +113,7 @@ public abstract class TileEntityBasic extends TileEntity {
      */
     public BlockState getState () {
         
-        return this.isLoaded() ? this.getWorld().getBlockState(this.pos) : null;
+        return this.isLoaded() ? this.getLevel().getBlockState(this.worldPosition) : null;
     }
     
     /**
@@ -125,7 +125,7 @@ public abstract class TileEntityBasic extends TileEntity {
      */
     public ChunkPos getChunkPos () {
         
-        return this.chunkPos.getValue();
+        return this.chunkPos.get();
     }
     
     /**

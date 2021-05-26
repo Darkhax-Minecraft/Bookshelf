@@ -48,7 +48,7 @@ public class InventoryUtils {
      */
     public static IItemHandler getInventory (World world, BlockPos pos, Direction side) {
         
-        final TileEntity tileEntity = world.getTileEntity(pos);
+        final TileEntity tileEntity = world.getBlockEntity(pos);
         
         if (tileEntity != null) {
             
@@ -65,7 +65,7 @@ public class InventoryUtils {
             if (state.getBlock() instanceof ISidedInventoryProvider) {
                 
                 final ISidedInventoryProvider inventoryProvider = (ISidedInventoryProvider) state.getBlock();
-                final ISidedInventory inventory = inventoryProvider.createInventory(state, world, pos);
+                final ISidedInventory inventory = inventoryProvider.getContainer(state, world, pos);
                 
                 if (inventory != null) {
                     
@@ -102,7 +102,7 @@ public class InventoryUtils {
     @Nullable
     public static Container getCraftingContainer (CraftingInventory craftingInv) {
         
-        return craftingInv.eventHandler;
+        return craftingInv.menu;
     }
     
     @Nullable
@@ -139,7 +139,7 @@ public class InventoryUtils {
             
             else if (container instanceof PlayerContainer) {
                 
-                return ((PlayerContainer) container).player;
+                return ((PlayerContainer) container).owner;
             }
         }
         
@@ -164,14 +164,14 @@ public class InventoryUtils {
         
         for (int i = 0; i < keptItems.size(); i++) {
             
-            final ItemStack stack = inv.getStackInSlot(i);
+            final ItemStack stack = inv.getItem(i);
             
             // Checks if the item has durability or has the unbreaking tag.
-            if (stack.getItem().isDamageable() || stack.hasTag() && stack.getTag().getBoolean("Unbreakable")) {
+            if (stack.getItem().canBeDepleted() || stack.hasTag() && stack.getTag().getBoolean("Unbreakable")) {
                 
                 @Nullable
                 final PlayerEntity player = InventoryUtils.getCraftingPlayer(inv);
-                final Random random = player != null ? player.getRNG() : Bookshelf.RANDOM;
+                final Random random = player != null ? player.getRandom() : Bookshelf.RANDOM;
                 final ItemStack retainedStack = stack.copy();
                 
                 // Sometimes you may want to ignore/bypass the unbreaking enchantment.
@@ -179,9 +179,9 @@ public class InventoryUtils {
                     
                     // Checks if the stack can be damaged. If so continue and bypass all the
                     // other item damaging mechanics.
-                    if (retainedStack.isDamageable()) {
+                    if (retainedStack.isDamageableItem()) {
                         
-                        retainedStack.setDamage(retainedStack.getDamage() + damageAmount);
+                        retainedStack.setDamageValue(retainedStack.getDamageValue() + damageAmount);
                     }
                 }
                 
@@ -189,7 +189,7 @@ public class InventoryUtils {
                     
                     // Attempts to damage the item, taking things like the unbreaking
                     // enchantment into consideration.
-                    retainedStack.attemptDamageItem(damageAmount, random, player instanceof ServerPlayerEntity ? (ServerPlayerEntity) player : null);
+                    retainedStack.hurt(damageAmount, random, player instanceof ServerPlayerEntity ? (ServerPlayerEntity) player : null);
                 }
                 
                 keptItems.set(i, retainedStack);

@@ -126,7 +126,7 @@ public class ItemHandler<T extends ItemHandler<T>> extends ItemStackHandler {
      */
     public T withItemValidator (IItemProvider... items) {
         
-        return this.withItemValidator(Ingredient.fromItems(items));
+        return this.withItemValidator(Ingredient.of(items));
     }
     
     /**
@@ -137,7 +137,7 @@ public class ItemHandler<T extends ItemHandler<T>> extends ItemStackHandler {
      */
     public T withItemValidator (ITag<Item> tag) {
         
-        return this.withItemValidator(Ingredient.fromTag(tag));
+        return this.withItemValidator(Ingredient.of(tag));
     }
     
     /**

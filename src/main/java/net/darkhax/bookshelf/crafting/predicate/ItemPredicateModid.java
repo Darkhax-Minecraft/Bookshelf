@@ -16,14 +16,14 @@ public class ItemPredicateModid extends ItemPredicate {
     }
     
     @Override
-    public boolean test (ItemStack stack) {
+    public boolean matches (ItemStack stack) {
         
         return !stack.isEmpty() && stack.getItem().getRegistryName().getNamespace().equals(this.modid);
     }
     
     public static ItemPredicate fromJson (JsonObject json) {
         
-        final String modid = JSONUtils.getString(json, "modid");
+        final String modid = JSONUtils.getAsString(json, "modid");
         return new ItemPredicateModid(modid);
     }
 }

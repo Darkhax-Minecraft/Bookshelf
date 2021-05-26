@@ -32,7 +32,7 @@ public class CommandUtils {
      */
     public static LiteralArgumentBuilder<CommandSource> createCommand (String key, int permissions, Command<CommandSource> command) {
         
-        return Commands.literal(key).requires(sender -> sender.hasPermissionLevel(permissions)).executes(command);
+        return Commands.literal(key).requires(sender -> sender.hasPermission(permissions)).executes(command);
     }
     
     /**
@@ -46,7 +46,7 @@ public class CommandUtils {
      */
     public static LiteralArgumentBuilder<CommandSource> createPlayerCommand (String key, int permissions, Command<CommandSource> command) {
         
-        return Commands.literal(key).requires(sender -> sender.hasPermissionLevel(permissions)).then(Commands.argument("targets", EntityArgument.player()).executes(command));
+        return Commands.literal(key).requires(sender -> sender.hasPermission(permissions)).then(Commands.argument("targets", EntityArgument.player()).executes(command));
     }
     
     /**
@@ -59,7 +59,7 @@ public class CommandUtils {
      */
     public static LiteralArgumentBuilder<CommandSource> createModCommand (String key, int permissions, BooleanCommand command) {
         
-        return Commands.literal(key).requires(sender -> sender.hasPermissionLevel(permissions)).executes(ctx -> command.apply(ctx, true)).then(Commands.argument("mod", ArgumentTypeMod.INSTACE).executes(ctx -> command.apply(ctx, false)));
+        return Commands.literal(key).requires(sender -> sender.hasPermission(permissions)).executes(ctx -> command.apply(ctx, true)).then(Commands.argument("mod", ArgumentTypeMod.INSTACE).executes(ctx -> command.apply(ctx, false)));
     }
     
     /**

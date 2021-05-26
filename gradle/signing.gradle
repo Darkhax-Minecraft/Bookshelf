@@ -1,0 +1,85 @@
+/*
+ This module will load Gradle's built in signing plugin. When the required 
+ properties are present the plugin will use PGP to sign all published 
+ artefacts and produce detached armoured ASCII signature files (ASC). These 
+ files can be used to verify the authenticity and integrity of the published
+ artefacts. This is primarily used by tools accessing a Maven.
+ 
+ The required properties are as follows
+ 
+ | Name                      | Type   | Description                                    | Example      |
+ |---------------------------|--------|------------------------------------------------|--------------|
+ | signing.secretKeyRingFile | File   | A container file for holding PGP keys.         | *.gpg        |
+ | signing.keyId             | String | The last 8 characters of the specific key ID.  | 39280BAE     |
+ | signing.password          | String | The password used when generated the keys.     | 8r+v!$*uaR4K |
+ 
+ Generating the key ring and signing key can be done from the command line
+ using GPG. This can be done using two commands.
+ 
+ 1) gpg --no-default-keyring --keyring ./mod_signing.gpg --full-generate-key
+ 
+    This command will generate a new keyring file in the working directory.
+    It will then prompt you to generate a new key. My personal recomendation is
+    an "RSA and RSA" key type with 4096 bits. I also recommend no expiration 
+    date for Minecraft mods. The password used when generating the key is used
+    as the value for signing.password.
+    
+    Once you have generated the key, make sure to copy down the public key ID.
+    This can be found under the pub section at the end of the command output. 
+    With the recommended settings this will be a 40 char hex string. The last
+    eight characters of this ID is the value for signing.keyId.
+ 
+ 2) gpg --no-default-keyring --keyring ./mod_signing.gpg --export-secret-keys -o mod_key_ring.gpg
+ 
+    This command will export the keys from the keyring file into a new keyring
+    file that Gradle can read. The newly created keyring file will be used for
+    the value of signing.secretKeyRingFile.
+*/
+
+def canLoad = true
+
+// 
+if (!project.hasProperty('signing.secretKeyRingFile') && project.hasProperty('pgpKeyRing')) {
+
+    final def keyRing = file project.getProperty('pgpKeyRing')
+    
+    if (keyRing.exists() && keyRing.name.endsWith('.gpg')) {
+    
+        project.ext.set('signing.secretKeyRingFile', keyRing.getAbsolutePath())
+        project.logger.lifecycle('Loaded PGP keyring from fallback property.')
+    }
+    
+    else {
+    
+        project.logger.warn('Failed to load PGP keyring from pgpKeyRing fallback property.')
+    }
+}
+
+if (!project.hasProperty('signing.secretKeyRingFile')) {
+
+    project.logger.warn('Skipping PGP signing. No signing.secretKeyRingFile provided.')
+    canLoad = false
+}
+
+if (!project.hasProperty('signing.keyId')) {
+
+    project.logger.warn('Skipping PGP signing. No signing.keyId provided.')
+    canLoad = false
+}
+
+if (!project.hasProperty('signing.password')) {
+
+    project.logger.warn('Skipping PGP signing. No signing.password provided.')
+    canLoad = false
+}
+
+if (canLoad) {
+
+    apply plugin: 'signing'
+
+    signing {
+    
+        project.logger.lifecycle('Artefacts will be signed using PGP.')
+        sign publishing.publications
+    } 
+}

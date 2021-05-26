@@ -40,9 +40,9 @@ public class InventoryListenable extends Inventory {
     }
     
     @Override
-    public void markDirty () {
+    public void setChanged () {
         
-        super.markDirty();
+        super.setChanged();
         
         if (this.listener != null) {
             

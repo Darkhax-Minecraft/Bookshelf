@@ -50,7 +50,7 @@ public final class SerializerBoolean implements ISerializer<Boolean> {
         
         if (nbt instanceof ByteNBT) {
             
-            return ((ByteNBT) nbt).getByte() != 0;
+            return ((ByteNBT) nbt).getAsByte() != 0;
         }
         
         throw new IllegalArgumentException("Expected NBT to be a byte/boolean tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

@@ -86,11 +86,11 @@ public class DisplayableBlockState {
     @OnlyIn(Dist.CLIENT)
     public void render (World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay, Direction... preferredSides) {
         
-        matrix.push();
-        this.getScale().ifPresent(vec -> matrix.scale(vec.getX(), vec.getY(), vec.getZ()));
-        this.getOffset().ifPresent(vec -> matrix.translate(vec.getX(), vec.getY(), vec.getZ()));
+        matrix.pushPose();
+        this.getScale().ifPresent(vec -> matrix.scale(vec.x(), vec.y(), vec.z()));
+        this.getOffset().ifPresent(vec -> matrix.translate(vec.x(), vec.y(), vec.z()));
         RenderUtils.renderState(this.state, world, pos, matrix, buffer, light, overlay, this.renderFluid, preferredSides);
-        matrix.pop();
+        matrix.popPose();
     }
     
     static class Serializer implements ISerializer<DisplayableBlockState> {
@@ -108,7 +108,7 @@ public class DisplayableBlockState {
                 return new DisplayableBlockState(state, scale, offset, renderFluid);
             }
             
-            throw new JsonParseException("Expected properties to be an object. Recieved " + JSONUtils.toString(json));
+            throw new JsonParseException("Expected properties to be an object. Recieved " + JSONUtils.getType(json));
         }
         
         @Override

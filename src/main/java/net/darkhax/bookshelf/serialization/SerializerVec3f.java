@@ -32,7 +32,7 @@ public class SerializerVec3f implements ISerializer<Vector3f> {
     @Override
     public JsonElement write (Vector3f toWrite) {
         
-        return Serializers.FLOAT.writeList(new ArrayList<>(Arrays.asList(toWrite.getX(), toWrite.getY(), toWrite.getZ())));
+        return Serializers.FLOAT.writeList(new ArrayList<>(Arrays.asList(toWrite.x(), toWrite.y(), toWrite.z())));
     }
     
     @Override
@@ -51,16 +51,16 @@ public class SerializerVec3f implements ISerializer<Vector3f> {
     @Override
     public void write (PacketBuffer buffer, Vector3f toWrite) {
         
-        Serializers.FLOAT.writeList(buffer, new ArrayList<>(Arrays.asList(toWrite.getX(), toWrite.getY(), toWrite.getZ())));
+        Serializers.FLOAT.writeList(buffer, new ArrayList<>(Arrays.asList(toWrite.x(), toWrite.y(), toWrite.z())));
     }
     
     @Override
     public INBT writeNBT (Vector3f toWrite) {
         
         final CompoundNBT tag = new CompoundNBT();
-        tag.putFloat("x", toWrite.getX());
-        tag.putFloat("y", toWrite.getY());
-        tag.putFloat("z", toWrite.getZ());
+        tag.putFloat("x", toWrite.x());
+        tag.putFloat("y", toWrite.y());
+        tag.putFloat("z", toWrite.z());
         return tag;
     }
     

@@ -1,0 +1,155 @@
+/*
+ This gradle module allows your build script to pull in information about who has pledged to your campaign.
+*/
+import groovy.json.JsonSlurper
+
+if (project.hasProperty('patreon_campaign_id') && findProperty('patreon_auth_token')) {
+
+    def defaultCampaign = project.findProperty('patreon_campaign_id')
+    def defaultAuth = project.findProperty('patreon_auth_token')
+    
+    project.ext.patreon = [
+        campaign: defaultCampaign,
+        pledgeLog: getPledgeLog(defaultCampaign, defaultAuth),
+        pledges: getPledges(defaultCampaign, defaultAuth)
+    ]
+    
+    if (project.hasProperty('patreon_campaign_url')) {
+    
+        project.ext.patreon.campaignUrl = project.getProperty('patreon_campaign_url')
+        project.ext.patreon.campaignUrlTracked = "${project.ext.patreon.campaignUrl}?${project.ext.modId}"
+    }
+    
+    project.logger.lifecycle("Loading plede data for default campaign ${defaultCampaign}.")
+}
+
+/*
+ Gets a list of pledges for a specified campaign using a specified auth token.
+*/
+def getPledges(campaignId, authToken) {
+
+    // Connect to Patreon's API using the provided auth info.
+    def connection = new URL('https://www.patreon.com/api/oauth2/api/campaigns/' + campaignId + '/pledges').openConnection() as HttpURLConnection
+    connection.setRequestProperty('User-Agent', 'Patreon-Groovy, platform ' + System.properties['os.name'] + ' ' + System.properties['os.version'])
+    connection.setRequestProperty('Authorization', 'Bearer ' + authToken)
+    connection.setRequestProperty('Accept', 'application/json')
+    
+    // Map containing all pledges. If the connection fails this will be empty.
+    Map<String, Pledge> pledges = new HashMap<String, Pledge>()
+    
+    // Check if connection was valid.
+    if (connection.responseCode == 200) {
+    
+        // Parse the response into an ambiguous json object.
+        def json = connection.inputStream.withCloseable {inStream -> new JsonSlurper().parse(inStream as InputStream)}
+        
+        // Iterate all the pledge entries
+        for (pledgeInfo in json.data) {
+            
+            // Create new pledge entry, and set pledge specific info.
+            def pledge = new Pledge()
+            pledge.id = pledgeInfo.relationships.patron.data.id
+            pledge.amountInCents = pledgeInfo.attributes.amount_cents
+            pledge.declined = pledgeInfo.attributes.declined_since
+            pledges.put(pledge.id, pledge)
+        }
+        
+        // Iterate all the user entries
+        for (pledgeInfo in json.included) {
+        
+            // Get pledge by user ID
+            def pledge = pledges.get(pledgeInfo.id)
+            
+            // If the pledge exists, set the user data.
+            if (pledge != null) {
+                
+                def info = pledgeInfo.attributes;
+                
+                pledge.email = info.email
+                pledge.name = info.full_name
+                pledge.vanityName = info.vanity
+                pledge.imgUrl = info.thumb_url
+                pledge.twitter = info.twitter
+                pledge.twitchUrl = info.twitch
+                pledge.youtubeUrl = info.youtube
+            }
+        }
+    }
+    
+    return pledges;
+}
+
+/*
+ Gets a list of pledge names for the specified campaign, using the specified auth token.
+*/
+def getPledgeLog(campaignId, authToken) {
+    
+    def pledgeLog = ''
+    
+    for (entry in getPledges(campaignId, authToken)) {
+    
+        def pledge = entry.value;
+        
+        if (pledge.isValid()) {
+        
+            pledgeLog += '- ' + pledge.getDisplayName() + '\n'
+        }
+    }
+    
+    return pledgeLog
+}
+
+class Pledge {
+
+    // The ID for this user in Patreon's system.
+    def id
+    
+    // The amount this user is currently paying in USD cents.
+    def amountInCents
+    
+    // The date they declined. This will be null if they haven't declined.
+    def declined
+    
+    // The email of the user.
+    def email
+    
+    // The full name of the user.
+    def name
+    
+    // The vanity name of the user, like a display name.
+    def vanityName
+    
+    // A url to the users profile image.
+    def imgUrl
+    
+    // The user's twitter handle.
+    def twitter
+    
+    // The user's twitch channel.
+    def twitchUrl
+    
+    // The user's youtube channel.
+    def youtubeUrl
+    
+    /*
+     Checks if the user is valid, and is paying.
+    */
+    def isValid() {
+    
+        return declined == null && amountInCents > 0;
+    }
+    
+    /*
+     Gets the display name for the user. Defaults to full name if no vanity name is specified by the user.
+    */
+    def getDisplayName() {
+    
+        return vanityName != null ? vanityName : name;
+    }
+}
+
+// Makes these methods accessible to the project using this module.
+ext {
+    getPledges = this.&getPledges
+    getPledgeLog = this.&getPledgeLog
+}

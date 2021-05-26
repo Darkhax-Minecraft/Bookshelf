@@ -16,24 +16,24 @@ public class SerializerIngredient implements ISerializer<Ingredient> {
     @Override
     public Ingredient read (JsonElement json) {
         
-        return Ingredient.deserialize(json);
+        return Ingredient.fromJson(json);
     }
     
     @Override
     public JsonElement write (Ingredient toWrite) {
         
-        return toWrite.serialize();
+        return toWrite.toJson();
     }
     
     @Override
     public Ingredient read (PacketBuffer buffer) {
         
-        return Ingredient.read(buffer);
+        return Ingredient.fromNetwork(buffer);
     }
     
     @Override
     public void write (PacketBuffer buffer, Ingredient toWrite) {
         
-        toWrite.write(buffer);
+        toWrite.toNetwork(buffer);
     }
 }

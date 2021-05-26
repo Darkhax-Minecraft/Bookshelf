@@ -41,7 +41,7 @@ public final class PlayerUtils {
      */
     public static boolean isPlayerReal (Entity player) {
         
-        return player != null && player.world != null && player.getClass() == ServerPlayerEntity.class;
+        return player != null && player.level != null && player.getClass() == ServerPlayerEntity.class;
     }
     
     /**
@@ -64,7 +64,7 @@ public final class PlayerUtils {
      */
     public static boolean playerHasItem (PlayerEntity player, Item item) {
         
-        for (final ItemStack stack : player.inventory.mainInventory) {
+        for (final ItemStack stack : player.inventory.items) {
             if (stack != null && stack.getItem().equals(item)) {
                 return true;
             }
@@ -72,7 +72,7 @@ public final class PlayerUtils {
         
         for (final EquipmentSlotType slotType : EquipmentSlotType.values()) {
             
-            if (player.getItemStackFromSlot(slotType).getItem() == item) {
+            if (player.getItemBySlot(slotType).getItem() == item) {
                 
                 return true;
             }
@@ -92,7 +92,7 @@ public final class PlayerUtils {
         
         final List<ItemStack> items = new ArrayList<>();
         
-        for (final ItemStack stack : player.inventory.mainInventory) {
+        for (final ItemStack stack : player.inventory.items) {
             if (stack != null && stack.getItem() == item) {
                 items.add(stack);
             }
@@ -100,7 +100,7 @@ public final class PlayerUtils {
         
         for (final EquipmentSlotType slotType : EquipmentSlotType.values()) {
             
-            final ItemStack stack = player.getItemStackFromSlot(slotType);
+            final ItemStack stack = player.getItemBySlot(slotType);
             
             if (stack.getItem() == item) {
                 
@@ -133,7 +133,7 @@ public final class PlayerUtils {
     public static boolean isPlayerInGame () {
         
         final Minecraft mc = Minecraft.getInstance();
-        return mc.player != null && mc.world != null && mc.player.world != null;
+        return mc.player != null && mc.level != null && mc.player.level != null;
     }
     
     /**
@@ -144,7 +144,7 @@ public final class PlayerUtils {
     @OnlyIn(Dist.CLIENT)
     public static UUID getClientUUID () {
         
-        return fixStrippedUUID(Minecraft.getInstance().getSession().getPlayerID());
+        return fixStrippedUUID(Minecraft.getInstance().getUser().getUuid());
     }
     
     /**
@@ -155,7 +155,7 @@ public final class PlayerUtils {
      */
     public static boolean isPlayerDamage (DamageSource source) {
         
-        return source != null && source.getTrueSource() instanceof PlayerEntity;
+        return source != null && source.getEntity() instanceof PlayerEntity;
     }
     
     /**
@@ -173,18 +173,18 @@ public final class PlayerUtils {
             final Minecraft minecraft = Minecraft.getInstance();
             
             // Load skin data about the profile.
-            final Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().loadSkinFromCache(profile);
+            final Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().getInsecureSkinInformation(profile);
             
             // If the loaded data has a skin, return that.
             if (map.containsKey(Type.SKIN)) {
-                return minecraft.getSkinManager().loadSkin(map.get(Type.SKIN), Type.SKIN);
+                return minecraft.getSkinManager().registerTexture(map.get(Type.SKIN), Type.SKIN);
             }
             else {
-                return DefaultPlayerSkin.getDefaultSkin(PlayerEntity.getUUID(profile));
+                return DefaultPlayerSkin.getDefaultSkin(PlayerEntity.createPlayerUUID(profile));
             }
         }
         
         // Default to the legacy steve skin.
-        return DefaultPlayerSkin.getDefaultSkinLegacy();
+        return DefaultPlayerSkin.getDefaultSkin();
     }
 }

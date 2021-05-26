@@ -37,14 +37,14 @@ public class CheckEnchantability implements ILootCondition {
         
         if (stack != null) {
             
-            return this.enchantability.test(stack.getItemEnchantability());
+            return this.enchantability.matches(stack.getItemEnchantability());
         }
         
         return false;
     }
     
     @Override
-    public LootConditionType func_230419_b_ () {
+    public LootConditionType getType () {
         
         return Bookshelf.instance.conditionCheckEnchantability;
     }
@@ -54,7 +54,7 @@ public class CheckEnchantability implements ILootCondition {
         @Override
         public void serialize (JsonObject json, CheckEnchantability value, JsonSerializationContext context) {
             
-            json.add("value", value.enchantability.serialize());
+            json.add("value", value.enchantability.serializeToJson());
         }
         
         @Override

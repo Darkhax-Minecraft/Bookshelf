@@ -35,7 +35,7 @@ public final class WorldUtils {
      */
     public static int getLoadedChunks (ServerWorld world) {
         
-        return world.getChunkProvider() != null ? world.getChunkProvider().getLoadedChunkCount() : -1;
+        return world.getChunkSource() != null ? world.getChunkSource().getLoadedChunksCount() : -1;
     }
     
     /**
@@ -94,7 +94,7 @@ public final class WorldUtils {
      */
     public static boolean isWithinDistanceAndUsable (IWorldPosCallable worldPos, PlayerEntity player, Predicate<BlockState> statePredicate, double maxDistance) {
         
-        return worldPos.applyOrElse( (world, pos) -> statePredicate.test(world.getBlockState(pos)) && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= maxDistance, true);
+        return worldPos.evaluate( (world, pos) -> statePredicate.test(world.getBlockState(pos)) && player.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= maxDistance, true);
     }
     
     /**
@@ -119,7 +119,7 @@ public final class WorldUtils {
      */
     public static int getWaterDepth (LivingEntity living, boolean toAir) {
         
-        return getWaterDepth(living.world, new BlockPos(living.getPosX(), living.getPosY() + living.getEyeHeight(), living.getPosZ()), toAir);
+        return getWaterDepth(living.level, new BlockPos(living.getX(), living.getY() + living.getEyeHeight(), living.getZ()), toAir);
     }
     
     /**
@@ -132,11 +132,11 @@ public final class WorldUtils {
      */
     public static int getWaterDepth (World world, BlockPos startingPos, boolean toAir) {
         
-        final BlockPos.Mutable depthPos = startingPos.toMutable();
+        final BlockPos.Mutable depthPos = startingPos.mutable();
         
         int depth = 0;
         
-        while (!World.isOutsideBuildHeight(depthPos) && (world.hasWater(depthPos) || toAir && !world.isAirBlock(depthPos))) {
+        while (!World.isOutsideBuildHeight(depthPos) && (world.isWaterAt(depthPos) || toAir && !world.isEmptyBlock(depthPos))) {
             
             depth++;
             depthPos.move(Direction.UP);
@@ -155,7 +155,7 @@ public final class WorldUtils {
      */
     public static void sendToTracking (ServerWorld world, ChunkPos chunkPos, IPacket<?> packet, boolean boundaryOnly) {
         
-        world.getChunkProvider().chunkManager.getTrackingPlayers(chunkPos, boundaryOnly).forEach(p -> p.connection.sendPacket(packet));
+        world.getChunkSource().chunkMap.getPlayers(chunkPos, boundaryOnly).forEach(p -> p.connection.send(packet));
     }
     
     /**
@@ -168,6 +168,6 @@ public final class WorldUtils {
      */
     public static boolean isInStructure (ServerWorld world, BlockPos pos, Structure<?> structure) {
         
-        return world.func_241112_a_().getStructureStart(pos, true, structure).isValid();
+        return world.structureFeatureManager().getStructureAt(pos, true, structure).isValid();
     }
 }

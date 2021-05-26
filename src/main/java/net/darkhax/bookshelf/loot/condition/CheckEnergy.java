@@ -39,11 +39,11 @@ public class CheckEnergy implements ILootCondition {
     @Override
     public boolean test (LootContext ctx) {
         
-        final Vector3d pos = ctx.get(LootParameters.field_237457_g_);
+        final Vector3d pos = ctx.getParamOrNull(LootParameters.ORIGIN);
         
         if (pos != null) {
             
-            final TileEntity tile = ctx.getWorld().getTileEntity(new BlockPos(pos));
+            final TileEntity tile = ctx.getLevel().getBlockEntity(new BlockPos(pos));
             
             if (tile != null) {
                 
@@ -52,7 +52,7 @@ public class CheckEnergy implements ILootCondition {
                 
                 if (energyStorage != null) {
                     
-                    return this.energy.test(energyStorage.getEnergyStored());
+                    return this.energy.matches(energyStorage.getEnergyStored());
                 }
             }
         }
@@ -61,7 +61,7 @@ public class CheckEnergy implements ILootCondition {
     }
     
     @Override
-    public LootConditionType func_230419_b_ () {
+    public LootConditionType getType () {
         
         return Bookshelf.instance.conditionCheckEnergy;
     }
@@ -71,7 +71,7 @@ public class CheckEnergy implements ILootCondition {
         @Override
         public void serialize (JsonObject json, CheckEnergy value, JsonSerializationContext context) {
             
-            json.add("value", value.energy.serialize());
+            json.add("value", value.energy.serializeToJson());
         }
         
         @Override

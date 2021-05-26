@@ -34,11 +34,11 @@ public class CheckItem implements ILootCondition {
     public boolean test (LootContext ctx) {
         
         final ItemStack stack = LootUtils.getItemContext(ctx);
-        return stack != null && this.predicate.test(stack);
+        return stack != null && this.predicate.matches(stack);
     }
     
     @Override
-    public LootConditionType func_230419_b_ () {
+    public LootConditionType getType () {
         
         return Bookshelf.instance.conditionCheckItem;
     }
@@ -48,13 +48,13 @@ public class CheckItem implements ILootCondition {
         @Override
         public void serialize (JsonObject json, CheckItem value, JsonSerializationContext context) {
             
-            json.add("predicate", value.predicate.serialize());
+            json.add("predicate", value.predicate.serializeToJson());
         }
         
         @Override
         public CheckItem deserialize (JsonObject json, JsonDeserializationContext context) {
             
-            final ItemPredicate predicate = ItemPredicate.deserialize(json.get("predicate"));
+            final ItemPredicate predicate = ItemPredicate.fromJson(json.get("predicate"));
             return new CheckItem(predicate);
         }
     }

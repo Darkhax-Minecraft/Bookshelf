@@ -52,13 +52,13 @@ public class ShapelessRecipeDamage extends ShapelessRecipe {
         }
         
         @Override
-        public ShapelessRecipeDamage read (ResourceLocation id, JsonObject json) {
+        public ShapelessRecipeDamage fromJson (ResourceLocation id, JsonObject json) {
             
-            final String group = JSONUtils.getString(json, "group", "");
-            final NonNullList<Ingredient> inputs = readIngredients(JSONUtils.getJsonArray(json, "ingredients"));
-            final ItemStack output = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
-            final int damageAmount = JSONUtils.getInt(json, "damageAmount", 1);
-            final boolean ignoreUnbreaking = JSONUtils.getBoolean(json, "ignoreUnbreaking", false);
+            final String group = JSONUtils.getAsString(json, "group", "");
+            final NonNullList<Ingredient> inputs = readIngredients(JSONUtils.getAsJsonArray(json, "ingredients"));
+            final ItemStack output = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
+            final int damageAmount = JSONUtils.getAsInt(json, "damageAmount", 1);
+            final boolean ignoreUnbreaking = JSONUtils.getAsBoolean(json, "ignoreUnbreaking", false);
             
             if (inputs.isEmpty()) {
                 
@@ -79,18 +79,18 @@ public class ShapelessRecipeDamage extends ShapelessRecipe {
         }
         
         @Override
-        public ShapelessRecipeDamage read (ResourceLocation id, PacketBuffer buffer) {
+        public ShapelessRecipeDamage fromNetwork (ResourceLocation id, PacketBuffer buffer) {
             
-            final String group = buffer.readString(32767);
+            final String group = buffer.readUtf(32767);
             final int inputCount = buffer.readVarInt();
             final NonNullList<Ingredient> inputs = NonNullList.withSize(inputCount, Ingredient.EMPTY);
             
             for (int i = 0; i < inputCount; i++) {
                 
-                inputs.set(i, Ingredient.read(buffer));
+                inputs.set(i, Ingredient.fromNetwork(buffer));
             }
             
-            final ItemStack output = buffer.readItemStack();
+            final ItemStack output = buffer.readItem();
             final int damageAmount = buffer.readVarInt();
             final boolean ignoreUnbreaking = buffer.readBoolean();
             
@@ -98,17 +98,17 @@ public class ShapelessRecipeDamage extends ShapelessRecipe {
         }
         
         @Override
-        public void write (PacketBuffer buffer, ShapelessRecipeDamage recipe) {
+        public void toNetwork (PacketBuffer buffer, ShapelessRecipeDamage recipe) {
             
-            buffer.writeString(recipe.getGroup());
+            buffer.writeUtf(recipe.getGroup());
             buffer.writeVarInt(recipe.getIngredients().size());
             
             for (final Ingredient ingredient : recipe.getIngredients()) {
                 
-                ingredient.write(buffer);
+                ingredient.toNetwork(buffer);
             }
             
-            buffer.writeItemStack(recipe.getRecipeOutput());
+            buffer.writeItem(recipe.getResultItem());
             buffer.writeVarInt(recipe.damageAmount);
             buffer.writeBoolean(recipe.ignoreUnbreaking);
         }
@@ -119,9 +119,9 @@ public class ShapelessRecipeDamage extends ShapelessRecipe {
             
             for (final JsonElement element : json) {
                 
-                final Ingredient ingredient = Ingredient.deserialize(element);
+                final Ingredient ingredient = Ingredient.fromJson(element);
                 
-                if (!ingredient.hasNoMatchingItems()) {
+                if (!ingredient.isEmpty()) {
                     
                     ingredients.add(ingredient);
                 }

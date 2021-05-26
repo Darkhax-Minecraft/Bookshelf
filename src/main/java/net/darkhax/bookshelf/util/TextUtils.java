@@ -29,7 +29,7 @@ public final class TextUtils {
         
         if (text instanceof IFormattableTextComponent) {
             
-            ((IFormattableTextComponent) text).setStyle(text.getStyle().setFontId(font));
+            ((IFormattableTextComponent) text).setStyle(text.getStyle().withFont(font));
         }
         
         text.getSiblings().forEach(sib -> applyFont(sib, font));

@@ -26,10 +26,10 @@ public class SmithingRecipeRepairCost extends SmithingRecipe {
     }
     
     @Override
-    public ItemStack getCraftingResult (IInventory inv) {
+    public ItemStack assemble (IInventory inv) {
         
-        final ItemStack stack = inv.getStackInSlot(0).copy();
-        final int repairCost = Math.max(0, stack.getRepairCost() - this.reduction);
+        final ItemStack stack = inv.getItem(0).copy();
+        final int repairCost = Math.max(0, stack.getBaseRepairCost() - this.reduction);
         
         stack.setRepairCost(repairCost);
         return stack;
@@ -38,11 +38,11 @@ public class SmithingRecipeRepairCost extends SmithingRecipe {
     @Override
     public boolean matches (IInventory inv, World world) {
         
-        return inv.getStackInSlot(0).getRepairCost() > 0 && super.matches(inv, world);
+        return inv.getItem(0).getBaseRepairCost() > 0 && super.matches(inv, world);
     }
     
     @Override
-    public boolean isDynamic () {
+    public boolean isSpecial () {
         
         return true;
     }
@@ -56,28 +56,28 @@ public class SmithingRecipeRepairCost extends SmithingRecipe {
     private static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<SmithingRecipeRepairCost> {
         
         @Override
-        public SmithingRecipeRepairCost read (ResourceLocation recipeId, JsonObject json) {
+        public SmithingRecipeRepairCost fromJson (ResourceLocation recipeId, JsonObject json) {
             
-            final Ingredient base = Ingredient.deserialize(JSONUtils.getJsonObject(json, "base"));
-            final Ingredient addition = Ingredient.deserialize(JSONUtils.getJsonObject(json, "addition"));
-            final int reduction = JSONUtils.getInt(json, "reduction", Integer.MAX_VALUE);
+            final Ingredient base = Ingredient.fromJson(JSONUtils.getAsJsonObject(json, "base"));
+            final Ingredient addition = Ingredient.fromJson(JSONUtils.getAsJsonObject(json, "addition"));
+            final int reduction = JSONUtils.getAsInt(json, "reduction", Integer.MAX_VALUE);
             return new SmithingRecipeRepairCost(recipeId, base, addition, reduction);
         }
         
         @Override
-        public SmithingRecipeRepairCost read (ResourceLocation recipeId, PacketBuffer buffer) {
+        public SmithingRecipeRepairCost fromNetwork (ResourceLocation recipeId, PacketBuffer buffer) {
             
-            final Ingredient base = Ingredient.read(buffer);
-            final Ingredient addition = Ingredient.read(buffer);
+            final Ingredient base = Ingredient.fromNetwork(buffer);
+            final Ingredient addition = Ingredient.fromNetwork(buffer);
             final int reduction = buffer.readInt();
             return new SmithingRecipeRepairCost(recipeId, base, addition, reduction);
         }
         
         @Override
-        public void write (PacketBuffer buffer, SmithingRecipeRepairCost recipe) {
+        public void toNetwork (PacketBuffer buffer, SmithingRecipeRepairCost recipe) {
             
-            recipe.base.write(buffer);
-            recipe.addition.write(buffer);
+            recipe.base.toNetwork(buffer);
+            recipe.addition.toNetwork(buffer);
             buffer.writeInt(recipe.reduction);
         }
     }

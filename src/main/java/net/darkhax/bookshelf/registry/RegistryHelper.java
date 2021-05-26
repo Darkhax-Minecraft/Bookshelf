@@ -74,7 +74,7 @@ public class RegistryHelper {
     
     public RegistryHelper withItemGroup (ItemGroup group) {
         
-        this.items.addRegisterListener( (registry, item) -> item.group = group);
+        this.items.addRegisterListener( (registry, item) -> item.category = group);
         return this;
     }
     

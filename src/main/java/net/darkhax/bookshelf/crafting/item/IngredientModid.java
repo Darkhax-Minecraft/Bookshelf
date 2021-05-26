@@ -50,28 +50,28 @@ public class IngredientModid extends Ingredient {
         @Override
         public IngredientModid parse (PacketBuffer buffer) {
             
-            final String modid = buffer.readString();
-            return new IngredientModid(modid, Stream.generate( () -> new Ingredient.SingleItemList(buffer.readItemStack())).limit(buffer.readVarInt()));
+            final String modid = buffer.readUtf();
+            return new IngredientModid(modid, Stream.generate( () -> new Ingredient.SingleItemList(buffer.readItem())).limit(buffer.readVarInt()));
         }
         
         @Override
         public IngredientModid parse (JsonObject json) {
             
-            final String modid = JSONUtils.getString(json, "modid");
+            final String modid = JSONUtils.getAsString(json, "modid");
             return new IngredientModid(modid, Stream.of(new StackList(this.getMatchingItems(modid))));
         }
         
         @Override
         public void write (PacketBuffer buffer, IngredientModid ingredient) {
             
-            buffer.writeString(ingredient.modid);
+            buffer.writeUtf(ingredient.modid);
             
-            final ItemStack[] items = ingredient.getMatchingStacks();
+            final ItemStack[] items = ingredient.getItems();
             buffer.writeVarInt(items.length);
             
             for (final ItemStack stack : items) {
                 
-                buffer.writeItemStack(stack);
+                buffer.writeItem(stack);
             }
         }
         

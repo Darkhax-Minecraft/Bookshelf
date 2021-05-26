@@ -45,7 +45,7 @@ public class ArgumentTypeLootTable implements ArgumentType<String> {
     @Nullable
     public static ResourceLocation getTable (final CommandContext<?> context, final String name) {
         
-        return ResourceLocation.tryCreate(getTableId(context, name));
+        return ResourceLocation.tryParse(getTableId(context, name));
     }
     
     @Override
@@ -69,6 +69,6 @@ public class ArgumentTypeLootTable implements ArgumentType<String> {
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions (CommandContext<S> context, SuggestionsBuilder builder) {
         
-        return ISuggestionProvider.suggest(LootTables.getReadOnlyLootTables().stream().map(ResourceLocation::toString), builder);
+        return ISuggestionProvider.suggest(LootTables.all().stream().map(ResourceLocation::toString), builder);
     }
 }

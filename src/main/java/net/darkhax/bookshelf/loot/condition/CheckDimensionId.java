@@ -34,9 +34,9 @@ public class CheckDimensionId implements ILootCondition {
     @Override
     public boolean test (LootContext ctx) {
         
-        final World world = ctx.getWorld();
-        final RegistryKey<World> dimension = world.getDimensionKey();
-        return dimension != null && dimension.getLocation().equals(this.dimensionId);
+        final World world = ctx.getLevel();
+        final RegistryKey<World> dimension = world.dimension();
+        return dimension != null && dimension.location().equals(this.dimensionId);
     }
     
     static class Serializer implements ILootSerializer<CheckDimensionId> {
@@ -44,7 +44,7 @@ public class CheckDimensionId implements ILootCondition {
         @Override
         public CheckDimensionId deserialize (JsonObject json, JsonDeserializationContext context) {
             
-            final ResourceLocation id = ResourceLocation.tryCreate(JSONUtils.getString(json, "dimension"));
+            final ResourceLocation id = ResourceLocation.tryParse(JSONUtils.getAsString(json, "dimension"));
             
             return new CheckDimensionId(id);
         }
@@ -57,7 +57,7 @@ public class CheckDimensionId implements ILootCondition {
     }
     
     @Override
-    public LootConditionType func_230419_b_ () {
+    public LootConditionType getType () {
         
         return Bookshelf.instance.conditionCheckDimension;
     }

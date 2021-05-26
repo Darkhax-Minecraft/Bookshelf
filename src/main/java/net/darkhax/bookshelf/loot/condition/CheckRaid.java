@@ -24,11 +24,11 @@ public class CheckRaid extends LootConditionPositional {
     
     private static boolean test (LootContext ctx, BlockPos pos) {
         
-        return ctx.getWorld().hasRaid(pos);
+        return ctx.getLevel().isRaided(pos);
     }
     
     @Override
-    public LootConditionType func_230419_b_ () {
+    public LootConditionType getType () {
         
         return Bookshelf.instance.conditionCheckRaid;
     }

@@ -11,7 +11,7 @@ public class ModPotion extends Potion {
     }
     
     @Override
-    public String getNamePrefixed (String prefix) {
+    public String getName (String prefix) {
         
         // Vanilla just appends the path, but for mod compatibility including the namespace is
         // better.

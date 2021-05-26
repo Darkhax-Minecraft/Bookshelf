@@ -31,27 +31,27 @@ public class PacketUtils {
             
             final int size = buffer.readInt();
             
-            BlockState state = block.getDefaultState();
+            BlockState state = block.defaultBlockState();
             
             for (int i = 0; i < size; i++) {
                 
-                final String propName = buffer.readString();
-                final String value = buffer.readString();
+                final String propName = buffer.readUtf();
+                final String value = buffer.readUtf();
                 
                 // Check the block for the property. Keys = property names.
-                final Property blockProperty = block.getStateContainer().getProperty(propName);
+                final Property blockProperty = block.getStateDefinition().getProperty(propName);
                 
                 if (blockProperty != null) {
                     
                     // Attempt to parse the value with the the property.
-                    final Optional<Comparable> propValue = blockProperty.parseValue(value);
+                    final Optional<Comparable> propValue = blockProperty.getValue(value);
                     
                     if (propValue.isPresent()) {
                         
                         // Update the state with the new property.
                         try {
                             
-                            state = state.with(blockProperty, propValue.get());
+                            state = state.setValue(blockProperty, propValue.get());
                         }
                         
                         catch (final Exception e) {
@@ -66,7 +66,7 @@ public class PacketUtils {
             return state;
         }
         
-        return Blocks.AIR.getDefaultState();
+        return Blocks.AIR.defaultBlockState();
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -80,8 +80,8 @@ public class PacketUtils {
         
         for (final Property property : properties) {
             
-            buffer.writeString(property.getName());
-            buffer.writeString(state.get(property).toString());
+            buffer.writeUtf(property.getName());
+            buffer.writeUtf(state.getValue(property).toString());
         }
     }
     
@@ -91,7 +91,7 @@ public class PacketUtils {
         
         for (final String string : strings) {
             
-            buffer.writeString(string);
+            buffer.writeUtf(string);
         }
     }
     
@@ -101,7 +101,7 @@ public class PacketUtils {
         
         for (int i = 0; i < strings.length; i++) {
             
-            strings[i] = buffer.readString();
+            strings[i] = buffer.readUtf();
         }
         
         return strings;
@@ -113,7 +113,7 @@ public class PacketUtils {
         
         for (final String string : strings) {
             
-            buffer.writeString(string);
+            buffer.writeUtf(string);
         }
     }
     
@@ -123,7 +123,7 @@ public class PacketUtils {
         
         for (int i = 0; i < count; i++) {
             
-            toFill.add(buffer.readString());
+            toFill.add(buffer.readUtf());
         }
     }
 }

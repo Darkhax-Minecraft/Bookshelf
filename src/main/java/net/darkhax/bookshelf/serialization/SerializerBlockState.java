@@ -36,7 +36,7 @@ public class SerializerBlockState implements ISerializer<BlockState> {
             final JsonObject obj = json.getAsJsonObject();
             final Block block = Serializers.BLOCK.read(obj, "block");
             
-            BlockState state = block.getDefaultState();
+            BlockState state = block.defaultBlockState();
             
             if (obj.has("properties")) {
                 
@@ -53,7 +53,7 @@ public class SerializerBlockState implements ISerializer<BlockState> {
         
         else {
             
-            throw new JsonParseException("Expected properties to be an object. Recieved " + JSONUtils.toString(json));
+            throw new JsonParseException("Expected properties to be an object. Recieved " + JSONUtils.getType(json));
         }
     }
     
@@ -69,17 +69,17 @@ public class SerializerBlockState implements ISerializer<BlockState> {
             
             if (prop instanceof IntegerProperty) {
                 
-                properties.addProperty(prop.getName(), (int) toWrite.get((IntegerProperty) prop));
+                properties.addProperty(prop.getName(), (int) toWrite.getValue((IntegerProperty) prop));
             }
             
             else if (prop instanceof BooleanProperty) {
                 
-                properties.addProperty(prop.getName(), (boolean) toWrite.get((BooleanProperty) prop));
+                properties.addProperty(prop.getName(), (boolean) toWrite.getValue((BooleanProperty) prop));
             }
             
             else {
                 
-                properties.addProperty(prop.getName(), prop.getName(toWrite.get(prop)));
+                properties.addProperty(prop.getName(), prop.getName(toWrite.getValue(prop)));
             }
         }
         
@@ -90,31 +90,31 @@ public class SerializerBlockState implements ISerializer<BlockState> {
     @Override
     public BlockState read (PacketBuffer buffer) {
         
-        return Block.getStateById(buffer.readInt());
+        return Block.stateById(buffer.readInt());
     }
     
     @Override
     public void write (PacketBuffer buffer, BlockState toWrite) {
         
-        buffer.writeInt(Block.getStateId(toWrite));
+        buffer.writeInt(Block.getId(toWrite));
     }
     
     private BlockState readProperty (BlockState state, String propName, JsonElement propValue) {
         
-        final Property blockProperty = state.getBlock().getStateContainer().getProperty(propName);
+        final Property blockProperty = state.getBlock().getStateDefinition().getProperty(propName);
         
         if (blockProperty != null) {
             
             if (propValue.isJsonPrimitive()) {
                 
                 final String valueString = propValue.getAsString();
-                final Optional<Comparable> parsedValue = blockProperty.parseValue(valueString);
+                final Optional<Comparable> parsedValue = blockProperty.getValue(valueString);
                 
                 if (parsedValue.isPresent()) {
                     
                     try {
                         
-                        return state.with(blockProperty, parsedValue.get());
+                        return state.setValue(blockProperty, parsedValue.get());
                     }
                     
                     catch (final Exception e) {
@@ -133,7 +133,7 @@ public class SerializerBlockState implements ISerializer<BlockState> {
             
             else {
                 
-                throw new JsonSyntaxException("Expected property value for " + propName + " to be primitive string. Got " + JSONUtils.toString(propValue));
+                throw new JsonSyntaxException("Expected property value for " + propName + " to be primitive string. Got " + JSONUtils.getType(propValue));
             }
         }
         

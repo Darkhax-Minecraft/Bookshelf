@@ -41,19 +41,19 @@ public class SlotInput extends Slot {
     }
     
     @Override
-    public boolean isItemValid (ItemStack stack) {
+    public boolean mayPlace (ItemStack stack) {
         
         return this.inputValidator.test(stack);
     }
     
     @Override
-    public void putStack (ItemStack stack) {
+    public void set (ItemStack stack) {
         
         if (this.inputListener != null) {
             
             this.inputListener.accept(stack);
         }
         
-        super.putStack(stack);
+        super.set(stack);
     }
 }

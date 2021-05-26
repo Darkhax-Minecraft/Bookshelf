@@ -52,21 +52,21 @@ public abstract class RecipeDataBase implements IRecipe<IInventory> {
     }
     
     @Override
-    public ItemStack getCraftingResult (IInventory inv) {
+    public ItemStack assemble (IInventory inv) {
         
         // Not used
         return ItemStack.EMPTY;
     }
     
     @Override
-    public boolean canFit (int width, int height) {
+    public boolean canCraftInDimensions (int width, int height) {
         
         // Not used
         return false;
     }
     
     @Override
-    public ItemStack getRecipeOutput () {
+    public ItemStack getResultItem () {
         
         // Not used
         return ItemStack.EMPTY;

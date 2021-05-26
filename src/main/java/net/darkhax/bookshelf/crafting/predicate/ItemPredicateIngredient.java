@@ -18,14 +18,14 @@ public class ItemPredicateIngredient extends ItemPredicate {
     }
     
     @Override
-    public boolean test (ItemStack stack) {
+    public boolean matches (ItemStack stack) {
         
         return !stack.isEmpty() && this.ingredient.test(stack);
     }
     
     public static ItemPredicate fromJson (JsonObject json) {
         
-        final JsonObject ingredientObj = JSONUtils.getJsonObject(json, "ingredient");
+        final JsonObject ingredientObj = JSONUtils.getAsJsonObject(json, "ingredient");
         return new ItemPredicateIngredient(CraftingHelper.getIngredient(ingredientObj));
     }
 }

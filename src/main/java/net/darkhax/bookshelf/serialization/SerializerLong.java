@@ -51,7 +51,7 @@ public final class SerializerLong implements ISerializer<Long> {
         
         if (nbt instanceof NumberNBT) {
             
-            return ((NumberNBT) nbt).getLong();
+            return ((NumberNBT) nbt).getAsLong();
         }
         
         throw new IllegalArgumentException("Expected NBT to be a number tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

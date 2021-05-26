@@ -26,7 +26,7 @@ public class SerializerEnchantmentData implements ISerializer<EnchantmentData> {
             
             final JsonObject obj = json.getAsJsonObject();
             final Enchantment enchant = Serializers.ENCHANTMENT.read(obj.get("enchantment"));
-            final int level = JSONUtils.getInt(obj, "level");
+            final int level = JSONUtils.getAsInt(obj, "level");
             return new EnchantmentData(enchant, level);
         }
         
@@ -38,7 +38,7 @@ public class SerializerEnchantmentData implements ISerializer<EnchantmentData> {
         
         final JsonObject json = new JsonObject();
         json.add("enchantment", Serializers.ENCHANTMENT.write(toWrite.enchantment));
-        json.addProperty("level", toWrite.enchantmentLevel);
+        json.addProperty("level", toWrite.level);
         return json;
     }
     
@@ -54,7 +54,7 @@ public class SerializerEnchantmentData implements ISerializer<EnchantmentData> {
     public void write (PacketBuffer buffer, EnchantmentData toWrite) {
         
         Serializers.ENCHANTMENT.write(buffer, toWrite.enchantment);
-        buffer.writeInt(toWrite.enchantmentLevel);
+        buffer.writeInt(toWrite.level);
     }
     
     @Override
@@ -62,7 +62,7 @@ public class SerializerEnchantmentData implements ISerializer<EnchantmentData> {
         
         final CompoundNBT tag = new CompoundNBT();
         tag.put("enchantment", Serializers.ENCHANTMENT.writeNBT(toWrite.enchantment));
-        tag.put("level", Serializers.INT.writeNBT(toWrite.enchantmentLevel));
+        tag.put("level", Serializers.INT.writeNBT(toWrite.level));
         return tag;
     }
     

@@ -24,11 +24,11 @@ public class CheckVillage extends LootConditionPositional {
     
     private static boolean test (LootContext ctx, BlockPos pos) {
         
-        return ctx.getWorld().isVillage(pos);
+        return ctx.getLevel().isVillage(pos);
     }
     
     @Override
-    public LootConditionType func_230419_b_ () {
+    public LootConditionType getType () {
         
         return Bookshelf.instance.conditionCheckVillage;
     }

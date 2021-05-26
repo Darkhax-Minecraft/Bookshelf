@@ -44,7 +44,7 @@ public class SlotOutput extends Slot {
     }
     
     @Override
-    public boolean isItemValid (ItemStack stack) {
+    public boolean mayPlace (ItemStack stack) {
         
         return this.inputValidator.test(stack);
     }
@@ -53,7 +53,7 @@ public class SlotOutput extends Slot {
     public ItemStack onTake (PlayerEntity player, ItemStack stack) {
         
         final ItemStack stackToTake = this.takeListener.apply(player, stack);
-        this.onSlotChanged();
+        this.setChanged();
         return stackToTake;
     }
 }

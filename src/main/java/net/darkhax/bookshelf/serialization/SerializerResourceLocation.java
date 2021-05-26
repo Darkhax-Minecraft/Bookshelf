@@ -40,7 +40,7 @@ public final class SerializerResourceLocation implements ISerializer<ResourceLoc
         
         else {
             
-            throw new JsonSyntaxException("Expected a string, was " + JSONUtils.toString(json));
+            throw new JsonSyntaxException("Expected a string, was " + JSONUtils.getType(json));
         }
     }
     
@@ -73,7 +73,7 @@ public final class SerializerResourceLocation implements ISerializer<ResourceLoc
         
         if (nbt instanceof StringNBT) {
             
-            return new ResourceLocation(((StringNBT) nbt).getString());
+            return new ResourceLocation(((StringNBT) nbt).getAsString());
         }
         
         throw new IllegalArgumentException("Expected NBT to be a double tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

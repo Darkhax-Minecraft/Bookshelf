@@ -30,11 +30,11 @@ public class EntityIsMob implements ILootCondition {
     @Override
     public boolean test (LootContext ctx) {
         
-        return ctx.get(this.target.getParameter()) instanceof IMob;
+        return ctx.getParamOrNull(this.target.getParam()) instanceof IMob;
     }
     
     @Override
-    public LootConditionType func_230419_b_ () {
+    public LootConditionType getType () {
         
         return Bookshelf.instance.conditionIsMob;
     }
@@ -54,7 +54,7 @@ public class EntityIsMob implements ILootCondition {
         @Override
         public EntityIsMob deserialize (JsonObject json, JsonDeserializationContext context) {
             
-            return new EntityIsMob(JSONUtils.deserializeClass(json, "entity", context, LootContext.EntityTarget.class));
+            return new EntityIsMob(JSONUtils.getAsObject(json, "entity", context, LootContext.EntityTarget.class));
         }
     }
 }

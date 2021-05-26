@@ -28,7 +28,7 @@ public class IngredientPotion extends Ingredient {
     
     public IngredientPotion(Item item, Potion potion) {
         
-        super(Stream.of(new Ingredient.SingleItemList(PotionUtils.addPotionToItemStack(new ItemStack(item), potion))));
+        super(Stream.of(new Ingredient.SingleItemList(PotionUtils.setPotion(new ItemStack(item), potion))));
         
         this.item = item;
         this.potion = potion;
@@ -37,7 +37,7 @@ public class IngredientPotion extends Ingredient {
     @Override
     public boolean test (ItemStack input) {
         
-        return input != null && !input.isEmpty() && this.item == input.getItem() && PotionUtils.getPotionFromItem(input) == this.potion;
+        return input != null && !input.isEmpty() && this.item == input.getItem() && PotionUtils.getPotion(input) == this.potion;
     }
     
     @Override
@@ -53,7 +53,7 @@ public class IngredientPotion extends Ingredient {
     }
     
     @Override
-    public JsonElement serialize () {
+    public JsonElement toJson () {
         
         final JsonObject json = new JsonObject();
         json.addProperty("type", CraftingHelper.getID(IngredientPotion.SERIALIZER).toString());

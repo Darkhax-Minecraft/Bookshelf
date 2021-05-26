@@ -12,7 +12,7 @@ public final class SerializerText implements ISerializer<ITextComponent> {
     @Override
     public ITextComponent read (JsonElement json) {
         
-        return ITextComponent.Serializer.getComponentFromJson(json);
+        return ITextComponent.Serializer.fromJson(json);
     }
     
     @Override
@@ -24,13 +24,13 @@ public final class SerializerText implements ISerializer<ITextComponent> {
     @Override
     public ITextComponent read (PacketBuffer buffer) {
         
-        final String jsonString = buffer.readString();
-        return ITextComponent.Serializer.getComponentFromJson(jsonString);
+        final String jsonString = buffer.readUtf();
+        return ITextComponent.Serializer.fromJson(jsonString);
     }
     
     @Override
     public void write (PacketBuffer buffer, ITextComponent toWrite) {
         
-        buffer.writeString(ITextComponent.Serializer.toJson(toWrite));
+        buffer.writeUtf(ITextComponent.Serializer.toJson(toWrite));
     }
 }

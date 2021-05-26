@@ -52,7 +52,7 @@ public final class RecipeUtils {
      */
     public static <T extends IRecipe<?>> List<T> getRecipeList (IRecipeType<T> recipeType, RecipeManager manager) {
         
-        return getRecipeList(recipeType, manager, Comparator.comparing(recipe -> recipe.getRecipeOutput().getTranslationKey()));
+        return getRecipeList(recipeType, manager, Comparator.comparing(recipe -> recipe.getResultItem().getDescriptionId()));
     }
     
     /**
@@ -95,7 +95,7 @@ public final class RecipeUtils {
      */
     public static <C extends IInventory, T extends IRecipe<C>> Map<ResourceLocation, IRecipe<C>> getRecipes (RecipeManager manager, IRecipeType<T> recipeType) {
         
-        return manager.getRecipes(recipeType);
+        return manager.byType(recipeType);
     }
     
     /**
@@ -107,6 +107,6 @@ public final class RecipeUtils {
     @SafeVarargs
     public static Ingredient ingredientFromTags (Tag<Item>... tags) {
         
-        return Ingredient.fromItems(Arrays.stream(tags).flatMap(t -> t.getAllElements().stream()).toArray(Item[]::new));
+        return Ingredient.of(Arrays.stream(tags).flatMap(t -> t.getValues().stream()).toArray(Item[]::new));
     }
 }

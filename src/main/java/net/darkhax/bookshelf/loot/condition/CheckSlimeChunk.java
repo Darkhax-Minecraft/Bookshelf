@@ -25,11 +25,11 @@ public class CheckSlimeChunk extends LootConditionPositional {
     
     private static boolean test (LootContext ctx, BlockPos pos) {
         
-        return WorldUtils.isSlimeChunk(ctx.getWorld(), pos);
+        return WorldUtils.isSlimeChunk(ctx.getLevel(), pos);
     }
     
     @Override
-    public LootConditionType func_230419_b_ () {
+    public LootConditionType getType () {
         
         return Bookshelf.instance.conditionCheckSlimeChunk;
     }

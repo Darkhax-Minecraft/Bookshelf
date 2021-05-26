@@ -28,7 +28,7 @@ public abstract class RecipeProviderBase<T extends IFinishedRecipe> extends Reci
     }
     
     @Override
-    protected void registerRecipes (Consumer<IFinishedRecipe> recipes) {
+    protected void buildShapelessRecipes (Consumer<IFinishedRecipe> recipes) {
         
         this.recipes = recipes;
         this.register(recipes);
@@ -36,7 +36,7 @@ public abstract class RecipeProviderBase<T extends IFinishedRecipe> extends Reci
     }
     
     @Override
-    protected void saveRecipeAdvancement (DirectoryCache cache, JsonObject advancementJson, Path pathIn) {
+    protected void saveAdvancement (DirectoryCache cache, JsonObject advancementJson, Path pathIn) {
         
         // Ignore advancements by default.
     }

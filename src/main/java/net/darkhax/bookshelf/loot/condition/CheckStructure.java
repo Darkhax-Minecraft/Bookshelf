@@ -44,18 +44,18 @@ public class CheckStructure implements ILootCondition {
     @Override
     public boolean test (LootContext ctx) {
         
-        final Vector3d pos = ctx.get(LootParameters.field_237457_g_);
+        final Vector3d pos = ctx.getParamOrNull(LootParameters.ORIGIN);
         
         if (pos != null && this.loadStructure()) {
             
-            return WorldUtils.isInStructure(ctx.getWorld(), new BlockPos(pos), this.structure);
+            return WorldUtils.isInStructure(ctx.getLevel(), new BlockPos(pos), this.structure);
         }
         
         return false;
     }
     
     @Override
-    public LootConditionType func_230419_b_ () {
+    public LootConditionType getType () {
         
         return Bookshelf.instance.conditionCheckStructure;
     }
@@ -64,7 +64,7 @@ public class CheckStructure implements ILootCondition {
         
         if (this.structure == null) {
             
-            this.structure = Structure.NAME_STRUCTURE_BIMAP.get(this.structureName);
+            this.structure = Structure.STRUCTURES_REGISTRY.get(this.structureName);
             
             if (this.structure == null) {
                 
@@ -87,7 +87,7 @@ public class CheckStructure implements ILootCondition {
         @Override
         public CheckStructure deserialize (JsonObject json, JsonDeserializationContext context) {
             
-            final String name = JSONUtils.getString(json, "structure");
+            final String name = JSONUtils.getAsString(json, "structure");
             return new CheckStructure(name);
         }
     }

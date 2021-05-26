@@ -19,6 +19,8 @@ import net.minecraft.entity.ai.attributes.AttributeModifierManager;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.inventory.EquipmentSlotType;
 
+import net.minecraft.enchantment.Enchantment.Rarity;
+
 public class EnchantmentAttribute extends EnchantmentTicking {
     
     private final Map<Attribute, AttributeModifier> modifiers = new HashMap<>();
@@ -41,11 +43,11 @@ public class EnchantmentAttribute extends EnchantmentTicking {
     
     protected void removeModifiers (LivingEntity living, int level) {
         
-        final AttributeModifierManager attributeMap = living.getAttributeManager();
+        final AttributeModifierManager attributeMap = living.getAttributes();
         
         for (final Entry<Attribute, AttributeModifier> entry : this.getModifiers(level).entrySet()) {
             
-            final ModifiableAttributeInstance modifiable = attributeMap.createInstanceIfAbsent(entry.getKey());
+            final ModifiableAttributeInstance modifiable = attributeMap.getInstance(entry.getKey());
             
             if (modifiable != null) {
                 
@@ -56,17 +58,17 @@ public class EnchantmentAttribute extends EnchantmentTicking {
     
     protected void applyModifiers (LivingEntity living, int level) {
         
-        final AttributeModifierManager attributeMap = living.getAttributeManager();
+        final AttributeModifierManager attributeMap = living.getAttributes();
         
         for (final Entry<Attribute, AttributeModifier> entry : this.getModifiers(level).entrySet()) {
             
-            final ModifiableAttributeInstance modifiable = attributeMap.createInstanceIfAbsent(entry.getKey());
+            final ModifiableAttributeInstance modifiable = attributeMap.getInstance(entry.getKey());
             
             if (modifiable != null) {
                 
                 final AttributeModifier effectModifier = entry.getValue();
                 modifiable.removeModifier(effectModifier);
-                modifiable.applyPersistentModifier(effectModifier);
+                modifiable.addPermanentModifier(effectModifier);
             }
         }
     }

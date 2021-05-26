@@ -47,7 +47,7 @@ public final class LootUtils {
      */
     public static List<LootPool> getPools (LootTable table) {
         
-        return ObfuscationReflectionHelper.getPrivateValue(LootTable.class, table, "field_186466_c");
+        return ObfuscationReflectionHelper.getPrivateValue(LootTable.class, table, "pools");
     }
     
     /**
@@ -58,7 +58,7 @@ public final class LootUtils {
      */
     public static List<LootEntry> getEntries (LootPool pool) {
         
-        return ObfuscationReflectionHelper.getPrivateValue(LootPool.class, pool, "field_186453_a");
+        return ObfuscationReflectionHelper.getPrivateValue(LootPool.class, pool, "entries");
     }
     
     /**
@@ -69,7 +69,7 @@ public final class LootUtils {
      */
     public static List<ILootCondition> getConditions (LootPool pool) {
         
-        return ObfuscationReflectionHelper.getPrivateValue(LootPool.class, pool, "field_186454_b");
+        return ObfuscationReflectionHelper.getPrivateValue(LootPool.class, pool, "conditions");
     }
     
     /**
@@ -83,21 +83,21 @@ public final class LootUtils {
     @Nullable
     public static ItemStack getItemContext (LootContext ctx) {
         
-        ItemStack stack = ctx.get(LootParameters.TOOL);
+        ItemStack stack = ctx.getParamOrNull(LootParameters.TOOL);
         
         // In some cases like killing an entity the tool is null rather than ItemStack.EMPTY.
         if (stack == null) {
             
-            Entity killer = ctx.get(LootParameters.KILLER_ENTITY);
+            Entity killer = ctx.getParamOrNull(LootParameters.KILLER_ENTITY);
             
             if (killer == null) {
                 
-                killer = ctx.get(LootParameters.DIRECT_KILLER_ENTITY);
+                killer = ctx.getParamOrNull(LootParameters.DIRECT_KILLER_ENTITY);
             }
             
             if (killer instanceof LivingEntity) {
                 
-                stack = ((LivingEntity) killer).getHeldItemMainhand();
+                stack = ((LivingEntity) killer).getMainHandItem();
             }
         }
         

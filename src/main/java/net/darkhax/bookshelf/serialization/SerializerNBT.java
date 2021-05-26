@@ -31,18 +31,18 @@ public class SerializerNBT implements ISerializer<CompoundNBT> {
                 
                 // Some numbers like shorts and array tags like IntArrayNBT can not be
                 // deserialized from objects due to NBT spec being dumb.
-                return JsonToNBT.getTagFromJson(GSON.toJson(json));
+                return JsonToNBT.parseTag(GSON.toJson(json));
             }
             
             else {
                 
-                return JsonToNBT.getTagFromJson(JSONUtils.getString(json, "nbt"));
+                return JsonToNBT.parseTag(JSONUtils.convertToString(json, "nbt"));
             }
         }
         
         catch (final CommandSyntaxException e) {
             
-            throw new JsonParseException("Failed to read NBT from " + JSONUtils.toString(json), e);
+            throw new JsonParseException("Failed to read NBT from " + JSONUtils.getType(json), e);
         }
     }
     
@@ -56,13 +56,13 @@ public class SerializerNBT implements ISerializer<CompoundNBT> {
     @Override
     public CompoundNBT read (PacketBuffer buffer) {
         
-        return buffer.readCompoundTag();
+        return buffer.readNbt();
     }
     
     @Override
     public void write (PacketBuffer buffer, CompoundNBT toWrite) {
         
-        buffer.writeCompoundTag(toWrite);
+        buffer.writeNbt(toWrite);
     }
     
     @Override

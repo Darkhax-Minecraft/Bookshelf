@@ -44,7 +44,7 @@ public class SpriteRegistry {
     
     private void registerSprites (TextureStitchEvent.Pre event) {
         
-        for (final ResourceLocation toAdd : this.sprites.get(event.getMap().getTextureLocation())) {
+        for (final ResourceLocation toAdd : this.sprites.get(event.getMap().location())) {
             
             event.addSprite(toAdd);
         }

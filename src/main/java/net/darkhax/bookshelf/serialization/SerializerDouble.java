@@ -50,7 +50,7 @@ public final class SerializerDouble implements ISerializer<Double> {
         
         if (nbt instanceof DoubleNBT) {
             
-            return ((DoubleNBT) nbt).getDouble();
+            return ((DoubleNBT) nbt).getAsDouble();
         }
         
         throw new IllegalArgumentException("Expected NBT to be a double tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

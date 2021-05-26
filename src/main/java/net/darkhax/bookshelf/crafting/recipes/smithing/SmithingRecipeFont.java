@@ -27,15 +27,15 @@ public class SmithingRecipeFont extends SmithingRecipe {
     }
     
     @Override
-    public ItemStack getCraftingResult (IInventory inv) {
+    public ItemStack assemble (IInventory inv) {
         
-        final ItemStack stack = inv.getStackInSlot(0).copy();
-        stack.setDisplayName(TextUtils.applyFont(stack.getDisplayName(), this.fontId));
+        final ItemStack stack = inv.getItem(0).copy();
+        stack.setHoverName(TextUtils.applyFont(stack.getHoverName(), this.fontId));
         return stack;
     }
     
     @Override
-    public boolean isDynamic () {
+    public boolean isSpecial () {
         
         return true;
     }
@@ -49,29 +49,29 @@ public class SmithingRecipeFont extends SmithingRecipe {
     private static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<SmithingRecipeFont> {
         
         @Override
-        public SmithingRecipeFont read (ResourceLocation recipeId, JsonObject json) {
+        public SmithingRecipeFont fromJson (ResourceLocation recipeId, JsonObject json) {
             
-            final Ingredient base = Ingredient.deserialize(JSONUtils.getJsonObject(json, "base"));
-            final Ingredient addition = Ingredient.deserialize(JSONUtils.getJsonObject(json, "addition"));
+            final Ingredient base = Ingredient.fromJson(JSONUtils.getAsJsonObject(json, "base"));
+            final Ingredient addition = Ingredient.fromJson(JSONUtils.getAsJsonObject(json, "addition"));
             final ResourceLocation font = Serializers.RESOURCE_LOCATION.read(json, "font");
             return new SmithingRecipeFont(recipeId, base, addition, font);
         }
         
         @Override
-        public SmithingRecipeFont read (ResourceLocation recipeId, PacketBuffer buffer) {
+        public SmithingRecipeFont fromNetwork (ResourceLocation recipeId, PacketBuffer buffer) {
             
-            final Ingredient base = Ingredient.read(buffer);
-            final Ingredient addition = Ingredient.read(buffer);
-            final ResourceLocation font = ResourceLocation.tryCreate(buffer.readString());
+            final Ingredient base = Ingredient.fromNetwork(buffer);
+            final Ingredient addition = Ingredient.fromNetwork(buffer);
+            final ResourceLocation font = ResourceLocation.tryParse(buffer.readUtf());
             return new SmithingRecipeFont(recipeId, base, addition, font);
         }
         
         @Override
-        public void write (PacketBuffer buffer, SmithingRecipeFont recipe) {
+        public void toNetwork (PacketBuffer buffer, SmithingRecipeFont recipe) {
             
-            recipe.base.write(buffer);
-            recipe.addition.write(buffer);
-            buffer.writeString(recipe.fontId.toString());
+            recipe.base.toNetwork(buffer);
+            recipe.addition.toNetwork(buffer);
+            buffer.writeUtf(recipe.fontId.toString());
         }
     }
 }

@@ -53,7 +53,7 @@ public final class EntityUtils {
      */
     public static double getDistanceFromEntity (Entity firstEntity, Entity secondEntity) {
         
-        return MathsUtils.getDistanceBetweenPoints(firstEntity.getPositionVec(), secondEntity.getPositionVec());
+        return MathsUtils.getDistanceBetweenPoints(firstEntity.position(), secondEntity.position());
     }
     
     /**
@@ -65,7 +65,7 @@ public final class EntityUtils {
      */
     public static double getDistaceFromPos (Entity entity, BlockPos pos) {
         
-        return MathsUtils.getDistanceBetweenPoints(entity.getPositionVec(), Vector3d.copyCentered(pos));
+        return MathsUtils.getDistanceBetweenPoints(entity.position(), Vector3d.atCenterOf(pos));
     }
     
     /**
@@ -77,7 +77,7 @@ public final class EntityUtils {
      */
     public static void pushTowards (Entity entityToMove, Direction direction, double force) {
         
-        pushTowards(entityToMove, entityToMove.getPosition().offset(direction.getOpposite(), 1), force);
+        pushTowards(entityToMove, entityToMove.blockPosition().relative(direction.getOpposite(), 1), force);
     }
     
     /**
@@ -89,14 +89,14 @@ public final class EntityUtils {
      */
     public static void pushTowards (Entity entityToMove, BlockPos pos, double force) {
         
-        final BlockPos entityPos = entityToMove.getPosition();
+        final BlockPos entityPos = entityToMove.blockPosition();
         final double distanceX = (double) pos.getX() - entityPos.getX();
         final double distanceY = (double) pos.getY() - entityPos.getY();
         final double distanceZ = (double) pos.getZ() - entityPos.getZ();
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
         if (distance > 0) {
-            entityToMove.setMotion(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+            entityToMove.setDeltaMovement(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
         }
     }
     
@@ -110,13 +110,13 @@ public final class EntityUtils {
      */
     public static void pushTowards (Entity entityToMove, Entity destination, double force) {
         
-        final double distanceX = destination.getPosX() - entityToMove.getPosX();
-        final double distanceY = destination.getPosY() - entityToMove.getPosY();
-        final double distanceZ = destination.getPosZ() - entityToMove.getPosZ();
+        final double distanceX = destination.getX() - entityToMove.getX();
+        final double distanceY = destination.getY() - entityToMove.getY();
+        final double distanceZ = destination.getZ() - entityToMove.getZ();
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
         if (distance > 0) {
-            entityToMove.setMotion(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+            entityToMove.setDeltaMovement(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
         }
     }
     
@@ -131,8 +131,8 @@ public final class EntityUtils {
      */
     public static void pushTowardsDirection (Entity entityToMove, Direction direction, double force) {
         
-        final BlockPos entityPos = entityToMove.getPosition();
-        final BlockPos destination = entityToMove.getPosition().offset(direction.getOpposite(), 1);
+        final BlockPos entityPos = entityToMove.blockPosition();
+        final BlockPos destination = entityToMove.blockPosition().relative(direction.getOpposite(), 1);
         
         final double distanceX = (double) destination.getX() - entityPos.getX();
         final double distanceY = (double) destination.getY() - entityPos.getY();
@@ -140,7 +140,7 @@ public final class EntityUtils {
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
         
         if (distance > 0) {
-            entityToMove.setMotion(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+            entityToMove.setDeltaMovement(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
         }
     }
     
@@ -185,7 +185,7 @@ public final class EntityUtils {
      */
     public static <T extends Entity> List<T> getEntitiesInArea (Class<T> entityClass, World world, BlockPos pos, float range) {
         
-        return world.getEntitiesWithinAABB(entityClass, new AxisAlignedBB(pos.add(-range, -range, -range), pos.add(range + 1, range + 1, range + 1)));
+        return world.getEntitiesOfClass(entityClass, new AxisAlignedBB(pos.offset(-range, -range, -range), pos.offset(range + 1, range + 1, range + 1)));
     }
     
     /**
@@ -200,9 +200,9 @@ public final class EntityUtils {
     public static boolean isWearingFullSet (MobEntity living, Class<Item> armorClass) {
         
         for (final EquipmentSlotType slot : EquipmentSlotType.values()) {
-            if (slot.getSlotType().equals(EquipmentSlotType.Group.ARMOR)) {
+            if (slot.getType().equals(EquipmentSlotType.Group.ARMOR)) {
                 
-                final ItemStack armor = living.getItemStackFromSlot(slot);
+                final ItemStack armor = living.getItemBySlot(slot);
                 
                 if (armor.isEmpty() || !armor.getItem().getClass().equals(armorClass)) {
                     return false;
@@ -224,10 +224,10 @@ public final class EntityUtils {
      */
     public static RayTraceResult rayTrace (LivingEntity entity, double length, BlockMode blockMode, FluidMode fluidMode) {
         
-        final Vector3d startingPosition = new Vector3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ());
-        final Vector3d lookVector = entity.getLookVec();
+        final Vector3d startingPosition = new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ());
+        final Vector3d lookVector = entity.getLookAngle();
         final Vector3d endingPosition = startingPosition.add(lookVector.x * length, lookVector.y * length, lookVector.z * length);
-        return entity.world.rayTraceBlocks(new RayTraceContext(startingPosition, endingPosition, blockMode, fluidMode, entity));
+        return entity.level.clip(new RayTraceContext(startingPosition, endingPosition, blockMode, fluidMode, entity));
     }
     
     /**
@@ -240,7 +240,7 @@ public final class EntityUtils {
      */
     public static boolean isAffectedByFire (LivingEntity toCheck) {
         
-        return !toCheck.isImmuneToFire() && !toCheck.isPotionActive(Effects.FIRE_RESISTANCE);
+        return !toCheck.fireImmune() && !toCheck.hasEffect(Effects.FIRE_RESISTANCE);
     }
     
     /**
@@ -255,19 +255,19 @@ public final class EntityUtils {
         
         final Set<Effect> toClear = new HashSet<>();
         
-        for (final EffectInstance effect : entity.getActivePotionEffects()) {
+        for (final EffectInstance effect : entity.getActiveEffects()) {
             
-            final boolean isGood = effect.getPotion().isBeneficial();
+            final boolean isGood = effect.getEffect().isBeneficial();
             
             if (isGood && removePositive || !isGood && removeNegative) {
                 
-                toClear.add(effect.getPotion());
+                toClear.add(effect.getEffect());
             }
         }
         
         for (final Effect effect : toClear) {
             
-            entity.removePotionEffect(effect);
+            entity.removeEffect(effect);
         }
     }
     
@@ -282,12 +282,12 @@ public final class EntityUtils {
         
         return eggColorCache.computeIfAbsent(type, key -> {
             
-            final SpawnEggItem item = SpawnEggItem.getEgg(key);
+            final SpawnEggItem item = SpawnEggItem.byId(key);
             
             if (item != null) {
                 
-                Bookshelf.LOG.debug("Updating color cache for {} to primary={} secondary={}", type.getRegistryName(), item.primaryColor, item.secondaryColor);
-                return new Tuple<>(item.primaryColor, item.secondaryColor);
+                Bookshelf.LOG.debug("Updating color cache for {} to primary={} secondary={}", type.getRegistryName(), item.color1, item.color2);
+                return new Tuple<>(item.color1, item.color2);
             }
             
             return new Tuple<>(0, 0);

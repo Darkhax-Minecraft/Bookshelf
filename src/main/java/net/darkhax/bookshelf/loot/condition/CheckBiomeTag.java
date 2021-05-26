@@ -42,15 +42,15 @@ public class CheckBiomeTag implements ILootCondition {
     @Override
     public boolean test (LootContext ctx) {
         
-        final Vector3d pos = ctx.get(LootParameters.field_237457_g_);
+        final Vector3d pos = ctx.getParamOrNull(LootParameters.ORIGIN);
         
         if (pos != null) {
             
-            final Biome biome = ctx.getWorld().getBiome(new BlockPos(pos));
+            final Biome biome = ctx.getLevel().getBiome(new BlockPos(pos));
             
             if (biome != null) {
                 
-                final RegistryKey<Biome> biomeKey = RegistryKey.getOrCreateKey(Registry.BIOME_KEY, biome.getRegistryName());
+                final RegistryKey<Biome> biomeKey = RegistryKey.create(Registry.BIOME_REGISTRY, biome.getRegistryName());
                 return BiomeDictionary.hasType(biomeKey, this.biomeType);
             }
         }
@@ -59,7 +59,7 @@ public class CheckBiomeTag implements ILootCondition {
     }
     
     @Override
-    public LootConditionType func_230419_b_ () {
+    public LootConditionType getType () {
         
         return Bookshelf.instance.conditionCheckBiomeTag;
     }
@@ -75,7 +75,7 @@ public class CheckBiomeTag implements ILootCondition {
         @Override
         public CheckBiomeTag deserialize (JsonObject json, JsonDeserializationContext context) {
             
-            final Type tag = Type.getType(JSONUtils.getString(json, "tag"));
+            final Type tag = Type.getType(JSONUtils.getAsString(json, "tag"));
             return new CheckBiomeTag(tag);
         }
     }

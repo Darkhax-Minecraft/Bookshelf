@@ -62,7 +62,7 @@ public class BannerRegistry {
     public BannerPattern registerItemPattern (String id, Rarity rarity) {
         
         final BannerPattern pattern = this.registerPattern(id, true);
-        final Item item = this.itemRegistry.register(new BannerPatternItem(pattern, new Item.Properties().maxStackSize(1).rarity(rarity)), id);
+        final Item item = this.itemRegistry.register(new BannerPatternItem(pattern, new Item.Properties().stacksTo(1).rarity(rarity)), id);
         this.patternItems.put(new ResourceLocation(this.ownerId, id), item);
         this.itemsByPattern.put(pattern, item);
         return pattern;

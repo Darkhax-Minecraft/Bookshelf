@@ -147,7 +147,7 @@ public class MCDate {
      */
     public String getLocalizedDayName () {
         
-        return I18n.format("time.bookshelf.day." + this.getDayName() + ".name");
+        return I18n.get("time.bookshelf.day." + this.getDayName() + ".name");
     }
     
     /**
@@ -167,6 +167,6 @@ public class MCDate {
      */
     public String getLocalizedMonthName () {
         
-        return I18n.format("time.bookshelf.month." + this.getMonthName() + ".name");
+        return I18n.get("time.bookshelf.month." + this.getMonthName() + ".name");
     }
 }

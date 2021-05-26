@@ -231,13 +231,13 @@ public final class MathsUtils {
         
         switch (facing) {
             case NORTH:
-                return Block.makeCuboidShape(x1, y1, z1, x2, y2, z2);
+                return Block.box(x1, y1, z1, x2, y2, z2);
             case EAST:
-                return Block.makeCuboidShape(16 - z2, y1, x1, 16 - z1, y2, x2);
+                return Block.box(16 - z2, y1, x1, 16 - z1, y2, x2);
             case SOUTH:
-                return Block.makeCuboidShape(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
+                return Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
             case WEST:
-                return Block.makeCuboidShape(z1, y1, 16 - x2, z2, y2, 16 - x1);
+                return Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
             default:
                 throw new IllegalArgumentException("Can not rotate face in direction " + facing.name());
         }

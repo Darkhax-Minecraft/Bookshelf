@@ -47,19 +47,19 @@ public class ModifierSilkTouch extends LootModifier {
     @Override
     public List<ItemStack> doApply (List<ItemStack> loot, LootContext context) {
         
-        final ItemStack tool = context.get(LootParameters.TOOL);
+        final ItemStack tool = context.getParamOrNull(LootParameters.TOOL);
         
-        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool) == 0) {
+        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, tool) == 0) {
             
             final ItemStack fakeTool = tool.copy();
-            fakeTool.addEnchantment(Enchantments.SILK_TOUCH, 1);
+            fakeTool.enchant(Enchantments.SILK_TOUCH, 1);
             
             final LootContext.Builder builder = new LootContext.Builder(context);
             builder.withParameter(LootParameters.TOOL, fakeTool);
             
-            final LootContext fakeContext = builder.build(LootParameterSets.BLOCK);
-            final LootTable table = context.getWorld().getServer().getLootTableManager().getLootTableFromLocation(context.get(LootParameters.BLOCK_STATE).getBlock().getLootTable());
-            return table.generate(fakeContext);
+            final LootContext fakeContext = builder.create(LootParameterSets.BLOCK);
+            final LootTable table = context.getLevel().getServer().getLootTables().get(context.getParamOrNull(LootParameters.BLOCK_STATE).getBlock().getLootTable());
+            return table.getRandomItems(fakeContext);
         }
         
         return loot;

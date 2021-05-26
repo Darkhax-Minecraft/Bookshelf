@@ -40,14 +40,14 @@ public class CommandHand {
         
         final OutputType type = context.getArgument("type", OutputType.class);
         
-        final ServerPlayerEntity player = context.getSource().asPlayer();
-        final String outputText = type.converter.apply(player.getHeldItemMainhand());
+        final ServerPlayerEntity player = context.getSource().getPlayerOrException();
+        final String outputText = type.converter.apply(player.getMainHandItem());
         
-        final ITextComponent component = TextComponentUtils.wrapWithSquareBrackets(new StringTextComponent(outputText).modifyStyle( (style) -> {
-            return style.setFormatting(TextFormatting.GREEN).setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, outputText)).setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("chat.copy.click"))).setInsertion(outputText);
+        final ITextComponent component = TextComponentUtils.wrapInSquareBrackets(new StringTextComponent(outputText).withStyle( (style) -> {
+            return style.withColor(TextFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, outputText)).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("chat.copy.click"))).withInsertion(outputText);
         }));
         
-        context.getSource().sendFeedback(component, false);
+        context.getSource().sendSuccess(component, false);
         
         return 0;
     }

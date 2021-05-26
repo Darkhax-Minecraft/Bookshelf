@@ -47,7 +47,7 @@ public final class ModUtils {
      */
     public static boolean isOptifineLoaded () {
         
-        return isOptifinePresent.getValue();
+        return isOptifinePresent.get();
     }
     
     /**

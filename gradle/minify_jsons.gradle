@@ -1,0 +1,39 @@
+/*
+ This module will automatically minify all JSON files as they are copied to the
+ resulting artefacts. This is done by removing superflous new line and 
+ whitespace characters from the file. The raw source files remain unmodified.
+ 
+ While the minified JSON files are not as visually appealing this technique can
+ have a notable reduction in the final JAR size. This impact is most notable in
+ mods with many recipes or other JSON datapack entries.
+ 
+ Unminified Example
+ {
+   "key": "value"
+ }
+ 
+ Minified Example
+ {"key":"value"}
+*/
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
+processResources {
+    
+    doLast {
+    
+        def jsonMinifyStart = System.currentTimeMillis()
+        def jsonMinified = 0
+        def jsonBytesSaved = 0
+        
+        fileTree(dir: outputs.files.asPath, include: '**/*.json').each {
+        
+            def oldLength = it.length()
+            it.text = JsonOutput.toJson(new JsonSlurper().parse(it))
+            jsonBytesSaved += oldLength - it.length()
+            jsonMinified++
+        }
+        
+        project.logger.lifecycle("Minified ${jsonMinified} files. Saved ${jsonBytesSaved} bytes before compression. Took ${System.currentTimeMillis() - jsonMinifyStart}ms.")
+    }
+}

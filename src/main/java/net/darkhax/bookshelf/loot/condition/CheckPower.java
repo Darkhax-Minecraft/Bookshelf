@@ -35,18 +35,18 @@ public class CheckPower implements ILootCondition {
     @Override
     public boolean test (LootContext ctx) {
         
-        final Vector3d pos = ctx.get(LootParameters.field_237457_g_);
+        final Vector3d pos = ctx.getParamOrNull(LootParameters.ORIGIN);
         
         if (pos != null) {
             
-            return this.power.test(ctx.getWorld().getRedstonePowerFromNeighbors(new BlockPos(pos)));
+            return this.power.matches(ctx.getLevel().getBestNeighborSignal(new BlockPos(pos)));
         }
         
         return false;
     }
     
     @Override
-    public LootConditionType func_230419_b_ () {
+    public LootConditionType getType () {
         
         return Bookshelf.instance.conditionCheckPower;
     }
@@ -56,7 +56,7 @@ public class CheckPower implements ILootCondition {
         @Override
         public void serialize (JsonObject json, CheckPower value, JsonSerializationContext context) {
             
-            json.add("value", value.power.serialize());
+            json.add("value", value.power.serializeToJson());
         }
         
         @Override

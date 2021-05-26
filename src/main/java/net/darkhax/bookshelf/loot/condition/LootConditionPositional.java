@@ -27,7 +27,7 @@ public abstract class LootConditionPositional implements ILootCondition {
     @Override
     public boolean test (LootContext ctx) {
         
-        final Vector3d pos = ctx.get(LootParameters.field_237457_g_);
+        final Vector3d pos = ctx.getParamOrNull(LootParameters.ORIGIN);
         return pos != null && this.predicate.test(ctx, new BlockPos(pos));
     }
 }

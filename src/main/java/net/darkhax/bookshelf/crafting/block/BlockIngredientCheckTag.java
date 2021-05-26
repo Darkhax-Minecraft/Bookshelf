@@ -54,9 +54,9 @@ public class BlockIngredientCheckTag extends BlockIngredient {
             
             this.cache = new ArrayList<>();
             
-            for (final Block block : this.tag.getAllElements()) {
+            for (final Block block : this.tag.getValues()) {
                 
-                block.getStateContainer().getValidStates().forEach(this.cache::add);
+                block.getStateDefinition().getPossibleStates().forEach(this.cache::add);
             }
         }
     }

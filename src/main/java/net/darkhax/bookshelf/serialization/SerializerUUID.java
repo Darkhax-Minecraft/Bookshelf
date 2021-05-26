@@ -32,20 +32,20 @@ public final class SerializerUUID implements ISerializer<UUID> {
     @Override
     public UUID read (PacketBuffer buffer) {
         
-        return UUID.fromString(buffer.readString());
+        return UUID.fromString(buffer.readUtf());
     }
     
     @Override
     public void write (PacketBuffer buffer, UUID toWrite) {
         
-        buffer.writeString(toWrite.toString());
+        buffer.writeUtf(toWrite.toString());
     }
     
     @Override
     public INBT writeNBT (UUID toWrite) {
         
         final CompoundNBT tag = new CompoundNBT();
-        tag.putUniqueId("id", toWrite);
+        tag.putUUID("id", toWrite);
         return tag;
     }
     
@@ -54,7 +54,7 @@ public final class SerializerUUID implements ISerializer<UUID> {
         
         if (nbt instanceof CompoundNBT) {
             
-            return ((CompoundNBT) nbt).getUniqueId("id");
+            return ((CompoundNBT) nbt).getUUID("id");
         }
         
         throw new IllegalArgumentException("Expected NBT to be a compund tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

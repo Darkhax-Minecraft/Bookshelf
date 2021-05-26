@@ -55,7 +55,7 @@ public class BlockIngredientCheckBlock extends BlockIngredient {
             
             for (final Block block : this.blocks) {
                 
-                block.getStateContainer().getValidStates().forEach(this.cache::add);
+                block.getStateDefinition().getPossibleStates().forEach(this.cache::add);
             }
         }
     }

@@ -25,12 +25,12 @@ public class ColorHandlers {
      * A reusable color handler which uses the hash of
      * {@link net.minecraft.item.ItemStack#getDisplayName()}.
      */
-    public static final IItemColor ITEM_DISPLAY_NAME = (stack, index) -> stack.getDisplayName().hashCode();
+    public static final IItemColor ITEM_DISPLAY_NAME = (stack, index) -> stack.getHoverName().hashCode();
     
     /**
      * A reusable color handler which uses the hash of {@link ItemStack#getTranslationKey()}.
      */
-    public static final IItemColor ITEM_UNLOCALIZED_NAME = (stack, index) -> stack.getTranslationKey().hashCode();
+    public static final IItemColor ITEM_UNLOCALIZED_NAME = (stack, index) -> stack.getDescriptionId().hashCode();
     
     /**
      * A reusable color handler which uses the hash of the
@@ -55,15 +55,15 @@ public class ColorHandlers {
     /**
      * A reusable color handler which applies the foliage color for the biome.
      */
-    public static final IBlockColor BLOCK_FOLIAGE = (state, world, pos, index) -> BiomeColors.getFoliageColor(world, pos);
+    public static final IBlockColor BLOCK_FOLIAGE = (state, world, pos, index) -> BiomeColors.getAverageFoliageColor(world, pos);
     
     /**
      * A reusable color handler which applies the grass color for the biome.
      */
-    public static final IBlockColor BLOCK_GRASS = (state, world, pos, index) -> BiomeColors.getGrassColor(world, pos);
+    public static final IBlockColor BLOCK_GRASS = (state, world, pos, index) -> BiomeColors.getAverageGrassColor(world, pos);
     
     /**
      * A reusable color handler which applies the water color for the biome.
      */
-    public static final IBlockColor BLOCK_WATER = (state, world, pos, index) -> BiomeColors.getWaterColor(world, pos);
+    public static final IBlockColor BLOCK_WATER = (state, world, pos, index) -> BiomeColors.getAverageWaterColor(world, pos);
 }

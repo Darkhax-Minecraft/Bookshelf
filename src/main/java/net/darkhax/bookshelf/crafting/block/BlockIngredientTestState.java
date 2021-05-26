@@ -70,11 +70,11 @@ public class BlockIngredientTestState extends BlockIngredient {
             
             for (final Entry<String, JsonElement> propValue : properties.entrySet()) {
                 
-                final Property<?> property = block.getStateContainer().getProperty(propValue.getKey());
+                final Property<?> property = block.getStateDefinition().getProperty(propValue.getKey());
                 
                 if (property != null) {
                     
-                    final Optional<?> value = property.parseValue(propValue.getValue().getAsString());
+                    final Optional<?> value = property.getValue(propValue.getValue().getAsString());
                     
                     if (value.isPresent()) {
                         
@@ -93,9 +93,9 @@ public class BlockIngredientTestState extends BlockIngredient {
                 }
             }
             
-            for (final BlockState state : block.getStateContainer().getValidStates()) {
+            for (final BlockState state : block.getStateDefinition().getPossibleStates()) {
                 
-                if (expectedProps.entrySet().stream().allMatch(e -> state.get(e.getKey()).equals(e.getValue()))) {
+                if (expectedProps.entrySet().stream().allMatch(e -> state.getValue(e.getKey()).equals(e.getValue()))) {
                     
                     validStates.add(state);
                 }

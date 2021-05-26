@@ -72,7 +72,7 @@ public class IngredientToolType extends Ingredient {
         @Override
         public IngredientToolType parse (PacketBuffer buffer) {
             
-            return new IngredientToolType(this.stackPred, this, Stream.generate( () -> new Ingredient.SingleItemList(buffer.readItemStack())).limit(buffer.readVarInt()));
+            return new IngredientToolType(this.stackPred, this, Stream.generate( () -> new Ingredient.SingleItemList(buffer.readItem())).limit(buffer.readVarInt()));
         }
         
         @Override
@@ -89,12 +89,12 @@ public class IngredientToolType extends Ingredient {
         @Override
         public void write (PacketBuffer buffer, IngredientToolType ingredient) {
             
-            final ItemStack[] items = ingredient.getMatchingStacks();
+            final ItemStack[] items = ingredient.getItems();
             buffer.writeVarInt(items.length);
             
             for (final ItemStack stack : items) {
                 
-                buffer.writeItemStack(stack);
+                buffer.writeItem(stack);
             }
         }
         
