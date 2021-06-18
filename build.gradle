@@ -1,33 +1,147 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply from: 'gradle/property_helper.gradle'
-apply from: 'gradle/property_loader.gradle'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'com.diluv.schoomp', name: 'Schoomp', version: '1.1.0'
+    }
+}
 
-// Load mod related properties
-ext.modName = getRequiredString('mod_name')
-ext.modAuthor = getRequiredString('mod_author')
-ext.modId = getRequiredString('mod_id')
-ext.modCredits = getDefaultString('mod_credits', ext.modAuthor)
-ext.modDescription = getOptionalString('mod_description')
-ext.modChangelog = getOptionalString('mod_changelog')
-ext.modHomepage = getOptionalString('mod_homepage')
-ext.modSource = getOptionalString('mod_source')
-ext.modIssues = getOptionalString('mod_issues')
+plugins {
+    id 'fabric-loom' version '0.5-SNAPSHOT'
+	id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id 'maven-publish'
+}
 
-// Load Minecraft specific properties
-ext.mcVersion = getRequiredString('minecraft_version')
+apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/secrets.gradle'
+apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
+apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/patreon.gradle'
 
-// Load build-time modules
-apply from: 'gradle/build_number.gradle'
-apply from: 'gradle/git_changelog.gradle'
-apply from: 'gradle/patreon.gradle'
-apply from: 'gradle/common_manifest.gradle'
-apply from: 'gradle/common_artifacts.gradle'
-apply from: 'gradle/forge.gradle'
-apply from: 'gradle/minify_jsons.gradle'
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+import com.diluv.schoomp.Webhook
+import com.diluv.schoomp.message.Message
+import com.diluv.schoomp.message.embed.Embed
+import com.diluv.schoomp.message.embed.Footer
 
-// Load publishing modules
-apply from: 'gradle/maven.gradle'
-apply from: 'gradle/signing.gradle'
-apply from: 'gradle/curseforge.gradle'
-apply from: 'gradle/version_checker.gradle'
+if (project.hasProperty('secretFile')) {
+    loadSecrets(new File((String) findProperty('secretFile')))
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+archivesBaseName = "${project.mod_name}-fabric-${project.minecraft_version}"
+version = project.mod_version + ".${getBuildNumber()}"
+
+dependencies {
+
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+}
+
+processResources {
+
+    inputs.property "version", project.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "fabric.mod.json"
+        expand "version": project.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude "fabric.mod.json"
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+
+curseforge {
+
+    apiKey = findProperty('curse_auth') ?: 0 
+    def versions = "${curse_versions}".split(', ')
+
+    project {
+
+        id = "${curse_project}"
+        releaseType = 'beta'
+        changelog = getGitChangelog() + "\n\nLike the mod? Consider following me on [Twitter](https://twitter.com/darkhaxdev) and joining the [Discord](https://discord.darkhax.net)\n\nHuge thanks to my supporters on [Patreon](https://www.patreon.com/Darkhax?MCChangelog?${mod_name})\n\n" + getPledgeLog()
+        changelogType = 'markdown'
+        addGameVersion "Fabric"
+        
+        versions.each {
+
+            addGameVersion "${it}"
+        }
+
+        mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
+        
+        afterEvaluate {
+            uploadTask.dependsOn(remapJar)
+        }
+    }
+    
+    options {
+        forgeGradleIntegration = false;
+    }
+}
+
+tasks.getByName("curseforge").doLast {
+
+    try {
+    
+        // Reads the file ID given to us by CurseForge
+        def newFileId = tasks.getByName("curseforge${curse_project}").property('mainArtifact').fileID
+    
+        def webhook = new Webhook(findProperty('discordCFWebhook'), "${project.findProperty('mod_name')} Gradle Upload");
+        
+        def message = new Message();        
+        message.setUsername(findProperty('mod_name'));
+        message.setContent("${project.findProperty('mod_name')} ${version} (Fabric) for Minecraft ${findProperty('minecraft_version')} has been released! The download will be public soon.");
+        
+        def embed = new Embed();
+        embed.addField('Download', "${project.findProperty('curse_page')}/files/$newFileId", false);
+        embed.addField('Change Log', "${getGitChangelog() ?: 'Unavailable :('}", false);
+        embed.setColor(0xFF8000);           
+        message.addEmbed(embed);
+
+        webhook.sendMessage(message);
+    }
+    
+    catch (IOException e) {
+        println 'Failed to push to the Discord webhook.'
+    }
+}
+
+java {
+	withSourcesJar()
+}
+
+publishing {
+    publications {
+		mavenJava(MavenPublication) {
+			artifact(remapJar) {
+				builtBy remapJar
+			}
+			artifact(sourcesJar) {
+				builtBy remapSourcesJar
+			}
+		}
+	}
+    repositories {
+        maven {
+            // Sets the maven URL
+            url findProperty('localMaven')
+        }
+    }
+}
+
+String getBuildNumber() {
+
+    return System.getenv('BUILD_NUMBER') ? System.getenv('BUILD_NUMBER') : System.getenv('TRAVIS_BUILD_NUMBER') ? System.getenv('TRAVIS_BUILD_NUMBER') : '0';
+}

@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "net.darkhax.bookshelf.internal.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"refmap": "bookshelf.refmap.json",
+	"mixins": [
+		"entity.MixinEntity",
+        "entity.MixinServerPlayerEntity"
+	],
+	"minVersion": "0.8"
+}

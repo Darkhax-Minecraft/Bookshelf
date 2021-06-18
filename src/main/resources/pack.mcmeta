@@ -1,6 +1,1 @@
-{
-	"pack": {
-		"pack_format": 6,
-		"description": "${modDescription}"
-	}
-}
+{"pack":{"pack_format":6,"description":"Bookshelf"}}

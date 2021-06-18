@@ -1,114 +1,91 @@
 package net.darkhax.bookshelf.registry;
 
+import java.util.function.Supplier;
+
 import org.apache.logging.log4j.Logger;
 
-import net.darkhax.bookshelf.block.IBookshelfBlock;
+import net.darkhax.bookshelf.utils.ItemHelper;
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.PaintingType;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.BlockItem;
+import net.minecraft.entity.decoration.painting.PaintingMotive;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.potion.Effect;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Lazy;
+import net.minecraft.util.registry.Registry;
 
+/**
+ * The registry helper handles registration of various game objects.
+ */
 public class RegistryHelper {
     
-    public final String modid;
+    public final String ownerId;
+    private boolean initialized = false;
     
-    public final CommandRegistry commands;
-    public final TradeRegistry trades;
-    public final RecipeTypeRegistry recipeTypes;
-    public final IngredientRegistry ingredients;
-    public final ForgeRegistryRegistryHelper registries;
-    public final BannerRegistry banners;
-    public final LootConditionRegistry lootConditions;
+    public final BasicRegistry<Block> blocks;
+    public final BasicRegistryItem items;
+    public final BasicRegistry<BlockEntityType<?>> blockEntities;
+    public final BasicRegistry<RecipeType<?>> recipeTypes;
+    public final BasicRegistry<RecipeSerializer<?>> recipeSerializers;
+    public final BasicRegistry<EntityType<?>> entityTypes;
+    public final BasicRegistry<PaintingMotive> paintings;
+    public final BasicRegistry<Potion> potions;
+    public final BasicRegistry<Enchantment> enchantments;
     
-    public final ForgeRegistryHelper<Block> blocks;
-    public final ForgeRegistryHelper<Item> items;
-    public final ForgeRegistryHelper<TileEntityType<?>> tileEntities;
-    public final ForgeRegistryHelper<IRecipeSerializer<?>> recipeSerializers;
-    public final ForgeRegistryHelper<ContainerType<?>> containerTypes;
-    public final ForgeRegistryHelper<EntityType<?>> entityTypes;
-    public final ForgeRegistryHelper<PaintingType> paintings;
-    public final ForgeRegistryHelper<Effect> effects;
-    public final ForgeRegistryHelper<Potion> potions;
-    public final ForgeRegistryHelper<Enchantment> enchantments;
-    public final ForgeRegistryHelper<GlobalLootModifierSerializer<?>> lootModifiers;
+    public RegistryHelper(String ownerId, Logger logger) {
+        
+        this.ownerId = ownerId;
+        
+        this.blocks = new BasicRegistry<>(logger, ownerId, Registry.BLOCK);
+        this.items = new BasicRegistryItem(logger, ownerId);
+        this.blockEntities = new BasicRegistry<>(logger, ownerId, Registry.BLOCK_ENTITY_TYPE);
+        this.recipeTypes = new BasicRegistry<>(logger, ownerId, Registry.RECIPE_TYPE);
+        this.recipeSerializers = new BasicRegistry<>(logger, ownerId, Registry.RECIPE_SERIALIZER);
+        this.entityTypes = new BasicRegistry<>(logger, ownerId, Registry.ENTITY_TYPE);
+        this.paintings = new BasicRegistry<>(logger, ownerId, Registry.PAINTING_MOTIVE);
+        this.potions = new BasicRegistry<>(logger, ownerId, Registry.POTION);
+        this.enchantments = new BasicRegistry<>(logger, ownerId, Registry.ENCHANTMENT);
+    }
     
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public RegistryHelper(String modid, Logger logger) {
+    public RegistryHelper withItemGroup (Supplier<Item> icon) {
         
-        this.modid = modid;
-        
-        this.commands = new CommandRegistry(logger);
-        this.trades = new TradeRegistry(logger);
-        this.recipeTypes = new RecipeTypeRegistry(modid, logger);
-        this.ingredients = new IngredientRegistry(modid, logger);
-        this.registries = new ForgeRegistryRegistryHelper(modid, logger);
-        this.lootConditions = new LootConditionRegistry(modid, logger);
-        
-        this.blocks = new ForgeRegistryHelper<>(logger, modid, Block.class);
-        this.items = new ForgeRegistryHelper<>(logger, modid, Item.class);
-        this.tileEntities = new ForgeRegistryHelper(logger, modid, TileEntityType.class);
-        this.recipeSerializers = new ForgeRegistryHelper(logger, modid, IRecipeSerializer.class);
-        this.containerTypes = new ForgeRegistryHelper(logger, modid, ContainerType.class);
-        this.entityTypes = new ForgeRegistryHelper(logger, modid, EntityType.class);
-        this.paintings = new ForgeRegistryHelper<>(logger, modid, PaintingType.class);
-        this.effects = new ForgeRegistryHelper<>(logger, modid, Effect.class);
-        this.potions = new ForgeRegistryHelper<>(logger, modid, Potion.class);
-        this.enchantments = new ForgeRegistryHelper<>(logger, modid, Enchantment.class);
-        this.lootModifiers = new ForgeRegistryHelper(logger, modid, GlobalLootModifierSerializer.class);
-        this.banners = new BannerRegistry(modid, logger, this.items);
-        
-        this.blocks.addRegisterListener(this::generateBlockItem);
-        // TODO Mobs
-        // TODO Spawn Eggs
+        final Lazy<ItemStack> iconGetter = new Lazy<>( () -> new ItemStack(icon.get()));
+        return this.withItemGroup(FabricItemGroupBuilder.build(new Identifier(this.ownerId, "tab"), iconGetter::get));
     }
     
     public RegistryHelper withItemGroup (ItemGroup group) {
         
-        this.items.addRegisterListener( (registry, item) -> item.category = group);
+        this.items.addRegisterListener( (reg, item) -> ItemHelper.setItemGroup(item, group));
         return this;
     }
     
-    public void initialize (IEventBus modBus) {
+    public void init () {
         
-        this.commands.initialize(modBus);
-        this.trades.initialize(modBus);
-        this.recipeTypes.initialize(modBus);
-        this.ingredients.initialize(modBus);
-        this.registries.initialize(modBus);
-        this.lootConditions.initialize(modBus);
-        
-        this.blocks.initialize(modBus);
-        this.items.initialize(modBus);
-        this.tileEntities.initialize(modBus);
-        this.recipeSerializers.initialize(modBus);
-        this.containerTypes.initialize(modBus);
-        this.entityTypes.initialize(modBus);
-        this.paintings.initialize(modBus);
-        this.effects.initialize(modBus);
-        this.potions.initialize(modBus);
-        this.enchantments.initialize(modBus);
-        this.lootModifiers.initialize(modBus);
-    }
-    
-    private void generateBlockItem (ForgeRegistryHelper<Block> registry, Block block) {
-        
-        final Item.Properties itemProps = block instanceof IBookshelfBlock ? ((IBookshelfBlock) block).getItemBlockProperties() : new Item.Properties();
-        
-        if (itemProps != null) {
+        if (!this.initialized) {
             
-            final Item item = new BlockItem(block, itemProps);
-            item.setRegistryName(block.getRegistryName());
-            this.items.register(item);
+            this.blocks.apply();
+            this.items.apply();
+            this.blockEntities.apply();
+            this.recipeTypes.apply();
+            this.recipeSerializers.apply();
+            this.entityTypes.apply();
+            this.paintings.apply();
+            this.potions.apply();
+            this.enchantments.apply();
+            
+            this.initialized = true;
+        }
+        
+        else {
+            
+            throw new IllegalStateException("RegistryHelper for mod " + this.ownerId + " has already been initialized.");
         }
     }
 }

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "bookshelf",
+  "version": "${version}",
+  "name": "Bookshelf",
+  "description": "An API for other mods and developers.",
+  "authors": [
+    "Darkhax"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/bookshelf",
+    "sources": "https://github.com/Darkhax-Minecraft/Bookshelf",
+    "issues": "https://github.com/Darkhax-Minecraft/Bookshelf/issues"
+  },
+  "license": "LGPL v2.1",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.darkhax.bookshelf.Bookshelf"
+    ]
+  },
+  "mixins": [
+    "bookshelf.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  }
+}
