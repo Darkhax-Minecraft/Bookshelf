@@ -5,7 +5,9 @@
 	"refmap": "bookshelf.refmap.json",
 	"mixins": [
 		"entity.MixinEntity",
-        "entity.MixinServerPlayerEntity"
+        "entity.MixinServerPlayerEntity",
+        
+        "item.AccessorItem"
 	],
 	"minVersion": "0.8"
 }
