@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.registry;
 
 import java.util.function.Supplier;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.darkhax.bookshelf.utils.ItemHelper;
@@ -39,6 +40,11 @@ public class RegistryHelper {
     public final BasicRegistry<Potion> potions;
     public final BasicRegistry<Enchantment> enchantments;
     
+    public RegistryHelper(String ownerId) {
+        
+        this(ownerId, LogManager.getLogger(ownerId));
+    }
+    
     public RegistryHelper(String ownerId, Logger logger) {
         
         this.ownerId = ownerId;
@@ -66,7 +72,7 @@ public class RegistryHelper {
         return this;
     }
     
-    public void init () {
+    public void apply () {
         
         if (!this.initialized) {
             

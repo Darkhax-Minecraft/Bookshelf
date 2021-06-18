@@ -26,6 +26,9 @@ public class Property<T> {
     @Expose
     private final T value;
     
+    /**
+     * A map containing metadata for the property.
+     */
     @Expose
     private Map<String, Object> meta;
     
@@ -34,29 +37,59 @@ public class Property<T> {
         this.value = value;
     }
     
+    /**
+     * Includes the default value in the metadata.
+     * 
+     * @return The property instance.
+     */
     public Property<T> defaultValue () {
         
         return this.defaultValue(this.value);
     }
     
+    /**
+     * Includes the default value in the metadata.
+     * 
+     * @param value The value to specify as the default value.
+     * @return The property instance.
+     */
     public Property<T> defaultValue (T value) {
         
         this.getMeta().put("default", value);
         return this;
     }
     
+    /**
+     * Includes a comment in the metadata for the property. This has support for multiline
+     * comments however calling this will replace all previous comments.
+     * 
+     * @param comments The comment lines to include.
+     * @return The property instance.
+     */
     public Property<T> comment (String... comments) {
         
         this.getMeta().put("comment", encodeComment(comments));
         return this;
     }
     
+    /**
+     * Includes an example property in the metadata for the property.
+     * 
+     * @param example The example value to include.
+     * @return The property instance.
+     */
     public Property<T> example (T example) {
         
         this.getMeta().put("example", example);
         return this;
     }
     
+    /**
+     * Includes all values of an enum in the valid values section of the metadata. This can
+     * only be used on properties that are holding an enum!
+     * 
+     * @return The property instance.
+     */
     public Property<T> enumValues () {
         
         if (this.value instanceof Enum<?>) {
@@ -68,12 +101,42 @@ public class Property<T> {
         throw new IllegalStateException("Expected class '" + this.value.getClass() + "' to be an enum.");
     }
     
+    /**
+     * Includes all boolean values in the valid values section of the metadata. This can only
+     * be used on properties that are holding a boolean.
+     * 
+     * @return The property instance.
+     */
+    public Property<T> booleanValues () {
+        
+        if (this.value instanceof Boolean) {
+            
+            this.validValues((T[]) new Boolean[] { true, false });
+            return this;
+        }
+        
+        throw new IllegalStateException("Expected class '" + this.value.getClass() + "' to be a boolean.");
+    }
+    
+    /**
+     * Specifies an array of valid values for this property in the metadata of the property.
+     * 
+     * @param validValues The range of valid values.
+     * @return The property instance.
+     */
     public Property<T> validValues (T[] validValues) {
         
         this.getMeta().put("valid_values", validValues);
         return this;
     }
     
+    /**
+     * Specifies a collection of valid values for this property in the metadata of the
+     * property.
+     * 
+     * @param validValues The range of valid values.
+     * @return The property instance.
+     */
     public Property<T> validValues (Collection<T> validValues) {
         
         this.getMeta().put("valid_values", validValues);
@@ -90,6 +153,12 @@ public class Property<T> {
         return this.value;
     }
     
+    /**
+     * Gets the metadata for the property. This can be used to add additional properties but
+     * should be treated as write only.
+     * 
+     * @return The metadata for the property.
+     */
     public Map<String, Object> getMeta () {
         
         if (this.meta == null) {
