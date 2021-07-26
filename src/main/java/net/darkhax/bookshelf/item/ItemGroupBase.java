@@ -19,37 +19,37 @@ import net.minecraft.item.ItemStack;
  * mod.
  */
 public class ItemGroupBase extends ItemGroup {
-    
+
     /**
      * A supplier for the icon of the creative tab.
      */
     private final Supplier<ItemStack> iconSupplier;
-    
-    public ItemGroupBase(String label, Block block) {
-        
+
+    public ItemGroupBase (String label, Block block) {
+
         this(label, Item.byBlock(block));
     }
-    
-    public ItemGroupBase(String label, Item item) {
-        
+
+    public ItemGroupBase (String label, Item item) {
+
         this(label, () -> new ItemStack(item));
     }
-    
+
     /**
      * The base constructor for creating a new ItemGroup.
-     * 
+     *
      * @param label The translation string used for the name of the group.
      * @param iconSupplier A supplier for the icon stack.
      */
-    public ItemGroupBase(String label, Supplier<ItemStack> iconSupplier) {
-        
+    public ItemGroupBase (String label, Supplier<ItemStack> iconSupplier) {
+
         super(label);
         this.iconSupplier = iconSupplier;
     }
-    
+
     @Override
     public ItemStack makeIcon () {
-        
+
         return this.iconSupplier.get();
     }
 }

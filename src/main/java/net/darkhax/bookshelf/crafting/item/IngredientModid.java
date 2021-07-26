@@ -16,77 +16,77 @@ import net.minecraftforge.common.crafting.StackList;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class IngredientModid extends Ingredient {
-    
+
     public static final Serializer SERIALIZER = new Serializer();
-    
+
     private final String modid;
-    
-    private IngredientModid(String modid, Stream<? extends Ingredient.IItemList> itemLists) {
-        
+
+    private IngredientModid (String modid, Stream<? extends Ingredient.IItemList> itemLists) {
+
         super(itemLists);
         this.modid = modid;
     }
-    
+
     @Override
     public boolean test (ItemStack stack) {
-        
+
         return !stack.isEmpty() && stack.getItem().getRegistryName().getNamespace().equals(this.modid);
     }
-    
+
     @Override
     public boolean isSimple () {
-        
+
         return false;
     }
-    
+
     @Override
     public IIngredientSerializer<IngredientModid> getSerializer () {
-        
+
         return SERIALIZER;
     }
-    
+
     static class Serializer implements IIngredientSerializer<IngredientModid> {
-        
+
         @Override
         public IngredientModid parse (PacketBuffer buffer) {
-            
+
             final String modid = buffer.readUtf();
             return new IngredientModid(modid, Stream.generate( () -> new Ingredient.SingleItemList(buffer.readItem())).limit(buffer.readVarInt()));
         }
-        
+
         @Override
         public IngredientModid parse (JsonObject json) {
-            
+
             final String modid = JSONUtils.getAsString(json, "modid");
             return new IngredientModid(modid, Stream.of(new StackList(this.getMatchingItems(modid))));
         }
-        
+
         @Override
         public void write (PacketBuffer buffer, IngredientModid ingredient) {
-            
+
             buffer.writeUtf(ingredient.modid);
-            
+
             final ItemStack[] items = ingredient.getItems();
             buffer.writeVarInt(items.length);
-            
+
             for (final ItemStack stack : items) {
-                
+
                 buffer.writeItem(stack);
             }
         }
-        
+
         private List<ItemStack> getMatchingItems (String modid) {
-            
+
             final List<ItemStack> matchingItems = NonNullList.create();
-            
+
             for (final Item item : ForgeRegistries.ITEMS.getValues()) {
-                
+
                 if (item.getRegistryName().getNamespace().equals(modid)) {
-                    
+
                     matchingItems.add(new ItemStack(item));
                 }
             }
-            
+
             return matchingItems;
         }
     }

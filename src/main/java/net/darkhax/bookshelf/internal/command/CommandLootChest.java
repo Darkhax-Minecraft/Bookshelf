@@ -17,28 +17,28 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 public class CommandLootChest {
-    
-    public CommandLootChest(LiteralArgumentBuilder<CommandSource> root) {
-        
+
+    public CommandLootChest (LiteralArgumentBuilder<CommandSource> root) {
+
         root.requires(s -> s.hasPermission(2)).then(Commands.literal("lootchest").then(Commands.argument("targets", EntityArgument.players()).then(Commands.argument("table", ArgumentTypeLootTable.INSTACE).executes(this::translate).then(Commands.argument("seed", StringArgumentType.string()).executes(this::translate)))));
     }
-    
+
     private int translate (CommandContext<CommandSource> context) throws CommandSyntaxException {
-        
+
         final ItemStack item = new ItemStack(Items.CHEST);
         final CompoundNBT tag = item.getOrCreateTagElement("BlockEntityTag");
         tag.putString("LootTable", ArgumentTypeLootTable.getTableId(context, "table"));
-        
+
         if (CommandUtils.hasArgument(context, "seed")) {
-            
+
             tag.putLong("LootTableSeed", StringArgumentType.getString(context, "seed").hashCode());
         }
-        
+
         for (final PlayerEntity player : EntityArgument.getPlayers(context, "targets")) {
-            
+
             ItemHandlerHelper.giveItemToPlayer(player, item.copy());
         }
-        
+
         return 0;
     }
 }

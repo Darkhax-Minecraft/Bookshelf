@@ -39,7 +39,7 @@ import net.minecraftforge.common.ForgeTagHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class Serializers {
-    
+
     public static final ISerializer<Boolean> BOOLEAN = SerializerBoolean.SERIALIZER;
     public static final ISerializer<Byte> BYTE = SerializerByte.SERIALIZER;
     public static final ISerializer<Short> SHORT = SerializerShort.SERIALIZER;
@@ -60,7 +60,7 @@ public class Serializers {
     public static final ISerializer<Vector3d> VEC3D = SerializerVec3d.SERIALIZER;
     public static final ISerializer<DisplayableBlockState> DISPLAY_STATE = DisplayableBlockState.SERIALIZER;
     public static final ISerializer<BlockIngredient> BLOCK_INGREDIENT = BlockIngredientSerializer.SERIALIZER;
-    
+
     public static final ISerializer<INamedTag<Block>> BLOCK_TAG = new SerializerINamedTag<>(BlockTags::createOptional);
     public static final ISerializer<INamedTag<Item>> ITEM_TAG = new SerializerINamedTag<>(ItemTags::createOptional);
     public static final ISerializer<INamedTag<EntityType<?>>> ENTITY_TAG = new SerializerINamedTag<>(EntityTypeTags::createOptional);
@@ -68,7 +68,7 @@ public class Serializers {
     public static final ISerializer<INamedTag<Enchantment>> ENCHANTMENT_TAG = new SerializerINamedTag<>(rl -> ForgeTagHandler.createOptionalTag(ForgeRegistries.ENCHANTMENTS, rl));
     public static final ISerializer<INamedTag<Potion>> POTION_TAG = new SerializerINamedTag<>(rl -> ForgeTagHandler.createOptionalTag(ForgeRegistries.POTION_TYPES, rl));
     public static final ISerializer<INamedTag<TileEntityType<?>>> TILE_ENTITY_TAG = new SerializerINamedTag<>(rl -> ForgeTagHandler.createOptionalTag(ForgeRegistries.TILE_ENTITIES, rl));
-    
+
     public static final ISerializer<Block> BLOCK = new SerializerForgeRegistry<>(ForgeRegistries.BLOCKS);
     public static final ISerializer<Fluid> FLUID = new SerializerForgeRegistry<>(ForgeRegistries.FLUIDS);
     public static final ISerializer<Item> ITEM = new SerializerForgeRegistry<>(ForgeRegistries.ITEMS);

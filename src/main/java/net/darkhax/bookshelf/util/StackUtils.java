@@ -11,9 +11,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ToolType;
 
 public final class StackUtils {
-    
+
     public static boolean hasToolType (ToolType type, ItemStack stack) {
-        
+
         return stack.getItem().getToolTypes(stack).contains(type);
     }
 }

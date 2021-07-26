@@ -14,10 +14,10 @@ import net.minecraft.command.CommandSource;
  */
 @FunctionalInterface
 public interface BooleanCommand {
-    
+
     /**
      * Handles the execution of your command.
-     * 
+     *
      * @param context The context provided by the command.
      * @param bool The arbitrary boolean value.
      * @return A success flag for the command.

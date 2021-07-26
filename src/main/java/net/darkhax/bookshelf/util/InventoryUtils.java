@@ -36,124 +36,124 @@ import net.minecraftforge.items.wrapper.EmptyHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 public class InventoryUtils {
-    
+
     /**
      * Gets an inventory from a position within the world. If no tile exists or the tile does
      * not have the inventory capability the empty inventory handler will be returned.
-     * 
+     *
      * @param world The world instance.
      * @param pos The position of the expected tile entity.
      * @param side The side to access the inventory from.
      * @return The inventory handler. Will be empty if none was found.
      */
     public static IItemHandler getInventory (World world, BlockPos pos, Direction side) {
-        
+
         final TileEntity tileEntity = world.getBlockEntity(pos);
-        
+
         if (tileEntity != null) {
-            
+
             final LazyOptional<IItemHandler> inventoryCap = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side);
             return inventoryCap.orElse(EmptyHandler.INSTANCE);
         }
-        
+
         else {
-            
+
             // Some blocks like composters are not tile entities so their inv can not be
             // accessed through the normal capability system.
             final BlockState state = world.getBlockState(pos);
-            
+
             if (state.getBlock() instanceof ISidedInventoryProvider) {
-                
+
                 final ISidedInventoryProvider inventoryProvider = (ISidedInventoryProvider) state.getBlock();
                 final ISidedInventory inventory = inventoryProvider.getContainer(state, world, pos);
-                
+
                 if (inventory != null) {
-                    
+
                     return new SidedInvWrapper(inventory, side);
                 }
             }
         }
-        
+
         return EmptyHandler.INSTANCE;
     }
-    
+
     /**
      * Checks if a position has an inventory. The empty inventory handler will be considered
      * invalid.
-     * 
+     *
      * @param world The world instance.
      * @param pos The position of the expected tile entity.
      * @param side The side to access the inventory from.
      * @return Whether or not the inventory exists.
      */
     public static boolean hasInventory (World world, BlockPos pos, Direction side) {
-        
+
         final IItemHandler handler = getInventory(world, pos, side);
         return handler != null && handler != EmptyHandler.INSTANCE;
     }
-    
+
     /**
      * Gets the container backing a CraftingInventory. This is normally private however it has
      * been made accessible through an access transformer.
-     * 
+     *
      * @param craftingInv The crafting inventory.
      * @return The container backing the crafting inventory.
      */
     @Nullable
     public static Container getCraftingContainer (CraftingInventory craftingInv) {
-        
+
         return craftingInv.menu;
     }
-    
+
     @Nullable
     public static PlayerEntity getCraftingPlayer (IInventory inventory) {
-        
+
         return getCraftingPlayer(inventory, null);
     }
-    
+
     /**
      * Attempts to locate a player from an inventory. This method is specifically intended for
      * crafting related inventories and is not guaranteed to work with every or even most
      * inventories or containers.
-     * 
+     *
      * @param inventory The inventory to search.
      * @param world The world instance.
      * @return The player that was found. This may be null if no player could be found.
      */
     @Nullable
     public static PlayerEntity getCraftingPlayer (IInventory inventory, World world) {
-        
+
         if (inventory instanceof PlayerInventory) {
-            
+
             return ((PlayerInventory) inventory).player;
         }
-        
+
         else if (inventory instanceof CraftingInventory) {
-            
+
             final Container container = getCraftingContainer((CraftingInventory) inventory);
-            
+
             if (container instanceof WorkbenchContainer) {
-                
+
                 return ((WorkbenchContainer) container).player;
             }
-            
+
             else if (container instanceof PlayerContainer) {
-                
+
                 return ((PlayerContainer) container).owner;
             }
         }
-        
+
         // TODO add a way for other mods to add special handling for their inventories and
         // containers if they want to.
         return null;
     }
-    
+
     /**
      * An extension of the IRecipe getRemainingItems method which attempts to keep items that
      * have durability. Instead of being consumed these items will attempt to have their
      * durability decreased. Things like unbreaking and unbreakable nbt settings are considered
      * depending on the input arguments.
-     * 
+     *
      * @param inv The inventory doing the crafting.
      * @param keptItems The list of items being kept.
      * @param ignoreUnbreaking Whether or not unbreaking enchantments should be ignored.
@@ -161,41 +161,41 @@ public class InventoryUtils {
      * @return The list of items being kept.
      */
     public static NonNullList<ItemStack> keepDamageableItems (CraftingInventory inv, NonNullList<ItemStack> keptItems, boolean ignoreUnbreaking, int damageAmount) {
-        
+
         for (int i = 0; i < keptItems.size(); i++) {
-            
+
             final ItemStack stack = inv.getItem(i);
-            
+
             // Checks if the item has durability or has the unbreaking tag.
             if (stack.getItem().canBeDepleted() || stack.hasTag() && stack.getTag().getBoolean("Unbreakable")) {
-                
+
                 @Nullable
                 final PlayerEntity player = InventoryUtils.getCraftingPlayer(inv);
                 final Random random = player != null ? player.getRandom() : Bookshelf.RANDOM;
                 final ItemStack retainedStack = stack.copy();
-                
+
                 // Sometimes you may want to ignore/bypass the unbreaking enchantment.
                 if (ignoreUnbreaking) {
-                    
+
                     // Checks if the stack can be damaged. If so continue and bypass all the
                     // other item damaging mechanics.
                     if (retainedStack.isDamageableItem()) {
-                        
+
                         retainedStack.setDamageValue(retainedStack.getDamageValue() + damageAmount);
                     }
                 }
-                
+
                 else {
-                    
+
                     // Attempts to damage the item, taking things like the unbreaking
                     // enchantment into consideration.
                     retainedStack.hurt(damageAmount, random, player instanceof ServerPlayerEntity ? (ServerPlayerEntity) player : null);
                 }
-                
+
                 keptItems.set(i, retainedStack);
             }
         }
-        
+
         return keptItems;
     }
 }

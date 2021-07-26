@@ -12,29 +12,29 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 
 public abstract class TileEntityBasicTickable extends TileEntityBasic implements ITickableTileEntity {
-    
-    public TileEntityBasicTickable(TileEntityType<?> tileEntityType) {
-        
+
+    public TileEntityBasicTickable (TileEntityType<?> tileEntityType) {
+
         super(tileEntityType);
     }
-    
+
     @Override
     public void tick () {
-        
+
         if (this.hasLevel() && this.isLoaded() && !this.isRemoved()) {
             try {
-                
+
                 this.onTileTick();
             }
-            
+
             catch (final Exception exception) {
-                
+
                 Bookshelf.LOG.warn("A TileEntity with ID {} at {} in world {} failed a client update tick!", this.getType().getRegistryName(), this.getBlockPos(), this.getLevel().toString());
                 Bookshelf.LOG.catching(exception);
             }
         }
     }
-    
+
     /**
      * Handles the TileEntity update ticks. This method will only be called in a safe
      * environment.

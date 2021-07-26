@@ -17,43 +17,43 @@ import net.minecraft.util.JSONUtils;
  * This condition checks if a mob is an instance of the IMob type.
  */
 public class EntityIsMob implements ILootCondition {
-    
+
     public static final Serializer SERIALIZER = new Serializer();
-    
+
     private final EntityTarget target;
-    
-    private EntityIsMob(EntityTarget target) {
-        
+
+    private EntityIsMob (EntityTarget target) {
+
         this.target = target;
     }
-    
+
     @Override
     public boolean test (LootContext ctx) {
-        
+
         return ctx.getParamOrNull(this.target.getParam()) instanceof IMob;
     }
-    
+
     @Override
     public LootConditionType getType () {
-        
+
         return Bookshelf.instance.conditionIsMob;
     }
-    
+
     private static class Serializer implements ILootSerializer<EntityIsMob> {
-        
-        protected Serializer() {
-            
+
+        protected Serializer () {
+
         }
-        
+
         @Override
         public void serialize (JsonObject json, EntityIsMob value, JsonSerializationContext context) {
-            
+
             json.add("entity", context.serialize(value.target));
         }
-        
+
         @Override
         public EntityIsMob deserialize (JsonObject json, JsonDeserializationContext context) {
-            
+
             return new EntityIsMob(JSONUtils.getAsObject(json, "entity", context, LootContext.EntityTarget.class));
         }
     }

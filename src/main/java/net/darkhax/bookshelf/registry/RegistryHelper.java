@@ -19,9 +19,9 @@ import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;
 
 public class RegistryHelper {
-    
+
     public final String modid;
-    
+
     public final CommandRegistry commands;
     public final TradeRegistry trades;
     public final RecipeTypeRegistry recipeTypes;
@@ -29,7 +29,7 @@ public class RegistryHelper {
     public final ForgeRegistryRegistryHelper registries;
     public final BannerRegistry banners;
     public final LootConditionRegistry lootConditions;
-    
+
     public final ForgeRegistryHelper<Block> blocks;
     public final ForgeRegistryHelper<Item> items;
     public final ForgeRegistryHelper<TileEntityType<?>> tileEntities;
@@ -41,19 +41,19 @@ public class RegistryHelper {
     public final ForgeRegistryHelper<Potion> potions;
     public final ForgeRegistryHelper<Enchantment> enchantments;
     public final ForgeRegistryHelper<GlobalLootModifierSerializer<?>> lootModifiers;
-    
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public RegistryHelper(String modid, Logger logger) {
-        
+    public RegistryHelper (String modid, Logger logger) {
+
         this.modid = modid;
-        
+
         this.commands = new CommandRegistry(logger);
         this.trades = new TradeRegistry(logger);
         this.recipeTypes = new RecipeTypeRegistry(modid, logger);
         this.ingredients = new IngredientRegistry(modid, logger);
         this.registries = new ForgeRegistryRegistryHelper(modid, logger);
         this.lootConditions = new LootConditionRegistry(modid, logger);
-        
+
         this.blocks = new ForgeRegistryHelper<>(logger, modid, Block.class);
         this.items = new ForgeRegistryHelper<>(logger, modid, Item.class);
         this.tileEntities = new ForgeRegistryHelper(logger, modid, TileEntityType.class);
@@ -66,27 +66,27 @@ public class RegistryHelper {
         this.enchantments = new ForgeRegistryHelper<>(logger, modid, Enchantment.class);
         this.lootModifiers = new ForgeRegistryHelper(logger, modid, GlobalLootModifierSerializer.class);
         this.banners = new BannerRegistry(modid, logger, this.items);
-        
+
         this.blocks.addRegisterListener(this::generateBlockItem);
         // TODO Mobs
         // TODO Spawn Eggs
     }
-    
+
     public RegistryHelper withItemGroup (ItemGroup group) {
-        
+
         this.items.addRegisterListener( (registry, item) -> item.category = group);
         return this;
     }
-    
+
     public void initialize (IEventBus modBus) {
-        
+
         this.commands.initialize(modBus);
         this.trades.initialize(modBus);
         this.recipeTypes.initialize(modBus);
         this.ingredients.initialize(modBus);
         this.registries.initialize(modBus);
         this.lootConditions.initialize(modBus);
-        
+
         this.blocks.initialize(modBus);
         this.items.initialize(modBus);
         this.tileEntities.initialize(modBus);
@@ -99,13 +99,13 @@ public class RegistryHelper {
         this.enchantments.initialize(modBus);
         this.lootModifiers.initialize(modBus);
     }
-    
+
     private void generateBlockItem (ForgeRegistryHelper<Block> registry, Block block) {
-        
+
         final Item.Properties itemProps = block instanceof IBookshelfBlock ? ((IBookshelfBlock) block).getItemBlockProperties() : new Item.Properties();
-        
+
         if (itemProps != null) {
-            
+
             final Item item = new BlockItem(block, itemProps);
             item.setRegistryName(block.getRegistryName());
             this.items.register(item);

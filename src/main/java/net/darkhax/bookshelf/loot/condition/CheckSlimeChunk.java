@@ -15,37 +15,37 @@ import net.minecraft.util.math.BlockPos;
  * A loot condition that checks for a slime chunk.
  */
 public class CheckSlimeChunk extends LootConditionPositional {
-    
+
     public static final Serializer SERIALIZER = new Serializer();
-    
-    private CheckSlimeChunk() {
-        
+
+    private CheckSlimeChunk () {
+
         super(CheckSlimeChunk::test);
     }
-    
+
     private static boolean test (LootContext ctx, BlockPos pos) {
-        
+
         return WorldUtils.isSlimeChunk(ctx.getLevel(), pos);
     }
-    
+
     @Override
     public LootConditionType getType () {
-        
+
         return Bookshelf.instance.conditionCheckSlimeChunk;
     }
-    
+
     private static class Serializer implements ILootSerializer<CheckSlimeChunk> {
-        
+
         private final CheckSlimeChunk instance = new CheckSlimeChunk();
-        
+
         @Override
         public void serialize (JsonObject json, CheckSlimeChunk value, JsonSerializationContext context) {
-            
+
         }
-        
+
         @Override
         public CheckSlimeChunk deserialize (JsonObject json, JsonDeserializationContext context) {
-            
+
             return this.instance;
         }
     }

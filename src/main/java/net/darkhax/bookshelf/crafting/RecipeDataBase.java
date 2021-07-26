@@ -20,54 +20,54 @@ import net.minecraft.world.World;
  * checks to make sure the recipe type and serializer have been set up in an appropriate way.
  */
 public abstract class RecipeDataBase implements IRecipe<IInventory> {
-    
+
     private final ResourceLocation identifier;
-    
-    public RecipeDataBase(ResourceLocation identifier) {
-        
+
+    public RecipeDataBase (ResourceLocation identifier) {
+
         this.identifier = identifier;
-        
+
         if (this.getSerializer() == null) {
-            
+
             throw new IllegalStateException("No serializer found for " + this.getClass().getName());
         }
-        
+
         if (this.getType() == null) {
-            
+
             throw new IllegalStateException("No recipe type found for " + this.getClass().getName());
         }
     }
-    
+
     @Override
     public ResourceLocation getId () {
-        
+
         return this.identifier;
     }
-    
+
     @Override
     public boolean matches (IInventory inv, World worldIn) {
-        
+
         // Not used
         return false;
     }
-    
+
     @Override
     public ItemStack assemble (IInventory inv) {
-        
+
         // Not used
         return ItemStack.EMPTY;
     }
-    
+
     @Override
     public boolean canCraftInDimensions (int width, int height) {
-        
+
         // Not used
         return false;
     }
-    
+
     @Override
     public ItemStack getResultItem () {
-        
+
         // Not used
         return ItemStack.EMPTY;
     }

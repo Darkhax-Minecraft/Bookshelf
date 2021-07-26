@@ -7,9 +7,9 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 
 public class BookshelfCommands {
-    
-    public BookshelfCommands(RegistryHelper registry) {
-        
+
+    public BookshelfCommands (RegistryHelper registry) {
+
         final LiteralArgumentBuilder<CommandSource> root = Commands.literal("bookshelf");
         new CommandHand(root);
         new CommandTranslate(root);

@@ -30,30 +30,30 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 public class CommandHand {
-    
-    public CommandHand(LiteralArgumentBuilder<CommandSource> root) {
-        
+
+    public CommandHand (LiteralArgumentBuilder<CommandSource> root) {
+
         root.then(Commands.literal("hand").then(Commands.argument("type", new ArgumentTypeHandOutput()).executes(this::hand)));
     }
-    
+
     private int hand (CommandContext<CommandSource> context) throws CommandSyntaxException {
-        
+
         final OutputType type = context.getArgument("type", OutputType.class);
-        
+
         final ServerPlayerEntity player = context.getSource().getPlayerOrException();
         final String outputText = type.converter.apply(player.getMainHandItem());
-        
+
         final ITextComponent component = TextComponentUtils.wrapInSquareBrackets(new StringTextComponent(outputText).withStyle( (style) -> {
             return style.withColor(TextFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, outputText)).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("chat.copy.click"))).withInsertion(outputText);
         }));
-        
+
         context.getSource().sendSuccess(component, false);
-        
+
         return 0;
     }
-    
+
     public enum OutputType {
-        
+
         STRING(OutputType::getAsString),
         INGREDIENT(OutputType::getAsIngredient),
         STACKJSON(OutputType::getAsStackJson),
@@ -61,81 +61,81 @@ public class CommandHand {
         HOLDER(OutputType::getAsHolder),
         TAGS(OutputType::getTags),
         FLUIDS(OutputType::getFluids);
-        
+
         private final Function<ItemStack, String> converter;
-        
-        OutputType(Function<ItemStack, String> converter) {
-            
+
+        OutputType (Function<ItemStack, String> converter) {
+
             this.converter = converter;
         }
-        
+
         private static String getAsString (ItemStack stack) {
-            
+
             return stack.toString();
         }
-        
+
         private static String getAsIngredient (ItemStack stack) {
-            
+
             final JsonObject json = new JsonObject();
             json.addProperty("type", CraftingHelper.getID(stack.hasTag() ? NBTIngredient.Serializer.INSTANCE : VanillaIngredientSerializer.INSTANCE).toString());
             json.addProperty("item", stack.getItem().getRegistryName().toString());
             json.addProperty("count", stack.getCount());
-            
+
             if (stack.hasTag()) {
-                
+
                 json.addProperty("nbt", stack.getTag().toString());
             }
-            
+
             return json.toString();
         }
-        
+
         private static String getAsStackJson (ItemStack stack) {
-            
+
             return Serializers.ITEMSTACK.write(stack).toString();
         }
-        
+
         public static String getAsID (ItemStack stack) {
-            
+
             return stack.getItem().getRegistryName().toString();
         }
-        
+
         public static String getAsHolder (ItemStack stack) {
-            
+
             final ResourceLocation itemId = stack.getItem().getRegistryName();
             return "@ObjectHolder(\"" + itemId.toString() + "\")\npublic static final Item " + itemId.getPath().toUpperCase() + " = null;";
         }
-        
+
         public static String getTags (ItemStack stack) {
-            
+
             final StringJoiner joiner = new StringJoiner("\n");
-            
+
             for (final ResourceLocation tag : stack.getItem().getTags()) {
-                
+
                 joiner.add(tag.toString());
             }
-            
+
             return joiner.toString();
         }
-        
+
         public static String getFluids (ItemStack stack) {
-            
+
             final StringJoiner joiner = new StringJoiner("\n");
-            
+
             final LazyOptional<IFluidHandlerItem> fluidCap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
-            
+
             fluidCap.ifPresent(fluidHandler -> {
-                
+
                 for (int i = 0; i < fluidHandler.getTanks(); i++) {
-                    
+
                     final FluidStack fluidStack = fluidHandler.getFluidInTank(i);
-                    
+
                     if (!fluidStack.isEmpty()) {
-                        
+
                         joiner.add(fluidStack.getRawFluid().getRegistryName().toString());
                     }
                 }
             });
-            
+
             return joiner.toString();
         }
     }
