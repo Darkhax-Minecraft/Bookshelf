@@ -21,7 +21,7 @@ buildscript {
     
     dependencies {
     
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
@@ -156,33 +156,29 @@ dependencies {
     }
 }
 
-
 processResources {
 
-    from(sourceSets.main.resources.srcDirs) {
+    def buildProps = project.properties.clone()
     
-        include 'META-INF/mods.toml'
-        include 'pack.mcmeta'
-        
-        def buildProps = project.properties.clone()
-        
-        if (project.ext.has('patreon') && project.ext.patreon.pledges && !project.ext.patreon.pledges.isEmpty()) {
-        
-            def supporters = new ArrayList<String>()
+    if (project.ext.has('patreon') && project.ext.patreon.pledges && !project.ext.patreon.pledges.isEmpty()) {
+    
+        def supporters = new ArrayList<String>()
 
-            for (entry in project.ext.patreon.pledges) {
+        for (entry in project.ext.patreon.pledges) {
 
-                def pledge = entry.getValue();
+            def pledge = entry.getValue();
 
-                if (pledge.isValid()) {
+            if (pledge.isValid()) {
 
-                    supporters.add(pledge.getDisplayName())
-                }
+                supporters.add(pledge.getDisplayName())
             }
-            
-            buildProps.put('modCredits', "${project.ext.modCredits} and the supporters on Patreon: ${supporters.join(', ')}") 
         }
         
+        buildProps.put('modCredits', "${project.ext.modCredits} and the supporters on Patreon: ${supporters.join(', ')}") 
+    }
+    
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+    
         expand buildProps
     }
 }
@@ -240,7 +236,7 @@ task runServer() {
 // Forge's Jar Signer
 def canSignJar = project.hasProperty('keyStore') && project.hasProperty('keyStorePass') && project.hasProperty('keyStoreKeyPass') && project.hasProperty('keyStoreAlias')
 
-task signJar(type: net.minecraftforge.gradle.common.task.SignJar, dependsOn: jar) {
+task signJar(type: net.minecraftforge.gradle.common.tasks.SignJar, dependsOn: jar) {
     
     onlyIf {
     
