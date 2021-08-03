@@ -75,6 +75,14 @@ def getMavenCoordinateStringCompact() {
     return "${project.group}:${project.name}:${project.version}"
 }
 
+// Disables Gradle's custom module metadata from being published to maven. The 
+// metadata includes mapped dependencies which are not reasonably consumable by
+// other mod developers.
+tasks.withType(GenerateModuleMetadata) {
+
+    enabled = false
+}
+
 ext {
 
     getMavenCoordinateString = this.&getMavenCoordinateString

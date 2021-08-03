@@ -42,8 +42,8 @@ def mappingVersion = getDefaultString('forge_mapping_version', project.ext.mcVer
 def remapRefmap = getDefaultBoolean('mixin_remap_refmap')
 def remapRefmapFile = getDefaultString('mixin_remap_refmap_file', "${projectDir}/build/createSrgToMcp/output.srg")
 
-archivesBaseName = "${mod_name}-${minecraft_version}"
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+// Makes sure jar files are reobfuscated by Forge when built.
+jar.finalizedBy('reobfJar')
 
 minecraft {
 

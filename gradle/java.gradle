@@ -1,3 +1,24 @@
+// Sets the name of files to ModName-Forge-MCVersion.
+archivesBaseName = "${mod_name}-Forge-${minecraft_version}"
+
+java {
+
+    // Generate a sources JAR.
+    withSourcesJar()
+    
+    // Generate a JavaDoc JAR.
+    withJavadocJar()
+    
+    // Set minimum language version.
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
+}
+
+javadoc {
+
+    // Supress annoying warnings when generating JavaDoc files.
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
 jar {
     manifest {
         attributes([

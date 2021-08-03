@@ -10,6 +10,16 @@ pipeline {
     
     stages {
         
+        stage('Setup') {
+        
+            steps {
+            
+                echo 'Setup Project'
+                sh 'chmod +x gradlew'
+                sh './gradlew clean'
+            }
+        }
+        
         stage('Build') {
         
             steps {
@@ -21,8 +31,7 @@ pipeline {
                 ]) {
             
                     echo 'Building project.'
-                    sh 'chmod +x gradlew'
-                    sh './gradlew clean build publish curseforge updateVersionTracker postTweet --stacktrace --warn'
+                    sh './gradlew build publish curseforge updateVersionTracker postTweet --stacktrace --warn'
                 }
             }
         }

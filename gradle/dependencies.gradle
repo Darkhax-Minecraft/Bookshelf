@@ -1,0 +1,149 @@
+apply from: 'gradle/property_helper.gradle'
+
+repositories {
+
+    // This maven repository hosts files for hundreds of mods. Some notable 
+    // mods include Bookshelf, Botania, BotanyPots, CraftTweaker, DarkUtils,
+    // GameStages, Patchouli, Psi, and Quark.    
+    maven {
+
+        url 'https://maven.blamejared.com'
+    }
+    
+    // This maven repository hosts files for dozens of mods. Some notable
+    // mods include JEI, TinkersConstruct, and ChiselAndBits.
+    maven {
+
+        url 'https://dvs1.progwml6.com/files/maven'
+    }
+    
+    // This maven repository hosts files for mods by TheIllusiveC4. This
+    // includes Curios, Caelus, and other APIs.
+    maven {
+
+        url = 'https://maven.theillusivec4.top/'
+    }
+    
+    // This maven repository proxies requests to the CurseForge API. This will
+    // allow mods without traditional mavens to be used in a dev environment.
+    // They use the pattern curse.maven:<descriptor>-<projectid>:<fileid> for 
+    // maven coordinates.
+    maven {
+    
+        url = 'https://www.cursemaven.com'
+        
+        // Improve performance by only querying for their specific group.
+        content {
+        
+            includeGroup 'curse.maven'
+        }
+    }
+}
+
+dependencies {
+    
+    // This section includes mods that are commonly compiled against. It is 
+    // recommended to add support for these mods if it makes sense for the 
+    // content of your mod.
+    if (getDefaultBoolean('dependencies_compile_enabled')) {
+            
+    }
+
+    // This section includes mods that are commonly used by players and meet a
+    // minimum level of quality and performance. These mods are only available
+    // at runtime by default meaning you may not directly access their code.
+    if (getDefaultBoolean('dependencies_runtime_enabled')) {
+        
+        // Replaces the config GUI with a shiny new one. Mods can enable a 
+        // custom menu icon by defining additional properties in the mods.toml
+        // file of their mod.
+        deobfRuntime('catalogue', 'curse.maven', 'catalogue-459701', '3399552')
+        
+        // Controlling overhauls the keybind menu by adding a search bar and
+        // other QoL features.
+        deobfRuntime('controlling', 'com.blamejared.controlling', 'Controlling', '8.0.0')
+    }
+}
+
+/**
+ * Creates a deobfuscated compile dependency. These are available at compile
+ * time and runtime. This means you can reference code from this dependency
+ * in your mod.
+ *
+ * See deobfDep for more info.
+ */
+def deobfCompile(modid, defaultGroup, defaultName, defaultVersion) {
+
+    deobfDep(modid, 'implementation', defaultGroup, defaultName, defaultVersion)
+}
+
+/**
+ * Creates a deobfuscated runtime dependency. These are only available during 
+ * runtime and not compile time. This means the dependency will show up when
+ * you run the game but you can not directly reference it's code in your mod.
+ * 
+ * See deobfDep for more info.
+ */
+def deobfRuntime(modid, defaultGroup, defaultName, defaultVersion) {
+
+    deobfDep(modid, 'runtimeOnly', defaultGroup, defaultName, defaultVersion)
+}
+
+/**
+ * Creates a new deobfuscated project dependency that is configured using 
+ * properties. This allows for greater flexability and additional logging.
+ *
+ * | Property      | Description                                       | Example               |
+ * |---------------|---------------------------------------------------|-----------------------|
+ * | modid_enabled | When set to false the dependency will be skipped. | true/false, y/n, 1/0  |
+ * | modid_deptype | The type of dependency to create.                 | compile, runtimeOnly  |
+ * | modid_group   | The maven group for the dependency.               | net.darkhax.bookshelf |
+ * | modid_name    | The name of the dependency.                       | Bookshelf-1.16.5      |
+ * | modid_version | The artefact version of the dependency.           | 10.0.7                |
+ * 
+ * @param modid An ID used in logging and the names of properties.
+ * @param defaultType The default type of dependency to create.
+ * @param defaultGroup The default group for the maven coordinate. modid_group
+ * @param defaultName The default name for the maven coordinate. modid_name
+ * @param defaultVersion the default version for the maven coordinate. modid_version
+ */
+def deobfDep(modid, defaultType, defaultGroup, defaultName, defaultVersion) {
+
+    if (getDefaultBoolean("${modid}_enabled")) {
+    
+        def depType = getDefaultString("${modid}_deptype", defaultType)
+        def group = getDefaultString("${modid}_group", defaultGroup)
+        def name = getDefaultString("${modid}_name", defaultName)
+        def version = getDefaultString("${modid}_version", defaultVersion)
+        
+        project.logger.lifecycle("Dependency ${modid} added. ${depType} \'${group}:${name}:${version}\'")
+        project.getDependencies().add(depType, fg.deobf("${group}:${name}:${version}"))
+    }
+    
+    else {
+    
+        project.logger.warn("Dependency ${modid} has been disabled for this build.")
+    }
+}
+
+// Gradle introduced a new metadata format that will override data from other
+// formats like Maven. When publishing Forge mods this metadata will include 
+// dependency entries for mapped versions of Forge and other mods used in the
+// userdev environment. Gradle will try and fail to resolve these dependencies.
+// The simplest fix is for those publishing artefacts to disable the publishing
+// of this metadata or to strip the mapped dependencies however we can not rely
+// on them to do that. This code will tell Gradle to ignore that metadata.
+project.repositories.each {
+
+    if (it.hasProperty('metadataSources')) {
+    
+        it.metadataSources.ignoreGradleMetadataRedirection()
+    }
+}
+
+ext {
+
+    deobfDep = this.&deobDep
+    deobfRuntime = this.&deobRuntime
+    deobfCompile = this.&deobCompile
+}
