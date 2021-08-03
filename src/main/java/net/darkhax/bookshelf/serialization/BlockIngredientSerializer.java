@@ -6,8 +6,8 @@ import com.google.gson.JsonParseException;
 
 import net.darkhax.bookshelf.crafting.block.BlockIngredient;
 import net.darkhax.bookshelf.crafting.block.IBlockIngredientSerializer;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 
 public final class BlockIngredientSerializer implements ISerializer<BlockIngredient> {
 
@@ -34,7 +34,7 @@ public final class BlockIngredientSerializer implements ISerializer<BlockIngredi
     }
 
     @Override
-    public BlockIngredient read (PacketBuffer buf) {
+    public BlockIngredient read (FriendlyByteBuf buf) {
 
         final ResourceLocation id = Serializers.RESOURCE_LOCATION.read(buf);
         final IBlockIngredientSerializer<?> serializer = BlockIngredient.getSerializer(id);
@@ -67,7 +67,7 @@ public final class BlockIngredientSerializer implements ISerializer<BlockIngredi
     }
 
     @Override
-    public void write (PacketBuffer buf, BlockIngredient ingredient) {
+    public void write (FriendlyByteBuf buf, BlockIngredient ingredient) {
 
         Serializers.RESOURCE_LOCATION.write(buf, ingredient.getSerializeId());
         this.writeUnsafe(buf, ingredient);
@@ -81,7 +81,7 @@ public final class BlockIngredientSerializer implements ISerializer<BlockIngredi
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends BlockIngredient> void writeUnsafe (PacketBuffer buf, T ingredient) {
+    private <T extends BlockIngredient> void writeUnsafe (FriendlyByteBuf buf, T ingredient) {
 
         final IBlockIngredientSerializer<T> serializer = (IBlockIngredientSerializer<T>) BlockIngredient.getSerializer(ingredient.getSerializeId());
         serializer.write(buf, ingredient);

@@ -17,16 +17,16 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.DefaultPlayerSkin;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -41,7 +41,7 @@ public final class PlayerUtils {
      */
     public static boolean isPlayerReal (Entity player) {
 
-        return player != null && player.level != null && player.getClass() == ServerPlayerEntity.class;
+        return player != null && player.level != null && player.getClass() == ServerPlayer.class;
     }
 
     /**
@@ -62,15 +62,15 @@ public final class PlayerUtils {
      * @param item The item to check for.
      * @return Whether or not the player has the item in their inventory.
      */
-    public static boolean playerHasItem (PlayerEntity player, Item item) {
+    public static boolean playerHasItem (Player player, Item item) {
 
-        for (final ItemStack stack : player.inventory.items) {
+        for (final ItemStack stack : player.getInventory().items) {
             if (stack != null && stack.getItem().equals(item)) {
                 return true;
             }
         }
 
-        for (final EquipmentSlotType slotType : EquipmentSlotType.values()) {
+        for (final EquipmentSlot slotType : EquipmentSlot.values()) {
 
             if (player.getItemBySlot(slotType).getItem() == item) {
 
@@ -88,17 +88,17 @@ public final class PlayerUtils {
      * @param item The item to look for.
      * @return A list of all matching item stacks.
      */
-    public static List<ItemStack> getStacksFromPlayer (PlayerEntity player, Item item) {
+    public static List<ItemStack> getStacksFromPlayer (Player player, Item item) {
 
         final List<ItemStack> items = new ArrayList<>();
 
-        for (final ItemStack stack : player.inventory.items) {
+        for (final ItemStack stack : player.getInventory().items) {
             if (stack != null && stack.getItem() == item) {
                 items.add(stack);
             }
         }
 
-        for (final EquipmentSlotType slotType : EquipmentSlotType.values()) {
+        for (final EquipmentSlot slotType : EquipmentSlot.values()) {
 
             final ItemStack stack = player.getItemBySlot(slotType);
 
@@ -118,7 +118,7 @@ public final class PlayerUtils {
      * @return The client side player.
      */
     @OnlyIn(Dist.CLIENT)
-    public static ClientPlayerEntity getClientPlayer () {
+    public static LocalPlayer getClientPlayer () {
 
         return Minecraft.getInstance().player;
     }
@@ -155,7 +155,7 @@ public final class PlayerUtils {
      */
     public static boolean isPlayerDamage (DamageSource source) {
 
-        return source != null && source.getEntity() instanceof PlayerEntity;
+        return source != null && source.getEntity() instanceof Player;
     }
 
     /**
@@ -180,7 +180,7 @@ public final class PlayerUtils {
                 return minecraft.getSkinManager().registerTexture(map.get(Type.SKIN), Type.SKIN);
             }
             else {
-                return DefaultPlayerSkin.getDefaultSkin(PlayerEntity.createPlayerUUID(profile));
+                return DefaultPlayerSkin.getDefaultSkin(Player.createPlayerUUID(profile));
             }
         }
 

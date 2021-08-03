@@ -15,8 +15,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import net.minecraft.nbt.INBT;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 
 /**
  * Provides a simple layout for serializing data to and from Json and packets.
@@ -39,16 +39,16 @@ public interface ISerializer<T> {
 
     JsonElement write (T toWrite);
 
-    T read (PacketBuffer buffer);
+    T read (FriendlyByteBuf buffer);
 
-    void write (PacketBuffer buffer, T toWrite);
+    void write (FriendlyByteBuf buffer, T toWrite);
 
-    public default INBT writeNBT (T toWrite) {
+    public default Tag writeNBT (T toWrite) {
 
         throw new NotImplementedException("NBT serialization is not yet implemented for " + this.getClass().getName());
     }
 
-    public default T read (INBT nbt) {
+    public default T read (Tag nbt) {
 
         throw new NotImplementedException("NBT serialization is not yet implemented for " + this.getClass().getName());
     }
@@ -94,7 +94,7 @@ public interface ISerializer<T> {
         return json;
     }
 
-    default List<T> readList (PacketBuffer buffer) {
+    default List<T> readList (FriendlyByteBuf buffer) {
 
         final int size = buffer.readInt();
         final List<T> list = new ArrayList<>(size);
@@ -107,7 +107,7 @@ public interface ISerializer<T> {
         return list;
     }
 
-    default void writeList (PacketBuffer buffer, List<T> toWrite) {
+    default void writeList (FriendlyByteBuf buffer, List<T> toWrite) {
 
         buffer.writeInt(toWrite.size());
         toWrite.forEach(t -> this.write(buffer, t));
@@ -154,7 +154,7 @@ public interface ISerializer<T> {
         return json;
     }
 
-    default Set<T> readSet (PacketBuffer buffer) {
+    default Set<T> readSet (FriendlyByteBuf buffer) {
 
         final int size = buffer.readInt();
         final Set<T> set = new HashSet<>(size);
@@ -167,7 +167,7 @@ public interface ISerializer<T> {
         return set;
     }
 
-    default void writeSet (PacketBuffer buffer, Set<T> toWrite) {
+    default void writeSet (FriendlyByteBuf buffer, Set<T> toWrite) {
 
         buffer.writeInt(toWrite.size());
         toWrite.forEach(t -> this.write(buffer, t));
@@ -178,12 +178,12 @@ public interface ISerializer<T> {
         return json.has(memberName) ? Optional.of(this.read(json.get(memberName))) : Optional.empty();
     }
 
-    default Optional<T> readOptional (PacketBuffer buffer) {
+    default Optional<T> readOptional (FriendlyByteBuf buffer) {
 
         return buffer.readBoolean() ? Optional.of(this.read(buffer)) : Optional.empty();
     }
 
-    default void writeOptional (PacketBuffer buffer, Optional<T> optional) {
+    default void writeOptional (FriendlyByteBuf buffer, Optional<T> optional) {
 
         final boolean isPresent = optional.isPresent();
         buffer.writeBoolean(isPresent);

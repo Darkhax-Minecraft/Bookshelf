@@ -8,11 +8,11 @@ import javax.annotation.Nullable;
 
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.item.BannerPatternItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.Rarity;
-import net.minecraft.tileentity.BannerPattern;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.BannerPatternItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.entity.BannerPattern;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
 
 public class BannerRegistry {

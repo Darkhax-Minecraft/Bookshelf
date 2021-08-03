@@ -3,8 +3,9 @@ package net.darkhax.bookshelf.command;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
@@ -13,10 +14,9 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 
-import net.minecraft.command.ISuggestionProvider;
-import net.minecraftforge.fml.ModContainer;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 /**
  * A command argument type which depicts a mod id.
@@ -33,6 +33,8 @@ public class ArgumentTypeMod implements ArgumentType<String> {
      */
     private static final List<String> examples = Arrays.asList("moda", "mod_b", "modc");
 
+    private static final Lazy<Set<String>> validModIds = Lazy.of(() -> ModList.get().getMods().stream().map(m -> m.getModId()).collect(Collectors.toSet()));
+    
     /**
      * Gets a mod id from a command context.
      *
@@ -66,7 +68,6 @@ public class ArgumentTypeMod implements ArgumentType<String> {
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions (CommandContext<S> context, SuggestionsBuilder builder) {
 
-        final Map<String, ModContainer> map = ObfuscationReflectionHelper.getPrivateValue(ModList.class, ModList.get(), "indexedMods");
-        return ISuggestionProvider.suggest(map.keySet(), builder);
+        return SharedSuggestionProvider.suggest(validModIds.get(), builder);
     }
 }

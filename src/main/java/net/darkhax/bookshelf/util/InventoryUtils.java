@@ -12,23 +12,23 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.darkhax.bookshelf.Bookshelf;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.ISidedInventoryProvider;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.inventory.container.WorkbenchContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.Container;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.WorldlyContainerHolder;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.inventory.CraftingMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -46,9 +46,9 @@ public class InventoryUtils {
      * @param side The side to access the inventory from.
      * @return The inventory handler. Will be empty if none was found.
      */
-    public static IItemHandler getInventory (World world, BlockPos pos, Direction side) {
+    public static IItemHandler getInventory (Level world, BlockPos pos, Direction side) {
 
-        final TileEntity tileEntity = world.getBlockEntity(pos);
+        final BlockEntity tileEntity = world.getBlockEntity(pos);
 
         if (tileEntity != null) {
 
@@ -62,10 +62,10 @@ public class InventoryUtils {
             // accessed through the normal capability system.
             final BlockState state = world.getBlockState(pos);
 
-            if (state.getBlock() instanceof ISidedInventoryProvider) {
+            if (state.getBlock() instanceof WorldlyContainerHolder) {
 
-                final ISidedInventoryProvider inventoryProvider = (ISidedInventoryProvider) state.getBlock();
-                final ISidedInventory inventory = inventoryProvider.getContainer(state, world, pos);
+                final WorldlyContainerHolder inventoryProvider = (WorldlyContainerHolder) state.getBlock();
+                final WorldlyContainer inventory = inventoryProvider.getContainer(state, world, pos);
 
                 if (inventory != null) {
 
@@ -86,7 +86,7 @@ public class InventoryUtils {
      * @param side The side to access the inventory from.
      * @return Whether or not the inventory exists.
      */
-    public static boolean hasInventory (World world, BlockPos pos, Direction side) {
+    public static boolean hasInventory (Level world, BlockPos pos, Direction side) {
 
         final IItemHandler handler = getInventory(world, pos, side);
         return handler != null && handler != EmptyHandler.INSTANCE;
@@ -100,13 +100,13 @@ public class InventoryUtils {
      * @return The container backing the crafting inventory.
      */
     @Nullable
-    public static Container getCraftingContainer (CraftingInventory craftingInv) {
+    public static AbstractContainerMenu getCraftingContainer (CraftingContainer craftingInv) {
 
         return craftingInv.menu;
     }
 
     @Nullable
-    public static PlayerEntity getCraftingPlayer (IInventory inventory) {
+    public static Player getCraftingPlayer (Container inventory) {
 
         return getCraftingPlayer(inventory, null);
     }
@@ -121,25 +121,25 @@ public class InventoryUtils {
      * @return The player that was found. This may be null if no player could be found.
      */
     @Nullable
-    public static PlayerEntity getCraftingPlayer (IInventory inventory, World world) {
+    public static Player getCraftingPlayer (Container inventory, Level world) {
 
-        if (inventory instanceof PlayerInventory) {
+        if (inventory instanceof Inventory) {
 
-            return ((PlayerInventory) inventory).player;
+            return ((Inventory) inventory).player;
         }
 
-        else if (inventory instanceof CraftingInventory) {
+        else if (inventory instanceof CraftingContainer) {
 
-            final Container container = getCraftingContainer((CraftingInventory) inventory);
+            final AbstractContainerMenu container = getCraftingContainer((CraftingContainer) inventory);
 
-            if (container instanceof WorkbenchContainer) {
+            if (container instanceof CraftingMenu) {
 
-                return ((WorkbenchContainer) container).player;
+                return ((CraftingMenu) container).player;
             }
 
-            else if (container instanceof PlayerContainer) {
+            else if (container instanceof InventoryMenu) {
 
-                return ((PlayerContainer) container).owner;
+                return ((InventoryMenu) container).owner;
             }
         }
 
@@ -160,7 +160,7 @@ public class InventoryUtils {
      * @param damageAmount The amount of damage to set on the item.
      * @return The list of items being kept.
      */
-    public static NonNullList<ItemStack> keepDamageableItems (CraftingInventory inv, NonNullList<ItemStack> keptItems, boolean ignoreUnbreaking, int damageAmount) {
+    public static NonNullList<ItemStack> keepDamageableItems (CraftingContainer inv, NonNullList<ItemStack> keptItems, boolean ignoreUnbreaking, int damageAmount) {
 
         for (int i = 0; i < keptItems.size(); i++) {
 
@@ -170,7 +170,7 @@ public class InventoryUtils {
             if (stack.getItem().canBeDepleted() || stack.hasTag() && stack.getTag().getBoolean("Unbreakable")) {
 
                 @Nullable
-                final PlayerEntity player = InventoryUtils.getCraftingPlayer(inv);
+                final Player player = InventoryUtils.getCraftingPlayer(inv);
                 final Random random = player != null ? player.getRandom() : Bookshelf.RANDOM;
                 final ItemStack retainedStack = stack.copy();
 
@@ -189,7 +189,7 @@ public class InventoryUtils {
 
                     // Attempts to damage the item, taking things like the unbreaking
                     // enchantment into consideration.
-                    retainedStack.hurt(damageAmount, random, player instanceof ServerPlayerEntity ? (ServerPlayerEntity) player : null);
+                    retainedStack.hurt(damageAmount, random, player instanceof ServerPlayer ? (ServerPlayer) player : null);
                 }
 
                 keptItems.set(i, retainedStack);

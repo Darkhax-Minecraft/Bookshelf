@@ -3,9 +3,9 @@ package net.darkhax.bookshelf.serialization;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.network.FriendlyByteBuf;
 
 public final class SerializerString implements ISerializer<String> {
 
@@ -28,29 +28,29 @@ public final class SerializerString implements ISerializer<String> {
     }
 
     @Override
-    public String read (PacketBuffer buffer) {
+    public String read (FriendlyByteBuf buffer) {
 
         return buffer.readUtf();
     }
 
     @Override
-    public void write (PacketBuffer buffer, String toWrite) {
+    public void write (FriendlyByteBuf buffer, String toWrite) {
 
         buffer.writeUtf(toWrite);
     }
 
     @Override
-    public INBT writeNBT (String toWrite) {
+    public Tag writeNBT (String toWrite) {
 
-        return StringNBT.valueOf(toWrite);
+        return StringTag.valueOf(toWrite);
     }
 
     @Override
-    public String read (INBT nbt) {
+    public String read (Tag nbt) {
 
-        if (nbt instanceof StringNBT) {
+        if (nbt instanceof StringTag) {
 
-            return ((StringNBT) nbt).getAsString();
+            return ((StringTag) nbt).getAsString();
         }
 
         throw new IllegalArgumentException("Expected NBT to be a string tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

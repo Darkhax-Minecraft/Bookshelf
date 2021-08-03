@@ -3,9 +3,9 @@ package net.darkhax.bookshelf.serialization;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
-import net.minecraft.nbt.INBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -32,26 +32,26 @@ public final class SerializerForgeRegistry<V extends IForgeRegistryEntry<V>> imp
     }
 
     @Override
-    public V read (PacketBuffer buffer) {
+    public V read (FriendlyByteBuf buffer) {
 
         final ResourceLocation id = buffer.readResourceLocation();
         return this.getFromId(id);
     }
 
     @Override
-    public void write (PacketBuffer buffer, V toWrite) {
+    public void write (FriendlyByteBuf buffer, V toWrite) {
 
         buffer.writeResourceLocation(toWrite.getRegistryName());
     }
 
     @Override
-    public INBT writeNBT (V toWrite) {
+    public Tag writeNBT (V toWrite) {
 
         return Serializers.RESOURCE_LOCATION.writeNBT(toWrite.getRegistryName());
     }
 
     @Override
-    public V read (INBT nbt) {
+    public V read (Tag nbt) {
 
         final ResourceLocation id = Serializers.RESOURCE_LOCATION.read(nbt);
         return this.getFromId(id);

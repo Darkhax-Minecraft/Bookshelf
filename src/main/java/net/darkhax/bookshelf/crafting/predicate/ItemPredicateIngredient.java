@@ -2,10 +2,10 @@ package net.darkhax.bookshelf.crafting.predicate;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.util.GsonHelper;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 public class ItemPredicateIngredient extends ItemPredicate {
@@ -25,7 +25,7 @@ public class ItemPredicateIngredient extends ItemPredicate {
 
     public static ItemPredicate fromJson (JsonObject json) {
 
-        final JsonObject ingredientObj = JSONUtils.getAsJsonObject(json, "ingredient");
+        final JsonObject ingredientObj = GsonHelper.getAsJsonObject(json, "ingredient");
         return new ItemPredicateIngredient(CraftingHelper.getIngredient(ingredientObj));
     }
 }

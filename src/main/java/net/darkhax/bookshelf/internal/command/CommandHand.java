@@ -9,18 +9,18 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.darkhax.bookshelf.serialization.Serializers;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextComponentUtils;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.util.text.event.HoverEvent;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.common.crafting.VanillaIngredientSerializer;
@@ -31,20 +31,20 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 public class CommandHand {
 
-    public CommandHand (LiteralArgumentBuilder<CommandSource> root) {
+    public CommandHand (LiteralArgumentBuilder<CommandSourceStack> root) {
 
         root.then(Commands.literal("hand").then(Commands.argument("type", new ArgumentTypeHandOutput()).executes(this::hand)));
     }
 
-    private int hand (CommandContext<CommandSource> context) throws CommandSyntaxException {
+    private int hand (CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
 
         final OutputType type = context.getArgument("type", OutputType.class);
 
-        final ServerPlayerEntity player = context.getSource().getPlayerOrException();
+        final ServerPlayer player = context.getSource().getPlayerOrException();
         final String outputText = type.converter.apply(player.getMainHandItem());
 
-        final ITextComponent component = TextComponentUtils.wrapInSquareBrackets(new StringTextComponent(outputText).withStyle( (style) -> {
-            return style.withColor(TextFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, outputText)).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("chat.copy.click"))).withInsertion(outputText);
+        final Component component = ComponentUtils.wrapInSquareBrackets(new TextComponent(outputText).withStyle( (style) -> {
+            return style.withColor(ChatFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, outputText)).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslatableComponent("chat.copy.click"))).withInsertion(outputText);
         }));
 
         context.getSource().sendSuccess(component, false);

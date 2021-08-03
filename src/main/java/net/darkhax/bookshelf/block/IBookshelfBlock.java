@@ -2,7 +2,7 @@ package net.darkhax.bookshelf.block;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 public interface IBookshelfBlock {
 

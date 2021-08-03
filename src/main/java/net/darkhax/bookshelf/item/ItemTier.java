@@ -11,17 +11,17 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import net.darkhax.bookshelf.util.RecipeUtils;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.Tag;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.tags.SetTag;
 import net.minecraftforge.common.util.Lazy;
 
 /**
  * A basic implementation of IItemTier.
  */
-public class ItemTier implements IItemTier {
+public class ItemTier implements Tier {
 
     /**
      * The maximum amount of durability.
@@ -55,12 +55,12 @@ public class ItemTier implements IItemTier {
 
     @SuppressWarnings("unchecked")
     @SafeVarargs
-    public static ItemTier createFromTags (int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<Tag<Item>>... repairItems) {
+    public static ItemTier createFromTags (int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<SetTag<Item>>... repairItems) {
 
-        return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> RecipeUtils.ingredientFromTags(Stream.of(repairItems).map(Supplier::get).toArray(Tag[]::new)));
+        return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> RecipeUtils.ingredientFromTags(Stream.of(repairItems).map(Supplier::get).toArray(SetTag[]::new)));
     }
 
-    public static ItemTier createFromTag (int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<Tag<Item>> repairItems) {
+    public static ItemTier createFromTag (int maxUses, float efficiency, float damage, int harvestLevel, int enchantability, Supplier<SetTag<Item>> repairItems) {
 
         return new ItemTier(maxUses, efficiency, damage, harvestLevel, enchantability, () -> Ingredient.of(repairItems.get()));
     }

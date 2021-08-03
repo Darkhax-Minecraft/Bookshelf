@@ -9,10 +9,10 @@ import com.google.gson.JsonObject;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.serialization.Serializers;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 
 public class BlockIngredientCheckBlock extends BlockIngredient {
 
@@ -78,14 +78,14 @@ public class BlockIngredientCheckBlock extends BlockIngredient {
         }
 
         @Override
-        public BlockIngredientCheckBlock read (PacketBuffer buf) {
+        public BlockIngredientCheckBlock read (FriendlyByteBuf buf) {
 
             final List<Block> states = Serializers.BLOCK.readList(buf);
             return new BlockIngredientCheckBlock(states);
         }
 
         @Override
-        public void write (PacketBuffer buf, BlockIngredientCheckBlock ingredient) {
+        public void write (FriendlyByteBuf buf, BlockIngredientCheckBlock ingredient) {
 
             Serializers.BLOCK.writeList(buf, ingredient.blocks);
         }

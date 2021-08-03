@@ -14,15 +14,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.RecipeManager;
-import net.minecraft.tags.Tag;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.tags.SetTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 public final class RecipeUtils {
 
@@ -36,7 +36,7 @@ public final class RecipeUtils {
      *         the recipe object.
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static <T extends IRecipe<?>> Map<ResourceLocation, T> getRecipes (IRecipeType<T> recipeType, RecipeManager manager) {
+    public static <T extends Recipe<?>> Map<ResourceLocation, T> getRecipes (RecipeType<T> recipeType, RecipeManager manager) {
 
         return (Map) manager.recipes.getOrDefault(recipeType, Collections.emptyMap());
     }
@@ -50,7 +50,7 @@ public final class RecipeUtils {
      * @param manager The recipe manager to pull data from.
      * @return A list of recipes for the given recipe type.
      */
-    public static <T extends IRecipe<?>> List<T> getRecipeList (IRecipeType<T> recipeType, RecipeManager manager) {
+    public static <T extends Recipe<?>> List<T> getRecipeList (RecipeType<T> recipeType, RecipeManager manager) {
 
         return getRecipeList(recipeType, manager, Comparator.comparing(recipe -> recipe.getResultItem().getDescriptionId()));
     }
@@ -65,7 +65,7 @@ public final class RecipeUtils {
      * @param comparator A comparator that will be used to sort the map.
      * @return A list of recipes for the given recipe type.
      */
-    public static <T extends IRecipe<?>> List<T> getRecipeList (IRecipeType<T> recipeType, RecipeManager manager, Comparator<T> comparator) {
+    public static <T extends Recipe<?>> List<T> getRecipeList (RecipeType<T> recipeType, RecipeManager manager, Comparator<T> comparator) {
 
         return getRecipes(recipeType, manager).values().stream().sorted(comparator).collect(Collectors.toList());
     }
@@ -79,7 +79,7 @@ public final class RecipeUtils {
      * @param recipeType The recipe type you want to get.
      * @return A map of recipes keyed to their IDs.
      */
-    public static <C extends IInventory, T extends IRecipe<C>> Map<ResourceLocation, IRecipe<C>> getRecipes (World world, IRecipeType<T> recipeType) {
+    public static <C extends Container, T extends Recipe<C>> Map<ResourceLocation, Recipe<C>> getRecipes (Level world, RecipeType<T> recipeType) {
 
         return getRecipes(world.getRecipeManager(), recipeType);
     }
@@ -93,7 +93,7 @@ public final class RecipeUtils {
      * @param recipeType The recipe type you want to get.
      * @return A map of recipes keyed to their IDs.
      */
-    public static <C extends IInventory, T extends IRecipe<C>> Map<ResourceLocation, IRecipe<C>> getRecipes (RecipeManager manager, IRecipeType<T> recipeType) {
+    public static <C extends Container, T extends Recipe<C>> Map<ResourceLocation, Recipe<C>> getRecipes (RecipeManager manager, RecipeType<T> recipeType) {
 
         return manager.byType(recipeType);
     }
@@ -105,7 +105,7 @@ public final class RecipeUtils {
      * @return An ingredient for these tags.
      */
     @SafeVarargs
-    public static Ingredient ingredientFromTags (Tag<Item>... tags) {
+    public static Ingredient ingredientFromTags (SetTag<Item>... tags) {
 
         return Ingredient.of(Arrays.stream(tags).flatMap(t -> t.getValues().stream()).toArray(Item[]::new));
     }

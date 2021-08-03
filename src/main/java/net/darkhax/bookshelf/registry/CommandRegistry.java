@@ -12,10 +12,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.arguments.ArgumentTypes;
-import net.minecraft.command.arguments.IArgumentSerializer;
-import net.minecraft.util.NonNullList;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.synchronization.ArgumentTypes;
+import net.minecraft.commands.synchronization.ArgumentSerializer;
+import net.minecraft.core.NonNullList;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -29,8 +29,8 @@ public class CommandRegistry {
      */
     private final Logger logger;
 
-    private final List<LiteralArgumentBuilder<CommandSource>> commands;
-    private final Map<String, Tuple<Class, IArgumentSerializer>> commandArguments;
+    private final List<LiteralArgumentBuilder<CommandSourceStack>> commands;
+    private final Map<String, Tuple<Class, ArgumentSerializer>> commandArguments;
 
     public CommandRegistry (Logger logger) {
 
@@ -52,7 +52,7 @@ public class CommandRegistry {
         }
     }
 
-    public LiteralArgumentBuilder<CommandSource> registerCommand (LiteralArgumentBuilder<CommandSource> command) {
+    public LiteralArgumentBuilder<CommandSourceStack> registerCommand (LiteralArgumentBuilder<CommandSourceStack> command) {
 
         this.commands.add(command);
         return command;
@@ -63,21 +63,21 @@ public class CommandRegistry {
         if (!this.commands.isEmpty()) {
 
             this.logger.info("Registering {} commands.", this.commands.size());
-            final CommandDispatcher<CommandSource> dispatcher = event.getDispatcher();
+            final CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
 
-            for (final LiteralArgumentBuilder<CommandSource> command : this.commands) {
+            for (final LiteralArgumentBuilder<CommandSourceStack> command : this.commands) {
 
                 dispatcher.register(command);
             }
         }
     }
 
-    public List<LiteralArgumentBuilder<CommandSource>> getCommands () {
+    public List<LiteralArgumentBuilder<CommandSourceStack>> getCommands () {
 
         return ImmutableList.copyOf(this.commands);
     }
 
-    public <T extends ArgumentType<?>> void registerCommandArgument (String name, Class<T> clazz, IArgumentSerializer<T> serializer) {
+    public <T extends ArgumentType<?>> void registerCommandArgument (String name, Class<T> clazz, ArgumentSerializer<T> serializer) {
 
         this.commandArguments.put(name, new Tuple<>(clazz, serializer));
     }
@@ -86,7 +86,7 @@ public class CommandRegistry {
 
         this.logger.info("Registering {} command argument types.", this.commandArguments.size());
 
-        for (final Entry<String, Tuple<Class, IArgumentSerializer>> entry : this.commandArguments.entrySet()) {
+        for (final Entry<String, Tuple<Class, ArgumentSerializer>> entry : this.commandArguments.entrySet()) {
 
             ArgumentTypes.register(entry.getKey(), entry.getValue().getA(), entry.getValue().getB());
         }

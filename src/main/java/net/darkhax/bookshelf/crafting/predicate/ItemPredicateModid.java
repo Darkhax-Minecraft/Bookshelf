@@ -2,9 +2,9 @@ package net.darkhax.bookshelf.crafting.predicate;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.util.GsonHelper;
 
 public class ItemPredicateModid extends ItemPredicate {
 
@@ -23,7 +23,7 @@ public class ItemPredicateModid extends ItemPredicate {
 
     public static ItemPredicate fromJson (JsonObject json) {
 
-        final String modid = JSONUtils.getAsString(json, "modid");
+        final String modid = GsonHelper.getAsString(json, "modid");
         return new ItemPredicateModid(modid);
     }
 }

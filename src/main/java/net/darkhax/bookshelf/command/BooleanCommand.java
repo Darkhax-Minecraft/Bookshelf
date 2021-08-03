@@ -3,7 +3,7 @@ package net.darkhax.bookshelf.command;
 import com.mojang.brigadier.context.CommandContext;
 
 import net.darkhax.bookshelf.util.CommandUtils;
-import net.minecraft.command.CommandSource;
+import net.minecraft.commands.CommandSourceStack;
 
 /**
  * This functional interface allows your commands to have an arbitrary boolean value passed
@@ -22,5 +22,5 @@ public interface BooleanCommand {
      * @param bool The arbitrary boolean value.
      * @return A success flag for the command.
      */
-    int apply (CommandContext<CommandSource> context, boolean bool);
+    int apply (CommandContext<CommandSourceStack> context, boolean bool);
 }

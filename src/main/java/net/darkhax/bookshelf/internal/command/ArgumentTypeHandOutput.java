@@ -14,9 +14,9 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 
 import net.darkhax.bookshelf.internal.command.CommandHand.OutputType;
-import net.minecraft.command.ISuggestionProvider;
-import net.minecraft.command.arguments.IArgumentSerializer;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.synchronization.ArgumentSerializer;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class ArgumentTypeHandOutput implements ArgumentType<OutputType> {
 
@@ -29,7 +29,7 @@ public class ArgumentTypeHandOutput implements ArgumentType<OutputType> {
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions (final CommandContext<S> context, final SuggestionsBuilder builder) {
 
-        return ISuggestionProvider.suggest(Stream.of(OutputType.class.getEnumConstants()).map(Object::toString), builder);
+        return SharedSuggestionProvider.suggest(Stream.of(OutputType.class.getEnumConstants()).map(Object::toString), builder);
     }
 
     @Override
@@ -38,15 +38,15 @@ public class ArgumentTypeHandOutput implements ArgumentType<OutputType> {
         return Stream.of(OutputType.class.getEnumConstants()).map(Object::toString).collect(Collectors.toList());
     }
 
-    public static class Serialzier implements IArgumentSerializer<ArgumentTypeHandOutput> {
+    public static class Serialzier implements ArgumentSerializer<ArgumentTypeHandOutput> {
 
         @Override
-        public void serializeToNetwork (ArgumentTypeHandOutput argument, PacketBuffer buffer) {
+        public void serializeToNetwork (ArgumentTypeHandOutput argument, FriendlyByteBuf buffer) {
 
         }
 
         @Override
-        public ArgumentTypeHandOutput deserializeFromNetwork (PacketBuffer buffer) {
+        public ArgumentTypeHandOutput deserializeFromNetwork (FriendlyByteBuf buffer) {
 
             return new ArgumentTypeHandOutput();
         }

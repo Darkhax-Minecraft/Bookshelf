@@ -6,9 +6,9 @@ import java.util.Map.Entry;
 
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.event.RegistryEvent;
@@ -38,11 +38,11 @@ public class IngredientRegistry {
 
         if (!this.serializers.isEmpty()) {
 
-            bus.addGenericListener(IRecipeSerializer.class, this::registerIngredientSerializers);
+            bus.addGenericListener(RecipeSerializer.class, this::registerIngredientSerializers);
         }
     }
 
-    private void registerIngredientSerializers (RegistryEvent.Register<IRecipeSerializer<?>> event) {
+    private void registerIngredientSerializers (RegistryEvent.Register<RecipeSerializer<?>> event) {
 
         for (final Entry<ResourceLocation, IIngredientSerializer<?>> serializer : this.serializers.entrySet()) {
 

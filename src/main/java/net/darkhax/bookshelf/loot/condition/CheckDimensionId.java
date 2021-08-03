@@ -5,19 +5,18 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 /**
  * A loot condition that checks the ID of the dimension.
  */
-public class CheckDimensionId implements ILootCondition {
+public class CheckDimensionId implements LootItemCondition {
 
     /**
      * The serializer for this function.
@@ -34,17 +33,17 @@ public class CheckDimensionId implements ILootCondition {
     @Override
     public boolean test (LootContext ctx) {
 
-        final World world = ctx.getLevel();
-        final RegistryKey<World> dimension = world.dimension();
+        final Level world = ctx.getLevel();
+        final ResourceKey<Level> dimension = world.dimension();
         return dimension != null && dimension.location().equals(this.dimensionId);
     }
 
-    static class Serializer implements ILootSerializer<CheckDimensionId> {
+    static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<CheckDimensionId> {
 
         @Override
         public CheckDimensionId deserialize (JsonObject json, JsonDeserializationContext context) {
 
-            final ResourceLocation id = ResourceLocation.tryParse(JSONUtils.getAsString(json, "dimension"));
+            final ResourceLocation id = ResourceLocation.tryParse(GsonHelper.getAsString(json, "dimension"));
 
             return new CheckDimensionId(id);
         }
@@ -57,7 +56,7 @@ public class CheckDimensionId implements ILootCondition {
     }
 
     @Override
-    public LootConditionType getType () {
+    public LootItemConditionType getType () {
 
         return Bookshelf.instance.conditionCheckDimension;
     }

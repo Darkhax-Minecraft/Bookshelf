@@ -5,9 +5,9 @@ import java.util.UUID;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 
 public final class SerializerUUID implements ISerializer<UUID> {
 
@@ -30,31 +30,31 @@ public final class SerializerUUID implements ISerializer<UUID> {
     }
 
     @Override
-    public UUID read (PacketBuffer buffer) {
+    public UUID read (FriendlyByteBuf buffer) {
 
         return UUID.fromString(buffer.readUtf());
     }
 
     @Override
-    public void write (PacketBuffer buffer, UUID toWrite) {
+    public void write (FriendlyByteBuf buffer, UUID toWrite) {
 
         buffer.writeUtf(toWrite.toString());
     }
 
     @Override
-    public INBT writeNBT (UUID toWrite) {
+    public Tag writeNBT (UUID toWrite) {
 
-        final CompoundNBT tag = new CompoundNBT();
+        final CompoundTag tag = new CompoundTag();
         tag.putUUID("id", toWrite);
         return tag;
     }
 
     @Override
-    public UUID read (INBT nbt) {
+    public UUID read (Tag nbt) {
 
-        if (nbt instanceof CompoundNBT) {
+        if (nbt instanceof CompoundTag) {
 
-            return ((CompoundNBT) nbt).getUUID("id");
+            return ((CompoundTag) nbt).getUUID("id");
         }
 
         throw new IllegalArgumentException("Expected NBT to be a compund tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

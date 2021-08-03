@@ -3,18 +3,18 @@ package net.darkhax.bookshelf.registry;
 import org.apache.logging.log4j.Logger;
 
 import net.darkhax.bookshelf.block.IBookshelfBlock;
-import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.PaintingType;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.Potion;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.decoration.Motive;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;
 
@@ -32,12 +32,12 @@ public class RegistryHelper {
 
     public final ForgeRegistryHelper<Block> blocks;
     public final ForgeRegistryHelper<Item> items;
-    public final ForgeRegistryHelper<TileEntityType<?>> tileEntities;
-    public final ForgeRegistryHelper<IRecipeSerializer<?>> recipeSerializers;
-    public final ForgeRegistryHelper<ContainerType<?>> containerTypes;
+    public final ForgeRegistryHelper<BlockEntityType<?>> tileEntities;
+    public final ForgeRegistryHelper<RecipeSerializer<?>> recipeSerializers;
+    public final ForgeRegistryHelper<MenuType<?>> containerTypes;
     public final ForgeRegistryHelper<EntityType<?>> entityTypes;
-    public final ForgeRegistryHelper<PaintingType> paintings;
-    public final ForgeRegistryHelper<Effect> effects;
+    public final ForgeRegistryHelper<Motive> paintings;
+    public final ForgeRegistryHelper<MobEffect> effects;
     public final ForgeRegistryHelper<Potion> potions;
     public final ForgeRegistryHelper<Enchantment> enchantments;
     public final ForgeRegistryHelper<GlobalLootModifierSerializer<?>> lootModifiers;
@@ -56,12 +56,12 @@ public class RegistryHelper {
 
         this.blocks = new ForgeRegistryHelper<>(logger, modid, Block.class);
         this.items = new ForgeRegistryHelper<>(logger, modid, Item.class);
-        this.tileEntities = new ForgeRegistryHelper(logger, modid, TileEntityType.class);
-        this.recipeSerializers = new ForgeRegistryHelper(logger, modid, IRecipeSerializer.class);
-        this.containerTypes = new ForgeRegistryHelper(logger, modid, ContainerType.class);
+        this.tileEntities = new ForgeRegistryHelper(logger, modid, BlockEntityType.class);
+        this.recipeSerializers = new ForgeRegistryHelper(logger, modid, RecipeSerializer.class);
+        this.containerTypes = new ForgeRegistryHelper(logger, modid, MenuType.class);
         this.entityTypes = new ForgeRegistryHelper(logger, modid, EntityType.class);
-        this.paintings = new ForgeRegistryHelper<>(logger, modid, PaintingType.class);
-        this.effects = new ForgeRegistryHelper<>(logger, modid, Effect.class);
+        this.paintings = new ForgeRegistryHelper<>(logger, modid, Motive.class);
+        this.effects = new ForgeRegistryHelper<>(logger, modid, MobEffect.class);
         this.potions = new ForgeRegistryHelper<>(logger, modid, Potion.class);
         this.enchantments = new ForgeRegistryHelper<>(logger, modid, Enchantment.class);
         this.lootModifiers = new ForgeRegistryHelper(logger, modid, GlobalLootModifierSerializer.class);
@@ -72,7 +72,7 @@ public class RegistryHelper {
         // TODO Spawn Eggs
     }
 
-    public RegistryHelper withItemGroup (ItemGroup group) {
+    public RegistryHelper withItemGroup (CreativeModeTab group) {
 
         this.items.addRegisterListener( (registry, item) -> item.category = group);
         return this;

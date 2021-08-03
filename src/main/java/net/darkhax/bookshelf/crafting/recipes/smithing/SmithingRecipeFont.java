@@ -4,19 +4,19 @@ import com.google.gson.JsonObject;
 
 import net.darkhax.bookshelf.serialization.Serializers;
 import net.darkhax.bookshelf.util.TextUtils;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.SmithingRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.UpgradeRecipe;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class SmithingRecipeFont extends SmithingRecipe {
+public class SmithingRecipeFont extends UpgradeRecipe {
 
-    public static final IRecipeSerializer<?> SERIALIZER = new Serializer();
+    public static final RecipeSerializer<?> SERIALIZER = new Serializer();
 
     private final ResourceLocation fontId;
 
@@ -27,7 +27,7 @@ public class SmithingRecipeFont extends SmithingRecipe {
     }
 
     @Override
-    public ItemStack assemble (IInventory inv) {
+    public ItemStack assemble (Container inv) {
 
         final ItemStack stack = inv.getItem(0).copy();
         stack.setHoverName(TextUtils.applyFont(stack.getHoverName(), this.fontId));
@@ -41,24 +41,24 @@ public class SmithingRecipeFont extends SmithingRecipe {
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer () {
+    public RecipeSerializer<?> getSerializer () {
 
         return SERIALIZER;
     }
 
-    private static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<SmithingRecipeFont> {
+    private static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<SmithingRecipeFont> {
 
         @Override
         public SmithingRecipeFont fromJson (ResourceLocation recipeId, JsonObject json) {
 
-            final Ingredient base = Ingredient.fromJson(JSONUtils.getAsJsonObject(json, "base"));
-            final Ingredient addition = Ingredient.fromJson(JSONUtils.getAsJsonObject(json, "addition"));
+            final Ingredient base = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "base"));
+            final Ingredient addition = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "addition"));
             final ResourceLocation font = Serializers.RESOURCE_LOCATION.read(json, "font");
             return new SmithingRecipeFont(recipeId, base, addition, font);
         }
 
         @Override
-        public SmithingRecipeFont fromNetwork (ResourceLocation recipeId, PacketBuffer buffer) {
+        public SmithingRecipeFont fromNetwork (ResourceLocation recipeId, FriendlyByteBuf buffer) {
 
             final Ingredient base = Ingredient.fromNetwork(buffer);
             final Ingredient addition = Ingredient.fromNetwork(buffer);
@@ -67,7 +67,7 @@ public class SmithingRecipeFont extends SmithingRecipe {
         }
 
         @Override
-        public void toNetwork (PacketBuffer buffer, SmithingRecipeFont recipe) {
+        public void toNetwork (FriendlyByteBuf buffer, SmithingRecipeFont recipe) {
 
             recipe.base.toNetwork(buffer);
             recipe.addition.toNetwork(buffer);

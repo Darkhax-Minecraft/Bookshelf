@@ -6,26 +6,25 @@ import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.util.LootUtils;
-import net.minecraft.advancements.criterion.MinMaxBounds.IntBound;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
+import net.minecraft.advancements.critereon.MinMaxBounds.Ints;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 /**
  * This loot condition checks the enchantability of the item used.
  */
-public class CheckEnchantability implements ILootCondition {
+public class CheckEnchantability implements LootItemCondition {
 
     /**
      * The serializer for this function.
      */
     public static final Serializer SERIALIZER = new Serializer();
 
-    private final IntBound enchantability;
+    private final Ints enchantability;
 
-    public CheckEnchantability (IntBound enchantIntBound) {
+    public CheckEnchantability (Ints enchantIntBound) {
 
         this.enchantability = enchantIntBound;
     }
@@ -44,12 +43,12 @@ public class CheckEnchantability implements ILootCondition {
     }
 
     @Override
-    public LootConditionType getType () {
+    public LootItemConditionType getType () {
 
         return Bookshelf.instance.conditionCheckEnchantability;
     }
 
-    static class Serializer implements ILootSerializer<CheckEnchantability> {
+    static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<CheckEnchantability> {
 
         @Override
         public void serialize (JsonObject json, CheckEnchantability value, JsonSerializationContext context) {
@@ -60,7 +59,7 @@ public class CheckEnchantability implements ILootCondition {
         @Override
         public CheckEnchantability deserialize (JsonObject json, JsonDeserializationContext context) {
 
-            return new CheckEnchantability(IntBound.fromJson(json.get("value")));
+            return new CheckEnchantability(Ints.fromJson(json.get("value")));
         }
     }
 }

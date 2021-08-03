@@ -6,15 +6,15 @@ import javax.annotation.Nonnull;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameterSets;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 
@@ -26,7 +26,7 @@ public class ModifierSilkTouch extends LootModifier {
     public static final GlobalLootModifierSerializer<ModifierSilkTouch> SERIALIZER = new GlobalLootModifierSerializer<ModifierSilkTouch>() {
 
         @Override
-        public ModifierSilkTouch read (ResourceLocation location, JsonObject object, ILootCondition[] ailootcondition) {
+        public ModifierSilkTouch read (ResourceLocation location, JsonObject object, LootItemCondition[] ailootcondition) {
 
             return new ModifierSilkTouch(ailootcondition);
         }
@@ -38,7 +38,7 @@ public class ModifierSilkTouch extends LootModifier {
         }
     };
 
-    private ModifierSilkTouch (ILootCondition[] conditionsIn) {
+    private ModifierSilkTouch (LootItemCondition[] conditionsIn) {
 
         super(conditionsIn);
     }
@@ -47,7 +47,7 @@ public class ModifierSilkTouch extends LootModifier {
     @Override
     public List<ItemStack> doApply (List<ItemStack> loot, LootContext context) {
 
-        final ItemStack tool = context.getParamOrNull(LootParameters.TOOL);
+        final ItemStack tool = context.getParamOrNull(LootContextParams.TOOL);
 
         if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, tool) == 0) {
 
@@ -55,10 +55,10 @@ public class ModifierSilkTouch extends LootModifier {
             fakeTool.enchant(Enchantments.SILK_TOUCH, 1);
 
             final LootContext.Builder builder = new LootContext.Builder(context);
-            builder.withParameter(LootParameters.TOOL, fakeTool);
+            builder.withParameter(LootContextParams.TOOL, fakeTool);
 
-            final LootContext fakeContext = builder.create(LootParameterSets.BLOCK);
-            final LootTable table = context.getLevel().getServer().getLootTables().get(context.getParamOrNull(LootParameters.BLOCK_STATE).getBlock().getLootTable());
+            final LootContext fakeContext = builder.create(LootContextParamSets.BLOCK);
+            final LootTable table = context.getLevel().getServer().getLootTables().get(context.getParamOrNull(LootContextParams.BLOCK_STATE).getBlock().getLootTable());
             return table.getRandomItems(fakeContext);
         }
 

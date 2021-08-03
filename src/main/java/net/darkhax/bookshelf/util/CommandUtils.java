@@ -15,10 +15,10 @@ import com.mojang.brigadier.context.CommandContext;
 
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
 import net.darkhax.bookshelf.command.BooleanCommand;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.command.arguments.EntityArgument;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class CommandUtils {
 
@@ -30,7 +30,7 @@ public class CommandUtils {
      * @param command The code to execute.
      * @return A LiteralArgumentBuilder that can be registered with a command dispatcher.
      */
-    public static LiteralArgumentBuilder<CommandSource> createCommand (String key, int permissions, Command<CommandSource> command) {
+    public static LiteralArgumentBuilder<CommandSourceStack> createCommand (String key, int permissions, Command<CommandSourceStack> command) {
 
         return Commands.literal(key).requires(sender -> sender.hasPermission(permissions)).executes(command);
     }
@@ -44,7 +44,7 @@ public class CommandUtils {
      * @param command The code to execute.
      * @return A LiteralArgumentBuilder that can be registered with a command dispatcher.
      */
-    public static LiteralArgumentBuilder<CommandSource> createPlayerCommand (String key, int permissions, Command<CommandSource> command) {
+    public static LiteralArgumentBuilder<CommandSourceStack> createPlayerCommand (String key, int permissions, Command<CommandSourceStack> command) {
 
         return Commands.literal(key).requires(sender -> sender.hasPermission(permissions)).then(Commands.argument("targets", EntityArgument.player()).executes(command));
     }
@@ -57,7 +57,7 @@ public class CommandUtils {
      * @param command The code to execute.
      * @return A LiteralArgumentBuilder that can be registered with a command dispatcher.
      */
-    public static LiteralArgumentBuilder<CommandSource> createModCommand (String key, int permissions, BooleanCommand command) {
+    public static LiteralArgumentBuilder<CommandSourceStack> createModCommand (String key, int permissions, BooleanCommand command) {
 
         return Commands.literal(key).requires(sender -> sender.hasPermission(permissions)).executes(ctx -> command.apply(ctx, true)).then(Commands.argument("mod", ArgumentTypeMod.INSTACE).executes(ctx -> command.apply(ctx, false)));
     }

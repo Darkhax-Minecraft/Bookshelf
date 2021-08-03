@@ -5,20 +5,20 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 
 import net.darkhax.bookshelf.util.InventoryUtils;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class ShapedRecipeDamaging extends ShapedRecipe {
 
-    public static final IRecipeSerializer<?> SERIALIZER = new Serializer();
+    public static final RecipeSerializer<?> SERIALIZER = new Serializer();
 
     private final int damageAmount;
     private final boolean ignoreUnbreaking;
@@ -31,19 +31,19 @@ public class ShapedRecipeDamaging extends ShapedRecipe {
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems (CraftingInventory inv) {
+    public NonNullList<ItemStack> getRemainingItems (CraftingContainer inv) {
 
         final NonNullList<ItemStack> keptItems = super.getRemainingItems(inv);
         return InventoryUtils.keepDamageableItems(inv, keptItems, this.ignoreUnbreaking, this.damageAmount);
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer () {
+    public RecipeSerializer<?> getSerializer () {
 
         return SERIALIZER;
     }
 
-    static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ShapedRecipeDamaging> {
+    static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ShapedRecipeDamaging> {
 
         private Serializer () {
 
@@ -52,21 +52,21 @@ public class ShapedRecipeDamaging extends ShapedRecipe {
         @Override
         public ShapedRecipeDamaging fromJson (ResourceLocation recipeId, JsonObject json) {
 
-            final String group = JSONUtils.getAsString(json, "group", "");
-            final Map<String, Ingredient> ingredients = ShapedRecipe.keyFromJson(JSONUtils.getAsJsonObject(json, "key"));
-            final String[] pattern = ShapedRecipe.shrink(ShapedRecipe.patternFromJson(JSONUtils.getAsJsonArray(json, "pattern")));
+            final String group = GsonHelper.getAsString(json, "group", "");
+            final Map<String, Ingredient> ingredients = ShapedRecipe.keyFromJson(GsonHelper.getAsJsonObject(json, "key"));
+            final String[] pattern = ShapedRecipe.shrink(ShapedRecipe.patternFromJson(GsonHelper.getAsJsonArray(json, "pattern")));
             final int width = pattern[0].length();
             final int height = pattern.length;
             final NonNullList<Ingredient> inputs = ShapedRecipe.dissolvePattern(pattern, ingredients, width, height);
-            final ItemStack output = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
-            final int damageAmount = JSONUtils.getAsInt(json, "damageAmount", 1);
-            final boolean ignoreUnbreaking = JSONUtils.getAsBoolean(json, "ignoreUnbreaking", false);
+            final ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
+            final int damageAmount = GsonHelper.getAsInt(json, "damageAmount", 1);
+            final boolean ignoreUnbreaking = GsonHelper.getAsBoolean(json, "ignoreUnbreaking", false);
 
             return new ShapedRecipeDamaging(recipeId, group, width, height, inputs, output, damageAmount, ignoreUnbreaking);
         }
 
         @Override
-        public ShapedRecipeDamaging fromNetwork (ResourceLocation recipeId, PacketBuffer buffer) {
+        public ShapedRecipeDamaging fromNetwork (ResourceLocation recipeId, FriendlyByteBuf buffer) {
 
             final int width = buffer.readInt();
             final int height = buffer.readInt();
@@ -87,7 +87,7 @@ public class ShapedRecipeDamaging extends ShapedRecipe {
         }
 
         @Override
-        public void toNetwork (PacketBuffer buffer, ShapedRecipeDamaging recipe) {
+        public void toNetwork (FriendlyByteBuf buffer, ShapedRecipeDamaging recipe) {
 
             buffer.writeInt(recipe.getWidth());
             buffer.writeInt(recipe.getHeight());

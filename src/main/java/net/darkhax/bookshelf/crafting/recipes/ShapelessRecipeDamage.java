@@ -6,21 +6,21 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import net.darkhax.bookshelf.util.InventoryUtils;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.item.crafting.ShapelessRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class ShapelessRecipeDamage extends ShapelessRecipe {
 
-    public static final IRecipeSerializer<?> SERIALIZER = new Serializer();
+    public static final RecipeSerializer<?> SERIALIZER = new Serializer();
 
     private final int damageAmount;
     private final boolean ignoreUnbreaking;
@@ -33,19 +33,19 @@ public class ShapelessRecipeDamage extends ShapelessRecipe {
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems (CraftingInventory inv) {
+    public NonNullList<ItemStack> getRemainingItems (CraftingContainer inv) {
 
         final NonNullList<ItemStack> keptItems = super.getRemainingItems(inv);
         return InventoryUtils.keepDamageableItems(inv, keptItems, this.ignoreUnbreaking, this.damageAmount);
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer () {
+    public RecipeSerializer<?> getSerializer () {
 
         return SERIALIZER;
     }
 
-    static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ShapelessRecipeDamage> {
+    static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ShapelessRecipeDamage> {
 
         private Serializer () {
 
@@ -54,11 +54,11 @@ public class ShapelessRecipeDamage extends ShapelessRecipe {
         @Override
         public ShapelessRecipeDamage fromJson (ResourceLocation id, JsonObject json) {
 
-            final String group = JSONUtils.getAsString(json, "group", "");
-            final NonNullList<Ingredient> inputs = readIngredients(JSONUtils.getAsJsonArray(json, "ingredients"));
-            final ItemStack output = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
-            final int damageAmount = JSONUtils.getAsInt(json, "damageAmount", 1);
-            final boolean ignoreUnbreaking = JSONUtils.getAsBoolean(json, "ignoreUnbreaking", false);
+            final String group = GsonHelper.getAsString(json, "group", "");
+            final NonNullList<Ingredient> inputs = readIngredients(GsonHelper.getAsJsonArray(json, "ingredients"));
+            final ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
+            final int damageAmount = GsonHelper.getAsInt(json, "damageAmount", 1);
+            final boolean ignoreUnbreaking = GsonHelper.getAsBoolean(json, "ignoreUnbreaking", false);
 
             if (inputs.isEmpty()) {
 
@@ -79,7 +79,7 @@ public class ShapelessRecipeDamage extends ShapelessRecipe {
         }
 
         @Override
-        public ShapelessRecipeDamage fromNetwork (ResourceLocation id, PacketBuffer buffer) {
+        public ShapelessRecipeDamage fromNetwork (ResourceLocation id, FriendlyByteBuf buffer) {
 
             final String group = buffer.readUtf(32767);
             final int inputCount = buffer.readVarInt();
@@ -98,7 +98,7 @@ public class ShapelessRecipeDamage extends ShapelessRecipe {
         }
 
         @Override
-        public void toNetwork (PacketBuffer buffer, ShapelessRecipeDamage recipe) {
+        public void toNetwork (FriendlyByteBuf buffer, ShapelessRecipeDamage recipe) {
 
             buffer.writeUtf(recipe.getGroup());
             buffer.writeVarInt(recipe.getIngredients().size());

@@ -5,12 +5,12 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.ResourceLocationException;
+import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.ResourceLocationException;
 
 public final class SerializerResourceLocation implements ISerializer<ResourceLocation> {
 
@@ -40,7 +40,7 @@ public final class SerializerResourceLocation implements ISerializer<ResourceLoc
 
         else {
 
-            throw new JsonSyntaxException("Expected a string, was " + JSONUtils.getType(json));
+            throw new JsonSyntaxException("Expected a string, was " + GsonHelper.getType(json));
         }
     }
 
@@ -51,29 +51,29 @@ public final class SerializerResourceLocation implements ISerializer<ResourceLoc
     }
 
     @Override
-    public ResourceLocation read (PacketBuffer buffer) {
+    public ResourceLocation read (FriendlyByteBuf buffer) {
 
         return buffer.readResourceLocation();
     }
 
     @Override
-    public void write (PacketBuffer buffer, ResourceLocation toWrite) {
+    public void write (FriendlyByteBuf buffer, ResourceLocation toWrite) {
 
         buffer.writeResourceLocation(toWrite);
     }
 
     @Override
-    public INBT writeNBT (ResourceLocation toWrite) {
+    public Tag writeNBT (ResourceLocation toWrite) {
 
-        return StringNBT.valueOf(toWrite.toString());
+        return StringTag.valueOf(toWrite.toString());
     }
 
     @Override
-    public ResourceLocation read (INBT nbt) {
+    public ResourceLocation read (Tag nbt) {
 
-        if (nbt instanceof StringNBT) {
+        if (nbt instanceof StringTag) {
 
-            return new ResourceLocation(((StringNBT) nbt).getAsString());
+            return new ResourceLocation(((StringTag) nbt).getAsString());
         }
 
         throw new IllegalArgumentException("Expected NBT to be a double tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

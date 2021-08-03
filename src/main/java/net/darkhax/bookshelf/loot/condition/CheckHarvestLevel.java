@@ -6,27 +6,26 @@ import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.util.LootUtils;
-import net.minecraft.advancements.criterion.MinMaxBounds.IntBound;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.TieredItem;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
+import net.minecraft.advancements.critereon.MinMaxBounds.Ints;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 /**
  * This condition checks the harvest level of the tool used.
  */
-public class CheckHarvestLevel implements ILootCondition {
+public class CheckHarvestLevel implements LootItemCondition {
 
     /**
      * The serializer for this function.
      */
     public static final Serializer SERIALIZER = new Serializer();
 
-    private final IntBound level;
+    private final Ints level;
 
-    public CheckHarvestLevel (IntBound level) {
+    public CheckHarvestLevel (Ints level) {
 
         this.level = level;
     }
@@ -45,12 +44,12 @@ public class CheckHarvestLevel implements ILootCondition {
     }
 
     @Override
-    public LootConditionType getType () {
+    public LootItemConditionType getType () {
 
         return Bookshelf.instance.conditionCheckHarvestLevel;
     }
 
-    static class Serializer implements ILootSerializer<CheckHarvestLevel> {
+    static class Serializer implements net.minecraft.world.level.storage.loot.	Serializer<CheckHarvestLevel> {
 
         @Override
         public void serialize (JsonObject json, CheckHarvestLevel value, JsonSerializationContext context) {
@@ -61,7 +60,7 @@ public class CheckHarvestLevel implements ILootCondition {
         @Override
         public CheckHarvestLevel deserialize (JsonObject json, JsonDeserializationContext context) {
 
-            return new CheckHarvestLevel(IntBound.fromJson(json.get("value")));
+            return new CheckHarvestLevel(Ints.fromJson(json.get("value")));
         }
     }
 }

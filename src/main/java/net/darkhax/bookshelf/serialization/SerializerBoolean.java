@@ -3,9 +3,9 @@ package net.darkhax.bookshelf.serialization;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
-import net.minecraft.nbt.ByteNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.nbt.ByteTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 
 public final class SerializerBoolean implements ISerializer<Boolean> {
 
@@ -28,29 +28,29 @@ public final class SerializerBoolean implements ISerializer<Boolean> {
     }
 
     @Override
-    public Boolean read (PacketBuffer buffer) {
+    public Boolean read (FriendlyByteBuf buffer) {
 
         return buffer.readBoolean();
     }
 
     @Override
-    public void write (PacketBuffer buffer, Boolean toWrite) {
+    public void write (FriendlyByteBuf buffer, Boolean toWrite) {
 
         buffer.writeBoolean(toWrite);
     }
 
     @Override
-    public INBT writeNBT (Boolean toWrite) {
+    public Tag writeNBT (Boolean toWrite) {
 
-        return ByteNBT.valueOf(toWrite);
+        return ByteTag.valueOf(toWrite);
     }
 
     @Override
-    public Boolean read (INBT nbt) {
+    public Boolean read (Tag nbt) {
 
-        if (nbt instanceof ByteNBT) {
+        if (nbt instanceof ByteTag) {
 
-            return ((ByteNBT) nbt).getAsByte() != 0;
+            return ((ByteTag) nbt).getAsByte() != 0;
         }
 
         throw new IllegalArgumentException("Expected NBT to be a byte/boolean tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

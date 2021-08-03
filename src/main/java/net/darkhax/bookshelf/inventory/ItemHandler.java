@@ -8,11 +8,11 @@ import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.items.ItemStackHandler;
 
 /**
@@ -124,7 +124,7 @@ public class ItemHandler<T extends ItemHandler<T>> extends ItemStackHandler {
      * @param items The items to accept.
      * @return The same item handler.
      */
-    public T withItemValidator (IItemProvider... items) {
+    public T withItemValidator (ItemLike... items) {
 
         return this.withItemValidator(Ingredient.of(items));
     }
@@ -135,7 +135,7 @@ public class ItemHandler<T extends ItemHandler<T>> extends ItemStackHandler {
      * @param tag The tag to check.
      * @return The same item handler.
      */
-    public T withItemValidator (ITag<Item> tag) {
+    public T withItemValidator (Tag<Item> tag) {
 
         return this.withItemValidator(Ingredient.of(tag));
     }

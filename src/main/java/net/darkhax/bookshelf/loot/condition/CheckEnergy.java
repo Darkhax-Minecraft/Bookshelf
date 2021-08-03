@@ -5,15 +5,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
-import net.minecraft.advancements.criterion.MinMaxBounds.IntBound;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.advancements.critereon.MinMaxBounds.Ints;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -22,16 +21,16 @@ import net.minecraftforge.energy.IEnergyStorage;
  * This loot condition checks if the block of the loot generation has a certain amount of forge
  * energy stored within it.
  */
-public class CheckEnergy implements ILootCondition {
+public class CheckEnergy implements LootItemCondition {
 
     /**
      * The serializer for this function.
      */
     public static final Serializer SERIALIZER = new Serializer();
 
-    private final IntBound energy;
+    private final Ints energy;
 
-    public CheckEnergy (IntBound energy) {
+    public CheckEnergy (Ints energy) {
 
         this.energy = energy;
     }
@@ -39,11 +38,11 @@ public class CheckEnergy implements ILootCondition {
     @Override
     public boolean test (LootContext ctx) {
 
-        final Vector3d pos = ctx.getParamOrNull(LootParameters.ORIGIN);
+        final Vec3 pos = ctx.getParamOrNull(LootContextParams.ORIGIN);
 
         if (pos != null) {
 
-            final TileEntity tile = ctx.getLevel().getBlockEntity(new BlockPos(pos));
+            final BlockEntity tile = ctx.getLevel().getBlockEntity(new BlockPos(pos));
 
             if (tile != null) {
 
@@ -61,12 +60,12 @@ public class CheckEnergy implements ILootCondition {
     }
 
     @Override
-    public LootConditionType getType () {
+    public LootItemConditionType getType () {
 
         return Bookshelf.instance.conditionCheckEnergy;
     }
 
-    static class Serializer implements ILootSerializer<CheckEnergy> {
+    static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<CheckEnergy> {
 
         @Override
         public void serialize (JsonObject json, CheckEnergy value, JsonSerializationContext context) {
@@ -77,7 +76,7 @@ public class CheckEnergy implements ILootCondition {
         @Override
         public CheckEnergy deserialize (JsonObject json, JsonDeserializationContext context) {
 
-            return new CheckEnergy(IntBound.fromJson(json));
+            return new CheckEnergy(Ints.fromJson(json));
         }
     }
 }

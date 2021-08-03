@@ -6,14 +6,13 @@ import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.util.LootUtils;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
-public class CheckItem implements ILootCondition {
+public class CheckItem implements LootItemCondition {
 
     /**
      * The serializer for this function.
@@ -38,12 +37,12 @@ public class CheckItem implements ILootCondition {
     }
 
     @Override
-    public LootConditionType getType () {
+    public LootItemConditionType getType () {
 
         return Bookshelf.instance.conditionCheckItem;
     }
 
-    static class Serializer implements ILootSerializer<CheckItem> {
+    static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<CheckItem> {
 
         @Override
         public void serialize (JsonObject json, CheckItem value, JsonSerializationContext context) {

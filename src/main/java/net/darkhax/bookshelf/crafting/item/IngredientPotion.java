@@ -6,14 +6,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import net.darkhax.bookshelf.serialization.Serializers;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtils;
-import net.minecraft.potion.Potions;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 
@@ -28,7 +28,7 @@ public class IngredientPotion extends Ingredient {
 
     public IngredientPotion (Item item, Potion potion) {
 
-        super(Stream.of(new Ingredient.SingleItemList(PotionUtils.setPotion(new ItemStack(item), potion))));
+        super(Stream.of(new Ingredient.ItemValue(PotionUtils.setPotion(new ItemStack(item), potion))));
 
         this.item = item;
         this.potion = potion;
@@ -65,7 +65,7 @@ public class IngredientPotion extends Ingredient {
     static class Serializer implements IIngredientSerializer<IngredientPotion> {
 
         @Override
-        public IngredientPotion parse (PacketBuffer buffer) {
+        public IngredientPotion parse (FriendlyByteBuf buffer) {
 
             final Item item = Serializers.ITEM.read(buffer);
             final Potion potion = Serializers.POTION.read(buffer);
@@ -81,7 +81,7 @@ public class IngredientPotion extends Ingredient {
         }
 
         @Override
-        public void write (PacketBuffer buffer, IngredientPotion ingredient) {
+        public void write (FriendlyByteBuf buffer, IngredientPotion ingredient) {
 
             Serializers.ITEM.write(ingredient.item);
             Serializers.POTION.write(ingredient.potion);

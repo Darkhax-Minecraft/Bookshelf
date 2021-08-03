@@ -13,28 +13,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.darkhax.bookshelf.Bookshelf;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SpawnEggItem;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.Tuple;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceContext.BlockMode;
-import net.minecraft.util.math.RayTraceContext.FluidMode;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.ClipContext.Block;
+import net.minecraft.world.level.ClipContext.Fluid;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 public final class EntityUtils {
 
@@ -65,7 +64,7 @@ public final class EntityUtils {
      */
     public static double getDistaceFromPos (Entity entity, BlockPos pos) {
 
-        return MathsUtils.getDistanceBetweenPoints(entity.position(), Vector3d.atCenterOf(pos));
+        return MathsUtils.getDistanceBetweenPoints(entity.position(), Vec3.atCenterOf(pos));
     }
 
     /**
@@ -96,7 +95,7 @@ public final class EntityUtils {
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
 
         if (distance > 0) {
-            entityToMove.setDeltaMovement(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+            entityToMove.setDeltaMovement(new Vec3(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
         }
     }
 
@@ -116,7 +115,7 @@ public final class EntityUtils {
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
 
         if (distance > 0) {
-            entityToMove.setDeltaMovement(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+            entityToMove.setDeltaMovement(new Vec3(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
         }
     }
 
@@ -140,7 +139,7 @@ public final class EntityUtils {
         final double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
 
         if (distance > 0) {
-            entityToMove.setDeltaMovement(new Vector3d(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
+            entityToMove.setDeltaMovement(new Vec3(distanceX / distance * force, distanceY / distance * force, distanceZ / distance * force));
         }
     }
 
@@ -168,7 +167,7 @@ public final class EntityUtils {
      * @param range The range of the search.
      * @return A List containing all entities of the specified type that are within the range.
      */
-    public static <T extends Entity> List<T> getEntitiesInArea (Class<T> entityClass, World world, BlockPos pos, int range) {
+    public static <T extends Entity> List<T> getEntitiesInArea (Class<T> entityClass, Level world, BlockPos pos, int range) {
 
         return getEntitiesInArea(entityClass, world, pos, (float) range);
     }
@@ -183,9 +182,9 @@ public final class EntityUtils {
      * @param range The range of the search.
      * @return A List containing all entities of the specified type that are within the range.
      */
-    public static <T extends Entity> List<T> getEntitiesInArea (Class<T> entityClass, World world, BlockPos pos, float range) {
+    public static <T extends Entity> List<T> getEntitiesInArea (Class<T> entityClass, Level world, BlockPos pos, float range) {
 
-        return world.getEntitiesOfClass(entityClass, new AxisAlignedBB(pos.offset(-range, -range, -range), pos.offset(range + 1, range + 1, range + 1)));
+        return world.getEntitiesOfClass(entityClass, new AABB(pos.offset(-range, -range, -range), pos.offset(range + 1, range + 1, range + 1)));
     }
 
     /**
@@ -197,10 +196,10 @@ public final class EntityUtils {
      * @return boolean: True if every piece of armor the entity is wearing are the same class
      *         as the provied armor class.
      */
-    public static boolean isWearingFullSet (MobEntity living, Class<Item> armorClass) {
+    public static boolean isWearingFullSet (Mob living, Class<Item> armorClass) {
 
-        for (final EquipmentSlotType slot : EquipmentSlotType.values()) {
-            if (slot.getType().equals(EquipmentSlotType.Group.ARMOR)) {
+        for (final EquipmentSlot slot : EquipmentSlot.values()) {
+            if (slot.getType().equals(EquipmentSlot.Type.ARMOR)) {
 
                 final ItemStack armor = living.getItemBySlot(slot);
 
@@ -222,12 +221,12 @@ public final class EntityUtils {
      * @param fluidMode The mode used when detecting fluids.
      * @return An object containing the results of the ray trace.
      */
-    public static RayTraceResult rayTrace (LivingEntity entity, double length, BlockMode blockMode, FluidMode fluidMode) {
+    public static HitResult rayTrace (LivingEntity entity, double length, Block blockMode, Fluid fluidMode) {
 
-        final Vector3d startingPosition = new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ());
-        final Vector3d lookVector = entity.getLookAngle();
-        final Vector3d endingPosition = startingPosition.add(lookVector.x * length, lookVector.y * length, lookVector.z * length);
-        return entity.level.clip(new RayTraceContext(startingPosition, endingPosition, blockMode, fluidMode, entity));
+        final Vec3 startingPosition = new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ());
+        final Vec3 lookVector = entity.getLookAngle();
+        final Vec3 endingPosition = startingPosition.add(lookVector.x * length, lookVector.y * length, lookVector.z * length);
+        return entity.level.clip(new ClipContext(startingPosition, endingPosition, blockMode, fluidMode, entity));
     }
 
     /**
@@ -240,7 +239,7 @@ public final class EntityUtils {
      */
     public static boolean isAffectedByFire (LivingEntity toCheck) {
 
-        return !toCheck.fireImmune() && !toCheck.hasEffect(Effects.FIRE_RESISTANCE);
+        return !toCheck.fireImmune() && !toCheck.hasEffect(MobEffects.FIRE_RESISTANCE);
     }
 
     /**
@@ -253,9 +252,9 @@ public final class EntityUtils {
      */
     public static void clearEffects (LivingEntity entity, boolean removePositive, boolean removeNegative) {
 
-        final Set<Effect> toClear = new HashSet<>();
+        final Set<MobEffect> toClear = new HashSet<>();
 
-        for (final EffectInstance effect : entity.getActiveEffects()) {
+        for (final MobEffectInstance effect : entity.getActiveEffects()) {
 
             final boolean isGood = effect.getEffect().isBeneficial();
 
@@ -265,7 +264,7 @@ public final class EntityUtils {
             }
         }
 
-        for (final Effect effect : toClear) {
+        for (final MobEffect effect : toClear) {
 
             entity.removeEffect(effect);
         }
@@ -286,8 +285,7 @@ public final class EntityUtils {
 
             if (item != null) {
 
-                Bookshelf.LOG.debug("Updating color cache for {} to primary={} secondary={}", type.getRegistryName(), item.color1, item.color2);
-                return new Tuple<>(item.color1, item.color2);
+                return new Tuple<>(item.getColor(0), item.getColor(1));
             }
 
             return new Tuple<>(0, 0);

@@ -5,21 +5,21 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class CommandTranslate {
 
-    public CommandTranslate (LiteralArgumentBuilder<CommandSource> root) {
+    public CommandTranslate (LiteralArgumentBuilder<CommandSourceStack> root) {
 
         root.then(Commands.literal("translate").then(Commands.argument("key", StringArgumentType.greedyString()).executes(this::translate)));
     }
 
-    private int translate (CommandContext<CommandSource> context) throws CommandSyntaxException {
+    private int translate (CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
 
         final String translationKey = StringArgumentType.getString(context, "key");
-        context.getSource().sendSuccess(new TranslationTextComponent(translationKey), false);
+        context.getSource().sendSuccess(new TranslatableComponent(translationKey), false);
         return 0;
     }
 }

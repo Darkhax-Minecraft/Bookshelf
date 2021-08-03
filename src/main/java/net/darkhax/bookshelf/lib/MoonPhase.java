@@ -3,7 +3,7 @@ package net.darkhax.bookshelf.lib;
 import com.google.common.primitives.Ints;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

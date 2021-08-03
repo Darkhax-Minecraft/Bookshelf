@@ -13,40 +13,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.BlockModelRenderer;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderState;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.block.ModelBlockRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.crash.ReportedException;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IReorderingProcessor;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.IBlockDisplayReader;
-import net.minecraft.world.World;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -78,7 +75,7 @@ public final class RenderUtils {
      * @param pos The position of the block.
      * @return The particle texture for the block state.
      */
-    public TextureAtlasSprite getParticleSprite (BlockState state, World world, BlockPos pos) {
+    public TextureAtlasSprite getParticleSprite (BlockState state, Level world, BlockPos pos) {
 
         return Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getTexture(state, world, pos);
     }
@@ -100,7 +97,7 @@ public final class RenderUtils {
      * @param name The model location name.
      * @return The associated model.
      */
-    public static IBakedModel getModel (ModelResourceLocation name) {
+    public static BakedModel getModel (ModelResourceLocation name) {
 
         return Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getModelManager().getModel(name);
     }
@@ -111,7 +108,7 @@ public final class RenderUtils {
      * @param stack The stack to get the model for.
      * @return The model for the stack.
      */
-    public static IBakedModel getModel (ItemStack stack) {
+    public static BakedModel getModel (ItemStack stack) {
 
         return Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(stack);
     }
@@ -122,7 +119,7 @@ public final class RenderUtils {
      * @param state The state to get the model for.
      * @return The model for the state.
      */
-    public static IBakedModel getModel (BlockState state) {
+    public static BakedModel getModel (BlockState state) {
 
         return Minecraft.getInstance().getBlockRenderer().getBlockModel(state);
     }
@@ -140,7 +137,7 @@ public final class RenderUtils {
      * @param buffer The render buffer.
      * @param sides The sides of the model to render.
      */
-    public static void renderModel (BlockModelRenderer renderer, IBlockDisplayReader world, IBakedModel model, BlockState state, BlockPos pos, MatrixStack matrix, IVertexBuilder buffer, Direction[] sides) {
+    public static void renderModel (ModelBlockRenderer renderer, BlockAndTintGetter world, BakedModel model, BlockState state, BlockPos pos, PoseStack matrix, VertexConsumer buffer, Direction[] sides) {
 
         final IModelData modelData = model.getModelData(world, pos, state, EmptyModelData.INSTANCE);
 
@@ -152,7 +149,7 @@ public final class RenderUtils {
 
             if (!sidedQuads.isEmpty()) {
 
-                final int lightForSide = WorldRenderer.getLightColor(world, state, pos.relative(side));
+                final int lightForSide = LevelRenderer.getLightColor(world, state, pos.relative(side));
                 renderer.renderModelFaceFlat(world, state, pos, lightForSide, OverlayTexture.NO_OVERLAY, false, matrix, buffer, sidedQuads, BITS);
             }
         }
@@ -175,7 +172,7 @@ public final class RenderUtils {
      * @param state The state to get the name of.
      * @return The name of the state.
      */
-    public static String getName (RenderState state) {
+    public static String getName (RenderStateShard state) {
 
         return state.name;
     }
@@ -208,12 +205,12 @@ public final class RenderUtils {
     public static RenderType findRenderType (BlockState state) {
 
         for (final RenderType blockType : RenderType.chunkBufferLayers()) {
-            if (RenderTypeLookup.canRenderInLayer(state, blockType)) {
+            if (ItemBlockRenderTypes.canRenderInLayer(state, blockType)) {
                 return blockType;
             }
         }
 
-        return RenderTypeLookup.getMovingBlockRenderType(state);
+        return ItemBlockRenderTypes.getMovingBlockRenderType(state);
     }
 
     /**
@@ -231,7 +228,7 @@ public final class RenderUtils {
      *        the sides that you don't want. Due to invasive changes made by Optifine this will
      *        be ignored when Optifine is installed.
      */
-    public static void renderState (BlockState state, World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay, boolean withFluid, Direction... preferredSides) {
+    public static void renderState (BlockState state, Level world, BlockPos pos, PoseStack matrix, MultiBufferSource buffer, int light, int overlay, boolean withFluid, Direction... preferredSides) {
 
         if (!ModUtils.isOptifineLoaded()) {
 
@@ -240,7 +237,7 @@ public final class RenderUtils {
 
         else {
 
-            renderBlock(state, world, pos, matrix, buffer);
+            throw new IllegalStateException("Optifine is not currently supported.");
         }
 
         if (withFluid) {
@@ -253,7 +250,7 @@ public final class RenderUtils {
                 final Fluid fluid = fluidState.getType();
                 final ResourceLocation texture = fluid.getAttributes().getStillTexture();
                 final int[] color = unpackColor(fluid.getAttributes().getColor(world, pos));
-                final TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS).apply(texture);
+                final TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(texture);
                 renderBlockSprite(buffer.getBuffer(RenderType.translucent()), matrix, sprite, light, overlay, color);
             }
         }
@@ -269,10 +266,10 @@ public final class RenderUtils {
      * @param buffer The render buffer.
      * @param preferredSides The sides to render, allows faces to be culled.
      */
-    private static void renderBlock (BlockState state, World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer, Direction[] renderSides) {
+    private static void renderBlock (BlockState state, Level world, BlockPos pos, PoseStack matrix, MultiBufferSource buffer, Direction[] renderSides) {
 
-        final BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
-        final IBakedModel model = dispatcher.getBlockModel(state);
+        final BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
+        final BakedModel model = dispatcher.getBlockModel(state);
 
         final RenderType type = RenderUtils.findRenderType(state);
 
@@ -280,101 +277,52 @@ public final class RenderUtils {
 
             ForgeHooksClient.setRenderLayer(type);
 
-            final IVertexBuilder builder = buffer.getBuffer(type);
+            final VertexConsumer builder = buffer.getBuffer(type);
             RenderUtils.renderModel(dispatcher.getModelRenderer(), world, model, state, pos, matrix, builder, renderSides);
 
             ForgeHooksClient.setRenderLayer(null);
         }
     }
 
-    /**
-     * Renders a block state into the world. This only exists for optifine compatibility mode.
-     *
-     * @param state The state to render.
-     * @param world The world context to render into.
-     * @param pos The position of the block.
-     * @param matrix The render matrix.
-     * @param buffer The render buffer.
-     */
-    private static void renderBlock (BlockState state, World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer) {
+    public static void renderLinesWrapped (PoseStack matrix, int x, int y, Component text, int textWidth) {
 
-        final BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
-        final IBakedModel model = dispatcher.getBlockModel(state);
-        final boolean useAO = Minecraft.useAmbientOcclusion() && state.getLightValue(world, pos) == 0 && model.useAmbientOcclusion();
-
-        final RenderType type = RenderUtils.findRenderType(state);
-
-        if (type != null) {
-
-            ForgeHooksClient.setRenderLayer(type);
-
-            final IVertexBuilder builder = buffer.getBuffer(type);
-            renderModel(dispatcher.getModelRenderer(), useAO, world, model, state, pos, matrix, builder, false, OverlayTexture.NO_OVERLAY);
-
-            ForgeHooksClient.setRenderLayer(null);
-        }
-    }
-
-    /**
-     * This only exists for optifine compatibility mode.
-     */
-    private static boolean renderModel (BlockModelRenderer renderer, boolean useAO, IBlockDisplayReader world, IBakedModel model, BlockState state, BlockPos pos, MatrixStack matrix, IVertexBuilder buffer, boolean checkSides, int overlay) {
-
-        try {
-
-            final IModelData modelData = model.getModelData(world, pos, state, EmptyModelData.INSTANCE);
-            return useAO ? renderer.renderModelSmooth(world, model, state, pos, matrix, buffer, checkSides, RANDOM, 0L, overlay, modelData) : renderer.renderModelFlat(world, model, state, pos, matrix, buffer, checkSides, RANDOM, 0L, overlay, modelData);
-        }
-
-        catch (final Throwable throwable) {
-
-            final CrashReport crashreport = CrashReport.forThrowable(throwable, "Tesselating block model");
-            final CrashReportCategory crashreportcategory = crashreport.addCategory("Block model being tesselated");
-            CrashReportCategory.populateBlockDetails(crashreportcategory, pos, state);
-            crashreportcategory.setDetail("Using AO", useAO);
-            throw new ReportedException(crashreport);
-        }
-    }
-
-    public static void renderLinesWrapped (MatrixStack matrix, int x, int y, ITextComponent text, int textWidth) {
-
-        final FontRenderer font = Minecraft.getInstance().font;
+        final Font font = Minecraft.getInstance().font;
         renderLinesWrapped(matrix, font, x, y, font.lineHeight, 0, text, textWidth);
     }
 
-    public static void renderLinesWrapped (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, ITextComponent text, int textWidth) {
+    public static void renderLinesWrapped (PoseStack matrix, Font fontRenderer, int x, int y, int spacing, int defaultColor, Component text, int textWidth) {
 
         // trimStringToWidth is actually wrapToWidth
         renderLinesWrapped(matrix, fontRenderer, x, y, spacing, defaultColor, fontRenderer.split(text, textWidth));
     }
 
-    public static void renderLinesWrapped (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, List<IReorderingProcessor> lines) {
+    public static void renderLinesWrapped (PoseStack matrix, Font fontRenderer, int x, int y, int spacing, int defaultColor, List<FormattedCharSequence> lines) {
 
         for (int lineNum = 0; lineNum < lines.size(); lineNum++) {
 
-            final IReorderingProcessor lineFragment = lines.get(lineNum);
+            final FormattedCharSequence lineFragment = lines.get(lineNum);
             fontRenderer.draw(matrix, lineFragment, x, y + lineNum * spacing, defaultColor);
         }
     }
 
-    public static int renderLinesReversed (MatrixStack matrix, int x, int y, ITextComponent text, int textWidth) {
+    public static int renderLinesReversed (PoseStack matrix, int x, int y, Component text, int textWidth) {
 
-        final FontRenderer font = Minecraft.getInstance().font;
+        final Font font = Minecraft.getInstance().font;
         return renderLinesReversed(matrix, font, x, y, font.lineHeight, 0xffffff, text, textWidth);
     }
 
-    public static int renderLinesReversed (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, ITextComponent text, int textWidth) {
+    public static int renderLinesReversed (PoseStack matrix, Font fontRenderer, int x, int y, int spacing, int defaultColor, Component text, int textWidth) {
 
         // trimStringToWidth is actually wrapToWidth
         return renderLinesReversed(matrix, fontRenderer, x, y, spacing, defaultColor, fontRenderer.split(text, textWidth));
     }
 
-    public static int renderLinesReversed (MatrixStack matrix, FontRenderer fontRenderer, int x, int y, int spacing, int defaultColor, List<IReorderingProcessor> lines) {
+    public static int renderLinesReversed (PoseStack matrix, Font fontRenderer, int x, int y, int spacing, int defaultColor, List<FormattedCharSequence> lines) {
 
         final int lineCount = lines.size();
         for (int lineNum = lineCount - 1; lineNum >= 0; lineNum--) {
 
-            final IReorderingProcessor lineFragment = lines.get(lineCount - 1 - lineNum);
+            final FormattedCharSequence lineFragment = lines.get(lineCount - 1 - lineNum);
             fontRenderer.draw(matrix, lineFragment, x, y - (lineNum + 1) * (spacing + 1), defaultColor);
         }
 
@@ -407,7 +355,7 @@ public final class RenderUtils {
      * @param overlay The packed overlay data.
      * @param color RGBA color to render.
      */
-    public static void renderBlockSprite (IVertexBuilder builder, MatrixStack stack, TextureAtlasSprite sprite, int light, int overlay, int[] color) {
+    public static void renderBlockSprite (VertexConsumer builder, PoseStack stack, TextureAtlasSprite sprite, int light, int overlay, int[] color) {
 
         renderBlockSprite(builder, stack.last().pose(), sprite, light, overlay, 0f, 1f, 0f, 1f, 0f, 1f, color);
     }
@@ -428,7 +376,7 @@ public final class RenderUtils {
      * @param z2 The max z width of the cube to render. Between 0 and 1.
      * @param color RGBA color to render.
      */
-    public static void renderBlockSprite (IVertexBuilder builder, MatrixStack stack, TextureAtlasSprite sprite, int light, int overlay, float x1, float x2, float y1, float y2, float z1, float z2, int[] color) {
+    public static void renderBlockSprite (VertexConsumer builder, PoseStack stack, TextureAtlasSprite sprite, int light, int overlay, float x1, float x2, float y1, float y2, float z1, float z2, int[] color) {
 
         renderBlockSprite(builder, stack.last().pose(), sprite, light, overlay, x1, x2, y1, y2, z1, z2, color);
     }
@@ -449,7 +397,7 @@ public final class RenderUtils {
      * @param z2 The max z width of the cube to render. Between 0 and 1.
      * @param color RGBA color to render.
      */
-    public static void renderBlockSprite (IVertexBuilder builder, Matrix4f pos, TextureAtlasSprite sprite, int light, int overlay, float x1, float x2, float y1, float y2, float z1, float z2, int[] color) {
+    public static void renderBlockSprite (VertexConsumer builder, Matrix4f pos, TextureAtlasSprite sprite, int light, int overlay, float x1, float x2, float y1, float y2, float z1, float z2, int[] color) {
 
         renderSpriteSide(builder, pos, sprite, Direction.DOWN, light, overlay, x1, x2, y1, y2, z1, z2, color);
         renderSpriteSide(builder, pos, sprite, Direction.UP, light, overlay, x1, x2, y1, y2, z1, z2, color);
@@ -476,7 +424,7 @@ public final class RenderUtils {
      * @param z2 The max z width of the cube to render. Between 0 and 1.
      * @param color RGBA color to render.
      */
-    public static void renderSpriteSide (IVertexBuilder builder, Matrix4f pos, TextureAtlasSprite sprite, Direction side, int light, int overlay, float x1, float x2, float y1, float y2, float z1, float z2, int[] color) {
+    public static void renderSpriteSide (VertexConsumer builder, Matrix4f pos, TextureAtlasSprite sprite, Direction side, int light, int overlay, float x1, float x2, float y1, float y2, float z1, float z2, int[] color) {
 
         // Convert block size to pixel size
         final double px1 = x1 * 16;

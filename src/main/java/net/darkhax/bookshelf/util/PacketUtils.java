@@ -11,18 +11,18 @@ import java.util.Collection;
 import java.util.Optional;
 
 import net.darkhax.bookshelf.Bookshelf;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.state.Property;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class PacketUtils {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static BlockState deserializeBlockState (PacketBuffer buffer) {
+    public static BlockState deserializeBlockState (FriendlyByteBuf buffer) {
 
         final ResourceLocation id = buffer.readResourceLocation();
         final Block block = ForgeRegistries.BLOCKS.getValue(id);
@@ -70,7 +70,7 @@ public class PacketUtils {
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static void serializeBlockState (PacketBuffer buffer, BlockState state) {
+    public static void serializeBlockState (FriendlyByteBuf buffer, BlockState state) {
 
         buffer.writeResourceLocation(state.getBlock().getRegistryName());
 
@@ -85,7 +85,7 @@ public class PacketUtils {
         }
     }
 
-    public static void serializeStringArray (PacketBuffer buffer, String[] strings) {
+    public static void serializeStringArray (FriendlyByteBuf buffer, String[] strings) {
 
         buffer.writeInt(strings.length);
 
@@ -95,7 +95,7 @@ public class PacketUtils {
         }
     }
 
-    public static String[] deserializeStringArray (PacketBuffer buffer) {
+    public static String[] deserializeStringArray (FriendlyByteBuf buffer) {
 
         final String[] strings = new String[buffer.readInt()];
 
@@ -107,7 +107,7 @@ public class PacketUtils {
         return strings;
     }
 
-    public static void serializeStringCollection (PacketBuffer buffer, Collection<String> strings) {
+    public static void serializeStringCollection (FriendlyByteBuf buffer, Collection<String> strings) {
 
         buffer.writeInt(strings.size());
 
@@ -117,7 +117,7 @@ public class PacketUtils {
         }
     }
 
-    public static void deserializeStringCollection (PacketBuffer buffer, Collection<String> toFill) {
+    public static void deserializeStringCollection (FriendlyByteBuf buffer, Collection<String> toFill) {
 
         final int count = buffer.readInt();
 

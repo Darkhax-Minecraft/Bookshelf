@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 
@@ -20,7 +20,7 @@ public class ModifierClear extends LootModifier {
     public static final GlobalLootModifierSerializer<ModifierClear> SERIALIZER = new GlobalLootModifierSerializer<ModifierClear>() {
 
         @Override
-        public ModifierClear read (ResourceLocation location, JsonObject object, ILootCondition[] ailootcondition) {
+        public ModifierClear read (ResourceLocation location, JsonObject object, LootItemCondition[] ailootcondition) {
 
             return new ModifierClear(ailootcondition);
         }
@@ -32,7 +32,7 @@ public class ModifierClear extends LootModifier {
         }
     };
 
-    private ModifierClear (ILootCondition[] conditionsIn) {
+    private ModifierClear (LootItemCondition[] conditionsIn) {
 
         super(conditionsIn);
     }

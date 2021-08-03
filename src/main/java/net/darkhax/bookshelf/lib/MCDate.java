@@ -7,8 +7,8 @@
  */
 package net.darkhax.bookshelf.lib;
 
-import net.minecraft.client.resources.I18n;
-import net.minecraft.world.World;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.level.Level;
 
 /**
  * This class is used to represent a date in the minecraft world.
@@ -61,7 +61,7 @@ public class MCDate {
      *
      * @param world The world to get a date for. Different worlds may have different times.
      */
-    public MCDate (World world) {
+    public MCDate (Level world) {
 
         this(world.getGameTime());
     }

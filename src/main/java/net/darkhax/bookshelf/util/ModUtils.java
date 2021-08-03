@@ -12,9 +12,9 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.util.LazyValue;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -26,7 +26,7 @@ public final class ModUtils {
      * Tracks whether or not Optifine is installed. Allows for better compatibility with
      * Optifine.
      */
-    private static LazyValue<Boolean> isOptifinePresent = new LazyValue<>( () -> {
+    private static LazyLoadedValue<Boolean> isOptifinePresent = new LazyLoadedValue<>( () -> {
 
         try {
 
@@ -196,9 +196,9 @@ public final class ModUtils {
      * @param mod The mod's container.
      * @return The name of the mod as a text component.
      */
-    public static ITextComponent getModName (ModContainer mod) {
+    public static Component getModName (ModContainer mod) {
 
-        return new StringTextComponent(mod.getModInfo().getDisplayName());
+        return new TextComponent(mod.getModInfo().getDisplayName());
     }
 
     /**

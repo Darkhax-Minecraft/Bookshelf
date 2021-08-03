@@ -2,35 +2,35 @@ package net.darkhax.bookshelf.serialization;
 
 import com.google.gson.JsonElement;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 
-public final class SerializerText implements ISerializer<ITextComponent> {
+public final class SerializerText implements ISerializer<Component> {
 
-    public static final ISerializer<ITextComponent> SERIALIZER = new SerializerText();
+    public static final ISerializer<Component> SERIALIZER = new SerializerText();
 
     @Override
-    public ITextComponent read (JsonElement json) {
+    public Component read (JsonElement json) {
 
-        return ITextComponent.Serializer.fromJson(json);
+        return Component.Serializer.fromJson(json);
     }
 
     @Override
-    public JsonElement write (ITextComponent toWrite) {
+    public JsonElement write (Component toWrite) {
 
-        return ITextComponent.Serializer.toJsonTree(toWrite);
+        return Component.Serializer.toJsonTree(toWrite);
     }
 
     @Override
-    public ITextComponent read (PacketBuffer buffer) {
+    public Component read (FriendlyByteBuf buffer) {
 
         final String jsonString = buffer.readUtf();
-        return ITextComponent.Serializer.fromJson(jsonString);
+        return Component.Serializer.fromJson(jsonString);
     }
 
     @Override
-    public void write (PacketBuffer buffer, ITextComponent toWrite) {
+    public void write (FriendlyByteBuf buffer, Component toWrite) {
 
-        buffer.writeUtf(ITextComponent.Serializer.toJson(toWrite));
+        buffer.writeUtf(Component.Serializer.toJson(toWrite));
     }
 }

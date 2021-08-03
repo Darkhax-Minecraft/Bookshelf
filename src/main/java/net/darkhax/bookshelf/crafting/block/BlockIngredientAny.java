@@ -12,10 +12,10 @@ import com.google.gson.JsonObject;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.serialization.Serializers;
-import net.minecraft.block.BlockState;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 
 public class BlockIngredientAny extends BlockIngredient {
 
@@ -70,7 +70,7 @@ public class BlockIngredientAny extends BlockIngredient {
 
             final ArrayList<BlockIngredient> ingredients = new ArrayList<>();
 
-            for (final JsonElement elem : JSONUtils.getAsJsonArray(json.getAsJsonObject(), "ingredients")) {
+            for (final JsonElement elem : GsonHelper.getAsJsonArray(json.getAsJsonObject(), "ingredients")) {
 
                 ingredients.add(Serializers.BLOCK_INGREDIENT.read(elem));
             }
@@ -94,14 +94,14 @@ public class BlockIngredientAny extends BlockIngredient {
         }
 
         @Override
-        public BlockIngredientAny read (PacketBuffer buf) {
+        public BlockIngredientAny read (FriendlyByteBuf buf) {
 
             final List<BlockIngredient> components = Serializers.BLOCK_INGREDIENT.readList(buf);
             return new BlockIngredientAny(components);
         }
 
         @Override
-        public void write (PacketBuffer buf, BlockIngredientAny ingredient) {
+        public void write (FriendlyByteBuf buf, BlockIngredientAny ingredient) {
 
             Serializers.BLOCK_INGREDIENT.writeList(ingredient.components);
         }

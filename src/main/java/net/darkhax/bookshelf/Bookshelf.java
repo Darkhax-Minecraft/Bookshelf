@@ -52,17 +52,17 @@ import net.darkhax.bookshelf.loot.modifier.ModifierConvert;
 import net.darkhax.bookshelf.loot.modifier.ModifierRecipe;
 import net.darkhax.bookshelf.loot.modifier.ModifierSilkTouch;
 import net.darkhax.bookshelf.registry.RegistryHelper;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.command.arguments.ArgumentSerializer;
-import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.HoeItem;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.ShearsItem;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.item.SwordItem;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.commands.synchronization.EmptyArgumentSerializer;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -86,19 +86,19 @@ public final class Bookshelf {
 
     private final RegistryHelper registry = new RegistryHelper(MOD_ID, LOG);
 
-    public final LootConditionType conditionIsMob;
-    public final LootConditionType conditionCheckVillage;
-    public final LootConditionType conditionCheckStructure;
-    public final LootConditionType conditionCheckSlimeChunk;
-    public final LootConditionType conditionCheckRarity;
-    public final LootConditionType conditionCheckRaid;
-    public final LootConditionType conditionCheckPower;
-    public final LootConditionType conditionCheckItem;
-    public final LootConditionType conditionCheckHarvestLevel;
-    public final LootConditionType conditionCheckEnergy;
-    public final LootConditionType conditionCheckEnchantability;
-    public final LootConditionType conditionCheckBiomeTag;
-    public final LootConditionType conditionCheckDimension;
+    public final LootItemConditionType conditionIsMob;
+    public final LootItemConditionType conditionCheckVillage;
+    public final LootItemConditionType conditionCheckStructure;
+    public final LootItemConditionType conditionCheckSlimeChunk;
+    public final LootItemConditionType conditionCheckRarity;
+    public final LootItemConditionType conditionCheckRaid;
+    public final LootItemConditionType conditionCheckPower;
+    public final LootItemConditionType conditionCheckItem;
+    public final LootItemConditionType conditionCheckHarvestLevel;
+    public final LootItemConditionType conditionCheckEnergy;
+    public final LootItemConditionType conditionCheckEnchantability;
+    public final LootItemConditionType conditionCheckBiomeTag;
+    public final LootItemConditionType conditionCheckDimension;
 
     public Bookshelf () {
 
@@ -107,8 +107,8 @@ public final class Bookshelf {
 
         // Command arguments
         this.registry.commands.registerCommandArgument("enum", ArgumentTypeHandOutput.class, new ArgumentTypeHandOutput.Serialzier());
-        this.registry.commands.registerCommandArgument("mod", ArgumentTypeMod.class, new ArgumentSerializer<>( () -> ArgumentTypeMod.INSTACE));
-        this.registry.commands.registerCommandArgument("loot", ArgumentTypeLootTable.class, new ArgumentSerializer<>( () -> ArgumentTypeLootTable.INSTACE));
+        this.registry.commands.registerCommandArgument("mod", ArgumentTypeMod.class, new EmptyArgumentSerializer<>( () -> ArgumentTypeMod.INSTACE));
+        this.registry.commands.registerCommandArgument("loot", ArgumentTypeLootTable.class, new EmptyArgumentSerializer<>( () -> ArgumentTypeLootTable.INSTACE));
 
         // Loot Modifier
         this.registry.lootModifiers.register(ModifierClear.SERIALIZER, "clear");
@@ -159,20 +159,20 @@ public final class Bookshelf {
         this.registry.ingredients.register("any_sword", IngredientToolType.create(i -> i instanceof SwordItem, null));
         this.registry.ingredients.register("any_shear", IngredientToolType.create(i -> i instanceof ShearsItem, null));
 
-        this.registry.ingredients.register("enchant_armor", IngredientEnchantmentType.create(EnchantmentType.ARMOR));
-        this.registry.ingredients.register("enchant_armor_feet", IngredientEnchantmentType.create(EnchantmentType.ARMOR_FEET));
-        this.registry.ingredients.register("enchant_armor_legs", IngredientEnchantmentType.create(EnchantmentType.ARMOR_LEGS));
-        this.registry.ingredients.register("enchant_armor_chest", IngredientEnchantmentType.create(EnchantmentType.ARMOR_CHEST));
-        this.registry.ingredients.register("enchant_armor_head", IngredientEnchantmentType.create(EnchantmentType.ARMOR_HEAD));
-        this.registry.ingredients.register("enchant_weapon", IngredientEnchantmentType.create(EnchantmentType.WEAPON));
-        this.registry.ingredients.register("enchant_digger", IngredientEnchantmentType.create(EnchantmentType.DIGGER));
-        this.registry.ingredients.register("enchant_fishing_rod", IngredientEnchantmentType.create(EnchantmentType.FISHING_ROD));
-        this.registry.ingredients.register("enchant_trident", IngredientEnchantmentType.create(EnchantmentType.TRIDENT));
-        this.registry.ingredients.register("enchant_breakable", IngredientEnchantmentType.create(EnchantmentType.BREAKABLE));
-        this.registry.ingredients.register("enchant_bow", IngredientEnchantmentType.create(EnchantmentType.BOW));
-        this.registry.ingredients.register("enchant_wearable", IngredientEnchantmentType.create(EnchantmentType.WEARABLE));
-        this.registry.ingredients.register("enchant_crossbow", IngredientEnchantmentType.create(EnchantmentType.CROSSBOW));
-        this.registry.ingredients.register("enchant_vanishable", IngredientEnchantmentType.create(EnchantmentType.VANISHABLE));
+        this.registry.ingredients.register("enchant_armor", IngredientEnchantmentType.create(EnchantmentCategory.ARMOR));
+        this.registry.ingredients.register("enchant_armor_feet", IngredientEnchantmentType.create(EnchantmentCategory.ARMOR_FEET));
+        this.registry.ingredients.register("enchant_armor_legs", IngredientEnchantmentType.create(EnchantmentCategory.ARMOR_LEGS));
+        this.registry.ingredients.register("enchant_armor_chest", IngredientEnchantmentType.create(EnchantmentCategory.ARMOR_CHEST));
+        this.registry.ingredients.register("enchant_armor_head", IngredientEnchantmentType.create(EnchantmentCategory.ARMOR_HEAD));
+        this.registry.ingredients.register("enchant_weapon", IngredientEnchantmentType.create(EnchantmentCategory.WEAPON));
+        this.registry.ingredients.register("enchant_digger", IngredientEnchantmentType.create(EnchantmentCategory.DIGGER));
+        this.registry.ingredients.register("enchant_fishing_rod", IngredientEnchantmentType.create(EnchantmentCategory.FISHING_ROD));
+        this.registry.ingredients.register("enchant_trident", IngredientEnchantmentType.create(EnchantmentCategory.TRIDENT));
+        this.registry.ingredients.register("enchant_breakable", IngredientEnchantmentType.create(EnchantmentCategory.BREAKABLE));
+        this.registry.ingredients.register("enchant_bow", IngredientEnchantmentType.create(EnchantmentCategory.BOW));
+        this.registry.ingredients.register("enchant_wearable", IngredientEnchantmentType.create(EnchantmentCategory.WEARABLE));
+        this.registry.ingredients.register("enchant_crossbow", IngredientEnchantmentType.create(EnchantmentCategory.CROSSBOW));
+        this.registry.ingredients.register("enchant_vanishable", IngredientEnchantmentType.create(EnchantmentCategory.VANISHABLE));
 
         // Block Ingredients
         BlockIngredient.register(BlockIngredientAny.SERIALIZER, BlockIngredientAny.ID);

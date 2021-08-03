@@ -5,11 +5,11 @@ import java.util.List;
 import com.google.gson.JsonObject;
 
 import net.darkhax.bookshelf.serialization.Serializers;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 
@@ -19,7 +19,7 @@ public class ModifierAddItem extends LootModifier {
 
     private final ItemStack toAdd;
 
-    public ModifierAddItem (ILootCondition[] conditions, ItemStack toAdd) {
+    public ModifierAddItem (LootItemCondition[] conditions, ItemStack toAdd) {
 
         super(conditions);
         this.toAdd = toAdd;
@@ -35,9 +35,9 @@ public class ModifierAddItem extends LootModifier {
     static class Serializer extends GlobalLootModifierSerializer<ModifierAddItem> {
 
         @Override
-        public ModifierAddItem read (ResourceLocation location, JsonObject data, ILootCondition[] conditions) {
+        public ModifierAddItem read (ResourceLocation location, JsonObject data, LootItemCondition[] conditions) {
 
-            final ItemStack item = ShapedRecipe.itemFromJson(data.getAsJsonObject("item"));
+            final ItemStack item = ShapedRecipe.itemStackFromJson(data.getAsJsonObject("item"));
             return new ModifierAddItem(conditions, item);
         }
 

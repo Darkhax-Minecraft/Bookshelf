@@ -6,18 +6,17 @@ import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.util.LootUtils;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 /**
  * This loot condition checks the rarity of the item used.
  */
-public class CheckRarity implements ILootCondition {
+public class CheckRarity implements LootItemCondition {
 
     /**
      * The serializer for this function.
@@ -32,7 +31,7 @@ public class CheckRarity implements ILootCondition {
     }
 
     @Override
-    public LootConditionType getType () {
+    public LootItemConditionType getType () {
 
         return Bookshelf.instance.conditionCheckRarity;
     }
@@ -51,7 +50,7 @@ public class CheckRarity implements ILootCondition {
         return false;
     }
 
-    static class Serializer implements ILootSerializer<CheckRarity> {
+    static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<CheckRarity> {
 
         @Override
         public void serialize (JsonObject json, CheckRarity value, JsonSerializationContext context) {
@@ -62,7 +61,7 @@ public class CheckRarity implements ILootCondition {
         @Override
         public CheckRarity deserialize (JsonObject json, JsonDeserializationContext context) {
 
-            return new CheckRarity(JSONUtils.getAsString(json, "rarity"));
+            return new CheckRarity(GsonHelper.getAsString(json, "rarity"));
         }
     }
 }

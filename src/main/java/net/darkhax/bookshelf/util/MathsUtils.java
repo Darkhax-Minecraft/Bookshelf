@@ -14,11 +14,11 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.Vec3;
 
 public final class MathsUtils {
 
@@ -47,7 +47,7 @@ public final class MathsUtils {
      * @param secondPos: The second position to work with.
      * @return double: The distance between the two provided locations.
      */
-    public static double getDistanceBetweenPoints (Vector3d firstPos, Vector3d secondPos) {
+    public static double getDistanceBetweenPoints (Vec3 firstPos, Vec3 secondPos) {
 
         final double distanceX = firstPos.x - secondPos.x;
         final double distanceY = firstPos.y - secondPos.y;
@@ -156,9 +156,9 @@ public final class MathsUtils {
      * @param maxZ The max Z pos.
      * @return A bounding box that is made to a pixel specific size.
      */
-    public static AxisAlignedBB getBoundsForPixels (int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+    public static AABB getBoundsForPixels (int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 
-        return new AxisAlignedBB(getPixelDistance(minX), getPixelDistance(minY), getPixelDistance(minZ), getPixelDistance(maxX), getPixelDistance(maxY), getPixelDistance(maxZ));
+        return new AABB(getPixelDistance(minX), getPixelDistance(minY), getPixelDistance(minZ), getPixelDistance(maxX), getPixelDistance(maxY), getPixelDistance(maxZ));
     }
 
     /**

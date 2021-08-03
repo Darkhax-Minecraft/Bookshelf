@@ -11,10 +11,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 
 public final class TextUtils {
 
@@ -25,11 +25,11 @@ public final class TextUtils {
      * @param font The font to apply.
      * @return The text component with he font applied.
      */
-    public static ITextComponent applyFont (ITextComponent text, ResourceLocation font) {
+    public static Component applyFont (Component text, ResourceLocation font) {
 
-        if (text instanceof IFormattableTextComponent) {
+        if (text instanceof MutableComponent) {
 
-            ((IFormattableTextComponent) text).setStyle(text.getStyle().withFont(font));
+            ((MutableComponent) text).setStyle(text.getStyle().withFont(font));
         }
 
         text.getSiblings().forEach(sib -> applyFont(sib, font));
@@ -43,7 +43,7 @@ public final class TextUtils {
      * @param toJoin An array of text components to join.
      * @return A joint text component containing all the input values.
      */
-    public static IFormattableTextComponent join (ITextComponent separator, ITextComponent... toJoin) {
+    public static MutableComponent join (Component separator, Component... toJoin) {
 
         return join(separator, Arrays.stream(toJoin).iterator());
     }
@@ -55,7 +55,7 @@ public final class TextUtils {
      * @param toJoin A collection of text components to join.
      * @return A joint text component containing all the input values.
      */
-    public static IFormattableTextComponent join (ITextComponent separator, Collection<ITextComponent> toJoin) {
+    public static MutableComponent join (Component separator, Collection<Component> toJoin) {
 
         return join(separator, toJoin.iterator());
     }
@@ -67,9 +67,9 @@ public final class TextUtils {
      * @param toJoin An iterator of text components to join.
      * @return A joint text component containing all the input values.
      */
-    public static IFormattableTextComponent join (ITextComponent separator, Iterator<ITextComponent> toJoin) {
+    public static MutableComponent join (Component separator, Iterator<Component> toJoin) {
 
-        final StringTextComponent joined = new StringTextComponent("");
+        final TextComponent joined = new TextComponent("");
 
         while (toJoin.hasNext()) {
 

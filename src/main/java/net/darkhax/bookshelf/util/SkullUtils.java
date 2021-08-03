@@ -9,10 +9,10 @@ package net.darkhax.bookshelf.util;
 
 import java.util.UUID;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
 
 public final class SkullUtils {
 
@@ -22,7 +22,7 @@ public final class SkullUtils {
      * @param player The PlayerEntity to use the skin from.
      * @return ItemStack An ItemStack containing a skull that represents the passed player.
      */
-    public static ItemStack createSkull (PlayerEntity player) {
+    public static ItemStack createSkull (Player player) {
 
         return createSkull(player.getGameProfile().getName(), player.getUUID());
     }
@@ -38,7 +38,7 @@ public final class SkullUtils {
     public static ItemStack createSkull (String name, UUID uuid) {
 
         final ItemStack stack = new ItemStack(Items.PLAYER_HEAD, 1);
-        final CompoundNBT ownerTag = new CompoundNBT();
+        final CompoundTag ownerTag = new CompoundTag();
         ownerTag.putString("Name", name);
         ownerTag.putString("Id", uuid.toString());
         stack.getOrCreateTag().put("SkullOwner", ownerTag);

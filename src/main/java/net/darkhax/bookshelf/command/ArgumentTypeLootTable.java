@@ -14,9 +14,9 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 
-import net.minecraft.command.ISuggestionProvider;
-import net.minecraft.loot.LootTables;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.resources.ResourceLocation;
 
 public class ArgumentTypeLootTable implements ArgumentType<String> {
 
@@ -69,6 +69,6 @@ public class ArgumentTypeLootTable implements ArgumentType<String> {
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions (CommandContext<S> context, SuggestionsBuilder builder) {
 
-        return ISuggestionProvider.suggest(LootTables.all().stream().map(ResourceLocation::toString), builder);
+        return SharedSuggestionProvider.suggest(BuiltInLootTables.all().stream().map(ResourceLocation::toString), builder);
     }
 }

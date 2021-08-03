@@ -14,11 +14,11 @@ import com.google.gson.JsonParseException;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.serialization.Serializers;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.state.Property;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.resources.ResourceLocation;
 
 public class BlockIngredientTestState extends BlockIngredient {
 
@@ -122,14 +122,14 @@ public class BlockIngredientTestState extends BlockIngredient {
         }
 
         @Override
-        public BlockIngredientTestState read (PacketBuffer buf) {
+        public BlockIngredientTestState read (FriendlyByteBuf buf) {
 
             final List<BlockState> states = Serializers.BLOCK_STATE.readList(buf);
             return new BlockIngredientTestState(states);
         }
 
         @Override
-        public void write (PacketBuffer buf, BlockIngredientTestState ingredient) {
+        public void write (FriendlyByteBuf buf, BlockIngredientTestState ingredient) {
 
             Serializers.BLOCK_STATE.writeList(buf, ingredient.validStates);
         }

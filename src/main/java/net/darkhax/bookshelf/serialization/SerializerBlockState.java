@@ -9,16 +9,16 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 
 import net.darkhax.bookshelf.Bookshelf;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.Property;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.util.GsonHelper;
 
 public class SerializerBlockState implements ISerializer<BlockState> {
 
@@ -53,7 +53,7 @@ public class SerializerBlockState implements ISerializer<BlockState> {
 
         else {
 
-            throw new JsonParseException("Expected properties to be an object. Recieved " + JSONUtils.getType(json));
+            throw new JsonParseException("Expected properties to be an object. Recieved " + GsonHelper.getType(json));
         }
     }
 
@@ -88,13 +88,13 @@ public class SerializerBlockState implements ISerializer<BlockState> {
     }
 
     @Override
-    public BlockState read (PacketBuffer buffer) {
+    public BlockState read (FriendlyByteBuf buffer) {
 
         return Block.stateById(buffer.readInt());
     }
 
     @Override
-    public void write (PacketBuffer buffer, BlockState toWrite) {
+    public void write (FriendlyByteBuf buffer, BlockState toWrite) {
 
         buffer.writeInt(Block.getId(toWrite));
     }
@@ -133,7 +133,7 @@ public class SerializerBlockState implements ISerializer<BlockState> {
 
             else {
 
-                throw new JsonSyntaxException("Expected property value for " + propName + " to be primitive string. Got " + JSONUtils.getType(propValue));
+                throw new JsonSyntaxException("Expected property value for " + propName + " to be primitive string. Got " + GsonHelper.getType(propValue));
             }
         }
 
@@ -144,17 +144,17 @@ public class SerializerBlockState implements ISerializer<BlockState> {
     }
 
     @Override
-    public INBT writeNBT (BlockState toWrite) {
+    public Tag writeNBT (BlockState toWrite) {
 
-        return NBTUtil.writeBlockState(toWrite);
+        return NbtUtils.writeBlockState(toWrite);
     }
 
     @Override
-    public BlockState read (INBT nbt) {
+    public BlockState read (Tag nbt) {
 
-        if (nbt instanceof CompoundNBT) {
+        if (nbt instanceof CompoundTag) {
 
-            return NBTUtil.readBlockState((CompoundNBT) nbt);
+            return NbtUtils.readBlockState((CompoundTag) nbt);
         }
 
         throw new IllegalArgumentException("Expected NBT to be a compound tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

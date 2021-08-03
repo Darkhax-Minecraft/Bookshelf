@@ -9,9 +9,9 @@ import org.apache.logging.log4j.Logger;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.minecraft.entity.merchant.villager.VillagerProfession;
-import net.minecraft.entity.merchant.villager.VillagerTrades.ITrade;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
@@ -20,9 +20,9 @@ import net.minecraftforge.eventbus.api.IEventBus;
 public class TradeRegistry {
 
     private final Logger logger;
-    private final Map<VillagerProfession, Int2ObjectMap<List<ITrade>>> trades;
-    private final List<ITrade> basicTrades;
-    private final List<ITrade> rareTrades;
+    private final Map<VillagerProfession, Int2ObjectMap<List<ItemListing>>> trades;
+    private final List<ItemListing> basicTrades;
+    private final List<ItemListing> rareTrades;
 
     public TradeRegistry (Logger logger) {
 
@@ -45,13 +45,13 @@ public class TradeRegistry {
         }
     }
 
-    public ITrade registerVillagerTrade (VillagerProfession profession, int level, ITrade trade) {
+    public ItemListing registerVillagerTrade (VillagerProfession profession, int level, ItemListing trade) {
 
         // Get or create a new int map
-        final Int2ObjectMap<List<ITrade>> tradesByLevel = this.trades.getOrDefault(profession, new Int2ObjectOpenHashMap<>());
+        final Int2ObjectMap<List<ItemListing>> tradesByLevel = this.trades.getOrDefault(profession, new Int2ObjectOpenHashMap<>());
 
         // Get or create a new list of trades for the level.
-        final List<ITrade> tradesForLevel = tradesByLevel.getOrDefault(level, new ArrayList<>());
+        final List<ItemListing> tradesForLevel = tradesByLevel.getOrDefault(level, new ArrayList<>());
 
         // Add the trades.
         tradesForLevel.add(trade);
@@ -68,7 +68,7 @@ public class TradeRegistry {
         if (event.getType() != null) {
 
             // Get all trades for the current profession
-            final Int2ObjectMap<List<ITrade>> tradesByLevel = this.trades.get(event.getType());
+            final Int2ObjectMap<List<ItemListing>> tradesByLevel = this.trades.get(event.getType());
 
             // Check to make sure a trade has been registered.
             if (tradesByLevel != null && !tradesByLevel.isEmpty()) {
@@ -76,7 +76,7 @@ public class TradeRegistry {
                 // Iterate for the various profession levels
                 for (final int level : tradesByLevel.keySet()) {
 
-                    final List<ITrade> tradeRegistry = event.getTrades().get(level);
+                    final List<ItemListing> tradeRegistry = event.getTrades().get(level);
 
                     // If the trade pool exists add all trades for that tier.
                     if (tradeRegistry != null) {
@@ -93,13 +93,13 @@ public class TradeRegistry {
         }
     }
 
-    public ITrade addBasicWanderingTrade (ITrade trade) {
+    public ItemListing addBasicWanderingTrade (ItemListing trade) {
 
         this.basicTrades.add(trade);
         return trade;
     }
 
-    public ITrade addRareWanderingTrade (ITrade trade) {
+    public ItemListing addRareWanderingTrade (ItemListing trade) {
 
         this.rareTrades.add(trade);
         return trade;

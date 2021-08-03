@@ -15,16 +15,16 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootEntry;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public final class LootUtils {
 
@@ -56,7 +56,7 @@ public final class LootUtils {
      * @param pool The loot pool to pull from.
      * @return The list of entries within the pool.
      */
-    public static List<LootEntry> getEntries (LootPool pool) {
+    public static List<LootPoolEntryContainer> getEntries (LootPool pool) {
 
         return ObfuscationReflectionHelper.getPrivateValue(LootPool.class, pool, "entries");
     }
@@ -67,7 +67,7 @@ public final class LootUtils {
      * @param pool The loot pool to pull from.
      * @return The list of loot conditions.
      */
-    public static List<ILootCondition> getConditions (LootPool pool) {
+    public static List<LootItemCondition> getConditions (LootPool pool) {
 
         return ObfuscationReflectionHelper.getPrivateValue(LootPool.class, pool, "conditions");
     }
@@ -83,16 +83,16 @@ public final class LootUtils {
     @Nullable
     public static ItemStack getItemContext (LootContext ctx) {
 
-        ItemStack stack = ctx.getParamOrNull(LootParameters.TOOL);
+        ItemStack stack = ctx.getParamOrNull(LootContextParams.TOOL);
 
         // In some cases like killing an entity the tool is null rather than ItemStack.EMPTY.
         if (stack == null) {
 
-            Entity killer = ctx.getParamOrNull(LootParameters.KILLER_ENTITY);
+            Entity killer = ctx.getParamOrNull(LootContextParams.KILLER_ENTITY);
 
             if (killer == null) {
 
-                killer = ctx.getParamOrNull(LootParameters.DIRECT_KILLER_ENTITY);
+                killer = ctx.getParamOrNull(LootContextParams.DIRECT_KILLER_ENTITY);
             }
 
             if (killer instanceof LivingEntity) {

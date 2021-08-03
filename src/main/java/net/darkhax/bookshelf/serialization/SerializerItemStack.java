@@ -4,12 +4,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
 
 public class SerializerItemStack implements ISerializer<ItemStack> {
 
@@ -24,7 +24,7 @@ public class SerializerItemStack implements ISerializer<ItemStack> {
 
         if (json.isJsonObject()) {
 
-            return ShapedRecipe.itemFromJson(json.getAsJsonObject());
+            return ShapedRecipe.itemStackFromJson(json.getAsJsonObject());
         }
 
         else if (json.isJsonPrimitive()) {
@@ -32,7 +32,7 @@ public class SerializerItemStack implements ISerializer<ItemStack> {
             return new ItemStack(Serializers.ITEM.read(json));
         }
 
-        throw new JsonParseException("Expected JSON object, got " + JSONUtils.getType(json));
+        throw new JsonParseException("Expected JSON object, got " + GsonHelper.getType(json));
     }
 
     @Override
@@ -52,29 +52,29 @@ public class SerializerItemStack implements ISerializer<ItemStack> {
     }
 
     @Override
-    public ItemStack read (PacketBuffer buffer) {
+    public ItemStack read (FriendlyByteBuf buffer) {
 
         return buffer.readItem();
     }
 
     @Override
-    public void write (PacketBuffer buffer, ItemStack toWrite) {
+    public void write (FriendlyByteBuf buffer, ItemStack toWrite) {
 
         buffer.writeItem(toWrite);
     }
 
     @Override
-    public INBT writeNBT (ItemStack toWrite) {
+    public Tag writeNBT (ItemStack toWrite) {
 
-        return toWrite.save(new CompoundNBT());
+        return toWrite.save(new CompoundTag());
     }
 
     @Override
-    public ItemStack read (INBT nbt) {
+    public ItemStack read (Tag nbt) {
 
-        if (nbt instanceof CompoundNBT) {
+        if (nbt instanceof CompoundTag) {
 
-            return ItemStack.of((CompoundNBT) nbt);
+            return ItemStack.of((CompoundTag) nbt);
         }
 
         throw new IllegalArgumentException("Expected NBT to be a compound tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

@@ -6,10 +6,9 @@ import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.util.WorldUtils;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 /**
  * A loot condition that checks for a slime chunk.
@@ -29,12 +28,12 @@ public class CheckSlimeChunk extends LootConditionPositional {
     }
 
     @Override
-    public LootConditionType getType () {
+    public LootItemConditionType getType () {
 
         return Bookshelf.instance.conditionCheckSlimeChunk;
     }
 
-    private static class Serializer implements ILootSerializer<CheckSlimeChunk> {
+    private static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<CheckSlimeChunk> {
 
         private final CheckSlimeChunk instance = new CheckSlimeChunk();
 

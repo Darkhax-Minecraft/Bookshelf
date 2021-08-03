@@ -7,7 +7,7 @@
  */
 package net.darkhax.bookshelf.util;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ToolType;
 
 public final class StackUtils {

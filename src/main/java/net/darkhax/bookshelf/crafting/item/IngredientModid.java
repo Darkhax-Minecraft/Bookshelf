@@ -5,12 +5,12 @@ import java.util.stream.Stream;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.common.crafting.StackList;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -21,7 +21,7 @@ public class IngredientModid extends Ingredient {
 
     private final String modid;
 
-    private IngredientModid (String modid, Stream<? extends Ingredient.IItemList> itemLists) {
+    private IngredientModid (String modid, Stream<? extends Ingredient.Value> itemLists) {
 
         super(itemLists);
         this.modid = modid;
@@ -48,21 +48,21 @@ public class IngredientModid extends Ingredient {
     static class Serializer implements IIngredientSerializer<IngredientModid> {
 
         @Override
-        public IngredientModid parse (PacketBuffer buffer) {
+        public IngredientModid parse (FriendlyByteBuf buffer) {
 
             final String modid = buffer.readUtf();
-            return new IngredientModid(modid, Stream.generate( () -> new Ingredient.SingleItemList(buffer.readItem())).limit(buffer.readVarInt()));
+            return new IngredientModid(modid, Stream.generate( () -> new Ingredient.ItemValue(buffer.readItem())).limit(buffer.readVarInt()));
         }
 
         @Override
         public IngredientModid parse (JsonObject json) {
 
-            final String modid = JSONUtils.getAsString(json, "modid");
+            final String modid = GsonHelper.getAsString(json, "modid");
             return new IngredientModid(modid, Stream.of(new StackList(this.getMatchingItems(modid))));
         }
 
         @Override
-        public void write (PacketBuffer buffer, IngredientModid ingredient) {
+        public void write (FriendlyByteBuf buffer, IngredientModid ingredient) {
 
             buffer.writeUtf(ingredient.modid);
 

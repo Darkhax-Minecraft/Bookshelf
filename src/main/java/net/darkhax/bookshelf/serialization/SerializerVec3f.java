@@ -7,10 +7,10 @@ import java.util.List;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
+import com.mojang.math.Vector3f;
 
 public class SerializerVec3f implements ISerializer<Vector3f> {
 
@@ -36,7 +36,7 @@ public class SerializerVec3f implements ISerializer<Vector3f> {
     }
 
     @Override
-    public Vector3f read (PacketBuffer buffer) {
+    public Vector3f read (FriendlyByteBuf buffer) {
 
         final List<Float> values = Serializers.FLOAT.readList(buffer);
 
@@ -49,15 +49,15 @@ public class SerializerVec3f implements ISerializer<Vector3f> {
     }
 
     @Override
-    public void write (PacketBuffer buffer, Vector3f toWrite) {
+    public void write (FriendlyByteBuf buffer, Vector3f toWrite) {
 
         Serializers.FLOAT.writeList(buffer, new ArrayList<>(Arrays.asList(toWrite.x(), toWrite.y(), toWrite.z())));
     }
 
     @Override
-    public INBT writeNBT (Vector3f toWrite) {
+    public Tag writeNBT (Vector3f toWrite) {
 
-        final CompoundNBT tag = new CompoundNBT();
+        final CompoundTag tag = new CompoundTag();
         tag.putFloat("x", toWrite.x());
         tag.putFloat("y", toWrite.y());
         tag.putFloat("z", toWrite.z());
@@ -65,11 +65,11 @@ public class SerializerVec3f implements ISerializer<Vector3f> {
     }
 
     @Override
-    public Vector3f read (INBT nbt) {
+    public Vector3f read (Tag nbt) {
 
-        if (nbt instanceof CompoundNBT) {
+        if (nbt instanceof CompoundTag) {
 
-            final CompoundNBT tag = (CompoundNBT) nbt;
+            final CompoundTag tag = (CompoundTag) nbt;
             final float x = tag.getFloat("x");
             final float y = tag.getFloat("y");
             final float z = tag.getFloat("z");

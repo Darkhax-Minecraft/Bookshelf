@@ -1,11 +1,11 @@
 package net.darkhax.bookshelf.potion;
 
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Potion;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.alchemy.Potion;
 
 public class ModPotion extends Potion {
 
-    public ModPotion (EffectInstance... effects) {
+    public ModPotion (MobEffectInstance... effects) {
 
         super(null, effects);
     }

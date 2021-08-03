@@ -5,10 +5,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 /**
  * A loot condition that checks for a village.
@@ -28,12 +27,12 @@ public class CheckVillage extends LootConditionPositional {
     }
 
     @Override
-    public LootConditionType getType () {
+    public LootItemConditionType getType () {
 
         return Bookshelf.instance.conditionCheckVillage;
     }
 
-    private static class Serializer implements ILootSerializer<CheckVillage> {
+    private static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<CheckVillage> {
 
         private final CheckVillage instance = new CheckVillage();
 

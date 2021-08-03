@@ -2,8 +2,8 @@ package net.darkhax.bookshelf.serialization;
 
 import com.google.gson.JsonElement;
 
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class SerializerIngredient implements ISerializer<Ingredient> {
 
@@ -26,13 +26,13 @@ public class SerializerIngredient implements ISerializer<Ingredient> {
     }
 
     @Override
-    public Ingredient read (PacketBuffer buffer) {
+    public Ingredient read (FriendlyByteBuf buffer) {
 
         return Ingredient.fromNetwork(buffer);
     }
 
     @Override
-    public void write (PacketBuffer buffer, Ingredient toWrite) {
+    public void write (FriendlyByteBuf buffer, Ingredient toWrite) {
 
         toWrite.toNetwork(buffer);
     }

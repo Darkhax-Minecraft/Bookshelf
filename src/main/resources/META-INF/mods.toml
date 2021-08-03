@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[36,]"
+loaderVersion="[37,]"
 issueTrackerURL="https://github.com/Darkhax-Minecraft/Bookshelf/issues"
 license="LGPL v2.1"
 logoFile="mod_logo.png"
@@ -7,8 +7,8 @@ logoBlur=false
 
 [[mods]]
 modId="bookshelf"
-updateJSONURL="https://updates.blamejared.com/get?n=bookshelf&gv=1.16.5"
-version="${version}"
+updateJSONURL="https://updates.blamejared.com/get?n=bookshelf&gv=1.17.1"
+version="${file.jarVersion}"
 displayName="${modName}"
 displayURL="${modHomepage}"
 credits="${modCredits}"
@@ -21,13 +21,13 @@ itemIcon="minecraft:bookshelf"
 [[dependencies.bookshelf]]
     modId="forge"
     mandatory=true
-    versionRange="[36,]"
+    versionRange="[37,]"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.bookshelf]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.5]"
+    versionRange="[1.17.1]"
     ordering="NONE"
     side="BOTH"

@@ -5,24 +5,23 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
 /**
  * A loot condition that checks the biome dictionary tags of the current biome.
  */
-public class CheckBiomeTag implements ILootCondition {
+public class CheckBiomeTag implements LootItemCondition {
 
     /**
      * The serializer for this function.
@@ -42,7 +41,7 @@ public class CheckBiomeTag implements ILootCondition {
     @Override
     public boolean test (LootContext ctx) {
 
-        final Vector3d pos = ctx.getParamOrNull(LootParameters.ORIGIN);
+        final Vec3 pos = ctx.getParamOrNull(LootContextParams.ORIGIN);
 
         if (pos != null) {
 
@@ -50,7 +49,7 @@ public class CheckBiomeTag implements ILootCondition {
 
             if (biome != null) {
 
-                final RegistryKey<Biome> biomeKey = RegistryKey.create(Registry.BIOME_REGISTRY, biome.getRegistryName());
+                final ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, biome.getRegistryName());
                 return BiomeDictionary.hasType(biomeKey, this.biomeType);
             }
         }
@@ -59,12 +58,12 @@ public class CheckBiomeTag implements ILootCondition {
     }
 
     @Override
-    public LootConditionType getType () {
+    public LootItemConditionType getType () {
 
         return Bookshelf.instance.conditionCheckBiomeTag;
     }
 
-    static class Serializer implements ILootSerializer<CheckBiomeTag> {
+    static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<CheckBiomeTag> {
 
         @Override
         public void serialize (JsonObject json, CheckBiomeTag value, JsonSerializationContext context) {
@@ -75,7 +74,7 @@ public class CheckBiomeTag implements ILootCondition {
         @Override
         public CheckBiomeTag deserialize (JsonObject json, JsonDeserializationContext context) {
 
-            final Type tag = Type.getType(JSONUtils.getAsString(json, "tag"));
+            final Type tag = Type.getType(GsonHelper.getAsString(json, "tag"));
             return new CheckBiomeTag(tag);
         }
     }

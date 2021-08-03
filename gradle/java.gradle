@@ -10,7 +10,7 @@ java {
     withJavadocJar()
     
     // Set minimum language version.
-    toolchain.languageVersion = JavaLanguageVersion.of(8)
+    toolchain.languageVersion = JavaLanguageVersion.of(16)
 }
 
 javadoc {

@@ -5,19 +5,19 @@ import java.util.Optional;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.darkhax.bookshelf.serialization.ISerializer;
 import net.darkhax.bookshelf.serialization.Serializers;
 import net.darkhax.bookshelf.util.RenderUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.Direction;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.core.BlockPos;
+import com.mojang.math.Vector3f;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -84,7 +84,7 @@ public class DisplayableBlockState {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void render (World world, BlockPos pos, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay, Direction... preferredSides) {
+    public void render (Level world, BlockPos pos, PoseStack matrix, MultiBufferSource buffer, int light, int overlay, Direction... preferredSides) {
 
         matrix.pushPose();
         this.getScale().ifPresent(vec -> matrix.scale(vec.x(), vec.y(), vec.z()));
@@ -108,7 +108,7 @@ public class DisplayableBlockState {
                 return new DisplayableBlockState(state, scale, offset, renderFluid);
             }
 
-            throw new JsonParseException("Expected properties to be an object. Recieved " + JSONUtils.getType(json));
+            throw new JsonParseException("Expected properties to be an object. Recieved " + GsonHelper.getType(json));
         }
 
         @Override
@@ -123,7 +123,7 @@ public class DisplayableBlockState {
         }
 
         @Override
-        public DisplayableBlockState read (PacketBuffer buffer) {
+        public DisplayableBlockState read (FriendlyByteBuf buffer) {
 
             final BlockState state = Serializers.BLOCK_STATE.read(buffer);
             final Optional<Vector3f> scale = Serializers.VEC3F.readOptional(buffer);
@@ -133,7 +133,7 @@ public class DisplayableBlockState {
         }
 
         @Override
-        public void write (PacketBuffer buffer, DisplayableBlockState toWrite) {
+        public void write (FriendlyByteBuf buffer, DisplayableBlockState toWrite) {
 
             Serializers.BLOCK_STATE.write(buffer, toWrite.getState());
             Serializers.VEC3F.writeOptional(buffer, toWrite.getScale());

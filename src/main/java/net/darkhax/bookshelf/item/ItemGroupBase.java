@@ -9,16 +9,16 @@ package net.darkhax.bookshelf.item;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * A basic creative tab class that can be used to quickly create a new creative tab for your
  * mod.
  */
-public class ItemGroupBase extends ItemGroup {
+public class ItemGroupBase extends CreativeModeTab {
 
     /**
      * A supplier for the icon of the creative tab.

@@ -12,18 +12,18 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fml.network.NetworkEvent.Context;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.network.PacketDistributor.PacketTarget;
-import net.minecraftforge.fml.network.PacketDistributor.TargetPoint;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
+import net.minecraftforge.fmllegacy.network.NetworkRegistry;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor.PacketTarget;
+import net.minecraftforge.fmllegacy.network.PacketDistributor.TargetPoint;
+import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
 
 public class NetworkHelper {
 
@@ -88,7 +88,7 @@ public class NetworkHelper {
      * @param messageConsumer A consumer that is applied when your packet is received and
      *        allows your code to respond.
      */
-    public <T> void registerEnqueuedMessage (Class<T> messageType, BiConsumer<T, PacketBuffer> encoder, Function<PacketBuffer, T> decoder, BiConsumer<T, Supplier<Context>> messageConsumer) {
+    public <T> void registerEnqueuedMessage (Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, BiConsumer<T, Supplier<Context>> messageConsumer) {
 
         this.registerMessage(messageType, encoder, decoder, (message, context) -> context.get().enqueueWork( () -> {
             messageConsumer.accept(message, context);
@@ -106,7 +106,7 @@ public class NetworkHelper {
      * @param messageConsumer A consumer that is applied when your packet is received and
      *        allows your code to respond.
      */
-    public <T> void registerMessage (Class<T> messageType, BiConsumer<T, PacketBuffer> encoder, Function<PacketBuffer, T> decoder, BiConsumer<T, Supplier<Context>> messageConsumer) {
+    public <T> void registerMessage (Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, BiConsumer<T, Supplier<Context>> messageConsumer) {
 
         this.channel.registerMessage(this.nextPacketId, messageType, encoder, decoder, messageConsumer);
         this.nextPacketId++;
@@ -140,7 +140,7 @@ public class NetworkHelper {
      * @param player The player to send the message to.
      * @param message The message to send.
      */
-    public void sendToPlayer (ServerPlayerEntity player, Object message) {
+    public void sendToPlayer (ServerPlayer player, Object message) {
 
         this.send(PacketDistributor.PLAYER.with( () -> player), message);
     }
@@ -151,7 +151,7 @@ public class NetworkHelper {
      * @param dimension The dimension to send the packet to.
      * @param message The message to send.
      */
-    public void sendToDimension (RegistryKey<World> dimension, Object message) {
+    public void sendToDimension (ResourceKey<Level> dimension, Object message) {
 
         this.send(PacketDistributor.DIMENSION.with( () -> dimension), message);
     }
@@ -166,7 +166,7 @@ public class NetworkHelper {
      * @param dimension The dimension the message originated from.
      * @param message The message to send.
      */
-    public void sendToNearbyPlayers (double x, double y, double z, double radius, RegistryKey<World> dimension, Object message) {
+    public void sendToNearbyPlayers (double x, double y, double z, double radius, ResourceKey<Level> dimension, Object message) {
 
         this.sendToNearbyPlayers(new TargetPoint(x, y, z, radius, dimension), message);
     }
@@ -198,7 +198,7 @@ public class NetworkHelper {
      * @param chunk The targeted chunk.
      * @param message The message to send.
      */
-    public void sendToChunk (Chunk chunk, Object message) {
+    public void sendToChunk (LevelChunk chunk, Object message) {
 
         this.send(PacketDistributor.TRACKING_CHUNK.with( () -> chunk), message);
     }

@@ -5,27 +5,27 @@ import java.util.stream.Stream;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.common.crafting.StackList;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class IngredientEnchantmentType extends Ingredient {
 
-    public static Serializer create (EnchantmentType type) {
+    public static Serializer create (EnchantmentCategory type) {
 
         return new Serializer(type);
     }
 
     private final Serializer serializer;
-    private final EnchantmentType type;
+    private final EnchantmentCategory type;
 
-    private IngredientEnchantmentType (EnchantmentType type, Serializer serializer, Stream<? extends Ingredient.IItemList> itemLists) {
+    private IngredientEnchantmentType (EnchantmentCategory type, Serializer serializer, Stream<? extends Ingredient.Value> itemLists) {
 
         super(itemLists);
         this.serializer = serializer;
@@ -52,18 +52,18 @@ public class IngredientEnchantmentType extends Ingredient {
 
     static class Serializer implements IIngredientSerializer<IngredientEnchantmentType> {
 
-        private final EnchantmentType type;
+        private final EnchantmentCategory type;
         private IngredientEnchantmentType ingredient;
 
-        private Serializer (EnchantmentType type) {
+        private Serializer (EnchantmentCategory type) {
 
             this.type = type;
         }
 
         @Override
-        public IngredientEnchantmentType parse (PacketBuffer buffer) {
+        public IngredientEnchantmentType parse (FriendlyByteBuf buffer) {
 
-            return new IngredientEnchantmentType(this.type, this, Stream.generate( () -> new Ingredient.SingleItemList(buffer.readItem())).limit(buffer.readVarInt()));
+            return new IngredientEnchantmentType(this.type, this, Stream.generate( () -> new Ingredient.ItemValue(buffer.readItem())).limit(buffer.readVarInt()));
         }
 
         @Override
@@ -78,7 +78,7 @@ public class IngredientEnchantmentType extends Ingredient {
         }
 
         @Override
-        public void write (PacketBuffer buffer, IngredientEnchantmentType ingredient) {
+        public void write (FriendlyByteBuf buffer, IngredientEnchantmentType ingredient) {
 
             final ItemStack[] items = ingredient.getItems();
             buffer.writeVarInt(items.length);

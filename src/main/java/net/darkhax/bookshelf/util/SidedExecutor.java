@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.common.thread.EffectiveSide;
+import net.minecraftforge.fml.util.thread.EffectiveSide;
 
 /**
  * This class contains utilities for running different code based on the current logical side.

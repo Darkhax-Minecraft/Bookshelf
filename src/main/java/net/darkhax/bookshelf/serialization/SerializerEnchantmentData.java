@@ -4,37 +4,37 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
 
-public class SerializerEnchantmentData implements ISerializer<EnchantmentData> {
+public class SerializerEnchantmentData implements ISerializer<EnchantmentInstance> {
 
-    public static final ISerializer<EnchantmentData> SERIALIZER = new SerializerEnchantmentData();
+    public static final ISerializer<EnchantmentInstance> SERIALIZER = new SerializerEnchantmentData();
 
     private SerializerEnchantmentData () {
 
     }
 
     @Override
-    public EnchantmentData read (JsonElement json) {
+    public EnchantmentInstance read (JsonElement json) {
 
         if (json.isJsonObject()) {
 
             final JsonObject obj = json.getAsJsonObject();
             final Enchantment enchant = Serializers.ENCHANTMENT.read(obj.get("enchantment"));
-            final int level = JSONUtils.getAsInt(obj, "level");
-            return new EnchantmentData(enchant, level);
+            final int level = GsonHelper.getAsInt(obj, "level");
+            return new EnchantmentInstance(enchant, level);
         }
 
         throw new JsonParseException("Expected enchantment data to be a JSON object.");
     }
 
     @Override
-    public JsonElement write (EnchantmentData toWrite) {
+    public JsonElement write (EnchantmentInstance toWrite) {
 
         final JsonObject json = new JsonObject();
         json.add("enchantment", Serializers.ENCHANTMENT.write(toWrite.enchantment));
@@ -43,38 +43,38 @@ public class SerializerEnchantmentData implements ISerializer<EnchantmentData> {
     }
 
     @Override
-    public EnchantmentData read (PacketBuffer buffer) {
+    public EnchantmentInstance read (FriendlyByteBuf buffer) {
 
         final Enchantment enchant = Serializers.ENCHANTMENT.read(buffer);
         final int level = buffer.readInt();
-        return new EnchantmentData(enchant, level);
+        return new EnchantmentInstance(enchant, level);
     }
 
     @Override
-    public void write (PacketBuffer buffer, EnchantmentData toWrite) {
+    public void write (FriendlyByteBuf buffer, EnchantmentInstance toWrite) {
 
         Serializers.ENCHANTMENT.write(buffer, toWrite.enchantment);
         buffer.writeInt(toWrite.level);
     }
 
     @Override
-    public INBT writeNBT (EnchantmentData toWrite) {
+    public Tag writeNBT (EnchantmentInstance toWrite) {
 
-        final CompoundNBT tag = new CompoundNBT();
+        final CompoundTag tag = new CompoundTag();
         tag.put("enchantment", Serializers.ENCHANTMENT.writeNBT(toWrite.enchantment));
         tag.put("level", Serializers.INT.writeNBT(toWrite.level));
         return tag;
     }
 
     @Override
-    public EnchantmentData read (INBT nbt) {
+    public EnchantmentInstance read (Tag nbt) {
 
-        if (nbt instanceof CompoundNBT) {
+        if (nbt instanceof CompoundTag) {
 
-            final CompoundNBT tag = (CompoundNBT) nbt;
+            final CompoundTag tag = (CompoundTag) nbt;
             final Enchantment ench = Serializers.ENCHANTMENT.read(tag.get("enchantment"));
             final int level = Serializers.INT.read(tag.get("level"));
-            return new EnchantmentData(ench, level);
+            return new EnchantmentInstance(ench, level);
         }
 
         throw new IllegalArgumentException("Expected NBT to be a compound tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

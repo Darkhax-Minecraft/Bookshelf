@@ -9,8 +9,8 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.Logger;
 
 import net.darkhax.bookshelf.util.MathsUtils;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.IForgeRegistry;

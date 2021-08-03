@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.darkhax.bookshelf.Bookshelf;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**

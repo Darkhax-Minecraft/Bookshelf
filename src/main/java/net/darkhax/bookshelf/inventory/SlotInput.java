@@ -12,9 +12,9 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * This class provides a basic Slot with an optional predicate for item validation, and an
@@ -33,7 +33,7 @@ public class SlotInput extends Slot {
     @Nullable
     private final Consumer<ItemStack> inputListener;
 
-    public SlotInput (IInventory inventory, int index, int xPosition, int yPosition, @Nullable Predicate<ItemStack> inputValidator, Consumer<ItemStack> inputListener) {
+    public SlotInput (Container inventory, int index, int xPosition, int yPosition, @Nullable Predicate<ItemStack> inputValidator, Consumer<ItemStack> inputListener) {
 
         super(inventory, index, xPosition, yPosition);
         this.inputValidator = inputValidator;

@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf.inventory;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * An item handler that only has a single slot. Provides some nice helper functions that take

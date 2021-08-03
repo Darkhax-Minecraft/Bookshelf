@@ -25,7 +25,7 @@ import com.mojang.authlib.GameProfile;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.util.ModUtils;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -39,7 +39,7 @@ public class SupporterHandler {
     private static final List<Consumer<Supporter>> listeners = new ArrayList<>();
 
     @Nullable
-    public static Supporter getSupporterData (PlayerEntity player) {
+    public static Supporter getSupporterData (Player player) {
 
         return player != null ? getSupporterData(player.getGameProfile()) : null;
     }

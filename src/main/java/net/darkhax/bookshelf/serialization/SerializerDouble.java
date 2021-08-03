@@ -3,9 +3,9 @@ package net.darkhax.bookshelf.serialization;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
-import net.minecraft.nbt.DoubleNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.nbt.DoubleTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 
 public final class SerializerDouble implements ISerializer<Double> {
 
@@ -28,29 +28,29 @@ public final class SerializerDouble implements ISerializer<Double> {
     }
 
     @Override
-    public Double read (PacketBuffer buffer) {
+    public Double read (FriendlyByteBuf buffer) {
 
         return buffer.readDouble();
     }
 
     @Override
-    public void write (PacketBuffer buffer, Double toWrite) {
+    public void write (FriendlyByteBuf buffer, Double toWrite) {
 
         buffer.writeDouble(toWrite);
     }
 
     @Override
-    public INBT writeNBT (Double toWrite) {
+    public Tag writeNBT (Double toWrite) {
 
-        return DoubleNBT.valueOf(toWrite);
+        return DoubleTag.valueOf(toWrite);
     }
 
     @Override
-    public Double read (INBT nbt) {
+    public Double read (Tag nbt) {
 
-        if (nbt instanceof DoubleNBT) {
+        if (nbt instanceof DoubleTag) {
 
-            return ((DoubleNBT) nbt).getAsDouble();
+            return ((DoubleTag) nbt).getAsDouble();
         }
 
         throw new IllegalArgumentException("Expected NBT to be a double tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

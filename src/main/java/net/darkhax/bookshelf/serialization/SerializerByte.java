@@ -3,10 +3,10 @@ package net.darkhax.bookshelf.serialization;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
-import net.minecraft.nbt.ByteNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.NumberNBT;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.nbt.ByteTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NumericTag;
+import net.minecraft.network.FriendlyByteBuf;
 
 public final class SerializerByte implements ISerializer<Byte> {
 
@@ -29,29 +29,29 @@ public final class SerializerByte implements ISerializer<Byte> {
     }
 
     @Override
-    public Byte read (PacketBuffer buffer) {
+    public Byte read (FriendlyByteBuf buffer) {
 
         return buffer.readByte();
     }
 
     @Override
-    public void write (PacketBuffer buffer, Byte toWrite) {
+    public void write (FriendlyByteBuf buffer, Byte toWrite) {
 
         buffer.writeByte(toWrite);
     }
 
     @Override
-    public INBT writeNBT (Byte toWrite) {
+    public Tag writeNBT (Byte toWrite) {
 
-        return ByteNBT.valueOf(toWrite);
+        return ByteTag.valueOf(toWrite);
     }
 
     @Override
-    public Byte read (INBT nbt) {
+    public Byte read (Tag nbt) {
 
-        if (nbt instanceof NumberNBT) {
+        if (nbt instanceof NumericTag) {
 
-            return ((NumberNBT) nbt).getAsByte();
+            return ((NumericTag) nbt).getAsByte();
         }
 
         throw new IllegalArgumentException("Expected NBT to be a number tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

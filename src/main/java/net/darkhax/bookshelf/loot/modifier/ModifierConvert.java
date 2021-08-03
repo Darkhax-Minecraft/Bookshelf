@@ -5,13 +5,13 @@ import java.util.List;
 import com.google.gson.JsonObject;
 
 import net.darkhax.bookshelf.util.MathsUtils;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 
@@ -23,7 +23,7 @@ public class ModifierConvert extends LootModifier {
 
     private final float chance;
 
-    public ModifierConvert (ILootCondition[] conditions, ResourceLocation table, float chance) {
+    public ModifierConvert (LootItemCondition[] conditions, ResourceLocation table, float chance) {
 
         super(conditions);
 
@@ -57,10 +57,10 @@ public class ModifierConvert extends LootModifier {
     static class Serializer extends GlobalLootModifierSerializer<ModifierConvert> {
 
         @Override
-        public ModifierConvert read (ResourceLocation location, JsonObject data, ILootCondition[] conditions) {
+        public ModifierConvert read (ResourceLocation location, JsonObject data, LootItemCondition[] conditions) {
 
-            final ResourceLocation tableName = ResourceLocation.tryParse(JSONUtils.getAsString(data, "table"));
-            final float chance = JSONUtils.getAsFloat(data, "chance", 1f);
+            final ResourceLocation tableName = ResourceLocation.tryParse(GsonHelper.getAsString(data, "table"));
+            final float chance = GsonHelper.getAsFloat(data, "chance", 1f);
             return new ModifierConvert(conditions, tableName, chance);
         }
 

@@ -9,11 +9,11 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 
 import net.darkhax.bookshelf.util.StackUtils;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.common.crafting.StackList;
@@ -31,7 +31,7 @@ public class IngredientToolType extends Ingredient {
     private final Serializer serializer;
     private final Predicate<ItemStack> stackPred;
 
-    private IngredientToolType (Predicate<ItemStack> stackPred, Serializer serializer, Stream<? extends Ingredient.IItemList> itemLists) {
+    private IngredientToolType (Predicate<ItemStack> stackPred, Serializer serializer, Stream<? extends Ingredient.Value> itemLists) {
 
         super(itemLists);
         this.serializer = serializer;
@@ -70,9 +70,9 @@ public class IngredientToolType extends Ingredient {
         }
 
         @Override
-        public IngredientToolType parse (PacketBuffer buffer) {
+        public IngredientToolType parse (FriendlyByteBuf buffer) {
 
-            return new IngredientToolType(this.stackPred, this, Stream.generate( () -> new Ingredient.SingleItemList(buffer.readItem())).limit(buffer.readVarInt()));
+            return new IngredientToolType(this.stackPred, this, Stream.generate( () -> new Ingredient.ItemValue(buffer.readItem())).limit(buffer.readVarInt()));
         }
 
         @Override
@@ -87,7 +87,7 @@ public class IngredientToolType extends Ingredient {
         }
 
         @Override
-        public void write (PacketBuffer buffer, IngredientToolType ingredient) {
+        public void write (FriendlyByteBuf buffer, IngredientToolType ingredient) {
 
             final ItemStack[] items = ingredient.getItems();
             buffer.writeVarInt(items.length);

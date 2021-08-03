@@ -11,8 +11,8 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 
 /**
  * This class provides a simple inventory that can have a listener called by
@@ -20,20 +20,20 @@ import net.minecraft.inventory.Inventory;
  * It should not be used for things like TileEntity inventory storage. Use the capability
  * system instead!
  */
-public class InventoryListenable extends Inventory {
+public class InventoryListenable extends SimpleContainer {
 
     /**
      * The listener. This may be null.
      */
     @Nullable
-    private Consumer<IInventory> listener;
+    private Consumer<Container> listener;
 
     public InventoryListenable (int size) {
 
         this(size, null);
     }
 
-    public InventoryListenable (int size, Consumer<IInventory> listener) {
+    public InventoryListenable (int size, Consumer<Container> listener) {
 
         super(size);
         this.listener = listener;
@@ -55,7 +55,7 @@ public class InventoryListenable extends Inventory {
      *
      * @param listener The new listener. Null can be used to remove the existing listener.
      */
-    public void setInventoryListener (@Nullable Consumer<IInventory> listener) {
+    public void setInventoryListener (@Nullable Consumer<Container> listener) {
 
         this.listener = listener;
     }

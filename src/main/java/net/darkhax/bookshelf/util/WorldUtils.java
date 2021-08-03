@@ -11,19 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.SharedSeedRandom;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
 
 public final class WorldUtils {
 
@@ -33,7 +33,7 @@ public final class WorldUtils {
      * @param world The world to get the chunk count of.
      * @return The amount of chunks. -1 means it was unable to get the amount.
      */
-    public static int getLoadedChunks (ServerWorld world) {
+    public static int getLoadedChunks (ServerLevel world) {
 
         return world.getChunkSource() != null ? world.getChunkSource().getLoadedChunksCount() : -1;
     }
@@ -57,7 +57,7 @@ public final class WorldUtils {
      * @param chunk The initial chunk.
      * @return A list of 9 chunks that are near the passed chunk, as well as the initial chunk.
      */
-    public static List<Chunk> getNearbyChunks (World world, Chunk chunk) {
+    public static List<LevelChunk> getNearbyChunks (Level world, LevelChunk chunk) {
 
         return getNearbyChunks(world, chunk.getPos());
     }
@@ -70,9 +70,9 @@ public final class WorldUtils {
      * @return A list of 9 chunks that are near the passed chunk pos, as well as the chunk at
      *         the passed position.
      */
-    public static List<Chunk> getNearbyChunks (World world, ChunkPos chunk) {
+    public static List<LevelChunk> getNearbyChunks (Level world, ChunkPos chunk) {
 
-        final List<Chunk> chunks = new ArrayList<>();
+        final List<LevelChunk> chunks = new ArrayList<>();
 
         for (int offX = -1; offX < 2; offX++) {
             for (int offY = -1; offY < 2; offY++) {
@@ -92,7 +92,7 @@ public final class WorldUtils {
      * @param maxDistance The maximum distance allowed.
      * @return Whether or not the distance and predicate are valid.
      */
-    public static boolean isWithinDistanceAndUsable (IWorldPosCallable worldPos, PlayerEntity player, Predicate<BlockState> statePredicate, double maxDistance) {
+    public static boolean isWithinDistanceAndUsable (ContainerLevelAccess worldPos, Player player, Predicate<BlockState> statePredicate, double maxDistance) {
 
         return worldPos.evaluate( (world, pos) -> statePredicate.test(world.getBlockState(pos)) && player.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= maxDistance, true);
     }
@@ -105,9 +105,9 @@ public final class WorldUtils {
      * @param pos The position to check.
      * @return Whether or not the given position is in a slime chunk.
      */
-    public static boolean isSlimeChunk (ServerWorld world, BlockPos pos) {
+    public static boolean isSlimeChunk (ServerLevel world, BlockPos pos) {
 
-        return SharedSeedRandom.seedSlimeChunk(pos.getX() >> 4, pos.getZ() >> 4, world.getSeed(), 987234911L).nextInt(10) == 0;
+        return WorldgenRandom.seedSlimeChunk(pos.getX() >> 4, pos.getZ() >> 4, world.getSeed(), 987234911L).nextInt(10) == 0;
     }
 
     /**
@@ -130,13 +130,13 @@ public final class WorldUtils {
      * @param toAir Whether or not non-air blocks also count.
      * @return The depth of the given position.
      */
-    public static int getWaterDepth (World world, BlockPos startingPos, boolean toAir) {
+    public static int getWaterDepth (Level world, BlockPos startingPos, boolean toAir) {
 
-        final BlockPos.Mutable depthPos = startingPos.mutable();
+        final BlockPos.MutableBlockPos depthPos = startingPos.mutable();
 
         int depth = 0;
 
-        while (!World.isOutsideBuildHeight(depthPos) && (world.isWaterAt(depthPos) || toAir && !world.isEmptyBlock(depthPos))) {
+        while (!world.isOutsideBuildHeight(depthPos) && (world.isWaterAt(depthPos) || toAir && !world.isEmptyBlock(depthPos))) {
 
             depth++;
             depthPos.move(Direction.UP);
@@ -153,7 +153,7 @@ public final class WorldUtils {
      * @param packet The packet to send to all players.
      * @param boundaryOnly Whether or not you only want chunks at the end of the view distance.
      */
-    public static void sendToTracking (ServerWorld world, ChunkPos chunkPos, IPacket<?> packet, boolean boundaryOnly) {
+    public static void sendToTracking (ServerLevel world, ChunkPos chunkPos, Packet<?> packet, boolean boundaryOnly) {
 
         world.getChunkSource().chunkMap.getPlayers(chunkPos, boundaryOnly).forEach(p -> p.connection.send(packet));
     }
@@ -166,7 +166,7 @@ public final class WorldUtils {
      * @param structure The structure to look for.
      * @return Whether or not the position was within that structure.
      */
-    public static boolean isInStructure (ServerWorld world, BlockPos pos, Structure<?> structure) {
+    public static boolean isInStructure (ServerLevel world, BlockPos pos, StructureFeature<?> structure) {
 
         return world.structureFeatureManager().getStructureAt(pos, true, structure).isValid();
     }

@@ -7,13 +7,13 @@
  */
 package net.darkhax.bookshelf.inventory;
 
-import java.util.function.BiFunction;
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * This slot provides a slot with optional validator for inputs, and a listener for when the
@@ -29,14 +29,14 @@ public class SlotOutput extends Slot {
     /**
      * A listener that is called when an item is removed from the slot.
      */
-    private final BiFunction<PlayerEntity, ItemStack, ItemStack> takeListener;
+    private final BiConsumer<Player, ItemStack> takeListener;
 
-    public SlotOutput (IInventory inventory, int index, int xPosition, int yPosition, BiFunction<PlayerEntity, ItemStack, ItemStack> takeListener) {
+    public SlotOutput (Container inventory, int index, int xPosition, int yPosition, BiConsumer<Player, ItemStack> takeListener) {
 
         this(inventory, index, xPosition, yPosition, stack -> false, takeListener);
     }
 
-    public SlotOutput (IInventory inventory, int index, int xPosition, int yPosition, Predicate<ItemStack> inputValidator, BiFunction<PlayerEntity, ItemStack, ItemStack> takeListener) {
+    public SlotOutput (Container inventory, int index, int xPosition, int yPosition, Predicate<ItemStack> inputValidator, BiConsumer<Player, ItemStack> takeListener) {
 
         super(inventory, index, xPosition, yPosition);
         this.inputValidator = inputValidator;
@@ -50,10 +50,9 @@ public class SlotOutput extends Slot {
     }
 
     @Override
-    public ItemStack onTake (PlayerEntity player, ItemStack stack) {
+    public void onTake (Player player, ItemStack stack) {
 
-        final ItemStack stackToTake = this.takeListener.apply(player, stack);
+        this.takeListener.accept(player, stack);
         this.setChanged();
-        return stackToTake;
     }
 }

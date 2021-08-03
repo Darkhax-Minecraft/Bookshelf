@@ -6,20 +6,20 @@ import com.google.gson.JsonSerializationContext;
 
 import net.darkhax.bookshelf.Bookshelf;
 import net.darkhax.bookshelf.util.WorldUtils;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.level.storage.loot.Serializer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
 
 /**
  * A loot condition for checking if it is inside a structure.
  */
-public class CheckStructure implements ILootCondition {
+public class CheckStructure implements LootItemCondition {
 
     /**
      * The serializer for this function.
@@ -34,7 +34,7 @@ public class CheckStructure implements ILootCondition {
     /**
      * The structure being checked for. This is lazy loaded by {@link #loadStructure()}.
      */
-    private Structure<?> structure;
+    private StructureFeature<?> structure;
 
     public CheckStructure (String structureName) {
 
@@ -44,7 +44,7 @@ public class CheckStructure implements ILootCondition {
     @Override
     public boolean test (LootContext ctx) {
 
-        final Vector3d pos = ctx.getParamOrNull(LootParameters.ORIGIN);
+        final Vec3 pos = ctx.getParamOrNull(LootContextParams.ORIGIN);
 
         if (pos != null && this.loadStructure()) {
 
@@ -55,7 +55,7 @@ public class CheckStructure implements ILootCondition {
     }
 
     @Override
-    public LootConditionType getType () {
+    public LootItemConditionType getType () {
 
         return Bookshelf.instance.conditionCheckStructure;
     }
@@ -64,7 +64,7 @@ public class CheckStructure implements ILootCondition {
 
         if (this.structure == null) {
 
-            this.structure = Structure.STRUCTURES_REGISTRY.get(this.structureName);
+            this.structure = StructureFeature.STRUCTURES_REGISTRY.get(this.structureName);
 
             if (this.structure == null) {
 
@@ -76,7 +76,7 @@ public class CheckStructure implements ILootCondition {
         return true;
     }
 
-    static class Serializer implements ILootSerializer<CheckStructure> {
+    static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<CheckStructure> {
 
         @Override
         public void serialize (JsonObject json, CheckStructure value, JsonSerializationContext context) {
@@ -87,7 +87,7 @@ public class CheckStructure implements ILootCondition {
         @Override
         public CheckStructure deserialize (JsonObject json, JsonDeserializationContext context) {
 
-            final String name = JSONUtils.getAsString(json, "structure");
+            final String name = GsonHelper.getAsString(json, "structure");
             return new CheckStructure(name);
         }
     }

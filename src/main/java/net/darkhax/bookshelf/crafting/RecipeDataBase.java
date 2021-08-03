@@ -7,11 +7,11 @@
  */
 package net.darkhax.bookshelf.crafting;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 /**
  * This class provides a decent base for implementing custom recipe objects. The default
@@ -19,7 +19,7 @@ import net.minecraft.world.World;
  * have been overridden with default and disabled values. The class also has some internal
  * checks to make sure the recipe type and serializer have been set up in an appropriate way.
  */
-public abstract class RecipeDataBase implements IRecipe<IInventory> {
+public abstract class RecipeDataBase implements Recipe<Container> {
 
     private final ResourceLocation identifier;
 
@@ -45,14 +45,14 @@ public abstract class RecipeDataBase implements IRecipe<IInventory> {
     }
 
     @Override
-    public boolean matches (IInventory inv, World worldIn) {
+    public boolean matches (Container inv, Level worldIn) {
 
         // Not used
         return false;
     }
 
     @Override
-    public ItemStack assemble (IInventory inv) {
+    public ItemStack assemble (Container inv) {
 
         // Not used
         return ItemStack.EMPTY;

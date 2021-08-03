@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.Logger;
 
 import net.darkhax.bookshelf.util.RecipeUtils;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -21,7 +21,7 @@ public class RecipeTypeRegistry {
 
     private final String ownerId;
     private final Logger logger;
-    private final Map<ResourceLocation, IRecipeType<?>> recipeTypes;
+    private final Map<ResourceLocation, RecipeType<?>> recipeTypes;
 
     public RecipeTypeRegistry (String ownerId, Logger logger) {
 
@@ -30,10 +30,10 @@ public class RecipeTypeRegistry {
         this.recipeTypes = new HashMap<>();
     }
 
-    public <T extends IRecipe<?>> IRecipeType<T> register (final String key) {
+    public <T extends Recipe<?>> RecipeType<T> register (final String key) {
 
         final ResourceLocation id = new ResourceLocation(this.ownerId, key);
-        final IRecipeType<T> type = IRecipeType.register(this.ownerId + ":" + key);
+        final RecipeType<T> type = RecipeType.register(this.ownerId + ":" + key);
         this.recipeTypes.put(id, type);
         return type;
     }
@@ -48,7 +48,7 @@ public class RecipeTypeRegistry {
 
     private void onRecipesSynced (RecipesUpdatedEvent event) {
 
-        for (final IRecipeType<?> type : this.recipeTypes.values()) {
+        for (final RecipeType<?> type : this.recipeTypes.values()) {
 
             final Map<ResourceLocation, ?> recipes = RecipeUtils.getRecipes(type, event.getRecipeManager());
             final int namespaces = recipes.keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet()).size();

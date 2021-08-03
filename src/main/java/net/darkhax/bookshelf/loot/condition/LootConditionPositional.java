@@ -2,17 +2,17 @@ package net.darkhax.bookshelf.loot.condition;
 
 import java.util.function.BiPredicate;
 
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * The base class for a loot condition that requires a world position. If no position is found
  * the test will fail.
  */
-public abstract class LootConditionPositional implements ILootCondition {
+public abstract class LootConditionPositional implements LootItemCondition {
 
     /**
      * The predicate to apply at the given position.
@@ -27,7 +27,7 @@ public abstract class LootConditionPositional implements ILootCondition {
     @Override
     public boolean test (LootContext ctx) {
 
-        final Vector3d pos = ctx.getParamOrNull(LootParameters.ORIGIN);
+        final Vec3 pos = ctx.getParamOrNull(LootContextParams.ORIGIN);
         return pos != null && this.predicate.test(ctx, new BlockPos(pos));
     }
 }

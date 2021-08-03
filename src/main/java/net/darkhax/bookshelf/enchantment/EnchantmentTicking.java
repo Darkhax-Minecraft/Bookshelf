@@ -10,14 +10,16 @@ package net.darkhax.bookshelf.enchantment;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+
+import net.minecraft.world.item.enchantment.Enchantment.Rarity;
 
 /**
  * An enchantment with hooks for when the user and enchanted items tick.
@@ -32,9 +34,9 @@ public class EnchantmentTicking extends Enchantment {
     /**
      * A copy of the slots, vanilla doesn't expose this normally.
      */
-    private final EquipmentSlotType[] validSlots;
+    private final EquipmentSlot[] validSlots;
 
-    public EnchantmentTicking (Rarity rarity, EnchantmentType type, EquipmentSlotType... slots) {
+    public EnchantmentTicking (Rarity rarity, EnchantmentCategory type, EquipmentSlot... slots) {
 
         super(rarity, type, slots);
         this.validSlots = slots;
@@ -70,7 +72,7 @@ public class EnchantmentTicking extends Enchantment {
      * @param item The item stack instance.
      * @param slot The slot the item is in.
      */
-    public void onItemTick (LivingEntity user, int level, ItemStack item, EquipmentSlotType slot) {
+    public void onItemTick (LivingEntity user, int level, ItemStack item, EquipmentSlot slot) {
 
     }
 
@@ -88,7 +90,7 @@ public class EnchantmentTicking extends Enchantment {
             int totalLevel = 0;
 
             // Check all equipment to count up their levels.
-            for (final EquipmentSlotType validSlot : tickingEnch.validSlots) {
+            for (final EquipmentSlot validSlot : tickingEnch.validSlots) {
 
                 // Get the item and add to the total level
                 final ItemStack stack = event.getEntityLiving().getItemBySlot(validSlot);
