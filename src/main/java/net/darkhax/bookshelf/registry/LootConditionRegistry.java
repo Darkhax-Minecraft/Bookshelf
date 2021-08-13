@@ -32,7 +32,7 @@ public class LootConditionRegistry {
 
         if (!this.lootConditions.isEmpty()) {
 
-            bus.addListener(this::registerCommands);
+            bus.addListener(this::registerLootConditions);
         }
     }
 
@@ -43,18 +43,21 @@ public class LootConditionRegistry {
         return conditionType;
     }
 
-    private void registerCommands (FMLCommonSetupEvent event) {
+    private void registerLootConditions (FMLCommonSetupEvent event) {
 
         if (!this.lootConditions.isEmpty()) {
 
-            this.logger.info("Registering {} loot conditions.", this.lootConditions.size());
+            event.enqueueWork(() -> {
+                
+                this.logger.info("Registering {} loot conditions.", this.lootConditions.size());
 
-            for (final Entry<ResourceLocation, LootItemConditionType> entry : this.lootConditions.entrySet()) {
+                for (final Entry<ResourceLocation, LootItemConditionType> entry : this.lootConditions.entrySet()) {
 
-                // No Forge registry for this yet.
-                Registry.register(Registry.LOOT_CONDITION_TYPE, entry.getKey(), entry.getValue());
-                this.logger.debug("Registered Loot Condition \"{}\" with type {}.", entry.getKey(), entry.getValue().getClass().getName());
-            }
+                    // No Forge registry for this yet.
+                    Registry.register(Registry.LOOT_CONDITION_TYPE, entry.getKey(), entry.getValue());
+                    this.logger.debug("Registered Loot Condition \"{}\" with type {}.", entry.getKey(), entry.getValue().getClass().getName());
+                }
+            });
         }
     }
 }
