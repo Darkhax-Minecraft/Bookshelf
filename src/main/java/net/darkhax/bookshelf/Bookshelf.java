@@ -23,7 +23,6 @@ import net.darkhax.bookshelf.crafting.block.BlockIngredientTestState;
 import net.darkhax.bookshelf.crafting.item.IngredientEnchantmentType;
 import net.darkhax.bookshelf.crafting.item.IngredientModid;
 import net.darkhax.bookshelf.crafting.item.IngredientPotion;
-import net.darkhax.bookshelf.crafting.item.IngredientToolType;
 import net.darkhax.bookshelf.crafting.predicate.ItemPredicateIngredient;
 import net.darkhax.bookshelf.crafting.predicate.ItemPredicateModid;
 import net.darkhax.bookshelf.crafting.recipes.ShapedRecipeDamaging;
@@ -54,16 +53,9 @@ import net.darkhax.bookshelf.loot.modifier.ModifierSilkTouch;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.commands.synchronization.EmptyArgumentSerializer;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.ShearsItem;
-import net.minecraft.world.item.ShovelItem;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -152,12 +144,6 @@ public final class Bookshelf {
         // Ingredients
         this.registry.ingredients.register("potion", IngredientPotion.SERIALIZER);
         this.registry.ingredients.register("modid", IngredientModid.SERIALIZER);
-        this.registry.ingredients.register("any_axe", IngredientToolType.create(i -> i instanceof AxeItem, ToolType.AXE));
-        this.registry.ingredients.register("any_hoe", IngredientToolType.create(i -> i instanceof HoeItem, ToolType.HOE));
-        this.registry.ingredients.register("any_pickaxe", IngredientToolType.create(i -> i instanceof PickaxeItem, ToolType.PICKAXE));
-        this.registry.ingredients.register("any_shovel", IngredientToolType.create(i -> i instanceof ShovelItem, ToolType.SHOVEL));
-        this.registry.ingredients.register("any_sword", IngredientToolType.create(i -> i instanceof SwordItem, null));
-        this.registry.ingredients.register("any_shear", IngredientToolType.create(i -> i instanceof ShearsItem, null));
 
         this.registry.ingredients.register("enchant_armor", IngredientEnchantmentType.create(EnchantmentCategory.ARMOR));
         this.registry.ingredients.register("enchant_armor_feet", IngredientEnchantmentType.create(EnchantmentCategory.ARMOR_FEET));
