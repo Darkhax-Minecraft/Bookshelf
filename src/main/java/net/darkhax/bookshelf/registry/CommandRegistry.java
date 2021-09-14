@@ -52,8 +52,15 @@ public class CommandRegistry {
         }
     }
     
+    /**
+     * @deprecated The static instantiation of commands seems to make some mixin mods very
+     *             unhappy. As a result this approach to registering commands has been
+     *             deprecated and will be removed in future updates.
+     */
+    @Deprecated
     public LiteralArgumentBuilder<CommandSource> registerCommand (LiteralArgumentBuilder<CommandSource> command) {
         
+        this.logger.error("Registered a command using a deprecated method. This will cause errors! {]", command);
         this.commands.add(command);
         return command;
     }
@@ -62,7 +69,7 @@ public class CommandRegistry {
         
         if (!this.commands.isEmpty()) {
             
-            this.logger.info("Registering {} commands.", this.commands.size());
+            this.logger.info("Registering {} commands. This mod is using a deprecated system!", this.commands.size());
             final CommandDispatcher<CommandSource> dispatcher = event.getDispatcher();
             
             for (final LiteralArgumentBuilder<CommandSource> command : this.commands) {
