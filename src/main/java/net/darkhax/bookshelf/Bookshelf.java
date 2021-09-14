@@ -12,6 +12,8 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+
 import net.darkhax.bookshelf.command.ArgumentTypeLootTable;
 import net.darkhax.bookshelf.command.ArgumentTypeMod;
 import net.darkhax.bookshelf.crafting.block.BlockIngredient;
@@ -32,7 +34,9 @@ import net.darkhax.bookshelf.crafting.recipes.smithing.SmithingRecipeEnchantment
 import net.darkhax.bookshelf.crafting.recipes.smithing.SmithingRecipeFont;
 import net.darkhax.bookshelf.crafting.recipes.smithing.SmithingRecipeRepairCost;
 import net.darkhax.bookshelf.internal.command.ArgumentTypeHandOutput;
-import net.darkhax.bookshelf.internal.command.BookshelfCommands;
+import net.darkhax.bookshelf.internal.command.CommandHand;
+import net.darkhax.bookshelf.internal.command.CommandLootChest;
+import net.darkhax.bookshelf.internal.command.CommandTranslate;
 import net.darkhax.bookshelf.loot.condition.CheckBiomeTag;
 import net.darkhax.bookshelf.loot.condition.CheckDimensionId;
 import net.darkhax.bookshelf.loot.condition.CheckEnchantability;
@@ -53,6 +57,8 @@ import net.darkhax.bookshelf.loot.modifier.ModifierRecipe;
 import net.darkhax.bookshelf.loot.modifier.ModifierSilkTouch;
 import net.darkhax.bookshelf.registry.RegistryHelper;
 import net.minecraft.advancements.criterion.ItemPredicate;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.ArgumentSerializer;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.item.AxeItem;
@@ -63,29 +69,31 @@ import net.minecraft.item.ShovelItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.loot.LootConditionType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(Bookshelf.MOD_ID)
 public final class Bookshelf {
-
+    
     public static Bookshelf instance;
-
+    
     // System Constants
     public static final Random RANDOM = new Random();
-
+    
     public static final String NEW_LINE = System.getProperty("line.separator");
-
+    
     // Mod Constants
     public static final String MOD_ID = "bookshelf";
-
+    
     public static final String MOD_NAME = "Bookshelf";
-
+    
     public static final Logger LOG = LogManager.getLogger(MOD_NAME);
-
+    
     private final RegistryHelper registry = new RegistryHelper(MOD_ID, LOG);
-
+    
     public final LootConditionType conditionIsMob;
     public final LootConditionType conditionCheckVillage;
     public final LootConditionType conditionCheckStructure;
@@ -99,17 +107,17 @@ public final class Bookshelf {
     public final LootConditionType conditionCheckEnchantability;
     public final LootConditionType conditionCheckBiomeTag;
     public final LootConditionType conditionCheckDimension;
-
-    public Bookshelf () {
-
+    
+    public Bookshelf() {
+        
         // Commands
-        new BookshelfCommands(this.registry);
-
+        MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
+        
         // Command arguments
         this.registry.commands.registerCommandArgument("enum", ArgumentTypeHandOutput.class, new ArgumentTypeHandOutput.Serialzier());
         this.registry.commands.registerCommandArgument("mod", ArgumentTypeMod.class, new ArgumentSerializer<>( () -> ArgumentTypeMod.INSTACE));
         this.registry.commands.registerCommandArgument("loot", ArgumentTypeLootTable.class, new ArgumentSerializer<>( () -> ArgumentTypeLootTable.INSTACE));
-
+        
         // Loot Modifier
         this.registry.lootModifiers.register(ModifierClear.SERIALIZER, "clear");
         this.registry.lootModifiers.register(ModifierSilkTouch.SERIALIZER, "silk_touch");
@@ -122,7 +130,7 @@ public final class Bookshelf {
         this.registry.lootModifiers.register(ModifierRecipe.STONECUT, "stonecutting");
         this.registry.lootModifiers.register(ModifierRecipe.SMITHING, "smithing");
         this.registry.lootModifiers.register(ModifierAddItem.SERIALIZER, "add_item");
-
+        
         // Loot Conditions
         this.conditionIsMob = this.registry.lootConditions.register(EntityIsMob.SERIALIZER, "is_mob");
         this.conditionCheckVillage = this.registry.lootConditions.register(CheckVillage.SERIALIZER, "check_village");
@@ -137,18 +145,18 @@ public final class Bookshelf {
         this.conditionCheckEnchantability = this.registry.lootConditions.register(CheckEnchantability.SERIALIZER, "check_enchantability");
         this.conditionCheckBiomeTag = this.registry.lootConditions.register(CheckBiomeTag.SERIALIZER, "check_biome_tag");
         this.conditionCheckDimension = this.registry.lootConditions.register(CheckDimensionId.SERIALIZER, "check_dimension");
-
+        
         // Item Predicates
         ItemPredicate.register(new ResourceLocation("bookshelf", "modid"), ItemPredicateModid::fromJson);
         ItemPredicate.register(new ResourceLocation("bookshelf", "ingredient"), ItemPredicateIngredient::fromJson);
-
+        
         // Recipe Serializers
         this.registry.recipeSerializers.register(ShapedRecipeDamaging.SERIALIZER, "crafting_shaped_with_damage");
         this.registry.recipeSerializers.register(ShapelessRecipeDamage.SERIALIZER, "crafting_shapeless_with_damage");
         this.registry.recipeSerializers.register(SmithingRecipeFont.SERIALIZER, "smithing_font");
         this.registry.recipeSerializers.register(SmithingRecipeRepairCost.SERIALIZER, "smithing_repair_cost");
         this.registry.recipeSerializers.register(SmithingRecipeEnchantment.SERIALIZER, "smithing_enchant");
-
+        
         // Ingredients
         this.registry.ingredients.register("potion", IngredientPotion.SERIALIZER);
         this.registry.ingredients.register("modid", IngredientModid.SERIALIZER);
@@ -158,7 +166,7 @@ public final class Bookshelf {
         this.registry.ingredients.register("any_shovel", IngredientToolType.create(i -> i instanceof ShovelItem, ToolType.SHOVEL));
         this.registry.ingredients.register("any_sword", IngredientToolType.create(i -> i instanceof SwordItem, null));
         this.registry.ingredients.register("any_shear", IngredientToolType.create(i -> i instanceof ShearsItem, null));
-
+        
         this.registry.ingredients.register("enchant_armor", IngredientEnchantmentType.create(EnchantmentType.ARMOR));
         this.registry.ingredients.register("enchant_armor_feet", IngredientEnchantmentType.create(EnchantmentType.ARMOR_FEET));
         this.registry.ingredients.register("enchant_armor_legs", IngredientEnchantmentType.create(EnchantmentType.ARMOR_LEGS));
@@ -173,14 +181,24 @@ public final class Bookshelf {
         this.registry.ingredients.register("enchant_wearable", IngredientEnchantmentType.create(EnchantmentType.WEARABLE));
         this.registry.ingredients.register("enchant_crossbow", IngredientEnchantmentType.create(EnchantmentType.CROSSBOW));
         this.registry.ingredients.register("enchant_vanishable", IngredientEnchantmentType.create(EnchantmentType.VANISHABLE));
-
+        
         // Block Ingredients
         BlockIngredient.register(BlockIngredientAny.SERIALIZER, BlockIngredientAny.ID);
         BlockIngredient.register(BlockIngredientCheckState.SERIALIZER, BlockIngredientCheckState.ID);
         BlockIngredient.register(BlockIngredientCheckBlock.SERIALIZER, BlockIngredientCheckBlock.ID);
         BlockIngredient.register(BlockIngredientCheckTag.SERIALIZER, BlockIngredientCheckTag.ID);
         BlockIngredient.register(BlockIngredientTestState.SERIALIZER, BlockIngredientTestState.ID);
-
+        
         this.registry.initialize(FMLJavaModLoadingContext.get().getModEventBus());
+    }
+    
+    private void registerCommands (RegisterCommandsEvent event) {
+        
+        final LiteralArgumentBuilder<CommandSource> root = Commands.literal("bookshelf");
+        new CommandHand(root);
+        new CommandTranslate(root);
+        new CommandLootChest(root);
+        
+        event.getDispatcher().register(root);
     }
 }
