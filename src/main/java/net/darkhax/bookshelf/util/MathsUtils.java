@@ -21,12 +21,12 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
 
 public final class MathsUtils {
-
+    
     /**
      * A decimal format that only preserves two decimal places.
      */
     public static final DecimalFormat DECIMAL_2 = new DecimalFormat("##.##");
-
+    
     /**
      * Checks if a double is within range of two other doubles.
      *
@@ -36,10 +36,10 @@ public final class MathsUtils {
      * @return boolean: Whether or not the value is within the provided scope.
      */
     public static boolean isInRange (double min, double max, double value) {
-
+        
         return value <= max && value >= min;
     }
-
+    
     /**
      * Calculates the distance between two Vec3 positions.
      *
@@ -48,14 +48,14 @@ public final class MathsUtils {
      * @return double: The distance between the two provided locations.
      */
     public static double getDistanceBetweenPoints (Vector3d firstPos, Vector3d secondPos) {
-
+        
         final double distanceX = firstPos.x - secondPos.x;
         final double distanceY = firstPos.y - secondPos.y;
         final double distanceZ = firstPos.z - secondPos.z;
-
+        
         return Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
     }
-
+    
     /**
      * This method can be used to round a double to a certain amount of places.
      *
@@ -65,10 +65,10 @@ public final class MathsUtils {
      *         specified.
      */
     public static double round (double value, int places) {
-
+        
         return value >= 0 && places > 0 ? BigDecimal.valueOf(value).setScale(places, RoundingMode.HALF_UP).doubleValue() : value;
     }
-
+    
     /**
      * Used to retrieve a random integer between the two provided integers. The integers
      * provided are also possible outcomes.
@@ -80,10 +80,10 @@ public final class MathsUtils {
      * @return An integer between the min and max, including the min and max.
      */
     public static int nextIntInclusive (Random rand, int min, int max) {
-
+        
         return rand.nextInt(max - min + 1) + min;
     }
-
+    
     /**
      * A method which handles the calculating of percentages. While this isn't a particularly
      * difficult piece of code, it has been added for the sake of simplicity.
@@ -92,10 +92,10 @@ public final class MathsUtils {
      * @return boolean: Returns are randomly true or false, based on the suplied percentage.
      */
     public static boolean tryPercentage (double percent) {
-
+        
         return Math.random() < percent;
     }
-
+    
     /**
      * Gets the middle integer between two other integers. The order is not important.
      *
@@ -104,10 +104,10 @@ public final class MathsUtils {
      * @return int: The integer that is between the two provided integers.
      */
     public static int getAverage (int first, int second) {
-
+        
         return Math.round((first + second) / 2.0F);
     }
-
+    
     /**
      * Converts time in ticks to a human readable string.
      *
@@ -115,12 +115,12 @@ public final class MathsUtils {
      * @return String: A human readable version of the time.
      */
     public static String ticksToTime (int ticks) {
-
+        
         final int seconds = ticks / 20;
         final int minutes = seconds / 60;
         return minutes + ":" + seconds;
     }
-
+    
     /**
      * Gets the percentage of an integer. Result is an integer and decimal is lost.
      *
@@ -129,10 +129,10 @@ public final class MathsUtils {
      * @return The percentage as an integer.
      */
     public static int getPercentage (int value, int total) {
-
+        
         return (int) ((float) value / (float) total * 100f);
     }
-
+    
     /**
      * Gets the distance in world for an amount of pixels. A basic block is a cubic meter, and
      * each pixel is 1/16th of a block.
@@ -141,10 +141,10 @@ public final class MathsUtils {
      * @return The distance in game for those pixels.
      */
     public static double getPixelDistance (int pixels) {
-
+        
         return pixels / 16d;
     }
-
+    
     /**
      * Creates a bounding box using pixel size.
      *
@@ -157,10 +157,10 @@ public final class MathsUtils {
      * @return A bounding box that is made to a pixel specific size.
      */
     public static AxisAlignedBB getBoundsForPixels (int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-
+        
         return new AxisAlignedBB(getPixelDistance(minX), getPixelDistance(minY), getPixelDistance(minZ), getPixelDistance(maxX), getPixelDistance(maxY), getPixelDistance(maxZ));
     }
-
+    
     /**
      * Takes an integer value and fits it within a range. If the initial value is less than the
      * minimum it will be set to the minimum. If the initial value is greater than the maximum
@@ -172,10 +172,10 @@ public final class MathsUtils {
      * @return The adjusted value.
      */
     public static int adjustToRange (int initial, int min, int max) {
-
+        
         return initial < min ? min : initial > max ? max : initial;
     }
-
+    
     /**
      * Multiplies an int packed color and returns a new int packed number.
      *
@@ -185,15 +185,15 @@ public final class MathsUtils {
      * @return The resulting color as a packed integer.
      */
     public static int multiplyColor (int color, float factor) {
-
+        
         final int a = color >> 24 & 0xFF;
         final int r = (int) ((color >> 16 & 0xFF) * factor);
         final int g = (int) ((color >> 8 & 0xFF) * factor);
         final int b = (int) ((color & 0xFF) * factor);
-
+        
         return a << 24 | r << 16 | g << 8 | b;
     }
-
+    
     /**
      * Creates a rotated variant of a voxel shape for each horizontal direction. The
      * default/base input is expected to be oriented north.
@@ -207,12 +207,12 @@ public final class MathsUtils {
      * @return A map containing rotated shape variants for each horizontal direction.
      */
     public static Map<Direction, VoxelShape> createHorizontalShapes (double x1, double y1, double z1, double x2, double y2, double z2) {
-
+        
         final Map<Direction, VoxelShape> shapes = new EnumMap<>(Direction.class);
         Direction.Plane.HORIZONTAL.forEach(dir -> shapes.put(dir, rotateShape(dir, x1, y1, z1, x2, y2, z2)));
         return shapes;
     }
-
+    
     /**
      * Creates a voxel shape that has been rotated a given direction. The default/base input is
      * expected to be oriented north. Thanks to Gigaherz for writing the original version of
@@ -228,7 +228,7 @@ public final class MathsUtils {
      * @return A voxel shape that has been rotated in the specified direction.
      */
     public static VoxelShape rotateShape (Direction facing, double x1, double y1, double z1, double x2, double y2, double z2) {
-
+        
         switch (facing) {
             case NORTH:
                 return Block.box(x1, y1, z1, x2, y2, z2);

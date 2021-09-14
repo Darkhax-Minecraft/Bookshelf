@@ -13,20 +13,20 @@ import net.minecraft.util.math.vector.Vector3d;
  * the test will fail.
  */
 public abstract class LootConditionPositional implements ILootCondition {
-
+    
     /**
      * The predicate to apply at the given position.
      */
     private final BiPredicate<LootContext, BlockPos> predicate;
-
-    public LootConditionPositional (BiPredicate<LootContext, BlockPos> predicate) {
-
+    
+    public LootConditionPositional(BiPredicate<LootContext, BlockPos> predicate) {
+        
         this.predicate = predicate;
     }
-
+    
     @Override
     public boolean test (LootContext ctx) {
-
+        
         final Vector3d pos = ctx.getParamOrNull(LootParameters.ORIGIN);
         return pos != null && this.predicate.test(ctx, new BlockPos(pos));
     }

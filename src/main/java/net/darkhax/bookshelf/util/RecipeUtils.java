@@ -25,7 +25,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public final class RecipeUtils {
-
+    
     /**
      * Looks up the map of all known recipes for a given recipe type.
      *
@@ -37,10 +37,10 @@ public final class RecipeUtils {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static <T extends IRecipe<?>> Map<ResourceLocation, T> getRecipes (IRecipeType<T> recipeType, RecipeManager manager) {
-
+        
         return (Map) manager.recipes.getOrDefault(recipeType, Collections.emptyMap());
     }
-
+    
     /**
      * Gets a list of all recipes for a given recipe type. This list will be sorted using the
      * translation key of the output item.
@@ -51,10 +51,10 @@ public final class RecipeUtils {
      * @return A list of recipes for the given recipe type.
      */
     public static <T extends IRecipe<?>> List<T> getRecipeList (IRecipeType<T> recipeType, RecipeManager manager) {
-
+        
         return getRecipeList(recipeType, manager, Comparator.comparing(recipe -> recipe.getResultItem().getDescriptionId()));
     }
-
+    
     /**
      * Gets a list of all recipes for a given recipe type. This list will be sorted using the
      * provided comparator.
@@ -66,10 +66,10 @@ public final class RecipeUtils {
      * @return A list of recipes for the given recipe type.
      */
     public static <T extends IRecipe<?>> List<T> getRecipeList (IRecipeType<T> recipeType, RecipeManager manager, Comparator<T> comparator) {
-
+        
         return getRecipes(recipeType, manager).values().stream().sorted(comparator).collect(Collectors.toList());
     }
-
+    
     /**
      * Gets all recipes for a given recipe type.
      *
@@ -80,10 +80,10 @@ public final class RecipeUtils {
      * @return A map of recipes keyed to their IDs.
      */
     public static <C extends IInventory, T extends IRecipe<C>> Map<ResourceLocation, IRecipe<C>> getRecipes (World world, IRecipeType<T> recipeType) {
-
+        
         return getRecipes(world.getRecipeManager(), recipeType);
     }
-
+    
     /**
      * Gets all recipes for a given recipe type.
      *
@@ -94,10 +94,10 @@ public final class RecipeUtils {
      * @return A map of recipes keyed to their IDs.
      */
     public static <C extends IInventory, T extends IRecipe<C>> Map<ResourceLocation, IRecipe<C>> getRecipes (RecipeManager manager, IRecipeType<T> recipeType) {
-
+        
         return manager.byType(recipeType);
     }
-
+    
     /**
      * Creates an ingredient using an array of item tags.
      *
@@ -106,7 +106,7 @@ public final class RecipeUtils {
      */
     @SafeVarargs
     public static Ingredient ingredientFromTags (Tag<Item>... tags) {
-
+        
         return Ingredient.of(Arrays.stream(tags).flatMap(t -> t.getValues().stream()).toArray(Item[]::new));
     }
 }

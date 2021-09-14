@@ -21,42 +21,42 @@ import net.minecraft.inventory.Inventory;
  * system instead!
  */
 public class InventoryListenable extends Inventory {
-
+    
     /**
      * The listener. This may be null.
      */
     @Nullable
     private Consumer<IInventory> listener;
-
-    public InventoryListenable (int size) {
-
+    
+    public InventoryListenable(int size) {
+        
         this(size, null);
     }
-
-    public InventoryListenable (int size, Consumer<IInventory> listener) {
-
+    
+    public InventoryListenable(int size, Consumer<IInventory> listener) {
+        
         super(size);
         this.listener = listener;
     }
-
+    
     @Override
     public void setChanged () {
-
+        
         super.setChanged();
-
+        
         if (this.listener != null) {
-
+            
             this.listener.accept(this);
         }
     }
-
+    
     /**
      * Sets the inventory listener.
      *
      * @param listener The new listener. Null can be used to remove the existing listener.
      */
     public void setInventoryListener (@Nullable Consumer<IInventory> listener) {
-
+        
         this.listener = listener;
     }
 }

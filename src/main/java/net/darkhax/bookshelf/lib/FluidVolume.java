@@ -12,35 +12,35 @@ package net.darkhax.bookshelf.lib;
  * many other mods which deal with fluid values.
  */
 public enum FluidVolume {
-
+    
     NUGGET(16),
     INGOT(144),
     BOTTLE(333),
     BUCKET(1000),
     BLOCK(1296);
-
+    
     /**
      * The amount of mb which make up this amount.
      */
     private final int amount;
-
+    
     /**
      * A simple enumeration used to list how many milibuckets is in a given measurement.
      *
      * @param amount The amount of milibuckets in the measurement.
      */
-    FluidVolume (int amount) {
-
+    FluidVolume(int amount) {
+        
         this.amount = amount;
     }
-
+    
     /**
      * Gets the amount of fluid for this volume.
      *
      * @return The amount of fluid in this volume.
      */
     public int getAmount () {
-
+        
         return this.amount;
     }
 }

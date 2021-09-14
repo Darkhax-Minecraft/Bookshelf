@@ -21,39 +21,39 @@ import net.minecraft.item.ItemStack;
  * optional listener for when an item is inputed.
  */
 public class SlotInput extends Slot {
-
+    
     /**
      * A predicate used to determine what can be placed in the slot.
      */
     private final Predicate<ItemStack> inputValidator;
-
+    
     /**
      * A listener for when an item is placed into the slot.
      */
     @Nullable
     private final Consumer<ItemStack> inputListener;
-
-    public SlotInput (IInventory inventory, int index, int xPosition, int yPosition, @Nullable Predicate<ItemStack> inputValidator, Consumer<ItemStack> inputListener) {
-
+    
+    public SlotInput(IInventory inventory, int index, int xPosition, int yPosition, @Nullable Predicate<ItemStack> inputValidator, Consumer<ItemStack> inputListener) {
+        
         super(inventory, index, xPosition, yPosition);
         this.inputValidator = inputValidator;
         this.inputListener = inputListener;
     }
-
+    
     @Override
     public boolean mayPlace (ItemStack stack) {
-
+        
         return this.inputValidator.test(stack);
     }
-
+    
     @Override
     public void set (ItemStack stack) {
-
+        
         if (this.inputListener != null) {
-
+            
             this.inputListener.accept(stack);
         }
-
+        
         super.set(stack);
     }
 }

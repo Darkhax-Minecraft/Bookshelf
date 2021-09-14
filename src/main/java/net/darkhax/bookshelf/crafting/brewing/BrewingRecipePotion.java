@@ -13,24 +13,24 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraftforge.common.brewing.BrewingRecipe;
 
 public class BrewingRecipePotion extends BrewingRecipe {
-
-    public BrewingRecipePotion (Item input, EffectInstance... effects) {
-
+    
+    public BrewingRecipePotion(Item input, EffectInstance... effects) {
+        
         super(IngredientPotion.AWKWARD, Ingredient.of(input), PotionUtils.setCustomEffects(new ItemStack(Items.POTION), Arrays.asList(effects)));
     }
-
-    public BrewingRecipePotion (Item input, Potion potion) {
-
+    
+    public BrewingRecipePotion(Item input, Potion potion) {
+        
         super(IngredientPotion.AWKWARD, Ingredient.of(input), PotionUtils.setPotion(new ItemStack(Items.POTION), potion));
     }
-
-    public BrewingRecipePotion (ItemStack input, EffectInstance... effects) {
-
+    
+    public BrewingRecipePotion(ItemStack input, EffectInstance... effects) {
+        
         super(IngredientPotion.AWKWARD, Ingredient.of(input), PotionUtils.setCustomEffects(new ItemStack(Items.POTION), Arrays.asList(effects)));
     }
-
-    public BrewingRecipePotion (ItemStack input, Potion potion) {
-
+    
+    public BrewingRecipePotion(ItemStack input, Potion potion) {
+        
         super(IngredientPotion.AWKWARD, Ingredient.of(input), PotionUtils.setPotion(new ItemStack(Items.POTION), potion));
     }
 }

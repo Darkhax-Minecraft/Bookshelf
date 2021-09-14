@@ -25,7 +25,7 @@ import net.minecraftforge.common.loot.LootModifier;
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ModifierRecipe extends LootModifier {
-
+    
     public static final GlobalLootModifierSerializer CRAFTING = createModifier(conditions -> new ModifierRecipe(conditions, IRecipeType.CRAFTING));
     public static final GlobalLootModifierSerializer SMELTING = createModifier(conditions -> new ModifierRecipe(conditions, IRecipeType.SMELTING));
     public static final GlobalLootModifierSerializer BLASTING = createModifier(conditions -> new ModifierRecipe(conditions, IRecipeType.BLASTING));
@@ -33,66 +33,66 @@ public class ModifierRecipe extends LootModifier {
     public static final GlobalLootModifierSerializer CAMPFIRE = createModifier(conditions -> new ModifierRecipe(conditions, IRecipeType.CAMPFIRE_COOKING));
     public static final GlobalLootModifierSerializer STONECUT = createModifier(conditions -> new ModifierRecipe(conditions, IRecipeType.STONECUTTING));
     public static final GlobalLootModifierSerializer SMITHING = createModifier(conditions -> new ModifierRecipe(conditions, IRecipeType.SMITHING));
-
+    
     private final IRecipeType recipeType;
-
-    public ModifierRecipe (ILootCondition[] conditions, IRecipeType type) {
-
+    
+    public ModifierRecipe(ILootCondition[] conditions, IRecipeType type) {
+        
         super(conditions);
         this.recipeType = type;
     }
-
+    
     @Nonnull
     @Override
     public List<ItemStack> doApply (List<ItemStack> loot, LootContext ctx) {
-
+        
         return loot.stream().map(stack -> this.craft(stack, ctx)).collect(Collectors.toList());
     }
-
+    
     private ItemStack craft (ItemStack stack, LootContext ctx) {
-
+        
         try {
-
+            
             final List<IRecipe> matchingRecipes = ctx.getLevel().getRecipeManager().getRecipesFor(this.recipeType, new Inventory(stack), ctx.getLevel());
-
+            
             if (!matchingRecipes.isEmpty()) {
-
+                
                 final IRecipe recipe = matchingRecipes.get(ctx.getLevel().random.nextInt(matchingRecipes.size()));
-
+                
                 if (recipe != null) {
-
+                    
                     final ItemStack output = recipe.getResultItem();
-
+                    
                     if (output != null && !output.isEmpty()) {
-
+                        
                         return output;
                     }
                 }
             }
         }
-
+        
         catch (final Exception e) {
-
+            
             Bookshelf.LOG.error("The following error is with another mod or your configs. Do not report it to Bookshelf!");
             Bookshelf.LOG.catching(e);
         }
-
+        
         return stack;
     }
-
+    
     public static GlobalLootModifierSerializer<ModifierRecipe> createModifier (Function<ILootCondition[], ModifierRecipe> function) {
-
+        
         return new GlobalLootModifierSerializer<ModifierRecipe>() {
-
+            
             @Override
             public ModifierRecipe read (ResourceLocation location, JsonObject object, ILootCondition[] ailootcondition) {
-
+                
                 return function.apply(ailootcondition);
             }
-
+            
             @Override
             public JsonObject write (ModifierRecipe instance) {
-
+                
                 return new JsonObject();
             }
         };

@@ -15,7 +15,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 
 public final class SkullUtils {
-
+    
     /**
      * Create a skull from an instance of PlayerEntity.
      *
@@ -23,10 +23,10 @@ public final class SkullUtils {
      * @return ItemStack An ItemStack containing a skull that represents the passed player.
      */
     public static ItemStack createSkull (PlayerEntity player) {
-
+        
         return createSkull(player.getGameProfile().getName(), player.getUUID());
     }
-
+    
     /**
      * Creates a skull using a players UUID.
      *
@@ -36,7 +36,7 @@ public final class SkullUtils {
      *         passed UUID.
      */
     public static ItemStack createSkull (String name, UUID uuid) {
-
+        
         final ItemStack stack = new ItemStack(Items.PLAYER_HEAD, 1);
         final CompoundNBT ownerTag = new CompoundNBT();
         ownerTag.putString("Name", name);

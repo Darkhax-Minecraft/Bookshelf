@@ -26,7 +26,7 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
 
 public final class WorldUtils {
-
+    
     /**
      * Gets the amount of loaded chunks.
      *
@@ -34,10 +34,10 @@ public final class WorldUtils {
      * @return The amount of chunks. -1 means it was unable to get the amount.
      */
     public static int getLoadedChunks (ServerWorld world) {
-
+        
         return world.getChunkSource() != null ? world.getChunkSource().getLoadedChunksCount() : -1;
     }
-
+    
     /**
      * Checks if two block positions are in the same chunk in a given world.
      *
@@ -46,10 +46,10 @@ public final class WorldUtils {
      * @return Whether or not the two positions are in the same chunk.
      */
     public static boolean areSameChunk (BlockPos first, BlockPos second) {
-
+        
         return new ChunkPos(first).equals(new ChunkPos(second));
     }
-
+    
     /**
      * Gets a list of 9 chunks in a 3x3 area, centered around the passed chunk.
      *
@@ -58,10 +58,10 @@ public final class WorldUtils {
      * @return A list of 9 chunks that are near the passed chunk, as well as the initial chunk.
      */
     public static List<Chunk> getNearbyChunks (World world, Chunk chunk) {
-
+        
         return getNearbyChunks(world, chunk.getPos());
     }
-
+    
     /**
      * Gets a list of 9 chunks in a 3x3 area, centered around the passed chunk position.
      *
@@ -71,18 +71,18 @@ public final class WorldUtils {
      *         the passed position.
      */
     public static List<Chunk> getNearbyChunks (World world, ChunkPos chunk) {
-
+        
         final List<Chunk> chunks = new ArrayList<>();
-
+        
         for (int offX = -1; offX < 2; offX++) {
             for (int offY = -1; offY < 2; offY++) {
                 chunks.add(world.getChunk(chunk.x + offX, chunk.z + offY));
             }
         }
-
+        
         return chunks;
     }
-
+    
     /**
      * Checks if a player is within distance of a block, and they are able to use it.
      *
@@ -93,10 +93,10 @@ public final class WorldUtils {
      * @return Whether or not the distance and predicate are valid.
      */
     public static boolean isWithinDistanceAndUsable (IWorldPosCallable worldPos, PlayerEntity player, Predicate<BlockState> statePredicate, double maxDistance) {
-
+        
         return worldPos.evaluate( (world, pos) -> statePredicate.test(world.getBlockState(pos)) && player.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= maxDistance, true);
     }
-
+    
     /**
      * Checks if a given position is within a slime chunk.
      *
@@ -106,10 +106,10 @@ public final class WorldUtils {
      * @return Whether or not the given position is in a slime chunk.
      */
     public static boolean isSlimeChunk (ServerWorld world, BlockPos pos) {
-
+        
         return SharedSeedRandom.seedSlimeChunk(pos.getX() >> 4, pos.getZ() >> 4, world.getSeed(), 987234911L).nextInt(10) == 0;
     }
-
+    
     /**
      * Gets the water depth of a given entity based on it's eye height position.
      *
@@ -118,10 +118,10 @@ public final class WorldUtils {
      * @return The depth of the given entity.
      */
     public static int getWaterDepth (LivingEntity living, boolean toAir) {
-
+        
         return getWaterDepth(living.level, new BlockPos(living.getX(), living.getY() + living.getEyeHeight(), living.getZ()), toAir);
     }
-
+    
     /**
      * Gets the depth of a given position within water. Scans upwards to find the surface.
      *
@@ -131,20 +131,20 @@ public final class WorldUtils {
      * @return The depth of the given position.
      */
     public static int getWaterDepth (World world, BlockPos startingPos, boolean toAir) {
-
+        
         final BlockPos.Mutable depthPos = startingPos.mutable();
-
+        
         int depth = 0;
-
+        
         while (!World.isOutsideBuildHeight(depthPos) && (world.isWaterAt(depthPos) || toAir && !world.isEmptyBlock(depthPos))) {
-
+            
             depth++;
             depthPos.move(Direction.UP);
         }
-
+        
         return depth;
     }
-
+    
     /**
      * Sends a vanilla packet to all players who are aware of a chunk.
      *
@@ -154,10 +154,10 @@ public final class WorldUtils {
      * @param boundaryOnly Whether or not you only want chunks at the end of the view distance.
      */
     public static void sendToTracking (ServerWorld world, ChunkPos chunkPos, IPacket<?> packet, boolean boundaryOnly) {
-
+        
         world.getChunkSource().chunkMap.getPlayers(chunkPos, boundaryOnly).forEach(p -> p.connection.send(packet));
     }
-
+    
     /**
      * Checks if a given BlockPos is within the bounds of a structure.
      *
@@ -167,7 +167,7 @@ public final class WorldUtils {
      * @return Whether or not the position was within that structure.
      */
     public static boolean isInStructure (ServerWorld world, BlockPos pos, Structure<?> structure) {
-
+        
         return world.structureFeatureManager().getStructureAt(pos, true, structure).isValid();
     }
 }

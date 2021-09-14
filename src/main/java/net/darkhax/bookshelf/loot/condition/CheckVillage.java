@@ -14,37 +14,37 @@ import net.minecraft.util.math.BlockPos;
  * A loot condition that checks for a village.
  */
 public class CheckVillage extends LootConditionPositional {
-
+    
     public static final Serializer SERIALIZER = new Serializer();
-
-    private CheckVillage () {
-
+    
+    private CheckVillage() {
+        
         super(CheckVillage::test);
     }
-
+    
     private static boolean test (LootContext ctx, BlockPos pos) {
-
+        
         return ctx.getLevel().isVillage(pos);
     }
-
+    
     @Override
     public LootConditionType getType () {
-
+        
         return Bookshelf.instance.conditionCheckVillage;
     }
-
+    
     private static class Serializer implements ILootSerializer<CheckVillage> {
-
+        
         private final CheckVillage instance = new CheckVillage();
-
+        
         @Override
         public void serialize (JsonObject json, CheckVillage value, JsonSerializationContext context) {
-
+            
         }
-
+        
         @Override
         public CheckVillage deserialize (JsonObject json, JsonDeserializationContext context) {
-
+            
             return this.instance;
         }
     }

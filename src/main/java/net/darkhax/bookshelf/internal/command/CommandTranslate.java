@@ -10,14 +10,14 @@ import net.minecraft.command.Commands;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class CommandTranslate {
-
-    public CommandTranslate (LiteralArgumentBuilder<CommandSource> root) {
-
+    
+    public CommandTranslate(LiteralArgumentBuilder<CommandSource> root) {
+        
         root.then(Commands.literal("translate").then(Commands.argument("key", StringArgumentType.greedyString()).executes(this::translate)));
     }
-
+    
     private int translate (CommandContext<CommandSource> context) throws CommandSyntaxException {
-
+        
         final String translationKey = StringArgumentType.getString(context, "key");
         context.getSource().sendSuccess(new TranslationTextComponent(translationKey), false);
         return 0;

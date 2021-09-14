@@ -14,7 +14,7 @@ import net.minecraft.command.CommandSource;
  */
 @FunctionalInterface
 public interface BooleanCommand {
-
+    
     /**
      * Handles the execution of your command.
      *

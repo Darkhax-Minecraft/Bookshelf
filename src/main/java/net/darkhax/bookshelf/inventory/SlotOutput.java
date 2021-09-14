@@ -20,38 +20,38 @@ import net.minecraft.item.ItemStack;
  * item is taken from the slot.
  */
 public class SlotOutput extends Slot {
-
+    
     /**
      * A predicate that validates what items can be placed in this slot.
      */
     private final Predicate<ItemStack> inputValidator;
-
+    
     /**
      * A listener that is called when an item is removed from the slot.
      */
     private final BiFunction<PlayerEntity, ItemStack, ItemStack> takeListener;
-
-    public SlotOutput (IInventory inventory, int index, int xPosition, int yPosition, BiFunction<PlayerEntity, ItemStack, ItemStack> takeListener) {
-
+    
+    public SlotOutput(IInventory inventory, int index, int xPosition, int yPosition, BiFunction<PlayerEntity, ItemStack, ItemStack> takeListener) {
+        
         this(inventory, index, xPosition, yPosition, stack -> false, takeListener);
     }
-
-    public SlotOutput (IInventory inventory, int index, int xPosition, int yPosition, Predicate<ItemStack> inputValidator, BiFunction<PlayerEntity, ItemStack, ItemStack> takeListener) {
-
+    
+    public SlotOutput(IInventory inventory, int index, int xPosition, int yPosition, Predicate<ItemStack> inputValidator, BiFunction<PlayerEntity, ItemStack, ItemStack> takeListener) {
+        
         super(inventory, index, xPosition, yPosition);
         this.inputValidator = inputValidator;
         this.takeListener = takeListener;
     }
-
+    
     @Override
     public boolean mayPlace (ItemStack stack) {
-
+        
         return this.inputValidator.test(stack);
     }
-
+    
     @Override
     public ItemStack onTake (PlayerEntity player, ItemStack stack) {
-
+        
         final ItemStack stackToTake = this.takeListener.apply(player, stack);
         this.setChanged();
         return stackToTake;

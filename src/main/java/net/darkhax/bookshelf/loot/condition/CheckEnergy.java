@@ -23,60 +23,60 @@ import net.minecraftforge.energy.IEnergyStorage;
  * energy stored within it.
  */
 public class CheckEnergy implements ILootCondition {
-
+    
     /**
      * The serializer for this function.
      */
     public static final Serializer SERIALIZER = new Serializer();
-
+    
     private final IntBound energy;
-
-    public CheckEnergy (IntBound energy) {
-
+    
+    public CheckEnergy(IntBound energy) {
+        
         this.energy = energy;
     }
-
+    
     @Override
     public boolean test (LootContext ctx) {
-
+        
         final Vector3d pos = ctx.getParamOrNull(LootParameters.ORIGIN);
-
+        
         if (pos != null) {
-
+            
             final TileEntity tile = ctx.getLevel().getBlockEntity(new BlockPos(pos));
-
+            
             if (tile != null) {
-
+                
                 final LazyOptional<IEnergyStorage> energyCap = tile.getCapability(CapabilityEnergy.ENERGY);
                 final IEnergyStorage energyStorage = energyCap.orElse(null);
-
+                
                 if (energyStorage != null) {
-
+                    
                     return this.energy.matches(energyStorage.getEnergyStored());
                 }
             }
         }
-
+        
         return false;
     }
-
+    
     @Override
     public LootConditionType getType () {
-
+        
         return Bookshelf.instance.conditionCheckEnergy;
     }
-
+    
     static class Serializer implements ILootSerializer<CheckEnergy> {
-
+        
         @Override
         public void serialize (JsonObject json, CheckEnergy value, JsonSerializationContext context) {
-
+            
             json.add("value", value.energy.serializeToJson());
         }
-
+        
         @Override
         public CheckEnergy deserialize (JsonObject json, JsonDeserializationContext context) {
-
+            
             return new CheckEnergy(IntBound.fromJson(json));
         }
     }
