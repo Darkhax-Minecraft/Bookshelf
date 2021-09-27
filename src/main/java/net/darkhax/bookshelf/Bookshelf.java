@@ -114,7 +114,7 @@ public final class Bookshelf {
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
         
         // Command arguments
-        this.registry.commands.registerCommandArgument("enum", ArgumentTypeHandOutput.class, new ArgumentTypeHandOutput.Serialzier());
+        this.registry.commands.registerCommandArgument("hand", ArgumentTypeHandOutput.class, new ArgumentTypeHandOutput.Serialzier());
         this.registry.commands.registerCommandArgument("mod", ArgumentTypeMod.class, new ArgumentSerializer<>( () -> ArgumentTypeMod.INSTACE));
         this.registry.commands.registerCommandArgument("loot", ArgumentTypeLootTable.class, new ArgumentSerializer<>( () -> ArgumentTypeLootTable.INSTACE));
         
