@@ -11,11 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
+import net.darkhax.bookshelf.entity.BookshelfFakePlayer;
+import net.darkhax.bookshelf.lib.function.LazyWeakReference;
+import net.darkhax.bookshelf.lib.function.NonNullSupplier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.resources.DefaultPlayerSkin;
@@ -27,8 +32,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public final class PlayerUtils {
     
@@ -186,5 +195,92 @@ public final class PlayerUtils {
         
         // Default to the legacy steve skin.
         return DefaultPlayerSkin.getDefaultSkin();
+    }
+    
+    /**
+     * Gets a fake player using their game profile. If there are no matching fake players a new
+     * one will be created.
+     * 
+     * @param world A world instance used to load the fake player.
+     * @param profile The profile of the fake player to find. If there are no matches a new
+     *        fake player will be created with this profile.
+     * @return The fake player that was found or created.
+     */
+    public static FakePlayer getFakePlayer (ServerWorld world, GameProfile profile) {
+        
+        return getFakePlayer(world, profile, BookshelfFakePlayer::new);
+    }
+    
+    /**
+     * Gets a fake player using their game profile. If there are no matching fake players a new
+     * one will be created using the provided factory.
+     * 
+     * @param world A world instance used to load the fake player. This will be passed to the
+     *        factory if no matching fake players were found.
+     * @param profile The profile of the fake player to find. This will be passed to the
+     *        factory if there are no matching fake players.
+     * @param factory A factory used to create the fake player if a match could not be found.
+     * @return The fake player that was found or created.
+     */
+    public static FakePlayer getFakePlayer (ServerWorld world, GameProfile profile, BiFunction<ServerWorld, GameProfile, FakePlayer> factory) {
+        
+        final Map<GameProfile, FakePlayer> fakePlayers = getCurrentFakePlayers();
+        
+        FakePlayer fakePlayer = fakePlayers.get(profile);
+        
+        if (fakePlayer == null) {
+            
+            fakePlayer = factory.apply(world, profile);
+            fakePlayers.put(profile, fakePlayer);
+        }
+        
+        return fakePlayer;
+    }
+    
+    /**
+     * Creates a supplier that stores a weak reference to the computed fake player. The fake
+     * player will be recomputed as needed when the weak reference expires.
+     * 
+     * @param world A world instance used to load the fake player.
+     * @param profile The profile of the fake player to find. If there are no matches a new
+     *        fake player will be created with this profile.
+     * @return The supplier for the fake player.
+     */
+    public static Supplier<FakePlayer> getFakePlayerReference (ServerWorld world, GameProfile profile) {
+        
+        return new LazyWeakReference<>(NonNullSupplier.from( () -> getFakePlayer(world, profile)));
+    }
+    
+    /**
+     * Creates a supplier that stores a weak reference to the computed fake player. The fake
+     * player will be recomputed as needed when the weak reference expires.
+     * 
+     * @param world A world instance used to load the fake player. This will be passed to the
+     *        factory if no matching fake players were found.
+     * @param profile The profile of the fake player to find. This will be passed to the
+     *        factory if there are no matching fake players.
+     * @param factory A factory used to create the fake player if a match could not be found.
+     * @return The supplier for the fake player.
+     */
+    public static Supplier<FakePlayer> getFakePlayerReference (ServerWorld world, GameProfile profile, BiFunction<ServerWorld, GameProfile, FakePlayer> factory) {
+        
+        return new LazyWeakReference<>(NonNullSupplier.from( () -> getFakePlayer(world, profile, factory)));
+    }
+    
+    /**
+     * Gets Forge's internal fake player map from the FakePlayerFactory. This map only contains
+     * fake players that are currently loaded and can only return results when a world is
+     * active.
+     * 
+     * Caution must be used when modifying this map as it is managed by Forge. Adding a new
+     * fake player should be done using
+     * {@link #getFakePlayer(ServerWorld, GameProfile, BiFunction)} or the FakePlayerHandler
+     * methods.
+     * 
+     * @return The map containing all fake players that have been registered with Forge.
+     */
+    public static Map<GameProfile, FakePlayer> getCurrentFakePlayers () {
+        
+        return ObfuscationReflectionHelper.getPrivateValue(FakePlayerFactory.class, null, "fakePlayers");
     }
 }
