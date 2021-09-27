@@ -27,8 +27,8 @@ repositories {
 
 dependencies {
 
-    // Example: compile "net.darkhax.bookshelf:Bookshelf-1.16.4:9.3.23"
-    compile "net.darkhax.bookshelf:Bookshelf-MCVERSION:PUT_BOOKSHELH_VERSION_HERE"
+    // Example: compile "net.darkhax.bookshelf:Bookshelf-Forge-1.16.5:10.3.29"
+    compile "net.darkhax.bookshelf:Bookshelf-Forge-MCVERSION:PUT_BOOKSHELH_VERSION_HERE"
 }
 ```
 
