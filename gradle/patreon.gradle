@@ -11,16 +11,23 @@ if (project.hasProperty('patreon_campaign_id') && findProperty('patreon_auth_tok
     project.ext.patreon = [
         campaign: defaultCampaign,
         pledgeLog: getPledgeLog(defaultCampaign, defaultAuth),
-        pledges: getPledges(defaultCampaign, defaultAuth)
+        pledges: getPledges(defaultCampaign, defaultAuth),
+        campaignUrl: '',
+        campaignUrlTracked: ''
     ]
     
     if (project.hasProperty('patreon_campaign_url')) {
-    
+
         project.ext.patreon.campaignUrl = project.getProperty('patreon_campaign_url')
-        project.ext.patreon.campaignUrlTracked = "${project.ext.patreon.campaignUrl}?${project.ext.modId}"
+        project.ext.patreon.campaignUrlTracked = "${project.ext.patreon.campaignUrl}?${project.ext.mod_id}"
     }
     
-    project.logger.lifecycle("Loading plede data for default campaign ${defaultCampaign}.")
+    project.logger.lifecycle("Loading pledge data for default campaign ${defaultCampaign}.")
+}
+
+else {
+
+    project.logger.warn("Patreon data can not be loaded! has_id:${project.hasProperty('patreon_campaign_id')} has_campaign:${findProperty('patreon_auth_token')}")
 }
 
 /*

@@ -4,22 +4,58 @@
  known the current commit will be used. The changelog output is in markdown
  format and will contain the commit message and a link to the commit.
 */
-apply from: 'gradle/property_helper.gradle'
+apply from: "$rootDir/gradle/property_helper.gradle"
 
-def gitRepo = project.ext.modSource ?: project.findProperty('gitRemote', getExecOutput(['git', 'remote', 'get-url', 'origin']))
-def gitCommit = System.getenv('GIT_COMMIT') ?: getExecOutput(['git', 'log', '-n', '1', '--pretty=tformat:%h' ])
-def gitPrevCommit = System.getenv('GIT_PREVIOUS_COMMIT')
+project.ext.mod_changelog = 'No changelog available.'
 
-// If a full range is available use that range.
-if (gitCommit && gitPrevCommit) {
+try {
 
-    project.ext.modChangelog += getExecOutput(['git', 'log', "--pretty=tformat:- %s [(%h)](${gitRepo}/commit/%h)", '' + gitPrevCommit + '..' + gitCommit])
-    project.logger.lifecycle("Appened Git changelog with commit ${gitPrevCommit} to ${gitCommit}.")
+    def gitRepo = mod_source ?: project.findProperty('gitRemote', getExecOutput(['git', 'remote', 'get-url', 'origin']))
+    def gitCommit = System.getenv('GIT_COMMIT') ?: getExecOutput(['git', 'log', '-n', '1', '--pretty=tformat:%h' ])
+    def gitPrevCommit = System.getenv('GIT_PREVIOUS_COMMIT')
+
+    // If a full range is available use that range.
+    if (gitCommit && gitPrevCommit) {
+
+        project.ext.mod_changelog = getExecOutput(['git', 'log', "--pretty=tformat:- %s [(%h)](${gitRepo}/commit/%h)", '' + gitPrevCommit + '..' + gitCommit])
+        project.logger.lifecycle("Appened Git changelog with commit ${gitPrevCommit} to ${gitCommit}.")
+    }
+
+    // If only one commit is available, use the last commit.
+    else if (gitCommit) {
+
+        project.ext.mod_changelog = getExecOutput(['git', 'log', '' + "--pretty=tformat:- %s [(%h)](${gitRepo}/commit/%h)", '-1', '' + gitCommit])
+        project.logger.lifecycle("Appened Git changelog with commit ${gitCommit}.")
+    }
 }
 
-// If only one commit is available, use the last commit.
-else if (gitCommit) {
+catch (Exception e) {
 
-    project.ext.modChangelog += getExecOutput(['git', 'log', '' + "--pretty=tformat:- %s [(%h)](${gitRepo}/commit/%h)", '-1', '' + gitCommit])
-    project.logger.lifecycle("Appened Git changelog with commit ${gitCommit}.")
+    project.logger.warn('Changelog generation has failed!', e)
+}
+
+def getChangelog(maxLength) {
+
+    def split = project.ext.mod_changelog.split('\n')
+    def output = ''
+
+    for (line in split) {
+
+        def newOutput = output + '\n' + line;
+
+        if (newOutput.length() > maxLength) {
+
+            return output
+        }
+
+        output = newOutput
+    }
+
+    return output;
+}
+
+// Allows other scripts to use these methods.
+ext {
+
+    getChangelog = this.&getChangelog
 }

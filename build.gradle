@@ -1,33 +1,135 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply from: 'gradle/property_helper.gradle'
+// TODO remove buildscript block
+buildscript {
+
+    repositories {
+    
+        mavenCentral()
+    }
+    
+    dependencies {
+    
+        classpath group: 'com.diluv.schoomp', name: 'Schoomp', version: '1.2.5'
+    }
+}
+
 apply from: 'gradle/property_loader.gradle'
-
-// Load mod related properties
-ext.modName = getRequiredString('mod_name')
-ext.modAuthor = getRequiredString('mod_author')
-ext.modId = getRequiredString('mod_id')
-ext.modCredits = getDefaultString('mod_credits', ext.modAuthor)
-ext.modDescription = getOptionalString('mod_description')
-ext.modChangelog = getOptionalString('mod_changelog')
-ext.modHomepage = getOptionalString('mod_homepage')
-ext.modSource = getOptionalString('mod_source')
-ext.modIssues = getOptionalString('mod_issues')
-
-// Load Minecraft specific properties
-ext.mcVersion = getRequiredString('minecraft_version')
-
-// Load build-time modules
 apply from: 'gradle/build_number.gradle'
 apply from: 'gradle/git_changelog.gradle'
-apply from: 'gradle/patreon.gradle'
-apply from: 'gradle/java.gradle'
-apply from: 'gradle/forge.gradle'
-apply from: 'gradle/dependencies.gradle'
-apply from: 'gradle/minify_jsons.gradle'
-
-// Load publishing modules
-apply from: 'gradle/maven.gradle'
-apply from: 'gradle/signing.gradle'
-apply from: 'gradle/curseforge.gradle'
 apply from: 'gradle/version_checker.gradle'
+
+subprojects {
+
+    apply plugin: 'maven-publish'
+    
+    apply from: '../gradle/property_loader.gradle'
+    apply from: '../gradle/java.gradle'
+    apply from: '../gradle/build_number.gradle'
+    apply from: '../gradle/git_changelog.gradle'
+    apply from: '../gradle/minify_jsons.gradle'
+    apply from: '../gradle/signing.gradle'
+    
+    // Disables Gradle's custom module metadata from being published to maven. The 
+    // metadata includes mapped dependencies which are not reasonably consumable by
+    // other mod developers.
+    tasks.withType(GenerateModuleMetadata) {
+
+        enabled = false
+    }
+    
+    // Enable Mixins
+    project.ext.mixin_enabled = project.file("src/main/resources/${mod_id}.mixins.json").exists()
+    project.logger.lifecycle("Mixin ${project.ext.mixin_enabled ? 'enabled' : 'disabled'} for project ${project.name}.")
+    
+    repositories {
+
+        mavenCentral()
+
+        maven {
+            name = 'Sponge / Mixin'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+
+        maven {
+            name = 'BlameJared Maven (CrT / Bookshelf)'
+            url = 'https://maven.blamejared.com'
+        }
+        
+        maven {
+            name = 'Mod Menu'
+            url = 'https://maven.terraformersmc.com/releases/'
+        }
+
+        maven {
+            name = 'Progwm16 / JEI'
+            url = 'https://dvs1.progwml6.com/files/maven'
+        }
+
+        maven {
+            name = 'Shedaniel / REI'
+            url = 'https://maven.shedaniel.me'
+        }
+
+        maven {
+            name = 'Curse Maven'
+            url = 'https://www.cursemaven.com'
+        }
+    }
+}
+
+import com.diluv.schoomp.Webhook
+import com.diluv.schoomp.message.Message
+import com.diluv.schoomp.message.embed.Embed
+import com.diluv.schoomp.message.embed.Footer
+
+task postDiscord() {
+
+    doLast {
+        try {
+
+            // Create a new webhook instance for Discord
+            def webhook = new Webhook(findProperty('curse_discord_webhook'), "${project.ext.mod_name} CurseForge Gradle Upload")
+        
+            // Craft a message to send to Discord using the webhook.
+            def message = new Message()      
+            message.setUsername("Mod Update: ${project.ext.mod_name}")
+            message.setContent("${project.ext.mod_name} ${project.version} for Minecraft ${project.ext.minecraft_version} has been published!")
+            
+            def embed = new Embed();
+            def downloadSources = new StringJoiner('\n')
+            
+            if (project(':Forge').hasProperty('curse_file_url')) {
+            
+                downloadSources.add("<:forge:916233930091401266> [Forge](${project(':Forge').findProperty('curse_file_url')})")
+            }
+            
+            if (project(':Fabric').hasProperty('curse_file_url')) {
+            
+                downloadSources.add("<:fabric:916233929722314763> [Fabric](${project(':Fabric').findProperty('curse_file_url')})")
+            }
+            
+            // Add Curseforge DL link if available.
+            def downloadString = downloadSources.toString()
+            
+            if (downloadString && !downloadString.isEmpty()) {
+            
+                embed.addField('Download', downloadString, false)
+            }
+            
+            // Add a changelog field if a changelog exists.
+            if (project.ext.mod_changelog && !project.ext.mod_changelog.isEmpty()) {
+                
+                embed.addField('Changelog', getChangelog(1500), false)
+            }
+            
+            embed.setColor(0xFF8000)
+            message.addEmbed(embed)
+
+            webhook.sendMessage(message)
+        }
+
+        catch (IOException e) {
+        
+            project.logger.error('Failed to push CF Discord webhook.')
+        }
+    }
+}

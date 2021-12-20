@@ -1,0 +1,6 @@
+{
+    "pack": {
+        "description": "${mod_description}",
+        "pack_format": 8
+    }
+}

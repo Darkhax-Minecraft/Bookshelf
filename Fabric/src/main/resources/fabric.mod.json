@@ -1,0 +1,51 @@
+{
+    "schemaVersion": 1,
+    "id": "${mod_id}",
+    "version": "${version}",
+  
+    "name": "${mod_name}",
+    "description": "${mod_description}",
+    "authors": [
+      "${mod_author}"
+    ],
+    "contributors": [
+      "This project is made possible with Patreon support from players like you. Thank you!",
+      "${mod_supporters}"
+    ],
+    "contact": {
+      "homepage": "${mod_homepage}",
+      "sources": "${mod_source}",
+      "issues": "${mod_issues}"
+    },
+    "icon": "assets/${mod_id}/textures/logo.png",
+    "license": "${mod_license}",
+    "environment": "*",
+    "entrypoints": {
+      "client": [
+        "net.darkhax.bookshelf.BookshelfFabricClient"
+      ],
+      "server": [
+        "net.darkhax.bookshelf.BookshelfFabricServer"
+      ]
+    },
+    "mixins": [
+      "${mod_id}.mixins.json"
+    ],
+  
+    "depends": {
+      "fabricloader": ">=0.11",
+      "fabric": "*",
+      "minecraft": "1.17.x",
+      "java": ">=16"
+    },
+    "custom": {
+      "modmenu": {
+        "links": {
+          "modmenu.twitter": "${mod_twitter}",
+          "modmenu.discord": "${mod_discord}",
+          "modmenu.curseforge": "${mod_homepage}",
+          "modmenu.patreon": "${patreon.campaignUrlTracked}"
+        }
+      }
+    }
+  }

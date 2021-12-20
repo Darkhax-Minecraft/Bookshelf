@@ -1,18 +1,22 @@
-# Gradle
-.gradle/
-bin/
-build/
-
-#Eclipse
-*.classpath
-*.project
-*.prefs
+# eclipse
+bin
 *.launch
+.settings
+.metadata
+.classpath
+.project
 
-# General
-run/
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
 
-# Annotation Processing
-/.apt_generated_tests/
-/Users/
-.factorypath
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run

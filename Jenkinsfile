@@ -5,7 +5,7 @@ pipeline {
     agent any
 
     tools {
-        jdk "jdk8u292-b10"
+        jdk "jdk-17.0.1"
     }
     
     stages {
@@ -31,7 +31,7 @@ pipeline {
                 ]) {
             
                     echo 'Building project.'
-                    sh './gradlew build publish curseforge updateVersionTracker postTweet --stacktrace --warn'
+                    sh './gradlew build publish publishCurseForge updateVersionTracker postTweet postDiscord --stacktrace --warn'
                 }
             }
         }

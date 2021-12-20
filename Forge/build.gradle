@@ -1,0 +1,251 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.minecraftforge.net' }
+        maven { url 'https://plugins.gradle.org/m2/' }
+        maven { url 'https://repo.spongepowered.org/repository/maven-public' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath group: 'net.darkhax.curseforgegradle', name: 'CurseForgeGradle', version: '1.0.7'
+        classpath group: 'net.darkhax.tweedle', name: 'Tweedle', version: '1.0.5'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+apply from: '../gradle/patreon.gradle'
+
+archivesBaseName = "${mod_name}-Forge-${minecraft_version}"
+
+minecraft {
+
+    mappings channel: 'official', version: minecraft_version
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            ideaModule "${rootProject.name}.${project.name}.main"
+            taskName 'Client'
+
+            property 'forge.logging.console.level', 'debug'
+            property 'terminal.ansi', 'true'
+            
+            if (project.ext.mixin_enabled) {
+                arg "-mixin.config=${mod_id}.mixins.json"
+            }
+            
+            mods {
+                modClientRun {
+                    source sourceSets.main
+                    source project(":Common").sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+            ideaModule "${rootProject.name}.${project.name}.main"
+            taskName 'Server'
+            property 'forge.logging.console.level', 'debug'
+            property 'terminal.ansi', 'true'
+
+            if (project.ext.mixin_enabled) {
+                arg "-mixin.config=${mod_id}.mixins.json"
+            }
+            
+            mods {
+                modServerRun {
+                    source sourceSets.main
+                    source project(":Common").sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    compileOnly project(":Common")
+
+    implementation fg.deobf("mezz.jei:jei-1.17.1:${jei_version}")
+    implementation fg.deobf("curse.maven:catalogue-459701:${catalogue_version}")
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.4-SNAPSHOT:processor'
+}
+
+tasks.withType(JavaCompile) {
+    source(project(":Common").sourceSets.main.allSource)
+}
+
+processResources {
+
+    from project(":Common").sourceSets.main.resources
+
+    def buildProps = project.properties.clone()
+
+    // Replaces FML's magic file.jarVersion string with the correct version at
+    // build time.
+    buildProps.put('file', [jarVersion: project.version])
+
+    if (project.hasProperty('patreon')) {
+
+        def supporters = new ArrayList<String>()
+
+        for (entry in project.ext.patreon.pledges) {
+
+            def pledge = entry.value;
+
+            if (pledge.isValid()) {
+
+                supporters.add(pledge.getDisplayName())
+            }
+        }
+
+        buildProps.put('mod_supporters', supporters.join(', '))
+    }
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+
+        expand buildProps
+    }
+
+    if (project.ext.mixin_enabled) {
+        filesMatching(["${mod_id}.mixins.json".toString()]) {
+
+            expand buildProps
+        }
+    }
+}
+
+jar.finalizedBy('reobfJar')
+
+jar {
+
+    manifest {
+
+        def newProps = [:]
+        
+        if (project.ext.mixin_enabled) {
+            newProps['MixinConfigs'] = "${mod_id}.mixins.json"
+        }
+        
+        attributes(newProps)
+    }
+}
+    
+// -- Mixin Support
+if (project.ext.mixin_enabled) {
+
+    apply plugin: 'org.spongepowered.mixin'
+    
+    mixin {
+
+        // Tells the mixin plugin where to put the generated refmap file.
+        add sourceSets.main, "${mod_id}.refmap.json"
+    }
+}
+
+// -- MAVEN PUBLISHING --
+project.publishing {
+    
+    publications {
+
+        mavenJava(MavenPublication) {
+        
+            artifactId project.archivesBaseName
+
+            // Base mod archive.
+            artifact jar
+            
+            // Adds the sources as an artifact.
+            artifact project.sourcesJar {
+                classifier 'sources'
+            }
+
+            // Adds the javadocs as an artifact.
+            artifact project.javadocJar {
+                classifier 'javadoc'
+            }
+        }
+    }
+
+    repositories {
+    
+        maven {
+        
+            // Sets maven credentials if they are provided. This is generally
+            // only used for external/remote uploads.
+            if (project.hasProperty('mavenUsername') && project.hasProperty('mavenPassword')) {
+            
+                credentials {
+                
+                    username findProperty('mavenUsername')
+                    password findProperty('mavenPassword')
+                }
+            }
+
+            url getDefaultString('mavenURL', 'undefined', true)
+        }
+    }
+}
+
+// CurseForge Publishing
+task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+
+    apiToken = findProperty('curse_auth')
+
+    def mainFile = upload(curse_project, jar)
+    mainFile.changelogType = 'markdown'
+    mainFile.changelog = project.ext.mod_changelog
+    mainFile.addJavaVersion('Java 17')
+    
+    // Append Patreon Supporters
+    def patreonInfo = project.findProperty('patreon')
+        
+    if (patreonInfo) {
+        mainFile.changelog += "\n\nThis project is made possible by [Patreon](${patreonInfo.campaignUrlTracked}) support from players like you. Thank you!\n\n${patreonInfo.pledgeLog}"
+    }
+    
+    doLast {
+    
+        if (project.hasProperty('mod_homepage')) {
+        
+            project.ext.curse_file_url = "${mod_homepage}/files/${mainFile.curseFileId}"
+        }
+    }
+}
+
+// Twitter Announcement
+def canTweet = project.hasProperty('twitter_api_key') && project.hasProperty('twitter_api_key_secret') && project.hasProperty('twitter_access_token') && project.hasProperty('twitter_access_token_secret')
+    
+task postTweet (type: net.darkhax.tweedle.TaskPostTweet){
+    
+    onlyIf {
+    
+        canTweet && project.hasProperty('minecraft_version') && project.hasProperty('curse_file_url')
+    }
+    
+    if (canTweet) {
+    
+        addClient(project.findProperty('twitter_api_key'), project.findProperty('twitter_api_key_secret'), project.findProperty('twitter_access_token'), project.findProperty('twitter_access_token_secret'))
+    }
+    
+    doLast {
+    
+        def tweetBody = "${project.ext.mod_name} (Forge) ${project.version} for Minecraft ${project.ext.minecraft_version} has been released. #${project.ext.mod_name.toLowerCase().replaceAll("[^a-zA-Z]", "")} #forge"
+        
+        if (project.hasProperty('curse_file_url')) {
+            
+            tweetBody += " ${project.findProperty('curse_file_url')}"
+        }
+        
+        sendTweet(tweetBody)
+    }
+}
+
+if (!canTweet) {
+    
+    project.logger.warn("Skipping Twitter plugin. APIKey: ${project.hasProperty('twitter_api_key')} ${project.hasProperty('twitter_api_key_secret')} AccessToken: ${project.hasProperty('twitter_access_token')} ${project.hasProperty('twitter_access_token_secret')}")
+}
