@@ -1,7 +1,10 @@
 package net.darkhax.bookshelf.impl.registry;
 
+import net.darkhax.bookshelf.api.item.ICreativeTabBuilder;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.RegistryHelper;
+import net.darkhax.bookshelf.impl.item.CreativeTabBuilderForge;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.decoration.Motive;
@@ -25,6 +28,12 @@ public class RegistryHelperForge extends RegistryHelper {
     public RegistryHelperForge(String ownerId) {
 
         super(ownerId);
+    }
+
+    @Override
+    public ICreativeTabBuilder<?> createTabBuilder(String tabId) {
+
+        return new CreativeTabBuilderForge(new ResourceLocation(this.ownerId, tabId));
     }
 
     @Override

@@ -4,6 +4,7 @@
   "package": "net.darkhax.bookshelf.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "item.AccessorItem"
   ],
   "injectors": {
     "defaultRequire": 1
