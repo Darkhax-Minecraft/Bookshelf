@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf.api.util;
 
-import net.darkhax.bookshelf.lib.PhysicalSide;
+import net.darkhax.bookshelf.api.PhysicalSide;
 
 import java.io.File;
 import java.nio.file.Path;

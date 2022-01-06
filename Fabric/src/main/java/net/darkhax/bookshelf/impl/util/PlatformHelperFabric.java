@@ -1,7 +1,7 @@
 package net.darkhax.bookshelf.impl.util;
 
 import net.darkhax.bookshelf.api.util.IPlatformHelper;
-import net.darkhax.bookshelf.lib.PhysicalSide;
+import net.darkhax.bookshelf.api.PhysicalSide;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 
