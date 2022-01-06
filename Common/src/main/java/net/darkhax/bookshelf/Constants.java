@@ -1,8 +1,5 @@
 package net.darkhax.bookshelf;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.decoration.Motive;
-import net.minecraft.world.inventory.BrewingStandMenu;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

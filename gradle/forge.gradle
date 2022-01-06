@@ -3,24 +3,24 @@ project.logger.lifecycle("Loading Forge project module. Using Mixins: ${project.
 buildscript {
 
     repositories {
-        
-        maven { 
-        
+
+        maven {
+
             name 'Official Forge Maven'
             url 'https://maven.minecraftforge.net'
         }
-        
+
         maven {
-            
+
             name 'Sponge / Mixin Maven'
             url 'https://repo.spongepowered.org/repository/maven-public'
         }
-        
+
         mavenCentral()
     }
-    
+
     dependencies {
-    
+
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
@@ -49,23 +49,23 @@ minecraft {
 
     // Loads mojmaps for the current MC version.
     mappings channel: mappingChannel, version: mappingVersion
-    
+
     // Loads access transofrmers if the user has specified them.
     if (project.hasProperty('forge_at')) {
-    
+
         accessTransformer = file(project.findProperty('forge_at'))
     }
-    
+
     runs {
-    
+
         client {
-        
+
             // Sets the folder the client runs in.
             workingDirectory project.file(clientRunDir)
-            
+
             // Sets the name of the run to include the mod name.
-            taskName modName.replaceAll("\\s","") + 'Client'
-                       
+            taskName modName.replaceAll("\\s", "") + 'Client'
+
             // Sets Forge's logging level on the client.
             property 'forge.logging.console.level', loggingLevel
 
@@ -73,40 +73,40 @@ minecraft {
             // development environment. This allows mods with mixins to be
             // used as devtime dependencies.
             if (remapRefmap) {
-            
+
                 property 'mixin.env.remapRefMap', 'true'
                 property 'mixin.env.refMapRemappingFile', remapRefmapFile
             }
-            
+
             // Enables ANSI color codes in the logs.
             if (loggingANSI) {
-            
-                property 'terminal.ansi', 'true' 
+
+                property 'terminal.ansi', 'true'
             }
-            
+
             // Enable mixins on the client.
             if (project.hasProperty('mixin_id')) {
-            
+
                 arg "-mixin.config=" + project.findProperty('mixin_id') + ".mixins.json"
             }
-            
+
             mods {
-            
+
                 clientRun {
-                
+
                     source sourceSets.main
                 }
             }
         }
 
         server {
-        
+
             // Sets the folder the server runs in.
             workingDirectory project.file(serverRunDir)
-            
+
             // Sets the name of the run to include the mod name.
-            taskName modName.replaceAll("\\s","") + 'Server'
-            
+            taskName modName.replaceAll("\\s", "") + 'Server'
+
             // Sets Forge's logging level on the server.
             property 'forge.logging.console.level', loggingLevel
 
@@ -114,27 +114,27 @@ minecraft {
             // development environment. This allows mods with mixins to be
             // used as devtime dependencies.
             if (remapRefmap) {
-            
+
                 property 'mixin.env.remapRefMap', 'true'
                 property 'mixin.env.refMapRemappingFile', remapRefmapFile
             }
-            
+
             // Enables ANSI color codes in the logs.
             if (loggingANSI) {
-            
-                property 'terminal.ansi', 'true' 
+
+                property 'terminal.ansi', 'true'
             }
-            
+
             // Enable mixins on the server.
             if (project.hasProperty('mixin_id')) {
-            
+
                 arg "-mixin.config=" + project.findProperty('mixin_id') + ".mixins.json"
             }
-            
+
             mods {
-            
+
                 serverRun {
-                
+
                     source sourceSets.main
                 }
             }
@@ -143,13 +143,13 @@ minecraft {
 }
 
 dependencies {
-        
+
     // Sets Minecraft and Forge as a dependency for the project.
     minecraft "net.minecraftforge:forge:${project.ext.mcVersion}-${forgeVersion}"
-    
+
     // Loads mixin dependencies when needed.
     if (project.hasProperty('mixin_id')) {
-    
+
         // Gradle 5.0+ no longer auto-loads annotation processors. Mixin relies
         // on these to generate the refmap file.
         annotationProcessor 'org.spongepowered:mixin:0.8:processor'
@@ -159,9 +159,9 @@ dependencies {
 processResources {
 
     def buildProps = project.properties.clone()
-    
+
     if (project.ext.has('patreon') && project.ext.patreon.pledges && !project.ext.patreon.pledges.isEmpty()) {
-    
+
         def supporters = new ArrayList<String>()
 
         for (entry in project.ext.patreon.pledges) {
@@ -173,12 +173,12 @@ processResources {
                 supporters.add(pledge.getDisplayName())
             }
         }
-        
-        buildProps.put('modCredits', "${project.ext.modCredits} and the supporters on Patreon: ${supporters.join(', ')}") 
+
+        buildProps.put('modCredits', "${project.ext.modCredits} and the supporters on Patreon: ${supporters.join(', ')}")
     }
-    
+
     filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
-    
+
         expand buildProps
     }
 }
@@ -186,22 +186,22 @@ processResources {
 jar {
 
     manifest {
-    
+
         def newProps = [:]
-        
+
         // Adds build time info to the manifest. This has no intended runtime
         // functionality.
         newProps['ModLoader'] = "forge-${forgeVersion}"
         newProps['Built-On-Minecraft'] = project.ext.mcVersion
         newProps['Built-On-Mapping'] = "${mappingChannel}-${mappingVersion}"
-        
+
         // Adds the mixin config to the manifest when mixins are used. This is
         // required for your mixins to run.
         if (project.hasProperty('mixin_id')) {
-        
+
             newProps['MixinConfigs'] = "${mixin_id}.mixins.json"
         }
-        
+
         attributes(newProps)
     }
 }
@@ -209,7 +209,7 @@ jar {
 if (project.hasProperty('mixin_id')) {
 
     apply plugin: org.spongepowered.asm.gradle.plugins.MixinGradlePlugin
-    
+
     mixin {
 
         // Tells the mixin plugin where to put the generated refmap file.
@@ -224,39 +224,37 @@ if (project.hasProperty('mixin_id')) {
 task runClient() {
 
     description = 'Runs the game client in developer/debug mode.'
-    dependsOn modName.replaceAll("\\s","") + 'Client'
+    dependsOn modName.replaceAll("\\s", "") + 'Client'
 }
 
 task runServer() {
 
     description = 'Runs the game server in developer/debug mode.'
-    dependsOn modName.replaceAll("\\s","") + 'Server'
+    dependsOn modName.replaceAll("\\s", "") + 'Server'
 }
 
 // Forge's Jar Signer
 def canSignJar = project.hasProperty('keyStore') && project.hasProperty('keyStorePass') && project.hasProperty('keyStoreKeyPass') && project.hasProperty('keyStoreAlias')
 
 task signJar(type: net.minecraftforge.gradle.common.tasks.SignJar, dependsOn: jar) {
-    
+
     onlyIf {
-    
+
         canSignJar
     }
-    
+
     if (canSignJar) {
-    
+
         keyStore = project.findProperty('keyStore')
         alias = project.findProperty('keyStoreAlias')
         storePass = project.findProperty('keyStorePass')
         keyPass = project.findProperty('keyStoreKeyPass')
         inputFile = jar.archivePath
         outputFile = jar.archivePath
-        
+
         build.dependsOn signJar
-    }
-    
-    else {
-    
+    } else {
+
         project.logger.warn('Jar signing is disabled for this build. One or more keyStore properties are not specified.')
     }
 }
@@ -264,7 +262,7 @@ task signJar(type: net.minecraftforge.gradle.common.tasks.SignJar, dependsOn: ja
 task setupDebugRunConfigs() {
 
     description = 'Creates basic configs used to debug mods in game'
-    
+
     dependsOn 'configServerProps'
     dependsOn 'configEula'
 }
@@ -274,7 +272,7 @@ task configServerProps(type: WriteProperties) {
     description = 'Configures the server with default properties. Eg. Disables online mode.'
 
     outputFile = file("${serverRunDir}/server.properties")
-    
+
     property('online-mode', getDefaultString('server_online_mode', 'false'))
     property('motd', getDefaultString('server_motd', "Testing server for ${project.modName}"))
     property('server-ip', getDefaultString('server_ip', ''))
@@ -282,7 +280,7 @@ task configServerProps(type: WriteProperties) {
     property('snooper-enabled', getDefaultString('server_snooper_enabled', 'false'))
     property('spawn-protection', getDefaultString('server_spawn_protection', '0'))
     property('enable-command-block', getDefaultString('enable_command_block', 'true'))
-    
+
     property('level-name', getDefaultString('level_name', project.modName))
     property('level-seed', getDefaultString('level_seed', project.modName))
     property('level-type', getDefaultString('level_type', 'default'))
@@ -293,11 +291,11 @@ task configEula(type: WriteProperties) {
     description = 'Automatically creates and agrees to the Mojang account EULA.'
 
     outputFile = file("${serverRunDir}/eula.txt")
-    
+
     property 'eula', true
-    
+
     doLast {
-    
+
         project.logger.warn("You have agreed to Mojang's EULA! https://account.mojang.com/documents/minecraft_eula");
     }
 }

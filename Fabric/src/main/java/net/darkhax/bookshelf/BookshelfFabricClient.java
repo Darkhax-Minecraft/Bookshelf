@@ -9,6 +9,6 @@ public class BookshelfFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
 
-        Constants.LOG.info(Services.PLATFORM.getPhysicalSide().isClient());
+        Constants.LOG.info(Services.REGISTRY_HELPER.create(Constants.MOD_ID).getClass());
     }
 }

@@ -1,7 +1,7 @@
 package net.darkhax.bookshelf.impl.util;
 
-import net.darkhax.bookshelf.api.util.IPlatformHelper;
 import net.darkhax.bookshelf.api.PhysicalSide;
+import net.darkhax.bookshelf.api.util.IPlatformHelper;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;

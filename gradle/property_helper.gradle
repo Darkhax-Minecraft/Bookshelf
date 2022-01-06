@@ -7,17 +7,17 @@ def getProperty(name, defaultValue, warn = false) {
 
     // Ensure it's a string, to handle Gradle Strings.
     name = name.toString();
-    
+
     if (project.hasProperty(name)) {
-    
+
         return project.findProperty(name)
     }
-    
+
     if (warn) {
-    
+
         project.logger.warn("Property ${name} was not found. Defaulting to ${defaultValue}.")
     }
-    
+
     return defaultValue
 }
 
@@ -34,10 +34,10 @@ def getRequiredString(name) {
 def getRequiredProperty(name) {
 
     if (project.hasProperty(name)) {
-    
+
         return project.findProperty(name)
     }
-    
+
     project.logger.error("The ${name} property is required!")
     throw new RuntimeException("The ${name} property is required!")
 }
@@ -45,12 +45,12 @@ def getRequiredProperty(name) {
 def getExecOutput(commands) {
 
     def out = new ByteArrayOutputStream()
-        
+
     exec {
         commandLine commands
         standardOutput out
     }
-        
+
     return out.toString().trim();
 }
 

@@ -11,7 +11,7 @@ project.ext.mod_changelog = 'No changelog available.'
 try {
 
     def gitRepo = mod_source ?: project.findProperty('gitRemote', getExecOutput(['git', 'remote', 'get-url', 'origin']))
-    def gitCommit = System.getenv('GIT_COMMIT') ?: getExecOutput(['git', 'log', '-n', '1', '--pretty=tformat:%h' ])
+    def gitCommit = System.getenv('GIT_COMMIT') ?: getExecOutput(['git', 'log', '-n', '1', '--pretty=tformat:%h'])
     def gitPrevCommit = System.getenv('GIT_PREVIOUS_COMMIT')
 
     // If a full range is available use that range.

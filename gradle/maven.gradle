@@ -1,16 +1,16 @@
 apply from: 'gradle/property_helper.gradle'
-apply plugin: 'maven-publish' 
+apply plugin: 'maven-publish'
 
 def canLoad = true
 
 if (!project.hasProperty('mavenURL')) {
-    
+
     canLoad = false;
     project.logger.warn('Skipping maven module. mavenURL property not specified.')
 }
 
 if (!(project.hasProperty('group') || project.hasProperty('groupId'))) {
-    
+
     canLoad = false;
     project.logger.warn('Skipping maven module. group property not specified.')
 }
@@ -18,20 +18,20 @@ if (!(project.hasProperty('group') || project.hasProperty('groupId'))) {
 if (canLoad) {
 
     project.logger.lifecycle('Loading maven module.')
-    
+
     project.publishing {
 
         tasks.publish.dependsOn 'build'
-        
+
         publications {
 
             mavenJava(MavenPublication) {
-            
+
                 artifactId project.archivesBaseName
 
                 // Base mod archive.
                 artifact jar
-                
+
                 // Adds the sources as an artifact.
                 artifact project.sourcesJar {
                     classifier 'sources'
@@ -45,15 +45,15 @@ if (canLoad) {
         }
 
         repositories {
-        
+
             maven {
-            
+
                 // Sets maven credentials if they are provided. This is generally
                 // only used for external/remote uploads.
                 if (project.hasProperty('mavenUsername') && project.hasProperty('mavenPassword')) {
-                
+
                     credentials {
-                    
+
                         username findProperty('mavenUsername')
                         password findProperty('mavenPassword')
                     }

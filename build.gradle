@@ -2,12 +2,12 @@
 buildscript {
 
     repositories {
-    
+
         mavenCentral()
     }
-    
+
     dependencies {
-    
+
         classpath group: 'com.diluv.schoomp', name: 'Schoomp', version: '1.2.5'
     }
 }
@@ -20,14 +20,14 @@ apply from: 'gradle/version_checker.gradle'
 subprojects {
 
     apply plugin: 'maven-publish'
-    
+
     apply from: '../gradle/property_loader.gradle'
     apply from: '../gradle/java.gradle'
     apply from: '../gradle/build_number.gradle'
     apply from: '../gradle/git_changelog.gradle'
     apply from: '../gradle/minify_jsons.gradle'
     apply from: '../gradle/signing.gradle'
-    
+
     // Disables Gradle's custom module metadata from being published to maven. The 
     // metadata includes mapped dependencies which are not reasonably consumable by
     // other mod developers.
@@ -35,11 +35,11 @@ subprojects {
 
         enabled = false
     }
-    
+
     // Enable Mixins
     project.ext.mixin_enabled = project.file("src/main/resources/${mod_id}.mixins.json").exists()
     project.logger.lifecycle("Mixin ${project.ext.mixin_enabled ? 'enabled' : 'disabled'} for project ${project.name}.")
-    
+
     repositories {
 
         mavenCentral()
@@ -53,7 +53,7 @@ subprojects {
             name = 'BlameJared Maven (CrT / Bookshelf)'
             url = 'https://maven.blamejared.com'
         }
-        
+
         maven {
             name = 'Mod Menu'
             url = 'https://maven.terraformersmc.com/releases/'
@@ -76,10 +76,10 @@ subprojects {
     }
 }
 
+
 import com.diluv.schoomp.Webhook
 import com.diluv.schoomp.message.Message
 import com.diluv.schoomp.message.embed.Embed
-import com.diluv.schoomp.message.embed.Footer
 
 task postDiscord() {
 
@@ -88,39 +88,39 @@ task postDiscord() {
 
             // Create a new webhook instance for Discord
             def webhook = new Webhook(findProperty('curse_discord_webhook'), "${project.ext.mod_name} CurseForge Gradle Upload")
-        
+
             // Craft a message to send to Discord using the webhook.
-            def message = new Message()      
+            def message = new Message()
             message.setUsername("Mod Update: ${project.ext.mod_name}")
             message.setContent("${project.ext.mod_name} ${project.version} for Minecraft ${project.ext.minecraft_version} has been published!")
-            
+
             def embed = new Embed();
             def downloadSources = new StringJoiner('\n')
-            
+
             if (project(':Forge').hasProperty('curse_file_url')) {
-            
+
                 downloadSources.add("<:forge:916233930091401266> [Forge](${project(':Forge').findProperty('curse_file_url')})")
             }
-            
+
             if (project(':Fabric').hasProperty('curse_file_url')) {
-            
+
                 downloadSources.add("<:fabric:916233929722314763> [Fabric](${project(':Fabric').findProperty('curse_file_url')})")
             }
-            
+
             // Add Curseforge DL link if available.
             def downloadString = downloadSources.toString()
-            
+
             if (downloadString && !downloadString.isEmpty()) {
-            
+
                 embed.addField('Download', downloadString, false)
             }
-            
+
             // Add a changelog field if a changelog exists.
             if (project.ext.mod_changelog && !project.ext.mod_changelog.isEmpty()) {
-                
+
                 embed.addField('Changelog', getChangelog(1500), false)
             }
-            
+
             embed.setColor(0xFF8000)
             message.addEmbed(embed)
 
@@ -128,7 +128,7 @@ task postDiscord() {
         }
 
         catch (IOException e) {
-        
+
             project.logger.error('Failed to push CF Discord webhook.')
         }
     }

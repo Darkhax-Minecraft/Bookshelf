@@ -4,40 +4,40 @@
  
  For further information contact Jared: https://twitter.com/jaredlll08
 */
-import groovy.json.JsonSlurper
+
 import groovy.json.JsonOutput
 
 apply from: "$rootDir/gradle/property_helper.gradle"
 
 task updateVersionTracker {
-    
+
     if (!project.hasProperty('versionTrackerAPI') || !project.hasProperty('versionTrackerUsername')) {
-    
+
         project.logger.warn('Skipping Version Checker update. Authentication is required!')
     }
-    
+
     onlyIf {
-    
+
         project.hasProperty('versionTrackerAPI') && project.hasProperty('versionTrackerUsername')
     }
-    
+
     doLast {
 
         def username = getRequiredString('versionTrackerUsername')
         def apiKey = getRequiredString('versionTrackerKey')
-        
+
         // Creates a Map that acts as the Json body of the API request.
         def body = [
-            'author': username,
-            'projectName': project.ext.mod_id,
-            'gameVersion': project.ext.minecraft_version,
-            'projectVersion': project.version,
-            'homepage': project.ext.mod_homepage,
-            'uid': apiKey
+                'author'        : username,
+                'projectName'   : project.ext.mod_id,
+                'gameVersion'   : project.ext.minecraft_version,
+                'projectVersion': project.version,
+                'homepage'      : project.ext.mod_homepage,
+                'uid'           : apiKey
         ]
-    
+
         project.logger.lifecycle("Version Check: ${project.ext.mod_id} for ${project.version}")
-        
+
         // Opens a connection to the version tracker API and writes the payload JSON.
         def req = new URL(project.findProperty('versionTrackerAPI')).openConnection()
         req.setRequestMethod('POST')

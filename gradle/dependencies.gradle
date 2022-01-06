@@ -9,56 +9,56 @@ repositories {
 
         url 'https://maven.blamejared.com'
     }
-    
+
     // This maven repository hosts files for dozens of mods. Some notable
     // mods include JEI, TinkersConstruct, and ChiselAndBits.
     maven {
 
         url 'https://dvs1.progwml6.com/files/maven'
     }
-    
+
     // This maven repository hosts files for mods by TheIllusiveC4. This
     // includes Curios, Caelus, and other APIs.
     maven {
 
         url = 'https://maven.theillusivec4.top/'
     }
-    
+
     // This maven repository proxies requests to the CurseForge API. This will
     // allow mods without traditional mavens to be used in a dev environment.
     // They use the pattern curse.maven:<descriptor>-<projectid>:<fileid> for 
     // maven coordinates.
     maven {
-    
+
         url = 'https://www.cursemaven.com'
-        
+
         // Improve performance by only querying for their specific group.
         content {
-        
+
             includeGroup 'curse.maven'
         }
     }
 }
 
 dependencies {
-    
+
     // This section includes mods that are commonly compiled against. It is 
     // recommended to add support for these mods if it makes sense for the 
     // content of your mod.
     if (getDefaultBoolean('dependencies_compile_enabled')) {
-            
+
     }
 
     // This section includes mods that are commonly used by players and meet a
     // minimum level of quality and performance. These mods are only available
     // at runtime by default meaning you may not directly access their code.
     if (getDefaultBoolean('dependencies_runtime_enabled')) {
-        
+
         // Replaces the config GUI with a shiny new one. Mods can enable a 
         // custom menu icon by defining additional properties in the mods.toml
         // file of their mod.
         deobfRuntime('catalogue', 'curse.maven', 'catalogue-459701', '3399552')
-        
+
         // Controlling overhauls the keybind menu by adding a search bar and
         // other QoL features.
         deobfRuntime('controlling', 'com.blamejared.controlling', 'Controlling', '8.0.0')
@@ -81,7 +81,7 @@ def deobfCompile(modid, defaultGroup, defaultName, defaultVersion) {
  * Creates a deobfuscated runtime dependency. These are only available during 
  * runtime and not compile time. This means the dependency will show up when
  * you run the game but you can not directly reference it's code in your mod.
- * 
+ *
  * See deobfDep for more info.
  */
 def deobfRuntime(modid, defaultGroup, defaultName, defaultVersion) {
@@ -100,7 +100,7 @@ def deobfRuntime(modid, defaultGroup, defaultName, defaultVersion) {
  * | modid_group   | The maven group for the dependency.               | net.darkhax.bookshelf |
  * | modid_name    | The name of the dependency.                       | Bookshelf-1.16.5      |
  * | modid_version | The artefact version of the dependency.           | 10.0.7                |
- * 
+ *
  * @param modid An ID used in logging and the names of properties.
  * @param defaultType The default type of dependency to create.
  * @param defaultGroup The default group for the maven coordinate. modid_group
@@ -110,18 +110,16 @@ def deobfRuntime(modid, defaultGroup, defaultName, defaultVersion) {
 def deobfDep(modid, defaultType, defaultGroup, defaultName, defaultVersion) {
 
     if (getDefaultBoolean("${modid}_enabled")) {
-    
+
         def depType = getDefaultString("${modid}_deptype", defaultType)
         def group = getDefaultString("${modid}_group", defaultGroup)
         def name = getDefaultString("${modid}_name", defaultName)
         def version = getDefaultString("${modid}_version", defaultVersion)
-        
+
         project.logger.lifecycle("Dependency ${modid} added. ${depType} \'${group}:${name}:${version}\'")
         project.getDependencies().add(depType, fg.deobf("${group}:${name}:${version}"))
-    }
-    
-    else {
-    
+    } else {
+
         project.logger.warn("Dependency ${modid} has been disabled for this build.")
     }
 }
@@ -136,7 +134,7 @@ def deobfDep(modid, defaultType, defaultGroup, defaultName, defaultVersion) {
 project.repositories.each {
 
     if (it.hasProperty('metadataSources')) {
-    
+
         it.metadataSources.ignoreGradleMetadataRedirection()
     }
 }

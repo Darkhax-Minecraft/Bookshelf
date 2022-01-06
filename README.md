@@ -1,11 +1,16 @@
 # Bookshelf [![](http://cf.way2muchnoise.eu/228525.svg)](https://minecraft.curseforge.com/projects/bookshelf) [![](http://cf.way2muchnoise.eu/versions/228525.svg)](https://minecraft.curseforge.com/projects/bookshelf)
 
-Bookshelf provides code, frameworks, and utilities that other mods can use. Many mods make use of Bookshelf and it's shared code to power their own mods.
+Bookshelf provides code, frameworks, and utilities that other mods can use. Many mods make use of Bookshelf and it's
+shared code to power their own mods.
 
 ## Why use a library mod?
-Library mods like Bookshelf allow many seemingly unrelated mods to share parts of the same reusable code base. This reduces the amount of time and effort required to develop certain mods and features. The shared code is also tested in a wider range of circumstances and communities which can lead to less bugs and a lower performance impact.
+
+Library mods like Bookshelf allow many seemingly unrelated mods to share parts of the same reusable code base. This
+reduces the amount of time and effort required to develop certain mods and features. The shared code is also tested in a
+wider range of circumstances and communities which can lead to less bugs and a lower performance impact.
 
 ## Feature List
+
 - Improved registry manager.
 - Tile Entity with Client Syncing
 - [Serialization for JSON/Network/NBT](https://github.com/Darkhax-Minecraft/Bookshelf/blob/1.16.3/src/main/java/net/darkhax/bookshelf/serialization/Serializers.java)
@@ -18,7 +23,11 @@ Library mods like Bookshelf allow many seemingly unrelated mods to share parts o
 - [Debug Commands](https://github.com/Darkhax-Minecraft/Bookshelf/wiki/Commands)
 
 ## Maven Dependency
-If you are using [Gradle](https://gradle.org) to manage your dependencies, add the following into your `build.gradle` file. Make sure to replace the version with the correct one. All versions can be viewed [here](https://maven.mcmoddev.com/net/darkhax/bookshelf/).
+
+If you are using [Gradle](https://gradle.org) to manage your dependencies, add the following into your `build.gradle`
+file. Make sure to replace the version with the correct one. All versions can be
+viewed [here](https://maven.mcmoddev.com/net/darkhax/bookshelf/).
+
 ```
 repositories {
 
@@ -34,7 +43,8 @@ dependencies {
 
 ## Jar Signing
 
-As of January 11th 2021 officially published builds will be signed. You can validate the integrity of these builds by comparing their signatures with the public fingerprints.
+As of January 11th 2021 officially published builds will be signed. You can validate the integrity of these builds by
+comparing their signatures with the public fingerprints.
 
 | Hash   | Fingerprint                                                        |
 |--------|--------------------------------------------------------------------|

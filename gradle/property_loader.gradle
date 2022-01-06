@@ -14,9 +14,9 @@ if (project.rootProject.hasProperty('secretFile')) {
 
     project.logger.lifecycle('Automatically loading properties from the secretFile')
     final def secretsFile = project.rootProject.file(project.rootProject.getProperty('secretFile'))
-    
+
     if (secretsFile.exists() && secretsFile.name.endsWith('.json')) {
-    
+
         loadProperties(secretsFile)
     }
 }
@@ -25,27 +25,25 @@ if (project.rootProject.hasProperty('secretFile')) {
 def loadProperties(propertyFile) {
 
     if (propertyFile.exists()) {
-    
+
         propertyFile.withReader {
-        
+
             Map propMap = new JsonSlurper().parse it
-            
+
             for (entry in propMap) {
-            
+
                 // Filter entries that use _comment in the key.
                 if (!entry.key.endsWith('_comment')) {
-                
+
                     project.ext.set(entry.key, entry.value)
                 }
             }
-            
+
             project.logger.lifecycle('Successfully loaded ' + propMap.size() + ' properties')
             propMap.clear()
         }
-    }
-    
-    else {
-    
+    } else {
+
         project.logger.warn('The property file ' + propertyFile.getName() + ' could not be loaded. It does not exist.')
     }
 }

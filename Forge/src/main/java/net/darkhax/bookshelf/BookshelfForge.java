@@ -8,6 +8,6 @@ public class BookshelfForge {
 
     public BookshelfForge() {
 
-        Constants.LOG.info(Services.PLATFORM.getPhysicalSide().isClient());
+        Constants.LOG.info(Services.REGISTRY_HELPER.create(Constants.MOD_ID).getClass());
     }
 }

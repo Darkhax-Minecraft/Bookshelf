@@ -11,8 +11,8 @@ minecraft {
 }
 
 dependencies {
-     compileOnly group: 'org.spongepowered', name:'mixin', version: '0.8.5'
-     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
+    compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 }
 
 processResources {
@@ -27,16 +27,16 @@ processResources {
 
 // -- MAVEN PUBLISHING --
 project.publishing {
-    
+
     publications {
 
         mavenJava(MavenPublication) {
-        
+
             artifactId project.archivesBaseName
 
             // Base mod archive.
             artifact jar
-            
+
             // Adds the sources as an artifact.
             artifact project.sourcesJar {
                 classifier 'sources'
@@ -50,15 +50,15 @@ project.publishing {
     }
 
     repositories {
-    
+
         maven {
-        
+
             // Sets maven credentials if they are provided. This is generally
             // only used for external/remote uploads.
             if (project.hasProperty('mavenUsername') && project.hasProperty('mavenPassword')) {
-            
+
                 credentials {
-                
+
                     username findProperty('mavenUsername')
                     password findProperty('mavenPassword')
                 }

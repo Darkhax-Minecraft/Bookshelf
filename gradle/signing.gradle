@@ -42,15 +42,13 @@ def canLoad = true
 if (!project.hasProperty('signing.secretKeyRingFile') && project.hasProperty('pgpKeyRing')) {
 
     final def keyRing = file project.getProperty('pgpKeyRing')
-    
+
     if (keyRing.exists() && keyRing.name.endsWith('.gpg')) {
-    
+
         project.ext.set('signing.secretKeyRingFile', keyRing.getAbsolutePath())
         project.logger.lifecycle('Loaded PGP keyring from fallback property.')
-    }
-    
-    else {
-    
+    } else {
+
         project.logger.warn('Failed to load PGP keyring from pgpKeyRing fallback property.')
     }
 }
@@ -78,8 +76,8 @@ if (canLoad) {
     apply plugin: 'signing'
 
     signing {
-    
+
         project.logger.lifecycle('Artefacts will be signed using PGP.')
         sign publishing.publications
-    } 
+    }
 }

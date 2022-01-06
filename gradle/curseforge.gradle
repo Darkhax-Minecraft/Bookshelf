@@ -34,90 +34,88 @@
 buildscript {
 
     repositories {
-    
+
         mavenCentral()
-        maven { 
-        
+        maven {
+
             url 'https://plugins.gradle.org/m2/'
         }
     }
-    
+
     dependencies {
-    
+
         classpath group: 'gradle.plugin.com.matthewprenger', name: 'CurseGradle', version: '1.4.0'
         classpath group: 'com.diluv.schoomp', name: 'Schoomp', version: '1.1.0'
         classpath group: 'net.darkhax.tweedle', name: 'Tweedle', version: '1.0.5'
     }
 }
 
+
 import com.diluv.schoomp.Webhook
 import com.diluv.schoomp.message.Message
 import com.diluv.schoomp.message.embed.Embed
-import com.diluv.schoomp.message.embed.Footer
 
 apply from: 'gradle/property_helper.gradle'
 apply plugin: com.matthewprenger.cursegradle.CurseGradlePlugin
 
 def projectPage = project.findProperty('curse_page')
-            
+
 if (!projectPage && project.ext.modHomepage && project.ext.modHomepage.startsWith('https://www.curseforge.com/minecraft/mc-mods/')) {
-                
+
     projectPage = project.ext.modHomepage
 }
-            
+
 curseforge {
 
     if (project.hasProperty('curse_project') && project.hasProperty('curse_auth')) {
-    
+
         apiKey = findProperty('curse_auth')
-    
+
         project {
 
             id = "${curse_project}"
             releaseType = getDefaultString('curse_release_type', 'alpha')
             changelog = project.ext.modChangelog
-            
+
             if (project.ext.patreon && project.ext.patreon.pledgeLog) {
-                
+
                 def patreonText = project.ext.patreon.campaignUrlTracked ? "[Patreon](${project.ext.patreon.campaignUrlTracked})" : 'Patreon'
                 changelog += "\n\nThis mod was made possible by ${patreonText} support from players like you. Thank you!\n\n${project.ext.patreon.pledgeLog}"
             }
-            
+
             changelogType = 'markdown'
 
             if (project.hasProperty('curse_versions')) {
-            
+
                 for (String version : getOptionalString('curse_versions').split(', ')) {
-            
+
                     addGameVersion version
                 }
-            }
-            
-            else {
-            
+            } else {
+
                 addGameVersion project.ext.mcVersion
                 addGameVersion 'Forge'
                 addGameVersion 'Java 16'
             }
 
             mainArtifact(jar) {
-            
+
                 if (project.hasProperty('curse_requirements') || project.hasProperty('curse_optionals')) {
-                
+
                     relations {
 
                         if (project.hasProperty('curse_requirements')) {
-                    
+
                             for (String req : project.findProperty('curse_requirements').split(', ')) {
-                        
+
                                 requiredLibrary req
                             }
                         }
-                    
+
                         if (project.hasProperty('curse_optionals')) {
-                    
+
                             for (String req : project.findProperty('curse_optionals').split(', ')) {
-                        
+
                                 optionalLibrary req
                             }
                         }
@@ -125,10 +123,8 @@ curseforge {
                 }
             }
         }
-    }
-    
-    else {
-    
+    } else {
+
         project.logger.lifecycle('Skipping CurseForge module. No auth info provided.')
     }
 }
@@ -136,79 +132,79 @@ curseforge {
 if (project.hasProperty('curse_discord_webhook')) {
 
     tasks.getByName("curseforge").doLast {
-    
+
         try {
-    
+
             // Reads the file ID given to us by CurseForge
             def newFileId = tasks.getByName("curseforge${curse_project}").property('mainArtifact').fileID
-    
+
             // Create a new webhook instance for Discord
             def webhook = new Webhook(findProperty('curse_discord_webhook'), "${project.ext.modName} CurseForge Gradle Upload")
-        
+
             // Craft a message to send to Discord using the webhook.
-            def message = new Message()      
+            def message = new Message()
             message.setUsername(project.ext.modName)
             message.setContent("${project.ext.modName} ${project.version} for Minecraft ${project.ext.mcVersion} has been published!")
-            
+
             def embed = new Embed();
-            
+
             // Add Curseforge DL link if available.
             if (projectPage) {
-            
+
                 embed.addField('Download', "${projectPage}/files/${newFileId}", false)
             }
-            
+
             // Add a changelog field if a changelog exists.
             if (project.ext.modChangelog && !project.ext.modChangelog.isEmpty()) {
-                
+
                 // Only include the first 240 chars of the changelog to
                 // avoid their size limits.
                 embed.addField('Changelog', project.ext.modChangelog.take(500), false)
             }
-            
+
             embed.setColor(0xFF8000)
             message.addEmbed(embed)
 
             webhook.sendMessage(message)
         }
-    
+
         catch (IOException e) {
-        
+
             project.logger.error('Failed to push CF Discord webhook.')
         }
     }
 }
 
 def canTwitter = project.hasProperty('twitter_api_key') && project.hasProperty('twitter_api_key_secret') && project.hasProperty('twitter_access_token') && project.hasProperty('twitter_access_token_secret')
-    
-task postTweet (type: net.darkhax.tweedle.TaskPostTweet){
-    
+
+task postTweet(type: net.darkhax.tweedle.TaskPostTweet) {
+
     onlyIf {
-    
+
         canTwitter
     }
-    
+
     if (canTwitter) {
-    
+
         addClient(project.findProperty('twitter_api_key'), project.findProperty('twitter_api_key_secret'), project.findProperty('twitter_access_token'), project.findProperty('twitter_access_token_secret'))
     }
-    
+
     doLast {
-    
+
         // Reads the file ID given to us by CurseForge
         def newFileId = tasks.getByName("curseforge${curse_project}").property('mainArtifact').fileID
         def tweetBody = "${project.ext.modName} ${project.version} for Minecraft ${project.ext.mcVersion} has been released. #${project.ext.modName.toLowerCase().replaceAll("[^a-zA-Z]", "")}"
-        
+
         if (projectPage && newFileId) {
-            
+
             tweetBody += " ${projectPage}/files/${newFileId}"
         }
-        
+
         sendTweet(tweetBody)
     }
 }
 
 if (!canTwitter) {
-    
+
     project.logger.warn("Skipping Twitter plugin. APIKey: ${project.hasProperty('twitter_api_key')} ${project.hasProperty('twitter_api_key_secret')} AccessToken: ${project.hasProperty('twitter_access_token')} ${project.hasProperty('twitter_access_token_secret')}")
 }

@@ -1,19 +1,19 @@
-modLoader="javafml"
-loaderVersion="[37,)"
-license="${mod_license}"
-issueTrackerURL="${mod_issues}"
-logoFile="logo.png"
-logoBlur=false
+modLoader = "javafml"
+loaderVersion = "[37,)"
+license = "${mod_license}"
+issueTrackerURL = "${mod_issues}"
+logoFile = "logo.png"
+logoBlur = false
 
 [[mods]]
-modId="${mod_id}"
-updateJSONURL="https://updates.blamejared.com/get?n=${mod_id}&gv=${minecraft_version}"
-version="${file.jarVersion}"
-displayName="${mod_name}"
-displayURL="${mod_homepage}"
-credits="This project is made possible with Patreon support from players like you. Thank you! ${mod_supporters}"
-authors="${mod_author}"
-description='''
+modId = "${mod_id}"
+updateJSONURL = "https://updates.blamejared.com/get?n=${mod_id}&gv=${minecraft_version}"
+version = "${file.jarVersion}"
+displayName = "${mod_name}"
+displayURL = "${mod_homepage}"
+credits = "This project is made possible with Patreon support from players like you. Thank you! ${mod_supporters}"
+authors = "${mod_author}"
+description = '''
 ${mod_description}
 '''
-itemIcon="minecraft:bookshelf"
+itemIcon = "minecraft:bookshelf"
