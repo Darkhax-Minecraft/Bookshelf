@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
-import net.darkhax.bookshelf.Bookshelf;
+import net.darkhax.bookshelf.Constants;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -116,8 +116,8 @@ public class SerializerBlockState implements ISerializer<BlockState> {
 
                     catch (final Exception e) {
 
-                        Bookshelf.LOG.error("Failed to update state for block {}. The mod that adds this block may have an issue.", Registry.BLOCK.getId(state.getBlock()));
-                        Bookshelf.LOG.catching(e);
+                        Constants.LOG.error("Failed to update state for block {}. The mod that adds this block may have an issue.", Registry.BLOCK.getId(state.getBlock()));
+                        Constants.LOG.catching(e);
                         throw e;
                     }
                 }

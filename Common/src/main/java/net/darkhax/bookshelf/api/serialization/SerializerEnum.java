@@ -2,7 +2,7 @@ package net.darkhax.bookshelf.api.serialization;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
-import net.darkhax.bookshelf.util.JSONHelper;
+import net.darkhax.bookshelf.api.util.JSONHelper;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
