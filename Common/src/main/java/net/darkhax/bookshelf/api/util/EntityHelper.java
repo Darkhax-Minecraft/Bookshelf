@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public final class EntityUtils {
+public final class EntityHelper {
 
     /**
      * A cache of spawn egg colors mapped to the entity type. Populated by {@link #getEggColors(EntityType)}.
@@ -44,7 +44,7 @@ public final class EntityUtils {
      */
     public static double getDistanceFromEntity(Entity firstEntity, Entity secondEntity) {
 
-        return MathsUtils.getDistanceBetweenPoints(firstEntity.position(), secondEntity.position());
+        return MathsHelper.getDistanceBetweenPoints(firstEntity.position(), secondEntity.position());
     }
 
     /**
@@ -56,7 +56,7 @@ public final class EntityUtils {
      */
     public static double getDistaceFromPos(Entity entity, BlockPos pos) {
 
-        return MathsUtils.getDistanceBetweenPoints(entity.position(), Vec3.atCenterOf(pos));
+        return MathsHelper.getDistanceBetweenPoints(entity.position(), Vec3.atCenterOf(pos));
     }
 
     /**

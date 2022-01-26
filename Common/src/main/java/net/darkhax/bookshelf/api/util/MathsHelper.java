@@ -13,7 +13,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Random;
 
-public final class MathsUtils {
+public final class MathsHelper {
 
     /**
      * A decimal format that only preserves two decimal places.
