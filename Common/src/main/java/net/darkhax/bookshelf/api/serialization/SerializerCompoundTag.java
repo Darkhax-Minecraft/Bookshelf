@@ -15,7 +15,7 @@ import net.minecraft.util.GsonHelper;
 public class SerializerCompoundTag implements ISerializer<CompoundTag> {
 
     public static final ISerializer<CompoundTag> SERIALIZER = new SerializerCompoundTag();
-    private static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
     private SerializerCompoundTag() {
 

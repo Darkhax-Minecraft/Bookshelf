@@ -1,11 +1,5 @@
 package net.darkhax.bookshelf.api.util;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Tuple;
@@ -28,22 +22,27 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public final class EntityUtils {
 
     /**
-     * A cache of spawn egg colors mapped to the entity type. Populated by
-     * {@link #getEggColors(EntityType)}.
+     * A cache of spawn egg colors mapped to the entity type. Populated by {@link #getEggColors(EntityType)}.
      */
-    private static Map<EntityType<?>, Tuple<Integer, Integer>> eggColorCache = new HashMap<>();
+    private static final Map<EntityType<?>, Tuple<Integer, Integer>> eggColorCache = new HashMap<>();
 
     /**
      * Calculates the distance between two entities.
      *
-     * @param firstEntity The first entity to use.
+     * @param firstEntity  The first entity to use.
      * @param secondEntity The second entity to use.
      * @return double The distance between the two entities passed.
      */
-    public static double getDistanceFromEntity (Entity firstEntity, Entity secondEntity) {
+    public static double getDistanceFromEntity(Entity firstEntity, Entity secondEntity) {
 
         return MathsUtils.getDistanceBetweenPoints(firstEntity.position(), secondEntity.position());
     }
@@ -52,10 +51,10 @@ public final class EntityUtils {
      * Calculates the distance between an entity and a BlockPos.
      *
      * @param entity The Entity to use for the first position.
-     * @param pos The BlockPos to use for the second position.
+     * @param pos    The BlockPos to use for the second position.
      * @return double The distance between the Entity and the BlockPos.
      */
-    public static double getDistaceFromPos (Entity entity, BlockPos pos) {
+    public static double getDistaceFromPos(Entity entity, BlockPos pos) {
 
         return MathsUtils.getDistanceBetweenPoints(entity.position(), Vec3.atCenterOf(pos));
     }
@@ -64,10 +63,10 @@ public final class EntityUtils {
      * Pushes an entity towards a specific direction.
      *
      * @param entityToMove The entity that you want to push.
-     * @param direction The direction to push the entity.
-     * @param force The amount of force to push the entity with.
+     * @param direction    The direction to push the entity.
+     * @param force        The amount of force to push the entity with.
      */
-    public static void pushTowards (Entity entityToMove, Direction direction, double force) {
+    public static void pushTowards(Entity entityToMove, Direction direction, double force) {
 
         pushTowards(entityToMove, entityToMove.blockPosition().relative(direction.getOpposite(), 1), force);
     }
@@ -76,10 +75,10 @@ public final class EntityUtils {
      * Pushes an Entity towards a BlockPos.
      *
      * @param entityToMove The entity that you want to push.
-     * @param pos The BlockPos to push the entity towards.
-     * @param force The amount of force to push the entity with.
+     * @param pos          The BlockPos to push the entity towards.
+     * @param force        The amount of force to push the entity with.
      */
-    public static void pushTowards (Entity entityToMove, BlockPos pos, double force) {
+    public static void pushTowards(Entity entityToMove, BlockPos pos, double force) {
 
         final BlockPos entityPos = entityToMove.blockPosition();
         final double distanceX = (double) pos.getX() - entityPos.getX();
@@ -96,11 +95,10 @@ public final class EntityUtils {
      * Pushes an entity towards another one.
      *
      * @param entityToMove The entity that should be pushed towards the other entity.
-     * @param destination The destination entity, that the entity to move should be pushed
-     *        towards.
-     * @param force The amount of force to push the entityToMove with.
+     * @param destination  The destination entity, that the entity to move should be pushed towards.
+     * @param force        The amount of force to push the entityToMove with.
      */
-    public static void pushTowards (Entity entityToMove, Entity destination, double force) {
+    public static void pushTowards(Entity entityToMove, Entity destination, double force) {
 
         final double distanceX = destination.getX() - entityToMove.getX();
         final double distanceY = destination.getY() - entityToMove.getY();
@@ -113,15 +111,14 @@ public final class EntityUtils {
     }
 
     /**
-     * Creates a Vector3d that represents the additional motion that would be needed to push an
-     * entity towards a destination.
+     * Creates a Vector3d that represents the additional motion that would be needed to push an entity towards a
+     * destination.
      *
      * @param entityToMove The entity to push.
-     * @param direction The direction to push the entity.
-     * @param force The amount of force to use.
-     *
+     * @param direction    The direction to push the entity.
+     * @param force        The amount of force to use.
      */
-    public static void pushTowardsDirection (Entity entityToMove, Direction direction, double force) {
+    public static void pushTowardsDirection(Entity entityToMove, Direction direction, double force) {
 
         final BlockPos entityPos = entityToMove.blockPosition();
         final BlockPos destination = entityToMove.blockPosition().relative(direction.getOpposite(), 1);
@@ -139,13 +136,12 @@ public final class EntityUtils {
     /**
      * Checks if two entities are close enough together.
      *
-     * @param firstEntity The first entity to check.
+     * @param firstEntity  The first entity to check.
      * @param secondEntity The second entity to check.
-     * @param maxDistance The maximum distance that the entities can be apart.
-     * @return boolean True if the distance between the entities are within range of the
-     *         maxDistance.
+     * @param maxDistance  The maximum distance that the entities can be apart.
+     * @return boolean True if the distance between the entities are within range of the maxDistance.
      */
-    public static boolean areEntitiesCloseEnough (Entity firstEntity, Entity secondEntity, double maxDistance) {
+    public static boolean areEntitiesCloseEnough(Entity firstEntity, Entity secondEntity, double maxDistance) {
 
         return getDistanceFromEntity(firstEntity, secondEntity) < maxDistance * maxDistance;
     }
@@ -153,14 +149,14 @@ public final class EntityUtils {
     /**
      * Gets a List of entities that are within the provided area.
      *
-     * @param <T> The type of entities to look for.
+     * @param <T>         The type of entities to look for.
      * @param entityClass The type of entity you are looking for.
-     * @param world The world to search in.
-     * @param pos The position to start the search around.
-     * @param range The range of the search.
+     * @param world       The world to search in.
+     * @param pos         The position to start the search around.
+     * @param range       The range of the search.
      * @return A List containing all entities of the specified type that are within the range.
      */
-    public static <T extends Entity> List<T> getEntitiesInArea (Class<T> entityClass, Level world, BlockPos pos, int range) {
+    public static <T extends Entity> List<T> getEntitiesInArea(Class<T> entityClass, Level world, BlockPos pos, int range) {
 
         return getEntitiesInArea(entityClass, world, pos, (float) range);
     }
@@ -168,28 +164,28 @@ public final class EntityUtils {
     /**
      * Gets a List of entities that are within the provided area.
      *
-     * @param <T> The type of entities to look for.
+     * @param <T>         The type of entities to look for.
      * @param entityClass The type of entity you are looking for.
-     * @param world The world to search in.
-     * @param pos The position to start the search around.
-     * @param range The range of the search.
+     * @param world       The world to search in.
+     * @param pos         The position to start the search around.
+     * @param range       The range of the search.
      * @return A List containing all entities of the specified type that are within the range.
      */
-    public static <T extends Entity> List<T> getEntitiesInArea (Class<T> entityClass, Level world, BlockPos pos, float range) {
+    public static <T extends Entity> List<T> getEntitiesInArea(Class<T> entityClass, Level world, BlockPos pos, float range) {
 
         return world.getEntitiesOfClass(entityClass, new AABB(pos.offset(-range, -range, -range), pos.offset(range + 1, range + 1, range + 1)));
     }
 
     /**
-     * A check to see if an entity is wearing a full suit of the armor. This check is based on
-     * the class names of armor.
+     * A check to see if an entity is wearing a full suit of the armor. This check is based on the class names of
+     * armor.
      *
-     * @param living: The living entity to check the armor of.
+     * @param living:     The living entity to check the armor of.
      * @param armorClass: The class of the armor to check against.
-     * @return boolean: True if every piece of armor the entity is wearing are the same class
-     *         as the provied armor class.
+     * @return boolean: True if every piece of armor the entity is wearing are the same class as the provied armor
+     * class.
      */
-    public static boolean isWearingFullSet (Mob living, Class<Item> armorClass) {
+    public static boolean isWearingFullSet(Mob living, Class<Item> armorClass) {
 
         for (final EquipmentSlot slot : EquipmentSlot.values()) {
             if (slot.getType().equals(EquipmentSlot.Type.ARMOR)) {
@@ -208,13 +204,13 @@ public final class EntityUtils {
     /**
      * Performs a ray trace for the look vector of an entity.
      *
-     * @param entity The entity to perform a ray trace on.
-     * @param length The distance to cast the rays.
+     * @param entity    The entity to perform a ray trace on.
+     * @param length    The distance to cast the rays.
      * @param blockMode The mode used when detecting blocks.
      * @param fluidMode The mode used when detecting fluids.
      * @return An object containing the results of the ray trace.
      */
-    public static HitResult rayTrace (LivingEntity entity, double length, Block blockMode, Fluid fluidMode) {
+    public static HitResult rayTrace(LivingEntity entity, double length, Block blockMode, Fluid fluidMode) {
 
         final Vec3 startingPosition = new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ());
         final Vec3 lookVector = entity.getLookAngle();
@@ -223,27 +219,25 @@ public final class EntityUtils {
     }
 
     /**
-     * Checks if an entity can be affected by fire. While fire immune entities can already
-     * negate the effects of fire doing prechecks using this method can be used to avoid
-     * rendering flickers or filter out these types of entities.
+     * Checks if an entity can be affected by fire. While fire immune entities can already negate the effects of fire
+     * doing prechecks using this method can be used to avoid rendering flickers or filter out these types of entities.
      *
      * @param toCheck The entity to check.
      * @return Whether or not this entity can be affected by fire.
      */
-    public static boolean isAffectedByFire (LivingEntity toCheck) {
+    public static boolean isAffectedByFire(LivingEntity toCheck) {
 
         return !toCheck.fireImmune() && !toCheck.hasEffect(MobEffects.FIRE_RESISTANCE);
     }
 
     /**
-     * Clears potion effect from an entity based on whether or not the effects are positive or
-     * negative.
+     * Clears potion effect from an entity based on whether or not the effects are positive or negative.
      *
-     * @param entity The entity to remove effects from.
+     * @param entity         The entity to remove effects from.
      * @param removePositive Should positive effects be cleared?
      * @param removeNegative Should negative effects be cleared?
      */
-    public static void clearEffects (LivingEntity entity, boolean removePositive, boolean removeNegative) {
+    public static void clearEffects(LivingEntity entity, boolean removePositive, boolean removeNegative) {
 
         final Set<MobEffect> toClear = new HashSet<>();
 
@@ -264,13 +258,13 @@ public final class EntityUtils {
     }
 
     /**
-     * Get the egg color associated with an entity type. If the entity does not have an egg
-     * type this will be 0 for both values.
+     * Get the egg color associated with an entity type. If the entity does not have an egg type this will be 0 for both
+     * values.
      *
      * @param type The entity type to get a color for.
      * @return A Tuple containing the primary and secondary egg colors.
      */
-    public static Tuple<Integer, Integer> getEggColors (EntityType<?> type) {
+    public static Tuple<Integer, Integer> getEggColors(EntityType<?> type) {
 
         return eggColorCache.computeIfAbsent(type, key -> {
 

@@ -132,7 +132,7 @@ public class SerializerEffectInstance implements ISerializer<MobEffectInstance> 
         final boolean ambient = Serializers.BOOLEAN.fromNBT(tag, "ambient", false);
         final boolean visible = Serializers.BOOLEAN.fromNBT(tag, "visible", true);
         final boolean showIcon = Serializers.BOOLEAN.fromNBT(tag, "showIcon", true);
-        final MobEffectInstance hiddenEffect = Serializers.EFFECT_INSTANCE.fromNBT(tag, "hiddenEffect", (MobEffectInstance) null);
+        final MobEffectInstance hiddenEffect = Serializers.EFFECT_INSTANCE.fromNBT(tag, "hiddenEffect", null);
 
         return new MobEffectInstance(effect, duration, amplifier, ambient, visible, showIcon, hiddenEffect);
     }
