@@ -79,17 +79,7 @@ project.publishing {
 
             artifactId project.archivesBaseName
 
-            // Base mod archive.
-            artifact(remapJar) {
-
-                builtBy remapJar
-            }
-
-            // Adds the soruces as an artifact.
-            artifact(sourcesJar) {
-
-                builtBy remapSourcesJar
-            }
+            from(components["java"])
         }
     }
 
