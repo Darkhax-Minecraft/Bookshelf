@@ -4,7 +4,7 @@ import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class RegistryEntries<T> implements IRegistryEntries<T> {
     public RegistryEntries(String ownerId) {
 
         this.ownerId = ownerId;
-        this.values = new HashMap<>();
+        this.values = new LinkedHashMap<>();
         this.valuesUnmodifiable = Collections.unmodifiableMap(this.values);
         this.insertListeners = new LinkedList<>();
     }
