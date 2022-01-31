@@ -22,6 +22,11 @@ public interface ICreativeTabBuilder<BT extends ICreativeTabBuilder<BT>> {
         return setIcon(() -> icon);
     }
 
+    default BT setIconItem(Supplier<ItemLike> iconSupplier) {
+
+        return this.setIcon(() -> new ItemStack(iconSupplier.get()));
+    }
+
     BT setIcon(Supplier<ItemStack> iconSupplier);
 
     BT setEnchantmentCategories(EnchantmentCategory... categories);
