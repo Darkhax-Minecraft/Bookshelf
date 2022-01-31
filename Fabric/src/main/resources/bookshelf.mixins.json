@@ -8,6 +8,9 @@
     "item.AccessorItem",
     "loot.MixinLootItemKilledByPlayerCondition"
   ],
+  "client": [
+    "client.AccessorItemBlockRenderTypes"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
