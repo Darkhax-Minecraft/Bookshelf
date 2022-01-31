@@ -3,18 +3,21 @@
 */
 import groovy.json.JsonSlurper
 
+project.ext.patreon = [
+    campaignUrl       : '',
+    campaignUrlTracked: ''
+]
+
+project.ext.mod_supporters = 'No supporters loaded.'
+
 if (project.hasProperty('patreon_campaign_id') && findProperty('patreon_auth_token')) {
 
     def defaultCampaign = project.findProperty('patreon_campaign_id')
     def defaultAuth = project.findProperty('patreon_auth_token')
 
-    project.ext.patreon = [
-            campaign          : defaultCampaign,
-            pledgeLog         : getPledgeLog(defaultCampaign, defaultAuth),
-            pledges           : getPledges(defaultCampaign, defaultAuth),
-            campaignUrl       : '',
-            campaignUrlTracked: ''
-    ]
+    project.ext.patreon.campaign = defaultCampaign;
+    project.ext.patreon.pledgeLog = getPledgeLog(defaultCampaign, defaultAuth)
+    project.ext.patreon.pledges = getPledges(defaultCampaign, defaultAuth)
 
     if (project.hasProperty('patreon_campaign_url')) {
 
