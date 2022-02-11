@@ -28,6 +28,8 @@ public abstract class RegistryHelper {
     public final IRegistryEntries<PreparableReloadListener> serverReloadListeners;
     public final IRegistryEntries<PreparableReloadListener> clientReloadListeners;
 
+    public final IRegistryEntries<ICommandBuilder> commands;
+
     protected RegistryHelper(String ownerId) {
 
         this.ownerId = ownerId;
@@ -42,6 +44,8 @@ public abstract class RegistryHelper {
 
         this.serverReloadListeners = new RegistryEntries<>(ownerId);
         this.clientReloadListeners = new RegistryEntries<>(ownerId);
+
+        this.commands = new RegistryEntries<>(ownerId);
     }
 
     public RegistryHelper withCreativeTab(CreativeModeTab tab) {

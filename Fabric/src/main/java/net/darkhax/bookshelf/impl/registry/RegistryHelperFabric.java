@@ -1,12 +1,15 @@
 package net.darkhax.bookshelf.impl.registry;
 
+import com.mojang.brigadier.CommandDispatcher;
 import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.item.ICreativeTabBuilder;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.RegistryHelper;
 import net.darkhax.bookshelf.impl.item.CreativeTabBuilderFabric;
 import net.darkhax.bookshelf.impl.resources.WrappedReloadListener;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -41,6 +44,13 @@ public class RegistryHelperFabric extends RegistryHelper {
 
             this.clientReloadListeners.getEntries().forEach((k, v) -> ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new WrappedReloadListener(k, v)));
         }
+
+        CommandRegistrationCallback.EVENT.register(this::buildCommands);
+    }
+
+    private void buildCommands(CommandDispatcher<CommandSourceStack> dispatcher, boolean isDedicated) {
+
+        this.commands.forEach(builder -> builder.build(dispatcher, isDedicated));
     }
 
     private <T> void consumeVanillaRegistry(IRegistryEntries<T> toRegister, Registry<T> registry) {
