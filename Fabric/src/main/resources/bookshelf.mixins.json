@@ -6,6 +6,8 @@
   "mixins": [
     "effect.AccessorMobEffectInstance",
     "item.AccessorItem",
+    "item.AccessorItemCooldowns",
+    "item.AccessorCooldownInstance",
     "loot.MixinLootItemKilledByPlayerCondition"
   ],
   "client": [

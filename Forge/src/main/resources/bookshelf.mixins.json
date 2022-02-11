@@ -6,10 +6,12 @@
   "mixins": [
     "effect.AccessorMobEffectInstance",
     "item.AccessorItem",
+    "item.AccessorItemCooldowns",
+    "item.AccessorCooldownInstance",
     "loot.MixinLootItemKilledByPlayerCondition"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "bookshelf.refmap.json",
+  "refmap": "bookshelf.refmap.json"
 }
