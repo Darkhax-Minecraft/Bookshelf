@@ -100,19 +100,6 @@ public final class MathsHelper {
     }
 
     /**
-     * Converts time in ticks to a human readable string.
-     *
-     * @param ticks: The amount of ticks to convert.
-     * @return String: A human readable version of the time.
-     */
-    public static String ticksToTime(int ticks) {
-
-        final int seconds = ticks / 20;
-        final int minutes = seconds / 60;
-        return minutes + ":" + seconds;
-    }
-
-    /**
      * Gets the percentage of an integer. Result is an integer and decimal is lost.
      *
      * @param value The value to get the percentage of.
