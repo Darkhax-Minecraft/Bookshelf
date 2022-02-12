@@ -1,7 +1,7 @@
 package net.darkhax.bookshelf.api.serialization;
 
+import net.darkhax.bookshelf.api.Services;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -59,19 +59,19 @@ public final class Serializers {
     public static final ISerializer<AttributeModifier.Operation> ATTRIBUTE_OPERATION = new SerializerEnum<>(AttributeModifier.Operation.class);
 
     // REGISTRY TYPES
-    public static final ISerializer<Block> BLOCK = new SerializerRegistryEntry<>(Registry.BLOCK);
-    public static final ISerializer<Item> ITEM = new SerializerRegistryEntry<>(Registry.ITEM);
-    public static final ISerializer<Enchantment> ENCHANTMENT = new SerializerRegistryEntry<>(Registry.ENCHANTMENT);
-    public static final ISerializer<Motive> MOTIVE = new SerializerRegistryEntry<>(Registry.MOTIVE);
-    public static final ISerializer<MobEffect> MOB_EFFECT = new SerializerRegistryEntry<>(Registry.MOB_EFFECT);
-    public static final ISerializer<Potion> POTION = new SerializerRegistryEntry<>(Registry.POTION);
-    public static final ISerializer<Attribute> ATTRIBUTE = new SerializerRegistryEntry<>(Registry.ATTRIBUTE);
-    public static final ISerializer<VillagerProfession> VILLAGER_PROFESSION = new SerializerRegistryEntry<>(Registry.VILLAGER_PROFESSION);
-    public static final ISerializer<VillagerType> VILLAGER_TYPE = new SerializerRegistryEntry<>(Registry.VILLAGER_TYPE);
-    public static final ISerializer<SoundEvent> SOUND_EVENT = new SerializerRegistryEntry<>(Registry.SOUND_EVENT);
-    public static final ISerializer<MenuType<?>> MENU = new SerializerRegistryEntry<>(Registry.MENU);
-    public static final ISerializer<ParticleType<?>> PARTICLE = new SerializerRegistryEntry<>(Registry.PARTICLE_TYPE);
-    public static final ISerializer<EntityType<?>> ENTITY = new SerializerRegistryEntry<>(Registry.ENTITY_TYPE);
-    public static final ISerializer<BlockEntityType<?>> BLOCK_ENTITY = new SerializerRegistryEntry<>(Registry.BLOCK_ENTITY_TYPE);
-    public static final ISerializer<GameEvent> GAME_EVENT = new SerializerRegistryEntry<>(Registry.GAME_EVENT);
+    public static final ISerializer<Block> BLOCK = new SerializerRegistryEntry<>(Services.REGISTRIES.blocks());
+    public static final ISerializer<Item> ITEM = new SerializerRegistryEntry<>(Services.REGISTRIES.items());
+    public static final ISerializer<Enchantment> ENCHANTMENT = new SerializerRegistryEntry<>(Services.REGISTRIES.enchantments());
+    public static final ISerializer<Motive> MOTIVE = new SerializerRegistryEntry<>(Services.REGISTRIES.paintings());
+    public static final ISerializer<MobEffect> MOB_EFFECT = new SerializerRegistryEntry<>(Services.REGISTRIES.mobEffects());
+    public static final ISerializer<Potion> POTION = new SerializerRegistryEntry<>(Services.REGISTRIES.potions());
+    public static final ISerializer<Attribute> ATTRIBUTE = new SerializerRegistryEntry<>(Services.REGISTRIES.attributes());
+    public static final ISerializer<VillagerProfession> VILLAGER_PROFESSION = new SerializerRegistryEntry<>(Services.REGISTRIES.villagerProfessions());
+    public static final ISerializer<VillagerType> VILLAGER_TYPE = new SerializerRegistryEntry<>(Services.REGISTRIES.villagerTypes());
+    public static final ISerializer<SoundEvent> SOUND_EVENT = new SerializerRegistryEntry<>(Services.REGISTRIES.sounds());
+    public static final ISerializer<MenuType<?>> MENU = new SerializerRegistryEntry<>(Services.REGISTRIES.menuTypes());
+    public static final ISerializer<ParticleType<?>> PARTICLE = new SerializerRegistryEntry<>(Services.REGISTRIES.particles());
+    public static final ISerializer<EntityType<?>> ENTITY = new SerializerRegistryEntry<>(Services.REGISTRIES.entities());
+    public static final ISerializer<BlockEntityType<?>> BLOCK_ENTITY = new SerializerRegistryEntry<>(Services.REGISTRIES.blockEntities());
+    public static final ISerializer<GameEvent> GAME_EVENT = new SerializerRegistryEntry<>(Services.REGISTRIES.gameEvents());
 }
