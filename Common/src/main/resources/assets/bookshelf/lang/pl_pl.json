@@ -1,0 +1,40 @@
+{
+    "_comment": "Polish Language File",
+
+    "_comment": "Moon Phases",
+    "moon.phase.full": "Pełnia Księżyca",
+    "moon.phase.waxing.gibbous": "Przybywający Księżyc garbaty",
+    "moon.phase.first.quarter": "Pierwsza kwadra Księżyca",
+    "moon.phase.waxing.crescent": "Przybywający Księżyc sierpowaty",
+    "moon.phase.new": "Nów Księżyca",
+    "moon.phase.waning.crescent": "Ubywający Księżyc sierpowaty",
+    "moon.phase.last.quarter": "Ostatnia kwadra Księżyca",
+    "moon.phase.waning.gibbous": "Ubywający Księżyc garbaty",
+
+    "_comment": "Months",
+    "time.bookshelf.month.january": "Styczeń",
+    "time.bookshelf.month.february": "Luty",
+    "time.bookshelf.month.march": "Marzec",
+    "time.bookshelf.month.april": "Kwiecień",
+    "time.bookshelf.month.may": "Maj",
+    "time.bookshelf.month.june": "Czerwiec",
+    "time.bookshelf.month.july": "Lipiec",
+    "time.bookshelf.month.august": "Sierpień",
+    "time.bookshelf.month.september": "Wrzesień",
+    "time.bookshelf.month.october": "Październik",
+    "time.bookshelf.month.november": "Listopad",
+    "time.bookshelf.month.december": "Grudzień",
+
+    "_comment": "Days",
+    "time.bookshelf.day.sunday": "Niedziela",
+    "time.bookshelf.day.monday": "Poniedziałek",
+    "time.bookshelf.day.tuesday": "Wtorek",
+    "time.bookshelf.day.wednesday": "Środa",
+    "time.bookshelf.day.thursday": "Czwartek",
+    "time.bookshelf.day.friday": "Piątek",
+    "time.bookshelf.day.saturday": "Sobota",
+
+    "_comment": "Commands",
+    "commands.bookshelf.loot_tables": "Znaleziono następującą liczbę brakujących tabel łupów: %d dla moda %s.",
+    "commands.bookshelf.loot_tables.wildcard": "Znaleziono następującą liczbę brakujących tabel łupów: %d dla wszystkich modów."
+}

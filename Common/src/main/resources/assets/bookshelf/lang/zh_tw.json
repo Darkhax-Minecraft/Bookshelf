@@ -1,0 +1,36 @@
+{
+    "_comment": "Traditional Chinese Language File",
+
+    "_comment": "Moon Phases",
+    "moon.phase.full": "滿月",
+    "moon.phase.waxing.gibbous": "盈凸月",
+    "moon.phase.first.quarter": "上弦月",
+    "moon.phase.waxing.crescent": "蛾眉月",
+    "moon.phase.new": "新月",
+    "moon.phase.waning.crescent": "殘月",
+    "moon.phase.last.quarter": "下弦月",
+    "moon.phase.waning.gibbous": "虧凸月",
+
+    "_comment": "Months",
+    "time.bookshelf.month.january": "一月",
+    "time.bookshelf.month.february": "二月",
+    "time.bookshelf.month.march": "三月",
+    "time.bookshelf.month.april": "四月",
+    "time.bookshelf.month.may": "五月",
+    "time.bookshelf.month.june": "六月",
+    "time.bookshelf.month.july": "七月",
+    "time.bookshelf.month.august": "八月",
+    "time.bookshelf.month.september": "九月",
+    "time.bookshelf.month.october": "十月",
+    "time.bookshelf.month.november": "十一月",
+    "time.bookshelf.month.december": "十二月",
+
+    "_comment": "Days",
+    "time.bookshelf.day.sunday": "星期日",
+    "time.bookshelf.day.monday": "星期一",
+    "time.bookshelf.day.tuesday": "星期二",
+    "time.bookshelf.day.wednesday": "星期三",
+    "time.bookshelf.day.thursday": "星期四",
+    "time.bookshelf.day.friday": "星期五",
+    "time.bookshelf.day.saturday": "星期六"
+}
