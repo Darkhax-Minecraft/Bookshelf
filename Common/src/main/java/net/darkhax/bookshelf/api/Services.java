@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.api;
 
 import net.darkhax.bookshelf.Constants;
 import net.darkhax.bookshelf.api.event.IEventHelper;
+import net.darkhax.bookshelf.api.registry.IGameRegistries;
 import net.darkhax.bookshelf.api.registry.IRegistryHelperFactory;
 import net.darkhax.bookshelf.api.util.IPlatformHelper;
 
@@ -12,6 +13,7 @@ public class Services {
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
     public static final IRegistryHelperFactory REGISTRY_HELPER = load(IRegistryHelperFactory.class);
     public static final IEventHelper EVENTS = load(IEventHelper.class);
+    public static final IGameRegistries REGISTRIES = load(IGameRegistries.class);
 
     public static <T> T load(Class<T> clazz) {
 
