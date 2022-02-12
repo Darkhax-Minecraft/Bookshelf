@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "effect.AccessorMobEffectInstance",
+    "entity.AccessorEntity",
     "item.AccessorItem",
     "item.AccessorItemCooldowns",
     "item.AccessorCooldownInstance",
