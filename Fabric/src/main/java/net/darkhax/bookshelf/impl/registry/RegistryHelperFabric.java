@@ -1,6 +1,9 @@
 package net.darkhax.bookshelf.impl.registry;
 
+import com.google.common.collect.Multimap;
 import com.mojang.brigadier.CommandDispatcher;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.item.ICreativeTabBuilder;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
@@ -13,6 +16,13 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerTrades;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class RegistryHelperFabric extends RegistryHelper {
 
@@ -46,6 +56,40 @@ public class RegistryHelperFabric extends RegistryHelper {
         }
 
         CommandRegistrationCallback.EVENT.register(this::buildCommands);
+        this.registerTradeData();
+        this.registerWanderingTrades();
+    }
+
+    private void registerTradeData() {
+
+        for (Map.Entry<VillagerProfession, Multimap<Integer, VillagerTrades.ItemListing>> professionData : this.trades.getVillagerTrades().entrySet()) {
+
+            final Int2ObjectMap<VillagerTrades.ItemListing[]> professionTrades = VillagerTrades.TRADES.computeIfAbsent(professionData.getKey(), profession -> new Int2ObjectOpenHashMap<>());
+
+            for (int merchantTier : professionData.getValue().keySet()) {
+
+                final List<VillagerTrades.ItemListing> tradesForTier = new ArrayList<>(Arrays.asList(professionTrades.getOrDefault(merchantTier, new VillagerTrades.ItemListing[0])));
+                tradesForTier.addAll(professionData.getValue().get(merchantTier));
+                professionTrades.put(merchantTier, tradesForTier.toArray(new VillagerTrades.ItemListing[0]));
+            }
+        }
+    }
+
+    private void registerWanderingTrades() {
+
+        if (!this.trades.getCommonWanderingTrades().isEmpty()) {
+
+            final List<VillagerTrades.ItemListing> tradeData = new ArrayList<>(Arrays.asList(VillagerTrades.WANDERING_TRADER_TRADES.get(1)));
+            tradeData.addAll(this.trades.getCommonWanderingTrades());
+            VillagerTrades.WANDERING_TRADER_TRADES.put(1, tradeData.toArray(new VillagerTrades.ItemListing[0]));
+        }
+
+        if (!this.trades.getRareWanderingTrades().isEmpty()) {
+
+            final List<VillagerTrades.ItemListing> tradeData = new ArrayList<>(Arrays.asList(VillagerTrades.WANDERING_TRADER_TRADES.get(2)));
+            tradeData.addAll(this.trades.getRareWanderingTrades());
+            VillagerTrades.WANDERING_TRADER_TRADES.put(2, tradeData.toArray(new VillagerTrades.ItemListing[0]));
+        }
     }
 
     private void buildCommands(CommandDispatcher<CommandSourceStack> dispatcher, boolean isDedicated) {

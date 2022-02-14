@@ -29,6 +29,7 @@ public abstract class RegistryHelper {
     public final IRegistryEntries<PreparableReloadListener> clientReloadListeners;
 
     public final IRegistryEntries<ICommandBuilder> commands;
+    public final VillagerTradeEntries trades;
 
     protected RegistryHelper(String ownerId) {
 
@@ -46,6 +47,7 @@ public abstract class RegistryHelper {
         this.clientReloadListeners = new RegistryEntries<>(ownerId);
 
         this.commands = new RegistryEntries<>(ownerId);
+        this.trades = new VillagerTradeEntries();
     }
 
     public RegistryHelper withCreativeTab(CreativeModeTab tab) {

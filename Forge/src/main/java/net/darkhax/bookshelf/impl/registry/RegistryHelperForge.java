@@ -1,6 +1,8 @@
 package net.darkhax.bookshelf.impl.registry;
 
+import com.google.common.collect.Multimap;
 import com.mojang.brigadier.CommandDispatcher;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.darkhax.bookshelf.api.item.ICreativeTabBuilder;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.RegistryHelper;
@@ -12,6 +14,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.decoration.Motive;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
@@ -20,11 +23,16 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.village.VillagerTradesEvent;
+import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class RegistryHelperForge extends RegistryHelper {
@@ -55,6 +63,29 @@ public class RegistryHelperForge extends RegistryHelper {
         consumeWithEvent(AddReloadListenerEvent.class, this.serverReloadListeners, e -> this.serverReloadListeners.getEntries().values().forEach(e::addListener));
 
         MinecraftForge.EVENT_BUS.addListener(this::buildCommands);
+        MinecraftForge.EVENT_BUS.addListener(this::registerVillagerTrades);
+        MinecraftForge.EVENT_BUS.addListener(this::registerWanderingTrades);
+    }
+
+    private void registerVillagerTrades(VillagerTradesEvent event) {
+
+        final Multimap<Integer, VillagerTrades.ItemListing> newTrades = this.trades.getVillagerTrades().get(event.getType());
+
+        if (newTrades != null) {
+
+            final Int2ObjectMap<List<VillagerTrades.ItemListing>> tradeData = event.getTrades();
+
+            for (Map.Entry<Integer, VillagerTrades.ItemListing> entry : newTrades.entries()) {
+
+                tradeData.computeIfAbsent(entry.getKey(), ArrayList::new).add(entry.getValue());
+            }
+        }
+    }
+
+    private void registerWanderingTrades(WandererTradesEvent event) {
+
+        event.getGenericTrades().addAll(this.trades.getCommonWanderingTrades());
+        event.getRareTrades().addAll(this.trades.getRareWanderingTrades());
     }
 
     private void buildCommands(RegisterCommandsEvent event) {
