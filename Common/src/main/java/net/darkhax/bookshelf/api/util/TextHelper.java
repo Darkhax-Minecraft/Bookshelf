@@ -6,6 +6,7 @@ import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -57,5 +58,23 @@ public final class TextHelper {
         }
 
         return component;
+    }
+
+    /**
+     * Recursively applies a custom font to a text component and all of it's children components.
+     *
+     * @param text The text to apply the font to.
+     * @param font The ID of the font to apply.
+     * @return A modified text component that has had the font applied.
+     */
+    public static Component applyFont(Component text, ResourceLocation font) {
+
+        if (text instanceof MutableComponent mutable) {
+
+            mutable.withStyle(style -> style.withFont(font));
+        }
+
+        text.getSiblings().forEach(sib -> applyFont(sib, font));
+        return text;
     }
 }
