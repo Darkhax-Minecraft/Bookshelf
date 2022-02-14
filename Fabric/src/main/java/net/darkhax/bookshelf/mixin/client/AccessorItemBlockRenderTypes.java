@@ -12,7 +12,7 @@ import java.util.Map;
 public interface AccessorItemBlockRenderTypes {
 
     @Accessor("TYPE_BY_BLOCK")
-    public static Map<Block, RenderType> getTypes() {
+    static Map<Block, RenderType> getTypes() {
 
         throw new AssertionError();
     }
