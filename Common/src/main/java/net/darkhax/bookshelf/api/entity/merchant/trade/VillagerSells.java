@@ -21,22 +21,22 @@ public class VillagerSells implements VillagerTrades.ItemListing {
 
     public VillagerSells(Block itemToBuy, int emeraldCost, int maxUses, int villagerXp, float priceMultiplier) {
 
-        this(new ItemStack(itemToBuy), emeraldCost, maxUses, villagerXp, priceMultiplier);
+        this(() -> new ItemStack(itemToBuy), emeraldCost, maxUses, villagerXp, priceMultiplier);
     }
 
     public VillagerSells(Block itemToBuy, int emeraldCost, int maxUses, int villagerXp) {
 
-        this(new ItemStack(itemToBuy), emeraldCost, maxUses, villagerXp, 0.05f);
+        this(itemToBuy, emeraldCost, maxUses, villagerXp, 0.05f);
     }
 
     public VillagerSells(Item itemToBuy, int emeraldCost, int maxUses, int villagerXp, float priceMultiplier) {
 
-        this(itemToBuy.getDefaultInstance(), emeraldCost, maxUses, villagerXp, priceMultiplier);
+        this(itemToBuy::getDefaultInstance, emeraldCost, maxUses, villagerXp, priceMultiplier);
     }
 
     public VillagerSells(Item itemToBuy, int emeraldCost, int maxUses, int villagerXp) {
 
-        this(itemToBuy.getDefaultInstance(), emeraldCost, maxUses, villagerXp, 0.05f);
+        this(itemToBuy, emeraldCost, maxUses, villagerXp, 0.05f);
     }
 
     public VillagerSells(ItemStack itemToBuy, int emeraldCost, int maxUses, int villagerXp, float priceMultiplier) {
