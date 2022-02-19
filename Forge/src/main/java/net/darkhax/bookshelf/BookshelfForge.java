@@ -7,5 +7,6 @@ public class BookshelfForge {
 
     public BookshelfForge() {
 
+        new BookshelfCommon();
     }
 }
