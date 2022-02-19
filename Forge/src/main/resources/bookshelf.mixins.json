@@ -9,7 +9,12 @@
     "item.AccessorItem",
     "item.AccessorItemCooldowns",
     "item.AccessorCooldownInstance",
-    "loot.MixinLootItemKilledByPlayerCondition"
+    "loot.MixinLootItemKilledByPlayerCondition",
+    "block.entity.AccessorSignBlockEntity"
+  ],
+  "client": [
+    "client.AccessorMinecraft",
+    "client.AccessorFontManager"
   ],
   "injectors": {
     "defaultRequire": 1
