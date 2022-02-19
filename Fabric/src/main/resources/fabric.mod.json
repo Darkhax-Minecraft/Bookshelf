@@ -20,11 +20,8 @@
   "license": "${mod_license}",
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "net.darkhax.bookshelf.BookshelfFabricClient"
-    ],
-    "server": [
-      "net.darkhax.bookshelf.BookshelfFabricServer"
+    "main": [
+      "net.darkhax.bookshelf.BookshelfFabric"
     ]
   },
   "mixins": [
