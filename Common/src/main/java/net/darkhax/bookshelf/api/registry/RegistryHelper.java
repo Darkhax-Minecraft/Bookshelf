@@ -3,7 +3,9 @@ package net.darkhax.bookshelf.api.registry;
 import net.darkhax.bookshelf.api.item.ICreativeTabBuilder;
 import net.darkhax.bookshelf.impl.registry.RegistryEntries;
 import net.darkhax.bookshelf.mixin.item.AccessorItem;
+import net.minecraft.commands.synchronization.ArgumentSerializer;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.decoration.Motive;
@@ -29,6 +31,7 @@ public abstract class RegistryHelper {
     public final IRegistryEntries<PreparableReloadListener> clientReloadListeners;
 
     public final IRegistryEntries<ICommandBuilder> commands;
+    public final IRegistryEntries<Tuple<Class, ArgumentSerializer>> commandArguments;
     public final VillagerTradeEntries trades;
 
     protected RegistryHelper(String ownerId) {
@@ -47,6 +50,7 @@ public abstract class RegistryHelper {
         this.clientReloadListeners = new RegistryEntries<>(ownerId);
 
         this.commands = new RegistryEntries<>(ownerId);
+        this.commandArguments = new RegistryEntries<>(ownerId);
         this.trades = new VillagerTradeEntries();
     }
 

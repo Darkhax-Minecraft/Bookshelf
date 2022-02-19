@@ -3,13 +3,17 @@ package net.darkhax.bookshelf.impl.registry;
 import com.google.common.collect.Multimap;
 import com.mojang.brigadier.CommandDispatcher;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.darkhax.bookshelf.Constants;
 import net.darkhax.bookshelf.api.item.ICreativeTabBuilder;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.RegistryHelper;
 import net.darkhax.bookshelf.impl.item.CreativeTabBuilderForge;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.synchronization.ArgumentSerializer;
+import net.minecraft.commands.synchronization.ArgumentTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.decoration.Motive;
@@ -27,6 +31,7 @@ import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -65,6 +70,16 @@ public class RegistryHelperForge extends RegistryHelper {
         MinecraftForge.EVENT_BUS.addListener(this::buildCommands);
         MinecraftForge.EVENT_BUS.addListener(this::registerVillagerTrades);
         MinecraftForge.EVENT_BUS.addListener(this::registerWanderingTrades);
+
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerCommandArguments);
+    }
+
+    private void registerCommandArguments (FMLCommonSetupEvent event) {
+
+        for (Map.Entry<ResourceLocation, Tuple<Class, ArgumentSerializer>> entry : this.commandArguments.getEntries().entrySet()) {
+
+            ArgumentTypes.register(entry.getKey().toString(), entry.getValue().getA(), entry.getValue().getB());
+        }
     }
 
     private void registerVillagerTrades(VillagerTradesEvent event) {

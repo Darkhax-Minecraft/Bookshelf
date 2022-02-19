@@ -13,9 +13,12 @@ import net.darkhax.bookshelf.impl.resources.WrappedReloadListener;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.synchronization.ArgumentSerializer;
+import net.minecraft.commands.synchronization.ArgumentTypes;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 
@@ -58,6 +61,15 @@ public class RegistryHelperFabric extends RegistryHelper {
         CommandRegistrationCallback.EVENT.register(this::buildCommands);
         this.registerTradeData();
         this.registerWanderingTrades();
+        this.registerCommandArguments();
+    }
+
+    private void registerCommandArguments () {
+
+        for (Map.Entry<ResourceLocation, Tuple<Class, ArgumentSerializer>> entry : this.commandArguments.getEntries().entrySet()) {
+
+            ArgumentTypes.register(entry.getKey().toString(), entry.getValue().getA(), entry.getValue().getB());
+        }
     }
 
     private void registerTradeData() {
