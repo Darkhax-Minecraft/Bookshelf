@@ -1,6 +1,10 @@
 package net.darkhax.bookshelf.api.util;
 
+import net.darkhax.bookshelf.api.Services;
+import net.darkhax.bookshelf.mixin.client.AccessorFontManager;
+import net.darkhax.bookshelf.mixin.client.AccessorMinecraft;
 import net.darkhax.bookshelf.mixin.entity.AccessorEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
@@ -11,7 +15,15 @@ import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.Collections;
+import java.util.Set;
+
 public final class TextHelper {
+
+    public static final ResourceLocation FONT_ALT = new ResourceLocation("minecraft", "alt");
+    public static final ResourceLocation FONT_DEFAULT = new ResourceLocation("minecraft", "default");
+    public static final ResourceLocation FONT_ILLAGER = new ResourceLocation("minecraft", "illageralt");
+    public static final ResourceLocation FONT_UNIFORM = new ResourceLocation("minecraft", "uniform");
 
     public static MutableComponent getFormatedTime(int ticks, boolean includeHover) {
 
@@ -76,5 +88,15 @@ public final class TextHelper {
 
         text.getSiblings().forEach(sib -> applyFont(sib, font));
         return text;
+    }
+
+    public static Set<ResourceLocation> getRegisteredFonts() {
+
+        if (!Services.PLATFORM.isPhysicalClient()) {
+
+            return Collections.emptySet();
+        }
+
+        return ((AccessorFontManager) (((AccessorMinecraft) Minecraft.getInstance()).bookshelf$getFontManager())).bookshelf$getFonts().keySet();
     }
 }
