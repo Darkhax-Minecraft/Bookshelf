@@ -12,4 +12,8 @@ public interface AccessorItem {
     @Mutable
     @Accessor("category")
     void bookshelf$setCreativeTab(CreativeModeTab tab);
+
+    @Mutable
+    @Accessor("craftingRemainingItem")
+    void bookshelf$setCraftingRemainder(Item item);
 }
