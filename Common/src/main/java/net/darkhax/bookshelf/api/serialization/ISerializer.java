@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -125,9 +126,9 @@ public interface ISerializer<T> {
         throw new NBTParseException("Required tag " + name + " was not present.");
     }
 
-    default T fromNBT(CompoundTag tag, String name, T fallback) {
+    default T fromNBT(@Nullable CompoundTag tag, String name, T fallback) {
 
-        return tag.contains(name) ? this.fromNBT(tag.get(name)) : fallback;
+        return tag != null && tag.contains(name) ? this.fromNBT(tag.get(name)) : fallback;
     }
 
     default void toNBT(CompoundTag tag, String name, T toWrite) {
