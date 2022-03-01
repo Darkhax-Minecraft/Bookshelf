@@ -5,6 +5,7 @@ import net.darkhax.bookshelf.mixin.client.AccessorFontManager;
 import net.darkhax.bookshelf.mixin.client.AccessorMinecraft;
 import net.darkhax.bookshelf.mixin.entity.AccessorEntity;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
@@ -15,8 +16,10 @@ import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 public final class TextHelper {
 
@@ -98,5 +101,61 @@ public final class TextHelper {
         }
 
         return ((AccessorFontManager) (((AccessorMinecraft) Minecraft.getInstance()).bookshelf$getFontManager())).bookshelf$getFonts().keySet();
+    }
+
+
+    @Nullable
+    public static TranslatableComponent lookupTranslationWithAlias(ResourceLocation id, String... keys) {
+
+        for (String key : keys) {
+
+            final TranslatableComponent lookupResult = lookupTranslation(key.formatted(id.getNamespace(), id.getPath()));
+
+            if (lookupResult != null) {
+
+                return lookupResult;
+            }
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public static TranslatableComponent lookupTranslationWithAlias(String[] keys, Object... params) {
+
+        for (String key : keys) {
+
+            final TranslatableComponent lookupResult = lookupTranslation(key, params);
+
+            if (lookupResult != null) {
+
+                return lookupResult;
+            }
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public static TranslatableComponent lookupTranslation(String key, Object... args) {
+
+        return lookupTranslation(key, (s, o) -> null, args);
+    }
+
+    @Nullable
+    public static TranslatableComponent lookupTranslation(String key, TranslatableComponent fallback, Object... args) {
+
+        return lookupTranslation(key, (s, o) -> fallback, args);
+    }
+
+    @Nullable
+    public static TranslatableComponent lookupTranslation(String key, BiFunction<String, Object[], TranslatableComponent> fallback, Object... args) {
+
+        if (I18n.exists(key)) {
+
+            return new TranslatableComponent(key, args);
+        }
+
+        return fallback != null ? fallback.apply(key, args) : null;
     }
 }
