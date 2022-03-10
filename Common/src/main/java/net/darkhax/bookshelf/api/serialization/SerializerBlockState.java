@@ -117,7 +117,7 @@ public class SerializerBlockState implements ISerializer<BlockState> {
                     catch (final Exception e) {
 
                         Constants.LOG.error("Failed to update state for block {}. The mod that adds this block may have an issue.", Registry.BLOCK.getId(state.getBlock()));
-                        Constants.LOG.catching(e);
+                        Constants.LOG.trace("Failed to read blockstate from JSON property.", e);
                         throw e;
                     }
                 }
