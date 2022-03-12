@@ -29,26 +29,48 @@ import net.minecraft.world.level.material.Fluid;
 public interface ITagHelper {
 
     TagKey<SoundEvent> soundTag(ResourceLocation tag);
+
     TagKey<Fluid> fluidTag(ResourceLocation tag);
+
     TagKey<MobEffect> effectTag(ResourceLocation tag);
+
     TagKey<Block> blockTag(ResourceLocation tag);
+
     TagKey<Enchantment> enchantmentTag(ResourceLocation tag);
+
     TagKey<EntityType<?>> entityTag(ResourceLocation tag);
+
     TagKey<Item> itemTag(ResourceLocation tag);
+
     TagKey<Potion> potionTag(ResourceLocation tag);
+
     TagKey<ParticleType<?>> particleTag(ResourceLocation tag);
+
     TagKey<BlockEntityType<?>> blockEntityTag(ResourceLocation tag);
+
     TagKey<Motive> paintingTag(ResourceLocation tag);
+
     TagKey<ResourceLocation> statTag(ResourceLocation tag);
+
     TagKey<MenuType<?>> menuTag(ResourceLocation tag);
+
     TagKey<RecipeType<?>> recipeTypeTag(ResourceLocation tag);
+
     TagKey<RecipeSerializer<?>> recipeSerializerTag(ResourceLocation tag);
+
     TagKey<Attribute> attributeTag(ResourceLocation tag);
+
     TagKey<GameEvent> gameEventTag(ResourceLocation tag);
+
     TagKey<VillagerType> villagerTypeTag(ResourceLocation tag);
+
     TagKey<VillagerProfession> villagerProfessionTag(ResourceLocation tag);
+
     TagKey<DimensionType> dimensionTypeTag(ResourceLocation tag);
+
     TagKey<Level> dimensionTag(ResourceLocation tag);
+
     TagKey<Biome> biomeTag(ResourceLocation tag);
+
     <T> TagKey<T> tag(ResourceKey<? extends Registry<T>> registryKey, ResourceLocation tag);
 }

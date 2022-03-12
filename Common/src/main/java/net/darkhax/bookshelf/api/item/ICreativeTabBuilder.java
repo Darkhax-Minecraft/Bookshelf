@@ -10,33 +10,23 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public interface ICreativeTabBuilder<BT extends ICreativeTabBuilder<BT>> {
+public interface ICreativeTabBuilder {
 
-    default BT setIcon(ItemLike icon) {
+    default ICreativeTabBuilder setIcon(Supplier<? extends ItemLike> iconSupplier) {
 
-        return this.setIcon(new ItemStack(icon));
+        return this.setIconStack(() -> new ItemStack(iconSupplier.get()));
     }
 
-    default BT setIcon(ItemStack icon) {
+    ICreativeTabBuilder setIconStack(Supplier<ItemStack> iconSupplier);
 
-        return setIcon(() -> icon);
-    }
+    ICreativeTabBuilder setEnchantmentCategories(EnchantmentCategory... categories);
 
-    default BT setIconItem(Supplier<ItemLike> iconSupplier) {
-
-        return this.setIcon(() -> new ItemStack(iconSupplier.get()));
-    }
-
-    BT setIcon(Supplier<ItemStack> iconSupplier);
-
-    BT setEnchantmentCategories(EnchantmentCategory... categories);
-
-    default BT setTabContents(List<ItemStack> items) {
+    default ICreativeTabBuilder setTabContents(List<ItemStack> items) {
 
         return setTabContents(tabContents -> tabContents.addAll(items));
     }
 
-    BT setTabContents(Consumer<List<ItemStack>> contentSupplier);
+    ICreativeTabBuilder setTabContents(Consumer<List<ItemStack>> contentSupplier);
 
     CreativeModeTab build();
 

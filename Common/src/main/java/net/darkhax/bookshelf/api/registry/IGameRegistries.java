@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-public interface IGameRegistries {
+public interface IGameRegistries extends IContentLoader {
 
     IRegistryReader<Block> blocks();
 

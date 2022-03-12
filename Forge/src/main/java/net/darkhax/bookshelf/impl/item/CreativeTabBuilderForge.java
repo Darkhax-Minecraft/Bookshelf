@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class CreativeTabBuilderForge implements ICreativeTabBuilder<CreativeTabBuilderForge> {
+public class CreativeTabBuilderForge implements ICreativeTabBuilder {
 
     private final ResourceLocation id;
     private final Set<EnchantmentCategory> enchantmentCategories = new HashSet<>();
@@ -29,7 +29,7 @@ public class CreativeTabBuilderForge implements ICreativeTabBuilder<CreativeTabB
     }
 
     @Override
-    public CreativeTabBuilderForge setIcon(Supplier<ItemStack> iconSupplier) {
+    public CreativeTabBuilderForge setIconStack(Supplier<ItemStack> iconSupplier) {
 
         this.iconSupplier = iconSupplier;
         return this;

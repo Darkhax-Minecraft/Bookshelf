@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-public class GameRegistriesVanilla implements IGameRegistries {
+public abstract class GameRegistriesVanilla implements IGameRegistries {
 
     private final IRegistryReader<Block> blockRegistry = new RegistryReaderVanilla<>(Registry.BLOCK);
     private final IRegistryReader<Item> itemRegistry = new RegistryReaderVanilla<>(Registry.ITEM);

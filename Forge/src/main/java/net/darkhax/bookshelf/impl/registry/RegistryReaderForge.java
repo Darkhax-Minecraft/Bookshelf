@@ -9,14 +9,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 
-public class RegistryReaderForge<T extends IForgeRegistryEntry<T>> implements IRegistryReader<T> {
-
-    private final IForgeRegistry<T> registry;
-
-    public RegistryReaderForge(IForgeRegistry<T> registry) {
-
-        this.registry = registry;
-    }
+public record RegistryReaderForge<T extends IForgeRegistryEntry<T>>(
+        IForgeRegistry<T> registry) implements IRegistryReader<T> {
 
     @Nullable
     @Override

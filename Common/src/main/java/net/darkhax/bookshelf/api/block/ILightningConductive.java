@@ -16,12 +16,12 @@ public interface ILightningConductive {
     /**
      * A default array of faces for conductive blocks to redirect lightning to.
      */
-    public static final Direction[] LIGHTNING_REDIRECTION_FACES = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.DOWN};
+    Direction[] LIGHTNING_REDIRECTION_FACES = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.DOWN};
 
     /**
      * An empty array of lightning redirection faces. Can be used when the block should not redirect lightning.
      */
-    public static final Direction[] NO_REDIRECTION_FACES = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.DOWN};
+    Direction[] NO_REDIRECTION_FACES = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.DOWN};
 
     /**
      * This method is called when a lightning bolt directly strikes the blocks.

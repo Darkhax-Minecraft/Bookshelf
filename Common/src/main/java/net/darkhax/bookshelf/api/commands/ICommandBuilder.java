@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.api.registry;
+package net.darkhax.bookshelf.api.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
