@@ -7,14 +7,9 @@ import java.util.function.Supplier;
 
 public class ClassRegistryEntries<V> extends RegistryEntries<Tuple<Class, V>> {
 
-    public ClassRegistryEntries(String ownerId) {
+    public ClassRegistryEntries(Supplier<String> idProvider, String type) {
 
-        super(ownerId);
-    }
-
-    public ClassRegistryEntries(Supplier<String> idProvider) {
-
-        super(idProvider);
+        super(idProvider, type);
     }
 
     public void add(Class clazz, Supplier<V> instance, String id) {

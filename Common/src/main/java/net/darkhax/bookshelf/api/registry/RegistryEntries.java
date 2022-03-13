@@ -1,7 +1,12 @@
 package net.darkhax.bookshelf.api.registry;
 
+import com.mojang.logging.LogUtils;
 import net.darkhax.bookshelf.api.function.CachedSupplier;
+import net.darkhax.bookshelf.api.util.MathsHelper;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import org.slf4j.Logger;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -14,6 +19,8 @@ import java.util.function.Supplier;
 
 public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
 
+    private final Logger logger = LogUtils.getLogger();
+    private final String name;
     private final CachedSupplier<String> ownerId;
     private final Map<ResourceLocation, IRegistryObject<? extends V>> rawValues = new LinkedHashMap<>();
     private final Map<ResourceLocation, V> entries = new LinkedHashMap<>();
@@ -22,14 +29,15 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
 
     private boolean built = false;
 
-    public RegistryEntries(String ownerId) {
+    public RegistryEntries(Supplier<String> idProvider, ResourceKey<?> registryKey) {
 
-        this(() -> ownerId);
+        this(idProvider, registryKey.registry() + " (" + registryKey.location() + ")") ;
     }
 
-    public RegistryEntries(Supplier<String> idProvider) {
+    public RegistryEntries(Supplier<String> idProvider, String name) {
 
         this.ownerId = CachedSupplier.cache(idProvider);
+        this.name = name;
     }
 
     @Override
@@ -81,20 +89,34 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
     @Override
     public void build(BiConsumer<ResourceLocation, V> registerFunc) {
 
+        if (this.built) {
+
+            this.logger.debug("Rebuilding entries for {}. Previous entries {}", this.ownerId.get(), this.entries.size());
+        }
+
         this.built = true;
         this.entries.clear();
-        this.rawValues.forEach((k, v) -> {
 
-            final V value = v.get();
+        if (!this.rawValues.isEmpty()) {
 
-            if (value != null) {
+            final long startTime = System.nanoTime();
 
-                this.entries.put(k, value);
-            }
+            this.rawValues.forEach((k, v) -> {
 
-            registerFunc.accept(k, value);
-            this.registryListeners.forEach(listener -> listener.accept(k, value));
-        });
+                final V value = v.get();
+
+                if (value != null) {
+
+                    this.entries.put(k, value);
+                }
+
+                registerFunc.accept(k, value);
+                this.registryListeners.forEach(listener -> listener.accept(k, value));
+            });
+
+            final long endTime = System.nanoTime();
+            this.logger.debug("({}) Built {} {} entries. Took {}.", this.ownerId.get(), this.entries.size(), this.name, MathsHelper.profileNanoTime(startTime, endTime));
+        }
     }
 
     @Override
