@@ -1,6 +1,8 @@
 package net.darkhax.bookshelf.api.registry;
 
+import net.darkhax.bookshelf.api.ClientServices;
 import net.darkhax.bookshelf.api.Services;
+import net.darkhax.bookshelf.api.block.IBindRenderLayer;
 import net.darkhax.bookshelf.api.block.IItemBlockProvider;
 import net.darkhax.bookshelf.api.commands.ICommandBuilder;
 import net.darkhax.bookshelf.mixin.item.AccessorItem;
@@ -74,6 +76,22 @@ public class RegistryDataProvider {
                 accessor.bookshelf$setCreativeTab(tab);
             }
         });
+
+        return this;
+    }
+
+    public final RegistryDataProvider bindBlockRenderLayers() {
+
+        if (Services.PLATFORM.isPhysicalClient()) {
+
+            this.blocks.addRegistryListener((id, block) -> {
+
+                if (block instanceof IBindRenderLayer binder) {
+
+                    ClientServices.CLIENT.setRenderType(block, binder.getRenderLayerToBind());
+                }
+            });
+        }
 
         return this;
     }
