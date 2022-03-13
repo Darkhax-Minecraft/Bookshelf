@@ -3,7 +3,6 @@ package net.darkhax.bookshelf.api.registry;
 import com.mojang.logging.LogUtils;
 import net.darkhax.bookshelf.api.function.CachedSupplier;
 import net.darkhax.bookshelf.api.util.MathsHelper;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -31,7 +30,7 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
 
     public RegistryEntries(Supplier<String> idProvider, ResourceKey<?> registryKey) {
 
-        this(idProvider, registryKey.registry() + " (" + registryKey.location() + ")") ;
+        this(idProvider, registryKey.registry() + " (" + registryKey.location() + ")");
     }
 
     public RegistryEntries(Supplier<String> idProvider, String name) {
