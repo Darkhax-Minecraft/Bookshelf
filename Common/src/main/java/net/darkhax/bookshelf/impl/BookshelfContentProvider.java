@@ -15,12 +15,5 @@ public class BookshelfContentProvider extends RegistryDataProvider {
 
         this.commandArguments.add(FontArgument.class, () -> FontArgument.SERIALIZER, "font");
         this.commands.add(BookshelfCommands::new, "commands");
-
-        for (int i = 0; i < 100; i++) {
-
-            this.trades.addCommonWanderingTrade(VillagerBuys.create(() -> Items.DIAMOND, 5, 5, 5, 0.05f));
-            this.trades.addCommonWanderingTrade(VillagerBuys.create(() -> Items.REDSTONE, 5, 5, 5, 0.05f));
-            this.trades.addCommonWanderingTrade(VillagerBuys.create(() -> Items.APPLE, 5, 5, 5, 0.05f));
-        }
     }
 }
