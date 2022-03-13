@@ -1,11 +1,11 @@
 package net.darkhax.bookshelf.api.registry;
 
-import com.mojang.logging.LogUtils;
 import net.darkhax.bookshelf.api.function.CachedSupplier;
 import net.darkhax.bookshelf.api.util.MathsHelper;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 
 public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
 
-    private final Logger logger = LogUtils.getLogger();
+    private final CachedSupplier<Logger> logger = CachedSupplier.cache(() -> LoggerFactory.getLogger(this.getOwner()));
     private final String name;
     private final CachedSupplier<String> ownerId;
     private final Map<ResourceLocation, IRegistryObject<? extends V>> rawValues = new LinkedHashMap<>();
@@ -30,7 +30,7 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
 
     public RegistryEntries(Supplier<String> idProvider, ResourceKey<?> registryKey) {
 
-        this(idProvider, registryKey.registry() + " (" + registryKey.location() + ")");
+        this(idProvider, registryKey.location().toString());
     }
 
     public RegistryEntries(Supplier<String> idProvider, String name) {
@@ -90,7 +90,7 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
 
         if (this.built) {
 
-            this.logger.debug("Rebuilding entries for {}. Previous entries {}", this.ownerId.get(), this.entries.size());
+            this.logger.get().debug("Rebuilding entries for {}. Previous entries {}", this.ownerId.get(), this.entries.size());
         }
 
         this.built = true;
@@ -114,7 +114,7 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
             });
 
             final long endTime = System.nanoTime();
-            this.logger.debug("({}) Built {} {} entries. Took {}.", this.ownerId.get(), this.entries.size(), this.name, MathsHelper.profileNanoTime(startTime, endTime));
+            this.logger.get().debug("Built {} {} entries. Took {}.", this.entries.size(), this.name, MathsHelper.profileNanoTime(startTime, endTime));
         }
     }
 
