@@ -6,6 +6,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Random;
@@ -18,41 +19,6 @@ public class VillagerSells implements VillagerTrades.ItemListing {
     private final int maxUses;
     private final int villagerXp;
     private final float priceMultiplier;
-
-    public VillagerSells(Block itemToBuy, int emeraldCost, int maxUses, int villagerXp, float priceMultiplier) {
-
-        this(() -> new ItemStack(itemToBuy), emeraldCost, maxUses, villagerXp, priceMultiplier);
-    }
-
-    public VillagerSells(Block itemToBuy, int emeraldCost, int maxUses, int villagerXp) {
-
-        this(itemToBuy, emeraldCost, maxUses, villagerXp, 0.05f);
-    }
-
-    public VillagerSells(Item itemToBuy, int emeraldCost, int maxUses, int villagerXp, float priceMultiplier) {
-
-        this(itemToBuy::getDefaultInstance, emeraldCost, maxUses, villagerXp, priceMultiplier);
-    }
-
-    public VillagerSells(Item itemToBuy, int emeraldCost, int maxUses, int villagerXp) {
-
-        this(itemToBuy, emeraldCost, maxUses, villagerXp, 0.05f);
-    }
-
-    public VillagerSells(ItemStack itemToBuy, int emeraldCost, int maxUses, int villagerXp, float priceMultiplier) {
-
-        this(itemToBuy::copy, emeraldCost, maxUses, villagerXp, priceMultiplier);
-    }
-
-    public VillagerSells(ItemStack itemToBuy, int emeraldCost, int maxUses, int villagerXp) {
-
-        this(itemToBuy::copy, emeraldCost, maxUses, villagerXp, 0.05f);
-    }
-
-    public VillagerSells(Supplier<ItemStack> itemToBuy, int emeraldCost, int maxUses, int villagerXp) {
-
-        this(itemToBuy, emeraldCost, maxUses, villagerXp, 0.05f);
-    }
 
     public VillagerSells(Supplier<ItemStack> itemToBuy, int emeraldCost, int maxUses, int villagerXp, float priceMultiplier) {
 
@@ -67,5 +33,10 @@ public class VillagerSells implements VillagerTrades.ItemListing {
     public MerchantOffer getOffer(Entity villager, Random rng) {
 
         return new MerchantOffer(new ItemStack(Items.EMERALD, this.emeraldCost), this.itemToBuy.get(), this.maxUses, this.villagerXp, this.priceMultiplier);
+    }
+
+    public static VillagerTrades.ItemListing create(Supplier<? extends ItemLike> stackToBuy, int emeraldCost, int maxUses, int villagerXp, float priceMultiplier) {
+
+        return new VillagerSells(() -> stackToBuy.get().asItem().getDefaultInstance(), emeraldCost, maxUses, villagerXp, priceMultiplier);
     }
 }
