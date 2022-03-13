@@ -217,4 +217,10 @@ public final class MathsHelper {
                 throw new IllegalArgumentException("Can not rotate face in direction " + facing.name());
         }
     }
+
+    public static String profileNanoTime(long start, long stop) {
+
+        final double duration = stop - start;
+        return duration < 10_000 ? "ns (<0.01ms)" : DECIMAL_2.format(duration / 1_000_000d) + "ms";
+    }
 }
