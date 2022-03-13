@@ -51,6 +51,7 @@ public class RegistryDataProvider {
 
     public final ClassRegistryEntries<ArgumentSerializer> commandArguments = new ClassRegistryEntries<>(this::getOwner);
     public final IOwnedRegistryEntries<ICommandBuilder> commands = new RegistryEntries<>(this::getOwner);
+    public final VillagerTradeEntries trades = new VillagerTradeEntries();
 
     public RegistryDataProvider(String ownerId) {
 

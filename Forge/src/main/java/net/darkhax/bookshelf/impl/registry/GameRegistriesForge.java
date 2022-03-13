@@ -1,9 +1,14 @@
 package net.darkhax.bookshelf.impl.registry;
 
+import com.google.common.collect.Multimap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.darkhax.bookshelf.api.function.QuadConsumer;
+import net.darkhax.bookshelf.api.function.TriConsumer;
 import net.darkhax.bookshelf.api.registry.IGameRegistries;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.IRegistryReader;
 import net.darkhax.bookshelf.api.registry.RegistryDataProvider;
+import net.darkhax.bookshelf.impl.util.ForgeEventHelper;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.synchronization.ArgumentTypes;
 import net.minecraft.core.Registry;
@@ -16,6 +21,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.decoration.Motive;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
@@ -29,6 +35,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.village.VillagerTradesEvent;
+import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.event.IModBusEvent;
@@ -37,6 +45,10 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class GameRegistriesForge implements IGameRegistries {
@@ -162,6 +174,30 @@ public class GameRegistriesForge implements IGameRegistries {
 
         this.consumeWithModEvent(content.commandArguments, FMLCommonSetupEvent.class, (event, id, arg) -> ArgumentTypes.register(id.toString(), arg.getA(), arg.getB()));
         this.consumeWithForgeEvent(content.commands, RegisterCommandsEvent.class, (event, id, builder) -> builder.build(event.getDispatcher(), event.getEnvironment() == Commands.CommandSelection.DEDICATED));
+
+        ForgeEventHelper.addContextListener(VillagerTradesEvent.class, content.trades.getVillagerTrades(), this::registerVillagerTrades);
+        ForgeEventHelper.addContextListener(WandererTradesEvent.class, content.trades.getCommonWanderingTrades(), content.trades.getRareWanderingTrades(), this::registerWanderingTrades);
+    }
+
+    private void registerVillagerTrades(VillagerTradesEvent event, Map<VillagerProfession, Multimap<Integer, VillagerTrades.ItemListing>> trades) {
+
+        final Multimap<Integer, VillagerTrades.ItemListing> newTrades = trades.get(event.getType());
+
+        if (newTrades != null) {
+
+            final Int2ObjectMap<List<VillagerTrades.ItemListing>> tradeData = event.getTrades();
+
+            for (Map.Entry<Integer, VillagerTrades.ItemListing> entry : newTrades.entries()) {
+
+                tradeData.computeIfAbsent(entry.getKey(), ArrayList::new).add(entry.getValue());
+            }
+        }
+    }
+
+    private void registerWanderingTrades(WandererTradesEvent event, List<VillagerTrades.ItemListing> common, List<VillagerTrades.ItemListing> rare) {
+
+        event.getGenericTrades().addAll(common);
+        event.getRareTrades().addAll(rare);
     }
 
     private <ET extends Event, RT> void consumeWithForgeEvent(IRegistryEntries<RT> registry, Class<ET> eventType, EventConsumer<ET, RT> func) {
