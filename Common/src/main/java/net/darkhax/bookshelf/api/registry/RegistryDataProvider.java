@@ -59,12 +59,12 @@ public class RegistryDataProvider {
         this.ownerId = ownerId;
     }
 
-    public final RegistryDataProvider withCreativeTab(Supplier<ItemLike> iconProvider) {
+    public final RegistryDataProvider withCreativeTab(Supplier<? extends ItemLike> iconProvider) {
 
         return this.withCreativeTab(iconProvider, "creative_tab");
     }
 
-    public final RegistryDataProvider withCreativeTab(Supplier<ItemLike> iconProvider, String id) {
+    public final RegistryDataProvider withCreativeTab(Supplier<? extends ItemLike> iconProvider, String id) {
 
         return this.withCreativeTab(Services.CREATIVE_TABS.createBuilder(this.ownerId, id).setIcon(iconProvider).build());
     }
