@@ -100,16 +100,16 @@ public class RegistryDataProvider {
 
     public final RegistryDataProvider withAutoItemBlocks() {
 
-        this.blocks.addRegistryListener((id, block) -> {
+        this.blocks.addInsertListener((id, block) -> {
 
             this.items.add(() -> {
 
                 if (block instanceof IItemBlockProvider provider) {
 
-                    return provider.createItemBlock(block);
+                    return provider.createItemBlock(block.get());
                 }
 
-                return IItemBlockProvider.DEFAULT.createItemBlock(block);
+                return IItemBlockProvider.DEFAULT.createItemBlock(block.get());
             }, id);
         });
 

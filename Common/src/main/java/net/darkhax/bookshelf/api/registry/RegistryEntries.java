@@ -24,6 +24,7 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
     private final Map<ResourceLocation, IRegistryObject<? extends V>> rawValues = new LinkedHashMap<>();
     private final Map<ResourceLocation, V> entries = new LinkedHashMap<>();
     private final Map<ResourceLocation, V> unmodifiableEntries = Collections.unmodifiableMap(entries);
+    private final List<BiConsumer<ResourceLocation, IRegistryObject<? extends V>>> insertListeners = new LinkedList<>();
     private final List<BiConsumer<ResourceLocation, V>> registryListeners = new LinkedList<>();
 
     private boolean built = false;
@@ -60,6 +61,7 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
 
         final IRegistryObject<VT> registryObject = new RegistryObject<VT>(id, value);
         this.rawValues.put(id, registryObject);
+        this.insertListeners.forEach(listener -> listener.accept(id, registryObject));
         return registryObject;
     }
 
@@ -72,6 +74,17 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
         }
 
         return this.unmodifiableEntries;
+    }
+
+    @Override
+    public void addInsertListener(BiConsumer<ResourceLocation, IRegistryObject<? extends V>> listener) {
+
+        if (this.built) {
+
+            throw new IllegalStateException("Attempted to define insert listener after entries have already been built. Owner=" + this.ownerId);
+        }
+
+        this.insertListeners.add(listener);
     }
 
     @Override

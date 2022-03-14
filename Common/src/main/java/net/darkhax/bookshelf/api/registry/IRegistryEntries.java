@@ -14,6 +14,8 @@ public interface IRegistryEntries<V> extends Iterable<V> {
 
     Map<ResourceLocation, V> getEntries();
 
+    void addInsertListener(BiConsumer<ResourceLocation, IRegistryObject<? extends V>> listener);
+
     void addRegistryListener(BiConsumer<ResourceLocation, V> listener);
 
     void build(BiConsumer<ResourceLocation, V> registerFunc);
