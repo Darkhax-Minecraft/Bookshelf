@@ -1,7 +1,10 @@
 package net.darkhax.bookshelf.api.util;
 
 import net.darkhax.bookshelf.api.PhysicalSide;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.nio.file.Path;
 
@@ -74,5 +77,15 @@ public interface IPlatformHelper {
     default boolean isPhysicalClient() {
 
         return this.getPhysicalSide().isClient();
+    }
+
+    @Nullable
+    String getModName(String modId);
+
+    @Nullable
+    default MutableComponent getModNameComponent(String modId) {
+
+        final String modName = getModName(modId);
+        return modName != null ? new TextComponent(modName) : null;
     }
 }

@@ -40,4 +40,10 @@ public class PlatformHelperForge implements IPlatformHelper {
 
         return FMLEnvironment.dist.isClient() ? PhysicalSide.CLIENT : PhysicalSide.SERVER;
     }
+
+    @Override
+    public String getModName(String modId) {
+
+        return ModList.get().getModContainerById(modId).map(mod -> mod.getModInfo().getDisplayName()).orElse(modId);
+    }
 }

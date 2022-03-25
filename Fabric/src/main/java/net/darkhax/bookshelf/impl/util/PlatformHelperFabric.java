@@ -5,7 +5,11 @@ import net.darkhax.bookshelf.api.util.IPlatformHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 
+import javax.annotation.Nullable;
 import java.nio.file.Path;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class PlatformHelperFabric implements IPlatformHelper {
 
@@ -37,5 +41,11 @@ public class PlatformHelperFabric implements IPlatformHelper {
     public PhysicalSide getPhysicalSide() {
 
         return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT ? PhysicalSide.CLIENT : PhysicalSide.SERVER;
+    }
+
+    @Override
+    public String getModName(String modId) {
+
+        return FabricLoader.getInstance().getModContainer(modId).map(mod -> mod.getMetadata().getName()).orElse(modId);
     }
 }
