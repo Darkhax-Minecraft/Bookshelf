@@ -1,7 +1,10 @@
 package net.darkhax.bookshelf.api.util;
 
 import net.darkhax.bookshelf.api.PhysicalSide;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.nio.file.Path;
 
@@ -74,5 +77,31 @@ public interface IPlatformHelper {
     default boolean isPhysicalClient() {
 
         return this.getPhysicalSide().isClient();
+    }
+
+    /**
+     * Attempts to resolve the name of a mod using the associated mod ID. If no mod is not available the provided ID
+     * will be treated as the name.
+     *
+     * @param modId The ID of the mod to lookup.
+     * @return The name of the mod associated with the given mod ID. If no mod is not available the provided ID will be
+     * treated as the name.
+     */
+    @Nullable
+    String getModName(String modId);
+
+    /**
+     * Attempts to resolve the name of a mod using the associated mod ID. If no mod is not available the provided ID
+     * will be treated as the name.
+     *
+     * @param modId The ID of the mod to lookup.
+     * @return The name of the mod associated with the given mod ID. If no mod is not available the provided ID will be
+     * treated as the name.
+     */
+    @Nullable
+    default MutableComponent getModNameComponent(String modId) {
+
+        final String modName = getModName(modId);
+        return modName != null ? new TextComponent(modName) : null;
     }
 }

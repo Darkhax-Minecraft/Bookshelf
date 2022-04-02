@@ -6,6 +6,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 
@@ -39,5 +40,12 @@ public class PlatformHelperForge implements IPlatformHelper {
     public PhysicalSide getPhysicalSide() {
 
         return FMLEnvironment.dist.isClient() ? PhysicalSide.CLIENT : PhysicalSide.SERVER;
+    }
+
+    @Nullable
+    @Override
+    public String getModName(String modId) {
+
+        return ModList.get().getModContainerById(modId).map(mod -> mod.getModInfo().getDisplayName()).orElse(modId);
     }
 }
