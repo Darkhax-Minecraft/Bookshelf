@@ -10,6 +10,11 @@ apply from: '../gradle/patreon.gradle'
 
 archivesBaseName = "${mod_name}-Fabric-${minecraft_version}"
 
+// Enable Mixins
+project.ext.mixin_enabled = project.file("src/main/resources/${mod_id}.fabric.mixins.json").exists()
+project.ext.mixin_refmap = "${archivesBaseName}.refmap.json"
+project.logger.lifecycle("Mixin ${project.ext.mixin_enabled ? 'enabled' : 'disabled'} for project ${project.name}.")
+
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.officialMojangMappings()
@@ -63,6 +68,14 @@ processResources {
     filesMatching(['fabric.mod.json', 'pack.mcmeta']) {
 
         expand buildProps
+    }
+
+    if (project.ext.mixin_enabled) {
+
+        filesMatching('*.mixins.json') {
+
+            expand buildProps
+        }
     }
 }
 

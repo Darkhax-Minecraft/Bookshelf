@@ -6,6 +6,10 @@ apply from: '../gradle/property_helper.gradle'
 
 archivesBaseName = "${mod_name}-Common-${minecraft_version}"
 
+// Enable Mixins
+project.ext.mixin_enabled = project.file("src/main/resources/${mod_id}.common.mixins.json").exists()
+project.logger.lifecycle("Mixin ${project.ext.mixin_enabled ? 'enabled' : 'disabled'} for project ${project.name}.")
+
 minecraft {
     version(minecraft_version)
 }

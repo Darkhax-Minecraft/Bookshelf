@@ -36,10 +36,6 @@ subprojects {
         enabled = false
     }
 
-    // Enable Mixins
-    project.ext.mixin_enabled = project.file("src/main/resources/${mod_id}.mixins.json").exists()
-    project.logger.lifecycle("Mixin ${project.ext.mixin_enabled ? 'enabled' : 'disabled'} for project ${project.name}.")
-
     repositories {
 
         mavenCentral()

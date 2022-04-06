@@ -18,6 +18,11 @@ apply from: '../gradle/patreon.gradle'
 
 archivesBaseName = "${mod_name}-Forge-${minecraft_version}"
 
+// Enable Mixins
+project.ext.mixin_enabled = project.file("src/main/resources/${mod_id}.forge.mixins.json").exists()
+project.ext.mixin_refmap = "${mod_id}.refmap.json"
+project.logger.lifecycle("Mixin ${project.ext.mixin_enabled ? 'enabled' : 'disabled'} for project ${project.name}.")
+
 minecraft {
 
     mappings channel: 'official', version: minecraft_version
@@ -32,7 +37,8 @@ minecraft {
             property 'terminal.ansi', 'true'
 
             if (project.ext.mixin_enabled) {
-                arg "-mixin.config=${mod_id}.mixins.json"
+                arg "-mixin.config=${mod_id}.common.mixins.json"
+                arg "-mixin.config=${mod_id}.forge.mixins.json"
             }
 
             mods {
@@ -51,7 +57,8 @@ minecraft {
             property 'terminal.ansi', 'true'
 
             if (project.ext.mixin_enabled) {
-                arg "-mixin.config=${mod_id}.mixins.json"
+                arg "-mixin.config=${mod_id}.common.mixins.json"
+                arg "-mixin.config=${mod_id}.forge.mixins.json"
             }
 
             mods {
@@ -112,7 +119,8 @@ processResources {
     }
 
     if (project.ext.mixin_enabled) {
-        filesMatching(["${mod_id}.mixins.json".toString()]) {
+
+        filesMatching('*.mixins.json') {
 
             expand buildProps
         }
@@ -120,20 +128,6 @@ processResources {
 }
 
 jar.finalizedBy('reobfJar')
-
-jar {
-
-    manifest {
-
-        def newProps = [:]
-
-        if (project.ext.mixin_enabled) {
-            newProps['MixinConfigs'] = "${mod_id}.mixins.json"
-        }
-
-        attributes(newProps)
-    }
-}
 
 // -- Mixin Support
 if (project.ext.mixin_enabled) {
@@ -143,7 +137,10 @@ if (project.ext.mixin_enabled) {
     mixin {
 
         // Tells the mixin plugin where to put the generated refmap file.
-        add sourceSets.main, "${mod_id}.refmap.json"
+        add sourceSets.main, project.ext.mixin_refmap
+
+        config "${mod_id}.common.mixins.json"
+        config "${mod_id}.forge.mixins.json"
     }
 }
 

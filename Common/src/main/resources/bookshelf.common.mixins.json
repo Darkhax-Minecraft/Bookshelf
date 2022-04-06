@@ -20,5 +20,5 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "bookshelf.refmap.json"
+  "refmap": "${mixin_refmap}"
 }
