@@ -4,18 +4,24 @@
   "package": "net.darkhax.bookshelf.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "block.entity.AccessorSignBlockEntity",
     "effect.AccessorMobEffectInstance",
     "entity.AccessorEntity",
+    "entity.AccessorLivingEntity",
+    "entity.AccessorMob",
     "entity.MixinLightningBolt",
+    "inventory.AccessorCraftingContainer",
+    "inventory.AccessorCraftingMenu",
+    "inventory.AccessorInventoryMenu",
+    "item.AccessorCooldownInstance",
     "item.AccessorItem",
     "item.AccessorItemCooldowns",
-    "item.AccessorCooldownInstance",
-    "loot.MixinLootItemKilledByPlayerCondition",
-    "block.entity.AccessorSignBlockEntity"
+    "item.crafting.AccessorShapedRecipe",
+    "loot.MixinLootItemKilledByPlayerCondition"
   ],
   "client": [
-    "client.AccessorMinecraft",
-    "client.AccessorFontManager"
+    "client.AccessorFontManager",
+    "client.AccessorMinecraft"
   ],
   "injectors": {
     "defaultRequire": 1
