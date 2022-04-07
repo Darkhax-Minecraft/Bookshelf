@@ -44,7 +44,7 @@ public class RegistryDataProvider {
     public final IOwnedRegistryEntries<BlockEntityType<?>> blockEntities = new RegistryEntries<>(this::getOwner, Registry.BLOCK_ENTITY_TYPE_REGISTRY);
     public final IOwnedRegistryEntries<ParticleType<?>> particleTypes = new RegistryEntries<>(this::getOwner, Registry.PARTICLE_TYPE_REGISTRY);
     public final IOwnedRegistryEntries<MenuType<?>> menus = new RegistryEntries<>(this::getOwner, Registry.MENU_REGISTRY);
-    public final IOwnedRegistryEntries<RecipeSerializer<?>> recipeSerializers = new RegistryEntries<>(this::getOwner, Registry.PARTICLE_TYPE_REGISTRY);
+    public final IOwnedRegistryEntries<RecipeSerializer<?>> recipeSerializers = new RegistryEntries<>(this::getOwner, Registry.RECIPE_SERIALIZER_REGISTRY);
     public final IOwnedRegistryEntries<Motive> paintings = new RegistryEntries<>(this::getOwner, Registry.MOTIVE_REGISTRY);
     public final IOwnedRegistryEntries<Attribute> attributes = new RegistryEntries<>(this::getOwner, Registry.ATTRIBUTE_REGISTRY);
     public final IOwnedRegistryEntries<StatType<?>> stats = new RegistryEntries<>(this::getOwner, Registry.STAT_TYPE_REGISTRY);
