@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -17,6 +18,8 @@ public interface IRegistryEntries<V> extends Iterable<V> {
     void addInsertListener(BiConsumer<ResourceLocation, IRegistryObject<? extends V>> listener);
 
     void addRegistryListener(BiConsumer<ResourceLocation, V> listener);
+
+    void addRegistryWrapper(BiFunction<ResourceLocation, V, V> wrapperFunc);
 
     void build(BiConsumer<ResourceLocation, V> registerFunc);
 
