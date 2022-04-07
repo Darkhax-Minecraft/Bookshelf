@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
@@ -26,6 +27,7 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
     private final Map<ResourceLocation, V> unmodifiableEntries = Collections.unmodifiableMap(entries);
     private final List<BiConsumer<ResourceLocation, IRegistryObject<? extends V>>> insertListeners = new LinkedList<>();
     private final List<BiConsumer<ResourceLocation, V>> registryListeners = new LinkedList<>();
+    private final List<BiFunction<ResourceLocation, V, V>> wrapperFunctions = new LinkedList<>();
 
     private boolean built = false;
 
@@ -99,6 +101,17 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
     }
 
     @Override
+    public void addRegistryWrapper(BiFunction<ResourceLocation, V, V> wrapperFunc) {
+
+        if (this.built) {
+
+            throw new IllegalStateException("Attempted to define registry listener after entries have already been built. Owner=" + this.ownerId);
+        }
+
+        this.wrapperFunctions.add(wrapperFunc);
+    }
+
+    @Override
     public void build(BiConsumer<ResourceLocation, V> registerFunc) {
 
         if (this.built) {
@@ -115,7 +128,7 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
 
             this.rawValues.forEach((k, v) -> {
 
-                final V value = v.get();
+                final V value = this.wrapValue(k, v.get());
 
                 if (value != null) {
 
@@ -129,6 +142,16 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
             final long endTime = System.nanoTime();
             this.logger.get().debug("Built {} {} entries. Took {}.", this.entries.size(), this.name, MathsHelper.profileNanoTime(startTime, endTime));
         }
+    }
+
+    private V wrapValue(ResourceLocation key, V value) {
+
+        for (BiFunction<ResourceLocation, V, V> wrapper : this.wrapperFunctions) {
+
+            value = wrapper.apply(key, value);
+        }
+
+        return value;
     }
 
     @Override

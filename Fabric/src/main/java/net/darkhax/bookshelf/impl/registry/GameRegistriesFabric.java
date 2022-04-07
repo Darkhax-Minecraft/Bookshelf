@@ -5,18 +5,22 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.RegistryDataProvider;
+import net.darkhax.bookshelf.impl.data.recipes.WrappedRecipeSerializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.commands.synchronization.ArgumentTypes;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 
+import java.nio.channels.WritePendingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class GameRegistriesFabric extends GameRegistriesVanilla {
 
@@ -34,7 +38,12 @@ public class GameRegistriesFabric extends GameRegistriesVanilla {
         this.consumeVanillaRegistry(content.blockEntities, Registry.BLOCK_ENTITY_TYPE);
         this.consumeVanillaRegistry(content.particleTypes, Registry.PARTICLE_TYPE);
         this.consumeVanillaRegistry(content.menus, Registry.MENU);
-        this.consumeVanillaRegistry(content.recipeSerializers, Registry.RECIPE_SERIALIZER);
+        this.consumeVanillaRegistry(content.recipeSerializers, Registry.RECIPE_SERIALIZER, e -> {
+
+            final RecipeSerializer<?> wrapper = new WrappedRecipeSerializer<>(e);
+            e.setWrapper(wrapper);
+            return wrapper;
+        });
         this.consumeVanillaRegistry(content.paintings, Registry.MOTIVE);
         this.consumeVanillaRegistry(content.attributes, Registry.ATTRIBUTE);
         this.consumeVanillaRegistry(content.stats, Registry.STAT_TYPE);
@@ -49,6 +58,11 @@ public class GameRegistriesFabric extends GameRegistriesVanilla {
 
         this.registerTradeData(content.trades.getVillagerTrades());
         this.registerWanderingTrades(content.trades.getCommonWanderingTrades(), content.trades.getRareWanderingTrades());
+    }
+
+    private <T, O> void consumeVanillaRegistry(IRegistryEntries<O> toRegister, Registry<T> registry, Function<O, T> wrapper) {
+
+        toRegister.build((id, value) -> Registry.register(registry, id, wrapper.apply(value)));
     }
 
     private <T> void consumeVanillaRegistry(IRegistryEntries<T> toRegister, Registry<T> registry) {

@@ -2,12 +2,14 @@ package net.darkhax.bookshelf.impl.registry;
 
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.darkhax.bookshelf.api.data.recipes.IRecipeSerializer;
 import net.darkhax.bookshelf.api.function.QuadConsumer;
 import net.darkhax.bookshelf.api.function.TriConsumer;
 import net.darkhax.bookshelf.api.registry.IGameRegistries;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.IRegistryReader;
 import net.darkhax.bookshelf.api.registry.RegistryDataProvider;
+import net.darkhax.bookshelf.impl.data.recipes.WrappedRecipeSerializer;
 import net.darkhax.bookshelf.impl.util.ForgeEventHelper;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.synchronization.ArgumentTypes;
@@ -50,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class GameRegistriesForge implements IGameRegistries {
 
@@ -166,7 +169,11 @@ public class GameRegistriesForge implements IGameRegistries {
         this.consumeRegistry(content.blockEntities, BlockEntityType.class);
         this.consumeRegistry(content.particleTypes, ParticleType.class);
         this.consumeRegistry(content.menus, MenuType.class);
-        this.consumeRegistry(content.recipeSerializers, RecipeSerializer.class);
+        this.consumeRegistry(content.recipeSerializers, RecipeSerializer.class, o -> {
+            final RecipeSerializer<?> wrapper = new WrappedRecipeSerializer<>(o);
+            o.setWrapper(wrapper);
+            return wrapper;
+        });
         this.consumeRegistry(content.paintings, Motive.class);
         this.consumeRegistry(content.attributes, Attribute.class);
         this.consumeRegistry(content.stats, StatType.class);
@@ -218,16 +225,23 @@ public class GameRegistriesForge implements IGameRegistries {
 
     private <T extends IForgeRegistryEntry<T>> void consumeRegistry(IRegistryEntries<? extends T> registry, Class clazz) {
 
+        this.consumeRegistry(registry, clazz, v -> v);
+    }
+
+    private <T extends IForgeRegistryEntry<T>, O> void consumeRegistry(IRegistryEntries<O> registry, Class clazz, Function<O, ? extends T> wrapper) {
+
         final Consumer<RegistryEvent.Register<T>> listener = event -> {
 
             registry.build((id, value) -> {
 
-                if (value.getRegistryName() == null) {
+                T toRegister = wrapper.apply(value);
 
-                    value.setRegistryName(id);
+                if (toRegister.getRegistryName() == null) {
+
+                    toRegister.setRegistryName(id);
                 }
 
-                event.getRegistry().register(value);
+                event.getRegistry().register(toRegister);
             });
         };
 
