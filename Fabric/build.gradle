@@ -12,7 +12,7 @@ archivesBaseName = "${mod_name}-Fabric-${minecraft_version}"
 
 // Enable Mixins
 project.ext.mixin_enabled = project.file("src/main/resources/${mod_id}.fabric.mixins.json").exists()
-project.ext.mixin_refmap = "${archivesBaseName}.refmap.json"
+project.ext.mixin_refmap = "${archivesBaseName}-refmap.json"
 project.logger.lifecycle("Mixin ${project.ext.mixin_enabled ? 'enabled' : 'disabled'} for project ${project.name}.")
 
 dependencies {
