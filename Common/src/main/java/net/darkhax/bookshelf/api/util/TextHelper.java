@@ -6,6 +6,7 @@ import net.darkhax.bookshelf.mixin.client.AccessorMinecraft;
 import net.darkhax.bookshelf.mixin.entity.AccessorEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
@@ -157,5 +158,15 @@ public final class TextHelper {
         }
 
         return fallback != null ? fallback.apply(key, args) : null;
+    }
+
+    public static MutableComponent setCopyText(MutableComponent component, String copy) {
+
+        return component.withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, copy)));
+    }
+
+    public static MutableComponent textWithCopy(String text) {
+
+        return new TextComponent(text).withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text)));
     }
 }
