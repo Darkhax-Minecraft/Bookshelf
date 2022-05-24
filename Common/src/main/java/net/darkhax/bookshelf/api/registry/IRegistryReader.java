@@ -14,6 +14,12 @@ public interface IRegistryReader<T> extends Iterable<T> {
     @Nullable
     ResourceLocation getId(T value);
 
+    default ResourceLocation getId(T value, ResourceLocation fallback) {
+
+        final ResourceLocation id = this.getId(value);
+        return id != null ? id : fallback;
+    }
+
     default Stream<T> streamValues() {
 
         return StreamSupport.stream(spliterator(), false);
