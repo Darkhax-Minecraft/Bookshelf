@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class FontArgument implements ArgumentType<ResourceLocation> {
 
     public static final FontArgument ARGUMENT = new FontArgument();
-    public static final ArgumentSerializer<FontArgument> SERIALIZER = SingletonArgumentSerializer.of(ARGUMENT);
+    public static final ArgumentSerializer<FontArgument> FONT_SERIALIZER = SingletonArgumentSerializer.of(ARGUMENT);
 
     private static final Collection<ResourceLocation> VANILLA_FONTS = List.of(TextHelper.FONT_DEFAULT, TextHelper.FONT_ALT, TextHelper.FONT_UNIFORM, TextHelper.FONT_ILLAGER);
     private static final Collection<String> EXAMPLES = VANILLA_FONTS.stream().map(ResourceLocation::toString).collect(Collectors.toList());
@@ -36,7 +36,7 @@ public class FontArgument implements ArgumentType<ResourceLocation> {
 
     public static RequiredArgumentBuilder<CommandSourceStack, ResourceLocation> argument() {
 
-        return Commands.argument("font", FontArgument.ARGUMENT);
+        return Commands.argument("font", ARGUMENT);
     }
 
     @Override

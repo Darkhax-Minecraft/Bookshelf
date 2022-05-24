@@ -13,6 +13,7 @@ public class BookshelfCommands implements ICommandBuilder {
 
         final LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("bookshelf");
         root.then(CommandFont.build());
+        root.then(CommandHand.build());
 
         dispatcher.register(root);
     }
