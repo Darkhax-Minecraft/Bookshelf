@@ -66,7 +66,7 @@ public class RegistryDataProvider {
 
     public final RegistryDataProvider withCreativeTab(Supplier<? extends ItemLike> iconProvider, String id) {
 
-        return this.withCreativeTab(Services.CREATIVE_TABS.createBuilder(this.ownerId, id).setIcon(iconProvider).build());
+        return this.withCreativeTab(Services.CONSTRUCTS.creativeTab(this.ownerId, id).setIcon(iconProvider).build());
     }
 
     public final RegistryDataProvider withCreativeTab(CreativeModeTab tab) {
