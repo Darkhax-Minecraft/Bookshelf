@@ -61,13 +61,11 @@ subprojects {
         }
 
         maven {
-            name = 'Shedaniel / REI'
-            url = 'https://maven.shedaniel.me'
-        }
-
-        maven {
             name = 'Curse Maven'
             url = 'https://www.cursemaven.com'
+            content {
+                includeGroup "curse.maven"
+            }
         }
     }
 }

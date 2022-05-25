@@ -79,6 +79,8 @@ dependencies {
     implementation fg.deobf("mezz.jei:jei-1.18.2:${jei_version}")
     implementation fg.deobf("curse.maven:catalogue-459701:${catalogue_version}")
 
+    runtimeOnly fg.deobf("curse.maven:refined_storage-243076:3712882")
+    runtimeOnly fg.deobf("curse.maven:mekanism-268560:3743835")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
