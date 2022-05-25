@@ -16,6 +16,8 @@ import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public interface IInventoryHelper {
 
@@ -123,5 +125,65 @@ public interface IInventoryHelper {
         }
 
         return keptItems;
+    }
+
+    /**
+     * Creates a list view of a Container's inventory contents.
+     *
+     * @param inventory The container to view.
+     * @return A list view of the provided containers inventory contents.
+     */
+    default NonNullList<ItemStack> toList(Container inventory) {
+
+        final NonNullList<ItemStack> items = NonNullList.withSize(inventory.getContainerSize(), ItemStack.EMPTY);
+        applyForEach(inventory, items::set);
+        return items;
+    }
+
+    /**
+     * Fills an inventory with a list of ItemStack. The inventory size and container size must be identical.
+     *
+     * @param inventory The inventory to fill.
+     * @param fillWith  The items to fill the inventory with.
+     */
+    default void fill(Container inventory, NonNullList<ItemStack> fillWith) {
+
+        if (inventory.getContainerSize() != fillWith.size()) {
+
+            throw new IllegalStateException("Inventory size did not match! inv_size=" + inventory.getContainerSize() + " fill_size=" + fillWith.size());
+        }
+
+        for (int slotId = 0; slotId < fillWith.size(); slotId++) {
+
+            inventory.setItem(slotId, fillWith.get(slotId));
+        }
+    }
+
+    /**
+     * Applies an action to every item within the inventory.
+     *
+     * @param inventory The inventory container.
+     * @param action    The action to apply.
+     */
+    default void applyForEach(Container inventory, Consumer<ItemStack> action) {
+
+        for (int slotId = 0; slotId < inventory.getContainerSize(); slotId++) {
+
+            action.accept(inventory.getItem(slotId));
+        }
+    }
+
+    /**
+     * Applies an action to every item within the inventory.
+     *
+     * @param inventory The inventory container.
+     * @param action    The action to apply.
+     */
+    default void applyForEach(Container inventory, BiConsumer<Integer, ItemStack> action) {
+
+        for (int slotId = 0; slotId < inventory.getContainerSize(); slotId++) {
+
+            action.accept(slotId, inventory.getItem(slotId));
+        }
     }
 }
