@@ -1,11 +1,18 @@
 package net.darkhax.bookshelf.api.util;
 
 import net.darkhax.bookshelf.Constants;
+import net.darkhax.bookshelf.api.inventory.ContainerInventoryAccess;
+import net.darkhax.bookshelf.api.inventory.IInventoryAccess;
+import net.darkhax.bookshelf.api.inventory.WorldlyContainerInventoryAccess;
 import net.darkhax.bookshelf.mixin.inventory.AccessorCraftingContainer;
 import net.darkhax.bookshelf.mixin.inventory.AccessorCraftingMenu;
 import net.darkhax.bookshelf.mixin.inventory.AccessorInventoryMenu;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.WorldlyContainerHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,6 +20,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -185,5 +198,60 @@ public interface IInventoryHelper {
 
             action.accept(slotId, inventory.getItem(slotId));
         }
+    }
+
+    /**
+     * Checks if two ItemStack may be stacked together.
+     *
+     * @param original The original stack.
+     * @param toStack  The stack attempting to be stacked into the original.
+     * @return Can the two stacks be stacked together.
+     */
+    default boolean canItemsStack(ItemStack original, ItemStack toStack) {
+
+        return !toStack.isEmpty() && original.sameItem(toStack) && original.hasTag() == toStack.hasTag() && (!original.hasTag() || original.getTag().equals(toStack.getTag()));
+    }
+
+    /**
+     * Attempts to provide access to an inventory stored at the given position.
+     *
+     * @param level     The world to query.
+     * @param pos       The position to look at.
+     * @param direction The side of the inventory being accessed.
+     * @return Access to the inventory at the given position.
+     */
+    @Nullable
+    default IInventoryAccess getInventory(Level level, BlockPos pos, @Nullable Direction direction) {
+
+        final BlockState state = level.getBlockState(pos);
+
+        // Handle blocks like the composter that think they're inventories.
+        if (state.getBlock() instanceof WorldlyContainerHolder holder) {
+
+            final WorldlyContainer container = holder.getContainer(state, level, pos);
+
+            if (container != null) {
+
+                return new ContainerInventoryAccess<>(container);
+            }
+        }
+
+        // Handle vanilla tile entity containers
+        else {
+
+            final BlockEntity be = level.getBlockEntity(pos);
+
+            if (be instanceof Container container) {
+
+                if (container instanceof WorldlyContainer worldly) {
+
+                    return new WorldlyContainerInventoryAccess<>(worldly);
+                }
+
+                return new ContainerInventoryAccess<>(container);
+            }
+        }
+
+        return null;
     }
 }
