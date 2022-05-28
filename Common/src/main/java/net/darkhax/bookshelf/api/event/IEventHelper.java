@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.api.event;
 
+import net.darkhax.bookshelf.api.event.entity.player.IPlayerWakeUpEvent;
 import net.darkhax.bookshelf.api.event.item.IItemTooltipEvent;
 
 /**
@@ -14,4 +15,11 @@ public interface IEventHelper {
      * @param listener The event listener.
      */
     void addItemTooltipListener(IItemTooltipEvent listener);
+
+    /**
+     * Registers a new player wake up listener with the underlying event bus.
+     *
+     * @param listener The event listener.
+     */
+    void addPlayerWakeUpListener(IPlayerWakeUpEvent listener);
 }

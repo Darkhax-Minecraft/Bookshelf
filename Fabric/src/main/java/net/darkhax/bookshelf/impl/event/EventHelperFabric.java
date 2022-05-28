@@ -2,8 +2,11 @@ package net.darkhax.bookshelf.impl.event;
 
 import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.event.IEventHelper;
+import net.darkhax.bookshelf.api.event.entity.player.IPlayerWakeUpEvent;
 import net.darkhax.bookshelf.api.event.item.IItemTooltipEvent;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
+import net.minecraft.world.entity.player.Player;
 
 public class EventHelperFabric implements IEventHelper {
 
@@ -14,5 +17,17 @@ public class EventHelperFabric implements IEventHelper {
 
             ItemTooltipCallback.EVENT.register((s, f, l) -> listener.apply(s, l, f));
         }
+    }
+
+    @Override
+    public void addPlayerWakeUpListener(IPlayerWakeUpEvent listener) {
+
+        EntitySleepEvents.STOP_SLEEPING.register((entity, pos) -> {
+
+            if (entity instanceof Player player) {
+
+                listener.apply(player);
+            }
+        });
     }
 }
