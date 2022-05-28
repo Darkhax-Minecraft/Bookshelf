@@ -104,4 +104,11 @@ public interface IPlatformHelper {
         final String modName = getModName(modId);
         return modName != null ? new TextComponent(modName) : null;
     }
+
+    /**
+     * Checks if the mod is currently running in an environment with game tests enabled.
+     *
+     * @return Are game tests currently enabled?
+     */
+    boolean isTestingEnvironment();
 }

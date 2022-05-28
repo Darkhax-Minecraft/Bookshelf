@@ -3,6 +3,7 @@ package net.darkhax.bookshelf.impl.util;
 import net.darkhax.bookshelf.api.PhysicalSide;
 import net.darkhax.bookshelf.api.util.IPlatformHelper;
 import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.impl.gametest.FabricGameTestHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,5 +46,11 @@ public class PlatformHelperFabric implements IPlatformHelper {
     public String getModName(String modId) {
 
         return FabricLoader.getInstance().getModContainer(modId).map(mod -> mod.getMetadata().getName()).orElse(modId);
+    }
+
+    @Override
+    public boolean isTestingEnvironment() {
+
+        return FabricGameTestHelper.ENABLED;
     }
 }
