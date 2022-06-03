@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.impl.event;
 
 import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.event.IEventHelper;
+import net.darkhax.bookshelf.api.event.block.IFarmlandTrampleListener;
 import net.darkhax.bookshelf.api.event.client.IRecipeSyncEvent;
 import net.darkhax.bookshelf.api.event.entity.player.IPlayerWakeUpEvent;
 import net.darkhax.bookshelf.api.event.item.IItemTooltipEvent;
@@ -39,5 +40,11 @@ public class EventHelperFabric implements IEventHelper {
 
             FabricBookshelfEvents.RECIPE_SYNC.register(listener);
         }
+    }
+
+    @Override
+    public void addFarmlandTrampleListener(IFarmlandTrampleListener listener) {
+
+        FabricBookshelfEvents.FARMLAND_TRAMPLE_EVENT.register(listener);
     }
 }
