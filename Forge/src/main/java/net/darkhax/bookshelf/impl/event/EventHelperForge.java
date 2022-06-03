@@ -2,8 +2,10 @@ package net.darkhax.bookshelf.impl.event;
 
 import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.event.IEventHelper;
+import net.darkhax.bookshelf.api.event.client.IRecipeSyncEvent;
 import net.darkhax.bookshelf.api.event.entity.player.IPlayerWakeUpEvent;
 import net.darkhax.bookshelf.api.event.item.IItemTooltipEvent;
+import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
@@ -24,5 +26,14 @@ public class EventHelperForge implements IEventHelper {
     public void addPlayerWakeUpListener(IPlayerWakeUpEvent listener) {
 
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerWakeUpEvent.class, e -> listener.apply(e.getPlayer()));
+    }
+
+    @Override
+    public void addRecipeSyncListener(IRecipeSyncEvent listener) {
+
+        if (Services.PLATFORM.isPhysicalClient()) {
+
+            MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, RecipesUpdatedEvent.class, e -> listener.apply(e.getRecipeManager()));
+        }
     }
 }

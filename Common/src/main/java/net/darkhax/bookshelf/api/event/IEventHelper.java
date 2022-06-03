@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.api.event;
 
+import net.darkhax.bookshelf.api.event.client.IRecipeSyncEvent;
 import net.darkhax.bookshelf.api.event.entity.player.IPlayerWakeUpEvent;
 import net.darkhax.bookshelf.api.event.item.IItemTooltipEvent;
 
@@ -22,4 +23,11 @@ public interface IEventHelper {
      * @param listener The event listener.
      */
     void addPlayerWakeUpListener(IPlayerWakeUpEvent listener);
+
+    /**
+     * Registers a listener that will be invoked when the client finishes processing a recipe sync packet.
+     *
+     * @param listener The event listener.
+     */
+    void addRecipeSyncListener(IRecipeSyncEvent listener);
 }

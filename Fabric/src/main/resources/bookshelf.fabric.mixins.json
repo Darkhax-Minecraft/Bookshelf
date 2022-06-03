@@ -6,7 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "client.AccessorItemBlockRenderTypes"
+    "client.AccessorItemBlockRenderTypes",
+    "client.MixinClientPacketListener"
   ],
   "injectors": {
     "defaultRequire": 1

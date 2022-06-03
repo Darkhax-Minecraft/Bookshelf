@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.impl.event;
 
 import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.event.IEventHelper;
+import net.darkhax.bookshelf.api.event.client.IRecipeSyncEvent;
 import net.darkhax.bookshelf.api.event.entity.player.IPlayerWakeUpEvent;
 import net.darkhax.bookshelf.api.event.item.IItemTooltipEvent;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -29,5 +30,14 @@ public class EventHelperFabric implements IEventHelper {
                 listener.apply(player);
             }
         });
+    }
+
+    @Override
+    public void addRecipeSyncListener(IRecipeSyncEvent listener) {
+
+        if (Services.PLATFORM.isPhysicalClient()) {
+
+            FabricBookshelfEvents.RECIPE_SYNC.register(listener);
+        }
     }
 }
