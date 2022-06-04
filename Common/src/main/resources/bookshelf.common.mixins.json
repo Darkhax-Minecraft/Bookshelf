@@ -17,7 +17,8 @@
     "item.AccessorItem",
     "item.AccessorItemCooldowns",
     "item.crafting.AccessorShapedRecipe",
-    "loot.MixinLootItemKilledByPlayerCondition"
+    "loot.MixinLootItemKilledByPlayerCondition",
+    "util.random.AccessorWeightedRandomList"
   ],
   "client": [
     "client.AccessorFontManager",
