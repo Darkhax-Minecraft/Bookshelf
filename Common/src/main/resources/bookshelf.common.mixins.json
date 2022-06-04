@@ -18,6 +18,7 @@
     "item.AccessorItemCooldowns",
     "item.crafting.AccessorShapedRecipe",
     "loot.MixinLootItemKilledByPlayerCondition",
+    "packs.resources.MixinSimpleJsonResourceReloadListener",
     "util.random.AccessorWeightedRandomList"
   ],
   "client": [
