@@ -111,4 +111,11 @@ public interface IPlatformHelper {
      * @return Are game tests currently enabled?
      */
     boolean isTestingEnvironment();
+
+    /**
+     * Gets the name of the platform.
+     *
+     * @return The name of the platform.
+     */
+    String getName();
 }

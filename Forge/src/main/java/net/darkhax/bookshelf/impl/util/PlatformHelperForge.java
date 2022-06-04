@@ -55,4 +55,9 @@ public class PlatformHelperForge implements IPlatformHelper {
 
         return ForgeGameTestHooks.isGametestEnabled();
     }
+
+    @Override
+    public String getName() {
+        return "Forge";
+    }
 }

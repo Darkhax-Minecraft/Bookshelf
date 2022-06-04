@@ -53,4 +53,10 @@ public class PlatformHelperFabric implements IPlatformHelper {
 
         return FabricGameTestHelper.ENABLED;
     }
+
+    @Override
+    public String getName() {
+
+        return "Fabric";
+    }
 }
