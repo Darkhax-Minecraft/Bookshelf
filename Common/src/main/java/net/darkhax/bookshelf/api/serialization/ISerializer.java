@@ -5,9 +5,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.darkhax.bookshelf.api.util.JSONHelper;
+import net.darkhax.bookshelf.mixin.util.random.AccessorWeightedRandomList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.random.WeightedEntry;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -448,5 +451,147 @@ public interface ISerializer<T> {
     default T fromJSONString(String jsonString) {
 
         return this.fromJSON(JSONHelper.getAsElement(jsonString));
+    }
+
+    /**
+     * Reads a wrapped weighted entry from a JSON element. The weight is taken from a JSON Object property named
+     * "weight". If the JSON is not an Object or the property does not exist a weight of 0 will be used.
+     *
+     * @param element The JSON element to read from.
+     * @return The weighted wrapper.
+     */
+    default WeightedEntry.Wrapper<T> fromJSONWeighted(JsonElement element) {
+
+        if (element instanceof JsonObject obj) {
+
+            final T value = this.fromJSON(obj, "value");
+            final int weight = Serializers.INT.fromJSON(obj, "weight", 0);
+            return WeightedEntry.wrap(value, weight);
+        }
+
+        return WeightedEntry.wrap(this.fromJSON(element), 0);
+    }
+
+    /**
+     * Writes a weighted entry to a JSON element. The value and weight are stored as separate properties.
+     *
+     * @param weightedEntry The weighted entry to write.
+     * @return The serialized JSON.
+     */
+    default JsonElement toJSONWeighted(WeightedEntry.Wrapper<T> weightedEntry) {
+
+        final JsonObject obj = new JsonObject();
+        obj.add("value", this.toJSON(weightedEntry.getData()));
+        obj.addProperty("weight", weightedEntry.getWeight().asInt());
+        return obj;
+    }
+
+    /**
+     * Writes a weighted wrapped value to a byte buffer.
+     *
+     * @param buffer  The buffer to write to.
+     * @param toWrite The data to write.
+     */
+    default void toByteBufWeighted(FriendlyByteBuf buffer, WeightedEntry.Wrapper<T> toWrite) {
+
+        this.toByteBuf(buffer, toWrite.getData());
+        Serializers.INT.toByteBuf(buffer, toWrite.getWeight().asInt());
+    }
+
+    /**
+     * Reads a weighted wrapped value from a byte buffer.
+     *
+     * @param buffer The buffer to read from.
+     * @return The value that was read from the buffer.
+     */
+    default WeightedEntry.Wrapper<T> fromByteBufWeighted(FriendlyByteBuf buffer) {
+
+        final T value = this.fromByteBuf(buffer);
+        final int weight = Serializers.INT.fromByteBuf(buffer);
+        return WeightedEntry.wrap(value, weight);
+    }
+
+    /**
+     * Reads a list of weighted wrapped values from the json.
+     *
+     * @param json The JSON data to read from.
+     * @return A list of weighted wrapped values.
+     */
+    default SimpleWeightedRandomList<T> fromJSONWeightedList(JsonElement json) {
+
+        final SimpleWeightedRandomList.Builder<T> list = SimpleWeightedRandomList.builder();
+
+        if (json instanceof JsonArray array) {
+
+            for (JsonElement element : array) {
+
+                final WeightedEntry.Wrapper<T> wrapped = this.fromJSONWeighted(element);
+                list.add(wrapped.getData(), wrapped.getWeight().asInt());
+            }
+        }
+
+        else {
+
+            final WeightedEntry.Wrapper<T> wrapped = this.fromJSONWeighted(json);
+            list.add(wrapped.getData(), wrapped.getWeight().asInt());
+        }
+
+        return list.build();
+    }
+
+    /**
+     * Writes a list of weighted wrapped entries to JSON.
+     *
+     * @param list The list to write.
+     * @return The JSON output.
+     */
+    default JsonElement toJSONWeightedList(SimpleWeightedRandomList<T> list) {
+
+        final JsonArray array = new JsonArray();
+        final AccessorWeightedRandomList<WeightedEntry.Wrapper<T>> accessor = ((AccessorWeightedRandomList<WeightedEntry.Wrapper<T>>) list);
+
+        for (WeightedEntry.Wrapper<T> entry : accessor.bookshelf$getEntries()) {
+
+            array.add(this.toJSONWeighted(entry));
+        }
+
+        return array;
+    }
+
+    /**
+     * Reads a list of weighted wrapped entries from a byte buffer.
+     *
+     * @param buffer The buffer to read from.
+     * @return The list of weighted wrapped entries.
+     */
+    default SimpleWeightedRandomList<T> fromByteBufWeightedList(FriendlyByteBuf buffer) {
+
+        final SimpleWeightedRandomList.Builder<T> list = SimpleWeightedRandomList.builder();
+        final int size = buffer.readInt();
+
+        for (int i = 0; i < size; i++) {
+
+            final WeightedEntry.Wrapper<T> wrapped = this.fromByteBufWeighted(buffer);
+            list.add(wrapped.getData(), wrapped.getWeight().asInt());
+        }
+
+        return list.build();
+    }
+
+    /**
+     * Writes a list of weighted wrapped entries to a byte buffer.
+     *
+     * @param buffer The buffer to write to.
+     * @param list   The list of entries to write.
+     */
+    default void toByteBufWeightedList(FriendlyByteBuf buffer, SimpleWeightedRandomList<T> list) {
+
+        final AccessorWeightedRandomList<WeightedEntry.Wrapper<T>> accessor = ((AccessorWeightedRandomList<WeightedEntry.Wrapper<T>>) list);
+        buffer.writeInt(accessor.bookshelf$getEntries().size());
+
+        for (WeightedEntry.Wrapper<T> entry : accessor.bookshelf$getEntries()) {
+
+            this.toByteBufWeighted(buffer, entry);
+        }
     }
 }
