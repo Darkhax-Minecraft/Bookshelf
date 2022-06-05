@@ -10,6 +10,7 @@ import net.darkhax.bookshelf.mixin.item.AccessorItem;
 import net.minecraft.commands.synchronization.ArgumentSerializer;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.stats.StatType;
 import net.minecraft.world.effect.MobEffect;
@@ -53,6 +54,8 @@ public class RegistryDataProvider {
     public final ClassRegistryEntries<ArgumentSerializer> commandArguments = new ClassRegistryEntries<>(this::getOwner, "Command Argument");
     public final IOwnedRegistryEntries<ICommandBuilder> commands = new RegistryEntries<>(this::getOwner, "Command");
     public final VillagerTradeEntries trades = new VillagerTradeEntries();
+    public final IOwnedRegistryEntries<PreparableReloadListener> resourceListeners = new RegistryEntries<>(this::getOwner, "Resource Listener");
+    public final IOwnedRegistryEntries<PreparableReloadListener> dataListeners = new RegistryEntries<>(this::getOwner, "Data Listener");
 
     public RegistryDataProvider(String ownerId) {
 

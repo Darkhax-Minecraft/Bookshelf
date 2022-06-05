@@ -13,8 +13,7 @@ import java.util.concurrent.Executor;
  * Fabric requires modded reload listeners to implement their IdentifiableResourceReloadListener interface. This
  * implementation simply wraps a vanilla compliant reload listener to make it compliant with the Fabric API.
  */
-public record WrappedReloadListener(ResourceLocation id,
-                                    PreparableReloadListener reloadListener) implements IdentifiableResourceReloadListener {
+public record WrappedReloadListener(ResourceLocation id, PreparableReloadListener reloadListener) implements IdentifiableResourceReloadListener {
 
     @Override
     public ResourceLocation getFabricId() {

@@ -3,18 +3,21 @@ package net.darkhax.bookshelf.impl.registry;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.RegistryDataProvider;
 import net.darkhax.bookshelf.impl.data.recipes.WrappedRecipeSerializer;
+import net.darkhax.bookshelf.impl.resources.WrappedReloadListener;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.commands.synchronization.ArgumentTypes;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
-import java.nio.channels.WritePendingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,6 +61,18 @@ public class GameRegistriesFabric extends GameRegistriesVanilla {
 
         this.registerTradeData(content.trades.getVillagerTrades());
         this.registerWanderingTrades(content.trades.getCommonWanderingTrades(), content.trades.getRareWanderingTrades());
+
+        this.consumeRegistry(content.dataListeners, (id, value) -> ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new WrappedReloadListener(id, value)));
+
+        if (Services.PLATFORM.isPhysicalClient()) {
+
+            this.loadClient(content);
+        }
+    }
+
+    private void loadClient(RegistryDataProvider content) {
+
+        this.consumeRegistry(content.resourceListeners, (id, value) -> ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new WrappedReloadListener(id, value)));
     }
 
     private <T, O> void consumeVanillaRegistry(IRegistryEntries<O> toRegister, Registry<T> registry, Function<O, T> wrapper) {

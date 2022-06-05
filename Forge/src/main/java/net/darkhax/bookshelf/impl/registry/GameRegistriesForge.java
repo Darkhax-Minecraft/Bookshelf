@@ -2,9 +2,7 @@ package net.darkhax.bookshelf.impl.registry;
 
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.darkhax.bookshelf.api.data.recipes.IRecipeSerializer;
-import net.darkhax.bookshelf.api.function.QuadConsumer;
-import net.darkhax.bookshelf.api.function.TriConsumer;
+import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.registry.IGameRegistries;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.IRegistryReader;
@@ -34,7 +32,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -50,7 +50,6 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -184,6 +183,18 @@ public class GameRegistriesForge implements IGameRegistries {
 
         ForgeEventHelper.addContextListener(VillagerTradesEvent.class, content.trades.getVillagerTrades(), this::registerVillagerTrades);
         ForgeEventHelper.addContextListener(WandererTradesEvent.class, content.trades.getCommonWanderingTrades(), content.trades.getRareWanderingTrades(), this::registerWanderingTrades);
+
+        this.consumeWithForgeEvent(content.dataListeners, AddReloadListenerEvent.class, (event, id, arg) -> event.addListener(arg));
+
+        if (Services.PLATFORM.isPhysicalClient()) {
+
+            this.loadClient(content);
+        }
+    }
+
+    private void loadClient(RegistryDataProvider content) {
+
+        this.consumeWithModEvent(content.resourceListeners, RegisterClientReloadListenersEvent.class, (event, id, arg) -> event.registerReloadListener(arg));
     }
 
     private void registerVillagerTrades(VillagerTradesEvent event, Map<VillagerProfession, Multimap<Integer, VillagerTrades.ItemListing>> trades) {
