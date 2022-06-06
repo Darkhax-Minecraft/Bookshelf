@@ -369,17 +369,6 @@ public interface ISerializer<T> {
     }
 
     /**
-     * Writes an optional value to a JSON element. If the value is not present a null value will be returned.
-     *
-     * @param value The optional value to write.
-     * @return The written JSON element. If the optional value was not present this will be null.
-     */
-    default JsonElement fromJSONOptional(Optional<T> value) {
-
-        return value.map(this::toJSON).orElse(null);
-    }
-
-    /**
      * Read an optional value from a child JSON element. If the child JSON member does not exist an empty optional will
      * be used.
      *
@@ -389,7 +378,41 @@ public interface ISerializer<T> {
      */
     default Optional<T> fromJSONOptional(JsonObject json, String memberName) {
 
-        return json.has(memberName) ? Optional.of(this.fromJSON(json.get(memberName))) : Optional.empty();
+        return this.fromJSONOptional(json.get(memberName));
+    }
+
+    /**
+     * Reads an optional value from a JSON element. If the element is null an empty optional will be returned.
+     * @param json The JSON to read data from.
+     * @return An optional containing the value that was read.
+     */
+    default Optional<T> fromJSONOptional(@Nullable JsonElement json) {
+
+        return json != null ? Optional.ofNullable(this.fromJSON(json)) : Optional.empty();
+    }
+
+    /**
+     * Writes an optional value to a JSON element. If the value is not present a null value will be returned.
+     *
+     * @param value The optional value to write.
+     * @return The written JSON element. If the optional value was not present this will be null.
+     */
+    @Nullable
+    default JsonElement toJSONOptional(@Nullable T value) {
+
+        return this.toJSONOptional(Optional.ofNullable(value));
+    }
+
+    /**
+     * Writes an optional value to a JSON element. If the value is not present a null value will be returned.
+     *
+     * @param value The optional value to write.
+     * @return The written JSON element. If the optional value was not present this will be null.
+     */
+    @Nullable
+    default JsonElement toJSONOptional(Optional<T> value) {
+
+        return value.map(this::toJSON).orElse(null);
     }
 
     /**
