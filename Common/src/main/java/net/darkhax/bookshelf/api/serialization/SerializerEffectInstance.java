@@ -89,7 +89,7 @@ public class SerializerEffectInstance implements ISerializer<MobEffectInstance> 
         Serializers.BOOLEAN.toByteBuf(buffer, toWrite.isAmbient());
         Serializers.BOOLEAN.toByteBuf(buffer, toWrite.isVisible());
         Serializers.BOOLEAN.toByteBuf(buffer, toWrite.showIcon());
-        Serializers.EFFECT_INSTANCE.toByteBufOptional(buffer, Optional.of(((AccessorMobEffectInstance) toWrite).bookshelf$getHiddenEffect()));
+        Serializers.EFFECT_INSTANCE.toByteBufOptional(buffer, Optional.ofNullable(((AccessorMobEffectInstance) toWrite).bookshelf$getHiddenEffect()));
     }
 
     @Override
