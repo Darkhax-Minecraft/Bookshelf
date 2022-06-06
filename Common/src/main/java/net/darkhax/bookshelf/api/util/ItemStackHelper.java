@@ -1,10 +1,14 @@
 package net.darkhax.bookshelf.api.util;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+
+import java.util.Objects;
 
 /**
  * This class contains static helper methods for working with ItemStacks.
@@ -50,5 +54,17 @@ public final class ItemStackHelper {
         final double bonusEnchantmentDamage = EnchantmentHelper.getDamageBonus(stack, targetType);
 
         return damage + bonusEnchantmentDamage;
+    }
+
+    public static ItemStack[] getTabItems(CreativeModeTab tab) {
+
+        final NonNullList<ItemStack> stacks = NonNullList.create();
+        CreativeModeTab.TAB_COMBAT.fillItemList(stacks);
+        return stacks.toArray(ItemStack[]::new);
+    }
+
+    public static boolean areStacksEquivalent(ItemStack first, ItemStack second) {
+
+        return first.isEmpty() == second.isEmpty() && first.getCount() == second.getCount() && Objects.equals(first.getTag(), second.getTag());
     }
 }
