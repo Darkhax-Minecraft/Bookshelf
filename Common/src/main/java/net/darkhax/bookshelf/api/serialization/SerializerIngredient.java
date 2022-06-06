@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.api.serialization;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -15,6 +16,12 @@ public class SerializerIngredient implements ISerializer<Ingredient> {
 
     @Override
     public Ingredient fromJSON(JsonElement json) {
+
+        // Support Empty Ingredient
+        if (json instanceof JsonArray array && array.isEmpty()) {
+
+            return Ingredient.EMPTY;
+        }
 
         return Ingredient.fromJson(json);
     }
