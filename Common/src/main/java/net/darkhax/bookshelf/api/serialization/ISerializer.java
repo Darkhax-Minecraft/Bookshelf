@@ -15,6 +15,7 @@ import net.minecraft.util.random.WeightedEntry;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -263,7 +264,7 @@ public interface ISerializer<T> {
      */
     default Set<T> fromJSONSet(JsonElement json) {
 
-        final Set<T> set = new HashSet<>();
+        final Set<T> set = new LinkedHashSet<>();
 
         if (json.isJsonArray()) {
 
@@ -346,7 +347,7 @@ public interface ISerializer<T> {
     default Set<T> readByteBufSet(FriendlyByteBuf buffer) {
 
         final int size = buffer.readInt();
-        final Set<T> set = new HashSet<>(size);
+        final Set<T> set = new LinkedHashSet<>(size);
 
         for (int i = 0; i < size; i++) {
 
