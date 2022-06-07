@@ -54,7 +54,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.function.BiPredicate;
 
 public class BookshelfGameTests {
 
@@ -68,7 +67,7 @@ public class BookshelfGameTests {
         testFrom(testFunctions, new TestSerialization<>("byte", Serializers.BYTE, (byte) 1, (byte) 32, (byte) 44, (byte) 0));
         testFrom(testFunctions, new TestSerialization<>("short", Serializers.SHORT, (short) 800, (short) 1337));
         testFrom(testFunctions, new TestSerialization<>("int", Serializers.INT, 54, 23, Integer.MAX_VALUE, 234234, Integer.MIN_VALUE));
-        testFrom(testFunctions, new TestSerialization<>("long", Serializers.LONG, 99L, 23441322L, Long.MIN_VALUE, 93249L -234L, Long.MAX_VALUE));
+        testFrom(testFunctions, new TestSerialization<>("long", Serializers.LONG, 99L, 23441322L, Long.MIN_VALUE, 93249L - 234L, Long.MAX_VALUE));
         testFrom(testFunctions, new TestSerialization<>("float", Serializers.FLOAT, 8f, -23.456f, 789.01f, Float.MAX_VALUE, -11f, Float.MIN_VALUE));
         testFrom(testFunctions, new TestSerialization<>("double", Serializers.DOUBLE, 24.92d, Double.MAX_VALUE, -922321.12345d, Double.MIN_VALUE));
         testFrom(testFunctions, new TestSerialization<>("string", Serializers.STRING, "one", "two", "3", "IV", ".....", "/I", "!@#$%^&*()_-"));
@@ -80,11 +79,11 @@ public class BookshelfGameTests {
         testFrom(testFunctions, new TestSerialization<>("nbt_compound_tag", Serializers.COMPOUND_TAG, Arrays.stream(ItemStackHelper.getTabItems(CreativeModeTab.TAB_COMBAT)).filter(ItemStack::hasTag).map(ItemStack::getTag).toArray(CompoundTag[]::new)));
         testFrom(testFunctions, new TestSerialization<>("text_component", Serializers.TEXT, new TranslatableComponent("moon.phase.full").withStyle(ChatFormatting.DARK_AQUA), new TextComponent("Hello World"), new TextComponent("okay").withStyle(s -> s.withFont(new ResourceLocation("minecraft:alt")))));
         testFrom(testFunctions, new TestSerialization<>("block_pos", Serializers.BLOCK_POS, new BlockPos(1, 2, 3), new BlockPos(0, 0, 0), BlockPos.of(123456L)));
-        testFrom(testFunctions, new TestSerialization<>("ingredient", Serializers.INGREDIENT, BookshelfGameTests::assertEqual, new Ingredient[] {Ingredient.of(Items.STONE_AXE), Ingredient.EMPTY, Ingredient.of(Items.COAL), Ingredient.of(new ItemStack(Items.ACACIA_BOAT)), Ingredient.of(ItemTags.BEDS) }));
+        testFrom(testFunctions, new TestSerialization<>("ingredient", Serializers.INGREDIENT, BookshelfGameTests::assertEqual, new Ingredient[]{Ingredient.of(Items.STONE_AXE), Ingredient.EMPTY, Ingredient.of(Items.COAL), Ingredient.of(new ItemStack(Items.ACACIA_BOAT)), Ingredient.of(ItemTags.BEDS)}));
         testFrom(testFunctions, new TestSerialization<>("block_state", Serializers.BLOCK_STATE, Blocks.STONE.defaultBlockState(), Blocks.CHEST.defaultBlockState(), Blocks.ACACIA_PRESSURE_PLATE.defaultBlockState().setValue(PressurePlateBlock.POWERED, true)));
         testFrom(testFunctions, new TestSerialization<>("attribute_modifier", Serializers.ATTRIBUTE_MODIFIER, new AttributeModifier("test", 15d, AttributeModifier.Operation.MULTIPLY_BASE), new AttributeModifier(UUID.randomUUID(), "test_2", 9.55d, AttributeModifier.Operation.ADDITION), new AttributeModifier("test3", 35d, AttributeModifier.Operation.MULTIPLY_TOTAL)));
         testFrom(testFunctions, new TestSerialization<>("effect_instance", Serializers.EFFECT_INSTANCE, new MobEffectInstance(MobEffects.ABSORPTION, 100, 10), new MobEffectInstance(MobEffects.BAD_OMEN, 10)));
-        testFrom(testFunctions, new TestSerialization<>("enchantment_instance", Serializers.ENCHANTMENT_INSTANCE, BookshelfGameTests::assertEncantmentInstanceEqual, new EnchantmentInstance[] {new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 5), new EnchantmentInstance(Enchantments.BINDING_CURSE, 15), new EnchantmentInstance(Enchantments.IMPALING, 2)}));
+        testFrom(testFunctions, new TestSerialization<>("enchantment_instance", Serializers.ENCHANTMENT_INSTANCE, BookshelfGameTests::assertEncantmentInstanceEqual, new EnchantmentInstance[]{new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 5), new EnchantmentInstance(Enchantments.BINDING_CURSE, 15), new EnchantmentInstance(Enchantments.IMPALING, 2)}));
 
         // Test Minecraft Enum Serializers
         testFrom(testFunctions, new TestSerialization<>("item_rarity", Serializers.ITEM_RARITY, Rarity.COMMON, Rarity.EPIC, Rarity.RARE, Rarity.RARE));
@@ -126,24 +125,34 @@ public class BookshelfGameTests {
         return testFunctions;
     }
 
-    public static <TA> void testFromTags(Collection<TestFunction> functions, String name, ISerializer<TagKey<TA>> serializer, TagKey<TA>... tags) {
-
-        BiPredicate<TagKey<TA>, TagKey<TA>> equality = BookshelfGameTests::assertTagEqual;
-        testFrom(functions, new TestSerialization<>(name, serializer, equality, tags));
-    }
-
+    /**
+     * Generates tests from a pre-instantiated instance of a class.
+     *
+     * @param functions The collection to register newly generated functions into.
+     * @param testImpl  The implementation of the test class.
+     * @param <T>       The type of class to load classes from.
+     */
     public static <T> void testFrom(Collection<TestFunction> functions, T testImpl) {
 
+        // I like to batch tests from the same instance together in a separate batch. To allow for
+        // this I use a new ITestable interface which allows the testImpl to optionally supply a
+        // name for the batch. If a test defines its own non-default batch this will be overridden.
         final String parentBatch = testImpl instanceof ITestable testObj ? testObj.getDefaultBatch() : null;
 
+        // TODO This code can not see inherited methods yet.
         for (Method method : testImpl.getClass().getDeclaredMethods()) {
 
+            // Only methods annotated with the vanilla GameTest annotation can be used.
             if (method.isAnnotationPresent(GameTest.class)) {
 
+                // Metadata defined by the annotation on the method.
                 final GameTest annotation = method.getAnnotation(GameTest.class);
 
+                // The namespaced ID of the template to spawn in the world. An empty structure is
+                // usually preferred if the test does not interact with the world.
                 final String template = annotation.template().isEmpty() ? "bookshelf:empty" : annotation.template();
                 final String batch = parentBatch != null && annotation.batch().equalsIgnoreCase("defaultBatch") ? parentBatch : annotation.batch();
+                // I prefer lower snake case for test names but this is not required.
                 final String testName = batch + "." + CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, method.getName());
                 final Rotation rotation = StructureUtils.getRotationForRotationSteps(annotation.rotationSteps());
 
@@ -154,14 +163,20 @@ public class BookshelfGameTests {
                         method.invoke(testImpl, gameTestHelper);
                     }
 
+                    // The scanned method could not be executed.
                     catch (IllegalAccessException e) {
 
                         throw new RuntimeException("Failed to invoke test method (%s) in (%s) because %s".formatted(method.getName(), method.getDeclaringClass().getCanonicalName(), e.getMessage()), e);
                     }
 
+                    // The scanned method was executed but thre an exception.
                     catch (InvocationTargetException e) {
 
+                        // Convert the exception into a RuntimeException, so we can rethrow it.
                         final RuntimeException rte = (e.getCause() instanceof RuntimeException runtimeException) ? runtimeException : new RuntimeException(e.getCause());
+
+                        // The vanilla system likes to swallow these errors, so making an external
+                        // paper trail for the exception can be very helpful.
                         Constants.LOG.error("The test {} failed to run!", testName, e);
                         throw rte;
                     }
@@ -170,6 +185,28 @@ public class BookshelfGameTests {
         }
     }
 
+    /**
+     * A generally unnecessary helper for adding tests for a tag serializer. This primarily exists to simplify generic
+     * vararg array issues.
+     *
+     * @param functions  The collection to register newly generated functions into.
+     * @param name       The name of the type being serialized. This is used for debug output.
+     * @param serializer The serializer that handles this tag type.
+     * @param tags       Arbitrary tags to test serialization with.
+     * @param <T>        The type of tag being serialized.
+     */
+    private static <T> void testFromTags(Collection<TestFunction> functions, String name, ISerializer<TagKey<T>> serializer, TagKey<T>... tags) {
+
+        testFrom(functions, new TestSerialization<>(name, serializer, BookshelfGameTests::assertTagEqual, tags));
+    }
+
+    /**
+     * Checks if two enchantment instance are equal.
+     *
+     * @param a The original instance to test.
+     * @param b The instance that resulted from deserialization.
+     * @return Whether the enchantment instances were equal or not.
+     */
     private static boolean assertEncantmentInstanceEqual(EnchantmentInstance a, EnchantmentInstance b) {
 
         if (Objects.equals(a, b)) {
@@ -192,11 +229,28 @@ public class BookshelfGameTests {
         return true;
     }
 
+    /**
+     * Internal code to test if two tag keys are equal.
+     *
+     * @param a   The original tag to test.
+     * @param b   The tag that resulted from deserialization.
+     * @param <T> The type of the tag.
+     * @return Whether the tags were equal or not.
+     */
     private static <T> boolean assertTagEqual(TagKey<T> a, TagKey<T> b) {
 
         return Objects.equals(a, b) || Objects.equals(a.location(), b.location());
     }
 
+    /**
+     * Internal code to test if two ingredients are equal. This approach is good enough for vanilla ingredients which is
+     * all our test cares about, however this is not robust enough for general use, or for use with modded ingredient
+     * specs.
+     *
+     * @param original The original ingredient to test.
+     * @param result   The ingredient that resulted from deserialization.
+     * @return Whether the ingredients were equal enough or not.
+     */
     private static boolean assertEqual(Ingredient original, Ingredient result) {
 
         if (Objects.equals(original, result)) {
