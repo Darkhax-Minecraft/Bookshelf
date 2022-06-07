@@ -2,6 +2,8 @@ package net.darkhax.bookshelf.impl.gametest;
 
 import com.google.common.base.CaseFormat;
 import net.darkhax.bookshelf.Constants;
+import net.darkhax.bookshelf.api.Services;
+import net.darkhax.bookshelf.api.serialization.ISerializer;
 import net.darkhax.bookshelf.api.serialization.Serializers;
 import net.darkhax.bookshelf.api.util.ItemStackHelper;
 import net.minecraft.ChatFormatting;
@@ -16,7 +18,11 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.GameEventTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -33,6 +39,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PressurePlateBlock;
@@ -47,6 +54,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.BiPredicate;
 
 public class BookshelfGameTests {
 
@@ -76,6 +84,7 @@ public class BookshelfGameTests {
         testFrom(testFunctions, new TestSerialization<>("block_state", Serializers.BLOCK_STATE, Blocks.STONE.defaultBlockState(), Blocks.CHEST.defaultBlockState(), Blocks.ACACIA_PRESSURE_PLATE.defaultBlockState().setValue(PressurePlateBlock.POWERED, true)));
         testFrom(testFunctions, new TestSerialization<>("attribute_modifier", Serializers.ATTRIBUTE_MODIFIER, new AttributeModifier("test", 15d, AttributeModifier.Operation.MULTIPLY_BASE), new AttributeModifier(UUID.randomUUID(), "test_2", 9.55d, AttributeModifier.Operation.ADDITION), new AttributeModifier("test3", 35d, AttributeModifier.Operation.MULTIPLY_TOTAL)));
         testFrom(testFunctions, new TestSerialization<>("effect_instance", Serializers.EFFECT_INSTANCE, new MobEffectInstance(MobEffects.ABSORPTION, 100, 10), new MobEffectInstance(MobEffects.BAD_OMEN, 10)));
+        testFrom(testFunctions, new TestSerialization<>("enchantment_instance", Serializers.ENCHANTMENT_INSTANCE, BookshelfGameTests::assertEncantmentInstanceEqual, new EnchantmentInstance[] {new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 5), new EnchantmentInstance(Enchantments.BINDING_CURSE, 15), new EnchantmentInstance(Enchantments.IMPALING, 2)}));
 
         // Test Minecraft Enum Serializers
         testFrom(testFunctions, new TestSerialization<>("item_rarity", Serializers.ITEM_RARITY, Rarity.COMMON, Rarity.EPIC, Rarity.RARE, Rarity.RARE));
@@ -97,7 +106,30 @@ public class BookshelfGameTests {
         testFrom(testFunctions, new TestSerialization<>("registry_entity_type", Serializers.ENTITY, EntityType.BAT, EntityType.ARROW, EntityType.AXOLOTL, EntityType.DRAGON_FIREBALL));
         testFrom(testFunctions, new TestSerialization<>("registry_block_entity_type", Serializers.BLOCK_ENTITY, BlockEntityType.BARREL, BlockEntityType.BEACON, BlockEntityType.BEEHIVE, BlockEntityType.JUKEBOX));
         testFrom(testFunctions, new TestSerialization<>("registry_game_event", Serializers.GAME_EVENT, GameEvent.FLAP, GameEvent.FLUID_PICKUP, GameEvent.PRIME_FUSE, GameEvent.LIGHTNING_STRIKE));
+
+        // Test Game Registry Tags
+        testFromTags(testFunctions, "block_tag", Serializers.BLOCK_TAG, BlockTags.ANVIL, BlockTags.BEDS, BlockTags.BASE_STONE_NETHER);
+        testFromTags(testFunctions, "item_tag", Serializers.ITEM_TAG, ItemTags.ANVIL, ItemTags.AXOLOTL_TEMPT_ITEMS, ItemTags.BIRCH_LOGS);
+        testFromTags(testFunctions, "enchantment_tag", Serializers.ENCHANTMENT_TAG, Services.TAGS.enchantmentTag(new ResourceLocation("test", "one")), Services.TAGS.enchantmentTag(new ResourceLocation("test", "two")));
+        testFromTags(testFunctions, "motive_tag", Serializers.MOTIVE_TAG, Services.TAGS.paintingTag(new ResourceLocation("test", "one")), Services.TAGS.paintingTag(new ResourceLocation("test", "two")));
+        testFromTags(testFunctions, "potion_tag", Serializers.POTION_TAG, Services.TAGS.potionTag(new ResourceLocation("test", "one")), Services.TAGS.potionTag(new ResourceLocation("test", "two")));
+        testFromTags(testFunctions, "attribute_tag", Serializers.ATTRIBUTE_TAG, Services.TAGS.attributeTag(new ResourceLocation("test", "one")), Services.TAGS.attributeTag(new ResourceLocation("test", "two")));
+        testFromTags(testFunctions, "villager_profession_tag", Serializers.VILLAGER_PROFESSION_TAG, Services.TAGS.villagerProfessionTag(new ResourceLocation("test", "one")), Services.TAGS.villagerProfessionTag(new ResourceLocation("test", "two")));
+        testFromTags(testFunctions, "villager_type_tag", Serializers.VILLAGER_TYPE_TAG, Services.TAGS.villagerTypeTag(new ResourceLocation("test", "one")), Services.TAGS.villagerTypeTag(new ResourceLocation("test", "two")));
+        testFromTags(testFunctions, "sound_event_tag", Serializers.SOUND_EVENT_TAG, Services.TAGS.soundTag(new ResourceLocation("test", "one")), Services.TAGS.soundTag(new ResourceLocation("test", "two")));
+        testFromTags(testFunctions, "menu_tag", Serializers.MENU_TAG, Services.TAGS.menuTag(new ResourceLocation("test", "one")), Services.TAGS.menuTag(new ResourceLocation("test", "two")));
+        testFromTags(testFunctions, "particle_type_tag", Serializers.PARTICLE_TAG, Services.TAGS.particleTag(new ResourceLocation("test", "one")), Services.TAGS.particleTag(new ResourceLocation("test", "two")));
+        testFromTags(testFunctions, "entity_type_tag", Serializers.ENTITY_TAG, EntityTypeTags.ARROWS, EntityTypeTags.AXOLOTL_ALWAYS_HOSTILES, EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS);
+        testFromTags(testFunctions, "block_entity_type_tag", Serializers.BLOCK_ENTITY_TAG, Services.TAGS.blockEntityTag(new ResourceLocation("test", "one")), Services.TAGS.blockEntityTag(new ResourceLocation("test", "two")));
+        testFromTags(testFunctions, "game_event_tag", Serializers.GAME_EVENT_TAG, GameEventTags.IGNORE_VIBRATIONS_SNEAKING, GameEventTags.VIBRATIONS, GameEventTags.VIBRATIONS);
+
         return testFunctions;
+    }
+
+    public static <TA> void testFromTags(Collection<TestFunction> functions, String name, ISerializer<TagKey<TA>> serializer, TagKey<TA>... tags) {
+
+        BiPredicate<TagKey<TA>, TagKey<TA>> equality = BookshelfGameTests::assertTagEqual;
+        testFrom(functions, new TestSerialization<>(name, serializer, equality, tags));
     }
 
     public static <T> void testFrom(Collection<TestFunction> functions, T testImpl) {
@@ -138,6 +170,33 @@ public class BookshelfGameTests {
         }
     }
 
+    private static boolean assertEncantmentInstanceEqual(EnchantmentInstance a, EnchantmentInstance b) {
+
+        if (Objects.equals(a, b)) {
+
+            return true;
+        }
+
+        if (a.enchantment != b.enchantment) {
+
+            Constants.LOG.error("Enchantment {} != {}", a.enchantment, b.enchantment);
+            return false;
+        }
+
+        if (a.level != b.level) {
+
+            Constants.LOG.error("Level {} != {}", a.level, b.level);
+            return false;
+        }
+
+        return true;
+    }
+
+    private static <T> boolean assertTagEqual(TagKey<T> a, TagKey<T> b) {
+
+        return Objects.equals(a, b) || Objects.equals(a.location(), b.location());
+    }
+
     private static boolean assertEqual(Ingredient original, Ingredient result) {
 
         if (Objects.equals(original, result)) {
@@ -165,6 +224,5 @@ public class BookshelfGameTests {
         }
 
         return true;
-
     }
 }
