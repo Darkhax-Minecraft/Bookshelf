@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
@@ -22,6 +23,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -52,6 +54,7 @@ public final class Serializers {
     public static final ISerializer<BlockState> BLOCK_STATE = SerializerBlockState.SERIALIZER;
     public static final ISerializer<AttributeModifier> ATTRIBUTE_MODIFIER = SerializerAttributeModifier.SERIALIZER;
     public static final ISerializer<MobEffectInstance> EFFECT_INSTANCE = new SerializerEffectInstance();
+    public static final ISerializer<EnchantmentInstance> ENCHANTMENT_INSTANCE = SerializerEnchantmentInstance.SERIALIZER;
 
     // ENUMS
     public static final ISerializer<Rarity> ITEM_RARITY = new SerializerEnum<>(Rarity.class);
@@ -74,4 +77,21 @@ public final class Serializers {
     public static final ISerializer<EntityType<?>> ENTITY = new SerializerRegistryEntry<>(Services.REGISTRIES.entities());
     public static final ISerializer<BlockEntityType<?>> BLOCK_ENTITY = new SerializerRegistryEntry<>(Services.REGISTRIES.blockEntities());
     public static final ISerializer<GameEvent> GAME_EVENT = new SerializerRegistryEntry<>(Services.REGISTRIES.gameEvents());
+
+    // Tag Types
+    public static final ISerializer<TagKey<Block>> BLOCK_TAG = new SerializerTagKey<>(Services.TAGS::blockTag);
+    public static final ISerializer<TagKey<Item>> ITEM_TAG = new SerializerTagKey<>(Services.TAGS::itemTag);
+    public static final ISerializer<TagKey<Enchantment>> ENCHANTMENT_TAG = new SerializerTagKey<>(Services.TAGS::enchantmentTag);
+    public static final ISerializer<TagKey<Motive>> MOTIVE_TAG = new SerializerTagKey<>(Services.TAGS::paintingTag);
+    public static final ISerializer<TagKey<MobEffect>> MOB_EFFECT_TAG = new SerializerTagKey<>(Services.TAGS::effectTag);
+    public static final ISerializer<TagKey<Potion>> POTION_TAG = new SerializerTagKey<>(Services.TAGS::potionTag);
+    public static final ISerializer<TagKey<Attribute>> ATTRIBUTE_TAG = new SerializerTagKey<>(Services.TAGS::attributeTag);
+    public static final ISerializer<TagKey<VillagerProfession>> VILLAGER_PROFESSION_TAG = new SerializerTagKey<>(Services.TAGS::villagerProfessionTag);
+    public static final ISerializer<TagKey<VillagerType>> VILLAGER_TYPE_TAG = new SerializerTagKey<>(Services.TAGS::villagerTypeTag);
+    public static final ISerializer<TagKey<SoundEvent>> SOUND_EVENT_TAG = new SerializerTagKey<>(Services.TAGS::soundTag);
+    public static final ISerializer<TagKey<MenuType<?>>> MENU_TAG = new SerializerTagKey<>(Services.TAGS::menuTag);
+    public static final ISerializer<TagKey<ParticleType<?>>> PARTICLE_TAG = new SerializerTagKey<>(Services.TAGS::particleTag);
+    public static final ISerializer<TagKey<EntityType<?>>> ENTITY_TAG = new SerializerTagKey<>(Services.TAGS::entityTag);
+    public static final ISerializer<TagKey<BlockEntityType<?>>> BLOCK_ENTITY_TAG = new SerializerTagKey<>(Services.TAGS::blockEntityTag);
+    public static final ISerializer<TagKey<GameEvent>> GAME_EVENT_TAG = new SerializerTagKey<>(Services.TAGS::gameEventTag);
 }
