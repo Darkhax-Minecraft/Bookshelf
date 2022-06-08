@@ -17,8 +17,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BannerPatternTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.GameEventTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.PaintingVariantTags;
@@ -107,20 +109,32 @@ public class BookshelfGameTests {
         testFrom(testFunctions, new TestSerialization<>("registry_game_event", Serializers.GAME_EVENT, GameEvent.FLAP, GameEvent.FLUID_PICKUP, GameEvent.PRIME_FUSE, GameEvent.LIGHTNING_STRIKE));
 
         // Test Game Registry Tags
+        final ResourceLocation tagOne = new ResourceLocation("test", "one");
+        final ResourceLocation tagTwo = new ResourceLocation("test", "two");
+
         testFromTags(testFunctions, "block_tag", Serializers.BLOCK_TAG, BlockTags.ANVIL, BlockTags.BEDS, BlockTags.BASE_STONE_NETHER);
         testFromTags(testFunctions, "item_tag", Serializers.ITEM_TAG, ItemTags.ANVIL, ItemTags.AXOLOTL_TEMPT_ITEMS, ItemTags.BIRCH_LOGS);
-        testFromTags(testFunctions, "enchantment_tag", Serializers.ENCHANTMENT_TAG, Services.TAGS.enchantmentTag(new ResourceLocation("test", "one")), Services.TAGS.enchantmentTag(new ResourceLocation("test", "two")));
+        testFromTags(testFunctions, "banner_pattern_tag", Serializers.BANNER_PATTERN_TAG, BannerPatternTags.NO_ITEM_REQUIRED, BannerPatternTags.PATTERN_ITEM_GLOBE, BannerPatternTags.PATTERN_ITEM_CREEPER);
+        testFromTags(testFunctions, "enchantment_tag", Serializers.ENCHANTMENT_TAG, Services.TAGS.enchantmentTag(tagOne), Services.TAGS.enchantmentTag(tagTwo));
         testFromTags(testFunctions, "painting_tag", Serializers.MOTIVE_TAG, PaintingVariantTags.PLACEABLE, PaintingVariantTags.PLACEABLE);
-        testFromTags(testFunctions, "potion_tag", Serializers.POTION_TAG, Services.TAGS.potionTag(new ResourceLocation("test", "one")), Services.TAGS.potionTag(new ResourceLocation("test", "two")));
-        testFromTags(testFunctions, "attribute_tag", Serializers.ATTRIBUTE_TAG, Services.TAGS.attributeTag(new ResourceLocation("test", "one")), Services.TAGS.attributeTag(new ResourceLocation("test", "two")));
-        testFromTags(testFunctions, "villager_profession_tag", Serializers.VILLAGER_PROFESSION_TAG, Services.TAGS.villagerProfessionTag(new ResourceLocation("test", "one")), Services.TAGS.villagerProfessionTag(new ResourceLocation("test", "two")));
-        testFromTags(testFunctions, "villager_type_tag", Serializers.VILLAGER_TYPE_TAG, Services.TAGS.villagerTypeTag(new ResourceLocation("test", "one")), Services.TAGS.villagerTypeTag(new ResourceLocation("test", "two")));
-        testFromTags(testFunctions, "sound_event_tag", Serializers.SOUND_EVENT_TAG, Services.TAGS.soundTag(new ResourceLocation("test", "one")), Services.TAGS.soundTag(new ResourceLocation("test", "two")));
-        testFromTags(testFunctions, "menu_tag", Serializers.MENU_TAG, Services.TAGS.menuTag(new ResourceLocation("test", "one")), Services.TAGS.menuTag(new ResourceLocation("test", "two")));
-        testFromTags(testFunctions, "particle_type_tag", Serializers.PARTICLE_TAG, Services.TAGS.particleTag(new ResourceLocation("test", "one")), Services.TAGS.particleTag(new ResourceLocation("test", "two")));
+        testFromTags(testFunctions, "mob_effect_tag", Serializers.MOB_EFFECT_TAG, Services.TAGS.effectTag(tagOne), Services.TAGS.effectTag(tagTwo));
+        testFromTags(testFunctions, "potion_tag", Serializers.POTION_TAG, Services.TAGS.potionTag(tagOne), Services.TAGS.potionTag(tagTwo));
+        testFromTags(testFunctions, "attribute_tag", Serializers.ATTRIBUTE_TAG, Services.TAGS.attributeTag(tagOne), Services.TAGS.attributeTag(tagTwo));
+        testFromTags(testFunctions, "villager_profession_tag", Serializers.VILLAGER_PROFESSION_TAG, Services.TAGS.villagerProfessionTag(tagOne), Services.TAGS.villagerProfessionTag(tagTwo));
+        testFromTags(testFunctions, "villager_type_tag", Serializers.VILLAGER_TYPE_TAG, Services.TAGS.villagerTypeTag(tagOne), Services.TAGS.villagerTypeTag(tagTwo));
+        testFromTags(testFunctions, "sound_event_tag", Serializers.SOUND_EVENT_TAG, Services.TAGS.soundTag(tagOne), Services.TAGS.soundTag(tagTwo));
+        testFromTags(testFunctions, "menu_tag", Serializers.MENU_TAG, Services.TAGS.menuTag(tagOne), Services.TAGS.menuTag(tagTwo));
+        testFromTags(testFunctions, "particle_type_tag", Serializers.PARTICLE_TAG, Services.TAGS.particleTag(tagOne), Services.TAGS.particleTag(tagTwo));
         testFromTags(testFunctions, "entity_type_tag", Serializers.ENTITY_TAG, EntityTypeTags.ARROWS, EntityTypeTags.AXOLOTL_ALWAYS_HOSTILES, EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS);
-        testFromTags(testFunctions, "block_entity_type_tag", Serializers.BLOCK_ENTITY_TAG, Services.TAGS.blockEntityTag(new ResourceLocation("test", "one")), Services.TAGS.blockEntityTag(new ResourceLocation("test", "two")));
+        testFromTags(testFunctions, "block_entity_type_tag", Serializers.BLOCK_ENTITY_TAG, Services.TAGS.blockEntityTag(tagOne), Services.TAGS.blockEntityTag(tagTwo));
         testFromTags(testFunctions, "game_event_tag", Serializers.GAME_EVENT_TAG, GameEventTags.IGNORE_VIBRATIONS_SNEAKING, GameEventTags.VIBRATIONS, GameEventTags.VIBRATIONS);
+        testFromTags(testFunctions, "fluid_tag", Serializers.FLUID_TAG, FluidTags.LAVA, FluidTags.WATER);
+        testFromTags(testFunctions, "stat_tag", Serializers.STAT_TAG, Services.TAGS.statTag(tagOne), Services.TAGS.statTag(tagTwo));
+        testFromTags(testFunctions, "recipe_type_tag", Serializers.RECIPE_TYPE_TAG, Services.TAGS.recipeTypeTag(tagOne), Services.TAGS.recipeTypeTag(tagTwo));
+        testFromTags(testFunctions, "recipe_serializer_tag", Serializers.RECIPE_SERIALIZER_TAG, Services.TAGS.recipeSerializerTag(tagOne), Services.TAGS.recipeSerializerTag(tagTwo));
+        testFromTags(testFunctions, "dimension_type_tag", Serializers.DIMENSION_TYPE_TAG, Services.TAGS.dimensionTypeTag(tagOne), Services.TAGS.dimensionTypeTag(tagTwo));
+        testFromTags(testFunctions, "dimension_tag", Serializers.DIMENSION_TAG, Services.TAGS.dimensionTag(tagOne), Services.TAGS.dimensionTag(tagTwo));
+        testFromTags(testFunctions, "biome_tag", Serializers.BIOME_TAG, Services.TAGS.biomeTag(tagOne), Services.TAGS.biomeTag(tagTwo));
 
         return testFunctions;
     }
