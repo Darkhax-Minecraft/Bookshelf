@@ -2,7 +2,6 @@ package net.darkhax.bookshelf.impl.data.recipes.crafting;
 
 import com.google.gson.JsonObject;
 import net.darkhax.bookshelf.api.Services;
-import net.darkhax.bookshelf.api.data.recipes.IRecipeSerializer;
 import net.darkhax.bookshelf.api.serialization.Serializers;
 import net.darkhax.bookshelf.mixin.item.crafting.AccessorShapedRecipe;
 import net.minecraft.core.NonNullList;
@@ -32,7 +31,7 @@ public final class ShapedDurabilityRecipe extends ShapedRecipe {
     @Override
     public RecipeSerializer<?> getSerializer() {
 
-        return SERIALIZER.getWrapper();
+        return SERIALIZER;
     }
 
     @Override
@@ -42,7 +41,7 @@ public final class ShapedDurabilityRecipe extends ShapedRecipe {
         return Services.INVENTORY_HELPER.keepDamageableItems(inv, keptItems, this.damageAmount);
     }
 
-    public static final class Serializer extends IRecipeSerializer<ShapedDurabilityRecipe> {
+    public static final class Serializer implements RecipeSerializer<ShapedDurabilityRecipe> {
 
         @Override
         public ShapedDurabilityRecipe fromJson(ResourceLocation id, JsonObject json) {

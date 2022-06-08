@@ -1,5 +1,7 @@
 package net.darkhax.bookshelf.api.registry;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
@@ -14,6 +16,8 @@ public interface IRegistryEntries<V> extends Iterable<V> {
     <VT extends V> IRegistryObject<VT> add(Supplier<VT> value, ResourceLocation id);
 
     Map<ResourceLocation, V> getEntries();
+
+    boolean isEmpty();
 
     void addInsertListener(BiConsumer<ResourceLocation, IRegistryObject<? extends V>> listener);
 

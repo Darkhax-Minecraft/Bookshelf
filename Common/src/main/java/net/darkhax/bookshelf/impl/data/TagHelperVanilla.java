@@ -10,7 +10,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.decoration.Motive;
+import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.inventory.MenuType;
@@ -80,8 +80,8 @@ public class TagHelperVanilla implements ITagHelper {
     }
 
     @Override
-    public TagKey<Motive> paintingTag(ResourceLocation tag) {
-        return TagKey.create(Registry.MOTIVE_REGISTRY, tag);
+    public TagKey<PaintingVariant> paintingTag(ResourceLocation tag) {
+        return TagKey.create(Registry.PAINTING_VARIANT_REGISTRY, tag);
     }
 
     @Override

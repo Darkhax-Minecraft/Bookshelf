@@ -9,7 +9,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.darkhax.bookshelf.api.function.CachedSupplier;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class EnumArgument<T extends Enum<T>> implements ArgumentType<T> {
 
-    private static final DynamicCommandExceptionType ERROR_UNKNOWN = new DynamicCommandExceptionType((obj) -> new TranslatableComponent("argument.bookshelf.unknown_value", obj));
+    private static final DynamicCommandExceptionType ERROR_UNKNOWN = new DynamicCommandExceptionType((obj) -> Component.translatable("argument.bookshelf.unknown_value", obj));
 
     private final CachedSupplier<Map<String, T>> values;
 

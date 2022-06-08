@@ -3,49 +3,46 @@ package net.darkhax.bookshelf.impl.registry;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.darkhax.bookshelf.api.Services;
+import net.darkhax.bookshelf.api.registry.CommandArgumentEntry;
 import net.darkhax.bookshelf.api.registry.IGameRegistries;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.IRegistryReader;
 import net.darkhax.bookshelf.api.registry.RegistryDataProvider;
-import net.darkhax.bookshelf.impl.data.recipes.WrappedRecipeSerializer;
 import net.darkhax.bookshelf.impl.util.ForgeEventHelper;
 import net.minecraft.commands.Commands;
-import net.minecraft.commands.synchronization.ArgumentTypes;
+import net.minecraft.commands.synchronization.ArgumentTypeInfo;
+import net.minecraft.commands.synchronization.ArgumentTypeInfos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.stats.StatType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.decoration.Motive;
+import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.event.IModBusEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.RegisterEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +55,7 @@ public class GameRegistriesForge implements IGameRegistries {
     private final IRegistryReader<Block> blockRegistry = new RegistryReaderForge<>(ForgeRegistries.BLOCKS);
     private final IRegistryReader<Item> itemRegistry = new RegistryReaderForge<>(ForgeRegistries.ITEMS);
     private final IRegistryReader<Enchantment> enchantmentRegistry = new RegistryReaderForge<>(ForgeRegistries.ENCHANTMENTS);
-    private final IRegistryReader<Motive> paintingRegistry = new RegistryReaderForge<>(ForgeRegistries.PAINTING_TYPES);
+    private final IRegistryReader<PaintingVariant> paintingRegistry = new RegistryReaderForge<>(ForgeRegistries.PAINTING_VARIANTS);
     private final IRegistryReader<MobEffect> mobEffectRegistry = new RegistryReaderForge<>(ForgeRegistries.MOB_EFFECTS);
     private final IRegistryReader<Potion> potionRegistry = new RegistryReaderForge<>(ForgeRegistries.POTIONS);
     private final IRegistryReader<Attribute> attributeRegistry = new RegistryReaderForge<>(ForgeRegistries.ATTRIBUTES);
@@ -92,7 +89,7 @@ public class GameRegistriesForge implements IGameRegistries {
     }
 
     @Override
-    public IRegistryReader<Motive> paintings() {
+    public IRegistryReader<PaintingVariant> paintings() {
 
         return this.paintingRegistry;
     }
@@ -157,29 +154,26 @@ public class GameRegistriesForge implements IGameRegistries {
     @Override
     public void loadContent(RegistryDataProvider content) {
 
-        this.consumeRegistry(content.blocks, Block.class);
-        this.consumeRegistry(content.fluids, Fluid.class);
-        this.consumeRegistry(content.items, Item.class);
-        this.consumeRegistry(content.mobEffects, MobEffect.class);
-        this.consumeRegistry(content.sounds, SoundEvent.class);
-        this.consumeRegistry(content.potions, Potion.class);
-        this.consumeRegistry(content.enchantments, Enchantment.class);
-        this.consumeRegistry(content.entities, EntityType.class);
-        this.consumeRegistry(content.blockEntities, BlockEntityType.class);
-        this.consumeRegistry(content.particleTypes, ParticleType.class);
-        this.consumeRegistry(content.menus, MenuType.class);
-        this.consumeRegistry(content.recipeSerializers, RecipeSerializer.class, o -> {
-            final RecipeSerializer<?> wrapper = new WrappedRecipeSerializer<>(o);
-            o.setWrapper(wrapper);
-            return wrapper;
-        });
-        this.consumeRegistry(content.paintings, Motive.class);
-        this.consumeRegistry(content.attributes, Attribute.class);
-        this.consumeRegistry(content.stats, StatType.class);
-        this.consumeRegistry(content.villagerProfessions, VillagerProfession.class);
+        this.consumeRegistry(content.blocks, Registry.BLOCK_REGISTRY);
+        this.consumeRegistry(content.fluids, Registry.FLUID_REGISTRY);
+        this.consumeRegistry(content.items, Registry.ITEM_REGISTRY);
+        this.consumeRegistry(content.mobEffects, Registry.MOB_EFFECT_REGISTRY);
+        this.consumeRegistry(content.sounds, Registry.SOUND_EVENT_REGISTRY);
+        this.consumeRegistry(content.potions, Registry.POTION_REGISTRY);
+        this.consumeRegistry(content.enchantments, Registry.ENCHANTMENT_REGISTRY);
+        this.consumeRegistry(content.entities, Registry.ENTITY_TYPE_REGISTRY);
+        this.consumeRegistry(content.blockEntities, Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+        this.consumeRegistry(content.particleTypes, Registry.PARTICLE_TYPE_REGISTRY);
+        this.consumeRegistry(content.menus, Registry.MENU_REGISTRY);
+        this.consumeRegistry(content.recipeSerializers, Registry.RECIPE_SERIALIZER_REGISTRY);
+        this.consumeRegistry(content.paintings, Registry.PAINTING_VARIANT_REGISTRY);
+        this.consumeRegistry(content.attributes, Registry.ATTRIBUTE_REGISTRY);
+        this.consumeRegistry(content.stats, Registry.STAT_TYPE_REGISTRY);
+        this.consumeRegistry(content.villagerProfessions, Registry.VILLAGER_PROFESSION_REGISTRY);
+        this.consumeArgumentTypes(content.commandArguments);
 
-        this.consumeWithModEvent(content.commandArguments, FMLCommonSetupEvent.class, (event, id, arg) -> ArgumentTypes.register(id.toString(), arg.getA(), arg.getB()));
-        this.consumeWithForgeEvent(content.commands, RegisterCommandsEvent.class, (event, id, builder) -> builder.build(event.getDispatcher(), event.getEnvironment() == Commands.CommandSelection.DEDICATED));
+        // TODO Forge does not provide registry access?
+        this.consumeWithForgeEvent(content.commands, RegisterCommandsEvent.class, (event, id, builder) -> builder.build(event.getDispatcher(), null, event.getEnvironment()));
 
         ForgeEventHelper.addContextListener(VillagerTradesEvent.class, content.trades.getVillagerTrades(), this::registerVillagerTrades);
         ForgeEventHelper.addContextListener(WandererTradesEvent.class, content.trades.getCommonWanderingTrades(), content.trades.getRareWanderingTrades(), this::registerWanderingTrades);
@@ -234,29 +228,53 @@ public class GameRegistriesForge implements IGameRegistries {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.NORMAL, false, eventType, listener);
     }
 
-    private <T extends IForgeRegistryEntry<T>> void consumeRegistry(IRegistryEntries<? extends T> registry, Class clazz) {
+    private <T> void consumeRegistry(IRegistryEntries<T> registry, ResourceKey<? extends Registry<T>> registryKey) {
 
-        this.consumeRegistry(registry, clazz, v -> v);
+        this.consumeRegistry(registry, registryKey, v -> v);
     }
 
-    private <T extends IForgeRegistryEntry<T>, O> void consumeRegistry(IRegistryEntries<O> registry, Class clazz, Function<O, ? extends T> wrapper) {
+    private <T> void consumeRegistry(IRegistryEntries<T> registry, ResourceKey<? extends Registry<T>> registryKey, Function<T, ? extends T> wrapper) {
 
-        final Consumer<RegistryEvent.Register<T>> listener = event -> {
+        if (registry.isEmpty()) {
 
-            registry.build((id, value) -> {
+            return;
+        }
 
-                T toRegister = wrapper.apply(value);
+        final Consumer<RegisterEvent> listener = event -> {
 
-                if (toRegister.getRegistryName() == null) {
+            if (event.getRegistryKey().equals(registryKey)) {
 
-                    toRegister.setRegistryName(id);
-                }
-
-                event.getRegistry().register(toRegister);
-            });
+                registry.build((id, value) -> event.register(registryKey, id, () -> wrapper.apply(value)));
+            }
         };
 
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(clazz, listener);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.NORMAL, false, RegisterEvent.class, listener);
+    }
+
+    private void consumeArgumentTypes(IRegistryEntries<CommandArgumentEntry<?,?,?>> registry) {
+
+        if (registry.isEmpty()) {
+
+            return;
+        }
+
+        final Consumer<RegisterEvent> listener = event -> {
+
+            if (event.getRegistryKey().equals(Registry.COMMAND_ARGUMENT_TYPE_REGISTRY)) {
+
+                registry.build((id, value) -> {
+
+                    event.register(Registry.COMMAND_ARGUMENT_TYPE_REGISTRY,id, () -> {
+
+                        final ArgumentTypeInfo serializer = value.getSerializer().get();
+                        ArgumentTypeInfos.registerByClass((Class) value.getType(), serializer);
+                        return serializer;
+                    });
+                });
+            }
+        };
+
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.NORMAL, false, RegisterEvent.class, listener);
     }
 
     interface EventConsumer<E extends Event, V> {

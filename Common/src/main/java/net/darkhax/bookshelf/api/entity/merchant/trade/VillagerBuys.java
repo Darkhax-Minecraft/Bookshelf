@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.api.entity.merchant.trade;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
@@ -7,7 +8,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.ItemLike;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
 public class VillagerBuys implements VillagerTrades.ItemListing {
@@ -27,7 +27,7 @@ public class VillagerBuys implements VillagerTrades.ItemListing {
         this.priceMultiplier = priceMultiplier;
     }
 
-    public MerchantOffer getOffer(Entity entity, Random random) {
+    public MerchantOffer getOffer(Entity entity, RandomSource random) {
 
         return new MerchantOffer(this.stackToSell.get(), new ItemStack(Items.EMERALD, this.emeraldCost), this.maxUses, this.villagerXp, this.priceMultiplier);
     }

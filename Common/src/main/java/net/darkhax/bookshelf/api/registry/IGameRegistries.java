@@ -5,7 +5,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.decoration.Motive;
+import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.inventory.MenuType;
@@ -24,7 +24,7 @@ public interface IGameRegistries extends IContentLoader {
 
     IRegistryReader<Enchantment> enchantments();
 
-    IRegistryReader<Motive> paintings();
+    IRegistryReader<PaintingVariant> paintings();
 
     IRegistryReader<MobEffect> mobEffects();
 

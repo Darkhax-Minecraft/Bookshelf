@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.darkhax.bookshelf.api.Services;
-import net.darkhax.bookshelf.api.data.recipes.IRecipeSerializer;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -39,10 +38,10 @@ public class ShapelessDurabilityRecipe extends ShapelessRecipe {
     @Override
     public RecipeSerializer<?> getSerializer() {
 
-        return SERIALIZER.getWrapper();
+        return SERIALIZER;
     }
 
-    public static class Serializer extends IRecipeSerializer<ShapelessDurabilityRecipe> {
+    public static class Serializer implements RecipeSerializer<ShapelessDurabilityRecipe> {
 
         @Override
         public ShapelessDurabilityRecipe fromJson(ResourceLocation recipeId, JsonObject json) {

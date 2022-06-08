@@ -10,8 +10,6 @@ import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.Entity;
@@ -31,11 +29,11 @@ public final class TextHelper {
 
     public static MutableComponent getFormatedTime(int ticks, boolean includeHover) {
 
-        MutableComponent component = new TextComponent(StringUtil.formatTickDuration(ticks));
+        MutableComponent component = Component.literal(StringUtil.formatTickDuration(ticks));
 
         if (includeHover) {
 
-            component = setHover(component, new TranslatableComponent("text.bookshelf.ticks", ticks));
+            component = setHover(component, Component.translatable("text.bookshelf.ticks", ticks));
         }
 
         return component;
@@ -106,11 +104,11 @@ public final class TextHelper {
 
 
     @Nullable
-    public static TranslatableComponent lookupTranslationWithAlias(ResourceLocation id, String... keys) {
+    public static MutableComponent lookupTranslationWithAlias(ResourceLocation id, String... keys) {
 
         for (String key : keys) {
 
-            final TranslatableComponent lookupResult = lookupTranslation(key.formatted(id.getNamespace(), id.getPath()));
+            final MutableComponent lookupResult = lookupTranslation(key.formatted(id.getNamespace(), id.getPath()));
 
             if (lookupResult != null) {
 
@@ -122,11 +120,11 @@ public final class TextHelper {
     }
 
     @Nullable
-    public static TranslatableComponent lookupTranslationWithAlias(String[] keys, Object... params) {
+    public static MutableComponent lookupTranslationWithAlias(String[] keys, Object... params) {
 
         for (String key : keys) {
 
-            final TranslatableComponent lookupResult = lookupTranslation(key, params);
+            final MutableComponent lookupResult = lookupTranslation(key, params);
 
             if (lookupResult != null) {
 
@@ -138,23 +136,23 @@ public final class TextHelper {
     }
 
     @Nullable
-    public static TranslatableComponent lookupTranslation(String key, Object... args) {
+    public static MutableComponent lookupTranslation(String key, Object... args) {
 
         return lookupTranslation(key, (s, o) -> null, args);
     }
 
     @Nullable
-    public static TranslatableComponent lookupTranslation(String key, TranslatableComponent fallback, Object... args) {
+    public static MutableComponent lookupTranslation(String key, MutableComponent fallback, Object... args) {
 
         return lookupTranslation(key, (s, o) -> fallback, args);
     }
 
     @Nullable
-    public static TranslatableComponent lookupTranslation(String key, BiFunction<String, Object[], TranslatableComponent> fallback, Object... args) {
+    public static MutableComponent lookupTranslation(String key, BiFunction<String, Object[], MutableComponent> fallback, Object... args) {
 
         if (I18n.exists(key)) {
 
-            return new TranslatableComponent(key, args);
+            return Component.translatable(key, args);
         }
 
         return fallback != null ? fallback.apply(key, args) : null;
@@ -167,6 +165,6 @@ public final class TextHelper {
 
     public static MutableComponent textWithCopy(String text) {
 
-        return new TextComponent(text).withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text)));
+        return Component.literal(text).withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text)));
     }
 }

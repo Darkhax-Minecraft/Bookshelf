@@ -1,7 +1,6 @@
 package net.darkhax.bookshelf.api.damagesource;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,7 +27,7 @@ public class FakePlayerDamageSource extends DamageSource {
     @Override
     public Component getLocalizedDeathMessage(LivingEntity deadMob) {
 
-        return new TranslatableComponent("death.attack." + this.sourceId.getNamespace() + "." + this.sourceId.getPath(), deadMob.getDisplayName());
+        return Component.translatable("death.attack." + this.sourceId.getNamespace() + "." + this.sourceId.getPath(), deadMob.getDisplayName());
     }
 
     /**

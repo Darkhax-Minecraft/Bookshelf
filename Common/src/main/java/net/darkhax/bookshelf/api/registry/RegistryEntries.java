@@ -79,6 +79,12 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
     }
 
     @Override
+    public boolean isEmpty() {
+
+        return this.rawValues.isEmpty();
+    }
+
+    @Override
     public void addInsertListener(BiConsumer<ResourceLocation, IRegistryObject<? extends V>> listener) {
 
         if (this.built) {

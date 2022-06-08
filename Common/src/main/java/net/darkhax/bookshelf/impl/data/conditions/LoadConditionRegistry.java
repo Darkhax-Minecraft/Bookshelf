@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.decoration.Motive;
+import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -29,7 +29,7 @@ public class LoadConditionRegistry<T> implements ILoadConditionSerializer<ILoadC
     public static final LoadConditionRegistry<Block> BLOCK = new LoadConditionRegistry<>(Services.REGISTRIES.blocks());
     public static final LoadConditionRegistry<Item> ITEM = new LoadConditionRegistry<>(Services.REGISTRIES.items());
     public static final LoadConditionRegistry<Enchantment> ENCHANTMENT = new LoadConditionRegistry<>(Services.REGISTRIES.enchantments());
-    public static final LoadConditionRegistry<Motive> PAINTING = new LoadConditionRegistry<>(Services.REGISTRIES.paintings());
+    public static final LoadConditionRegistry<PaintingVariant> PAINTING = new LoadConditionRegistry<>(Services.REGISTRIES.paintings());
     public static final LoadConditionRegistry<MobEffect> MOB_EFFECT = new LoadConditionRegistry<>(Services.REGISTRIES.mobEffects());
     public static final LoadConditionRegistry<Potion> POTION = new LoadConditionRegistry<>(Services.REGISTRIES.potions());
     public static final LoadConditionRegistry<Attribute> ATTRIBUTE = new LoadConditionRegistry<>(Services.REGISTRIES.attributes());

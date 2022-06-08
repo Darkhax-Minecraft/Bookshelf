@@ -9,7 +9,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.decoration.Motive;
+import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.inventory.MenuType;
@@ -48,7 +48,7 @@ public interface ITagHelper {
 
     TagKey<BlockEntityType<?>> blockEntityTag(ResourceLocation tag);
 
-    TagKey<Motive> paintingTag(ResourceLocation tag);
+    TagKey<PaintingVariant> paintingTag(ResourceLocation tag);
 
     TagKey<ResourceLocation> statTag(ResourceLocation tag);
 

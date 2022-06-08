@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[40,)"
+loaderVersion = "[41,)"
 license = "${mod_license}"
 issueTrackerURL = "${mod_issues}"
 logoFile = "logo.png"

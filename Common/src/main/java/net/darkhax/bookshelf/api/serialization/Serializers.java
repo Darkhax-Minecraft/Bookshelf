@@ -13,7 +13,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.decoration.Motive;
+import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.inventory.MenuType;
@@ -65,7 +65,7 @@ public final class Serializers {
     public static final ISerializer<Block> BLOCK = new SerializerRegistryEntry<>(Services.REGISTRIES.blocks());
     public static final ISerializer<Item> ITEM = new SerializerRegistryEntry<>(Services.REGISTRIES.items());
     public static final ISerializer<Enchantment> ENCHANTMENT = new SerializerRegistryEntry<>(Services.REGISTRIES.enchantments());
-    public static final ISerializer<Motive> MOTIVE = new SerializerRegistryEntry<>(Services.REGISTRIES.paintings());
+    public static final ISerializer<PaintingVariant> PAINTING = new SerializerRegistryEntry<>(Services.REGISTRIES.paintings());
     public static final ISerializer<MobEffect> MOB_EFFECT = new SerializerRegistryEntry<>(Services.REGISTRIES.mobEffects());
     public static final ISerializer<Potion> POTION = new SerializerRegistryEntry<>(Services.REGISTRIES.potions());
     public static final ISerializer<Attribute> ATTRIBUTE = new SerializerRegistryEntry<>(Services.REGISTRIES.attributes());
@@ -82,7 +82,7 @@ public final class Serializers {
     public static final ISerializer<TagKey<Block>> BLOCK_TAG = new SerializerTagKey<>(Services.TAGS::blockTag);
     public static final ISerializer<TagKey<Item>> ITEM_TAG = new SerializerTagKey<>(Services.TAGS::itemTag);
     public static final ISerializer<TagKey<Enchantment>> ENCHANTMENT_TAG = new SerializerTagKey<>(Services.TAGS::enchantmentTag);
-    public static final ISerializer<TagKey<Motive>> MOTIVE_TAG = new SerializerTagKey<>(Services.TAGS::paintingTag);
+    public static final ISerializer<TagKey<PaintingVariant>> MOTIVE_TAG = new SerializerTagKey<>(Services.TAGS::paintingTag);
     public static final ISerializer<TagKey<MobEffect>> MOB_EFFECT_TAG = new SerializerTagKey<>(Services.TAGS::effectTag);
     public static final ISerializer<TagKey<Potion>> POTION_TAG = new SerializerTagKey<>(Services.TAGS::potionTag);
     public static final ISerializer<TagKey<Attribute>> ATTRIBUTE_TAG = new SerializerTagKey<>(Services.TAGS::attributeTag);

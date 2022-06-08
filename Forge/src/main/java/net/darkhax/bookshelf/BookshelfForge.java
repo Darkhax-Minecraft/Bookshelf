@@ -5,9 +5,11 @@ import net.darkhax.bookshelf.impl.BookshelfCommon;
 import net.darkhax.bookshelf.impl.capabilities.SingletonCapabilityProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod(Constants.MOD_ID)
 public class BookshelfForge {

@@ -10,6 +10,7 @@ import net.darkhax.bookshelf.mixin.inventory.AccessorInventoryMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.WorldlyContainerHolder;
@@ -94,6 +95,8 @@ public interface IInventoryHelper {
         // Only items with durability can be damaged. Items with an Unbreakable tag override damage.
         if (stack.isDamageableItem()) {
 
+            final RandomSource random = owner != null ? owner.getRandom() : Constants.RANDOM_SOURCE;
+
             // If an owner is present, use the entity aware version.
             if (owner != null) {
 
@@ -106,7 +109,7 @@ public interface IInventoryHelper {
             }
 
             // Try to damage the stack directly.
-            else if (stack.hurt(amount, Constants.RANDOM, null)) {
+            else if (stack.hurt(amount, random, null)) {
 
                 // Destroy the ItemStack when it has no more durability.
                 stack.shrink(1);
@@ -120,7 +123,7 @@ public interface IInventoryHelper {
     default NonNullList<ItemStack> keepDamageableItems(CraftingContainer inv, NonNullList<ItemStack> keptItems, int damageAmount) {
 
         @Nullable final Player player = this.getCraftingPlayer(inv);
-        final Random random = player != null ? player.getRandom() : Constants.RANDOM;
+        final RandomSource random = player != null ? player.getRandom() : Constants.RANDOM_SOURCE;
 
         for (int i = 0; i < keptItems.size(); i++) {
 

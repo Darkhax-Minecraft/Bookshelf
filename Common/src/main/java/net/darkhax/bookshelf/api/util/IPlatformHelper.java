@@ -1,8 +1,8 @@
 package net.darkhax.bookshelf.api.util;
 
 import net.darkhax.bookshelf.api.PhysicalSide;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -102,7 +102,7 @@ public interface IPlatformHelper {
     default MutableComponent getModNameComponent(String modId) {
 
         final String modName = getModName(modId);
-        return modName != null ? new TextComponent(modName) : null;
+        return modName != null ? Component.literal(modName) : null;
     }
 
     /**

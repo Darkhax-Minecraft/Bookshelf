@@ -6,17 +6,16 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.RegistryDataProvider;
-import net.darkhax.bookshelf.impl.data.recipes.WrappedRecipeSerializer;
 import net.darkhax.bookshelf.impl.resources.WrappedReloadListener;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.minecraft.commands.synchronization.ArgumentTypes;
+import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,23 +40,14 @@ public class GameRegistriesFabric extends GameRegistriesVanilla {
         this.consumeVanillaRegistry(content.blockEntities, Registry.BLOCK_ENTITY_TYPE);
         this.consumeVanillaRegistry(content.particleTypes, Registry.PARTICLE_TYPE);
         this.consumeVanillaRegistry(content.menus, Registry.MENU);
-        this.consumeVanillaRegistry(content.recipeSerializers, Registry.RECIPE_SERIALIZER, e -> {
-
-            final RecipeSerializer<?> wrapper = new WrappedRecipeSerializer<>(e);
-            e.setWrapper(wrapper);
-            return wrapper;
-        });
-        this.consumeVanillaRegistry(content.paintings, Registry.MOTIVE);
+        this.consumeVanillaRegistry(content.recipeSerializers, Registry.RECIPE_SERIALIZER);
+        this.consumeVanillaRegistry(content.paintings, Registry.PAINTING_VARIANT);
         this.consumeVanillaRegistry(content.attributes, Registry.ATTRIBUTE);
         this.consumeVanillaRegistry(content.stats, Registry.STAT_TYPE);
         this.consumeVanillaRegistry(content.villagerProfessions, Registry.VILLAGER_PROFESSION);
+        this.consumeRegistry(content.commandArguments, (id, value) -> ArgumentTypeRegistry.registerArgumentType(id, (Class) value.getType(), (ArgumentTypeInfo) value.getSerializer().get()));
 
-        this.consumeRegistry(content.commandArguments, (id, value) -> ArgumentTypes.register(id.toString(), value.getA(), value.getB()));
-
-        CommandRegistrationCallback.EVENT.register((dispatcher, isDedicated) -> {
-
-            content.commands.build((id, value) -> value.build(dispatcher, isDedicated));
-        });
+        CommandRegistrationCallback.EVENT.register((dispatcher, access, environment) -> content.commands.build((id, value) -> value.build(dispatcher, access, environment)));
 
         this.registerTradeData(content.trades.getVillagerTrades());
         this.registerWanderingTrades(content.trades.getCommonWanderingTrades(), content.trades.getRareWanderingTrades());

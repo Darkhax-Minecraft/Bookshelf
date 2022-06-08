@@ -12,10 +12,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 
 import java.util.Optional;
 
-/**
- * This is a serializer that does several things and stuff. This is just a test to seee how the line wrapping will work.
- * I don't really know what to write here but okay this is probably enought lol.
- */
 public class SerializerEffectInstance implements ISerializer<MobEffectInstance> {
 
     @Override
@@ -31,7 +27,8 @@ public class SerializerEffectInstance implements ISerializer<MobEffectInstance> 
             final boolean showIcon = Serializers.BOOLEAN.fromJSON(obj, "showIcon", true);
             final MobEffectInstance hiddenEffect = Serializers.EFFECT_INSTANCE.fromJSON(obj, "hiddenEffect", (MobEffectInstance) null);
 
-            return new MobEffectInstance(effect, duration, amplifier, ambient, visible, showIcon, hiddenEffect);
+            // TODO Add serializer support for FactorData.
+            return new MobEffectInstance(effect, duration, amplifier, ambient, visible, showIcon, hiddenEffect, effect.createFactorData());
         }
 
         throw new JsonParseException("Expected JSON object.");
@@ -77,7 +74,9 @@ public class SerializerEffectInstance implements ISerializer<MobEffectInstance> 
         final boolean visible = Serializers.BOOLEAN.fromByteBuf(buffer);
         final boolean showIcon = Serializers.BOOLEAN.fromByteBuf(buffer);
         final MobEffectInstance hiddenEffect = Serializers.EFFECT_INSTANCE.fromByteBufOptional(buffer).orElse(null);
-        return new MobEffectInstance(effect, duration, amplifier, ambient, visible, showIcon, hiddenEffect);
+
+        // TODO add factor data support.
+        return new MobEffectInstance(effect, duration, amplifier, ambient, visible, showIcon, hiddenEffect, effect.createFactorData());
     }
 
     @Override
@@ -134,6 +133,7 @@ public class SerializerEffectInstance implements ISerializer<MobEffectInstance> 
         final boolean showIcon = Serializers.BOOLEAN.fromNBT(tag, "showIcon", true);
         final MobEffectInstance hiddenEffect = Serializers.EFFECT_INSTANCE.fromNBT(tag, "hiddenEffect", null);
 
-        return new MobEffectInstance(effect, duration, amplifier, ambient, visible, showIcon, hiddenEffect);
+        // TODO add factor data.
+        return new MobEffectInstance(effect, duration, amplifier, ambient, visible, showIcon, hiddenEffect, effect.createFactorData());
     }
 }

@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.impl.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandExceptionType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.darkhax.bookshelf.api.util.TextHelper;
 import net.darkhax.bookshelf.impl.commands.args.FontArgument;
@@ -18,8 +19,8 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.commands.SayCommand;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -45,22 +46,12 @@ public class CommandFont {
 
     private static int speakWithFont(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
 
+        //TODO Consider adding a message decorator or chat type and use signed chat?
         final ResourceLocation fontId = FontArgument.getFont(context);
         final Component inputMessage = TextHelper.applyFont(MessageArgument.getMessage(context, "message"), fontId);
-        final Component txtMessage = new TranslatableComponent("chat.type.announcement", context.getSource().getDisplayName(), inputMessage);
-        final Entity sender = context.getSource().getEntity();
-
-        if (sender != null) {
-
-            context.getSource().getServer().getPlayerList().broadcastMessage(txtMessage, ChatType.CHAT, sender.getUUID());
-        }
-
-        else {
-
-            context.getSource().getServer().getPlayerList().broadcastMessage(txtMessage, ChatType.SYSTEM, Util.NIL_UUID);
-        }
-
-        return 1;
+        final Component txtMessage = Component.translatable("chat.type.announcement", context.getSource().getDisplayName(), inputMessage);
+        context.getSource().getServer().getPlayerList().broadcastSystemMessage(txtMessage, ChatType.SYSTEM);
+        return 0;
     }
 
     private static int renameItemWithFont(CommandContext<CommandSourceStack> context) {

@@ -8,7 +8,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.decoration.Motive;
+import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.inventory.MenuType;
@@ -24,7 +24,7 @@ public abstract class GameRegistriesVanilla implements IGameRegistries {
     private final IRegistryReader<Block> blockRegistry = new RegistryReaderVanilla<>(Registry.BLOCK);
     private final IRegistryReader<Item> itemRegistry = new RegistryReaderVanilla<>(Registry.ITEM);
     private final IRegistryReader<Enchantment> enchantmentRegistry = new RegistryReaderVanilla<>(Registry.ENCHANTMENT);
-    private final IRegistryReader<Motive> paintingRegistry = new RegistryReaderVanilla<>(Registry.MOTIVE);
+    private final IRegistryReader<PaintingVariant> paintingRegistry = new RegistryReaderVanilla<>(Registry.PAINTING_VARIANT);
     private final IRegistryReader<MobEffect> mobEffectRegistry = new RegistryReaderVanilla<>(Registry.MOB_EFFECT);
     private final IRegistryReader<Potion> potionRegistry = new RegistryReaderVanilla<>(Registry.POTION);
     private final IRegistryReader<Attribute> attributeRegistry = new RegistryReaderVanilla<>(Registry.ATTRIBUTE);
@@ -56,7 +56,7 @@ public abstract class GameRegistriesVanilla implements IGameRegistries {
     }
 
     @Override
-    public IRegistryReader<Motive> paintings() {
+    public IRegistryReader<PaintingVariant> paintings() {
 
         return this.paintingRegistry;
     }
