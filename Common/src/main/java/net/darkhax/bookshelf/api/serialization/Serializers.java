@@ -22,13 +22,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.Fluid;
 
 import java.util.UUID;
 
@@ -97,4 +103,11 @@ public final class Serializers {
     public static final ISerializer<TagKey<EntityType<?>>> ENTITY_TAG = new SerializerTagKey<>(Services.TAGS::entityTag);
     public static final ISerializer<TagKey<BlockEntityType<?>>> BLOCK_ENTITY_TAG = new SerializerTagKey<>(Services.TAGS::blockEntityTag);
     public static final ISerializer<TagKey<GameEvent>> GAME_EVENT_TAG = new SerializerTagKey<>(Services.TAGS::gameEventTag);
+    public static final ISerializer<TagKey<Fluid>> FLUID_TAG = new SerializerTagKey<>(Services.TAGS::fluidTag);
+    public static final ISerializer<TagKey<ResourceLocation>> STAT_TAG = new SerializerTagKey<>(Services.TAGS::statTag);
+    public static final ISerializer<TagKey<RecipeType<?>>> RECIPE_TYPE_TAG = new SerializerTagKey<>(Services.TAGS::recipeTypeTag);
+    public static final ISerializer<TagKey<RecipeSerializer<?>>> RECIPE_SERIALIZER_TAG = new SerializerTagKey<>(Services.TAGS::recipeSerializerTag);
+    public static final ISerializer<TagKey<DimensionType>> DIMENSION_TYPE_TAG = new SerializerTagKey<>(Services.TAGS::dimensionTypeTag);
+    public static final ISerializer<TagKey<Level>> DIMENSION_TAG = new SerializerTagKey<>(Services.TAGS::dimensionTag);
+    public static final ISerializer<TagKey<Biome>> BIOME_TAG = new SerializerTagKey<>(Services.TAGS::biomeTag);
 }
