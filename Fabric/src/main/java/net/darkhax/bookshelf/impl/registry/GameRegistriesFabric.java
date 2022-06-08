@@ -32,6 +32,7 @@ public class GameRegistriesFabric extends GameRegistriesVanilla {
         this.consumeVanillaRegistry(content.blocks, Registry.BLOCK);
         this.consumeVanillaRegistry(content.fluids, Registry.FLUID);
         this.consumeVanillaRegistry(content.items, Registry.ITEM);
+        this.consumeVanillaRegistry(content.bannerPatterns, Registry.BANNER_PATTERN);
         this.consumeVanillaRegistry(content.mobEffects, Registry.MOB_EFFECT);
         this.consumeVanillaRegistry(content.sounds, Registry.SOUND_EVENT);
         this.consumeVanillaRegistry(content.potions, Registry.POTION);

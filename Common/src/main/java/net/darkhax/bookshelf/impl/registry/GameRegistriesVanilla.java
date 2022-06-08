@@ -16,6 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.gameevent.GameEvent;
 
@@ -23,6 +24,7 @@ public abstract class GameRegistriesVanilla implements IGameRegistries {
 
     private final IRegistryReader<Block> blockRegistry = new RegistryReaderVanilla<>(Registry.BLOCK);
     private final IRegistryReader<Item> itemRegistry = new RegistryReaderVanilla<>(Registry.ITEM);
+    private final IRegistryReader<BannerPattern> bannerPatternRegistry = new RegistryReaderVanilla<>(Registry.BANNER_PATTERN);
     private final IRegistryReader<Enchantment> enchantmentRegistry = new RegistryReaderVanilla<>(Registry.ENCHANTMENT);
     private final IRegistryReader<PaintingVariant> paintingRegistry = new RegistryReaderVanilla<>(Registry.PAINTING_VARIANT);
     private final IRegistryReader<MobEffect> mobEffectRegistry = new RegistryReaderVanilla<>(Registry.MOB_EFFECT);
@@ -47,6 +49,12 @@ public abstract class GameRegistriesVanilla implements IGameRegistries {
     public IRegistryReader<Item> items() {
 
         return this.itemRegistry;
+    }
+
+    @Override
+    public IRegistryReader<BannerPattern> bannerPatterns() {
+
+        return this.bannerPatternRegistry;
     }
 
     @Override

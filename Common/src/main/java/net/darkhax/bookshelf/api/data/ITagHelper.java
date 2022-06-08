@@ -21,6 +21,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -41,6 +42,8 @@ public interface ITagHelper {
     TagKey<EntityType<?>> entityTag(ResourceLocation tag);
 
     TagKey<Item> itemTag(ResourceLocation tag);
+
+    TagKey<BannerPattern> bannerPatternTag(ResourceLocation tag);
 
     TagKey<Potion> potionTag(ResourceLocation tag);
 

@@ -26,6 +26,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 
@@ -38,6 +39,7 @@ public class RegistryDataProvider {
     public final IOwnedRegistryEntries<Block> blocks = new RegistryEntries<>(this::getOwner, Registry.BLOCK_REGISTRY);
     public final IOwnedRegistryEntries<Fluid> fluids = new RegistryEntries<>(this::getOwner, Registry.FLUID_REGISTRY);
     public final IOwnedRegistryEntries<Item> items = new RegistryEntries<>(this::getOwner, Registry.ITEM_REGISTRY);
+    public final IOwnedRegistryEntries<BannerPattern> bannerPatterns = new RegistryEntries<>(this::getOwner, Registry.BANNER_PATTERN_REGISTRY);
     public final IOwnedRegistryEntries<MobEffect> mobEffects = new RegistryEntries<>(this::getOwner, Registry.MOB_EFFECT_REGISTRY);
     public final IOwnedRegistryEntries<SoundEvent> sounds = new RegistryEntries<>(this::getOwner, Registry.SOUND_EVENT_REGISTRY);
     public final IOwnedRegistryEntries<Potion> potions = new RegistryEntries<>(this::getOwner, Registry.POTION_REGISTRY);

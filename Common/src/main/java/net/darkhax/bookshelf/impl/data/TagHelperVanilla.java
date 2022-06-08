@@ -22,6 +22,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -62,6 +63,11 @@ public class TagHelperVanilla implements ITagHelper {
     @Override
     public TagKey<Item> itemTag(ResourceLocation tag) {
         return TagKey.create(Registry.ITEM_REGISTRY, tag);
+    }
+
+    @Override
+    public TagKey<BannerPattern> bannerPatternTag(ResourceLocation tag) {
+        return TagKey.create(Registry.BANNER_PATTERN_REGISTRY, tag);
     }
 
     @Override

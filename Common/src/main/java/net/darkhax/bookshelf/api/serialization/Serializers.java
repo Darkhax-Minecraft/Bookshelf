@@ -25,6 +25,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -64,6 +65,7 @@ public final class Serializers {
     // REGISTRY TYPES
     public static final ISerializer<Block> BLOCK = new SerializerRegistryEntry<>(Services.REGISTRIES.blocks());
     public static final ISerializer<Item> ITEM = new SerializerRegistryEntry<>(Services.REGISTRIES.items());
+    public static final ISerializer<BannerPattern> BANNER_PATTERN = new SerializerRegistryEntry<>(Services.REGISTRIES.bannerPatterns());
     public static final ISerializer<Enchantment> ENCHANTMENT = new SerializerRegistryEntry<>(Services.REGISTRIES.enchantments());
     public static final ISerializer<PaintingVariant> PAINTING = new SerializerRegistryEntry<>(Services.REGISTRIES.paintings());
     public static final ISerializer<MobEffect> MOB_EFFECT = new SerializerRegistryEntry<>(Services.REGISTRIES.mobEffects());
@@ -81,6 +83,7 @@ public final class Serializers {
     // Tag Types
     public static final ISerializer<TagKey<Block>> BLOCK_TAG = new SerializerTagKey<>(Services.TAGS::blockTag);
     public static final ISerializer<TagKey<Item>> ITEM_TAG = new SerializerTagKey<>(Services.TAGS::itemTag);
+    public static final ISerializer<TagKey<BannerPattern>> BANNER_PATTERN_TAG = new SerializerTagKey<>(Services.TAGS::bannerPatternTag);
     public static final ISerializer<TagKey<Enchantment>> ENCHANTMENT_TAG = new SerializerTagKey<>(Services.TAGS::enchantmentTag);
     public static final ISerializer<TagKey<PaintingVariant>> MOTIVE_TAG = new SerializerTagKey<>(Services.TAGS::paintingTag);
     public static final ISerializer<TagKey<MobEffect>> MOB_EFFECT_TAG = new SerializerTagKey<>(Services.TAGS::effectTag);

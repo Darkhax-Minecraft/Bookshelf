@@ -29,6 +29,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -54,6 +55,7 @@ public class GameRegistriesForge implements IGameRegistries {
 
     private final IRegistryReader<Block> blockRegistry = new RegistryReaderForge<>(ForgeRegistries.BLOCKS);
     private final IRegistryReader<Item> itemRegistry = new RegistryReaderForge<>(ForgeRegistries.ITEMS);
+    private final IRegistryReader<BannerPattern> bannerPatternRegistry = new RegistryReaderVanilla<>(Registry.BANNER_PATTERN);
     private final IRegistryReader<Enchantment> enchantmentRegistry = new RegistryReaderForge<>(ForgeRegistries.ENCHANTMENTS);
     private final IRegistryReader<PaintingVariant> paintingRegistry = new RegistryReaderForge<>(ForgeRegistries.PAINTING_VARIANTS);
     private final IRegistryReader<MobEffect> mobEffectRegistry = new RegistryReaderForge<>(ForgeRegistries.MOB_EFFECTS);
@@ -80,6 +82,12 @@ public class GameRegistriesForge implements IGameRegistries {
     public IRegistryReader<Item> items() {
 
         return this.itemRegistry;
+    }
+
+    @Override
+    public IRegistryReader<BannerPattern> bannerPatterns() {
+
+        return this.bannerPatternRegistry;
     }
 
     @Override
@@ -157,6 +165,7 @@ public class GameRegistriesForge implements IGameRegistries {
         this.consumeRegistry(content.blocks, Registry.BLOCK_REGISTRY);
         this.consumeRegistry(content.fluids, Registry.FLUID_REGISTRY);
         this.consumeRegistry(content.items, Registry.ITEM_REGISTRY);
+        this.consumeRegistry(content.bannerPatterns, Registry.BANNER_PATTERN_REGISTRY);
         this.consumeRegistry(content.mobEffects, Registry.MOB_EFFECT_REGISTRY);
         this.consumeRegistry(content.sounds, Registry.SOUND_EVENT_REGISTRY);
         this.consumeRegistry(content.potions, Registry.POTION_REGISTRY);
