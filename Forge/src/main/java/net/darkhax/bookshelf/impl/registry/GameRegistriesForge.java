@@ -180,9 +180,7 @@ public class GameRegistriesForge implements IGameRegistries {
         this.consumeRegistry(content.stats, Registry.STAT_TYPE_REGISTRY);
         this.consumeRegistry(content.villagerProfessions, Registry.VILLAGER_PROFESSION_REGISTRY);
         this.consumeArgumentTypes(content.commandArguments);
-
-        // TODO Forge does not provide registry access?
-        this.consumeWithForgeEvent(content.commands, RegisterCommandsEvent.class, (event, id, builder) -> builder.build(event.getDispatcher(), null, event.getEnvironment()));
+        this.consumeWithForgeEvent(content.commands, RegisterCommandsEvent.class, (event, id, builder) -> builder.build(event.getDispatcher(), event.getBuildContext(), event.getEnvironment()));
 
         ForgeEventHelper.addContextListener(VillagerTradesEvent.class, content.trades.getVillagerTrades(), this::registerVillagerTrades);
         ForgeEventHelper.addContextListener(WandererTradesEvent.class, content.trades.getCommonWanderingTrades(), content.trades.getRareWanderingTrades(), this::registerWanderingTrades);
