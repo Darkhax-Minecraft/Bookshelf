@@ -5,8 +5,8 @@ import net.darkhax.bookshelf.api.util.IPlatformHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.impl.gametest.FabricGameTestHelper;
 import net.fabricmc.loader.api.FabricLoader;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.nio.file.Path;
 
 public class PlatformHelperFabric implements IPlatformHelper {

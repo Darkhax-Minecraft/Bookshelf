@@ -8,8 +8,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class SingletonCapabilityProvider<T> implements ICapabilityProvider {
 
@@ -22,9 +22,8 @@ public class SingletonCapabilityProvider<T> implements ICapabilityProvider {
         this.value = LazyOptional.of(() -> value);
     }
 
-    @NotNull
     @Override
-    public <R> LazyOptional<R> getCapability(@NotNull Capability<R> requested, @Nullable Direction side) {
+    public <R> LazyOptional<R> getCapability(Capability<R> requested, @Nullable Direction side) {
 
         return this.provided.orEmpty(requested, value);
     }

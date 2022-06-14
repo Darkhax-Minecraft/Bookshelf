@@ -7,8 +7,8 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.gametest.ForgeGameTestHooks;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.nio.file.Path;
 
 public class PlatformHelperForge implements IPlatformHelper {
