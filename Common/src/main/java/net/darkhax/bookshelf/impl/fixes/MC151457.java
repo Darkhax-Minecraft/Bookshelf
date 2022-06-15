@@ -21,6 +21,7 @@ public final class MC151457 {
         setCraftingRemainderIfNull(Items.TROPICAL_FISH_BUCKET, Items.BUCKET);
         setCraftingRemainderIfNull(Items.AXOLOTL_BUCKET, Items.BUCKET);
         setCraftingRemainderIfNull(Items.POWDER_SNOW_BUCKET, Items.BUCKET);
+        setCraftingRemainderIfNull(Items.TADPOLE_BUCKET, Items.BUCKET);
     }
 
     private static void setCraftingRemainderIfNull(Item target, Item remainder) {
