@@ -19,7 +19,7 @@ ${mod_description}
 itemIcon = "minecraft:bookshelf"
 
 [[dependencies.${ mod_id }]]
-modId = "bookshelf"
+modId = "forge"
 mandatory = true
 versionRange = "[41.0.22,)"
 ordering = "NONE"
