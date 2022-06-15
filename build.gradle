@@ -44,29 +44,6 @@ subprojects {
             name = 'Sponge / Mixin'
             url = 'https://repo.spongepowered.org/repository/maven-public/'
         }
-
-        maven {
-            name = 'BlameJared Maven (CrT / Bookshelf)'
-            url = 'https://maven.blamejared.com'
-        }
-
-        maven {
-            name = 'Mod Menu'
-            url = 'https://maven.terraformersmc.com/releases/'
-        }
-
-        maven {
-            name = 'Progwm16 / JEI'
-            url = 'https://dvs1.progwml6.com/files/maven'
-        }
-
-        maven {
-            name = 'Curse Maven'
-            url = 'https://www.cursemaven.com'
-            content {
-                includeGroup "curse.maven"
-            }
-        }
     }
 }
 
