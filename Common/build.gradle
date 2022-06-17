@@ -23,7 +23,7 @@ processResources {
 
     def buildProps = project.properties.clone()
 
-    filesMatching(['pack.mcmeta']) {
+    filesMatching(['pack.mcmeta', '*.mixins.json']) {
 
         expand buildProps
     }
