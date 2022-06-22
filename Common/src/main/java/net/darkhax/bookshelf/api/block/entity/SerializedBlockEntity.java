@@ -47,7 +47,7 @@ public abstract class SerializedBlockEntity extends BlockEntity {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    abstract void writeTileData(CompoundTag data);
+    public abstract void writeTileData(CompoundTag data);
 
-    abstract void readTileData(CompoundTag data);
+    public abstract void readTileData(CompoundTag data);
 }
