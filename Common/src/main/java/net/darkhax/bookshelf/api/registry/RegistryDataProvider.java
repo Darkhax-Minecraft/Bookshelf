@@ -51,6 +51,7 @@ public class RegistryDataProvider {
     public final IOwnedRegistryEntries<StatType<?>> stats = new RegistryEntries<>(this::getOwner, Registry.STAT_TYPE_REGISTRY);
     public final IOwnedRegistryEntries<VillagerProfession> villagerProfessions = new RegistryEntries<>(this::getOwner, Registry.VILLAGER_PROFESSION_REGISTRY);
 
+    public final RecipeTypeEntries recipeTypes = new RecipeTypeEntries(this::getOwner);
     public final ClassRegistryEntries<ArgumentSerializer> commandArguments = new ClassRegistryEntries<>(this::getOwner, "Command Argument");
     public final IOwnedRegistryEntries<ICommandBuilder> commands = new RegistryEntries<>(this::getOwner, "Command");
     public final VillagerTradeEntries trades = new VillagerTradeEntries();

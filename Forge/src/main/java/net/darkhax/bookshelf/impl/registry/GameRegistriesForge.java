@@ -50,6 +50,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -178,6 +179,7 @@ public class GameRegistriesForge implements IGameRegistries {
         this.consumeRegistry(content.stats, StatType.class);
         this.consumeRegistry(content.villagerProfessions, VillagerProfession.class);
 
+        this.consumeOnRegistry(content.recipeTypes, RecipeSerializer.class, (id, value) -> Registry.register(Registry.RECIPE_TYPE, id, value));
         this.consumeWithModEvent(content.commandArguments, FMLCommonSetupEvent.class, (event, id, arg) -> ArgumentTypes.register(id.toString(), arg.getA(), arg.getB()));
         this.consumeWithForgeEvent(content.commands, RegisterCommandsEvent.class, (event, id, builder) -> builder.build(event.getDispatcher(), event.getEnvironment() == Commands.CommandSelection.DEDICATED));
 
@@ -255,6 +257,13 @@ public class GameRegistriesForge implements IGameRegistries {
                 event.getRegistry().register(toRegister);
             });
         };
+
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(clazz, listener);
+    }
+
+    private <O extends IForgeRegistryEntry<O>, T> void consumeOnRegistry(IRegistryEntries<T> registry, Class<O> clazz, BiConsumer<ResourceLocation, T> code) {
+
+        final Consumer<RegistryEvent.Register<O>> listener = event -> registry.build(code);
 
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(clazz, listener);
     }
