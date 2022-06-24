@@ -23,8 +23,8 @@ public class ConstructHelperForge implements IConstructHelper {
     }
 
     @Override
-    public <T extends BlockEntity> Supplier<BlockEntityType<T>> blockEntityType(BiFunction<BlockPos, BlockState, T> factory, Supplier<Block>... validBlocks) {
+    public <T extends BlockEntity> Supplier<BlockEntityType<T>> blockEntityType(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks) {
 
-        return () -> BlockEntityType.Builder.of(factory::apply, Arrays.stream(validBlocks).map(Supplier::get).toArray(Block[]::new)).build(null);
+        return () -> BlockEntityType.Builder.of(factory::apply, validBlocks).build(null);
     }
 }

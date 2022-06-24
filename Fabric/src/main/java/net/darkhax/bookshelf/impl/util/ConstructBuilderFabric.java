@@ -23,8 +23,8 @@ public class ConstructBuilderFabric implements IConstructHelper {
     }
 
     @Override
-    public <T extends BlockEntity> Supplier<BlockEntityType<T>> blockEntityType(BiFunction<BlockPos, BlockState, T> factory, Supplier<Block>... validBlocks) {
+    public <T extends BlockEntity> Supplier<BlockEntityType<T>> blockEntityType(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks) {
 
-        return () -> FabricBlockEntityTypeBuilder.create(factory::apply, Arrays.stream(validBlocks).map(Supplier::get).toArray(Block[]::new)).build();
+        return () -> FabricBlockEntityTypeBuilder.create(factory::apply, validBlocks).build();
     }
 }
