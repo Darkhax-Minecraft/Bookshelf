@@ -36,5 +36,9 @@
 
     "_comment": "Commands",
     "commands.bookshelf.loot_tables": "Znaleziono następującą liczbę brakujących tabel łupów: %d dla moda %s.",
-    "commands.bookshelf.loot_tables.wildcard": "Znaleziono następującą liczbę brakujących tabel łupów: %d dla wszystkich modów."
+    "commands.bookshelf.loot_tables.wildcard": "Znaleziono następującą liczbę brakujących tabel łupów: %d dla wszystkich modów.",
+    "argument.bookshelf.unknown_value": "Wartość „%s” jest nieznana.",
+
+    "_comment": "Misc",
+    "text.bookshelf.ticks": "Ticki: %s"
 }
