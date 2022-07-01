@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Set;
-import java.util.function.Predicate;
 
 /**
  * A BlockEntity implementation that holds a container based inventory.
@@ -63,6 +62,8 @@ public abstract class InventoryBlockEntity<T extends Container> extends BaseCont
     /**
      * Drops the contents of the held inventory into the world. This is used in situations where the block has been
      * removed from the world and allows the inventory to drop the contents before they are destroyed.
+     * <p>
+     * The default behaviour will drop the entire contents of the inventory onto the ground.
      *
      * @param state The state of the block.
      * @param world The level the block is in.
