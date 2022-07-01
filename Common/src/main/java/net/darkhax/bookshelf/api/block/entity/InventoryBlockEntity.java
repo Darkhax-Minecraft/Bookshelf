@@ -58,7 +58,7 @@ public abstract class InventoryBlockEntity<T extends Container> extends BaseCont
      *
      * @return A new inventory to be held by the block entity.
      */
-    abstract T createInventory();
+    public abstract T createInventory();
 
     /**
      * Drops the contents of the held inventory into the world. This is used in situations where the block has been
