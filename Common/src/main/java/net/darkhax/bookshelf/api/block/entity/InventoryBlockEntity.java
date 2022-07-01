@@ -15,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -72,6 +73,15 @@ public abstract class InventoryBlockEntity<T extends Container> extends BaseCont
     public void dropContents(BlockState state, Level world, BlockPos pos) {
 
         Containers.dropContents(world, pos, this.getInventory());
+    }
+
+    /**
+     * Notifies the world that the tile has been updated and requires re-saving. This has the same behaviour as
+     * {@link BlockEntity#setChanged()} but avoids invoking {@link Container#setChanged()} unintentionally.
+     */
+    public void markDirty() {
+
+        super.setChanged();
     }
 
     /**
