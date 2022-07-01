@@ -187,6 +187,9 @@ public abstract class InventoryBlockEntity<T extends Container> extends BaseCont
     @Override
     public final void setChanged() {
 
+        // BlockEntity has a method with the same name. It seems vanilla intends for these to be unified for block entities with containers.
+        super.setChanged();
+
         // Delegate to the held inventory.
         this.getInventory().setChanged();
     }
