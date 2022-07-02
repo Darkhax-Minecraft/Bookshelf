@@ -5,12 +5,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class InventoryBlock extends Block implements EntityBlock {
+public abstract class InventoryBlock extends BaseEntityBlock implements EntityBlock {
 
     public InventoryBlock(Properties properties) {
 
@@ -39,5 +40,12 @@ public abstract class InventoryBlock extends Block implements EntityBlock {
         }
 
         super.onRemove(oldState, world, pos, newState, pushed);
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState state) {
+
+        // BaseEntityBlock uses INVISIBLE by default however I have personally found that model is a more convenient default for my block entities.
+        return RenderShape.MODEL;
     }
 }
