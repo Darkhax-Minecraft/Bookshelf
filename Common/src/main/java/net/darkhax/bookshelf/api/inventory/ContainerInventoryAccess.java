@@ -34,7 +34,12 @@ public class ContainerInventoryAccess<T extends Container> implements IInventory
     @Override
     public ItemStack insert(int slot, ItemStack insertStack, Direction side, boolean modify) {
 
-        if (insertStack.isEmpty() || !this.isValidForSlot(slot, insertStack, side)) {
+        return this.insert(slot, insertStack, side, modify, false);
+    }
+
+    public ItemStack insert(int slot, ItemStack insertStack, Direction side, boolean modify, boolean forceInsert) {
+
+        if (insertStack.isEmpty() || (!forceInsert && !this.isValidForSlot(slot, insertStack, side))) {
 
             return insertStack;
         }
