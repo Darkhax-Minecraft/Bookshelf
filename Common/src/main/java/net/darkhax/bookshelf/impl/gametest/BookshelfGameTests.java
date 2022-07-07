@@ -51,7 +51,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.lang.reflect.InvocationTargetException;

@@ -1,7 +1,6 @@
 package net.darkhax.bookshelf.api.inventory;
 
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;

@@ -15,7 +15,6 @@ import net.minecraft.util.random.WeightedEntry;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
