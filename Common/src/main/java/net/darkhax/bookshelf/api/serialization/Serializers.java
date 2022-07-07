@@ -1,5 +1,7 @@
 package net.darkhax.bookshelf.api.serialization;
 
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import net.darkhax.bookshelf.api.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleType;
@@ -55,6 +57,8 @@ public final class Serializers {
     public static final ISerializer<AttributeModifier> ATTRIBUTE_MODIFIER = SerializerAttributeModifier.SERIALIZER;
     public static final ISerializer<MobEffectInstance> EFFECT_INSTANCE = new SerializerEffectInstance();
     public static final ISerializer<EnchantmentInstance> ENCHANTMENT_INSTANCE = SerializerEnchantmentInstance.SERIALIZER;
+    public static final ISerializer<Vector3f> VECTOR_3F = SerializerVector3f.SERIALIZER;
+    public static final ISerializer<Vector4f> VECTOR_4F = SerializerVector4f.SERIALIZER;
 
     // ENUMS
     public static final ISerializer<Rarity> ITEM_RARITY = new SerializerEnum<>(Rarity.class);
