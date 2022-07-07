@@ -225,6 +225,21 @@ public interface ISerializer<T> {
     }
 
     /**
+     * Writes a list of values to a JSON object, if the list is null or empty it will be ignored.
+     *
+     * @param json       The JSON object to add the list to.
+     * @param memberName The name to assign the list member.
+     * @param toWrite    The list to write.
+     */
+    default void toJSONList(JsonObject json, String memberName, @Nullable List<T> toWrite) {
+
+        if (toWrite != null && !toWrite.isEmpty()) {
+
+            json.add(memberName, this.toJSONList(toWrite));
+        }
+    }
+
+    /**
      * Reads a list of values from a byte buffer.
      *
      * @param buffer The buffer to read data from.
@@ -384,6 +399,7 @@ public interface ISerializer<T> {
 
     /**
      * Reads an optional value from a JSON element. If the element is null an empty optional will be returned.
+     *
      * @param json The JSON to read data from.
      * @return An optional containing the value that was read.
      */
