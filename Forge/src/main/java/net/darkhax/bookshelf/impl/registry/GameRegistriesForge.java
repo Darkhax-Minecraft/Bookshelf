@@ -61,12 +61,12 @@ public class GameRegistriesForge implements IGameRegistries {
     private final IRegistryReader<MobEffect> mobEffectRegistry = new RegistryReaderForge<>(ForgeRegistries.MOB_EFFECTS);
     private final IRegistryReader<Potion> potionRegistry = new RegistryReaderForge<>(ForgeRegistries.POTIONS);
     private final IRegistryReader<Attribute> attributeRegistry = new RegistryReaderForge<>(ForgeRegistries.ATTRIBUTES);
-    private final IRegistryReader<VillagerProfession> professionRegistry = new RegistryReaderForge<>(ForgeRegistries.PROFESSIONS);
+    private final IRegistryReader<VillagerProfession> professionRegistry = new RegistryReaderForge<>(ForgeRegistries.VILLAGER_PROFESSIONS);
     private final IRegistryReader<SoundEvent> soundRegistry = new RegistryReaderForge<>(ForgeRegistries.SOUND_EVENTS);
-    private final IRegistryReader<MenuType<?>> menuRegistry = new RegistryReaderForge<>(ForgeRegistries.CONTAINERS);
+    private final IRegistryReader<MenuType<?>> menuRegistry = new RegistryReaderForge<>(ForgeRegistries.MENU_TYPES);
     private final IRegistryReader<ParticleType<?>> particleRegistry = new RegistryReaderForge<>(ForgeRegistries.PARTICLE_TYPES);
-    private final IRegistryReader<EntityType<?>> entityRegistry = new RegistryReaderForge<>(ForgeRegistries.ENTITIES);
-    private final IRegistryReader<BlockEntityType<?>> blockEntityRegistry = new RegistryReaderForge<>(ForgeRegistries.BLOCK_ENTITIES);
+    private final IRegistryReader<EntityType<?>> entityRegistry = new RegistryReaderForge<>(ForgeRegistries.ENTITY_TYPES);
+    private final IRegistryReader<BlockEntityType<?>> blockEntityRegistry = new RegistryReaderForge<>(ForgeRegistries.BLOCK_ENTITY_TYPES);
 
     // No native Forge Registry
     private final IRegistryReader<GameEvent> gameEventRegistry = new RegistryReaderVanilla<>(Registry.GAME_EVENT);
@@ -180,7 +180,7 @@ public class GameRegistriesForge implements IGameRegistries {
         this.consumeRegistry(content.stats, Registry.STAT_TYPE_REGISTRY);
         this.consumeRegistry(content.villagerProfessions, Registry.VILLAGER_PROFESSION_REGISTRY);
         this.consumeArgumentTypes(content.commandArguments);
-        this.consumeWithForgeEvent(content.commands, RegisterCommandsEvent.class, (event, id, builder) -> builder.build(event.getDispatcher(), event.getBuildContext(), event.getEnvironment()));
+        this.consumeWithForgeEvent(content.commands, RegisterCommandsEvent.class, (event, id, builder) -> builder.build(event.getDispatcher(), event.getBuildContext(), event.getCommandSelection()));
 
         ForgeEventHelper.addContextListener(VillagerTradesEvent.class, content.trades.getVillagerTrades(), this::registerVillagerTrades);
         ForgeEventHelper.addContextListener(WandererTradesEvent.class, content.trades.getCommonWanderingTrades(), content.trades.getRareWanderingTrades(), this::registerWanderingTrades);

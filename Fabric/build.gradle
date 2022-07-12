@@ -124,6 +124,8 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.changelogType = 'markdown'
     mainFile.changelog = project.ext.mod_changelog
     mainFile.addJavaVersion('Java 17')
+    mainFile.addModLoader('Fabric')
+    mainFile.addModLoader('Quilt')
 
     // Append Patreon Supporters
     def patreonInfo = project.findProperty('patreon')

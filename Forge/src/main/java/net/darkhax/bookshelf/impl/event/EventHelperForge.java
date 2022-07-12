@@ -10,8 +10,7 @@ import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 
 public class EventHelperForge implements IEventHelper {
@@ -28,7 +27,7 @@ public class EventHelperForge implements IEventHelper {
     @Override
     public void addPlayerWakeUpListener(IPlayerWakeUpEvent listener) {
 
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerWakeUpEvent.class, e -> listener.apply(e.getPlayer()));
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerWakeUpEvent.class, e -> listener.apply(e.getEntity()));
     }
 
     @Override
