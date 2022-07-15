@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.impl.capabilities;
 
+import net.darkhax.bookshelf.api.function.CachedSupplier;
 import net.minecraft.core.Direction;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraftforge.common.capabilities.Capability;
@@ -14,34 +15,26 @@ import java.util.EnumMap;
 
 public class WorldlyContainerCapabilityProvider implements ICapabilityProvider {
 
-    private final EnumMap<Direction, LazyOptional<?>> sidedCaps = new EnumMap<>(Direction.class);
+    private final CachedSupplier<EnumMap<Direction, LazyOptional<IItemHandler>>> sidedCaps;
 
     public WorldlyContainerCapabilityProvider(WorldlyContainer container) {
 
-        for (Direction side : Direction.values()) {
+        sidedCaps = CachedSupplier.cache(() -> {
 
-            sidedCaps.put(side, createSidedCaps(container, side));
-        }
+            final EnumMap<Direction, LazyOptional<IItemHandler>> caps = new EnumMap<>(Direction.class);
+
+            for (Direction side : Direction.values()) {
+
+                caps.put(side, container.getSlotsForFace(side).length > 0 ? LazyOptional.of(() -> new SidedInvWrapper(container, side)) : LazyOptional.empty());
+            }
+
+            return caps;
+        });
     }
 
     @Override
     public <R> LazyOptional<R> getCapability(Capability<R> requested, @Nullable Direction side) {
 
-        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(requested, sidedCaps.get(side).cast());
-    }
-
-    private static LazyOptional<IItemHandler> createSidedCaps(WorldlyContainer container, @Nullable Direction side) {
-
-        if (container != null && side != null) {
-
-            final int[] exposedSlots = container.getSlotsForFace(side);
-
-            if (exposedSlots != null && exposedSlots.length > 0) {
-
-                return LazyOptional.of(() -> new SidedInvWrapper(container, side));
-            }
-        }
-
-        return LazyOptional.empty();
+        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(requested, sidedCaps.get().get(side).cast());
     }
 }
