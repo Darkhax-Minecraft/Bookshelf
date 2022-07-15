@@ -2,7 +2,7 @@ package net.darkhax.bookshelf;
 
 import net.darkhax.bookshelf.api.block.entity.WorldlyInventoryBlockEntity;
 import net.darkhax.bookshelf.impl.BookshelfCommon;
-import net.darkhax.bookshelf.impl.capabilities.SingletonCapabilityProvider;
+import net.darkhax.bookshelf.impl.capabilities.WorldlyContainerCapabilityProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.MinecraftForge;
@@ -25,7 +25,7 @@ public class BookshelfForge {
 
         if (event.getObject() instanceof WorldlyInventoryBlockEntity<?> worldly) {
 
-            event.addCapability(WORLDLY_CONTAINER_WRAPPER, SingletonCapabilityProvider.of(worldly));
+            event.addCapability(WORLDLY_CONTAINER_WRAPPER, new WorldlyContainerCapabilityProvider(worldly));
         }
     }
 }
