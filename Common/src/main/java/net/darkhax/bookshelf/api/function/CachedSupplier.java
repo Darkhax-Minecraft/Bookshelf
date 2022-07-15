@@ -102,6 +102,11 @@ public class CachedSupplier<T> implements Supplier<T> {
         consumer.accept(this.get());
     }
 
+    public <X> CachedSupplier<X> cast() {
+
+        return (CachedSupplier<X>)this;
+    }
+
     /**
      * Creates a cached supplier that can only produce a single value.
      *
