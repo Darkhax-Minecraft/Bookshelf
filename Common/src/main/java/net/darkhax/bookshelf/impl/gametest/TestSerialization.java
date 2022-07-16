@@ -367,6 +367,80 @@ public class TestSerialization<T> implements ITestable {
         assertWeightedListEqual(helper, original, read);
     }
 
+    @GameTest
+    public void testJsonNullable(GameTestHelper helper) {
+
+        final JsonElement nullJson = this.serializer.toJSONNullable(null);
+
+        if (nullJson != null) {
+
+            helper.fail("Expected JSON to be null.");
+        }
+
+        final T nullValue = this.serializer.fromJSONNullable(nullJson);
+
+        if (nullValue != null) {
+
+            helper.fail("Expected value to be null.");
+        }
+
+        final JsonElement json = this.serializer.toJSONNullable(this.singleton);
+
+        if (json == null) {
+
+            helper.fail("Expected JSON to not be null.");
+        }
+
+        final T value = this.serializer.fromJSONNullable(json);
+
+        if (value == null) {
+
+            helper.fail("Expected value to not be null.");
+        }
+
+        if (!this.equality.test(this.singleton, value)) {
+
+            helper.fail("Value written and read do not match.");
+        }
+
+        else {
+
+            helper.succeed();
+        }
+    }
+
+    @GameTest
+    public void testBytebufNullable(GameTestHelper helper) {
+
+        final FriendlyByteBuf nullBuffer = new FriendlyByteBuf(Unpooled.buffer());
+        this.serializer.toByteBufNullable(nullBuffer, null);
+        final T nullValue = this.serializer.fromByteBufNullable(nullBuffer);
+
+        if (nullValue != null) {
+
+            helper.fail("Expected value to be null.");
+        }
+
+        final FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
+        this.serializer.toByteBufNullable(buffer, this.singleton);
+        final T value = this.serializer.fromByteBufNullable(buffer);
+
+        if (value == null) {
+
+            helper.fail("Expected value to not be null.");
+        }
+
+        if (!this.equality.test(this.singleton, value)) {
+
+            helper.fail("Value written and read do not match.");
+        }
+
+        else {
+
+            helper.succeed();
+        }
+    }
+
     private Set<T> createSet() {
 
         final Set<T> values = new LinkedHashSet<>();

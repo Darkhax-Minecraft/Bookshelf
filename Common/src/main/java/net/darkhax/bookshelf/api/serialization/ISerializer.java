@@ -685,4 +685,48 @@ public interface ISerializer<T> {
             this.toByteBufWeighted(buffer, entry);
         }
     }
+
+    // NULLABLE
+
+    @Nullable
+    default T fromJSONNullable(JsonObject json, String memberName) {
+
+        return json.has(memberName) ? fromJSONNullable(json.get(memberName)) : null;
+    }
+
+    @Nullable
+    default T fromJSONNullable(@Nullable JsonElement json) {
+
+        return json != null ? this.fromJSON(json) : null;
+    }
+
+    @Nullable
+    default JsonElement toJSONNullable(@Nullable T value) {
+
+        return value != null ? this.toJSON(value) : null;
+    }
+
+    default void toJSONNullable(@Nullable JsonObject json, String memberName, @Nullable T value) {
+
+        if (json != null && value != null) {
+
+            json.add(memberName, this.toJSON(value));
+        }
+    }
+
+    @Nullable
+    default T fromByteBufNullable(FriendlyByteBuf buffer) {
+
+        return buffer.readBoolean() ? this.fromByteBuf(buffer) : null;
+    }
+
+    default void toByteBufNullable(FriendlyByteBuf buffer, @Nullable T value) {
+
+        buffer.writeBoolean(value != null);
+
+        if (value != null) {
+
+            this.toByteBuf(buffer,value);
+        }
+    }
 }
