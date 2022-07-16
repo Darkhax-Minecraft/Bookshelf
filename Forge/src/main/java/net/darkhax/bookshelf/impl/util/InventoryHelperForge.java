@@ -62,4 +62,16 @@ public class InventoryHelperForge implements IInventoryHelper {
 
         NetworkHooks.openGui(player, provider, buf);
     }
+
+    @Override
+    public ItemStack getCraftingRemainder(ItemStack stack) {
+
+        return stack.getContainerItem();
+    }
+
+    @Override
+    public boolean hasCraftingRemainder(ItemStack stack) {
+
+        return stack.hasContainerItem();
+    }
 }
