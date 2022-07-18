@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -74,6 +75,7 @@ public final class Serializers {
     public static final ISerializer<MobCategory> MOB_CATEGORY = new SerializerEnum<>(MobCategory.class);
     public static final ISerializer<EnchantmentCategory> ENCHANTMENT_CATEGORY = new SerializerEnum<>(EnchantmentCategory.class);
     public static final ISerializer<DyeColor> DYE_COLOR = new SerializerEnum<>(DyeColor.class);
+    public static final ISerializer<SoundSource> SOUND_CATEGORY = new SerializerEnum<>(SoundSource.class);
 
     // REGISTRY TYPES
     public static final ISerializer<Block> BLOCK = new SerializerRegistryEntry<>(Services.REGISTRIES.blocks());

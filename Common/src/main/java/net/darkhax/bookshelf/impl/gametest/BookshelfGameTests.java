@@ -21,6 +21,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.GameEventTags;
@@ -103,6 +104,7 @@ public class BookshelfGameTests {
         testFrom(testFunctions, new TestSerialization<>("mob_category", Serializers.MOB_CATEGORY, MobCategory.AMBIENT, MobCategory.AXOLOTLS, MobCategory.CREATURE, MobCategory.AXOLOTLS, MobCategory.MONSTER, MobCategory.MISC));
         testFrom(testFunctions, new TestSerialization<>("enchantment_category", Serializers.ENCHANTMENT_CATEGORY, EnchantmentCategory.ARMOR, EnchantmentCategory.BREAKABLE, EnchantmentCategory.BREAKABLE));
         testFrom(testFunctions, new TestSerialization<>("dye_color", Serializers.DYE_COLOR, DyeColor.BLACK, DyeColor.RED, DyeColor.BLUE));
+        testFrom(testFunctions, new TestSerialization<>("sound_category", Serializers.SOUND_CATEGORY, SoundSource.AMBIENT, SoundSource.HOSTILE, SoundSource.PLAYERS));
 
         // Test Game Registry Serializers
         testFrom(testFunctions, new TestSerialization<>("registry_block", Serializers.BLOCK, Blocks.SAND, Blocks.STONE, Blocks.KELP, Blocks.SAND));
