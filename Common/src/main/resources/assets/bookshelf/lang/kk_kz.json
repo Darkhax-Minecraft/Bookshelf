@@ -1,0 +1,44 @@
+{
+    "_comment": "English Language File",
+
+    "_comment": "Moon Phases",
+    "moon.phase.full": "Толған ай",
+    "moon.phase.waxing.gibbous": "Өсуші ай",
+    "moon.phase.first.quarter": "Бірінші ширек",
+    "moon.phase.waxing.crescent": "Туар ай",
+    "moon.phase.new": "Жаңа ай",
+    "moon.phase.waning.crescent": "Кемуші ай",
+    "moon.phase.last.quarter": "Соңғы ширек",
+    "moon.phase.waning.gibbous": "Ескі ай",
+
+    "_comment": "Months",
+    "time.bookshelf.month.january": "Қаңтар",
+    "time.bookshelf.month.february": "Ақпан",
+    "time.bookshelf.month.march": "Наурыз",
+    "time.bookshelf.month.april": "Сәуір",
+    "time.bookshelf.month.may": "Мамыр",
+    "time.bookshelf.month.june": "Маусым",
+    "time.bookshelf.month.july": "Шілде",
+    "time.bookshelf.month.august": "Тамыз",
+    "time.bookshelf.month.september": "Қыркүйек",
+    "time.bookshelf.month.october": "Қазан",
+    "time.bookshelf.month.november": "Қараша",
+    "time.bookshelf.month.december": "Желтоқсан",
+
+    "_comment": "Days",
+    "time.bookshelf.day.sunday": "Жексенбі",
+    "time.bookshelf.day.monday": "Дүйсенбі",
+    "time.bookshelf.day.tuesday": "Сейсенбі",
+    "time.bookshelf.day.wednesday": "Сәрсенбі",
+    "time.bookshelf.day.thursday": "Бейсенбі",
+    "time.bookshelf.day.friday": "Жұма",
+    "time.bookshelf.day.saturday": "Сенбі",
+
+    "_comment": "Commands",
+    "commands.bookshelf.loot_tables": "%s үшін %d олжа кестесі жетпейді.",
+    "commands.bookshelf.loot_tables.wildcard": "Барлық мод үшін %d олжа кестесі жетпейді.",
+    "argument.bookshelf.unknown_value": "'%s' мәні белгісіз.",
+
+    "_comment": "Misc",
+    "text.bookshelf.ticks": "Тик: %s"
+}
