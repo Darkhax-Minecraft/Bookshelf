@@ -43,7 +43,7 @@ public class Sound implements ISound {
 
     @Override
     public int hashCode() {
-        
+
         return Objects.hash(sound, category, pitch, volume);
     }
 
