@@ -35,6 +35,6 @@ public class WorldlyContainerCapabilityProvider implements ICapabilityProvider {
     @Override
     public <R> LazyOptional<R> getCapability(Capability<R> requested, @Nullable Direction side) {
 
-        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(requested, sidedCaps.get().get(side).cast());
+        return side != null ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(requested, sidedCaps.get().get(side).cast()) : LazyOptional.empty();
     }
 }
