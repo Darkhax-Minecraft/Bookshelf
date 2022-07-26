@@ -1,0 +1,44 @@
+{
+    "_comment": "Ukrainian Language File",
+
+    "_comment": "Moon Phases",
+    "moon.phase.full": "Повний Місяць",
+    "moon.phase.waxing.gibbous": "Прибуваючий Місяць",
+    "moon.phase.first.quarter": "Перша чверть",
+    "moon.phase.waxing.crescent": "Молодий Місяць",
+    "moon.phase.new": "Новий Місяць",
+    "moon.phase.waning.crescent": "Старий Місяць",
+    "moon.phase.last.quarter": "Остання чверть",
+    "moon.phase.waning.gibbous": "Спадаючий Місяць",
+
+    "_comment": "Months",
+    "time.bookshelf.month.january": "Січень",
+    "time.bookshelf.month.february": "Лютий",
+    "time.bookshelf.month.march": "Березень",
+    "time.bookshelf.month.april": "Квітень",
+    "time.bookshelf.month.may": "Травень",
+    "time.bookshelf.month.june": "Червень",
+    "time.bookshelf.month.july": "Липень",
+    "time.bookshelf.month.august": "Серпень",
+    "time.bookshelf.month.september": "Вересень",
+    "time.bookshelf.month.october": "Жовтень",
+    "time.bookshelf.month.november": "Листопад",
+    "time.bookshelf.month.december": "Грудень",
+
+    "_comment": "Days",
+    "time.bookshelf.day.sunday": "Неділя",
+    "time.bookshelf.day.monday": "Понеділок",
+    "time.bookshelf.day.tuesday": "Вівторок",
+    "time.bookshelf.day.wednesday": "Середа",
+    "time.bookshelf.day.thursday": "Четвер",
+    "time.bookshelf.day.friday": "П'ятниця",
+    "time.bookshelf.day.saturday": "Субота",
+
+    "_comment": "Commands",
+    "commands.bookshelf.loot_tables": "Знайдено %d відсутніх таблиць луту для %s.",
+    "commands.bookshelf.loot_tables.wildcard": "Знайдено %d відсутніх таблиць луту для всіх модів.",
+    "argument.bookshelf.unknown_value": "Невідоме значення '%s'.",
+
+    "_comment": "Misc",
+    "text.bookshelf.ticks": "Тіків: %s"
+}
