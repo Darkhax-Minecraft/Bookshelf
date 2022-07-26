@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "#forge:helmets",
-    "#forge:chestplates",
-    "#forge:leggings",
-    "#forge:boots"
+    "#c:helmets",
+    "#c:chestplates",
+    "#c:leggings",
+    "#c:boots"
   ]
 }
