@@ -7,6 +7,7 @@ logoBlur = false
 
 [[mods]]
 modId = "${mod_id}"
+displayTest="IGNORE_ALL_VERSION"
 updateJSONURL = "https://updates.blamejared.com/get?n=${mod_id}&gv=${minecraft_version}"
 version = "${file.jarVersion}"
 displayName = "${mod_name}"
