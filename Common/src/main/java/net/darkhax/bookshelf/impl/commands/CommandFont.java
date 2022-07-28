@@ -50,7 +50,7 @@ public class CommandFont {
         final ResourceLocation fontId = FontArgument.getFont(context);
         final Component inputMessage = TextHelper.applyFont(MessageArgument.getMessage(context, "message"), fontId);
         final Component txtMessage = Component.translatable("chat.type.announcement", context.getSource().getDisplayName(), inputMessage);
-        context.getSource().getServer().getPlayerList().broadcastSystemMessage(txtMessage, ChatType.SYSTEM);
+        context.getSource().getServer().getPlayerList().broadcastSystemMessage(txtMessage, false);
         return 0;
     }
 
