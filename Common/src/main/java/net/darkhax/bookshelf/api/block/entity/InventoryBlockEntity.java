@@ -50,8 +50,7 @@ public abstract class InventoryBlockEntity<T extends Container> extends BaseCont
     /**
      * Creates a new instance of the inventory held by the block entity. The resulting inventory should be effectively a
      * clean slate that represents the default state for the inventory. Persisting the state of the inventory is managed
-     * by {@link #load(net.minecraft.nbt.CompoundTag)} and
-     * {@link #saveAdditional(net.minecraft.nbt.CompoundTag)}.
+     * by {@link #load(net.minecraft.nbt.CompoundTag)} and {@link #saveAdditional(net.minecraft.nbt.CompoundTag)}.
      * <p>
      * This method should only be invoked once per tile entity instance. The resulting value is stored with
      * {@link #inventory}.
@@ -106,6 +105,16 @@ public abstract class InventoryBlockEntity<T extends Container> extends BaseCont
     public CompoundTag saveInventory() {
 
         return ContainerHelper.saveAllItems(new CompoundTag(), Services.INVENTORY_HELPER.toList(this.getInventory()));
+    }
+
+    /**
+     * Notifies the world that the tile has been updated and requires re-saving. This has the same behaviour as
+     * {@link net.minecraft.world.level.block.entity.BlockEntity#setChanged()} but avoids invoking
+     * {@link Container#setChanged()} unintentionally.
+     */
+    public void markDirty() {
+
+        super.setChanged();
     }
 
     @Override
