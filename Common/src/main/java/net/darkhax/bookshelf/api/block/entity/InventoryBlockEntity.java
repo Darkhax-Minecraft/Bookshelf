@@ -29,7 +29,7 @@ public abstract class InventoryBlockEntity<T extends Container> extends Serializ
         return this.inventory;
     }
 
-    abstract T createInventory();
+    public abstract T createInventory();
 
     @Override
     public void readTileData(CompoundTag tag) {
