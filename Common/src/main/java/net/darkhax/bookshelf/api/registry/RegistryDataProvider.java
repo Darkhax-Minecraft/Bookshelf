@@ -53,6 +53,7 @@ public class RegistryDataProvider {
     public final IOwnedRegistryEntries<Attribute> attributes = new RegistryEntries<>(this::getOwner, Registry.ATTRIBUTE_REGISTRY);
     public final IOwnedRegistryEntries<StatType<?>> stats = new RegistryEntries<>(this::getOwner, Registry.STAT_TYPE_REGISTRY);
     public final IOwnedRegistryEntries<VillagerProfession> villagerProfessions = new RegistryEntries<>(this::getOwner, Registry.VILLAGER_PROFESSION_REGISTRY);
+    public final IOwnedRegistryEntries<MenuType<?>> menuTypes = new RegistryEntries<>(this::getOwner, Registry.MENU_REGISTRY);
     public final CommandArgumentRegistryEntries commandArguments = new CommandArgumentRegistryEntries(this::getOwner, Registry.COMMAND_ARGUMENT_TYPE_REGISTRY);
     public final RecipeTypeEntries recipeTypes = new RecipeTypeEntries(this::getOwner);
     public final IOwnedRegistryEntries<ICommandBuilder> commands = new RegistryEntries<>(this::getOwner, "Command");
