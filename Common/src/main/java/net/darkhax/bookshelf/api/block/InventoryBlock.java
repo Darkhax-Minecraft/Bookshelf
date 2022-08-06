@@ -2,11 +2,12 @@ package net.darkhax.bookshelf.api.block;
 
 import net.darkhax.bookshelf.api.block.entity.InventoryBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.Containers;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class InventoryBlock extends Block implements EntityBlock {
@@ -17,16 +18,24 @@ public abstract class InventoryBlock extends Block implements EntityBlock {
     }
 
     @Override
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+
+        super.setPlacedBy(world, pos, state, placer, stack);
+
+        // Allow the custom name of the placer item to be applied to the placed block entity.
+        if (stack.hasCustomHoverName() && world.getBlockEntity(pos) instanceof BaseContainerBlockEntity container) {
+
+            container.setCustomName(stack.getHoverName());
+        }
+    }
+
+    @Override
     public void onRemove(BlockState oldState, Level world, BlockPos pos, BlockState newState, boolean pushed) {
 
-        if (!newState.is(oldState.getBlock())) {
+        // Drop the contents of the inventory.
+        if (!newState.is(oldState.getBlock()) && world.getBlockEntity(pos) instanceof InventoryBlockEntity<?> invBlock) {
 
-            final BlockEntity blockEntity = world.getBlockEntity(pos);
-
-            if (blockEntity instanceof InventoryBlockEntity invBlock) {
-
-                Containers.dropContents(world, pos, invBlock.getInventory());
-            }
+            invBlock.dropContents(oldState, world, pos);
         }
 
         super.onRemove(oldState, world, pos, newState, pushed);
