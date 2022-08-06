@@ -63,6 +63,8 @@ public abstract class InventoryBlockEntity<T extends Container> extends BaseCont
     /**
      * Drops the contents of the held inventory into the world. This is used in situations where the block has been
      * removed from the world and allows the inventory to drop the contents before they are destroyed.
+     * <p>
+     * The default behaviour will drop the entire contents of the inventory onto the ground.
      *
      * @param state The state of the block.
      * @param world The level the block is in.
