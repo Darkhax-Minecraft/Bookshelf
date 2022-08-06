@@ -10,8 +10,11 @@ import net.darkhax.bookshelf.mixin.inventory.AccessorInventoryMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.WorldlyContainerHolder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -257,4 +260,11 @@ public interface IInventoryHelper {
 
         return null;
     }
+
+    default void openMenu(ServerPlayer player, MenuProvider provider) {
+
+        this.openMenu(player, provider, buf -> {});
+    }
+
+    void openMenu(ServerPlayer player, MenuProvider provider, Consumer<FriendlyByteBuf> buf);
 }
