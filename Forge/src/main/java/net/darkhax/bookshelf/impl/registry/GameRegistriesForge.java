@@ -48,6 +48,7 @@ import net.minecraftforge.registries.RegisterEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -179,6 +180,7 @@ public class GameRegistriesForge implements IGameRegistries {
         this.consumeRegistry(content.attributes, Registry.ATTRIBUTE_REGISTRY);
         this.consumeRegistry(content.stats, Registry.STAT_TYPE_REGISTRY);
         this.consumeRegistry(content.villagerProfessions, Registry.VILLAGER_PROFESSION_REGISTRY);
+        this.consumeRegistry(content.recipeTypes, Registry.RECIPE_TYPE_REGISTRY);
         this.consumeArgumentTypes(content.commandArguments);
         this.consumeWithForgeEvent(content.commands, RegisterCommandsEvent.class, (event, id, builder) -> builder.build(event.getDispatcher(), event.getBuildContext(), event.getCommandSelection()));
 
