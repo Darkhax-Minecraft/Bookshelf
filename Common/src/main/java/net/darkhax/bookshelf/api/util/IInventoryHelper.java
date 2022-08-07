@@ -267,4 +267,14 @@ public interface IInventoryHelper {
     }
 
     void openMenu(ServerPlayer player, MenuProvider provider, Consumer<FriendlyByteBuf> buf);
+
+    default ItemStack getCraftingRemainder(ItemStack stack) {
+
+        return this.hasCraftingRemainder(stack) ? new ItemStack(stack.getItem().getCraftingRemainingItem()) : ItemStack.EMPTY;
+    }
+
+    default boolean hasCraftingRemainder(ItemStack stack) {
+
+        return stack.getItem().hasCraftingRemainingItem();
+    }
 }
