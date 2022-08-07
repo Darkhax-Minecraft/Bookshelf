@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.impl.gametest;
 
 import com.google.common.collect.Iterables;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import io.netty.buffer.Unpooled;
 import net.darkhax.bookshelf.api.serialization.ISerializer;
 import net.darkhax.bookshelf.mixin.util.random.AccessorWeightedRandomList;
@@ -13,6 +14,7 @@ import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.item.crafting.Ingredient;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -310,6 +312,37 @@ public class TestSerialization<T> implements ITestable {
         final SimpleWeightedRandomList<T> read = this.serializer.fromByteBufWeightedList(buffer);
 
         assertWeightedListEqual(helper, original, read);
+    }
+
+    @GameTest
+    public void testJsonListEmpty(GameTestHelper helper) {
+
+        final List<T> list = new ArrayList<>();
+        final JsonObject testObj = new JsonObject();
+
+        this.serializer.toJSONList(testObj, "test", list);
+
+        if (testObj.has("test")) {
+
+            helper.fail("Empty list should not be serialized.");
+        }
+
+        helper.succeed();
+    }
+
+    @GameTest
+    public void testJsonListNull(GameTestHelper helper) {
+
+        final JsonObject testObj = new JsonObject();
+
+        this.serializer.toJSONList(testObj, "test", null);
+
+        if (testObj.has("test")) {
+
+            helper.fail("Empty list should not be serialized.");
+        }
+
+        helper.succeed();
     }
 
     private Set<T> createSet() {
