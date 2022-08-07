@@ -8,6 +8,8 @@ import net.darkhax.bookshelf.api.serialization.ISerializer;
 import net.darkhax.bookshelf.mixin.util.random.AccessorWeightedRandomList;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.random.SimpleWeightedRandomList;
@@ -268,6 +270,28 @@ public class TestSerialization<T> implements ITestable {
         final List<T> list = List.of(this.collection);
         this.serializer.toByteBufList(buffer, list);
         final List<T> read = this.serializer.fromByteBufList(buffer);
+
+        assertIterableEqual(helper, list, read);
+    }
+
+    @GameTest
+    public void testNbtList(GameTestHelper helper) {
+
+        final List<T> list = List.of(this.collection);
+        final CompoundTag tag = new CompoundTag();
+        this.serializer.toNBTList(tag, "test_list", list);
+
+        if (!tag.contains("test_list")) {
+
+            helper.fail("List was not written to tag.");
+        }
+
+        if (tag.get("test_list") instanceof ListTag listTag && listTag.size() != list.size()) {
+
+            helper.fail("List size does not match on write. Has " + listTag.size() + " expected " + list.size());
+        }
+
+        final List<T> read = this.serializer.fromNBTList(tag, "test_list");
 
         assertIterableEqual(helper, list, read);
     }

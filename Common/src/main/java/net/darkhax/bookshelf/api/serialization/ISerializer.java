@@ -7,6 +7,7 @@ import com.google.gson.JsonParseException;
 import net.darkhax.bookshelf.api.util.JSONHelper;
 import net.darkhax.bookshelf.mixin.util.random.AccessorWeightedRandomList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.random.SimpleWeightedRandomList;
@@ -16,6 +17,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -138,6 +140,56 @@ public interface ISerializer<T> {
     default void toNBT(CompoundTag tag, String name, T toWrite) {
 
         tag.put(name, this.toNBT(toWrite));
+    }
+
+    default void toNBTList(@Nullable CompoundTag tag, String name, @Nullable List<T> toWrite) {
+
+        if (tag != null && toWrite != null && !toWrite.isEmpty()) {
+
+            tag.put(name, this.toNBTList(toWrite));
+        }
+    }
+
+    default ListTag toNBTList(List<T> toWrite) {
+
+        final ListTag listTag = new ListTag();
+
+        for (T value : toWrite) {
+
+            listTag.add(this.toNBT(value));
+        }
+
+        return listTag;
+    }
+
+    default List<T> fromNBTList(CompoundTag tag, String name) {
+
+        if (tag.contains(name)) {
+
+            return fromNBTList(tag.get(name));
+        }
+
+        throw new NBTParseException("Expected list tag named " + name);
+    }
+
+    default List<T> fromNBTList(Tag toRead) {
+
+        final List<T> list = new LinkedList<>();
+
+        if (toRead instanceof ListTag listTag) {
+
+            for (Tag tag : listTag) {
+
+                list.add(this.fromNBT(tag));
+            }
+        }
+
+        else {
+
+            list.add(this.fromNBT(toRead));
+        }
+
+        return list;
     }
 
     /**
