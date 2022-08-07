@@ -7,6 +7,9 @@ import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import org.apache.commons.lang3.EnumUtils;
+
+import java.util.Locale;
 
 public class SerializerEnum<T extends Enum<T>> implements ISerializer<T> {
 
@@ -84,14 +87,18 @@ public class SerializerEnum<T extends Enum<T>> implements ISerializer<T> {
 
     private T getByName(String name) {
 
-        try {
+        T value = EnumUtils.getEnum(this.enumClass, name);
 
-            return Enum.valueOf(this.enumClass, name);
+        if (value == null) {
+
+            value = EnumUtils.getEnum(this.enumClass, name.toUpperCase(Locale.ROOT));
         }
 
-        catch (EnumConstantNotPresentException e) {
+        if (value == null) {
 
-            return this.defaultValue;
+            value = this.defaultValue;
         }
+
+        return value;
     }
 }
