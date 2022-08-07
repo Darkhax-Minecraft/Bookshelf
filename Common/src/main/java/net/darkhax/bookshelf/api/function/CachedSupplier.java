@@ -103,6 +103,14 @@ public class CachedSupplier<T> implements Supplier<T> {
     }
 
     /**
+     * Performs an unsafe cast to the expected type.
+     */
+    public <X> CachedSupplier<X> cast() {
+
+        return (CachedSupplier<X>) this;
+    }
+
+    /**
      * Creates a cached supplier that can only produce a single value.
      *
      * @param singleton The only value for the cache to use.
