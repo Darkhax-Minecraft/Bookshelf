@@ -14,7 +14,7 @@ public record RegistryReaderForge<T extends IForgeRegistryEntry<T>>(IForgeRegist
     @Override
     public T get(ResourceLocation id) {
 
-        return this.registry.getValue(id);
+        return this.registry.containsKey(id) ? this.registry.getValue(id) : null;
     }
 
     @Nullable
@@ -22,6 +22,12 @@ public record RegistryReaderForge<T extends IForgeRegistryEntry<T>>(IForgeRegist
     public ResourceLocation getId(T value) {
 
         return value.getRegistryName();
+    }
+
+    @Override
+    public ResourceLocation getRegistryName() {
+
+        return this.registry.getRegistryName();
     }
 
     @Override
