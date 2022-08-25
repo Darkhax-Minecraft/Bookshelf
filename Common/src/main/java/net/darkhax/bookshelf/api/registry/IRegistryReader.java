@@ -14,6 +14,8 @@ public interface IRegistryReader<T> extends Iterable<T> {
     @Nullable
     ResourceLocation getId(T value);
 
+    ResourceLocation getRegistryName();
+
     default ResourceLocation getId(T value, ResourceLocation fallback) {
 
         final ResourceLocation id = this.getId(value);
