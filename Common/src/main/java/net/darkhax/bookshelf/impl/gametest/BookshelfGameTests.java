@@ -141,6 +141,23 @@ public class BookshelfGameTests {
         testFromTags(testFunctions, "block_entity_type_tag", Serializers.BLOCK_ENTITY_TAG, Services.TAGS.blockEntityTag(new ResourceLocation("test", "one")), Services.TAGS.blockEntityTag(new ResourceLocation("test", "two")));
         testFromTags(testFunctions, "game_event_tag", Serializers.GAME_EVENT_TAG, GameEventTags.IGNORE_VIBRATIONS_SNEAKING, GameEventTags.VIBRATIONS, GameEventTags.VIBRATIONS);
 
+        // Test Registry Readers
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.blocks()));
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.items()));
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.enchantments()));
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.paintings()));
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.mobEffects()));
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.potions()));
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.attributes()));
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.villagerProfessions()));
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.villagerTypes()));
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.sounds()));
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.menuTypes()));
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.particles()));
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.entities()));
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.blockEntities()));
+        testFrom(testFunctions, new TestRegistryAccessor<>(Services.REGISTRIES.gameEvents()));
+
         return testFunctions;
     }
 
