@@ -14,7 +14,7 @@ public record RegistryReaderForge<T>(IForgeRegistry<T> registry) implements IReg
     @Override
     public T get(ResourceLocation id) {
 
-        return this.registry.getValue(id);
+        return this.registry.containsKey(id) ? this.registry.getValue(id) : null;
     }
 
     @Nullable

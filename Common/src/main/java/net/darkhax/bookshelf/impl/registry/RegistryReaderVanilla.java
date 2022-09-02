@@ -18,7 +18,7 @@ public class RegistryReaderVanilla<T> implements IRegistryReader<T> {
     @Override
     public T get(ResourceLocation id) {
 
-        return this.registry.get(id);
+        return this.registry.containsKey(id) ? this.registry.get(id) : null;
     }
 
     @Override
