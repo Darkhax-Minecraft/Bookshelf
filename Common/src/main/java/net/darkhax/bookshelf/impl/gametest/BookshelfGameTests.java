@@ -154,6 +154,23 @@ public class BookshelfGameTests {
         testFromTags(testFunctions, "dimension_tag", Serializers.DIMENSION_TAG, Services.TAGS.dimensionTag(tagOne), Services.TAGS.dimensionTag(tagTwo));
         testFromTags(testFunctions, "biome_tag", Serializers.BIOME_TAG, Services.TAGS.biomeTag(tagOne), Services.TAGS.biomeTag(tagTwo));
 
+        // Test Registry Readers
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.blocks()));
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.items()));
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.enchantments()));
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.paintings()));
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.mobEffects()));
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.potions()));
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.attributes()));
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.villagerProfessions()));
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.villagerTypes()));
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.sounds()));
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.menuTypes()));
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.particles()));
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.entities()));
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.blockEntities()));
+        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.gameEvents()));
+        
         return testFunctions;
     }
 
