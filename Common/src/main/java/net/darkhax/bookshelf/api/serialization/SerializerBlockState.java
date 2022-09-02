@@ -3,6 +3,7 @@ package net.darkhax.bookshelf.api.serialization;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import net.darkhax.bookshelf.Constants;
 import net.minecraft.core.Registry;
@@ -50,6 +51,12 @@ public class SerializerBlockState implements ISerializer<BlockState> {
 
             return state;
         }
+
+        else if (json instanceof JsonPrimitive primitive && primitive.isString()) {
+
+            return Serializers.BLOCK.fromJSON(json).defaultBlockState();
+        }
+
         else {
 
             throw new JsonParseException("Expected properties to be an object. Recieved " + GsonHelper.getType(json));
