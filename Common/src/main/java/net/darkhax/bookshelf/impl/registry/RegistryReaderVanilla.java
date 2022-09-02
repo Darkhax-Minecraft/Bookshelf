@@ -28,6 +28,12 @@ public class RegistryReaderVanilla<T> implements IRegistryReader<T> {
     }
 
     @Override
+    public ResourceLocation getRegistryName() {
+
+        return this.registry.key().registry();
+    }
+
+    @Override
     public Iterator<T> iterator() {
 
         return registry.iterator();

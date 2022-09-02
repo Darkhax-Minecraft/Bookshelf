@@ -24,6 +24,12 @@ public record RegistryReaderForge<T>(IForgeRegistry<T> registry) implements IReg
         return this.registry.getKey(value);
     }
 
+    @Override
+    public ResourceLocation getRegistryName() {
+
+        return this.registry.getRegistryName();
+    }
+
     @NotNull
     @Override
     public Iterator<T> iterator() {
