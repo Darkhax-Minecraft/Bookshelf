@@ -10,6 +10,7 @@
     "entity.AccessorLivingEntity",
     "entity.AccessorMob",
     "entity.MixinLightningBolt",
+    "entity.MixinLivingEntity",
     "inventory.AccessorCraftingContainer",
     "inventory.AccessorCraftingMenu",
     "inventory.AccessorInventoryMenu",
