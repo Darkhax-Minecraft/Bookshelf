@@ -245,11 +245,6 @@ public class GameRegistriesForge implements IGameRegistries {
 
     private <T> void consumeRegistry(IRegistryEntries<T> registry, ResourceKey<? extends Registry<T>> registryKey, Function<T, ? extends T> wrapper) {
 
-        if (registry.isEmpty()) {
-
-            return;
-        }
-
         final Consumer<RegisterEvent> listener = event -> {
 
             if (event.getRegistryKey().equals(registryKey)) {
