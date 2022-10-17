@@ -107,17 +107,25 @@ public class RegistryDataProvider {
 
     public final RegistryDataProvider withAutoItemBlocks() {
 
-        this.blocks.addInsertListener((id, block) -> {
+        // This code is invoked once for each block as it is being registered. At this stage
+        // the actual block instance has been resolved.
+        this.blocks.addRegistryListener((id, block) -> {
 
-            this.items.add(() -> {
+            // Allow blocks to specify custom itemblock behaviour
+            if (block instanceof IItemBlockProvider provider) {
 
-                if (block instanceof IItemBlockProvider provider) {
+                // Returning false here will prevent an ItemBlock from being created.
+                if (provider.hasItemBlock(block)) {
 
-                    return provider.createItemBlock(block.get());
+                    this.items.add(() -> provider.createItemBlock(block), id);
                 }
+            }
 
-                return IItemBlockProvider.DEFAULT.createItemBlock(block.get());
-            }, id);
+            // The default behaviour just makes a normal ItemBlock.
+            else {
+
+                this.items.add(() -> IItemBlockProvider.DEFAULT.createItemBlock(block), id);
+            }
         });
 
         return this;

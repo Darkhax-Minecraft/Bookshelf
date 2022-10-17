@@ -13,4 +13,9 @@ public interface IItemBlockProvider {
 
         return new BlockItem(block, new Item.Properties());
     }
+
+    default boolean hasItemBlock(Block block) {
+
+        return true;
+    }
 }
