@@ -37,6 +37,7 @@
     "_comment": "Commands",
     "commands.bookshelf.loot_tables": "%sにおいて%d個の欠落したルートテーブルが見つかりました。",
     "commands.bookshelf.loot_tables.wildcard": "すべてのModにおいて%d個の欠落したルートテーブルが見つかりました。",
+    "argument.bookshelf.unknown_value": "値「%s」は不明です。",
 
     "_comment": "Misc",
     "text.bookshelf.ticks": "ティック：%s"
