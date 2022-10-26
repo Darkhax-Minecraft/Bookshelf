@@ -68,6 +68,21 @@ minecraft {
                 }
             }
         }
+
+        gameTestServer {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'bookshelf'
+
+            mods {
+                examplemod {
+                    source sourceSets.main
+                    source project(":Common").sourceSets.main
+                }
+            }
+        }
     }
 }
 
