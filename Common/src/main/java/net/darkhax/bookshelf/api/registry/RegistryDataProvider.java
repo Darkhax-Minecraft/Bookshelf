@@ -1,13 +1,11 @@
 package net.darkhax.bookshelf.api.registry;
 
-import com.mojang.brigadier.arguments.ArgumentType;
 import net.darkhax.bookshelf.api.ClientServices;
 import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.block.IBindRenderLayer;
 import net.darkhax.bookshelf.api.block.IItemBlockProvider;
 import net.darkhax.bookshelf.api.commands.ICommandBuilder;
 import net.darkhax.bookshelf.mixin.item.AccessorItem;
-import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
@@ -53,13 +51,18 @@ public class RegistryDataProvider {
     public final IOwnedRegistryEntries<Attribute> attributes = new RegistryEntries<>(this::getOwner, Registry.ATTRIBUTE_REGISTRY);
     public final IOwnedRegistryEntries<StatType<?>> stats = new RegistryEntries<>(this::getOwner, Registry.STAT_TYPE_REGISTRY);
     public final IOwnedRegistryEntries<VillagerProfession> villagerProfessions = new RegistryEntries<>(this::getOwner, Registry.VILLAGER_PROFESSION_REGISTRY);
-    public final IOwnedRegistryEntries<MenuType<?>> menuTypes = new RegistryEntries<>(this::getOwner, Registry.MENU_REGISTRY);
     public final CommandArgumentRegistryEntries commandArguments = new CommandArgumentRegistryEntries(this::getOwner, Registry.COMMAND_ARGUMENT_TYPE_REGISTRY);
     public final RecipeTypeEntries recipeTypes = new RecipeTypeEntries(this::getOwner);
     public final IOwnedRegistryEntries<ICommandBuilder> commands = new RegistryEntries<>(this::getOwner, "Command");
     public final VillagerTradeEntries trades = new VillagerTradeEntries();
     public final IOwnedRegistryEntries<PreparableReloadListener> resourceListeners = new RegistryEntries<>(this::getOwner, "Resource Listener");
     public final IOwnedRegistryEntries<PreparableReloadListener> dataListeners = new RegistryEntries<>(this::getOwner, "Data Listener");
+
+    /**
+     * This registry is a duplicate of {@link #menus} and should not be used. Will be removed in 1.19.3.
+     */
+    @Deprecated
+    public final IOwnedRegistryEntries<MenuType<?>> menuTypes = menus;
 
     public RegistryDataProvider(String ownerId) {
 

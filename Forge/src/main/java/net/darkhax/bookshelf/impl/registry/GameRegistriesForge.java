@@ -181,7 +181,6 @@ public class GameRegistriesForge implements IGameRegistries {
         this.consumeRegistry(content.stats, Registry.STAT_TYPE_REGISTRY);
         this.consumeRegistry(content.villagerProfessions, Registry.VILLAGER_PROFESSION_REGISTRY);
         this.consumeRegistry(content.recipeTypes, Registry.RECIPE_TYPE_REGISTRY);
-        this.consumeRegistry(content.menus, Registry.MENU_REGISTRY);
         this.consumeArgumentTypes(content.commandArguments);
         this.consumeWithForgeEvent(content.commands, RegisterCommandsEvent.class, (event, id, builder) -> builder.build(event.getDispatcher(), event.getBuildContext(), event.getCommandSelection()));
 
