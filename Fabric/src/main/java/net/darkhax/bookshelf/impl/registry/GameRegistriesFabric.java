@@ -46,7 +46,6 @@ public class GameRegistriesFabric extends GameRegistriesVanilla {
         this.consumeVanillaRegistry(content.attributes, Registry.ATTRIBUTE);
         this.consumeVanillaRegistry(content.stats, Registry.STAT_TYPE);
         this.consumeVanillaRegistry(content.villagerProfessions, Registry.VILLAGER_PROFESSION);
-        this.consumeVanillaRegistry(content.menuTypes, Registry.MENU);
         this.consumeRegistry(content.commandArguments, (id, value) -> ArgumentTypeRegistry.registerArgumentType(id, (Class) value.getType(), (ArgumentTypeInfo) value.getSerializer().get()));
         this.consumeVanillaRegistry(content.recipeTypes, Registry.RECIPE_TYPE);
 
