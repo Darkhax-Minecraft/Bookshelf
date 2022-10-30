@@ -40,7 +40,7 @@ def mappingVersion = getDefaultString('forge_mapping_version', project.ext.mcVer
 
 // Mixin Options
 def remapRefmap = getDefaultBoolean('mixin_remap_refmap')
-def remapRefmapFile = getDefaultString('mixin_remap_refmap_file', "${projectDir}/build/createSrgToMcp/output.srg")
+def remapRefmapFile = getDefaultString('mixin_remap_refmap_file', "${project.buildDir}/createSrgToMcp/output.srg")
 
 // Makes sure jar files are reobfuscated by Forge when built.
 jar.finalizedBy('reobfJar')
