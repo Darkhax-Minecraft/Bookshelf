@@ -22,6 +22,9 @@
   "entrypoints": {
     "main": [
       "net.darkhax.bookshelf.BookshelfFabric"
+    ],
+    "fabric-gametest": [
+      "net.darkhax.bookshelf.impl.gametest.BookshelfGameTests"
     ]
   },
   "mixins": [

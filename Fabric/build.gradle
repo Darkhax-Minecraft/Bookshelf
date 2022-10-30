@@ -24,6 +24,20 @@ dependencies {
     implementation project(":Common")
 }
 
+sourceSets {
+    gametest {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+
+        compileClasspath += project(":Common").sourceSets.main.compileClasspath
+        runtimeClasspath += project(":Common").sourceSets.main.runtimeClasspath
+        compileClasspath += project(":Common").sourceSets.main.output
+        runtimeClasspath += project(":Common").sourceSets.main.output
+    }
+}
+
 loom {
     runs {
         client {
@@ -35,6 +49,22 @@ loom {
         server {
             server()
             setConfigName("Fabric Server")
+            ideConfigGenerated(true)
+            runDir("run")
+        }
+        gametestServer {
+            server()
+            source(project.sourceSets.gametest)
+            vmArg("-Dfabric-api.gametest")
+            vmArg("-Dfabric-api.gametest.report-file=${project.buildDir}/junit.xml")
+            setConfigName("Fabric Game Test (Server)")
+            runDir("build/gametest")
+        }
+        // Use to debug tests
+        gametestClient {
+            client()
+            source(project.sourceSets.gametest)
+            setConfigName("Fabric Game Test (Client)")
             ideConfigGenerated(true)
             runDir("run")
         }
