@@ -21,7 +21,8 @@ if (canLoad) {
 
     project.publishing {
 
-        tasks.publish.dependsOn 'build'
+        // TODO this is probably not needed
+        tasks.publish.dependsOn 'assemble'
 
         publications {
 

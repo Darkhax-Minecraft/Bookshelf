@@ -252,7 +252,7 @@ task signJar(type: net.minecraftforge.gradle.common.tasks.SignJar, dependsOn: ja
         inputFile = jar.archivePath
         outputFile = jar.archivePath
 
-        build.dependsOn signJar
+        assemble.dependsOn signJar
     } else {
 
         project.logger.warn('Jar signing is disabled for this build. One or more keyStore properties are not specified.')
