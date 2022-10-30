@@ -26,7 +26,7 @@ wider range of circumstances and communities which can lead to less bugs and a l
 
 If you are using [Gradle](https://gradle.org) to manage your dependencies, add the following into your `build.gradle`
 file. Make sure to replace the version with the correct one. All versions can be
-viewed [here](https://maven.mcmoddev.com/net/darkhax/bookshelf/).
+viewed [here](https://maven.blamejared.com/net/darkhax/bookshelf/).
 
 ```
 repositories {
@@ -36,8 +36,17 @@ repositories {
 
 dependencies {
 
-    // Example: compile "net.darkhax.bookshelf:Bookshelf-Forge-1.16.5:10.3.29"
-    compile "net.darkhax.bookshelf:Bookshelf-Forge-MCVERSION:PUT_BOOKSHELH_VERSION_HERE"
+    // Forge devs
+    // EXAMPLE: compile "net.darkhax.bookshelf:Bookshelf-Forge-1.19.2:16.1.11"
+    // compile "net.darkhax.bookshelf:Bookshelf-Forge-MCVERSION:BOOKSHELF_VERSION"
+
+    // Fabric / Quilt devs
+    // EXAMPLE: modImplementation "net.darkhax.bookshelf:Bookshelf-Fabric-1.19.2:16.1.11"
+    // modImplementation "net.darkhax.bookshelf:Bookshelf-Fabric-MCVERSION:BOOKSHELF_VERSION"
+
+    // Common / MultiLoader / Vanilla
+    // EXAMPLE: compileOnly group: 'net.darkhax.bookshelf', name: "Bookshelf-Common-1.19.2", version: 16.1.11
+    // compileOnly group: 'net.darkhax.bookshelf', name: "Bookshelf-Common-MCVERSION", version: BOOKSHELF_VERSION
 }
 ```
 
