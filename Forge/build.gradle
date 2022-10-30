@@ -72,6 +72,9 @@ minecraft {
         gameTestServer {
             workingDirectory project.file('run')
 
+            // needed to not make CI think the task failed
+            setForceExit(false)
+
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'bookshelf'
@@ -284,5 +287,12 @@ task signJar(type: net.minecraftforge.gradle.common.tasks.SignJar, dependsOn: ja
     else {
 
         project.logger.warn('Jar signing is disabled for this build. One or more keyStore properties are not specified.')
+    }
+}
+
+// this is a workaround for ForgeGradle generating run config tasks during afterEvaluate, making it impossible to refer to them via tasks.getbyName()
+tasks.withType(JavaExec) {
+    if (name == 'runGameTestServer') {
+        tasks.test.dependsOn(it)
     }
 }
