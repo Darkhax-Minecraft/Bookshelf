@@ -33,4 +33,12 @@
     "time.bookshelf.day.thursday": "Quinta-feira",
     "time.bookshelf.day.friday": "Sexta-feira",
     "time.bookshelf.day.saturday": "Sábado"
+
+    "_comment": "Commands",
+    "commands.bookshelf.loot_tables": "Encontrados %d tabelas de saque ausentes para %s.",
+    "commands.bookshelf.loot_tables.wildcard": "Encontrados %d tabelas de saque ausentes para todos os mods.",
+    "argument.bookshelf.unknown_value": "O valor '%s' é desconhecido.",
+
+    "_comment": "Misc",
+    "text.bookshelf.ticks": "Ticks: %s"
 }
