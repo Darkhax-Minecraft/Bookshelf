@@ -281,7 +281,7 @@ task signJar(type: net.minecraftforge.gradle.common.tasks.SignJar, dependsOn: ja
         inputFile = jar.archivePath
         outputFile = jar.archivePath
 
-        tasks.reobfJar.finalizedBy signJar
+        tasks.assemble.finalizedBy signJar
     }
 
     else {
