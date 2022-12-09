@@ -32,7 +32,7 @@
     "time.bookshelf.day.wednesday": "Quarta-feira",
     "time.bookshelf.day.thursday": "Quinta-feira",
     "time.bookshelf.day.friday": "Sexta-feira",
-    "time.bookshelf.day.saturday": "Sábado"
+    "time.bookshelf.day.saturday": "Sábado",
 
     "_comment": "Commands",
     "commands.bookshelf.loot_tables": "Encontrados %d tabelas de saque ausentes para %s.",
