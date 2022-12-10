@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.darkhax.bookshelf.api.Services;
+import net.darkhax.bookshelf.api.registry.IContentLoader;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.RegistryDataProvider;
 import net.darkhax.bookshelf.impl.resources.WrappedReloadListener;
@@ -12,6 +13,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -24,30 +26,30 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public class GameRegistriesFabric extends GameRegistriesVanilla {
+public class ContentLoaderFabric implements IContentLoader {
 
     @Override
     public void loadContent(RegistryDataProvider content) {
 
-        this.consumeVanillaRegistry(content.blocks, Registry.BLOCK);
-        this.consumeVanillaRegistry(content.fluids, Registry.FLUID);
-        this.consumeVanillaRegistry(content.items, Registry.ITEM);
-        this.consumeVanillaRegistry(content.bannerPatterns, Registry.BANNER_PATTERN);
-        this.consumeVanillaRegistry(content.mobEffects, Registry.MOB_EFFECT);
-        this.consumeVanillaRegistry(content.sounds, Registry.SOUND_EVENT);
-        this.consumeVanillaRegistry(content.potions, Registry.POTION);
-        this.consumeVanillaRegistry(content.enchantments, Registry.ENCHANTMENT);
-        this.consumeVanillaRegistry(content.entities, Registry.ENTITY_TYPE);
-        this.consumeVanillaRegistry(content.blockEntities, Registry.BLOCK_ENTITY_TYPE);
-        this.consumeVanillaRegistry(content.particleTypes, Registry.PARTICLE_TYPE);
-        this.consumeVanillaRegistry(content.menus, Registry.MENU);
-        this.consumeVanillaRegistry(content.recipeSerializers, Registry.RECIPE_SERIALIZER);
-        this.consumeVanillaRegistry(content.paintings, Registry.PAINTING_VARIANT);
-        this.consumeVanillaRegistry(content.attributes, Registry.ATTRIBUTE);
-        this.consumeVanillaRegistry(content.stats, Registry.STAT_TYPE);
-        this.consumeVanillaRegistry(content.villagerProfessions, Registry.VILLAGER_PROFESSION);
+        this.consumeVanillaRegistry(content.blocks, BuiltInRegistries.BLOCK);
+        this.consumeVanillaRegistry(content.fluids, BuiltInRegistries.FLUID);
+        this.consumeVanillaRegistry(content.items, BuiltInRegistries.ITEM);
+        this.consumeVanillaRegistry(content.bannerPatterns, BuiltInRegistries.BANNER_PATTERN);
+        this.consumeVanillaRegistry(content.mobEffects, BuiltInRegistries.MOB_EFFECT);
+        this.consumeVanillaRegistry(content.sounds, BuiltInRegistries.SOUND_EVENT);
+        this.consumeVanillaRegistry(content.potions, BuiltInRegistries.POTION);
+        this.consumeVanillaRegistry(content.enchantments, BuiltInRegistries.ENCHANTMENT);
+        this.consumeVanillaRegistry(content.entities, BuiltInRegistries.ENTITY_TYPE);
+        this.consumeVanillaRegistry(content.blockEntities, BuiltInRegistries.BLOCK_ENTITY_TYPE);
+        this.consumeVanillaRegistry(content.particleTypes, BuiltInRegistries.PARTICLE_TYPE);
+        this.consumeVanillaRegistry(content.menus, BuiltInRegistries.MENU);
+        this.consumeVanillaRegistry(content.recipeSerializers, BuiltInRegistries.RECIPE_SERIALIZER);
+        this.consumeVanillaRegistry(content.paintings, BuiltInRegistries.PAINTING_VARIANT);
+        this.consumeVanillaRegistry(content.attributes, BuiltInRegistries.ATTRIBUTE);
+        this.consumeVanillaRegistry(content.stats, BuiltInRegistries.STAT_TYPE);
+        this.consumeVanillaRegistry(content.villagerProfessions, BuiltInRegistries.VILLAGER_PROFESSION);
         this.consumeRegistry(content.commandArguments, (id, value) -> ArgumentTypeRegistry.registerArgumentType(id, (Class) value.getType(), (ArgumentTypeInfo) value.getSerializer().get()));
-        this.consumeVanillaRegistry(content.recipeTypes, Registry.RECIPE_TYPE);
+        this.consumeVanillaRegistry(content.recipeTypes, BuiltInRegistries.RECIPE_TYPE);
 
         CommandRegistrationCallback.EVENT.register((dispatcher, access, environment) -> content.commands.build((id, value) -> value.build(dispatcher, access, environment)));
 

@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf.api.registry;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -11,7 +11,7 @@ public class RecipeTypeEntries extends RegistryEntries<RecipeType<?>> {
 
     public RecipeTypeEntries(Supplier<String> idProvider) {
 
-        super(idProvider, Registry.RECIPE_TYPE_REGISTRY);
+        super(idProvider, Registries.RECIPE_TYPE);
     }
 
     public <T extends Recipe<?>> IRegistryObject<RecipeType<T>> add(String typeId) {

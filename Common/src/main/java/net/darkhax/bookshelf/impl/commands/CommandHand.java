@@ -9,6 +9,7 @@ import net.darkhax.bookshelf.api.util.TextHelper;
 import net.darkhax.bookshelf.impl.commands.args.HandArgument;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -73,7 +74,7 @@ public class CommandHand {
 
         public static String getAsID(ItemStack stack) {
 
-            final ResourceLocation id = Services.REGISTRIES.items().getId(stack.getItem());
+            final ResourceLocation id = BuiltInRegistries.ITEM.getKey(stack.getItem());
             return id != null ? id.toString() : null;
         }
 

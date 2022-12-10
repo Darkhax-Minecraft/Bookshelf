@@ -1,11 +1,11 @@
 package net.darkhax.bookshelf.impl.data.conditions;
 
 import com.google.gson.JsonObject;
-import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.data.conditions.ILoadCondition;
 import net.darkhax.bookshelf.api.data.conditions.ILoadConditionSerializer;
-import net.darkhax.bookshelf.api.registry.IRegistryReader;
 import net.darkhax.bookshelf.api.serialization.Serializers;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
@@ -26,19 +26,19 @@ import java.util.List;
  */
 public class LoadConditionRegistry<T> implements ILoadConditionSerializer<ILoadCondition> {
 
-    public static final LoadConditionRegistry<Block> BLOCK = new LoadConditionRegistry<>(Services.REGISTRIES.blocks());
-    public static final LoadConditionRegistry<Item> ITEM = new LoadConditionRegistry<>(Services.REGISTRIES.items());
-    public static final LoadConditionRegistry<Enchantment> ENCHANTMENT = new LoadConditionRegistry<>(Services.REGISTRIES.enchantments());
-    public static final LoadConditionRegistry<PaintingVariant> PAINTING = new LoadConditionRegistry<>(Services.REGISTRIES.paintings());
-    public static final LoadConditionRegistry<MobEffect> MOB_EFFECT = new LoadConditionRegistry<>(Services.REGISTRIES.mobEffects());
-    public static final LoadConditionRegistry<Potion> POTION = new LoadConditionRegistry<>(Services.REGISTRIES.potions());
-    public static final LoadConditionRegistry<Attribute> ATTRIBUTE = new LoadConditionRegistry<>(Services.REGISTRIES.attributes());
-    public static final LoadConditionRegistry<EntityType<?>> ENTITY_TYPE = new LoadConditionRegistry<>(Services.REGISTRIES.entities());
-    public static final LoadConditionRegistry<BlockEntityType<?>> BLOCK_ENTITY_TYPE = new LoadConditionRegistry<>(Services.REGISTRIES.blockEntities());
+    public static final LoadConditionRegistry<Block> BLOCK = new LoadConditionRegistry<>(BuiltInRegistries.BLOCK);
+    public static final LoadConditionRegistry<Item> ITEM = new LoadConditionRegistry<>(BuiltInRegistries.ITEM);
+    public static final LoadConditionRegistry<Enchantment> ENCHANTMENT = new LoadConditionRegistry<>(BuiltInRegistries.ENCHANTMENT);
+    public static final LoadConditionRegistry<PaintingVariant> PAINTING = new LoadConditionRegistry<>(BuiltInRegistries.PAINTING_VARIANT);
+    public static final LoadConditionRegistry<MobEffect> MOB_EFFECT = new LoadConditionRegistry<>(BuiltInRegistries.MOB_EFFECT);
+    public static final LoadConditionRegistry<Potion> POTION = new LoadConditionRegistry<>(BuiltInRegistries.POTION);
+    public static final LoadConditionRegistry<Attribute> ATTRIBUTE = new LoadConditionRegistry<>(BuiltInRegistries.ATTRIBUTE);
+    public static final LoadConditionRegistry<EntityType<?>> ENTITY_TYPE = new LoadConditionRegistry<>(BuiltInRegistries.ENTITY_TYPE);
+    public static final LoadConditionRegistry<BlockEntityType<?>> BLOCK_ENTITY_TYPE = new LoadConditionRegistry<>(BuiltInRegistries.BLOCK_ENTITY_TYPE);
 
-    private final IRegistryReader<T> registry;
+    private final Registry<T> registry;
 
-    public LoadConditionRegistry(IRegistryReader<T> registry) {
+    public LoadConditionRegistry(Registry<T> registry) {
 
         this.registry = registry;
     }

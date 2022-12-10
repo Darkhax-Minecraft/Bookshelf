@@ -1,6 +1,5 @@
 package net.darkhax.bookshelf.api.util;
 
-import net.darkhax.bookshelf.api.item.ICreativeTabBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,8 +16,6 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 public interface IConstructHelper {
-
-    ICreativeTabBuilder creativeTab(String namespace, String tabName);
 
     default <T extends BlockEntity> Supplier<BlockEntityType<T>> blockEntityType(BiFunction<BlockPos, BlockState, T> factory, Supplier<Collection<Block>> blocks) {
 

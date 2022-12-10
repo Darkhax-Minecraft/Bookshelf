@@ -1,16 +1,16 @@
 package net.darkhax.bookshelf.api.serialization;
 
 import com.google.gson.JsonElement;
-import net.darkhax.bookshelf.api.registry.IRegistryReader;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
 public class SerializerRegistryEntry<T> implements ISerializer<T> {
 
-    private final IRegistryReader<T> registry;
+    private final Registry<T> registry;
 
-    public SerializerRegistryEntry(IRegistryReader<T> registry) {
+    public SerializerRegistryEntry(Registry<T> registry) {
 
         this.registry = registry;
     }
@@ -25,7 +25,7 @@ public class SerializerRegistryEntry<T> implements ISerializer<T> {
     @Override
     public JsonElement toJSON(T toWrite) {
 
-        return Serializers.RESOURCE_LOCATION.toJSON(registry.getId(toWrite));
+        return Serializers.RESOURCE_LOCATION.toJSON(registry.getKey(toWrite));
     }
 
     @Override
@@ -38,13 +38,13 @@ public class SerializerRegistryEntry<T> implements ISerializer<T> {
     @Override
     public void toByteBuf(FriendlyByteBuf buffer, T toWrite) {
 
-        Serializers.RESOURCE_LOCATION.toByteBuf(buffer, registry.getId(toWrite));
+        Serializers.RESOURCE_LOCATION.toByteBuf(buffer, registry.getKey(toWrite));
     }
 
     @Override
     public Tag toNBT(T toWrite) {
 
-        return Serializers.RESOURCE_LOCATION.toNBT(registry.getId(toWrite));
+        return Serializers.RESOURCE_LOCATION.toNBT(registry.getKey(toWrite));
     }
 
     @Override

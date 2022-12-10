@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
@@ -22,9 +23,9 @@ public class ShapelessDurabilityRecipe extends ShapelessRecipe {
 
     private final int damageAmount;
 
-    public ShapelessDurabilityRecipe(ResourceLocation recipeId, String group, ItemStack result, NonNullList<Ingredient> ingredients, int damageAmount) {
+    public ShapelessDurabilityRecipe(ResourceLocation recipeId, String group, CraftingBookCategory category, ItemStack result, NonNullList<Ingredient> ingredients, int damageAmount) {
 
-        super(recipeId, group, result, ingredients);
+        super(recipeId, group, category, result, ingredients);
         this.damageAmount = damageAmount;
     }
 
@@ -51,6 +52,8 @@ public class ShapelessDurabilityRecipe extends ShapelessRecipe {
             final ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
             final int damageAmount = GsonHelper.getAsInt(json, "damageAmount", 1);
 
+            CraftingBookCategory category = CraftingBookCategory.CODEC.byName(GsonHelper.getAsString(json, "category", null), CraftingBookCategory.MISC);
+
             if (inputs.isEmpty()) {
 
                 throw new JsonSyntaxException("No ingredients were found for the recipe!");
@@ -66,7 +69,7 @@ public class ShapelessDurabilityRecipe extends ShapelessRecipe {
                 throw new JsonSyntaxException("The output of the recipe must not be empty!");
             }
 
-            return new ShapelessDurabilityRecipe(recipeId, group, output, inputs, damageAmount);
+            return new ShapelessDurabilityRecipe(recipeId, group, category, output, inputs, damageAmount);
         }
 
         @Override
@@ -81,10 +84,12 @@ public class ShapelessDurabilityRecipe extends ShapelessRecipe {
                 inputs.set(i, Ingredient.fromNetwork(buffer));
             }
 
+            final CraftingBookCategory category = buffer.readEnum(CraftingBookCategory.class);
+
             final ItemStack output = buffer.readItem();
             final int damageAmount = buffer.readVarInt();
 
-            return new ShapelessDurabilityRecipe(recipeId, group, output, inputs, damageAmount);
+            return new ShapelessDurabilityRecipe(recipeId, group, category,output, inputs, damageAmount);
         }
 
         @Override
@@ -97,6 +102,8 @@ public class ShapelessDurabilityRecipe extends ShapelessRecipe {
 
                 ingredient.toNetwork(buffer);
             }
+
+            buffer.writeEnum(toWrite.category());
 
             buffer.writeItem(toWrite.getResultItem());
             buffer.writeVarInt(toWrite.damageAmount);

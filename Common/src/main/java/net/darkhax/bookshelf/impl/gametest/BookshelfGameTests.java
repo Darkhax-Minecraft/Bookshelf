@@ -1,11 +1,10 @@
 package net.darkhax.bookshelf.impl.gametest;
 
 import com.google.common.base.CaseFormat;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import net.darkhax.bookshelf.Constants;
 import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.data.sound.Sound;
+import net.darkhax.bookshelf.api.item.ItemStackBuilder;
 import net.darkhax.bookshelf.api.serialization.ISerializer;
 import net.darkhax.bookshelf.api.serialization.Serializers;
 import net.darkhax.bookshelf.api.util.ItemStackHelper;
@@ -13,11 +12,15 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.StructureUtils;
 import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -40,7 +43,7 @@ import net.minecraft.world.entity.decoration.PaintingVariants;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -56,6 +59,8 @@ import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -85,8 +90,8 @@ public class BookshelfGameTests {
 
         // Test Minecraft Type Serializers
         testFrom(testFunctions, new TestSerialization<>("resource_location", Serializers.RESOURCE_LOCATION, new ResourceLocation("hello_world"), new ResourceLocation("test", "two"), new ResourceLocation("test_from", "stuff/things/okay_stuff")));
-        testFrom(testFunctions, new TestSerialization<>("item_stack", Serializers.ITEM_STACK, ItemStackHelper::areStacksEquivalent, ItemStackHelper.getTabItems(CreativeModeTab.TAB_COMBAT)));
-        testFrom(testFunctions, new TestSerialization<>("nbt_compound_tag", Serializers.COMPOUND_TAG, Arrays.stream(ItemStackHelper.getTabItems(CreativeModeTab.TAB_COMBAT)).filter(ItemStack::hasTag).map(ItemStack::getTag).toArray(CompoundTag[]::new)));
+        testFrom(testFunctions, new TestSerialization<>("item_stack", Serializers.ITEM_STACK, ItemStackHelper::areStacksEquivalent, getTestStacks()));
+        testFrom(testFunctions, new TestSerialization<>("nbt_compound_tag", Serializers.COMPOUND_TAG, getTestTags()));
         testFrom(testFunctions, new TestSerialization<>("text_component", Serializers.TEXT, Component.translatable("moon.phase.full").withStyle(ChatFormatting.DARK_AQUA), Component.literal("Hello World"), Component.literal("okay").withStyle(s -> s.withFont(new ResourceLocation("minecraft:alt")))));
         testFrom(testFunctions, new TestSerialization<>("block_pos", Serializers.BLOCK_POS, new BlockPos(1, 2, 3), new BlockPos(0, 0, 0), BlockPos.of(123456L)));
         testFrom(testFunctions, new TestSerialization<>("ingredient", Serializers.INGREDIENT, BookshelfGameTests::assertEqual, new Ingredient[]{Ingredient.of(Items.STONE_AXE), Ingredient.EMPTY, Ingredient.of(Items.COAL), Ingredient.of(new ItemStack(Items.ACACIA_BOAT)), Ingredient.of(ItemTags.BEDS)}));
@@ -96,7 +101,7 @@ public class BookshelfGameTests {
         testFrom(testFunctions, new TestSerialization<>("enchantment_instance", Serializers.ENCHANTMENT_INSTANCE, BookshelfGameTests::assertEncantmentInstanceEqual, new EnchantmentInstance[]{new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 5), new EnchantmentInstance(Enchantments.BINDING_CURSE, 15), new EnchantmentInstance(Enchantments.IMPALING, 2)}));
         testFrom(testFunctions, new TestSerialization<>("Vector3f", Serializers.VECTOR_3F, new Vector3f(1f, 2f, 3f), new Vector3f(-5f, -2f, 44f), new Vector3f(Float.MAX_VALUE, Float.MIN_VALUE, Float.MIN_VALUE)));
         testFrom(testFunctions, new TestSerialization<>("Vector4f", Serializers.VECTOR_4F, new Vector4f(1f, 2f, 3f, 4f), new Vector4f(0f, -22f, -2222f, 0f), new Vector4f(Float.MAX_VALUE, Float.MIN_VALUE, Float.MIN_VALUE, Float.MAX_VALUE)));
-        testFrom(testFunctions, new TestSerialization<>("sound", Serializers.SOUND, new Sound(SoundEvents.DOLPHIN_JUMP, SoundSource.AMBIENT, 1f, 1f), new Sound(SoundEvents.AMBIENT_CAVE, SoundSource.NEUTRAL, 0.5f, 0.222f), new Sound(SoundEvents.SQUID_AMBIENT, SoundSource.PLAYERS, 0.1f, 0.2f)));
+        testFrom(testFunctions, new TestSerialization<>("sound", Serializers.SOUND, new Sound(SoundEvents.DOLPHIN_JUMP, SoundSource.AMBIENT, 1f, 1f), new Sound(SoundEvents.ALLAY_HURT, SoundSource.NEUTRAL, 0.5f, 0.222f), new Sound(SoundEvents.SQUID_AMBIENT, SoundSource.PLAYERS, 0.1f, 0.2f)));
 
         // Test Minecraft Enum Serializers
         testFrom(testFunctions, new TestSerialization<>("item_rarity", Serializers.ITEM_RARITY, Rarity.COMMON, Rarity.EPIC, Rarity.RARE, Rarity.RARE));
@@ -114,7 +119,7 @@ public class BookshelfGameTests {
         testFrom(testFunctions, new TestSerialization<>("registry_block", Serializers.BLOCK, Blocks.SAND, Blocks.STONE, Blocks.KELP, Blocks.SAND));
         testFrom(testFunctions, new TestSerialization<>("registry_item", Serializers.ITEM, Items.APPLE, Items.STICK, Items.STICK, Items.COOKED_PORKCHOP));
         testFrom(testFunctions, new TestSerialization<>("registry_enchantment", Serializers.ENCHANTMENT, Enchantments.ALL_DAMAGE_PROTECTION, Enchantments.BLAST_PROTECTION, Enchantments.BLAST_PROTECTION, Enchantments.SILK_TOUCH));
-        testFrom(testFunctions, new TestSerialization<>("registry_painting", Serializers.PAINTING, Services.REGISTRIES.paintings().get(PaintingVariants.COURBET.location()), Services.REGISTRIES.paintings().get(PaintingVariants.AZTEC.location())));
+        testFrom(testFunctions, new TestSerialization<>("registry_painting", Serializers.PAINTING, BuiltInRegistries.PAINTING_VARIANT.get(PaintingVariants.COURBET.location()), BuiltInRegistries.PAINTING_VARIANT.get(PaintingVariants.AZTEC.location())));
         testFrom(testFunctions, new TestSerialization<>("registry_potion", Serializers.POTION, Potions.EMPTY, Potions.AWKWARD, Potions.AWKWARD, Potions.FIRE_RESISTANCE, Potions.HEALING));
         testFrom(testFunctions, new TestSerialization<>("registry_attribute", Serializers.ATTRIBUTE, Attributes.ARMOR, Attributes.ATTACK_SPEED, Attributes.MAX_HEALTH, Attributes.SPAWN_REINFORCEMENTS_CHANCE));
         testFrom(testFunctions, new TestSerialization<>("registry_villager_profession", Serializers.VILLAGER_PROFESSION, VillagerProfession.ARMORER, VillagerProfession.ARMORER, VillagerProfession.BUTCHER, VillagerProfession.LEATHERWORKER, VillagerProfession.WEAPONSMITH));
@@ -154,23 +159,6 @@ public class BookshelfGameTests {
         testFromTags(testFunctions, "dimension_tag", Serializers.DIMENSION_TAG, Services.TAGS.dimensionTag(tagOne), Services.TAGS.dimensionTag(tagTwo));
         testFromTags(testFunctions, "biome_tag", Serializers.BIOME_TAG, Services.TAGS.biomeTag(tagOne), Services.TAGS.biomeTag(tagTwo));
 
-        // Test Registry Readers
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.blocks()));
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.items()));
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.enchantments()));
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.paintings()));
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.mobEffects()));
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.potions()));
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.attributes()));
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.villagerProfessions()));
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.villagerTypes()));
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.sounds()));
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.menuTypes()));
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.particles()));
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.entities()));
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.blockEntities()));
-        testFrom(testFunctions, new TestRegistryAccess<>(Services.REGISTRIES.gameEvents()));
-        
         return testFunctions;
     }
 
@@ -327,5 +315,31 @@ public class BookshelfGameTests {
         }
 
         return true;
+    }
+
+    private static ItemStack[] getTestStacks() {
+
+        return new ItemStack[]{
+                new ItemStack(Items.STONE),
+                new ItemStack(Items.STICK).setHoverName(Component.literal("test")),
+                new ItemStack(Items.STONE_AXE),
+                ItemStack.EMPTY,
+                new ItemStackBuilder(Items.GLOW_ITEM_FRAME).enchant(Enchantments.ALL_DAMAGE_PROTECTION).build(),
+                new ItemStackBuilder(Items.BOOKSHELF).name(Component.literal("HELP")).lore(Component.literal("hello world")).build()
+        };
+    }
+
+    private static CompoundTag[] getTestTags() {
+
+        CompoundTag tag1 = new CompoundTag();
+        CompoundTag tag2 = new CompoundTag();
+        tag2.put("one", IntTag.valueOf(33));
+        tag2.put("two", StringTag.valueOf("hello"));
+        CompoundTag tag3 = new CompoundTag();
+        tag3.put("one", tag2);
+        tag3.put("two", new ListTag());
+        return new CompoundTag[]{
+                tag1, tag2, tag3
+        };
     }
 }

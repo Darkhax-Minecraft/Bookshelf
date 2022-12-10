@@ -7,6 +7,8 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import net.darkhax.bookshelf.Constants;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
@@ -123,7 +125,7 @@ public class SerializerBlockState implements ISerializer<BlockState> {
 
                     catch (final Exception e) {
 
-                        Constants.LOG.error("Failed to update state for block {}. The mod that adds this block may have an issue.", Registry.BLOCK.getId(state.getBlock()));
+                        Constants.LOG.error("Failed to update state for block {}. The mod that adds this block may have an issue.", BuiltInRegistries.BLOCK.getKey(state.getBlock()));
                         Constants.LOG.trace("Failed to read blockstate from JSON property.", e);
                         throw e;
                     }
@@ -140,7 +142,7 @@ public class SerializerBlockState implements ISerializer<BlockState> {
         }
         else {
 
-            throw new JsonSyntaxException("The property " + propName + " is not valid for block " + Registry.BLOCK.getId(state.getBlock()));
+            throw new JsonSyntaxException("The property " + propName + " is not valid for block " + BuiltInRegistries.BLOCK.getKey(state.getBlock()));
         }
     }
 
@@ -155,7 +157,7 @@ public class SerializerBlockState implements ISerializer<BlockState> {
 
         if (nbt instanceof CompoundTag compound) {
 
-            return NbtUtils.readBlockState(compound);
+            return NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), compound);
         }
 
         throw new NBTParseException("Expected NBT to be a compound tag. Class was " + nbt.getClass() + " with ID " + nbt.getId() + " instead.");

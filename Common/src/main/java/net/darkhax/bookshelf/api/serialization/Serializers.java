@@ -1,13 +1,11 @@
 package net.darkhax.bookshelf.api.serialization;
 
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import net.darkhax.bookshelf.api.Services;
-import net.darkhax.bookshelf.api.data.sound.ISound;
 import net.darkhax.bookshelf.api.data.sound.Sound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -44,6 +42,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluid;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.util.UUID;
 
@@ -88,22 +88,22 @@ public final class Serializers {
     public static final ISerializer<SoundSource> SOUND_CATEGORY = new SerializerEnum<>(SoundSource.class);
 
     // REGISTRY TYPES
-    public static final ISerializer<Block> BLOCK = new SerializerRegistryEntry<>(Services.REGISTRIES.blocks());
-    public static final ISerializer<Item> ITEM = new SerializerRegistryEntry<>(Services.REGISTRIES.items());
-    public static final ISerializer<BannerPattern> BANNER_PATTERN = new SerializerRegistryEntry<>(Services.REGISTRIES.bannerPatterns());
-    public static final ISerializer<Enchantment> ENCHANTMENT = new SerializerRegistryEntry<>(Services.REGISTRIES.enchantments());
-    public static final ISerializer<PaintingVariant> PAINTING = new SerializerRegistryEntry<>(Services.REGISTRIES.paintings());
-    public static final ISerializer<MobEffect> MOB_EFFECT = new SerializerRegistryEntry<>(Services.REGISTRIES.mobEffects());
-    public static final ISerializer<Potion> POTION = new SerializerRegistryEntry<>(Services.REGISTRIES.potions());
-    public static final ISerializer<Attribute> ATTRIBUTE = new SerializerRegistryEntry<>(Services.REGISTRIES.attributes());
-    public static final ISerializer<VillagerProfession> VILLAGER_PROFESSION = new SerializerRegistryEntry<>(Services.REGISTRIES.villagerProfessions());
-    public static final ISerializer<VillagerType> VILLAGER_TYPE = new SerializerRegistryEntry<>(Services.REGISTRIES.villagerTypes());
-    public static final ISerializer<SoundEvent> SOUND_EVENT = new SerializerRegistryEntry<>(Services.REGISTRIES.sounds());
-    public static final ISerializer<MenuType<?>> MENU = new SerializerRegistryEntry<>(Services.REGISTRIES.menuTypes());
-    public static final ISerializer<ParticleType<?>> PARTICLE = new SerializerRegistryEntry<>(Services.REGISTRIES.particles());
-    public static final ISerializer<EntityType<?>> ENTITY = new SerializerRegistryEntry<>(Services.REGISTRIES.entities());
-    public static final ISerializer<BlockEntityType<?>> BLOCK_ENTITY = new SerializerRegistryEntry<>(Services.REGISTRIES.blockEntities());
-    public static final ISerializer<GameEvent> GAME_EVENT = new SerializerRegistryEntry<>(Services.REGISTRIES.gameEvents());
+    public static final ISerializer<Block> BLOCK = new SerializerRegistryEntry<>(BuiltInRegistries.BLOCK);
+    public static final ISerializer<Item> ITEM = new SerializerRegistryEntry<>(BuiltInRegistries.ITEM);
+    public static final ISerializer<BannerPattern> BANNER_PATTERN = new SerializerRegistryEntry<>(BuiltInRegistries.BANNER_PATTERN);
+    public static final ISerializer<Enchantment> ENCHANTMENT = new SerializerRegistryEntry<>(BuiltInRegistries.ENCHANTMENT);
+    public static final ISerializer<PaintingVariant> PAINTING = new SerializerRegistryEntry<>(BuiltInRegistries.PAINTING_VARIANT);
+    public static final ISerializer<MobEffect> MOB_EFFECT = new SerializerRegistryEntry<>(BuiltInRegistries.MOB_EFFECT);
+    public static final ISerializer<Potion> POTION = new SerializerRegistryEntry<>(BuiltInRegistries.POTION);
+    public static final ISerializer<Attribute> ATTRIBUTE = new SerializerRegistryEntry<>(BuiltInRegistries.ATTRIBUTE);
+    public static final ISerializer<VillagerProfession> VILLAGER_PROFESSION = new SerializerRegistryEntry<>(BuiltInRegistries.VILLAGER_PROFESSION);
+    public static final ISerializer<VillagerType> VILLAGER_TYPE = new SerializerRegistryEntry<>(BuiltInRegistries.VILLAGER_TYPE);
+    public static final ISerializer<SoundEvent> SOUND_EVENT = new SerializerRegistryEntry<>(BuiltInRegistries.SOUND_EVENT);
+    public static final ISerializer<MenuType<?>> MENU = new SerializerRegistryEntry<>(BuiltInRegistries.MENU);
+    public static final ISerializer<ParticleType<?>> PARTICLE = new SerializerRegistryEntry<>(BuiltInRegistries.PARTICLE_TYPE);
+    public static final ISerializer<EntityType<?>> ENTITY = new SerializerRegistryEntry<>(BuiltInRegistries.ENTITY_TYPE);
+    public static final ISerializer<BlockEntityType<?>> BLOCK_ENTITY = new SerializerRegistryEntry<>(BuiltInRegistries.BLOCK_ENTITY_TYPE);
+    public static final ISerializer<GameEvent> GAME_EVENT = new SerializerRegistryEntry<>(BuiltInRegistries.GAME_EVENT);
 
     // Tag Types
     public static final ISerializer<TagKey<Block>> BLOCK_TAG = new SerializerTagKey<>(Services.TAGS::blockTag);

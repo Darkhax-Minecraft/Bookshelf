@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
@@ -22,9 +23,9 @@ public final class ShapedDurabilityRecipe extends ShapedRecipe {
 
     private final int damageAmount;
 
-    public ShapedDurabilityRecipe(ResourceLocation id, String group, int width, int height, NonNullList<Ingredient> input, ItemStack output, int damageAmount) {
+    public ShapedDurabilityRecipe(ResourceLocation id, String group, CraftingBookCategory category, int width, int height, NonNullList<Ingredient> input, ItemStack output, int damageAmount) {
 
-        super(id, group, width, height, input, output);
+        super(id, group, category, width, height, input, output);
         this.damageAmount = damageAmount;
     }
 
@@ -55,7 +56,9 @@ public final class ShapedDurabilityRecipe extends ShapedRecipe {
             final NonNullList<Ingredient> inputs = AccessorShapedRecipe.bookshelf$dissolvePattern(pattern, ingredients, width, height);
             final ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
             final int damageAmount = Serializers.INT.fromJSON(json, "damageAmount", 1);
-            return new ShapedDurabilityRecipe(id, group, width, height, inputs, output, damageAmount);
+            final CraftingBookCategory category = CraftingBookCategory.CODEC.byName(GsonHelper.getAsString(json, "category", null), CraftingBookCategory.MISC);
+
+            return new ShapedDurabilityRecipe(id, group, category, width, height, inputs, output, damageAmount);
         }
 
         @Override
@@ -75,7 +78,9 @@ public final class ShapedDurabilityRecipe extends ShapedRecipe {
             final ItemStack output = buffer.readItem();
             final int damageAmount = buffer.readInt();
 
-            return new ShapedDurabilityRecipe(recipeId, group, width, height, input, output, damageAmount);
+            final CraftingBookCategory category = buffer.readEnum(CraftingBookCategory.class);
+
+            return new ShapedDurabilityRecipe(recipeId, group, category, width, height, input, output, damageAmount);
         }
 
         @Override
@@ -92,6 +97,8 @@ public final class ShapedDurabilityRecipe extends ShapedRecipe {
 
             buffer.writeItem(recipe.getResultItem());
             buffer.writeInt(recipe.damageAmount);
+
+            buffer.writeEnum(recipe.category());
         }
     }
 }

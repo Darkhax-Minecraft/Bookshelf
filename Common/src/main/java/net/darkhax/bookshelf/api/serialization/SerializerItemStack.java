@@ -3,12 +3,16 @@ package net.darkhax.bookshelf.api.serialization;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
 public class SerializerItemStack implements ISerializer<ItemStack> {
@@ -22,10 +26,20 @@ public class SerializerItemStack implements ISerializer<ItemStack> {
     @Override
     public ItemStack fromJSON(JsonElement json) {
 
-        if (json.isJsonObject()) {
+        if (json instanceof JsonObject obj) {
 
-            return ShapedRecipe.itemStackFromJson(json.getAsJsonObject());
+            // Our code needs to support deserializing air and empty stacks which is not supported by
+            // the underlying deserialization code. To avoid this we check and return early.
+            final ResourceLocation identifier = new ResourceLocation(GsonHelper.getAsString(obj, "item"));
+
+            if (BuiltInRegistries.ITEM.get(identifier) == Items.AIR) {
+
+                return ItemStack.EMPTY;
+            }
+
+            return ShapedRecipe.itemStackFromJson(obj);
         }
+
         else if (json.isJsonPrimitive()) {
 
             return new ItemStack(Serializers.ITEM.fromJSON(json));

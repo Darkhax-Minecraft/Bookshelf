@@ -5,9 +5,8 @@ import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.block.IBindRenderLayer;
 import net.darkhax.bookshelf.api.block.IItemBlockProvider;
 import net.darkhax.bookshelf.api.commands.ICommandBuilder;
-import net.darkhax.bookshelf.mixin.item.AccessorItem;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.stats.StatType;
@@ -17,41 +16,37 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 
-import java.util.function.Supplier;
-
 public class RegistryDataProvider {
 
     private final String ownerId;
 
-    public final IOwnedRegistryEntries<Block> blocks = new RegistryEntries<>(this::getOwner, Registry.BLOCK_REGISTRY);
-    public final IOwnedRegistryEntries<Fluid> fluids = new RegistryEntries<>(this::getOwner, Registry.FLUID_REGISTRY);
-    public final IOwnedRegistryEntries<Item> items = new RegistryEntries<>(this::getOwner, Registry.ITEM_REGISTRY);
-    public final IOwnedRegistryEntries<BannerPattern> bannerPatterns = new RegistryEntries<>(this::getOwner, Registry.BANNER_PATTERN_REGISTRY);
-    public final IOwnedRegistryEntries<MobEffect> mobEffects = new RegistryEntries<>(this::getOwner, Registry.MOB_EFFECT_REGISTRY);
-    public final IOwnedRegistryEntries<SoundEvent> sounds = new RegistryEntries<>(this::getOwner, Registry.SOUND_EVENT_REGISTRY);
-    public final IOwnedRegistryEntries<Potion> potions = new RegistryEntries<>(this::getOwner, Registry.POTION_REGISTRY);
-    public final IOwnedRegistryEntries<Enchantment> enchantments = new RegistryEntries<>(this::getOwner, Registry.ENCHANTMENT_REGISTRY);
-    public final IOwnedRegistryEntries<EntityType<?>> entities = new RegistryEntries<>(this::getOwner, Registry.ENTITY_TYPE_REGISTRY);
-    public final IOwnedRegistryEntries<BlockEntityType<?>> blockEntities = new RegistryEntries<>(this::getOwner, Registry.BLOCK_ENTITY_TYPE_REGISTRY);
-    public final IOwnedRegistryEntries<ParticleType<?>> particleTypes = new RegistryEntries<>(this::getOwner, Registry.PARTICLE_TYPE_REGISTRY);
-    public final IOwnedRegistryEntries<MenuType<?>> menus = new RegistryEntries<>(this::getOwner, Registry.MENU_REGISTRY);
-    public final IOwnedRegistryEntries<RecipeSerializer<?>> recipeSerializers = new RegistryEntries<>(this::getOwner, Registry.RECIPE_SERIALIZER_REGISTRY);
-    public final IOwnedRegistryEntries<PaintingVariant> paintings = new RegistryEntries<>(this::getOwner, Registry.PAINTING_VARIANT_REGISTRY);
-    public final IOwnedRegistryEntries<Attribute> attributes = new RegistryEntries<>(this::getOwner, Registry.ATTRIBUTE_REGISTRY);
-    public final IOwnedRegistryEntries<StatType<?>> stats = new RegistryEntries<>(this::getOwner, Registry.STAT_TYPE_REGISTRY);
-    public final IOwnedRegistryEntries<VillagerProfession> villagerProfessions = new RegistryEntries<>(this::getOwner, Registry.VILLAGER_PROFESSION_REGISTRY);
-    public final CommandArgumentRegistryEntries commandArguments = new CommandArgumentRegistryEntries(this::getOwner, Registry.COMMAND_ARGUMENT_TYPE_REGISTRY);
+    public final IOwnedRegistryEntries<Block> blocks = new RegistryEntries<>(this::getOwner, Registries.BLOCK);
+    public final IOwnedRegistryEntries<Fluid> fluids = new RegistryEntries<>(this::getOwner, Registries.FLUID);
+    public final IOwnedRegistryEntries<Item> items = new RegistryEntries<>(this::getOwner, Registries.ITEM);
+    public final IOwnedRegistryEntries<BannerPattern> bannerPatterns = new RegistryEntries<>(this::getOwner, Registries.BANNER_PATTERN);
+    public final IOwnedRegistryEntries<MobEffect> mobEffects = new RegistryEntries<>(this::getOwner, Registries.MOB_EFFECT);
+    public final IOwnedRegistryEntries<SoundEvent> sounds = new RegistryEntries<>(this::getOwner, Registries.SOUND_EVENT);
+    public final IOwnedRegistryEntries<Potion> potions = new RegistryEntries<>(this::getOwner, Registries.POTION);
+    public final IOwnedRegistryEntries<Enchantment> enchantments = new RegistryEntries<>(this::getOwner, Registries.ENCHANTMENT);
+    public final IOwnedRegistryEntries<EntityType<?>> entities = new RegistryEntries<>(this::getOwner, Registries.ENTITY_TYPE);
+    public final IOwnedRegistryEntries<BlockEntityType<?>> blockEntities = new RegistryEntries<>(this::getOwner, Registries.BLOCK_ENTITY_TYPE);
+    public final IOwnedRegistryEntries<ParticleType<?>> particleTypes = new RegistryEntries<>(this::getOwner, Registries.PARTICLE_TYPE);
+    public final IOwnedRegistryEntries<MenuType<?>> menus = new RegistryEntries<>(this::getOwner, Registries.MENU);
+    public final IOwnedRegistryEntries<RecipeSerializer<?>> recipeSerializers = new RegistryEntries<>(this::getOwner, Registries.RECIPE_SERIALIZER);
+    public final IOwnedRegistryEntries<PaintingVariant> paintings = new RegistryEntries<>(this::getOwner, Registries.PAINTING_VARIANT);
+    public final IOwnedRegistryEntries<Attribute> attributes = new RegistryEntries<>(this::getOwner, Registries.ATTRIBUTE);
+    public final IOwnedRegistryEntries<StatType<?>> stats = new RegistryEntries<>(this::getOwner, Registries.STAT_TYPE);
+    public final IOwnedRegistryEntries<VillagerProfession> villagerProfessions = new RegistryEntries<>(this::getOwner, Registries.VILLAGER_PROFESSION);
+    public final CommandArgumentRegistryEntries commandArguments = new CommandArgumentRegistryEntries(this::getOwner, Registries.COMMAND_ARGUMENT_TYPE);
     public final RecipeTypeEntries recipeTypes = new RecipeTypeEntries(this::getOwner);
     public final IOwnedRegistryEntries<ICommandBuilder> commands = new RegistryEntries<>(this::getOwner, "Command");
     public final VillagerTradeEntries trades = new VillagerTradeEntries();
@@ -67,29 +62,6 @@ public class RegistryDataProvider {
     public RegistryDataProvider(String ownerId) {
 
         this.ownerId = ownerId;
-    }
-
-    public final RegistryDataProvider withCreativeTab(Supplier<? extends ItemLike> iconProvider) {
-
-        return this.withCreativeTab(iconProvider, "creative_tab");
-    }
-
-    public final RegistryDataProvider withCreativeTab(Supplier<? extends ItemLike> iconProvider, String id) {
-
-        return this.withCreativeTab(Services.CONSTRUCTS.creativeTab(this.ownerId, id).setIcon(iconProvider).build());
-    }
-
-    public final RegistryDataProvider withCreativeTab(CreativeModeTab tab) {
-
-        this.items.addRegistryListener((id, item) -> {
-
-            if (item instanceof AccessorItem accessor) {
-
-                accessor.bookshelf$setCreativeTab(tab);
-            }
-        });
-
-        return this;
     }
 
     public final RegistryDataProvider bindBlockRenderLayers() {

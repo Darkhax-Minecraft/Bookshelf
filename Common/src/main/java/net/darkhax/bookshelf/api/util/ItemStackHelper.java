@@ -1,6 +1,13 @@
 package net.darkhax.bookshelf.api.util;
 
-import net.minecraft.core.NonNullList;
+import net.darkhax.bookshelf.api.item.ItemStackBuilder;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
@@ -8,6 +15,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -58,13 +66,27 @@ public final class ItemStackHelper {
 
     public static ItemStack[] getTabItems(CreativeModeTab tab) {
 
-        final NonNullList<ItemStack> stacks = NonNullList.create();
-        CreativeModeTab.TAB_COMBAT.fillItemList(stacks);
-        return stacks.toArray(ItemStack[]::new);
+        return tab.getDisplayItems().toArray(ItemStack[]::new);
     }
 
     public static boolean areStacksEquivalent(ItemStack first, ItemStack second) {
 
         return first.isEmpty() == second.isEmpty() && first.getCount() == second.getCount() && Objects.equals(first.getTag(), second.getTag());
+    }
+
+    public static void setLore(ItemStack stack, Component... lines) {
+
+        final CompoundTag displayTag = stack.getOrCreateTagElement("display");
+        final ListTag loreList = new ListTag();
+        Arrays.stream(lines).forEach(line -> loreList.add(StringTag.valueOf(Component.Serializer.toJson(line))));
+        displayTag.put("Lore", loreList);
+    }
+
+    public static void appendLore(ItemStack stack, Component... lines) {
+
+        final CompoundTag displayTag = stack.getOrCreateTagElement("display");
+        final ListTag loreList = displayTag.contains("Lore") ? displayTag.getList("Lore", Tag.TAG_STRING) : new ListTag();
+        Arrays.stream(lines).forEach(line -> loreList.add(StringTag.valueOf(Component.Serializer.toJson(line))));
+        displayTag.put("Lore", loreList);
     }
 }
