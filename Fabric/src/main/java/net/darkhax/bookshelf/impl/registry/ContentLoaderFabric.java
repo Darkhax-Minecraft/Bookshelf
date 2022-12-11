@@ -4,12 +4,15 @@ import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.darkhax.bookshelf.api.Services;
+import net.darkhax.bookshelf.api.item.tab.ITabBuilder;
+import net.darkhax.bookshelf.api.item.tab.TabBuilder;
 import net.darkhax.bookshelf.api.registry.IContentLoader;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.RegistryDataProvider;
 import net.darkhax.bookshelf.impl.resources.WrappedReloadListener;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.core.Registry;
@@ -57,6 +60,13 @@ public class ContentLoaderFabric implements IContentLoader {
         this.registerWanderingTrades(content.trades.getCommonWanderingTrades(), content.trades.getRareWanderingTrades());
 
         this.consumeRegistry(content.dataListeners, (id, value) -> ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new WrappedReloadListener(id, value)));
+
+        this.consumeRegistry(content.creativeTabs, (id, value) -> {
+
+            final ITabBuilder builder = new TabBuilder(FabricItemGroup.builder(id));
+            value.accept(builder);
+            builder.build();
+        });
 
         if (Services.PLATFORM.isPhysicalClient()) {
 

@@ -3,6 +3,7 @@ package net.darkhax.bookshelf.impl.registry;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.darkhax.bookshelf.api.Services;
+import net.darkhax.bookshelf.api.item.tab.TabBuilder;
 import net.darkhax.bookshelf.api.registry.CommandArgumentEntry;
 import net.darkhax.bookshelf.api.registry.IContentLoader;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
@@ -11,8 +12,8 @@ import net.darkhax.bookshelf.impl.util.ForgeEventHelper;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
@@ -40,7 +42,7 @@ public class ContentLoaderForge implements IContentLoader {
     // Content loading
     @Override
     public void loadContent(RegistryDataProvider content) {
-        
+
         this.consumeRegistry(content.blocks, Registries.BLOCK);
         this.consumeRegistry(content.fluids, Registries.FLUID);
         this.consumeRegistry(content.items, Registries.ITEM);
@@ -66,6 +68,11 @@ public class ContentLoaderForge implements IContentLoader {
         ForgeEventHelper.addContextListener(WandererTradesEvent.class, content.trades.getCommonWanderingTrades(), content.trades.getRareWanderingTrades(), this::registerWanderingTrades);
 
         this.consumeWithForgeEvent(content.dataListeners, AddReloadListenerEvent.class, (event, id, arg) -> event.addListener(arg));
+        this.consumeWithModEvent(content.creativeTabs, CreativeModeTabEvent.Register.class, (event, id, arg) -> {
+            event.registerCreativeModeTab(id, builder -> {
+                arg.accept(new TabBuilder(builder.title(Component.translatable("itemGroup.%s.%s".formatted(id.getNamespace(), id.getPath())))));
+            });
+        });
 
         if (Services.PLATFORM.isPhysicalClient()) {
 

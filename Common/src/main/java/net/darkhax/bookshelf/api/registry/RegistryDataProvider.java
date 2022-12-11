@@ -5,6 +5,7 @@ import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.block.IBindRenderLayer;
 import net.darkhax.bookshelf.api.block.IItemBlockProvider;
 import net.darkhax.bookshelf.api.commands.ICommandBuilder;
+import net.darkhax.bookshelf.api.item.tab.ITabBuilder;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -24,6 +26,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class RegistryDataProvider {
 
@@ -52,16 +57,20 @@ public class RegistryDataProvider {
     public final VillagerTradeEntries trades = new VillagerTradeEntries();
     public final IOwnedRegistryEntries<PreparableReloadListener> resourceListeners = new RegistryEntries<>(this::getOwner, "Resource Listener");
     public final IOwnedRegistryEntries<PreparableReloadListener> dataListeners = new RegistryEntries<>(this::getOwner, "Data Listener");
-
-    /**
-     * This registry is a duplicate of {@link #menus} and should not be used. Will be removed in 1.19.3.
-     */
-    @Deprecated
-    public final IOwnedRegistryEntries<MenuType<?>> menuTypes = menus;
+    public final IOwnedRegistryEntries<Consumer<ITabBuilder>> creativeTabs = new RegistryEntries<>(this::getOwner, "Creative Tabs");
 
     public RegistryDataProvider(String ownerId) {
 
         this.ownerId = ownerId;
+    }
+
+    public final RegistryDataProvider withItemTab(Supplier<ItemStack> icon) {
+
+        this.creativeTabs.add(() -> builder -> {
+            builder.icon(icon);
+            builder.displayItems((flags, output, isOp) -> output.acceptItemIter(this.items));
+        }, "creative_tab");
+        return this;
     }
 
     public final RegistryDataProvider bindBlockRenderLayers() {
