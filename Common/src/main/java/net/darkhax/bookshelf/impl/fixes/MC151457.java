@@ -1,7 +1,6 @@
 package net.darkhax.bookshelf.impl.fixes;
 
 import net.darkhax.bookshelf.Constants;
-import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.mixin.item.AccessorItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;

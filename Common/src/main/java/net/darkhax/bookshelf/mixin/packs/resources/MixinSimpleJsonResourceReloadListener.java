@@ -2,8 +2,6 @@ package net.darkhax.bookshelf.mixin.packs.resources;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.darkhax.bookshelf.api.data.conditions.ILoadCondition;
-import net.darkhax.bookshelf.api.data.conditions.ILoadConditionSerializer;
 import net.darkhax.bookshelf.api.data.conditions.LoadConditions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;

@@ -3,7 +3,6 @@ package net.darkhax.bookshelf.impl.commands;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.serialization.Serializers;
 import net.darkhax.bookshelf.api.util.TextHelper;
 import net.darkhax.bookshelf.impl.commands.args.HandArgument;
