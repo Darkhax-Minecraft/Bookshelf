@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.api.serialization;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import net.darkhax.bookshelf.api.registry.IRegistryReader;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -19,6 +20,13 @@ public class SerializerRegistryEntry<T> implements ISerializer<T> {
     public T fromJSON(JsonElement json) {
 
         final ResourceLocation id = Serializers.RESOURCE_LOCATION.fromJSON(json);
+        final T entry = registry.get(id);
+
+        if (entry == null) {
+
+            throw new JsonParseException("Failed to lookup registry entry '" + id.toString() + "' in registry '" + registry.getRegistryName().toString() + "'");
+        }
+
         return registry.get(id);
     }
 
