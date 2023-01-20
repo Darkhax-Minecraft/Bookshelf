@@ -54,7 +54,17 @@ public class SerializerBlockState implements ISerializer<BlockState> {
 
         else if (json instanceof JsonPrimitive primitive && primitive.isString()) {
 
-            return Serializers.BLOCK.fromJSON(json).defaultBlockState();
+            final Block block = Serializers.BLOCK.fromJSON(json);
+
+            if (block != null) {
+
+                return block.defaultBlockState();
+            }
+
+            else {
+
+                throw new JsonParseException("Block ID is missing or invalid. '" + json.getAsString() + "'");
+            }
         }
 
         else {
