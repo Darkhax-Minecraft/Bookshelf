@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -144,6 +145,11 @@ public class TagHelperVanilla implements ITagHelper {
     @Override
     public TagKey<Biome> biomeTag(ResourceLocation tag) {
         return TagKey.create(Registries.BIOME, tag);
+    }
+
+    @Override
+    public TagKey<DamageType> damageTag(ResourceLocation tag) {
+        return TagKey.create(Registries.DAMAGE_TYPE, tag);
     }
 
     @Override

@@ -22,11 +22,13 @@ public final class ShapedDurabilityRecipe extends ShapedRecipe {
     public static final Serializer SERIALIZER = new Serializer();
 
     private final int damageAmount;
+    private final ItemStack output;
 
     public ShapedDurabilityRecipe(ResourceLocation id, String group, CraftingBookCategory category, int width, int height, NonNullList<Ingredient> input, ItemStack output, int damageAmount) {
 
         super(id, group, category, width, height, input, output);
         this.damageAmount = damageAmount;
+        this.output = output;
     }
 
     @Override
@@ -95,7 +97,7 @@ public final class ShapedDurabilityRecipe extends ShapedRecipe {
                 ingredient.toNetwork(buffer);
             }
 
-            buffer.writeItem(recipe.getResultItem());
+            buffer.writeItem(recipe.output);
             buffer.writeInt(recipe.damageAmount);
 
             buffer.writeEnum(recipe.category());

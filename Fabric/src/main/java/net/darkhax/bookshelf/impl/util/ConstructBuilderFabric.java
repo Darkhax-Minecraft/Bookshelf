@@ -39,7 +39,7 @@ public class ConstructBuilderFabric implements IConstructHelper {
     @Override
     public CreativeModeTab.DisplayItemsGenerator wrapDisplayGen(IDisplayGenerator displayGen) {
 
-        return (flags, output, op) -> displayGen.display(flags, new IOutputWrapper() {
+        return (params, output) -> displayGen.display(params, new IOutputWrapper() {
             @Override
             public void accept(ItemStack stack) {
                 output.accept(stack);
@@ -49,6 +49,6 @@ public class ConstructBuilderFabric implements IConstructHelper {
             public void accept(ItemLike item) {
                 output.accept(item);
             }
-        }, op);
+        });
     }
 }

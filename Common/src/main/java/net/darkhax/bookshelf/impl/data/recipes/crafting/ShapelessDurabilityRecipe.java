@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.armortrim.TrimPattern;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -22,11 +23,13 @@ public class ShapelessDurabilityRecipe extends ShapelessRecipe {
     public static final Serializer SERIALIZER = new Serializer();
 
     private final int damageAmount;
+    private final ItemStack output;
 
     public ShapelessDurabilityRecipe(ResourceLocation recipeId, String group, CraftingBookCategory category, ItemStack result, NonNullList<Ingredient> ingredients, int damageAmount) {
 
         super(recipeId, group, category, result, ingredients);
         this.damageAmount = damageAmount;
+        this.output = result;
     }
 
     @Override
@@ -105,7 +108,7 @@ public class ShapelessDurabilityRecipe extends ShapelessRecipe {
 
             buffer.writeEnum(toWrite.category());
 
-            buffer.writeItem(toWrite.getResultItem());
+            buffer.writeItem(toWrite.output);
             buffer.writeVarInt(toWrite.damageAmount);
         }
 

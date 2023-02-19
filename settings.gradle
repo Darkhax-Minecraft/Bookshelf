@@ -17,4 +17,4 @@ pluginManagement {
 }
 
 rootProject.name = "Bookshelf"
-include('Common', 'Fabric', 'Forge')
+include('Common', 'Fabric')
