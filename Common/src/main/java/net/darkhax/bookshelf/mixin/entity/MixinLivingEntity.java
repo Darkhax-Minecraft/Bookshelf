@@ -1,8 +1,8 @@
 package net.darkhax.bookshelf.mixin.entity;
 
 import net.darkhax.bookshelf.Constants;
-import net.darkhax.bookshelf.api.item.IEquippable;
 import net.darkhax.bookshelf.api.data.BookshelfTags;
+import net.darkhax.bookshelf.api.item.IEquippable;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
