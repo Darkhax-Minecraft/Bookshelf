@@ -52,7 +52,7 @@ public class LoadConditionRegistry<T> implements ILoadConditionSerializer<ILoadC
 
             for (ResourceLocation regId : ids) {
 
-                if (this.registry.get(regId) == null) {
+                if (!this.registry.containsKey(regId)) {
 
                     return false;
                 }
