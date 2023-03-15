@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.api.serialization;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -19,7 +20,12 @@ public class SerializerRegistryEntry<T> implements ISerializer<T> {
     public T fromJSON(JsonElement json) {
 
         final ResourceLocation id = Serializers.RESOURCE_LOCATION.fromJSON(json);
-        return registry.get(id);
+
+        if (registry.containsKey(id)) {
+            return registry.get(id);
+        }
+
+        throw new JsonParseException("ID '" + id + "' has not been registered");
     }
 
     @Override
