@@ -7,7 +7,6 @@
     "block.MixinFarmBlock"
   ],
   "client": [
-    "client.AccessorItemBlockRenderTypes",
     "client.MixinClientPacketListener"
   ],
   "injectors": {

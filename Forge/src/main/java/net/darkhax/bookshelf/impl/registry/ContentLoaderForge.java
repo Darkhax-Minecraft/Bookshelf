@@ -3,12 +3,14 @@ package net.darkhax.bookshelf.impl.registry;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.darkhax.bookshelf.api.Services;
+import net.darkhax.bookshelf.api.block.IBindRenderLayer;
 import net.darkhax.bookshelf.api.item.tab.TabBuilder;
 import net.darkhax.bookshelf.api.registry.CommandArgumentEntry;
 import net.darkhax.bookshelf.api.registry.IContentLoader;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.RegistryDataProvider;
 import net.darkhax.bookshelf.impl.util.ForgeEventHelper;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
 import net.minecraft.core.Registry;
@@ -28,12 +30,15 @@ import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.event.IModBusEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.ParallelDispatchEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegisterEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -83,6 +88,12 @@ public class ContentLoaderForge implements IContentLoader {
     private void loadClient(RegistryDataProvider content) {
 
         this.consumeWithModEvent(content.resourceListeners, RegisterClientReloadListenersEvent.class, (event, id, arg) -> event.registerReloadListener(arg));
+
+        this.consumeWithParallelEvent(content.blocks, FMLClientSetupEvent.class, (event, block) -> {
+            if (block instanceof IBindRenderLayer bindLayer) {
+                ItemBlockRenderTypes.setRenderLayer(block, bindLayer.getRenderLayerToBind());
+            }
+        });
     }
 
     private void registerVillagerTrades(VillagerTradesEvent event, Map<VillagerProfession, Multimap<Integer, VillagerTrades.ItemListing>> trades) {
@@ -164,6 +175,20 @@ public class ContentLoaderForge implements IContentLoader {
         };
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.NORMAL, false, RegisterEvent.class, listener);
+    }
+
+    private <ET extends ParallelDispatchEvent, RT> void consumeWithParallelEvent(IRegistryEntries<RT> registry, Class<ET> eventType, BiConsumer<ET, RT> func) {
+
+        final Consumer<ET> listener = event -> {
+
+            event.enqueueWork(() -> {
+                for (RT entry : registry) {
+                    func.accept(event, entry);
+                }
+            });
+        };
+
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.NORMAL, false, eventType, listener);
     }
 
     interface EventConsumer<E extends Event, V> {

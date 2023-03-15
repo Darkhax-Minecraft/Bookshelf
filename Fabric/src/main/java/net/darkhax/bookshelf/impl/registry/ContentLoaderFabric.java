@@ -4,12 +4,14 @@ import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.darkhax.bookshelf.api.Services;
+import net.darkhax.bookshelf.api.block.IBindRenderLayer;
 import net.darkhax.bookshelf.api.item.tab.ITabBuilder;
 import net.darkhax.bookshelf.api.item.tab.TabBuilder;
 import net.darkhax.bookshelf.api.registry.IContentLoader;
 import net.darkhax.bookshelf.api.registry.IRegistryEntries;
 import net.darkhax.bookshelf.api.registry.RegistryDataProvider;
 import net.darkhax.bookshelf.impl.resources.WrappedReloadListener;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
@@ -21,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.level.block.Block;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,6 +80,12 @@ public class ContentLoaderFabric implements IContentLoader {
     private void loadClient(RegistryDataProvider content) {
 
         this.consumeRegistry(content.resourceListeners, (id, value) -> ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new WrappedReloadListener(id, value)));
+
+        for (Block block : content.blocks) {
+            if (block instanceof IBindRenderLayer bindLayer) {
+                BlockRenderLayerMap.INSTANCE.putBlock(block, bindLayer.getRenderLayerToBind());
+            }
+        }
     }
 
     private <T, O> void consumeVanillaRegistry(IRegistryEntries<O> toRegister, Registry<T> registry, Function<O, T> wrapper) {

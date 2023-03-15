@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.api.registry;
 
+import net.darkhax.bookshelf.Constants;
 import net.darkhax.bookshelf.api.ClientServices;
 import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.block.IBindRenderLayer;
@@ -73,19 +74,10 @@ public class RegistryDataProvider {
         return this;
     }
 
+    @Deprecated
     public final RegistryDataProvider bindBlockRenderLayers() {
 
-        if (Services.PLATFORM.isPhysicalClient()) {
-
-            this.blocks.addRegistryListener((id, block) -> {
-
-                if (block instanceof IBindRenderLayer binder) {
-
-                    ClientServices.CLIENT.setRenderType(block, binder.getRenderLayerToBind());
-                }
-            });
-        }
-
+        Constants.LOG.error("Mod {} is using deprecated bindBlockRenderLayers option.", this.getOwner());
         return this;
     }
 
