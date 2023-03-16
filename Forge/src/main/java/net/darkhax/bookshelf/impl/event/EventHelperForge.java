@@ -2,7 +2,6 @@ package net.darkhax.bookshelf.impl.event;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.event.IEventHelper;
 import net.darkhax.bookshelf.api.event.block.IFarmlandTrampleListener;
@@ -16,12 +15,7 @@ import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
-
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.function.Consumer;
 
 public class EventHelperForge implements IEventHelper {
 

@@ -17,11 +17,10 @@
     "accessors.item.AccessorItemCooldowns",
     "accessors.item.crafting.AccessorShapedRecipe",
     "accessors.util.random.AccessorWeightedRandomList",
-
-    "patches.loot.MixinLootItemKilledByPlayerCondition",
-    "patches.packs.resources.MixinSimpleJsonResourceReloadListener",
     "patches.entity.MixinLightningBolt",
-    "patches.entity.MixinLivingEntity"
+    "patches.entity.MixinLivingEntity",
+    "patches.loot.MixinLootItemKilledByPlayerCondition",
+    "patches.packs.resources.MixinSimpleJsonResourceReloadListener"
   ],
   "client": [
     "accessors.client.AccessorFontManager",

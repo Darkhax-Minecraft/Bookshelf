@@ -1,9 +1,6 @@
 package net.darkhax.bookshelf.api.registry;
 
 import net.darkhax.bookshelf.Constants;
-import net.darkhax.bookshelf.api.ClientServices;
-import net.darkhax.bookshelf.api.Services;
-import net.darkhax.bookshelf.api.block.IBindRenderLayer;
 import net.darkhax.bookshelf.api.block.IItemBlockProvider;
 import net.darkhax.bookshelf.api.commands.ICommandBuilder;
 import net.darkhax.bookshelf.api.item.tab.ITabBuilder;

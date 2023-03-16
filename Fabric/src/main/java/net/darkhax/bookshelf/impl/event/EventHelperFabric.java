@@ -11,8 +11,6 @@ import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.function.Consumer;
-
 public class EventHelperFabric implements IEventHelper {
 
     @Override

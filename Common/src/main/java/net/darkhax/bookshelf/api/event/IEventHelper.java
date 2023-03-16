@@ -6,8 +6,6 @@ import net.darkhax.bookshelf.api.event.entity.player.IPlayerWakeUpEvent;
 import net.darkhax.bookshelf.api.event.item.IItemAttributeEvent;
 import net.darkhax.bookshelf.api.event.item.IItemTooltipEvent;
 
-import java.util.function.Consumer;
-
 /**
  * The event helper provides a loader neutral interface for registering event listeners with an underlying loader
  * specific event bus.
