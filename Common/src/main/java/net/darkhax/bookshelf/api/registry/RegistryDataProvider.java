@@ -1,6 +1,5 @@
 package net.darkhax.bookshelf.api.registry;
 
-import net.darkhax.bookshelf.Constants;
 import net.darkhax.bookshelf.api.block.IItemBlockProvider;
 import net.darkhax.bookshelf.api.commands.ICommandBuilder;
 import net.darkhax.bookshelf.api.item.tab.ITabBuilder;
@@ -68,13 +67,6 @@ public class RegistryDataProvider {
             builder.icon(icon);
             builder.displayItems((flags, output) -> output.acceptItemIter(this.items));
         }, "creative_tab");
-        return this;
-    }
-
-    @Deprecated
-    public final RegistryDataProvider bindBlockRenderLayers() {
-
-        Constants.LOG.error("Mod {} is using deprecated bindBlockRenderLayers option.", this.getOwner());
         return this;
     }
 

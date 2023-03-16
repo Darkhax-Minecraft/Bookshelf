@@ -121,8 +121,8 @@ public interface IInventoryHelper {
 
     default NonNullList<ItemStack> keepDamageableItems(CraftingContainer inv, NonNullList<ItemStack> keptItems, int damageAmount) {
 
-        @Nullable final Player player = this.getCraftingPlayer(inv);
-        final RandomSource random = player != null ? player.getRandom() : Constants.RANDOM_SOURCE;
+        @Nullable
+        final Player player = this.getCraftingPlayer(inv);
 
         for (int i = 0; i < keptItems.size(); i++) {
 

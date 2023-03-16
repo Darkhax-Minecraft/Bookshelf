@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.NetworkHooks;
@@ -46,7 +46,7 @@ public class InventoryHelperForge implements IInventoryHelper {
 
         if (be != null) {
 
-            final Optional<IItemHandler> inventory = be.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction).resolve();
+            final Optional<IItemHandler> inventory = be.getCapability(ForgeCapabilities.ITEM_HANDLER, direction).resolve();
 
             if (inventory.isPresent()) {
 

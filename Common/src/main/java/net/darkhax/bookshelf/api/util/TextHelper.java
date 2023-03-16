@@ -64,7 +64,7 @@ public final class TextHelper {
         return setHover(component, new HoverEvent(action, arg));
     }
 
-    public static <T extends Component, AT, A extends HoverEvent.Action<AT>> T setHover(T component, HoverEvent hoverInfo) {
+    public static <T extends Component> T setHover(T component, HoverEvent hoverInfo) {
 
         if (component instanceof MutableComponent mutable) {
 

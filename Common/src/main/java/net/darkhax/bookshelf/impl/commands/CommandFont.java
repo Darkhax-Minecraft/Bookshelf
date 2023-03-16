@@ -16,6 +16,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -85,7 +86,7 @@ public class CommandFont {
 
                     final Component component = sign.getMessage(i, false);
 
-                    if (component != null && component != Component.EMPTY) {
+                    if (component != null && component != FormattedText.EMPTY) {
 
                         sign.setMessage(i, TextHelper.applyFont(component.copy(), fontId));
                     }

@@ -81,13 +81,13 @@ public class SerializerBlockState implements ISerializer<BlockState> {
 
         for (final Property prop : toWrite.getProperties()) {
 
-            if (prop instanceof IntegerProperty) {
+            if (prop instanceof IntegerProperty intProp) {
 
-                properties.addProperty(prop.getName(), toWrite.getValue((IntegerProperty) prop));
+                properties.addProperty(prop.getName(), toWrite.getValue(intProp));
             }
-            else if (prop instanceof BooleanProperty) {
+            else if (prop instanceof BooleanProperty boolProp) {
 
-                properties.addProperty(prop.getName(), toWrite.getValue((BooleanProperty) prop));
+                properties.addProperty(prop.getName(), toWrite.getValue(boolProp));
             }
             else {
 

@@ -61,7 +61,7 @@ public class RegistryEntries<V> implements IOwnedRegistryEntries<V> {
             throw new IllegalStateException("The ID " + id + " has already been registered.");
         }
 
-        final IRegistryObject<VT> registryObject = new RegistryObject<VT>(id, value);
+        final IRegistryObject<VT> registryObject = new RegistryObject<>(id, value);
         this.rawValues.put(id, registryObject);
         this.insertListeners.forEach(listener -> listener.accept(id, registryObject));
         return registryObject;

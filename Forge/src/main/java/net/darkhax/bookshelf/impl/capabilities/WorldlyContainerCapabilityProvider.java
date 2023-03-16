@@ -3,9 +3,9 @@ package net.darkhax.bookshelf.impl.capabilities;
 import net.minecraft.core.Direction;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
@@ -23,7 +23,7 @@ public class WorldlyContainerCapabilityProvider implements ICapabilityProvider {
     @Override
     public <R> LazyOptional<R> getCapability(Capability<R> requested, @Nullable Direction side) {
 
-        if (requested == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (requested == ForgeCapabilities.ITEM_HANDLER) {
 
             return LazyOptional.of(() -> (side != null) ? new SidedInvWrapper(container, side) : new InvWrapper(container)).cast();
         }
