@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.impl.event;
 
 import net.darkhax.bookshelf.api.event.block.IFarmlandTrampleListener;
 import net.darkhax.bookshelf.api.event.client.IRecipeSyncEvent;
+import net.darkhax.bookshelf.api.event.item.IItemAttributeEvent;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
@@ -32,5 +33,14 @@ public class FabricBookshelfEvents {
         }
 
         return false;
+    });
+
+    /**
+     * This event is posted when the attributes of an ItemStack are calculated.
+     */
+    public static final Event<IItemAttributeEvent.Listener> ITEM_ATTRIBUTE_EVENT = EventFactory.createArrayBacked(IItemAttributeEvent.Listener.class, callbacks -> (event) -> {
+        for (IItemAttributeEvent.Listener listener : callbacks) {
+            listener.accept(event);
+        }
     });
 }

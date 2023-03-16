@@ -3,7 +3,10 @@ package net.darkhax.bookshelf.api.event;
 import net.darkhax.bookshelf.api.event.block.IFarmlandTrampleListener;
 import net.darkhax.bookshelf.api.event.client.IRecipeSyncEvent;
 import net.darkhax.bookshelf.api.event.entity.player.IPlayerWakeUpEvent;
+import net.darkhax.bookshelf.api.event.item.IItemAttributeEvent;
 import net.darkhax.bookshelf.api.event.item.IItemTooltipEvent;
+
+import java.util.function.Consumer;
 
 /**
  * The event helper provides a loader neutral interface for registering event listeners with an underlying loader
@@ -38,4 +41,6 @@ public interface IEventHelper {
      * @param listener The event listener.
      */
     void addFarmlandTrampleListener(IFarmlandTrampleListener listener);
+
+    void addItemAttributeListener(IItemAttributeEvent.Listener listener);
 }

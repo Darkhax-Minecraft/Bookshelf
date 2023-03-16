@@ -7,7 +7,8 @@
     "patches.block.MixinFarmBlock"
   ],
   "client": [
-    "patches.client.MixinClientPacketListener"
+    "patches.client.MixinClientPacketListener",
+    "patches.item.MixinItemStack"
   ],
   "injectors": {
     "defaultRequire": 1
