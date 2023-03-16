@@ -20,33 +20,30 @@ import net.minecraftforge.eventbus.api.EventPriority;
 public class EventHelperForge implements IEventHelper {
 
     @Override
-    public void addItemTooltipListener(IItemTooltipEvent listener) {
-
+    public void addItemTooltipListener(IItemTooltipEvent listener, Ordering ordering) {
         if (Services.PLATFORM.isPhysicalClient()) {
-
-            MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, ItemTooltipEvent.class, e -> listener.apply(e.getItemStack(), e.getToolTip(), e.getFlags()));
+            MinecraftForge.EVENT_BUS.addListener(priority(ordering), false, ItemTooltipEvent.class, e -> listener.apply(e.getItemStack(), e.getToolTip(), e.getFlags()));
         }
     }
 
     @Override
-    public void addPlayerWakeUpListener(IPlayerWakeUpEvent listener) {
-
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerWakeUpEvent.class, e -> listener.apply(e.getEntity()));
+    public void addPlayerWakeUpListener(IPlayerWakeUpEvent listener, Ordering ordering) {
+        MinecraftForge.EVENT_BUS.addListener(priority(ordering), false, PlayerWakeUpEvent.class, e -> listener.apply(e.getEntity()));
     }
 
     @Override
-    public void addRecipeSyncListener(IRecipeSyncEvent listener) {
-
+    public void addRecipeSyncListener(IRecipeSyncEvent listener, Ordering ordering) {
         if (Services.PLATFORM.isPhysicalClient()) {
-
-            MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, RecipesUpdatedEvent.class, e -> listener.apply(e.getRecipeManager()));
+            MinecraftForge.EVENT_BUS.addListener(priority(ordering), false, RecipesUpdatedEvent.class, e -> listener.apply(e.getRecipeManager()));
         }
     }
 
     @Override
-    public void addFarmlandTrampleListener(IFarmlandTrampleListener listener) {
+    public void addFarmlandTrampleListener(IFarmlandTrampleListener listener, Ordering ordering) {
 
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, BlockEvent.FarmlandTrampleEvent.class, e -> {
+        final EventPriority priority = priority(ordering);
+
+        MinecraftForge.EVENT_BUS.addListener(priority, false, BlockEvent.FarmlandTrampleEvent.class, e -> {
 
             if (listener.apply(e.getEntity(), e.getPos(), e.getState())) {
 
@@ -58,9 +55,9 @@ public class EventHelperForge implements IEventHelper {
     private static final Multimap<EventPriority, IItemAttributeEvent.Listener> ITEM_ATTRIBUTE_LISTENERS = HashMultimap.create();
 
     @Override
-    public void addItemAttributeListener(IItemAttributeEvent.Listener listener) {
+    public void addItemAttributeListener(IItemAttributeEvent.Listener listener, Ordering ordering) {
 
-        EventPriority priority = EventPriority.NORMAL;
+        final EventPriority priority = priority(ordering);
 
         if (!ITEM_ATTRIBUTE_LISTENERS.containsKey(priority)) {
             MinecraftForge.EVENT_BUS.addListener(priority, false, ItemAttributeModifierEvent.class, e -> {
@@ -70,5 +67,14 @@ public class EventHelperForge implements IEventHelper {
         }
 
         ITEM_ATTRIBUTE_LISTENERS.put(priority, listener);
+    }
+
+    private static EventPriority priority(Ordering ordering) {
+        return switch (ordering) {
+            case BEFORE -> EventPriority.HIGH;
+            case DEFAULT -> EventPriority.NORMAL;
+            case AFTER -> EventPriority.LOW;
+            default -> EventPriority.NORMAL;
+        };
     }
 }

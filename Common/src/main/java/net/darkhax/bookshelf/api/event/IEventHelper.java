@@ -12,33 +12,39 @@ import net.darkhax.bookshelf.api.event.item.IItemTooltipEvent;
  */
 public interface IEventHelper {
 
-    /**
-     * Registers a new item tooltip event listener with the underlying event bus.
-     *
-     * @param listener The event listener.
-     */
-    void addItemTooltipListener(IItemTooltipEvent listener);
+    default void addItemTooltipListener(IItemTooltipEvent listener) {
+        this.addItemTooltipListener(listener, Ordering.DEFAULT);
+    }
 
-    /**
-     * Registers a new player wake up listener with the underlying event bus.
-     *
-     * @param listener The event listener.
-     */
-    void addPlayerWakeUpListener(IPlayerWakeUpEvent listener);
+    void addItemTooltipListener(IItemTooltipEvent listener, Ordering ordering);
 
-    /**
-     * Registers a listener that will be invoked when the client finishes processing a recipe sync packet.
-     *
-     * @param listener The event listener.
-     */
-    void addRecipeSyncListener(IRecipeSyncEvent listener);
+    default void addPlayerWakeUpListener(IPlayerWakeUpEvent listener) {
+        this.addPlayerWakeUpListener(listener, Ordering.DEFAULT);
+    }
 
-    /**
-     * Registers a listener that will be invoked when a farmland block is trampled by an entity.
-     *
-     * @param listener The event listener.
-     */
-    void addFarmlandTrampleListener(IFarmlandTrampleListener listener);
+    void addPlayerWakeUpListener(IPlayerWakeUpEvent listener, Ordering ordering);
 
-    void addItemAttributeListener(IItemAttributeEvent.Listener listener);
+    default void addRecipeSyncListener(IRecipeSyncEvent listener) {
+        this.addRecipeSyncListener(listener, Ordering.DEFAULT);
+    }
+
+    void addRecipeSyncListener(IRecipeSyncEvent listener, Ordering ordering);
+
+    default void addFarmlandTrampleListener(IFarmlandTrampleListener listener) {
+        this.addFarmlandTrampleListener(listener, Ordering.DEFAULT);
+    }
+
+    void addFarmlandTrampleListener(IFarmlandTrampleListener listener, Ordering ordering);
+
+    default void addItemAttributeListener(IItemAttributeEvent.Listener listener) {
+        this.addItemAttributeListener(listener, Ordering.DEFAULT);
+    }
+
+    void addItemAttributeListener(IItemAttributeEvent.Listener listener, Ordering ordering);
+
+    public enum Ordering {
+        BEFORE, // Runs before most other mods
+        DEFAULT, // Runs same time as most mods
+        AFTER // Runs after most mods
+    }
 }
