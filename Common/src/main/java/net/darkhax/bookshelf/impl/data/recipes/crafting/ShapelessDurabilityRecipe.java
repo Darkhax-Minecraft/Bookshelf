@@ -21,12 +21,14 @@ public class ShapelessDurabilityRecipe extends ShapelessRecipe {
 
     public static final Serializer SERIALIZER = new Serializer();
 
+    private final ItemStack output;
     private final int damageAmount;
 
     public ShapelessDurabilityRecipe(ResourceLocation recipeId, String group, CraftingBookCategory category, ItemStack result, NonNullList<Ingredient> ingredients, int damageAmount) {
 
         super(recipeId, group, category, result, ingredients);
         this.damageAmount = damageAmount;
+        this.output = result;
     }
 
     @Override
@@ -105,7 +107,7 @@ public class ShapelessDurabilityRecipe extends ShapelessRecipe {
 
             buffer.writeEnum(toWrite.category());
 
-            buffer.writeItem(toWrite.getResultItem());
+            buffer.writeItem(toWrite.output);
             buffer.writeVarInt(toWrite.damageAmount);
         }
 

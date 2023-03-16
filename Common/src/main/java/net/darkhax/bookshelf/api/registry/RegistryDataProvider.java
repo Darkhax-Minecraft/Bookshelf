@@ -69,7 +69,7 @@ public class RegistryDataProvider {
 
         this.creativeTabs.add(() -> builder -> {
             builder.icon(icon);
-            builder.displayItems((flags, output, isOp) -> output.acceptItemIter(this.items));
+            builder.displayItems((flags, output) -> output.acceptItemIter(this.items));
         }, "creative_tab");
         return this;
     }

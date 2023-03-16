@@ -1,0 +1,11 @@
+{
+  "comments": [
+    "Mobs killed by damage types in this tag will still drop player only loot  ",
+    "items even if they were not killed by a player.                           "
+  ],
+  "values": [
+    "#bookshelf:fake_player",
+    "bookshelf:generic_drop_player_loot",
+    "bookshelf:generic_drop_exp_and_player_loot"
+  ]
+}

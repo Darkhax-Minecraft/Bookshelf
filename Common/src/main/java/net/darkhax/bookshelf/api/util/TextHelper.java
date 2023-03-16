@@ -1,9 +1,9 @@
 package net.darkhax.bookshelf.api.util;
 
 import net.darkhax.bookshelf.api.Services;
-import net.darkhax.bookshelf.mixin.client.AccessorFontManager;
-import net.darkhax.bookshelf.mixin.client.AccessorMinecraft;
-import net.darkhax.bookshelf.mixin.entity.AccessorEntity;
+import net.darkhax.bookshelf.mixin.accessors.client.AccessorFontManager;
+import net.darkhax.bookshelf.mixin.accessors.client.AccessorMinecraft;
+import net.darkhax.bookshelf.mixin.accessors.entity.AccessorEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.ClickEvent;

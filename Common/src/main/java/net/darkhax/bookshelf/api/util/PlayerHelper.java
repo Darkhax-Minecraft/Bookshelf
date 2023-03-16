@@ -1,7 +1,7 @@
 package net.darkhax.bookshelf.api.util;
 
-import net.darkhax.bookshelf.mixin.item.AccessorCooldownInstance;
-import net.darkhax.bookshelf.mixin.item.AccessorItemCooldowns;
+import net.darkhax.bookshelf.mixin.accessors.item.AccessorCooldownInstance;
+import net.darkhax.bookshelf.mixin.accessors.item.AccessorItemCooldowns;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 

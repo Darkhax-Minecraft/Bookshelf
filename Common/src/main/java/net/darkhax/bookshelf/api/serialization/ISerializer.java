@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.darkhax.bookshelf.api.util.JSONHelper;
-import net.darkhax.bookshelf.mixin.util.random.AccessorWeightedRandomList;
+import net.darkhax.bookshelf.mixin.accessors.util.random.AccessorWeightedRandomList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;

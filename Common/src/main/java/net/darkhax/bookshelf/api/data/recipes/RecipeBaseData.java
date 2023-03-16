@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.api.data.recipes;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +31,7 @@ public abstract class RecipeBaseData<C extends Container> extends RecipeBase<C> 
     }
 
     @Override
-    public ItemStack assemble(C c) {
+    public ItemStack assemble(C c, RegistryAccess access) {
 
         // This is not used by default.
         return ItemStack.EMPTY;
@@ -44,7 +45,7 @@ public abstract class RecipeBaseData<C extends Container> extends RecipeBase<C> 
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess access) {
 
         // This is not used by default.
         return ItemStack.EMPTY;

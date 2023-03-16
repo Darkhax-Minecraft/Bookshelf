@@ -38,7 +38,7 @@ public class ConstructHelperForge implements IConstructHelper {
     @Override
     public CreativeModeTab.DisplayItemsGenerator wrapDisplayGen(IDisplayGenerator displayGen) {
 
-        return (flags, output, op) -> displayGen.display(flags, new IOutputWrapper() {
+        return (flags, output) -> displayGen.display(flags, new IOutputWrapper() {
             @Override
             public void accept(ItemStack stack) {
                 output.accept(stack);
@@ -48,6 +48,6 @@ public class ConstructHelperForge implements IConstructHelper {
             public void accept(ItemLike item) {
                 output.accept(item);
             }
-        }, op);
+        });
     }
 }

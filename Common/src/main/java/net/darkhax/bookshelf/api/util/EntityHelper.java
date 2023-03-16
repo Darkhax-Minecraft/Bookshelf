@@ -158,21 +158,6 @@ public final class EntityHelper {
      */
     public static <T extends Entity> List<T> getEntitiesInArea(Class<T> entityClass, Level world, BlockPos pos, int range) {
 
-        return getEntitiesInArea(entityClass, world, pos, (float) range);
-    }
-
-    /**
-     * Gets a List of entities that are within the provided area.
-     *
-     * @param <T>         The type of entities to look for.
-     * @param entityClass The type of entity you are looking for.
-     * @param world       The world to search in.
-     * @param pos         The position to start the search around.
-     * @param range       The range of the search.
-     * @return A List containing all entities of the specified type that are within the range.
-     */
-    public static <T extends Entity> List<T> getEntitiesInArea(Class<T> entityClass, Level world, BlockPos pos, float range) {
-
         return world.getEntitiesOfClass(entityClass, new AABB(pos.offset(-range, -range, -range), pos.offset(range + 1, range + 1, range + 1)));
     }
 

@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.netty.buffer.Unpooled;
 import net.darkhax.bookshelf.api.serialization.ISerializer;
-import net.darkhax.bookshelf.mixin.util.random.AccessorWeightedRandomList;
+import net.darkhax.bookshelf.mixin.accessors.util.random.AccessorWeightedRandomList;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;

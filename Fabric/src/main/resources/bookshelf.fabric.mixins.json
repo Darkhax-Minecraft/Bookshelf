@@ -4,10 +4,10 @@
   "package": "net.darkhax.bookshelf.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "block.MixinFarmBlock"
+    "patches.block.MixinFarmBlock"
   ],
   "client": [
-    "client.MixinClientPacketListener"
+    "patches.client.MixinClientPacketListener"
   ],
   "injectors": {
     "defaultRequire": 1

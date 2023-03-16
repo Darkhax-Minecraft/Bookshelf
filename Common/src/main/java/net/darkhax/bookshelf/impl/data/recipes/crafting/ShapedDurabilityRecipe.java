@@ -3,7 +3,7 @@ package net.darkhax.bookshelf.impl.data.recipes.crafting;
 import com.google.gson.JsonObject;
 import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.serialization.Serializers;
-import net.darkhax.bookshelf.mixin.item.crafting.AccessorShapedRecipe;
+import net.darkhax.bookshelf.mixin.accessors.item.crafting.AccessorShapedRecipe;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -22,11 +22,13 @@ public final class ShapedDurabilityRecipe extends ShapedRecipe {
     public static final Serializer SERIALIZER = new Serializer();
 
     private final int damageAmount;
+    private final ItemStack output;
 
     public ShapedDurabilityRecipe(ResourceLocation id, String group, CraftingBookCategory category, int width, int height, NonNullList<Ingredient> input, ItemStack output, int damageAmount) {
 
         super(id, group, category, width, height, input, output);
         this.damageAmount = damageAmount;
+        this.output = output;
     }
 
     @Override
@@ -95,7 +97,7 @@ public final class ShapedDurabilityRecipe extends ShapedRecipe {
                 ingredient.toNetwork(buffer);
             }
 
-            buffer.writeItem(recipe.getResultItem());
+            buffer.writeItem(recipe.output);
             buffer.writeInt(recipe.damageAmount);
 
             buffer.writeEnum(recipe.category());

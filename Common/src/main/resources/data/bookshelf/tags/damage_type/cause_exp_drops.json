@@ -1,0 +1,12 @@
+{
+  "comments": [
+    "Mobs killed by damage types in this tag will still drop EXP even if they  ",
+    "do not meet the vanilla requirement of having a player hurt the mob within",
+    "the last 100 ticks (5 seconds).                                           "
+  ],
+  "values": [
+    "#bookshelf:fake_player",
+    "bookshelf:generic_drop_exp",
+    "bookshelf:generic_drop_exp_and_player_loot"
+  ]
+}
