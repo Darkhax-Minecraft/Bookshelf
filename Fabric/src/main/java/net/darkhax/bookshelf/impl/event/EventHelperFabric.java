@@ -5,6 +5,7 @@ import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.event.IEventHelper;
 import net.darkhax.bookshelf.api.event.block.IFarmlandTrampleListener;
 import net.darkhax.bookshelf.api.event.client.IRecipeSyncEvent;
+import net.darkhax.bookshelf.api.event.entity.IItemUseTickEvent;
 import net.darkhax.bookshelf.api.event.entity.player.IPlayerWakeUpEvent;
 import net.darkhax.bookshelf.api.event.item.IItemAttributeEvent;
 import net.darkhax.bookshelf.api.event.item.IItemTooltipEvent;
@@ -67,6 +68,11 @@ public class EventHelperFabric implements IEventHelper {
     public void addItemAttributeListener(IItemAttributeEvent.Listener listener, Ordering ordering) {
 
         FabricBookshelfEvents.ITEM_ATTRIBUTE_EVENT.register(getPhase(ordering), listener);
+    }
+
+    @Override
+    public void addItemUseTickListener(IItemUseTickEvent listener, Ordering ordering) {
+        FabricBookshelfEvents.ITEM_USE_TICK_EVENT.register(getPhase(ordering), listener);
     }
 
     private static ResourceLocation getPhase(Ordering ordering) {

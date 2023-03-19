@@ -6,16 +6,20 @@ import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.event.IEventHelper;
 import net.darkhax.bookshelf.api.event.block.IFarmlandTrampleListener;
 import net.darkhax.bookshelf.api.event.client.IRecipeSyncEvent;
+import net.darkhax.bookshelf.api.event.entity.IItemUseTickEvent;
 import net.darkhax.bookshelf.api.event.entity.player.IPlayerWakeUpEvent;
 import net.darkhax.bookshelf.api.event.item.IItemAttributeEvent;
 import net.darkhax.bookshelf.api.event.item.IItemTooltipEvent;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class EventHelperForge implements IEventHelper {
 
@@ -67,6 +71,25 @@ public class EventHelperForge implements IEventHelper {
         }
 
         ITEM_ATTRIBUTE_LISTENERS.put(priority, listener);
+    }
+
+    private static final Multimap<EventPriority, IItemUseTickEvent> ITEM_USE_TICK_LISTENERS = HashMultimap.create();
+
+    @Override
+    public void addItemUseTickListener(IItemUseTickEvent listener, Ordering ordering) {
+
+        final EventPriority priority = priority(ordering);
+
+        if (!ITEM_USE_TICK_LISTENERS.containsKey(priority)) {
+
+            MinecraftForge.EVENT_BUS.addListener(priority(ordering), false, LivingEntityUseItemEvent.Tick.class, e -> {
+                final AtomicInteger duration = new AtomicInteger(e.getDuration());
+                ITEM_USE_TICK_LISTENERS.get(priority).forEach(entry -> entry.onUseTick(e.getEntity(), e.getItem(), duration));
+                e.setDuration(duration.get());
+            });
+        }
+
+        ITEM_USE_TICK_LISTENERS.put(priority, listener);
     }
 
     private static EventPriority priority(Ordering ordering) {

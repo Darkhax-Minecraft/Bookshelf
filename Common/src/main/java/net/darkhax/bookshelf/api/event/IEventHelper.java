@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.api.event;
 
 import net.darkhax.bookshelf.api.event.block.IFarmlandTrampleListener;
 import net.darkhax.bookshelf.api.event.client.IRecipeSyncEvent;
+import net.darkhax.bookshelf.api.event.entity.IItemUseTickEvent;
 import net.darkhax.bookshelf.api.event.entity.player.IPlayerWakeUpEvent;
 import net.darkhax.bookshelf.api.event.item.IItemAttributeEvent;
 import net.darkhax.bookshelf.api.event.item.IItemTooltipEvent;
@@ -41,6 +42,12 @@ public interface IEventHelper {
     }
 
     void addItemAttributeListener(IItemAttributeEvent.Listener listener, Ordering ordering);
+
+    default void addItemUseTickListener(IItemUseTickEvent listener) {
+        this.addItemUseTickListener(listener, Ordering.DEFAULT);
+    }
+
+    void addItemUseTickListener(IItemUseTickEvent listener, Ordering ordering);
 
     public enum Ordering {
         BEFORE, // Runs before most other mods
