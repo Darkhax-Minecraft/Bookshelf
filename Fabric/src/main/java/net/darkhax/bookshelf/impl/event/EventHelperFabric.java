@@ -12,6 +12,7 @@ import net.darkhax.bookshelf.api.event.item.IItemTooltipEvent;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.item.v1.ModifyItemAttributeModifiersCallback;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
@@ -25,7 +26,7 @@ public class EventHelperFabric implements IEventHelper {
         setup(EntitySleepEvents.STOP_SLEEPING);
         setup(FabricBookshelfEvents.RECIPE_SYNC);
         setup(FabricBookshelfEvents.FARMLAND_TRAMPLE_EVENT);
-        setup(FabricBookshelfEvents.ITEM_ATTRIBUTE_EVENT);
+        setup(FabricBookshelfEvents.ITEM_USE_TICK_EVENT);
     }
 
     @Override
@@ -67,7 +68,9 @@ public class EventHelperFabric implements IEventHelper {
     @Override
     public void addItemAttributeListener(IItemAttributeEvent.Listener listener, Ordering ordering) {
 
-        FabricBookshelfEvents.ITEM_ATTRIBUTE_EVENT.register(getPhase(ordering), listener);
+        ModifyItemAttributeModifiersCallback.EVENT.register((stack, slot, modifiers) -> {
+            listener.accept(new FabricItemAttributeEvent(stack, slot, modifiers));
+        });
     }
 
     @Override

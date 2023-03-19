@@ -8,8 +8,7 @@
     "patches.entity.MixinLivingEntityFabric"
   ],
   "client": [
-    "patches.client.MixinClientPacketListener",
-    "patches.item.MixinItemStack"
+    "patches.client.MixinClientPacketListener"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,6 +1,5 @@
 package net.darkhax.bookshelf.impl.event;
 
-import com.google.common.collect.Multimap;
 import net.darkhax.bookshelf.api.event.item.IItemAttributeEvent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -17,16 +16,6 @@ public class ForgeItemAttributeEvent implements IItemAttributeEvent {
     public ForgeItemAttributeEvent(ItemAttributeModifierEvent event) {
 
         this.internal = event;
-    }
-
-    @Override
-    public Multimap<Attribute, AttributeModifier> getModifiers() {
-        return this.internal.getModifiers();
-    }
-
-    @Override
-    public Multimap<Attribute, AttributeModifier> getOriginalModifiers() {
-        return this.internal.getOriginalModifiers();
     }
 
     @Override
