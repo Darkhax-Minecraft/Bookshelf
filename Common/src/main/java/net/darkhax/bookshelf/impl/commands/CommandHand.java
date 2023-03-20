@@ -9,9 +9,11 @@ import net.darkhax.bookshelf.impl.commands.args.HandArgument;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -46,6 +48,7 @@ public class CommandHand {
         STRING(OutputType::getAsString),
         INGREDIENT(OutputType::getAsIngredient),
         STACK_JSON(OutputType::getAsStackJson),
+        SNBT(OutputType::getAsSNBT),
         ID(OutputType::getAsID),
         TAGS(OutputType::getTags);
 
@@ -69,6 +72,11 @@ public class CommandHand {
         private static String getAsStackJson(ItemStack stack) {
 
             return Serializers.ITEM_STACK.toJSON(stack).toString();
+        }
+
+        public static String getAsSNBT(ItemStack stack) {
+
+            return stack.save(new CompoundTag()).getAsString();
         }
 
         public static String getAsID(ItemStack stack) {
