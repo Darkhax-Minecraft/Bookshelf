@@ -37,25 +37,42 @@ public class SerializerBlockState implements ISerializer<BlockState> {
             final JsonObject obj = json.getAsJsonObject();
             final Block block = Serializers.BLOCK.fromJSON(obj, "block");
 
-            BlockState state = block.defaultBlockState();
+            if (block != null) {
 
-            if (obj.has("properties")) {
+                BlockState state = block.defaultBlockState();
 
-                final JsonElement properties = obj.get("properties");
+                if (obj.has("properties")) {
 
-                for (final Entry<String, JsonElement> property : properties.getAsJsonObject().entrySet()) {
+                    final JsonElement properties = obj.get("properties");
 
-                    state = this.readProperty(state, property.getKey(), property.getValue());
+                    for (final Entry<String, JsonElement> property : properties.getAsJsonObject().entrySet()) {
+
+                        state = this.readProperty(state, property.getKey(), property.getValue());
+                    }
                 }
+
+                return state;
             }
 
-            return state;
+            else {
+
+                throw new JsonParseException("Tried to reference invalid block ID: " + obj.get("block").getAsString());
+            }
         }
 
         else if (json instanceof JsonPrimitive primitive && primitive.isString()) {
 
             final Block block = Serializers.BLOCK.fromJSON(json);
-            return block.defaultBlockState();
+
+            if (block != null) {
+                
+                return block.defaultBlockState();
+            }
+
+            else {
+
+                throw new JsonParseException("Tried to reference invalid block ID: " + json.getAsString());
+            }
         }
 
         else {
