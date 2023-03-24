@@ -16,17 +16,24 @@ import net.fabricmc.fabric.api.item.v1.ModifyItemAttributeModifiersCallback;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.ServiceLoader;
+
 public class EventHelperFabric implements IEventHelper {
 
     public static final ResourceLocation PHASE_BEFORE = new ResourceLocation(Constants.MOD_ID, "before");
     public static final ResourceLocation PHASE_AFTER = new ResourceLocation(Constants.MOD_ID, "after");
 
     static {
-        setup(ItemTooltipCallback.EVENT);
+
         setup(EntitySleepEvents.STOP_SLEEPING);
         setup(FabricBookshelfEvents.RECIPE_SYNC);
         setup(FabricBookshelfEvents.FARMLAND_TRAMPLE_EVENT);
         setup(FabricBookshelfEvents.ITEM_USE_TICK_EVENT);
+
+        if (Services.PLATFORM.isPhysicalClient()) {
+
+            setup(ItemTooltipCallback.EVENT);
+        }
     }
 
     @Override
