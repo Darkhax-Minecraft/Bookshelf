@@ -41,6 +41,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.material.Fluid;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -74,6 +75,7 @@ public final class Serializers {
     public static final ISerializer<Vector3f> VECTOR_3F = SerializerVector3f.SERIALIZER;
     public static final ISerializer<Vector4f> VECTOR_4F = SerializerVector4f.SERIALIZER;
     public static final ISerializer<Sound> SOUND = Sound.SERIALIZER;
+    public static final ISerializer<StructurePoolElement> STRUCTURE_POOL_ELEMENT = new SerializerCodec<>(StructurePoolElement.CODEC);
 
     // ENUMS
     public static final ISerializer<Rarity> ITEM_RARITY = new SerializerEnum<>(Rarity.class);
