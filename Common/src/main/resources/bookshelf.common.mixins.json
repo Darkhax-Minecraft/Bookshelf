@@ -17,6 +17,7 @@
     "accessors.item.AccessorItemCooldowns",
     "accessors.item.crafting.AccessorShapedRecipe",
     "accessors.util.random.AccessorWeightedRandomList",
+    "accessors.world.AccessorStructureTemplatePool",
     "patches.entity.MixinLightningBolt",
     "patches.entity.MixinLivingEntity",
     "patches.loot.MixinLootItemKilledByPlayerCondition",
