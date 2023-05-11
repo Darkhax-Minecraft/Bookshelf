@@ -68,7 +68,17 @@ public final class ItemStackHelper {
 
     public static boolean areStacksEquivalent(ItemStack first, ItemStack second) {
 
-        return first.isEmpty() == second.isEmpty() && first.getCount() == second.getCount() && Objects.equals(first.getTag(), second.getTag());
+        return areStacksEquivalent(first, second, false);
+    }
+
+    public static boolean areStacksContentsEquivalent(ItemStack first, ItemStack second) {
+
+        return areStacksEquivalent(first, second, true);
+    }
+
+    public static boolean areStacksEquivalent(ItemStack first, ItemStack second, boolean ignoreTags) {
+
+        return first.isEmpty() == second.isEmpty() && first.getCount() == second.getCount() && first.getItem() == second.getItem() && (ignoreTags || Objects.equals(first.getTag(), second.getTag()));
     }
 
     public static void setLore(ItemStack stack, Component... lines) {
