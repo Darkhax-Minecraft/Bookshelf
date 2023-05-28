@@ -18,7 +18,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.function.BiFunction;
 
@@ -168,5 +171,32 @@ public final class TextHelper {
     public static MutableComponent textWithCopy(String text) {
 
         return new TextComponent(text).withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text)));
+    }
+
+    public static MutableComponent join (Component separator, Component... toJoin) {
+
+        return join(separator, Arrays.stream(toJoin).iterator());
+    }
+
+    public static MutableComponent join (Component separator, Collection<Component> toJoin) {
+
+        return join(separator, toJoin.iterator());
+    }
+
+    public static MutableComponent join (Component separator, Iterator<Component> toJoin) {
+
+        final MutableComponent joined = Component.literal("");
+
+        while (toJoin.hasNext()) {
+
+            joined.append(toJoin.next());
+
+            if (toJoin.hasNext()) {
+
+                joined.append(separator);
+            }
+        }
+
+        return joined;
     }
 }
