@@ -185,7 +185,7 @@ public final class TextHelper {
 
     public static MutableComponent join (Component separator, Iterator<Component> toJoin) {
 
-        final MutableComponent joined = Component.literal("");
+        final MutableComponent joined = new TextComponent("");
 
         while (toJoin.hasNext()) {
 
