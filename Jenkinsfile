@@ -31,7 +31,7 @@ pipeline {
                 ]) {
             
                     echo 'Building project.'
-                    sh './gradlew build publish publishCurseForge updateVersionTracker postTweet postDiscord --stacktrace --warn'
+                    sh './gradlew build publish publishCurseForge updateVersionTracker postDiscord --stacktrace --warn'
                 }
             }
         }
