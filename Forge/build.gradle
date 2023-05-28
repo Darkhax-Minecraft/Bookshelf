@@ -9,7 +9,6 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
         classpath group: 'net.darkhax.curseforgegradle', name: 'CurseForgeGradle', version: '1.0.11'
-        classpath group: 'net.darkhax.tweedle', name: 'Tweedle', version: '1.0.5'
     }
 }
 
@@ -209,39 +208,6 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
             project.ext.curse_file_url = "${mod_homepage}/files/${mainFile.curseFileId}"
         }
     }
-}
-
-// Twitter Announcement
-def canTweet = project.hasProperty('twitter_api_key') && project.hasProperty('twitter_api_key_secret') && project.hasProperty('twitter_access_token') && project.hasProperty('twitter_access_token_secret')
-
-task postTweet(type: net.darkhax.tweedle.TaskPostTweet) {
-
-    onlyIf {
-
-        canTweet && project.hasProperty('minecraft_version') && project.hasProperty('curse_file_url')
-    }
-
-    if (canTweet) {
-
-        addClient(project.findProperty('twitter_api_key'), project.findProperty('twitter_api_key_secret'), project.findProperty('twitter_access_token'), project.findProperty('twitter_access_token_secret'))
-    }
-
-    doLast {
-
-        def tweetBody = "${project.ext.mod_name} (Forge) ${project.version} for Minecraft ${project.ext.minecraft_version} has been released. #${project.ext.mod_name.toLowerCase().replaceAll("[^a-zA-Z]", "")} #forge"
-
-        if (project.hasProperty('curse_file_url')) {
-
-            tweetBody += " ${project.findProperty('curse_file_url')}"
-        }
-
-        sendTweet(tweetBody)
-    }
-}
-
-if (!canTweet) {
-
-    project.logger.warn("Skipping Twitter plugin. APIKey: ${project.hasProperty('twitter_api_key')} ${project.hasProperty('twitter_api_key_secret')} AccessToken: ${project.hasProperty('twitter_access_token')} ${project.hasProperty('twitter_access_token_secret')}")
 }
 
 // Forge's Jar Signer
