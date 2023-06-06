@@ -37,4 +37,8 @@
     "_comment": "Commands",
     "commands.bookshelf.loot_tables": "%s에 대한 누락된 루트 테이블 %d개를 찾았습니다.",
     "commands.bookshelf.loot_tables.wildcard": "모든 모드에 대해 루트 테이블 %d개가 누락되었습니다."
+    "argument.bookshelf.unknown_value": "'%s' 값을 알 수 없습니다.",
+
+    "_comment": "Misc",
+    "text.bookshelf.ticks": "틱: %s"
 }
