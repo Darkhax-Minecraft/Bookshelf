@@ -31,22 +31,22 @@ public class MixinLightningBolt {
         // Checks if the block being struck reacts to lightning.
         if (strikeBlock instanceof ILightningConductive extended) {
 
-            ((ILightningConductive) strikeBlock).onDirectLightningStrike(self.level, strikePos, strikeState, self);
+            ((ILightningConductive) strikeBlock).onDirectLightningStrike(self.level(), strikePos, strikeState, self);
         }
 
         // Checks if the block redirects lightning to adjacent blocks. This is
         // a hardcoded behaviour of the lightning rod that we expose to other
         // blocks as well.
-        if (canRedirect(self.level, strikePos, strikeState)) {
+        if (canRedirect(self.level(), strikePos, strikeState)) {
 
-            for (Direction direction : getRedirectionSides(self.level, strikePos, strikeState)) {
+            for (Direction direction : getRedirectionSides(self.level(), strikePos, strikeState)) {
 
                 final BlockPos indirectPos = strikePos.relative(direction);
-                final BlockState indirectState = self.level.getBlockState(indirectPos);
+                final BlockState indirectState = self.level().getBlockState(indirectPos);
 
                 if (indirectState.getBlock() instanceof ILightningConductive extended) {
 
-                    extended.onIndirectLightingStrike(self.level, strikePos, strikeState, indirectPos, indirectState, self);
+                    extended.onIndirectLightingStrike(self.level(), strikePos, strikeState, indirectPos, indirectState, self);
                 }
             }
         }

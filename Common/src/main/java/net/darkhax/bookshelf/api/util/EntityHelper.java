@@ -200,7 +200,7 @@ public final class EntityHelper {
         final Vec3 startingPosition = new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ());
         final Vec3 lookVector = entity.getLookAngle();
         final Vec3 endingPosition = startingPosition.add(lookVector.x * length, lookVector.y * length, lookVector.z * length);
-        return entity.level.clip(new ClipContext(startingPosition, endingPosition, blockMode, fluidMode, entity));
+        return entity.level().clip(new ClipContext(startingPosition, endingPosition, blockMode, fluidMode, entity));
     }
 
     /**

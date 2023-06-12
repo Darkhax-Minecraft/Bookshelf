@@ -16,7 +16,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -26,6 +25,10 @@ import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.SignText;
+
+import java.util.UUID;
+import java.util.function.UnaryOperator;
 
 public class CommandFont {
 
@@ -82,21 +85,22 @@ public class CommandFont {
 
             if (tile instanceof SignBlockEntity sign) {
 
-                for (int i = 0; i < 4; i++) {
-
-                    final Component component = sign.getMessage(i, false);
-
-                    if (component != null && component != FormattedText.EMPTY) {
-
-                        sign.setMessage(i, TextHelper.applyFont(component.copy(), fontId));
-                    }
-                }
-
-                ((AccessorSignBlockEntity) sign).bookshelf$markUpdated();
+                sign.updateText(applySignFont(fontId), true);
+                sign.updateText(applySignFont(fontId), false);
+                sign.getLevel().sendBlockUpdated(sign.getBlockPos(), sign.getBlockState(), sign.getBlockState(), 3);
             }
         }
 
         return 1;
+    }
+
+    private static UnaryOperator<SignText> applySignFont(ResourceLocation fontId) {
+        return text -> {
+            for (int i = 0; i < 4; i++) {
+                text.setMessage(i, TextHelper.applyFont(text.getMessage(i, false), fontId));
+            }
+            return text;
+        };
     }
 
     private static int setBookFont(CommandContext<CommandSourceStack> context) {

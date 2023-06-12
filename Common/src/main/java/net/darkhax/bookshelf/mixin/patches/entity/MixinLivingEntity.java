@@ -31,7 +31,7 @@ public abstract class MixinLivingEntity extends Entity {
      */
     @Inject(method = "baseTick", at = @At("RETURN"))
     private void onBaseTick(CallbackInfo cbi) {
-        if (!this.level.isClientSide && this.bookshelf$expDamageTimer > 0) {
+        if (!this.level().isClientSide && this.bookshelf$expDamageTimer > 0) {
             this.bookshelf$expDamageTimer--;
         }
     }
@@ -42,7 +42,7 @@ public abstract class MixinLivingEntity extends Entity {
      */
     @Inject(method = "hurt", at = @At("HEAD"))
     private void onHurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> callback) {
-        if (!this.level.isClientSide && !this.isInvulnerableTo(source) && source.is(BookshelfTags.DamageTypes.CAUSE_EXP_DROPS)) {
+        if (!this.level().isClientSide && !this.isInvulnerableTo(source) && source.is(BookshelfTags.DamageTypes.CAUSE_EXP_DROPS)) {
             this.bookshelf$expDamageTimer = 100;
         }
     }
@@ -53,7 +53,7 @@ public abstract class MixinLivingEntity extends Entity {
      */
     @Inject(method = "isAlwaysExperienceDropper", at = @At("RETURN"), cancellable = true)
     private void onExpDropTest(CallbackInfoReturnable<Boolean> callback) {
-        if (!this.level.isClientSide && this.bookshelf$expDamageTimer > 0) {
+        if (!this.level().isClientSide && this.bookshelf$expDamageTimer > 0) {
             callback.setReturnValue(true);
         }
     }

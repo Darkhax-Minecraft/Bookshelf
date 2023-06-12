@@ -4,9 +4,9 @@ import net.darkhax.bookshelf.Constants;
 import net.darkhax.bookshelf.api.inventory.ContainerInventoryAccess;
 import net.darkhax.bookshelf.api.inventory.IInventoryAccess;
 import net.darkhax.bookshelf.api.inventory.WorldlyContainerInventoryAccess;
-import net.darkhax.bookshelf.mixin.accessors.inventory.AccessorCraftingContainer;
 import net.darkhax.bookshelf.mixin.accessors.inventory.AccessorCraftingMenu;
 import net.darkhax.bookshelf.mixin.accessors.inventory.AccessorInventoryMenu;
+import net.darkhax.bookshelf.mixin.accessors.inventory.AccessorTransientCraftingContainer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -43,7 +43,7 @@ public interface IInventoryHelper {
     @Nullable
     default AbstractContainerMenu getCraftingContainer(CraftingContainer container) {
 
-        return (container instanceof AccessorCraftingContainer accessor) ? accessor.bookshelf$getMenu() : null;
+        return (container instanceof AccessorTransientCraftingContainer accessor) ? accessor.bookshelf$getMenu() : null;
     }
 
     @Nullable
@@ -211,7 +211,7 @@ public interface IInventoryHelper {
      */
     default boolean canItemsStack(ItemStack original, ItemStack toStack) {
 
-        return !toStack.isEmpty() && original.sameItem(toStack) && original.hasTag() == toStack.hasTag() && (!original.hasTag() || original.getTag().equals(toStack.getTag()));
+        return !toStack.isEmpty() && ItemStack.isSameItem(original, toStack) && original.hasTag() == toStack.hasTag() && (!original.hasTag() || original.getTag().equals(toStack.getTag()));
     }
 
     /**

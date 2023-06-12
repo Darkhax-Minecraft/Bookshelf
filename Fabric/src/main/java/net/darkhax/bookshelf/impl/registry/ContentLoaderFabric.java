@@ -19,6 +19,7 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -30,6 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class ContentLoaderFabric implements IContentLoader {
@@ -64,11 +66,12 @@ public class ContentLoaderFabric implements IContentLoader {
 
         this.consumeRegistry(content.dataListeners, (id, value) -> ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new WrappedReloadListener(id, value)));
 
-        this.consumeRegistry(content.creativeTabs, (id, value) -> {
+        this.consumeVanillaRegistry(content.creativeTabs, BuiltInRegistries.CREATIVE_MODE_TAB, (id, setup) -> {
 
-            final ITabBuilder builder = new TabBuilder(FabricItemGroup.builder(id));
-            value.accept(builder);
-            builder.build();
+            final ITabBuilder builder = new TabBuilder(FabricItemGroup.builder());
+            builder.title(Component.translatable("itemGroup.%s.%s".formatted(id.getNamespace(), id.getPath())));
+            setup.accept(builder);
+            return builder.build();
         });
 
         if (Services.PLATFORM.isPhysicalClient()) {
@@ -86,6 +89,11 @@ public class ContentLoaderFabric implements IContentLoader {
                 BlockRenderLayerMap.INSTANCE.putBlock(block, bindLayer.getRenderLayerToBind());
             }
         }
+    }
+
+    private <T, O> void consumeVanillaRegistry(IRegistryEntries<O> toRegister, Registry<T> registry, BiFunction<ResourceLocation, O, T> wrapper) {
+
+        toRegister.build((id, value) -> Registry.register(registry, id, wrapper.apply(id, value)));
     }
 
     private <T, O> void consumeVanillaRegistry(IRegistryEntries<O> toRegister, Registry<T> registry, Function<O, T> wrapper) {

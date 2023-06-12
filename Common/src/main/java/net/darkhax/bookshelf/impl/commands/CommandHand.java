@@ -13,7 +13,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -37,7 +36,7 @@ public class CommandHand {
         if (sender instanceof LivingEntity living) {
 
             final String stackOutput = type.converter.apply(living.getMainHandItem());
-            context.getSource().sendSuccess(TextHelper.textWithCopy(stackOutput), false);
+            context.getSource().sendSuccess(() -> TextHelper.textWithCopy(stackOutput), false);
         }
 
         return 1;

@@ -16,8 +16,6 @@ import net.fabricmc.fabric.api.item.v1.ModifyItemAttributeModifiersCallback;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.ServiceLoader;
-
 public class EventHelperFabric implements IEventHelper {
 
     public static final ResourceLocation PHASE_BEFORE = new ResourceLocation(Constants.MOD_ID, "before");

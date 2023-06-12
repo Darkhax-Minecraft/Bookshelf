@@ -20,10 +20,10 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
@@ -39,8 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class ContentLoaderForge implements IContentLoader {
 
@@ -73,10 +73,13 @@ public class ContentLoaderForge implements IContentLoader {
         ForgeEventHelper.addContextListener(WandererTradesEvent.class, content.trades.getCommonWanderingTrades(), content.trades.getRareWanderingTrades(), this::registerWanderingTrades);
 
         this.consumeWithForgeEvent(content.dataListeners, AddReloadListenerEvent.class, (event, id, arg) -> event.addListener(arg));
-        this.consumeWithModEvent(content.creativeTabs, CreativeModeTabEvent.Register.class, (event, id, arg) -> {
-            event.registerCreativeModeTab(id, builder -> {
-                arg.accept(new TabBuilder(builder.title(Component.translatable("itemGroup.%s.%s".formatted(id.getNamespace(), id.getPath())))));
-            });
+
+        this.consumeRegistry(content.creativeTabs, Registries.CREATIVE_MODE_TAB, (id, setup) -> {
+
+            final TabBuilder builder = new TabBuilder(CreativeModeTab.builder());
+            builder.title(Component.translatable("itemGroup.%s.%s".formatted(id.getNamespace(), id.getPath())));
+            setup.accept(builder);
+            return builder.build();
         });
 
         if (Services.PLATFORM.isPhysicalClient()) {
@@ -135,16 +138,16 @@ public class ContentLoaderForge implements IContentLoader {
 
     private <T> void consumeRegistry(IRegistryEntries<T> registry, ResourceKey<? extends Registry<T>> registryKey) {
 
-        this.consumeRegistry(registry, registryKey, v -> v);
+        this.consumeRegistry(registry, registryKey, (id, v) -> v);
     }
 
-    private <T> void consumeRegistry(IRegistryEntries<T> registry, ResourceKey<? extends Registry<T>> registryKey, Function<T, ? extends T> wrapper) {
+    private <T, WT> void consumeRegistry(IRegistryEntries<T> registry, ResourceKey<? extends Registry<WT>> registryKey, BiFunction<ResourceLocation, T, WT> wrapper) {
 
         final Consumer<RegisterEvent> listener = event -> {
 
             if (event.getRegistryKey().equals(registryKey)) {
 
-                registry.build((id, value) -> event.register(registryKey, id, () -> wrapper.apply(value)));
+                registry.build((id, value) -> event.register(registryKey, id, () -> wrapper.apply(id, value)));
             }
         };
 
