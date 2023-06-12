@@ -220,7 +220,7 @@ modrinth {
     token.set(project.findProperty('modrinth_auth'))
     projectId.set(modrinth_project)
     changelog.set(project.ext.mod_changelog)
-    versionName.set("Forge-${minecraft_version}-$version")
+    versionName.set("${mod_name}-Forge-${minecraft_version}-$version")
     versionType.set('release')
     uploadFile.set(tasks.jar)
 }
