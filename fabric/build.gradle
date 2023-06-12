@@ -191,7 +191,7 @@ modrinth {
     changelog.set(project.ext.mod_changelog)
     versionName.set("Fabric-${minecraft_version}-$version")
     versionType.set("release")
-    uploadFile.set(tasks.remapJar.get())
+    uploadFile.set(tasks.remapJar)
     dependencies {
         required.project("fabric-api")
     }

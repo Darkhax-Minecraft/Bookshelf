@@ -222,7 +222,7 @@ modrinth {
     changelog.set(project.ext.mod_changelog)
     versionName.set("Forge-${minecraft_version}-$version")
     versionType.set('release')
-    uploadFile.set(tasks.jar.get())
+    uploadFile.set(tasks.jar)
 }
 
 // Forge's Jar Signer
