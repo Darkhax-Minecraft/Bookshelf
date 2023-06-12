@@ -5,7 +5,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.darkhax.bookshelf.api.util.TextHelper;
 import net.darkhax.bookshelf.impl.commands.args.FontArgument;
-import net.darkhax.bookshelf.mixin.accessors.block.entity.AccessorSignBlockEntity;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.MessageArgument;
@@ -27,7 +26,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
 
-import java.util.UUID;
 import java.util.function.UnaryOperator;
 
 public class CommandFont {
