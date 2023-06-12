@@ -2,6 +2,7 @@ plugins {
     id 'net.minecraftforge.gradle'
     id 'org.spongepowered.mixin'
     id 'net.darkhax.curseforgegradle'
+    id 'com.modrinth.minotaur'
 }
 
 apply from: '../gradle/patreon.gradle'
@@ -196,6 +197,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.changelogType = 'markdown'
     mainFile.changelog = project.ext.mod_changelog
     mainFile.addJavaVersion('Java 17')
+    mainFile.releaseType = 'release'
 
     // Append Patreon Supporters
     def patreonInfo = project.findProperty('patreon')
@@ -211,6 +213,16 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
             project.ext.curse_file_url = "${mod_homepage}/files/${mainFile.curseFileId}"
         }
     }
+}
+
+// Modrinth
+modrinth {
+    token.set(project.findProperty('modrinth_auth'))
+    projectId.set(modrinth_project)
+    changelog.set(project.ext.mod_changelog)
+    versionName.set("Forge-${minecraft_version}-$version")
+    versionType.set('release')
+    uploadFile.set(tasks.jar.get())
 }
 
 // Forge's Jar Signer
