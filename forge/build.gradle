@@ -163,6 +163,7 @@ project.publishing {
 
             artifactId = base.archivesName.get()
             from components.java
+            fg.component(it)
         }
     }
 
