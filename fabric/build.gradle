@@ -7,7 +7,9 @@ plugins {
 apply from: '../gradle/property_helper.gradle'
 apply from: '../gradle/patreon.gradle'
 
-archivesBaseName = "${mod_name}-Fabric-${minecraft_version}"
+base {
+    archivesName = "${mod_name}-Fabric-${minecraft_version}"
+}
 
 // Enable Mixins
 project.ext.mixin_enabled = project.file("src/main/resources/${mod_id}.fabric.mixins.json").exists()
@@ -127,7 +129,6 @@ project.publishing {
 
         mavenJava(MavenPublication) {
 
-            artifactId project.archivesBaseName
             from components.java
         }
     }
