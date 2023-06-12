@@ -110,7 +110,7 @@ public class CommandFont {
 
             final ItemStack stack = living.getMainHandItem();
 
-            if (stack.getItem() instanceof WrittenBookItem book && stack.hasTag()) {
+            if (stack.getItem() instanceof WrittenBookItem && stack.hasTag()) {
 
                 stack.setHoverName(TextHelper.applyFont(stack.getHoverName(), fontId));
 
