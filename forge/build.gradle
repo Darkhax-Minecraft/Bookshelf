@@ -159,6 +159,7 @@ project.publishing {
 
         mavenJava(MavenPublication) {
         
+            artifactId project.archivesBaseName
             from components.java
         }
     }
