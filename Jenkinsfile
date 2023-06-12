@@ -31,22 +31,7 @@ pipeline {
                 ]) {
             
                     echo 'Building project.'
-                    sh './gradlew build --stacktrace --warn'
-                }
-            }
-        }
-        
-        stage('Publish') {
-        
-            steps {
-            
-                withCredentials([file(credentialsId: 'build_secrets', variable: 'ORG_GRADLE_PROJECT_secretFile')]) {
-                
-                    echo 'Updating version'
-                    sh './gradlew updateVersionTracker'
-
-                    echo 'Deploying to Maven'
-                    sh './gradlew publish publishCurseForge modrinth postDiscord'
+                    sh './gradlew build publish publishCurseForge modrinth postDiscord updateVersionTracker --stacktrace --warn'
                 }
             }
         }
