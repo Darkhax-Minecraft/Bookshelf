@@ -197,7 +197,7 @@ modrinth {
 
     token.set(project.findProperty('modrinth_auth'))
     projectId.set(modrinth_project)
-    changelog.set(changelog)
+    changelog = changelog
     versionName.set("${mod_name}-Fabric-${minecraft_version}-$version")
     versionType.set("release")
     uploadFile.set(tasks.remapJar)
