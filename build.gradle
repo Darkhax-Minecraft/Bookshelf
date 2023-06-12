@@ -12,6 +12,14 @@ buildscript {
     }
 }
 
+plugins {
+    id 'fabric-loom' version '1.2-SNAPSHOT' apply(false)
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)' apply(false)
+    id 'org.spongepowered.gradle.vanilla' version '0.2.1-SNAPSHOT' apply(false)
+    id 'org.spongepowered.mixin' version '0.7-SNAPSHOT' apply(false)
+    id 'net.darkhax.curseforgegradle' version '1.0.14' apply(false)
+}
+
 apply from: 'gradle/property_loader.gradle'
 apply from: 'gradle/build_number.gradle'
 apply from: 'gradle/git_changelog.gradle'
@@ -31,7 +39,7 @@ subprojects {
     // Disables Gradle's custom module metadata from being published to maven. The 
     // metadata includes mapped dependencies which are not reasonably consumable by
     // other mod developers.
-    tasks.withType(GenerateModuleMetadata) {
+    tasks.withType(GenerateModuleMetadata).configureEach {
 
         enabled = false
     }

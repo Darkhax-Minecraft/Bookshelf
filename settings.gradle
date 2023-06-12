@@ -16,5 +16,11 @@ pluginManagement {
     }
 }
 
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.5.0'
+}
+
 rootProject.name = "Bookshelf"
-include('Common', 'Fabric', 'Forge')
+include('common')
+include('fabric')
+include('forge')

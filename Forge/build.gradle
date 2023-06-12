@@ -1,16 +1,7 @@
-buildscript {
-    repositories {
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-    }
-}
-
 plugins {
-    id 'net.minecraftforge.gradle' version '5.1.+'
-    id 'net.darkhax.curseforgegradle' version '1.0.10'
+    id 'net.minecraftforge.gradle'
+    id 'org.spongepowered.mixin'
+    id 'net.darkhax.curseforgegradle'
 }
 
 apply from: '../gradle/patreon.gradle'
@@ -43,7 +34,7 @@ minecraft {
             mods {
                 modClientRun {
                     source sourceSets.main
-                    source project(":Common").sourceSets.main
+                    source project(":common").sourceSets.main
                 }
             }
         }
@@ -63,16 +54,13 @@ minecraft {
             mods {
                 modServerRun {
                     source sourceSets.main
-                    source project(":Common").sourceSets.main
+                    source project(":common").sourceSets.main
                 }
             }
         }
 
         gameTestServer {
             workingDirectory project.file('run')
-
-            // needed to not make CI think the task failed
-            setForceExit(false)
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
@@ -81,7 +69,7 @@ minecraft {
             mods {
                 examplemod {
                     source sourceSets.main
-                    source project(":Common").sourceSets.main
+                    source project(":common").sourceSets.main
                 }
             }
         }
@@ -91,18 +79,26 @@ minecraft {
 dependencies {
 
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    compileOnly project(":Common")
+    compileOnly project(":common")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
-tasks.withType(JavaCompile) {
-    source(project(":Common").sourceSets.main.allSource)
+tasks.withType(JavaCompile).configureEach {
+    source(project(":common").sourceSets.main.allSource)
+}
+
+tasks.withType(Javadoc).configureEach {
+    source(project(":common").sourceSets.main.allJava)
+}
+
+tasks.named("sourcesJar", Jar) {
+    from(project(":common").sourceSets.main.allSource)
 }
 
 processResources {
 
-    from project(":Common").sourceSets.main.resources
+    from project(":common").sourceSets.main.resources
 
     def buildProps = project.properties.clone()
 
@@ -146,8 +142,6 @@ jar.finalizedBy('reobfJar')
 // -- Mixin Support
 if (project.ext.mixin_enabled) {
 
-    apply plugin: 'org.spongepowered.mixin'
-
     mixin {
 
         // Tells the mixin plugin where to put the generated refmap file.
@@ -164,21 +158,8 @@ project.publishing {
     publications {
 
         mavenJava(MavenPublication) {
-
-            artifactId project.archivesBaseName
-
-            // Base mod archive.
-            artifact jar
-
-            // Adds the sources as an artifact.
-            artifact project.sourcesJar {
-                classifier 'sources'
-            }
-
-            // Adds the javadocs as an artifact.
-            artifact project.javadocJar {
-                classifier 'javadoc'
-            }
+        
+            from components.java
         }
     }
 

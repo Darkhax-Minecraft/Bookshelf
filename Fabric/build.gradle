@@ -1,6 +1,6 @@
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
-    id 'net.darkhax.curseforgegradle' version '1.0.10'
+    id 'fabric-loom'
+    id 'net.darkhax.curseforgegradle'
     id 'idea'
 }
 
@@ -20,7 +20,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    implementation project(":Common")
+    implementation project(":common")
 }
 
 sourceSets {
@@ -30,10 +30,10 @@ sourceSets {
         compileClasspath += main.output
         runtimeClasspath += main.output
 
-        compileClasspath += project(":Common").sourceSets.main.compileClasspath
-        runtimeClasspath += project(":Common").sourceSets.main.runtimeClasspath
-        compileClasspath += project(":Common").sourceSets.main.output
-        runtimeClasspath += project(":Common").sourceSets.main.output
+        compileClasspath += project(":common").sourceSets.main.compileClasspath
+        runtimeClasspath += project(":common").sourceSets.main.runtimeClasspath
+        compileClasspath += project(":common").sourceSets.main.output
+        runtimeClasspath += project(":common").sourceSets.main.output
     }
 }
 
@@ -72,7 +72,7 @@ loom {
 
 processResources {
 
-    from project(":Common").sourceSets.main.resources
+    from project(":common").sourceSets.main.resources
 
     def buildProps = project.properties.clone()
 
@@ -107,8 +107,17 @@ processResources {
     }
 }
 
-tasks.withType(JavaCompile) {
-    source(project(":Common").sourceSets.main.allSource)
+
+tasks.withType(JavaCompile).configureEach {
+    source(project(":common").sourceSets.main.allSource)
+}
+
+tasks.withType(Javadoc).configureEach {
+    source(project(":common").sourceSets.main.allJava)
+}
+
+tasks.named("sourcesJar", Jar) {
+    from(project(":common").sourceSets.main.allSource)
 }
 
 // -- MAVEN PUBLISHING --
@@ -118,9 +127,7 @@ project.publishing {
 
         mavenJava(MavenPublication) {
 
-            artifactId project.archivesBaseName
-
-            from(components["java"])
+            from components.java
         }
     }
 
