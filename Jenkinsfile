@@ -46,16 +46,7 @@ pipeline {
                     sh './gradlew updateVersionTracker'
 
                     echo 'Deploying to Maven'
-                    sh './gradlew publish'
-
-                    echo 'Deploying to CurseForge'
-                    sh './gradlew publishCurseForge'
-                    
-                    echo 'Deploying to Modrinth'
-                    sh './gradlew modrinth'
-                    
-                    echo 'Discord Announcement'
-                    sh './gradlew postDiscord'
+                    sh './gradlew publish publishCurseForge modrinth postDiscord'
                 }
             }
         }
