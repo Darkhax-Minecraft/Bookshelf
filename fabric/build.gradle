@@ -1,7 +1,8 @@
 plugins {
+    id 'idea'
     id 'fabric-loom'
     id 'net.darkhax.curseforgegradle'
-    id 'idea'
+    id 'com.modrinth.minotaur'
 }
 
 apply from: '../gradle/property_helper.gradle'
