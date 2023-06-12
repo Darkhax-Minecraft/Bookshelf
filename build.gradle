@@ -77,14 +77,14 @@ task postDiscord() {
             def embed = new Embed();
             def downloadSources = new StringJoiner('\n')
 
-            if (project(':Forge').hasProperty('curse_file_url')) {
+            if (project(':forge').hasProperty('curse_file_url')) {
 
-                downloadSources.add("<:forge:916233930091401266> [Forge](${project(':Forge').findProperty('curse_file_url')})")
+                downloadSources.add("<:forge:916233930091401266> [Forge](${project(':forge').findProperty('curse_file_url')})")
             }
 
-            if (project(':Fabric').hasProperty('curse_file_url')) {
+            if (project(':fabric').hasProperty('curse_file_url')) {
 
-                downloadSources.add("<:fabric:916233929722314763> [Fabric](${project(':Fabric').findProperty('curse_file_url')})")
+                downloadSources.add("<:fabric:916233929722314763> [Fabric](${project(':fabric').findProperty('curse_file_url')})")
             }
 
             // Add Curseforge DL link if available.
