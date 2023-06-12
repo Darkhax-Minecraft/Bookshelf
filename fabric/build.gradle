@@ -167,6 +167,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.addModLoader('Fabric')
     mainFile.addModLoader('Quilt')
     mainFile.releaseType = 'release'
+    mainFile.addGameVersion('Server', 'Client')
 
     // Append Patreon Supporters
     def patreonInfo = project.findProperty('patreon')
