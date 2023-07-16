@@ -36,7 +36,14 @@ public class SerializerItemStack implements ISerializer<ItemStack> {
                 return ItemStack.EMPTY;
             }
 
-            return ShapedRecipe.itemStackFromJson(obj);
+            final ItemStack stack = ShapedRecipe.itemStackFromJson(obj);
+
+            if (obj.has("nbt") && !stack.hasTag()) {
+
+                stack.setTag(Serializers.COMPOUND_TAG.fromJSON(obj.get("nbt")));
+            }
+
+            return stack;
         }
 
         else if (json.isJsonPrimitive()) {
