@@ -2,6 +2,11 @@ package net.darkhax.bookshelf.api.util;
 
 import net.darkhax.bookshelf.mixin.accessors.item.AccessorCooldownInstance;
 import net.darkhax.bookshelf.mixin.accessors.item.AccessorItemCooldowns;
+import net.minecraft.ResourceLocationException;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 
@@ -22,5 +27,28 @@ public class PlayerHelper {
         }
 
         return 0;
+    }
+
+    public static void awardAdvancement(ServerPlayer player, ResourceLocation advancementId) {
+
+        final Advancement toGrant = player.getServer().getAdvancements().getAdvancement(advancementId);
+
+        if (toGrant != null) {
+
+            final AdvancementProgress progress = player.getAdvancements().getOrStartProgress(toGrant);
+
+            if (!progress.isDone()) {
+
+                for(String remainingCriteria : progress.getRemainingCriteria()) {
+
+                    player.getAdvancements().award(toGrant, remainingCriteria);
+                }
+            }
+        }
+
+        else {
+
+            throw new ResourceLocationException("No advancement found for ID: " + advancementId);
+        }
     }
 }
