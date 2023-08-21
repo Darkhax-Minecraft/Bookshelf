@@ -194,6 +194,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     apiToken = findProperty('curse_auth')
 
     def mainFile = upload(curse_project, jar)
+    mainFile.addModLoader('NeoForge')
     mainFile.changelogType = 'markdown'
     mainFile.changelog = project.ext.mod_changelog
     mainFile.addJavaVersion('Java 17')
