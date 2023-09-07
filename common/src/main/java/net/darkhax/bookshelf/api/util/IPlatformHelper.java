@@ -48,6 +48,23 @@ public interface IPlatformHelper {
     }
 
     /**
+     * Gets the primary path that the current loader will load mods from.
+     *
+     * @return The currently specified mods path.
+     */
+    Path getModsPath();
+
+    /**
+     * Gets the primary directory that the current loader will load mods from.
+     *
+     * @return The currently specified mods directory.
+     */
+    default File getModsDirectory() {
+
+        return this.getModsPath().toFile();
+    }
+
+    /**
      * Checks if a given mod is loaded.
      *
      * @param modId The mod id to search for.

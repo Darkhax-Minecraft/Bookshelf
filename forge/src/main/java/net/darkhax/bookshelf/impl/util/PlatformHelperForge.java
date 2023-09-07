@@ -26,6 +26,12 @@ public class PlatformHelperForge implements IPlatformHelper {
     }
 
     @Override
+    public Path getModsPath() {
+
+        return FMLPaths.MODSDIR.get();
+    }
+
+    @Override
     public boolean isModLoaded(String modId) {
 
         return ModList.get().isLoaded(modId);

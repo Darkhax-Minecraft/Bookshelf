@@ -24,6 +24,12 @@ public class PlatformHelperFabric implements IPlatformHelper {
     }
 
     @Override
+    public Path getModsPath() {
+
+        return this.getGamePath().resolve("mods");
+    }
+
+    @Override
     public boolean isModLoaded(String modId) {
 
         return FabricLoader.getInstance().isModLoaded(modId);
