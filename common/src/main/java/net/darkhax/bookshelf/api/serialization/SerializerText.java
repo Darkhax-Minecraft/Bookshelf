@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.api.serialization;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -12,7 +13,14 @@ public final class SerializerText implements ISerializer<Component> {
     @Override
     public Component fromJSON(JsonElement json) {
 
-        return Component.Serializer.fromJson(json);
+        final Component component = Component.Serializer.fromJson(json);
+
+        if (component == null) {
+
+            throw new JsonParseException("Text can not be null.");
+        }
+
+        return component;
     }
 
     @Override
@@ -43,6 +51,13 @@ public final class SerializerText implements ISerializer<Component> {
     @Override
     public Component fromNBT(Tag nbt) {
 
-        return Component.Serializer.fromJson(Serializers.STRING.fromNBT(nbt));
+        final Component component = Component.Serializer.fromJson(Serializers.STRING.fromNBT(nbt));
+
+        if (component == null) {
+
+            throw new JsonParseException("Text can not be null.");
+        }
+
+        return component;
     }
 }
