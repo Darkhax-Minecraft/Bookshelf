@@ -48,6 +48,7 @@ import org.joml.Vector4f;
 
 import java.util.UUID;
 
+@Deprecated
 public final class Serializers {
 
     // JAVA TYPES
