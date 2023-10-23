@@ -526,6 +526,6 @@ public class TestSerialization<T> implements ITestable {
     @Override
     public String getDefaultBatch() {
 
-        return "bookshelf_serialization_" + this.type;
+        return "bookshelf.serialization_" + this.type;
     }
 }

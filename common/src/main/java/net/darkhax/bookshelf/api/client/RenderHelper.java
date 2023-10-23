@@ -114,12 +114,12 @@ public interface RenderHelper {
     default void renderFace(VertexConsumer builder, Matrix4f pos, TextureAtlasSprite sprite, Direction side, int light, int overlay, float x1, float x2, float y1, float y2, float z1, float z2, int[] color) {
 
         // Convert block size to pixel size
-        final double px1 = x1 * 16;
-        final double px2 = x2 * 16;
-        final double py1 = y1 * 16;
-        final double py2 = y2 * 16;
-        final double pz1 = z1 * 16;
-        final double pz2 = z2 * 16;
+        final float px1 = x1 * 16;
+        final float px2 = x2 * 16;
+        final float py1 = y1 * 16;
+        final float py2 = y2 * 16;
+        final float pz1 = z1 * 16;
+        final float pz2 = z2 * 16;
 
         switch (side) {
 

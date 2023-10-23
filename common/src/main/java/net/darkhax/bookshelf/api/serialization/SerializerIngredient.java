@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.api.serialization;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -23,13 +24,13 @@ public class SerializerIngredient implements ISerializer<Ingredient> {
             return Ingredient.EMPTY;
         }
 
-        return Ingredient.fromJson(json);
+        return Ingredient.CODEC.parse(JsonOps.INSTANCE, json).result().orElseThrow();
     }
 
     @Override
     public JsonElement toJSON(Ingredient toWrite) {
 
-        return toWrite.toJson();
+        return toWrite.toJson(true);
     }
 
     @Override

@@ -4,6 +4,7 @@ import net.darkhax.bookshelf.mixin.accessors.item.AccessorCooldownInstance;
 import net.darkhax.bookshelf.mixin.accessors.item.AccessorItemCooldowns;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,9 +32,9 @@ public class PlayerHelper {
 
     public static void awardAdvancement(ServerPlayer player, ResourceLocation advancementId) {
 
-        final Advancement toGrant = player.getServer().getAdvancements().getAdvancement(advancementId);
+        final AdvancementHolder toGrant = player.getServer().getAdvancements().get(advancementId);
 
-        if (toGrant != null) {
+        if (toGrant != null && toGrant.value() != null) {
 
             final AdvancementProgress progress = player.getAdvancements().getOrStartProgress(toGrant);
 

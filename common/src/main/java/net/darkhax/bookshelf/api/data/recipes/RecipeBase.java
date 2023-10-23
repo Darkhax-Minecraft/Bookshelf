@@ -33,10 +33,4 @@ public abstract class RecipeBase<C extends Container> implements Recipe<C> {
             throw new IllegalStateException("Recipe class " + this.getClass().getName() + " has no recipe type!");
         }
     }
-
-    @Override
-    public ResourceLocation getId() {
-
-        return this.id;
-    }
 }

@@ -16,6 +16,7 @@
     "accessors.item.AccessorItem",
     "accessors.item.AccessorItemCooldowns",
     "accessors.item.crafting.AccessorShapedRecipe",
+    "accessors.item.crafting.AccessorShapedRecipeSerializer",
     "accessors.util.random.AccessorWeightedRandomList",
     "accessors.world.AccessorStructureTemplatePool",
     "patches.entity.MixinLightningBolt",

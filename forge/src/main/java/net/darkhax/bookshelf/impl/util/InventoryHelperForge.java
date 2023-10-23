@@ -17,7 +17,6 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -60,7 +59,7 @@ public class InventoryHelperForge implements IInventoryHelper {
     @Override
     public void openMenu(ServerPlayer player, MenuProvider provider, Consumer<FriendlyByteBuf> buf) {
 
-        NetworkHooks.openScreen(player, provider, buf);
+        player.openMenu(provider, buf);
     }
 
     @Override
