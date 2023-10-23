@@ -31,7 +31,7 @@ public class MixinLightningBolt {
         // Checks if the block being struck reacts to lightning.
         if (strikeBlock instanceof ILightningConductive extended) {
 
-            ((ILightningConductive) strikeBlock).onDirectLightningStrike(self.level(), strikePos, strikeState, self);
+            extended.onDirectLightningStrike(self.level(), strikePos, strikeState, self);
         }
 
         // Checks if the block redirects lightning to adjacent blocks. This is

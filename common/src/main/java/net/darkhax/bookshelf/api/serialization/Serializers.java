@@ -1,6 +1,5 @@
 package net.darkhax.bookshelf.api.serialization;
 
-import net.darkhax.bookshelf.api.Services;
 import net.darkhax.bookshelf.api.data.sound.Sound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

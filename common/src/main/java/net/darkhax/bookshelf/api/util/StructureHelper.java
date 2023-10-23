@@ -7,7 +7,6 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
@@ -51,7 +50,7 @@ public class StructureHelper {
     public static StructurePoolElement poolElementFromNBT(RegistryAccess registryAccess, ResourceKey<StructureProcessorList> processorId, String nbtPath, StructureTemplatePool.Projection projection, boolean useLegacy) {
 
         final Holder<StructureProcessorList> processorList = registryAccess.registry(Registries.PROCESSOR_LIST).orElseThrow().getHolderOrThrow(processorId);
-        return useLegacy ? SinglePoolElement.legacy(nbtPath, processorList).apply(projection) : SinglePoolElement.single(nbtPath, processorList).apply(projection);
+        return useLegacy ? StructurePoolElement.legacy(nbtPath, processorList).apply(projection) : StructurePoolElement.single(nbtPath, processorList).apply(projection);
     }
 
     public static void insertPoolElement(StructureTemplatePool pool, StructurePoolElement element, int weight) {

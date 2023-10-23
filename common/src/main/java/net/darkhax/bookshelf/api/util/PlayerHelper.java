@@ -3,7 +3,6 @@ package net.darkhax.bookshelf.api.util;
 import net.darkhax.bookshelf.mixin.accessors.item.AccessorCooldownInstance;
 import net.darkhax.bookshelf.mixin.accessors.item.AccessorItemCooldowns;
 import net.minecraft.ResourceLocationException;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.resources.ResourceLocation;

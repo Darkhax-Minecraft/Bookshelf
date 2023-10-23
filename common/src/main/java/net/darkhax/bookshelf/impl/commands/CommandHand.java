@@ -28,7 +28,7 @@ public class CommandHand {
         return hand;
     }
 
-    private static int printHeldStack(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private static int printHeldStack(CommandContext<CommandSourceStack> context) {
 
         final OutputType type = HandArgument.get(context);
         final Entity sender = context.getSource().getEntity();

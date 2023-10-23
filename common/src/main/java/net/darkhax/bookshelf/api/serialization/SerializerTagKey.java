@@ -5,10 +5,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-
-import java.util.function.Function;
 
 public class SerializerTagKey<T> implements ISerializer<TagKey<T>> {
 
