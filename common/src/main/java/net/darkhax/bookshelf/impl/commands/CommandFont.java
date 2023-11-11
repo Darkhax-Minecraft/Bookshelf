@@ -60,7 +60,7 @@ public class CommandFont {
         if (sender instanceof LivingEntity living) {
 
             final ItemStack stack = living.getMainHandItem();
-            stack.setHoverName(TextHelper.applyFont(stack.getHoverName(), fontId));
+            stack.setHoverName(TextHelper.applyFont(stack.getHoverName().copy(), fontId));
             return 1;
         }
 
@@ -78,7 +78,7 @@ public class CommandFont {
 
             if (tile instanceof BaseContainerBlockEntity container) {
 
-                container.setCustomName(TextHelper.applyFont(container.getName(), fontId));
+                container.setCustomName(TextHelper.applyFont(container.getName().copy(), fontId));
             }
 
             if (tile instanceof SignBlockEntity sign) {
@@ -95,7 +95,7 @@ public class CommandFont {
     private static UnaryOperator<SignText> applySignFont(ResourceLocation fontId) {
         return text -> {
             for (int i = 0; i < 4; i++) {
-                text.setMessage(i, TextHelper.applyFont(text.getMessage(i, false), fontId));
+                text.setMessage(i, TextHelper.applyFont(text.getMessage(i, false).copy(), fontId));
             }
             return text;
         };
@@ -112,7 +112,7 @@ public class CommandFont {
 
             if (stack.getItem() instanceof WrittenBookItem && stack.hasTag()) {
 
-                stack.setHoverName(TextHelper.applyFont(stack.getHoverName(), fontId));
+                stack.setHoverName(TextHelper.applyFont(stack.getHoverName().copy(), fontId));
 
                 final CompoundTag stackTag = stack.getTag();
 
@@ -123,7 +123,7 @@ public class CommandFont {
                     for (int pageNum = 0; pageNum < pageData.size(); pageNum++) {
 
                         final Component pageText = Component.Serializer.fromJsonLenient(pageData.getString(pageNum));
-                        TextHelper.applyFont(pageText, fontId);
+                        TextHelper.applyFont(pageText.copy(), fontId);
                         pageData.set(pageNum, StringTag.valueOf(Component.Serializer.toJson(pageText)));
                     }
 
