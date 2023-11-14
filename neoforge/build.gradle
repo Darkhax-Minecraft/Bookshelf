@@ -1,0 +1,169 @@
+plugins {
+    id 'net.neoforged.gradle.userdev' version '7.0.43'
+    id 'net.darkhax.curseforgegradle'
+    id 'com.modrinth.minotaur'
+}
+
+apply from: '../gradle/patreon.gradle'
+
+base {
+    archivesName = "${mod_name}-NeoForge-${minecraft_version}"
+}
+
+runs {
+    configureEach {
+        modSource project.sourceSets.main
+    }
+    client {
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+    }
+    server {
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        programArgument '--nogui'
+    }
+
+    gameTestServer {
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+    }
+}
+
+dependencies {
+    implementation "net.neoforged:neoforge:${neoforge_version}"
+    compileOnly project(':common')
+}
+
+// NeoGradle compiles the game, but we don't want to add our common code to the game's code
+TaskCollection.metaClass.excludingNeoTasks = { ->
+    delegate.matching { !it.name.startsWith("neo") }
+}
+
+tasks.withType(JavaCompile).excludingNeoTasks().configureEach {
+    source(project(':common').sourceSets.main.allSource)
+}
+
+tasks.withType(Javadoc).excludingNeoTasks().configureEach {
+    source(project(':common').sourceSets.main.allJava)
+}
+
+tasks.named("sourcesJar", Jar) {
+    from(project(':common').sourceSets.main.allSource)
+}
+
+tasks.withType(ProcessResources).excludingNeoTasks().configureEach {
+    from project(':common').sourceSets.main.resources
+}
+
+processResources {
+
+    from project(":common").sourceSets.main.resources
+
+    def buildProps = project.properties.clone()
+
+    // Replaces FML's magic file.jarVersion string with the correct version at
+    // build time.
+    buildProps.put('file', [jarVersion: project.version])
+
+    if (project.hasProperty('patreon')) {
+
+        def supporters = new ArrayList<String>()
+
+        for (entry in project.ext.patreon.pledges) {
+
+            def pledge = entry.value;
+
+            if (pledge.isValid()) {
+
+                supporters.add(pledge.getDisplayName())
+            }
+        }
+
+        buildProps.put('mod_supporters', supporters.join(', '))
+    }
+
+    filesMatching('*.mixins.json') {
+        filter(org.apache.tools.ant.filters.LineContains, negate: true, contains: ['refmap' ] )
+    }
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta', '*.mixins.json']) {
+
+        expand buildProps
+    }
+}
+
+// -- MAVEN PUBLISHING --
+project.publishing {
+
+    publications {
+
+        mavenJava(MavenPublication) {
+
+            artifactId = base.archivesName.get()
+            from components.java
+        }
+    }
+
+    repositories {
+
+        maven {
+
+            // Sets maven credentials if they are provided. This is generally
+            // only used for external/remote uploads.
+            if (project.hasProperty('mavenUsername') && project.hasProperty('mavenPassword')) {
+
+                credentials {
+
+                    username findProperty('mavenUsername')
+                    password findProperty('mavenPassword')
+                }
+            }
+
+            url getDefaultString('mavenURL', 'undefined', true)
+        }
+    }
+}
+
+// CurseForge Publishing
+task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+
+    apiToken = findProperty('curse_auth')
+
+    def mainFile = upload(curse_project, jar)
+    mainFile.changelogType = 'markdown'
+    mainFile.changelog = project.ext.mod_changelog
+    mainFile.addJavaVersion('Java 17')
+    mainFile.releaseType = 'release'
+    mainFile.addGameVersion('Server', 'Client')
+
+    // Append Patreon Supporters
+    def patreonInfo = project.findProperty('patreon')
+
+    if (patreonInfo) {
+        mainFile.changelog += "\n\nThis project is made possible by [Patreon](${patreonInfo.campaignUrlTracked}) support from players like you. Thank you!\n\n${patreonInfo.pledgeLog}"
+    }
+
+    doLast {
+
+        if (project.hasProperty('mod_homepage')) {
+
+            project.ext.curse_file_url = "${mod_homepage}/files/${mainFile.curseFileId}"
+        }
+    }
+}
+
+// Modrinth
+modrinth {
+
+    def patreonInfo = project.findProperty('patreon')
+    def changelog = project.ext.mod_changelog
+
+    if (patreonInfo) {
+        changelog += "\n\nThis project is made possible by [Patreon](${patreonInfo.campaignUrlTracked}) support from players like you. Thank you!\n\n${patreonInfo.pledgeLog}"
+    }
+
+    token.set(project.findProperty('modrinth_auth'))
+    projectId.set(modrinth_project)
+    changelog = changelog
+    versionName.set("${mod_name}-Forge-${minecraft_version}-$version")
+    versionType.set('release')
+    uploadFile.set(tasks.jar)
+}

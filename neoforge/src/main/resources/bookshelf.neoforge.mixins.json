@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.darkhax.bookshelf.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "patches.block.entity.MixinBaseContainerBlockEntity"
+  ],
+  "client": [
+  ],
+  "server": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
