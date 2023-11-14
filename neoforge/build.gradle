@@ -166,4 +166,6 @@ modrinth {
     versionName.set("${mod_name}-NeoForge-${minecraft_version}-$version")
     versionType.set('release')
     uploadFile.set(tasks.jar)
+
+    loaders = ["neoforge"]
 }
