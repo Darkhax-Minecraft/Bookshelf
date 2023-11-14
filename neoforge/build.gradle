@@ -168,4 +168,5 @@ modrinth {
     uploadFile.set(tasks.jar)
 
     loaders = ["neoforge"]
+    gameVersions = ["${minecraft_version}"]
 }
