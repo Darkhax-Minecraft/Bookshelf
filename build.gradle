@@ -84,6 +84,11 @@ task postDiscord() {
                 downloadSources.add("<:fabric:916233929722314763> [Fabric](${project(':fabric').findProperty('curse_file_url')})")
             }
 
+            if (project(':neoforge').hasProperty('curse_file_url')) {
+
+                downloadSources.add("<:neoforge:916233929722314763> [NeoForge](${project(':neoforge').findProperty('curse_file_url')})")
+            }
+
             // Add Curseforge DL link if available.
             def downloadString = downloadSources.toString()
 
