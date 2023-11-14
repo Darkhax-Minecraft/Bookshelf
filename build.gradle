@@ -86,7 +86,7 @@ task postDiscord() {
 
             if (project(':neoforge').hasProperty('curse_file_url')) {
 
-                downloadSources.add("<:neoforge:916233929722314763> [NeoForge](${project(':neoforge').findProperty('curse_file_url')})")
+                downloadSources.add("<:neoforge:1173939148806176779> [NeoForge](${project(':neoforge').findProperty('curse_file_url')})")
             }
 
             // Add Curseforge DL link if available.
