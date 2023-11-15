@@ -1,6 +1,8 @@
 package net.darkhax.bookshelf.api.util;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -222,5 +224,47 @@ public final class MathsHelper {
 
         final double duration = stop - start;
         return duration < 10_000 ? "ns (<0.01ms)" : DECIMAL_2.format(duration / 1_000_000d) + "ms";
+    }
+
+    /**
+     * Offsets a position by a random amount horizontally within an upper range. Movement will be along the X and Z
+     * axis.
+     *
+     * @param startPos The starting position to offset from.
+     * @param rng      A random number source.
+     * @param range    The maximum amount of blocks the position can be offset by in both the positive and negative
+     *                 direction. For example a value of 5 will allow the new position to be -5 to 5 blocks away on
+     *                 either axis. Value should be positive.
+     * @return The offset postion.
+     */
+    public static BlockPos randomOffsetHorizontal(BlockPos startPos, RandomSource rng, int range) {
+
+        return randomOffset(startPos, rng, range, 0, range);
+    }
+
+    /**
+     * Offsets a position by a random amount within a given range.
+     *
+     * @param startPos The starting position to offset from.
+     * @param rng      A random number source.
+     * @param rangeX   The maximum amount of blocks the position can be offset on the X axis in both positive and
+     *                 negative directions.
+     * @param rangeY   The maximum amount of blocks the position can be offset on the Y axis in both positive and
+     *                 negative directions.
+     * @param rangeZ   The maximum amount of blocks the position can be offset on the Z axis in both positive and
+     *                 negative directions.
+     * @return The offset position.
+     */
+    public static BlockPos randomOffset(BlockPos startPos, RandomSource rng, int rangeX, int rangeY, int rangeZ) {
+
+        if (rangeX < 0 || rangeY < 0 || rangeZ < 0) {
+
+            throw new IllegalArgumentException("Cannot offset position by '" + rangeX + ", " + rangeY + ", " + rangeZ + "'. Range must be positive!");
+        }
+
+        final int offsetX = rangeX != 0 ? rng.nextIntBetweenInclusive(-rangeX, rangeX) : 0;
+        final int offsetY = rangeY != 0 ? rng.nextIntBetweenInclusive(-rangeY, rangeY) : 0;
+        final int offsetZ = rangeZ != 0 ? rng.nextIntBetweenInclusive(-rangeZ, rangeZ) : 0;
+        return startPos.offset(offsetX, offsetY, offsetZ);
     }
 }
