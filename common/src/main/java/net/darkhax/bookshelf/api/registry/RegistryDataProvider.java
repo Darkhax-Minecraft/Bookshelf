@@ -59,6 +59,11 @@ public class RegistryDataProvider {
     public RegistryDataProvider(String ownerId) {
 
         this.ownerId = ownerId;
+        this.recipeSerializers.addRegistryListener((id, serializer) -> {
+            if (serializer.codec() == null) {
+                throw new IllegalStateException("Recipe serializer '" + id.toString() + "' attempted to register serializer '" + serializer.getClass() + "' with null codec.");
+            }
+        });
     }
 
     public final RegistryDataProvider withItemTab(Supplier<ItemStack> icon) {
