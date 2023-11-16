@@ -75,7 +75,7 @@ public class ShapelessDurabilityRecipe extends ShapelessRecipe {
         @Override
         public Codec<ShapelessDurabilityRecipe> codec() {
 
-            return null;
+            return CODEC;
         }
 
         @Override
