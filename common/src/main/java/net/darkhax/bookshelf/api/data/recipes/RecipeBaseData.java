@@ -1,9 +1,9 @@
 package net.darkhax.bookshelf.api.data.recipes;
 
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 
 /**
@@ -16,12 +16,7 @@ import net.minecraft.world.level.Level;
  *
  * @param <C> The type of inventory used to craft the recipe. This can usually be ignored.
  */
-public abstract class RecipeBaseData<C extends Container> extends RecipeBase<C> {
-
-    public RecipeBaseData(ResourceLocation id) {
-
-        super(id);
-    }
+public abstract class RecipeBaseData<C extends Container> implements Recipe<C> {
 
     @Override
     public boolean matches(C inventory, Level level) {
