@@ -75,7 +75,6 @@ public final class Serializers {
     public static final ISerializer<EnchantmentInstance> ENCHANTMENT_INSTANCE = SerializerEnchantmentInstance.SERIALIZER;
     public static final ISerializer<Vector3f> VECTOR_3F = SerializerVector3f.SERIALIZER;
     public static final ISerializer<Vector4f> VECTOR_4F = SerializerVector4f.SERIALIZER;
-    public static final ISerializer<Sound> SOUND = Sound.SERIALIZER;
     public static final ISerializer<StructurePoolElement> STRUCTURE_POOL_ELEMENT = new SerializerCodec<>(StructurePoolElement.CODEC);
 
     // ENUMS

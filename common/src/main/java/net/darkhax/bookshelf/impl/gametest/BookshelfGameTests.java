@@ -92,8 +92,6 @@ public class BookshelfGameTests {
         testFrom(testFunctions, new TestSerialization<>("enchantment_instance", Serializers.ENCHANTMENT_INSTANCE, BookshelfGameTests::assertEncantmentInstanceEqual, new EnchantmentInstance[]{new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 5), new EnchantmentInstance(Enchantments.BINDING_CURSE, 15), new EnchantmentInstance(Enchantments.IMPALING, 2)}));
         testFrom(testFunctions, new TestSerialization<>("Vector3f", Serializers.VECTOR_3F, new Vector3f(1f, 2f, 3f), new Vector3f(-5f, -2f, 44f), new Vector3f(Float.MAX_VALUE, Float.MIN_VALUE, Float.MIN_VALUE)));
         testFrom(testFunctions, new TestSerialization<>("Vector4f", Serializers.VECTOR_4F, new Vector4f(1f, 2f, 3f, 4f), new Vector4f(0f, -22f, -2222f, 0f), new Vector4f(Float.MAX_VALUE, Float.MIN_VALUE, Float.MIN_VALUE, Float.MAX_VALUE)));
-        testFrom(testFunctions, new TestSerialization<>("sound", Serializers.SOUND, new Sound(SoundEvents.DOLPHIN_JUMP, SoundSource.AMBIENT, 1f, 1f), new Sound(SoundEvents.ALLAY_HURT, SoundSource.NEUTRAL, 0.5f, 0.222f), new Sound(SoundEvents.SQUID_AMBIENT, SoundSource.PLAYERS, 0.1f, 0.2f)));
-
         // Test Minecraft Enum Serializers
         testFrom(testFunctions, new TestSerialization<>("item_rarity", Serializers.ITEM_RARITY, Rarity.COMMON, Rarity.EPIC, Rarity.RARE, Rarity.RARE));
         testFrom(testFunctions, new TestSerialization<>("enchantment_rarity", Serializers.ENCHANTMENT_RARITY, Enchantment.Rarity.COMMON, Enchantment.Rarity.COMMON, Enchantment.Rarity.RARE, Enchantment.Rarity.UNCOMMON));
