@@ -15,11 +15,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.function.BiFunction;
@@ -202,5 +204,30 @@ public final class TextHelper {
         }
 
         return joined;
+    }
+
+    public static Set<String> getPossibleMatches(String input, Iterable<String> candidates) {
+
+        final HashSet<String> bestMatches = new HashSet();
+        int distance = Integer.MAX_VALUE;
+
+        for (String candidate : candidates) {
+
+            final int currentDistance = StringUtils.getLevenshteinDistance(input, candidate);
+
+            if (currentDistance < distance) {
+
+                distance = currentDistance;
+                bestMatches.clear();
+                bestMatches.add(candidate);
+            }
+
+            else if (currentDistance == distance) {
+
+                bestMatches.add(candidate);
+            }
+        }
+
+        return bestMatches;
     }
 }
