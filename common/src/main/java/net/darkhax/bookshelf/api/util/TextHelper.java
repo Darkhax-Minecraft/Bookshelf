@@ -25,6 +25,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public final class TextHelper {
 
@@ -179,17 +181,17 @@ public final class TextHelper {
         return Component.literal(text).withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text)));
     }
 
-    public static MutableComponent join (Component separator, Component... toJoin) {
+    public static MutableComponent join(Component separator, Component... toJoin) {
 
         return join(separator, Arrays.stream(toJoin).iterator());
     }
 
-    public static MutableComponent join (Component separator, Collection<Component> toJoin) {
+    public static MutableComponent join(Component separator, Collection<Component> toJoin) {
 
         return join(separator, toJoin.iterator());
     }
 
-    public static MutableComponent join (Component separator, Iterator<Component> toJoin) {
+    public static MutableComponent join(Component separator, Iterator<Component> toJoin) {
 
         final MutableComponent joined = Component.literal("");
 
@@ -229,5 +231,33 @@ public final class TextHelper {
         }
 
         return bestMatches;
+    }
+
+    /**
+     * Formats a collection of values to a string using {@link Object#toString()}. If the collection has more than one
+     * value each entry will be separated by commas. Each value will also be quoted.
+     *
+     * @param collection The collection of values to format.
+     * @param <T>        The type of value being formatted.
+     * @return The formatted string.
+     */
+    public static <T> String formatCollection(Collection<T> collection) {
+
+        return formatCollection(collection, entry -> "\"" + entry.toString() + "\"", ", ");
+    }
+
+    /**
+     * Formats a collection of values to a string. If the collection has more than one value each entry will be
+     * separated using the delimiter.
+     *
+     * @param collection The collection of values to format.
+     * @param formatter  A function used to format the value to a string.
+     * @param delimiter  A delimiter used to separate values in a list.
+     * @param <T>        The type of value being formatted.
+     * @return The formatted string.
+     */
+    public static <T> String formatCollection(Collection<T> collection, Function<T, String> formatter, String delimiter) {
+
+        return collection.size() == 1 ? formatter.apply(collection.stream().findFirst().get()) : collection.stream().map(formatter).collect(Collectors.joining(delimiter));
     }
 }
