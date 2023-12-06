@@ -2,8 +2,9 @@ package net.darkhax.bookshelf.impl.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.darkhax.bookshelf.api.serialization.Serializers;
+import com.mojang.serialization.JsonOps;
+import net.darkhax.bookshelf.Constants;
+import net.darkhax.bookshelf.api.data.codecs.BookshelfCodecs;
 import net.darkhax.bookshelf.api.util.TextHelper;
 import net.darkhax.bookshelf.impl.commands.args.HandArgument;
 import net.minecraft.commands.CommandSourceStack;
@@ -65,12 +66,12 @@ public class CommandHand {
 
         private static String getAsIngredient(ItemStack stack) {
 
-            return Serializers.INGREDIENT.toJSON(Ingredient.of(stack)).toString();
+            return BookshelfCodecs.INGREDIENT.get().encodeStart(JsonOps.INSTANCE, Ingredient.of(stack)).getOrThrow(false, error -> Constants.LOG.error("Can't turn {} into ingredient. Error: {}", stack, error)).toString();
         }
 
         private static String getAsStackJson(ItemStack stack) {
 
-            return Serializers.ITEM_STACK.toJSON(stack).toString();
+            return BookshelfCodecs.ITEM_STACK.get().encodeStart(JsonOps.INSTANCE, stack).getOrThrow(false, error -> Constants.LOG.error("Can't turn {} to stack json. Error: {}", stack, error)).toString();
         }
 
         public static String getAsSNBT(ItemStack stack) {

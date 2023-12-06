@@ -1,10 +1,16 @@
 package net.darkhax.bookshelf.api.util;
 
+import com.google.common.math.DoubleMath;
+import net.minecraft.nbt.CollectionTag;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
+import net.minecraft.nbt.FloatTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NumericTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
@@ -13,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -78,7 +85,99 @@ public final class ItemStackHelper {
 
     public static boolean areStacksEquivalent(ItemStack first, ItemStack second, boolean ignoreTags) {
 
-        return first.isEmpty() == second.isEmpty() && first.getCount() == second.getCount() && first.getItem() == second.getItem() && (ignoreTags || Objects.equals(first.getTag(), second.getTag()));
+        return ((first == null && second == null) || first.isEmpty() == second.isEmpty()) || (first.getCount() == second.getCount() && first.getItem() == second.getItem() && (ignoreTags || areTagsEquivalent(first.getTag(), second.getTag())));
+    }
+
+    public static boolean areTagsEquivalent(Tag a, Tag b) {
+
+        if (!Objects.equals(a, b)) {
+
+            if (a instanceof NumericTag numericA && b instanceof NumericTag numericB) {
+
+                return areNumericTagsEquivalent(numericA, numericB);
+            }
+
+            else if (a instanceof CollectionTag<?> collectionA && b instanceof CollectionTag<?> collectionB) {
+
+                return areCollectionTagsEquivalent(collectionA, collectionB);
+            }
+
+            else if (a instanceof CompoundTag compoundA && b instanceof CompoundTag compoundB) {
+
+                return areCompoundTagsEquivalent(compoundA, compoundB);
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean areCompoundTagsEquivalent(CompoundTag a, CompoundTag b) {
+
+        if (a.size() != b.size()) {
+
+            return false;
+        }
+
+        for (String key : a.getAllKeys()) {
+
+            if (!areTagsEquivalent(a.getCompound(key), b.getCompound(key))) {
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean areCollectionTagsEquivalent(CollectionTag<?> a, CollectionTag<?> b) {
+
+        if (a.size() != b.size()) {
+
+            return false;
+        }
+
+        for (int index = 0; index < a.size(); index++) {
+
+            if (!areTagsEquivalent(a.get(index), b.get(index))) {
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean areNumericTagsEquivalent(NumericTag a, NumericTag b) {
+
+        final boolean decimalA = isDecimal(a);
+        final boolean decimalB = isDecimal(b);
+
+        // Checks that both are integers or decimals.
+        if (decimalA == decimalB) {
+
+            // Checks if both values are decimals which are floats or doubles.
+            if (decimalA) {
+
+                return Mth.equal(a.getAsDouble(), b.getAsDouble());
+            }
+
+            // Compare integers as longs because it handles all other value cases.
+            return a.getAsLong() == b.getAsLong();
+        }
+
+        // When A is a decimal and B is an integer, check if A represents an integer.
+        else if (decimalA) {
+
+            return DoubleMath.isMathematicalInteger(a.getAsDouble()) && (int) a.getAsDouble() == b.getAsInt();
+        }
+
+        // When B is a decimal and A is an integer, check if B represents an integer.
+        return DoubleMath.isMathematicalInteger(b.getAsDouble()) && (int) b.getAsDouble() == a.getAsInt();
+    }
+
+    public static boolean isDecimal(NumericTag tag) {
+
+        return tag instanceof FloatTag || tag instanceof DoubleTag;
     }
 
     public static void setLore(ItemStack stack, Component... lines) {

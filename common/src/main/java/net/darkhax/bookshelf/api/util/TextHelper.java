@@ -405,8 +405,30 @@ public final class TextHelper {
      */
     public static Set<String> getPossibleMatches(String input, Iterable<String> candidates) {
 
+        return getPossibleMatches(input, candidates, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Finds a set of possible matches within an iterable group of strings. This can be used to take invalid user input
+     * and attempt to find a plausible match using known good values.
+     * <p>
+     * Possible matches are determined using the Levenshtein distance between the input value and the potential
+     * candidates. The Levenshtein distance represents the number of characters that need to be changed in order for the
+     * strings to match. For example "abc" to "def" has a difference of three, while "123" to "1234" has a distance of
+     * 1.
+     *
+     * @param input      The input string.
+     * @param candidates An iterable group of possible candidates.
+     * @param threshold  The maximum distance allowed for a value to be considered. For example if the threshold is two,
+     *                   only entries with a distance of two or less will be considered.
+     * @return A set of possible matches for the input. This set will include all candidates that have the lowest
+     * possible distance. For example if there were 100 candidates and five had a distance of one all five of the lowest
+     * distance values will be returned.
+     */
+    public static Set<String> getPossibleMatches(String input, Iterable<String> candidates, int threshold) {
+
         final HashSet<String> bestMatches = new HashSet();
-        int distance = Integer.MAX_VALUE;
+        int distance = threshold;
 
         for (String candidate : candidates) {
 

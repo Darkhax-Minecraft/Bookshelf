@@ -2,16 +2,21 @@ package net.darkhax.bookshelf.impl.gametest;
 
 import com.google.common.base.CaseFormat;
 import net.darkhax.bookshelf.Constants;
+import net.darkhax.bookshelf.api.data.bytebuf.BookshelfByteBufs;
+import net.darkhax.bookshelf.api.data.bytebuf.ByteBufHelper;
+import net.darkhax.bookshelf.api.data.bytebuf.RegistryByteBufHelper;
+import net.darkhax.bookshelf.api.data.codecs.BookshelfCodecs;
+import net.darkhax.bookshelf.api.data.codecs.CodecHelper;
+import net.darkhax.bookshelf.api.data.codecs.RegistryCodecHelper;
 import net.darkhax.bookshelf.api.data.sound.Sound;
 import net.darkhax.bookshelf.api.item.ItemStackBuilder;
-import net.darkhax.bookshelf.api.serialization.ISerializer;
-import net.darkhax.bookshelf.api.serialization.Serializers;
 import net.darkhax.bookshelf.api.util.ItemStackHelper;
+import net.darkhax.bookshelf.impl.gametest.tests.ByteBufTests;
+import net.darkhax.bookshelf.impl.gametest.tests.CodecTests;
+import net.darkhax.bookshelf.impl.gametest.tests.RegistryCodecTests;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.StructureUtils;
@@ -26,40 +31,36 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.decoration.PaintingVariants;
-import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.entity.npc.VillagerType;
-import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.gameevent.GameEvent;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.BiPredicate;
 
 public class BookshelfGameTests {
 
@@ -69,58 +70,147 @@ public class BookshelfGameTests {
         final Collection<TestFunction> testFunctions = new ArrayList<>();
 
         // Test Java Type Serializers
-        testFrom(testFunctions, new TestSerialization<>("boolean", Serializers.BOOLEAN, false, true, true, false));
-        testFrom(testFunctions, new TestSerialization<>("byte", Serializers.BYTE, (byte) 1, (byte) 32, (byte) 44, (byte) 0));
-        testFrom(testFunctions, new TestSerialization<>("short", Serializers.SHORT, (short) 800, (short) 1337));
-        testFrom(testFunctions, new TestSerialization<>("int", Serializers.INT, 54, 23, Integer.MAX_VALUE, 234234, Integer.MIN_VALUE));
-        testFrom(testFunctions, new TestSerialization<>("long", Serializers.LONG, 99L, 23441322L, Long.MIN_VALUE, 93249L - 234L, Long.MAX_VALUE));
-        testFrom(testFunctions, new TestSerialization<>("float", Serializers.FLOAT, 8f, -23.456f, 789.01f, Float.MAX_VALUE, -11f, Float.MIN_VALUE));
-        testFrom(testFunctions, new TestSerialization<>("double", Serializers.DOUBLE, 24.92d, Double.MAX_VALUE, -922321.12345d, Double.MIN_VALUE));
-        testFrom(testFunctions, new TestSerialization<>("string", Serializers.STRING, "one", "two", "3", "IV", ".....", "/I", "!@#$%^&*()_-"));
-        testFrom(testFunctions, new TestSerialization<>("uuid", Serializers.UUID, UUID.randomUUID(), UUID.fromString("da0317d2-e550-11ec-8fea-0242ac120002"), UUID.randomUUID()));
+        testFrom(testFunctions, BookshelfByteBufs.BOOLEAN, BookshelfCodecs.BOOLEAN, false, true, true, false);
+        testFrom(testFunctions, BookshelfByteBufs.BYTE, BookshelfCodecs.BYTE, (byte) 1, (byte) 32, (byte) 44, (byte) 0);
+        testFrom(testFunctions, BookshelfByteBufs.SHORT, BookshelfCodecs.SHORT, (short) 800, (short) 1337);
+        testFrom(testFunctions, BookshelfByteBufs.INT, BookshelfCodecs.INT, 54, 23, Integer.MAX_VALUE, 234234, Integer.MIN_VALUE);
+        testFrom(testFunctions, BookshelfByteBufs.LONG, BookshelfCodecs.LONG, 99L, 23441322L, Long.MIN_VALUE, 93249L - 234L, Long.MAX_VALUE);
+        testFrom(testFunctions, BookshelfByteBufs.FLOAT, BookshelfCodecs.FLOAT, 8f, -23.456f, 789.01f, Float.MAX_VALUE, -11f, Float.MIN_VALUE);
+        testFrom(testFunctions, BookshelfByteBufs.DOUBLE, BookshelfCodecs.DOUBLE, 24.92d, Double.MAX_VALUE, -922321.12345d, Double.MIN_VALUE);
+        testFrom(testFunctions, BookshelfByteBufs.STRING, BookshelfCodecs.STRING, "one", "two", "3", "IV", ".....", "/I", "!@#$%^&*()_-");
+        testFrom(testFunctions, BookshelfByteBufs.UUID, BookshelfCodecs.UUID, UUID.randomUUID(), UUID.fromString("da0317d2-e550-11ec-8fea-0242ac120002"), UUID.randomUUID());
 
         // Test Minecraft Type Serializers
-        testFrom(testFunctions, new TestSerialization<>("resource_location", Serializers.RESOURCE_LOCATION, new ResourceLocation("hello_world"), new ResourceLocation("test", "two"), new ResourceLocation("test_from", "stuff/things/okay_stuff")));
-        testFrom(testFunctions, new TestSerialization<>("item_stack", Serializers.ITEM_STACK, ItemStackHelper::areStacksEquivalent, getTestStacks()));
-        testFrom(testFunctions, new TestSerialization<>("nbt_compound_tag", Serializers.COMPOUND_TAG, getTestTags()));
-        testFrom(testFunctions, new TestSerialization<>("text_component", Serializers.TEXT, Component.translatable("moon.phase.full").withStyle(ChatFormatting.DARK_AQUA), Component.literal("Hello World"), Component.literal("okay").withStyle(s -> s.withFont(new ResourceLocation("minecraft:alt")))));
-        testFrom(testFunctions, new TestSerialization<>("block_pos", Serializers.BLOCK_POS, new BlockPos(1, 2, 3), new BlockPos(0, 0, 0), BlockPos.of(123456L)));
-        testFrom(testFunctions, new TestSerialization<>("ingredient", Serializers.INGREDIENT, BookshelfGameTests::assertEqual, new Ingredient[]{Ingredient.of(Items.STONE_AXE), Ingredient.EMPTY, Ingredient.of(Items.COAL), Ingredient.of(new ItemStack(Items.ACACIA_BOAT)), Ingredient.of(ItemTags.BEDS)}));
-        testFrom(testFunctions, new TestSerialization<>("block_state", Serializers.BLOCK_STATE, Blocks.STONE.defaultBlockState(), Blocks.CHEST.defaultBlockState(), Blocks.ACACIA_PRESSURE_PLATE.defaultBlockState().setValue(PressurePlateBlock.POWERED, true)));
-        testFrom(testFunctions, new TestSerialization<>("attribute_modifier", Serializers.ATTRIBUTE_MODIFIER, new AttributeModifier("test", 15d, AttributeModifier.Operation.MULTIPLY_BASE), new AttributeModifier(UUID.randomUUID(), "test_2", 9.55d, AttributeModifier.Operation.ADDITION), new AttributeModifier("test3", 35d, AttributeModifier.Operation.MULTIPLY_TOTAL)));
-        testFrom(testFunctions, new TestSerialization<>("effect_instance", Serializers.EFFECT_INSTANCE, new MobEffectInstance(MobEffects.ABSORPTION, 100, 10), new MobEffectInstance(MobEffects.BAD_OMEN, 10)));
-        testFrom(testFunctions, new TestSerialization<>("enchantment_instance", Serializers.ENCHANTMENT_INSTANCE, BookshelfGameTests::assertEncantmentInstanceEqual, new EnchantmentInstance[]{new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 5), new EnchantmentInstance(Enchantments.BINDING_CURSE, 15), new EnchantmentInstance(Enchantments.IMPALING, 2)}));
-        testFrom(testFunctions, new TestSerialization<>("Vector3f", Serializers.VECTOR_3F, new Vector3f(1f, 2f, 3f), new Vector3f(-5f, -2f, 44f), new Vector3f(Float.MAX_VALUE, Float.MIN_VALUE, Float.MIN_VALUE)));
-        testFrom(testFunctions, new TestSerialization<>("Vector4f", Serializers.VECTOR_4F, new Vector4f(1f, 2f, 3f, 4f), new Vector4f(0f, -22f, -2222f, 0f), new Vector4f(Float.MAX_VALUE, Float.MIN_VALUE, Float.MIN_VALUE, Float.MAX_VALUE)));
+        testFrom(testFunctions, BookshelfByteBufs.RESOURCE_LOCATION, BookshelfCodecs.RESOURCE_LOCATION, new ResourceLocation("hello_world"), new ResourceLocation("test", "two"), new ResourceLocation("test_from", "stuff/things/okay_stuff"));
+        testFrom(testFunctions, BookshelfByteBufs.ITEM_STACK, BookshelfCodecs.ITEM_STACK, ItemStackHelper::areStacksEquivalent, getTestStacks());
+        testFrom(testFunctions, BookshelfByteBufs.COMPOUND_TAG, BookshelfCodecs.COMPOUND_TAG, ItemStackHelper::areTagsEquivalent, getTestTags());
+        testFrom(testFunctions, BookshelfByteBufs.TEXT, BookshelfCodecs.TEXT, Component.translatable("moon.phase.full").withStyle(ChatFormatting.DARK_AQUA), Component.literal("Hello World"), Component.literal("okay").withStyle(s -> s.withFont(new ResourceLocation("minecraft:alt"))));
+        testFrom(testFunctions, BookshelfByteBufs.BLOCK_POS, BookshelfCodecs.BLOCK_POS, new BlockPos(1, 2, 3), new BlockPos(0, 0, 0), BlockPos.of(123456L));
+        testFrom(testFunctions, BookshelfByteBufs.INGREDIENT, BookshelfCodecs.INGREDIENT, TestHelper::assertEqual, new Ingredient[]{Ingredient.of(Items.STONE_AXE), Ingredient.EMPTY, Ingredient.of(Items.COAL), Ingredient.of(new ItemStack(Items.ACACIA_BOAT)), Ingredient.of(ItemTags.BEDS)});
+        testFrom(testFunctions, BookshelfByteBufs.BLOCK_STATE, BookshelfCodecs.BLOCK_STATE, Blocks.STONE.defaultBlockState(), Blocks.CHEST.defaultBlockState(), Blocks.ACACIA_PRESSURE_PLATE.defaultBlockState().setValue(PressurePlateBlock.POWERED, true));
+        testFrom(testFunctions, BookshelfByteBufs.ATTRIBUTE_MODIFIER, BookshelfCodecs.ATTRIBUTE_MODIFIER, new AttributeModifier("test", 15d, AttributeModifier.Operation.MULTIPLY_BASE), new AttributeModifier(UUID.randomUUID(), "test_2", 9.55d, AttributeModifier.Operation.ADDITION), new AttributeModifier("test3", 35d, AttributeModifier.Operation.MULTIPLY_TOTAL));
+        testFrom(testFunctions, BookshelfByteBufs.EFFECT_INSTANCE, BookshelfCodecs.EFFECT_INSTANCE, new MobEffectInstance(MobEffects.ABSORPTION, 100, 10), new MobEffectInstance(MobEffects.BAD_OMEN, 10));
+        testFrom(testFunctions, BookshelfByteBufs.ENCHANTMENT_INSTANCE, BookshelfCodecs.ENCHANTMENT_INSTANCE, TestHelper::assertEqual, new EnchantmentInstance[]{new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 5), new EnchantmentInstance(Enchantments.BINDING_CURSE, 15), new EnchantmentInstance(Enchantments.IMPALING, 2)});
+        testFrom(testFunctions, BookshelfByteBufs.VECTOR_3F, BookshelfCodecs.VECTOR_3F, new Vector3f(1f, 2f, 3f), new Vector3f(-5f, -2f, 44f), new Vector3f(Float.MAX_VALUE, Float.MIN_VALUE, Float.MIN_VALUE));
+        testFrom(testFunctions, BookshelfByteBufs.SOUND, BookshelfCodecs.SOUND, new Sound(SoundEvents.DOLPHIN_JUMP, SoundSource.AMBIENT, 1f, 1f), new Sound(SoundEvents.ALLAY_HURT, SoundSource.NEUTRAL, 0.5f, 0.222f), new Sound(SoundEvents.SQUID_AMBIENT, SoundSource.PLAYERS, 0.1f, 0.2f));
+
         // Test Minecraft Enum Serializers
-        testFrom(testFunctions, new TestSerialization<>("item_rarity", Serializers.ITEM_RARITY, Rarity.COMMON, Rarity.EPIC, Rarity.RARE, Rarity.RARE));
-        testFrom(testFunctions, new TestSerialization<>("enchantment_rarity", Serializers.ENCHANTMENT_RARITY, Enchantment.Rarity.COMMON, Enchantment.Rarity.COMMON, Enchantment.Rarity.RARE, Enchantment.Rarity.UNCOMMON));
-        testFrom(testFunctions, new TestSerialization<>("attribute_modifier", Serializers.ATTRIBUTE_OPERATION, AttributeModifier.Operation.ADDITION, AttributeModifier.Operation.ADDITION, AttributeModifier.Operation.MULTIPLY_BASE, AttributeModifier.Operation.MULTIPLY_TOTAL, AttributeModifier.Operation.MULTIPLY_TOTAL));
-        testFrom(testFunctions, new TestSerialization<>("direction", Serializers.DIRECTION, Direction.UP, Direction.UP, Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.SOUTH));
-        testFrom(testFunctions, new TestSerialization<>("axis", Serializers.AXIS, Direction.Axis.X, Direction.Axis.X, Direction.Axis.Y, Direction.Axis.Z, Direction.Axis.Y));
-        testFrom(testFunctions, new TestSerialization<>("plane", Serializers.PLANE, Direction.Plane.HORIZONTAL, Direction.Plane.VERTICAL, Direction.Plane.VERTICAL, Direction.Plane.VERTICAL, Direction.Plane.HORIZONTAL));
-        testFrom(testFunctions, new TestSerialization<>("mob_category", Serializers.MOB_CATEGORY, MobCategory.AMBIENT, MobCategory.AXOLOTLS, MobCategory.CREATURE, MobCategory.AXOLOTLS, MobCategory.MONSTER, MobCategory.MISC));
-        testFrom(testFunctions, new TestSerialization<>("enchantment_category", Serializers.ENCHANTMENT_CATEGORY, EnchantmentCategory.ARMOR, EnchantmentCategory.BREAKABLE, EnchantmentCategory.BREAKABLE));
-        testFrom(testFunctions, new TestSerialization<>("dye_color", Serializers.DYE_COLOR, DyeColor.BLACK, DyeColor.RED, DyeColor.BLUE));
-        testFrom(testFunctions, new TestSerialization<>("sound_category", Serializers.SOUND_CATEGORY, SoundSource.AMBIENT, SoundSource.HOSTILE, SoundSource.PLAYERS));
+        testFrom(testFunctions, BookshelfByteBufs.ITEM_RARITY, BookshelfCodecs.ITEM_RARITY, Rarity.COMMON, Rarity.EPIC, Rarity.RARE, Rarity.RARE);
+        testFrom(testFunctions, BookshelfByteBufs.ENCHANTMENT_RARITY, BookshelfCodecs.ENCHANTMENT_RARITY, Enchantment.Rarity.COMMON, Enchantment.Rarity.COMMON, Enchantment.Rarity.RARE, Enchantment.Rarity.UNCOMMON);
+        testFrom(testFunctions, BookshelfByteBufs.ATTRIBUTE_OPERATION, BookshelfCodecs.ATTRIBUTE_OPERATION, AttributeModifier.Operation.ADDITION, AttributeModifier.Operation.ADDITION, AttributeModifier.Operation.MULTIPLY_BASE, AttributeModifier.Operation.MULTIPLY_TOTAL, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        testFrom(testFunctions, BookshelfByteBufs.DIRECTION, BookshelfCodecs.DIRECTION, Direction.UP, Direction.UP, Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.SOUTH);
+        testFrom(testFunctions, BookshelfByteBufs.AXIS, BookshelfCodecs.AXIS, Direction.Axis.X, Direction.Axis.X, Direction.Axis.Y, Direction.Axis.Z, Direction.Axis.Y);
+        testFrom(testFunctions, BookshelfByteBufs.PLANE, BookshelfCodecs.PLANE, Direction.Plane.HORIZONTAL, Direction.Plane.VERTICAL, Direction.Plane.VERTICAL, Direction.Plane.VERTICAL, Direction.Plane.HORIZONTAL);
+        testFrom(testFunctions, BookshelfByteBufs.MOB_CATEGORY, BookshelfCodecs.MOB_CATEGORY, MobCategory.AMBIENT, MobCategory.AXOLOTLS, MobCategory.CREATURE, MobCategory.AXOLOTLS, MobCategory.MONSTER, MobCategory.MISC);
+        testFrom(testFunctions, BookshelfByteBufs.ENCHANTMENT_CATEGORY, BookshelfCodecs.ENCHANTMENT_CATEGORY, EnchantmentCategory.ARMOR, EnchantmentCategory.BREAKABLE, EnchantmentCategory.BREAKABLE);
+        testFrom(testFunctions, BookshelfByteBufs.DYE_COLOR, BookshelfCodecs.DYE_COLOR, DyeColor.BLACK, DyeColor.RED, DyeColor.BLUE);
+        testFrom(testFunctions, BookshelfByteBufs.SOUND_SOURCE, BookshelfCodecs.SOUND_SOURCE, SoundSource.AMBIENT, SoundSource.HOSTILE, SoundSource.PLAYERS);
+        testFrom(testFunctions, BookshelfByteBufs.ARMOR_MATERIAL, BookshelfCodecs.ARMOR_MATERIAL, ArmorMaterials.CHAIN, ArmorMaterials.DIAMOND, ArmorMaterials.IRON, ArmorMaterials.TURTLE);
+        testFrom(testFunctions, BookshelfByteBufs.DIFFICULTY, BookshelfCodecs.DIFFICULTY, Difficulty.EASY, Difficulty.EASY, Difficulty.HARD, Difficulty.NORMAL, Difficulty.HARD, Difficulty.PEACEFUL);
+        testFrom(testFunctions, BookshelfByteBufs.EQUIPMENT_SLOT, BookshelfCodecs.EQUIPMENT_SLOT, EquipmentSlot.CHEST, EquipmentSlot.CHEST, EquipmentSlot.MAINHAND, EquipmentSlot.FEET, EquipmentSlot.MAINHAND);
+        testFrom(testFunctions, BookshelfByteBufs.MIRROR, BookshelfCodecs.MIRROR, Mirror.FRONT_BACK, Mirror.LEFT_RIGHT, Mirror.NONE, Mirror.LEFT_RIGHT);
+        testFrom(testFunctions, BookshelfByteBufs.ROTATION, BookshelfCodecs.ROTATION, Rotation.NONE, Rotation.CLOCKWISE_90, Rotation.CLOCKWISE_180, Rotation.CLOCKWISE_90);
 
         // Test Game Registry Serializers
-        testFrom(testFunctions, new TestSerialization<>("registry_block", Serializers.BLOCK, Blocks.SAND, Blocks.STONE, Blocks.KELP, Blocks.SAND));
-        testFrom(testFunctions, new TestSerialization<>("registry_item", Serializers.ITEM, Items.APPLE, Items.STICK, Items.STICK, Items.COOKED_PORKCHOP));
-        testFrom(testFunctions, new TestSerialization<>("registry_enchantment", Serializers.ENCHANTMENT, Enchantments.ALL_DAMAGE_PROTECTION, Enchantments.BLAST_PROTECTION, Enchantments.BLAST_PROTECTION, Enchantments.SILK_TOUCH));
-        testFrom(testFunctions, new TestSerialization<>("registry_painting", Serializers.PAINTING, BuiltInRegistries.PAINTING_VARIANT.get(PaintingVariants.COURBET.location()), BuiltInRegistries.PAINTING_VARIANT.get(PaintingVariants.AZTEC.location())));
-        testFrom(testFunctions, new TestSerialization<>("registry_potion", Serializers.POTION, Potions.EMPTY, Potions.AWKWARD, Potions.AWKWARD, Potions.FIRE_RESISTANCE, Potions.HEALING));
-        testFrom(testFunctions, new TestSerialization<>("registry_attribute", Serializers.ATTRIBUTE, Attributes.ARMOR, Attributes.ATTACK_SPEED, Attributes.MAX_HEALTH, Attributes.SPAWN_REINFORCEMENTS_CHANCE));
-        testFrom(testFunctions, new TestSerialization<>("registry_villager_profession", Serializers.VILLAGER_PROFESSION, VillagerProfession.ARMORER, VillagerProfession.ARMORER, VillagerProfession.BUTCHER, VillagerProfession.LEATHERWORKER, VillagerProfession.WEAPONSMITH));
-        testFrom(testFunctions, new TestSerialization<>("registry_villager_type", Serializers.VILLAGER_TYPE, VillagerType.SWAMP, VillagerType.JUNGLE, VillagerType.JUNGLE, VillagerType.PLAINS));
-        testFrom(testFunctions, new TestSerialization<>("registry_sound_event", Serializers.SOUND_EVENT, SoundEvents.ANVIL_STEP, SoundEvents.BAMBOO_STEP, SoundEvents.AXE_STRIP, SoundEvents.DOLPHIN_JUMP));
-        testFrom(testFunctions, new TestSerialization<>("registry_menu", Serializers.MENU, MenuType.ANVIL, MenuType.GENERIC_9x2, MenuType.ENCHANTMENT, MenuType.CARTOGRAPHY_TABLE));
-        testFrom(testFunctions, new TestSerialization<>("registry_particle_type", Serializers.PARTICLE, ParticleTypes.BUBBLE_POP, ParticleTypes.BUBBLE_COLUMN_UP, ParticleTypes.CLOUD, ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, ParticleTypes.DRIPPING_OBSIDIAN_TEAR));
-        testFrom(testFunctions, new TestSerialization<>("registry_entity_type", Serializers.ENTITY, EntityType.BAT, EntityType.ARROW, EntityType.AXOLOTL, EntityType.DRAGON_FIREBALL));
-        testFrom(testFunctions, new TestSerialization<>("registry_block_entity_type", Serializers.BLOCK_ENTITY, BlockEntityType.BARREL, BlockEntityType.BEACON, BlockEntityType.BEEHIVE, BlockEntityType.JUKEBOX));
-        testFrom(testFunctions, new TestSerialization<>("registry_game_event", Serializers.GAME_EVENT, GameEvent.FLAP, GameEvent.FLUID_PICKUP, GameEvent.PRIME_FUSE, GameEvent.LIGHTNING_STRIKE));
+        testFrom(testFunctions, BookshelfByteBufs.GAME_EVENT, BookshelfCodecs.GAME_EVENT);
+        testFrom(testFunctions, BookshelfByteBufs.SOUND_EVENT, BookshelfCodecs.SOUND_EVENT);
+        testFrom(testFunctions, BookshelfByteBufs.FLUID, BookshelfCodecs.FLUID);
+        testFrom(testFunctions, BookshelfByteBufs.MOB_EFFECT, BookshelfCodecs.MOB_EFFECT);
+        testFrom(testFunctions, BookshelfByteBufs.BLOCK, BookshelfCodecs.BLOCK);
+        testFrom(testFunctions, BookshelfByteBufs.ENCHANTMENT, BookshelfCodecs.ENCHANTMENT);
+        testFrom(testFunctions, BookshelfByteBufs.ENTITY_TYPE, BookshelfCodecs.ENTITY_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.ITEM, BookshelfCodecs.ITEM);
+        testFrom(testFunctions, BookshelfByteBufs.POTION, BookshelfCodecs.POTION);
+        testFrom(testFunctions, BookshelfByteBufs.PARTICLE_TYPE, BookshelfCodecs.PARTICLE_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.BLOCK_ENTITY_TYPE, BookshelfCodecs.BLOCK_ENTITY_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.PAINTING_VARIANT, BookshelfCodecs.PAINTING_VARIANT);
+        testFrom(testFunctions, BookshelfByteBufs.CUSTOM_STAT, BookshelfCodecs.CUSTOM_STAT);
+        testFrom(testFunctions, BookshelfByteBufs.CHUNK_STATUS, BookshelfCodecs.CHUNK_STATUS);
+        testFrom(testFunctions, BookshelfByteBufs.RULE_TEST, BookshelfCodecs.RULE_TEST);
+        testFrom(testFunctions, BookshelfByteBufs.RULE_BLOCK_ENTITY_MODIFIER, BookshelfCodecs.RULE_BLOCK_ENTITY_MODIFIER);
+        testFrom(testFunctions, BookshelfByteBufs.POS_RULE_TEST, BookshelfCodecs.POS_RULE_TEST);
+        testFrom(testFunctions, BookshelfByteBufs.MENU, BookshelfCodecs.MENU);
+        testFrom(testFunctions, BookshelfByteBufs.RECIPE_TYPE, BookshelfCodecs.RECIPE_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.RECIPE_SERIALIZER, BookshelfCodecs.RECIPE_SERIALIZER);
+        testFrom(testFunctions, BookshelfByteBufs.ATTRIBUTE, BookshelfCodecs.ATTRIBUTE);
+        testFrom(testFunctions, BookshelfByteBufs.POSITION_SOURCE_TYPE, BookshelfCodecs.POSITION_SOURCE_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.ARGUMENT_TYPE_INFO_CODEC_HELPER, BookshelfCodecs.ARGUMENT_TYPE_INFO_CODEC_HELPER);
+        testFrom(testFunctions, BookshelfByteBufs.STAT_TYPE, BookshelfCodecs.STAT_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.VILLAGER_TYPE, BookshelfCodecs.VILLAGER_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.VILLAGER_PROFESSION, BookshelfCodecs.VILLAGER_PROFESSION);
+        testFrom(testFunctions, BookshelfByteBufs.POINT_OF_INTEREST_TYPE, BookshelfCodecs.POINT_OF_INTEREST_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.MEMORY_MODULE_TYPE, BookshelfCodecs.MEMORY_MODULE_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.SENSOR_TYPE, BookshelfCodecs.SENSOR_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.SCHEDULE, BookshelfCodecs.SCHEDULE);
+        testFrom(testFunctions, BookshelfByteBufs.ACTIVITY, BookshelfCodecs.ACTIVITY);
+        testFrom(testFunctions, BookshelfByteBufs.LOOT_POOL_ENTRY_TYPE, BookshelfCodecs.LOOT_POOL_ENTRY_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.LOOT_FUNCTION_TYPE, BookshelfCodecs.LOOT_FUNCTION_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.LOOT_CONDITION_TYPE, BookshelfCodecs.LOOT_CONDITION_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.LOOT_NUMBER_PROVIDER_TYPE, BookshelfCodecs.LOOT_NUMBER_PROVIDER_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.LOOT_NBT_PROVIDER_TYPE, BookshelfCodecs.LOOT_NBT_PROVIDER_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.LOOT_SCORE_PROVIDER_TYPE, BookshelfCodecs.LOOT_SCORE_PROVIDER_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.FLOAT_PROVIDER_TYPE, BookshelfCodecs.FLOAT_PROVIDER_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.INT_PROVIDER_TYPE, BookshelfCodecs.INT_PROVIDER_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.HEIGHT_PROVIDER_TYPE, BookshelfCodecs.HEIGHT_PROVIDER_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.BLOCK_PREDICATE_TYPE, BookshelfCodecs.BLOCK_PREDICATE_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.CARVER, BookshelfCodecs.CARVER);
+        testFrom(testFunctions, BookshelfByteBufs.FEATURE, BookshelfCodecs.FEATURE);
+        testFrom(testFunctions, BookshelfByteBufs.STRUCTURE_PLACEMENT, BookshelfCodecs.STRUCTURE_PLACEMENT);
+        testFrom(testFunctions, BookshelfByteBufs.STRUCTURE_PIECE, BookshelfCodecs.STRUCTURE_PIECE);
+        testFrom(testFunctions, BookshelfByteBufs.STRUCTURE_TYPE, BookshelfCodecs.STRUCTURE_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.PLACEMENT_MODIFIER_TYPE, BookshelfCodecs.PLACEMENT_MODIFIER_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.BLOCKSTATE_PROVIDER_TYPE, BookshelfCodecs.BLOCKSTATE_PROVIDER_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.FOLIAGE_PLACER_TYPE, BookshelfCodecs.FOLIAGE_PLACER_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.TRUNK_PLACER_TYPE, BookshelfCodecs.TRUNK_PLACER_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.ROOT_PLACER_TYPE, BookshelfCodecs.ROOT_PLACER_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.TREE_DECORATOR_TYPE, BookshelfCodecs.TREE_DECORATOR_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.FEATURE_SIZE_TYPE, BookshelfCodecs.FEATURE_SIZE_TYPE);
+        testFrom(testFunctions, BookshelfByteBufs.STRUCTURE_PROCESSOR, BookshelfCodecs.STRUCTURE_PROCESSOR);
+        testFrom(testFunctions, BookshelfByteBufs.STRUCTURE_POOL_ELEMENT, BookshelfCodecs.STRUCTURE_POOL_ELEMENT);
+        testFrom(testFunctions, BookshelfByteBufs.CAT_VARIANT, BookshelfCodecs.CAT_VARIANT);
+        testFrom(testFunctions, BookshelfByteBufs.FROG_VARIANT, BookshelfCodecs.FROG_VARIANT);
+        testFrom(testFunctions, BookshelfByteBufs.BANNER_PATTERN, BookshelfCodecs.BANNER_PATTERN);
+        testFrom(testFunctions, BookshelfByteBufs.INSTRUMENT, BookshelfCodecs.INSTRUMENT);
+        testFrom(testFunctions, BookshelfByteBufs.DECORATED_POT_PATTERNS, BookshelfCodecs.DECORATED_POT_PATTERNS);
+        testFrom(testFunctions, BookshelfByteBufs.CREATIVE_MODE_TAB, BookshelfCodecs.CREATIVE_MODE_TAB);
 
         return testFunctions;
+    }
+
+    private static <T> void testFrom(Collection<TestFunction> functions, ByteBufHelper<T> bufferHelper, CodecHelper<T> codecHelper, T... collection) {
+
+        testFrom(functions, bufferHelper, codecHelper, Objects::equals, collection);
+    }
+
+    private static <T> void testFrom(Collection<TestFunction> functions, RegistryByteBufHelper<T> bufferHelper, RegistryCodecHelper<T> codecHelper, T... collection) {
+
+        final T[] testArray = codecHelper.getRegistry().stream().limit(5).toArray(size -> (T[]) Array.newInstance(collection.getClass().getComponentType(), size));
+        testFrom(functions, bufferHelper, codecHelper, Objects::equals, testArray);
+    }
+
+    private static <T> void testFrom(Collection<TestFunction> functions, ByteBufHelper<T> bufferHelper, CodecHelper<T> codecHelper, BiPredicate<T, T> equality, T... collection) {
+
+        final String typeName = toSnakeCase(collection.getClass().getComponentType().getSimpleName());
+
+        if (codecHelper instanceof RegistryCodecHelper<T> registryCodecHelper && bufferHelper instanceof RegistryByteBufHelper<T> registryBufHelper) {
+
+            final ResourceLocation registryId = registryCodecHelper.getRegistry().key().location();
+            final String registryTypeName = registryId.getNamespace() + "_" + registryId.getNamespace();
+
+            final T[] testArray = registryCodecHelper.getRegistry().stream().limit(5).toArray(size -> (T[]) Array.newInstance(collection.getClass().getComponentType(), size));
+            final TagKey<T>[] tagExamples = new TagKey[] {TagKey.create(registryCodecHelper.getRegistry().key(), new ResourceLocation(Constants.MOD_ID, "test_one")), TagKey.create(registryCodecHelper.getRegistry().key(), new ResourceLocation(Constants.MOD_ID, "test_two")), TagKey.create(registryCodecHelper.getRegistry().key(), new ResourceLocation("test_three"))};
+
+            testFrom(functions, new RegistryCodecTests<>("registry_" + registryTypeName, registryCodecHelper, testArray));
+            testFrom(functions, new ByteBufTests<>("registry_" + registryTypeName, registryBufHelper, testArray));
+            testFrom(functions, new CodecTests<>("tags_" + registryTypeName, registryCodecHelper.tag(), tagExamples));
+            testFrom(functions, new ByteBufTests<>("tags_" + registryTypeName, registryBufHelper.tag(), tagExamples));
+        }
+
+        else {
+
+            testFrom(functions, new CodecTests<>(typeName, codecHelper, equality, collection));
+            testFrom(functions, new ByteBufTests<>(typeName, bufferHelper, equality, collection));
+        }
     }
 
     /**
@@ -138,7 +228,7 @@ public class BookshelfGameTests {
         final String parentBatch = testImpl instanceof ITestable testObj ? testObj.getDefaultBatch() : null;
 
         // TODO This code can not see inherited methods yet.
-        for (Method method : testImpl.getClass().getDeclaredMethods()) {
+        for (Method method : testImpl.getClass().getMethods()) {
 
             // Only methods annotated with the vanilla GameTest annotation can be used.
             if (method.isAnnotationPresent(GameTest.class)) {
@@ -150,6 +240,7 @@ public class BookshelfGameTests {
                 // usually preferred if the test does not interact with the world.
                 final String template = annotation.template().isEmpty() ? "bookshelf:empty" : annotation.template();
                 final String batch = parentBatch != null && annotation.batch().equalsIgnoreCase("defaultBatch") ? parentBatch : annotation.batch();
+
                 // I prefer lower snake case for test names but this is not required.
                 final String testName = batch + "." + CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, method.getName());
                 final Rotation rotation = StructureUtils.getRotationForRotationSteps(annotation.rotationSteps());
@@ -183,101 +274,6 @@ public class BookshelfGameTests {
         }
     }
 
-    /**
-     * A generally unnecessary helper for adding tests for a tag serializer. This primarily exists to simplify generic
-     * vararg array issues.
-     *
-     * @param functions  The collection to register newly generated functions into.
-     * @param name       The name of the type being serialized. This is used for debug output.
-     * @param serializer The serializer that handles this tag type.
-     * @param tags       Arbitrary tags to test serialization with.
-     * @param <T>        The type of tag being serialized.
-     */
-    private static <T> void testFromTags(Collection<TestFunction> functions, String name, ISerializer<TagKey<T>> serializer, TagKey<T>... tags) {
-
-        testFrom(functions, new TestSerialization<>(name, serializer, BookshelfGameTests::assertTagEqual, tags));
-    }
-
-    /**
-     * Checks if two enchantment instance are equal.
-     *
-     * @param a The original instance to test.
-     * @param b The instance that resulted from deserialization.
-     * @return Whether the enchantment instances were equal or not.
-     */
-    private static boolean assertEncantmentInstanceEqual(EnchantmentInstance a, EnchantmentInstance b) {
-
-        if (Objects.equals(a, b)) {
-
-            return true;
-        }
-
-        if (a.enchantment != b.enchantment) {
-
-            Constants.LOG.error("Enchantment {} != {}", a.enchantment, b.enchantment);
-            return false;
-        }
-
-        if (a.level != b.level) {
-
-            Constants.LOG.error("Level {} != {}", a.level, b.level);
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Internal code to test if two tag keys are equal.
-     *
-     * @param a   The original tag to test.
-     * @param b   The tag that resulted from deserialization.
-     * @param <T> The type of the tag.
-     * @return Whether the tags were equal or not.
-     */
-    private static <T> boolean assertTagEqual(TagKey<T> a, TagKey<T> b) {
-
-        return Objects.equals(a, b) || Objects.equals(a.location(), b.location());
-    }
-
-    /**
-     * Internal code to test if two ingredients are equal. This approach is good enough for vanilla ingredients which is
-     * all our test cares about, however this is not robust enough for general use, or for use with modded ingredient
-     * specs.
-     *
-     * @param original The original ingredient to test.
-     * @param result   The ingredient that resulted from deserialization.
-     * @return Whether the ingredients were equal enough or not.
-     */
-    private static boolean assertEqual(Ingredient original, Ingredient result) {
-
-        if (Objects.equals(original, result)) {
-
-            return true;
-        }
-
-        final ItemStack[] originalStacks = original.getItems();
-        final ItemStack[] resultStacks = result.getItems();
-
-        if (originalStacks.length != resultStacks.length) {
-
-            Constants.LOG.error("Size mismatch. original={} result={}", originalStacks.length, resultStacks.length);
-            return false;
-        }
-
-        for (int index = 0; index < originalStacks.length; index++) {
-
-            if (!ItemStackHelper.areStacksEquivalent(originalStacks[index], resultStacks[index])) {
-
-                Constants.LOG.error("Mismatch at index {}. original={} result={}", index, originalStacks[index], resultStacks[index]);
-
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     private static ItemStack[] getTestStacks() {
 
         return new ItemStack[]{
@@ -302,5 +298,21 @@ public class BookshelfGameTests {
         return new CompoundTag[]{
                 tag1, tag2, tag3
         };
+    }
+
+    private static String toSnakeCase(String str) {
+
+        StringBuilder result = new StringBuilder();
+        result.append(Character.toLowerCase(str.charAt(0)));
+
+        for (int i = 1; i < str.length(); i++) {
+
+            char ch = str.charAt(i);
+
+            result.append(Character.isUpperCase(ch) ? result.toString() + '_' + Character.toLowerCase(ch) : ch);
+        }
+
+        // return the result
+        return result.toString();
     }
 }

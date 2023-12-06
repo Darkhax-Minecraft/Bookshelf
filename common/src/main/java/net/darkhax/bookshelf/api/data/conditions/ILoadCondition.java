@@ -11,5 +11,7 @@ public interface ILoadCondition {
      *
      * @return Has the condition been met?
      */
-    boolean test();
+    boolean allowLoading();
+
+    LoadConditions.ConditionType getType();
 }
