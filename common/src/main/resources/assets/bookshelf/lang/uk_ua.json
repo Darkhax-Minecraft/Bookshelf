@@ -35,10 +35,10 @@
     "time.bookshelf.day.saturday": "Субота",
 
     "_comment": "Commands",
-    "commands.bookshelf.loot_tables": "Знайдено %d відсутніх таблиць луту для %s.",
-    "commands.bookshelf.loot_tables.wildcard": "Знайдено %d відсутніх таблиць луту для всіх модів.",
+    "commands.bookshelf.loot_tables": "Знайдено %d відсутніх таблиць здобичі для %s.",
+    "commands.bookshelf.loot_tables.wildcard": "Знайдено %d відсутніх таблиць здобичі для всіх модів.",
     "argument.bookshelf.unknown_value": "Невідоме значення '%s'.",
 
     "_comment": "Misc",
-    "text.bookshelf.ticks": "Тіків: %s"
+    "text.bookshelf.ticks": "Тактів: %s"
 }
