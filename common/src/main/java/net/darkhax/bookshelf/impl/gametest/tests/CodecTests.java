@@ -1,21 +1,16 @@
 package net.darkhax.bookshelf.impl.gametest.tests;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import net.darkhax.bookshelf.api.data.codecs.CodecHelper;
-import net.darkhax.bookshelf.api.util.EnchantmentHelper;
 import net.darkhax.bookshelf.impl.gametest.ITestable;
 import net.darkhax.bookshelf.impl.gametest.TestHelper;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.util.random.SimpleWeightedRandomList;
-import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;

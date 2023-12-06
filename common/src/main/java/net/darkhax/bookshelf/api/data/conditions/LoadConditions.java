@@ -8,11 +8,11 @@ import net.darkhax.bookshelf.Constants;
 import net.darkhax.bookshelf.api.data.codecs.BookshelfCodecs;
 import net.darkhax.bookshelf.api.data.codecs.CodecHelper;
 import net.darkhax.bookshelf.api.data.conditions.impl.And;
-import net.darkhax.bookshelf.api.data.conditions.impl.Not;
-import net.darkhax.bookshelf.api.data.conditions.impl.Or;
-import net.darkhax.bookshelf.api.data.conditions.impl.OnPlatform;
-import net.darkhax.bookshelf.api.data.conditions.impl.SpecificRegistryContains;
 import net.darkhax.bookshelf.api.data.conditions.impl.ModLoaded;
+import net.darkhax.bookshelf.api.data.conditions.impl.Not;
+import net.darkhax.bookshelf.api.data.conditions.impl.OnPlatform;
+import net.darkhax.bookshelf.api.data.conditions.impl.Or;
+import net.darkhax.bookshelf.api.data.conditions.impl.SpecificRegistryContains;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 

@@ -19,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Objects;
 
 /**

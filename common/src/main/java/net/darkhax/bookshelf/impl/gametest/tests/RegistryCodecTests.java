@@ -3,7 +3,6 @@ package net.darkhax.bookshelf.impl.gametest.tests;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import net.darkhax.bookshelf.api.data.codecs.CodecHelper;
 import net.minecraft.gametest.framework.GameTest;

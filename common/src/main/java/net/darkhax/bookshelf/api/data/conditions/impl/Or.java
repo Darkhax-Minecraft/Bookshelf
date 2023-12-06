@@ -2,7 +2,6 @@ package net.darkhax.bookshelf.api.data.conditions.impl;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.darkhax.bookshelf.api.data.codecs.BookshelfCodecs;
 import net.darkhax.bookshelf.api.data.conditions.ILoadCondition;
 import net.darkhax.bookshelf.api.data.conditions.LoadConditions;
 
