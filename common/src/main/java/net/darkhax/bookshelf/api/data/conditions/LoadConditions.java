@@ -28,11 +28,11 @@ public class LoadConditions {
     public static final Codec<ILoadCondition> CONDITION_CODEC = CONDITION_TYPE_CODEC.dispatch(ILoadCondition::getType, ConditionType::codec);
     public static final CodecHelper<ILoadCondition> CODEC_HELPER = new CodecHelper<>(CONDITION_CODEC);
 
-    public static final ConditionType AND = register(new ResourceLocation(Constants.MOD_ID, "and"), And.CODEC);
-    public static final ConditionType NOT = register(new ResourceLocation(Constants.MOD_ID, "not"), Not.CODEC);
-    public static final ConditionType OR = register(new ResourceLocation(Constants.MOD_ID, "or"), Or.CODEC);
-    public static final ConditionType ON_PLATFORM = register(new ResourceLocation(Constants.MOD_ID, "on_platform"), OnPlatform.CODEC);
-    public static final ConditionType MOD_LOADED = register(new ResourceLocation(Constants.MOD_ID, "mod_loaded"), ModLoaded.CODEC);
+    public static final ConditionType AND = register(Constants.id("and"), And.CODEC);
+    public static final ConditionType NOT = register(Constants.id("not"), Not.CODEC);
+    public static final ConditionType OR = register(Constants.id("or"), Or.CODEC);
+    public static final ConditionType ON_PLATFORM = register(Constants.id("on_platform"), OnPlatform.CODEC);
+    public static final ConditionType MOD_LOADED = register(Constants.id("mod_loaded"), ModLoaded.CODEC);
     public static final ConditionType BLOCK_EXISTS = SpecificRegistryContains.of("block_exists", BuiltInRegistries.BLOCK);
     public static final ConditionType ITEM_EXISTS = SpecificRegistryContains.of("item_exists", BuiltInRegistries.ITEM);
     public static final ConditionType ENCHANTMENT_EXISTS = SpecificRegistryContains.of("enchantment_exists", BuiltInRegistries.ENCHANTMENT);

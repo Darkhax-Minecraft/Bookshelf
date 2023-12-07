@@ -18,8 +18,8 @@ import net.minecraft.world.entity.player.Player;
 
 public class EventHelperFabric implements IEventHelper {
 
-    public static final ResourceLocation PHASE_BEFORE = new ResourceLocation(Constants.MOD_ID, "before");
-    public static final ResourceLocation PHASE_AFTER = new ResourceLocation(Constants.MOD_ID, "after");
+    public static final ResourceLocation PHASE_BEFORE = Constants.id("before");
+    public static final ResourceLocation PHASE_AFTER = Constants.id("after");
 
     static {
 

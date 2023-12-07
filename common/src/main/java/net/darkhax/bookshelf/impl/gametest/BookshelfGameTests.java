@@ -198,7 +198,7 @@ public class BookshelfGameTests {
             final String registryTypeName = registryId.getNamespace() + "_" + registryId.getNamespace();
 
             final T[] testArray = registryCodecHelper.getRegistry().stream().limit(5).toArray(size -> (T[]) Array.newInstance(collection.getClass().getComponentType(), size));
-            final TagKey<T>[] tagExamples = new TagKey[] {TagKey.create(registryCodecHelper.getRegistry().key(), new ResourceLocation(Constants.MOD_ID, "test_one")), TagKey.create(registryCodecHelper.getRegistry().key(), new ResourceLocation(Constants.MOD_ID, "test_two")), TagKey.create(registryCodecHelper.getRegistry().key(), new ResourceLocation("test_three"))};
+            final TagKey<T>[] tagExamples = new TagKey[] {TagKey.create(registryCodecHelper.getRegistry().key(), Constants.id("test_one")), TagKey.create(registryCodecHelper.getRegistry().key(), Constants.id("test_two")), TagKey.create(registryCodecHelper.getRegistry().key(), new ResourceLocation("test_three"))};
 
             testFrom(functions, new RegistryCodecTests<>("registry_" + registryTypeName, registryCodecHelper, testArray));
             testFrom(functions, new ByteBufTests<>("registry_" + registryTypeName, registryBufHelper, testArray));

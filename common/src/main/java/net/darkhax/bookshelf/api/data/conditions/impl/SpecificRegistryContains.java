@@ -16,7 +16,7 @@ public class SpecificRegistryContains<T> implements ILoadCondition {
 
     public static <RT> LoadConditions.ConditionType of(String key, Registry<RT> registry) {
 
-        final ResourceLocation typeId = new ResourceLocation(Constants.MOD_ID, key);
+        final ResourceLocation typeId = Constants.id(key);
         final Codec<SpecificRegistryContains<RT>> codec = RecordCodecBuilder.create(instance -> instance.group(
                 BookshelfCodecs.RESOURCE_LOCATION.getSet("values", SpecificRegistryContains::getRequiredEntries)
         ).apply(instance, requiredEntries -> new SpecificRegistryContains<>(registry, requiredEntries, () -> LoadConditions.getType(typeId))));

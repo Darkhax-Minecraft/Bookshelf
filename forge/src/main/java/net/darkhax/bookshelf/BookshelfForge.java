@@ -19,7 +19,7 @@ public class BookshelfForge {
         MinecraftForge.EVENT_BUS.addGenericListener(BlockEntity.class, this::attachBlockCapabilities);
     }
 
-    private static final ResourceLocation WORLDLY_CONTAINER_WRAPPER = new ResourceLocation(Constants.MOD_ID, "worldly_container_wrapper");
+    private static final ResourceLocation WORLDLY_CONTAINER_WRAPPER = Constants.id("worldly_container_wrapper");
 
     private void attachBlockCapabilities(AttachCapabilitiesEvent<BlockEntity> event) {
 
