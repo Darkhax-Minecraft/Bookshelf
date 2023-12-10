@@ -222,7 +222,8 @@ public class BookshelfCodecs {
     public static final CodecHelper<BlockPos> BLOCK_POS = new CodecHelper<>(BlockPos.CODEC);
     public static final CodecHelper<Ingredient> INGREDIENT = new CodecHelper<>(Ingredient.CODEC);
     public static final CodecHelper<Ingredient> INGREDIENT_NONEMPTY = new CodecHelper<>(Ingredient.CODEC_NONEMPTY);
-    public static final CodecHelper<BlockState> BLOCK_STATE = new CodecHelper<>(Codec.mapPair(BLOCK.get().fieldOf("block"), Codec.unboundedMap(Codec.STRING, Codec.STRING).optionalFieldOf("properties")).flatXmap(BookshelfCodecs::decodeBlockState, BookshelfCodecs::encodeBlockState).codec());
+    public static final MapCodec<BlockState> BLOCK_STATE_MAP_CODEC = Codec.mapPair(BLOCK.get().fieldOf("block"), Codec.unboundedMap(Codec.STRING, Codec.STRING).optionalFieldOf("properties")).flatXmap(BookshelfCodecs::decodeBlockState, BookshelfCodecs::encodeBlockState);
+    public static final CodecHelper<BlockState> BLOCK_STATE = new CodecHelper<>(BLOCK_STATE_MAP_CODEC.codec());
     public static final CodecHelper<AttributeModifier> ATTRIBUTE_MODIFIER = new CodecHelper<>(RecordCodecBuilder.create(instance -> instance.group(
             UUID.get("uuid", AttributeModifier::getId),
             STRING.get("name", AttributeModifier::getName),
