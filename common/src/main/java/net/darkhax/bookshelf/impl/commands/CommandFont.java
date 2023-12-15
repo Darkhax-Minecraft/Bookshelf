@@ -94,10 +94,15 @@ public class CommandFont {
 
     private static UnaryOperator<SignText> applySignFont(ResourceLocation fontId) {
         return text -> {
+
+            SignText newText = text;
+
             for (int i = 0; i < 4; i++) {
-                text.setMessage(i, TextHelper.applyFont(text.getMessage(i, false), fontId));
+
+                newText = newText.setMessage(i, TextHelper.applyFont(text.getMessage(i, false).copy(), fontId));
             }
-            return text;
+
+            return newText;
         };
     }
 
