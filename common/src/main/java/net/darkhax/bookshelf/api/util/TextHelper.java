@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -85,6 +86,11 @@ public final class TextHelper {
      * @return A modified text component that has had the font applied.
      */
     public static Component applyFont(Component text, ResourceLocation font) {
+
+        if (text.getContents() == ComponentContents.EMPTY) {
+
+            return text;
+        }
 
         if (text instanceof MutableComponent mutable) {
 
