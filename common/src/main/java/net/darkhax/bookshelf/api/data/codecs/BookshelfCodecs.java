@@ -424,6 +424,29 @@ public class BookshelfCodecs {
         return Codec.STRING.flatXmap(string -> Optionull.mapOrElse(fromString.apply(string), DataResult::success, () -> DataResult.error(() -> errorMessage.apply(string))), object -> DataResult.success(object.name()));
     }
 
+    /**
+     * Creates a dispatch codec that will deserialize a value based on the serializer type defined by an optional
+     * property. If the type property is not provided the fallbackCodec will be used instead. This is similar to the
+     * recipe codec that can read crafting, smelting, stone cutting, and smithing table recipes.
+     *
+     * @param typeCodec     A codec that can read the serializer type. Typically, this is a Codec that uses a map to go
+     *                      from ResourceLocation to the serializer type and back.
+     * @param getSerializer A function that gets the serializer type from a value. This is used to allow the Codec to
+     *                      encode the type ID when writing the value.
+     * @param getCodec      A function that gets the codec responsible for a type. This is used to decode the resulting
+     *                      value.
+     * @param fallbackCodec A fallback codec that is used when the type property is not specified.
+     * @param <T>           The type of the type serializer.
+     * @param <V>           The type of value that is ultimately serialized using this dispatch codec.
+     * @return A dispatch codec that has a fallback for when the type is not specified.
+     */
+    public static <T, V> Codec<V> dispatchFallback(Codec<T> typeCodec, Function<V, T> getSerializer, Function<T, Codec<V>> getCodec, Supplier<Codec<V>> fallbackCodec) {
+        return ExtraCodecs.lazyInitializedCodec(() -> ExtraCodecs.either(typeCodec.dispatch(getSerializer, getCodec), fallbackCodec.get()).flatComapMap(
+                resultingCodec -> resultingCodec.left().isPresent() ? resultingCodec.left().get() : resultingCodec.right().get(),
+                resultingValue -> DataResult.success(Either.left(resultingValue))
+        ));
+    }
+
     // INTERNAL HELPERS
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static DataResult<BlockState> decodeBlockState(Pair<Block, Optional<Map<String, String>>> props) {
