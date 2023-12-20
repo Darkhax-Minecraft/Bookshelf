@@ -12,6 +12,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.random.WeightedEntry;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -75,7 +76,40 @@ public class CodecTests<T> implements ITestable {
         final List<T> inputList = Arrays.asList(this.collection);
         final JsonElement toJson = toJson(helper, codecHelper.getList(), inputList);
         final List<T> fromJson = fromJson(helper, codecHelper.getList(), toJson);
+
+        if (fromJson.isEmpty()) {
+            helper.fail("Found an empty list when non-empty was expected.");
+        }
+
         TestHelper.assertEqual(helper, inputList, fromJson, this.equality);
+    }
+
+    @GameTest
+    public void test_list_singleton(GameTestHelper helper) {
+
+        final List<T> inputList = List.of(this.singleton);
+        final JsonElement toJson = toJson(helper, codecHelper.getList(), inputList);
+        final List<T> fromJson = fromJson(helper, codecHelper.getList(), toJson);
+
+        if (fromJson.isEmpty()) {
+            helper.fail("Found an empty list when non-empty was expected.");
+        }
+
+        TestHelper.assertEqual(helper, inputList, fromJson, this.equality);
+    }
+
+    @GameTest
+    public void test_list_empty(GameTestHelper helper) {
+
+        final JsonElement toJson = toJson(helper, codecHelper.getList(), new ArrayList<>());
+        final List<T> fromJson = fromJson(helper, codecHelper.getList(), toJson);
+
+        if (!fromJson.isEmpty()) {
+            helper.fail("Expected list to be empty. List=" + fromJson);
+        }
+        else {
+            helper.succeed();
+        }
     }
 
     @GameTest
@@ -162,10 +196,6 @@ public class CodecTests<T> implements ITestable {
     public String getDefaultBatch() {
 
         return "bookshelf.codecs." + this.type;
-    }
-
-    record ValueHolder<VT>(VT value) {
-
     }
 
     public static <DT> JsonElement toJson(GameTestHelper helper, MapCodec<DT> codec, DT data) {
