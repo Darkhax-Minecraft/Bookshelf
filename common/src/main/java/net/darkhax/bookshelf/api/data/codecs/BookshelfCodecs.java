@@ -282,7 +282,7 @@ public class BookshelfCodecs {
      */
     public static <T> Codec<List<T>> flexibleList(Codec<T> codec) {
 
-        return Codec.either(codec.listOf(), codec).xmap(either -> either.map(Function.identity(), List::of), list -> list.size() == 1 ? Either.right(list.get(0)) : Either.left(list));
+        return ExtraCodecs.either(codec.listOf(), codec).xmap(either -> either.map(Function.identity(), List::of), list -> list.size() == 1 ? Either.right(list.get(0)) : Either.left(list));
     }
 
     /**
