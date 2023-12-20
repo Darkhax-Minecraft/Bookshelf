@@ -57,6 +57,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.crafting.CraftingRecipeCodecs;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -216,8 +217,20 @@ public class BookshelfCodecs {
 
     // MINECRAFT TYPES
     public static final CodecHelper<ResourceLocation> RESOURCE_LOCATION = new CodecHelper<>(ResourceLocation.CODEC);
-    public static final CodecHelper<ItemStack> ITEM_STACK = new CodecHelper<>(ItemStack.CODEC);
     public static final CodecHelper<CompoundTag> COMPOUND_TAG = new CodecHelper<>(CompoundTag.CODEC);
+    public static final CodecHelper<ItemStack> ITEM_STACK = new CodecHelper<>(ItemStack.CODEC);
+    public static final CodecHelper<ItemStack> ITEM_STACK_RECIPE = new CodecHelper<>(CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC);
+    public static final CodecHelper<ItemStack> ITEM_STACK_NBT = new CodecHelper<>(RecordCodecBuilder.create(instance -> instance.group(
+            ITEM.get("item", ItemStack::getItem),
+            ExtraCodecs.strictOptionalField(ExtraCodecs.POSITIVE_INT, "count", 1).forGetter(ItemStack::getCount),
+            COMPOUND_TAG.getOptional("nbt", stack -> stack.hasTag() ? Optional.ofNullable(stack.getTag()) : Optional.empty())
+    ).apply(instance, (item, count, nbt) -> {
+        final ItemStack stack = new ItemStack(item, count);
+        nbt.ifPresent(stack::setTag);
+        return stack;
+    })));
+    public static final CodecHelper<ItemStack> ITEM_STACK_FLEXIBLE = new CodecHelper<>(alternatives(ITEM.get().xmap(Item::getDefaultInstance, ItemStack::getItem), ITEM_STACK_NBT.get(), stack -> (stack.hasTag() || stack.getCount() != 1) ? Either.right(stack) : Either.left(stack)));
+
     public static final CodecHelper<Component> TEXT = new CodecHelper<>(ExtraCodecs.COMPONENT);
     public static final CodecHelper<BlockPos> BLOCK_POS = new CodecHelper<>(BlockPos.CODEC);
     public static final CodecHelper<Ingredient> INGREDIENT = new CodecHelper<>(Ingredient.CODEC);
@@ -441,10 +454,19 @@ public class BookshelfCodecs {
      * @return A dispatch codec that has a fallback for when the type is not specified.
      */
     public static <T, V> Codec<V> dispatchFallback(Codec<T> typeCodec, Function<V, T> getSerializer, Function<T, Codec<V>> getCodec, Supplier<Codec<V>> fallbackCodec) {
+
         return ExtraCodecs.lazyInitializedCodec(() -> ExtraCodecs.either(typeCodec.dispatch(getSerializer, getCodec), fallbackCodec.get()).flatComapMap(
                 resultingCodec -> resultingCodec.left().isPresent() ? resultingCodec.left().get() : resultingCodec.right().get(),
                 resultingValue -> DataResult.success(Either.left(resultingValue))
         ));
+    }
+
+    public static <T> Codec<T> alternatives(Codec<T> first, Codec<T> second, Function<T, Either<T, T>> encodeLogic) {
+
+        return ExtraCodecs.either(first, second).flatComapMap(
+                decodeResults -> decodeResults.left().isPresent() ? decodeResults.left().get() : decodeResults.right().get(),
+                toEncode -> DataResult.success(encodeLogic.apply(toEncode))
+        );
     }
 
     // INTERNAL HELPERS
