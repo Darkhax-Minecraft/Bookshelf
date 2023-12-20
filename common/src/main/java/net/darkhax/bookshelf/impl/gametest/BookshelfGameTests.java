@@ -13,6 +13,7 @@ import net.darkhax.bookshelf.api.item.ItemStackBuilder;
 import net.darkhax.bookshelf.api.util.ItemStackHelper;
 import net.darkhax.bookshelf.impl.gametest.tests.ByteBufTests;
 import net.darkhax.bookshelf.impl.gametest.tests.CodecTests;
+import net.darkhax.bookshelf.impl.gametest.tests.ItemStackTests;
 import net.darkhax.bookshelf.impl.gametest.tests.RegistryCodecTests;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -51,6 +52,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.Rotation;
+import org.apache.commons.lang3.StringUtils;
 import org.joml.Vector3f;
 
 import java.lang.reflect.Array;
@@ -58,6 +60,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiPredicate;
@@ -174,6 +177,7 @@ public class BookshelfGameTests {
         testFrom(testFunctions, BookshelfByteBufs.DECORATED_POT_PATTERNS, BookshelfCodecs.DECORATED_POT_PATTERNS);
         testFrom(testFunctions, BookshelfByteBufs.CREATIVE_MODE_TAB, BookshelfCodecs.CREATIVE_MODE_TAB);
 
+        testFrom(testFunctions, new ItemStackTests());
         return testFunctions;
     }
 
@@ -195,7 +199,7 @@ public class BookshelfGameTests {
         if (codecHelper instanceof RegistryCodecHelper<T> registryCodecHelper && bufferHelper instanceof RegistryByteBufHelper<T> registryBufHelper) {
 
             final ResourceLocation registryId = registryCodecHelper.getRegistry().key().location();
-            final String registryTypeName = registryId.getNamespace() + "_" + registryId.getNamespace();
+            final String registryTypeName = registryId.getNamespace() + "_" + registryId.getPath();
 
             final T[] testArray = registryCodecHelper.getRegistry().stream().limit(5).toArray(size -> (T[]) Array.newInstance(collection.getClass().getComponentType(), size));
             final TagKey<T>[] tagExamples = new TagKey[] {TagKey.create(registryCodecHelper.getRegistry().key(), Constants.id("test_one")), TagKey.create(registryCodecHelper.getRegistry().key(), Constants.id("test_two")), TagKey.create(registryCodecHelper.getRegistry().key(), new ResourceLocation("test_three"))};
@@ -227,7 +231,6 @@ public class BookshelfGameTests {
         // name for the batch. If a test defines its own non-default batch this will be overridden.
         final String parentBatch = testImpl instanceof ITestable testObj ? testObj.getDefaultBatch() : null;
 
-        // TODO This code can not see inherited methods yet.
         for (Method method : testImpl.getClass().getMethods()) {
 
             // Only methods annotated with the vanilla GameTest annotation can be used.
@@ -302,6 +305,10 @@ public class BookshelfGameTests {
 
     private static String toSnakeCase(String str) {
 
+        if (StringUtils.isAllUpperCase(str) || StringUtils.isAllLowerCase(str)) {
+            return str.toLowerCase(Locale.ROOT);
+        }
+
         StringBuilder result = new StringBuilder();
         result.append(Character.toLowerCase(str.charAt(0)));
 
@@ -309,7 +316,7 @@ public class BookshelfGameTests {
 
             char ch = str.charAt(i);
 
-            result.append(Character.isUpperCase(ch) ? result.toString() + '_' + Character.toLowerCase(ch) : ch);
+            result.append(Character.isUpperCase(ch) ? "_" + Character.toLowerCase(ch) : ch);
         }
 
         // return the result
