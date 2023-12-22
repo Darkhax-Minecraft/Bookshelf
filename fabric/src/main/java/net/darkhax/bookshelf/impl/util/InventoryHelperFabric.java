@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.impl.util;
 
 import net.darkhax.bookshelf.api.util.IInventoryHelper;
+import net.fabricmc.fabric.api.entity.FakePlayer;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -41,5 +42,11 @@ public class InventoryHelperFabric implements IInventoryHelper {
         };
 
         player.openMenu(extendedProvider);
+    }
+
+    @Override
+    public boolean isFakePlayer(Player player) {
+        
+        return player instanceof FakePlayer;
     }
 }

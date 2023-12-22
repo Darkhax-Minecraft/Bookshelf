@@ -273,4 +273,6 @@ public interface IInventoryHelper {
 
         return stack.getItem().hasCraftingRemainingItem();
     }
+
+    boolean isFakePlayer(Player player);
 }
