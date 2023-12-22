@@ -60,9 +60,10 @@ public class InventoryHelperForge implements IInventoryHelper {
     }
 
     @Override
-    public void openMenu(ServerPlayer player, MenuProvider provider, Consumer<FriendlyByteBuf> buf) {
-
-        NetworkHooks.openScreen(player, provider, buf);
+    public void openMenu(ServerPlayer player, MenuProvider provider, Consumer<FriendlyByteBuf> buf, boolean allowFakes) {
+        if (allowFakes || !isFakePlayer(player)) {
+            NetworkHooks.openScreen(player, provider, buf);
+        }
     }
 
     @Override

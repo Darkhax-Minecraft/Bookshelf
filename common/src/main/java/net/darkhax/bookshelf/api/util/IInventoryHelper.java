@@ -262,7 +262,12 @@ public interface IInventoryHelper {
         this.openMenu(player, provider, buf -> {});
     }
 
-    void openMenu(ServerPlayer player, MenuProvider provider, Consumer<FriendlyByteBuf> buf);
+    default void openMenu(ServerPlayer player, MenuProvider provider, Consumer<FriendlyByteBuf> buf) {
+
+        this.openMenu(player, provider, buf, false);
+    }
+
+    void openMenu(ServerPlayer player, MenuProvider provider, Consumer<FriendlyByteBuf> buf, boolean allowFakes);
 
     default ItemStack getCraftingRemainder(ItemStack stack) {
 

@@ -17,36 +17,39 @@ import java.util.function.Consumer;
 public class InventoryHelperFabric implements IInventoryHelper {
 
     @Override
-    public void openMenu(ServerPlayer player, MenuProvider vanillaProvider, Consumer<FriendlyByteBuf> bufConsumer) {
+    public void openMenu(ServerPlayer player, MenuProvider vanillaProvider, Consumer<FriendlyByteBuf> bufConsumer, boolean allowFakes) {
 
-        final ExtendedScreenHandlerFactory extendedProvider = new ExtendedScreenHandlerFactory() {
+        if (allowFakes || !isFakePlayer(player)) {
 
-            @Nullable
-            @Override
-            public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+            final ExtendedScreenHandlerFactory extendedProvider = new ExtendedScreenHandlerFactory() {
 
-                return vanillaProvider.createMenu(i, inventory, player);
-            }
+                @Nullable
+                @Override
+                public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
 
-            @Override
-            public Component getDisplayName() {
+                    return vanillaProvider.createMenu(i, inventory, player);
+                }
 
-                return vanillaProvider.getDisplayName();
-            }
+                @Override
+                public Component getDisplayName() {
 
-            @Override
-            public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
+                    return vanillaProvider.getDisplayName();
+                }
 
-                bufConsumer.accept(buf);
-            }
-        };
+                @Override
+                public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
 
-        player.openMenu(extendedProvider);
+                    bufConsumer.accept(buf);
+                }
+            };
+
+            player.openMenu(extendedProvider);
+        }
     }
 
     @Override
     public boolean isFakePlayer(Player player) {
-        
+
         return player instanceof FakePlayer;
     }
 }
