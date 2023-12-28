@@ -158,7 +158,7 @@ public final class EntityHelper {
      */
     public static <T extends Entity> List<T> getEntitiesInArea(Class<T> entityClass, Level world, BlockPos pos, int range) {
 
-        return world.getEntitiesOfClass(entityClass, new AABB(pos.offset(-range, -range, -range), pos.offset(range + 1, range + 1, range + 1)));
+        return world.getEntitiesOfClass(entityClass, new AABB(MathsHelper.vec3(pos.offset(-range, -range, -range)), MathsHelper.vec3(pos.offset(range + 1, range + 1, range + 1))));
     }
 
     /**

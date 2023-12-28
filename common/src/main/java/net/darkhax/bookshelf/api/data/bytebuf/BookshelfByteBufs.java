@@ -2,6 +2,7 @@ package net.darkhax.bookshelf.api.data.bytebuf;
 
 import net.darkhax.bookshelf.api.data.sound.Sound;
 import net.darkhax.bookshelf.mixin.accessors.effect.AccessorMobEffectInstance;
+import net.darkhax.bookshelf.mixin.accessors.entity.AccessorAttributeModifier;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -203,7 +204,7 @@ public class BookshelfByteBufs {
             },
             (buf, val) -> {
                 UUID.write(buf, val.getId());
-                STRING.write(buf, val.getName());
+                STRING.write(buf, ((AccessorAttributeModifier) val).bookshelf$getName());
                 DOUBLE.write(buf, val.getAmount());
                 ATTRIBUTE_OPERATION.write(buf, val.getOperation());
             }

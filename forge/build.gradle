@@ -268,3 +268,9 @@ tasks.withType(JavaExec) {
         tasks.test.dependsOn(it)
     }
 }
+
+sourceSets.each {
+    def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+    it.output.resourcesDir = dir
+    it.java.destinationDirectory = dir
+}

@@ -14,17 +14,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.apache.commons.lang3.function.TriFunction;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 public interface IConstructHelper {
 
-    default <T extends BlockEntity> Supplier<BlockEntityType<T>> blockEntityType(BiFunction<BlockPos, BlockState, T> factory, Supplier<Collection<Block>> blocks) {
+    public static final Map<BlockEntityType<?>, Class<?>> TYPE_CLASSES = new HashMap<>();
 
-        return this.blockEntityType(factory, blocks.get().toArray(new Block[0]));
+    default <T extends BlockEntity> Supplier<BlockEntityType<T>> blockEntityType(Class<T> blockEntityClass, BiFunction<BlockPos, BlockState, T> factory, Supplier<Collection<Block>> blocks) {
+
+        return this.blockEntityType(blockEntityClass, factory, blocks.get().toArray(new Block[0]));
     }
 
-    <T extends BlockEntity> Supplier<BlockEntityType<T>> blockEntityType(BiFunction<BlockPos, BlockState, T> factory, Block... blocks);
+    <T extends BlockEntity> Supplier<BlockEntityType<T>> blockEntityType(Class<T> blockEntityClass, BiFunction<BlockPos, BlockState, T> factory, Block... blocks);
 
     <T extends AbstractContainerMenu> MenuType<T> menuType(TriFunction<Integer, Inventory, FriendlyByteBuf, T> constructor);
 

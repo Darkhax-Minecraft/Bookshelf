@@ -6,6 +6,7 @@
   "mixins": [
     "accessors.block.entity.AccessorSignBlockEntity",
     "accessors.effect.AccessorMobEffectInstance",
+    "accessors.entity.AccessorAttributeModifier",
     "accessors.entity.AccessorEntity",
     "accessors.entity.AccessorLivingEntity",
     "accessors.entity.AccessorMob",
@@ -15,8 +16,6 @@
     "accessors.item.AccessorCooldownInstance",
     "accessors.item.AccessorItem",
     "accessors.item.AccessorItemCooldowns",
-    "accessors.item.crafting.AccessorShapedRecipe",
-    "accessors.item.crafting.AccessorShapedRecipeSerializer",
     "accessors.util.random.AccessorWeightedRandomList",
     "accessors.world.AccessorRecipeManager",
     "accessors.world.AccessorStructureTemplatePool",

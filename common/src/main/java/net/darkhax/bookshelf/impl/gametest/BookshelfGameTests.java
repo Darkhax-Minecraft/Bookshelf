@@ -85,7 +85,8 @@ public class BookshelfGameTests {
 
         // Test Minecraft Type Serializers
         testFrom(testFunctions, BookshelfByteBufs.RESOURCE_LOCATION, BookshelfCodecs.RESOURCE_LOCATION, new ResourceLocation("hello_world"), new ResourceLocation("test", "two"), new ResourceLocation("test_from", "stuff/things/okay_stuff"));
-        testFrom(testFunctions, BookshelfByteBufs.ITEM_STACK, BookshelfCodecs.ITEM_STACK, ItemStackHelper::areStacksEquivalent, getTestStacks());
+        testFrom(testFunctions, BookshelfByteBufs.ITEM_STACK, BookshelfCodecs.ITEM_STACK, ItemStackHelper::areStacksEquivalent, getSimpleStacks());
+        testFrom(testFunctions, BookshelfByteBufs.ITEM_STACK, BookshelfCodecs.ITEM_STACK_FLEXIBLE, ItemStackHelper::areStacksEquivalent, getTestStacks());
         testFrom(testFunctions, BookshelfByteBufs.COMPOUND_TAG, BookshelfCodecs.COMPOUND_TAG, ItemStackHelper::areTagsEquivalent, getTestTags());
         testFrom(testFunctions, BookshelfByteBufs.TEXT, BookshelfCodecs.TEXT, Component.translatable("moon.phase.full").withStyle(ChatFormatting.DARK_AQUA), Component.literal("Hello World"), Component.literal("okay").withStyle(s -> s.withFont(new ResourceLocation("minecraft:alt"))));
         testFrom(testFunctions, BookshelfByteBufs.BLOCK_POS, BookshelfCodecs.BLOCK_POS, new BlockPos(1, 2, 3), new BlockPos(0, 0, 0), BlockPos.of(123456L));
@@ -202,7 +203,7 @@ public class BookshelfGameTests {
             final String registryTypeName = registryId.getNamespace() + "_" + registryId.getPath();
 
             final T[] testArray = registryCodecHelper.getRegistry().stream().limit(5).toArray(size -> (T[]) Array.newInstance(collection.getClass().getComponentType(), size));
-            final TagKey<T>[] tagExamples = new TagKey[] {TagKey.create(registryCodecHelper.getRegistry().key(), Constants.id("test_one")), TagKey.create(registryCodecHelper.getRegistry().key(), Constants.id("test_two")), TagKey.create(registryCodecHelper.getRegistry().key(), new ResourceLocation("test_three"))};
+            final TagKey<T>[] tagExamples = new TagKey[]{TagKey.create(registryCodecHelper.getRegistry().key(), Constants.id("test_one")), TagKey.create(registryCodecHelper.getRegistry().key(), Constants.id("test_two")), TagKey.create(registryCodecHelper.getRegistry().key(), new ResourceLocation("test_three"))};
 
             testFrom(functions, new RegistryCodecTests<>("registry_" + registryTypeName, registryCodecHelper, testArray));
             testFrom(functions, new ByteBufTests<>("registry_" + registryTypeName, registryBufHelper, testArray));
@@ -248,7 +249,8 @@ public class BookshelfGameTests {
                 final String testName = batch + "." + CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, method.getName());
                 final Rotation rotation = StructureUtils.getRotationForRotationSteps(annotation.rotationSteps());
 
-                functions.add(new TestFunction(batch, testName, template, rotation, annotation.timeoutTicks(), annotation.setupTicks(), annotation.required(), annotation.requiredSuccesses(), annotation.attempts(), gameTestHelper -> {
+                // batch has been hardcoded to defaultBatch for performance reasons
+                functions.add(new TestFunction("defaultBatch", testName, template, rotation, annotation.timeoutTicks(), annotation.setupTicks(), annotation.required(), annotation.requiredSuccesses(), annotation.attempts(), gameTestHelper -> {
 
                     try {
 
@@ -275,6 +277,16 @@ public class BookshelfGameTests {
                 }));
             }
         }
+    }
+
+    private static ItemStack[] getSimpleStacks() {
+
+        return new ItemStack[]{
+                new ItemStack(Items.STICK),
+                new ItemStack(Items.BOOKSHELF, 22),
+                new ItemStack(Items.ACACIA_BOAT),
+                new ItemStack(Items.GLOW_ITEM_FRAME, 33)
+        };
     }
 
     private static ItemStack[] getTestStacks() {

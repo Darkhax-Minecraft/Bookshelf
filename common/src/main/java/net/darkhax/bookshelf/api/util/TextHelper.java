@@ -7,6 +7,7 @@ import net.darkhax.bookshelf.mixin.accessors.entity.AccessorEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.HoverEvent;
@@ -16,6 +17,8 @@ import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
@@ -65,6 +68,16 @@ public final class TextHelper {
         return getFormattedTime(ticks, true);
     }
 
+    public static MutableComponent getFormattedTime(int ticks, boolean includeHover) {
+
+        return getFormattedTime(ticks, includeHover, 1f);
+    }
+
+    public static MutableComponent getFormattedTime(int ticks, boolean includeHover, Level level) {
+
+        return getFormattedTime(ticks, includeHover, level.tickRateManager().tickrate());
+    }
+
     /**
      * Creates a component that displays a duration of ticks in HH:MM:SS format.
      *
@@ -72,9 +85,9 @@ public final class TextHelper {
      * @param includeHover Should the component show a tooltip with the raw tick time when the mouse hovers over it?
      * @return A component that displays the duration of ticks.
      */
-    public static MutableComponent getFormattedTime(int ticks, boolean includeHover) {
+    public static MutableComponent getFormattedTime(int ticks, boolean includeHover, float tickRate) {
 
-        MutableComponent component = Component.literal(StringUtil.formatTickDuration(ticks));
+        MutableComponent component = Component.literal(StringUtil.formatTickDuration(ticks, tickRate));
 
         if (includeHover) {
 
@@ -186,18 +199,15 @@ public final class TextHelper {
      */
     public static Component applyFont(Component text, ResourceLocation font) {
 
-        if (text.getContents() == ComponentContents.EMPTY) {
+        if (text == CommonComponents.EMPTY) {
 
             return text;
         }
 
-        if (text instanceof MutableComponent mutable) {
-
-            mutable.withStyle(style -> style.withFont(font));
-        }
-
-        text.getSiblings().forEach(sib -> applyFont(sib, font));
-        return text;
+        MutableComponent modified = text.copy();
+        modified.withStyle(style -> style.withFont(font));
+        modified.getSiblings().forEach(sib -> applyFont(sib, font));
+        return modified;
     }
 
     /**

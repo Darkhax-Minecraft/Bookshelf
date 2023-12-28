@@ -25,9 +25,13 @@ import java.util.function.Supplier;
 public class ConstructBuilderFabric implements IConstructHelper {
 
     @Override
-    public <T extends BlockEntity> Supplier<BlockEntityType<T>> blockEntityType(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks) {
+    public <T extends BlockEntity> Supplier<BlockEntityType<T>> blockEntityType(Class<T> blockEntityClass, BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks) {
 
-        return () -> FabricBlockEntityTypeBuilder.create(factory::apply, validBlocks).build();
+        return () -> {
+            final BlockEntityType<T> type = FabricBlockEntityTypeBuilder.create(factory::apply, validBlocks).build();
+            IConstructHelper.TYPE_CLASSES.putIfAbsent(type, blockEntityClass);
+            return type;
+        };
     }
 
     @Override

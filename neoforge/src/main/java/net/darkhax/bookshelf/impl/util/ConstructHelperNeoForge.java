@@ -24,9 +24,13 @@ import java.util.function.Supplier;
 public class ConstructHelperNeoForge implements IConstructHelper {
 
     @Override
-    public <T extends BlockEntity> Supplier<BlockEntityType<T>> blockEntityType(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks) {
+    public <T extends BlockEntity> Supplier<BlockEntityType<T>> blockEntityType(Class<T> blockEntityClass, BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks) {
 
-        return () -> BlockEntityType.Builder.of(factory::apply, validBlocks).build(null);
+        return () -> {
+            final BlockEntityType<T> type = BlockEntityType.Builder.of(factory::apply, validBlocks).build(null);
+            IConstructHelper.TYPE_CLASSES.putIfAbsent(type, blockEntityClass);
+            return type;
+        };
     }
 
     @Override

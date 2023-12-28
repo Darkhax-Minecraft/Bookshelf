@@ -267,4 +267,9 @@ public final class MathsHelper {
         final int offsetZ = rangeZ != 0 ? rng.nextIntBetweenInclusive(-rangeZ, rangeZ) : 0;
         return startPos.offset(offsetX, offsetY, offsetZ);
     }
+
+    public static Vec3 vec3(BlockPos pos) {
+
+        return new Vec3(pos.getX(), pos.getY(), pos.getZ());
+    }
 }

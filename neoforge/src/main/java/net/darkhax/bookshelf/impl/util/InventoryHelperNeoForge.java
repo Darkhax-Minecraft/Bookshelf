@@ -12,15 +12,13 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.CommonHooks;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
 import java.util.function.Consumer;
 
 public class InventoryHelperNeoForge implements IInventoryHelper {
@@ -42,16 +40,11 @@ public class InventoryHelperNeoForge implements IInventoryHelper {
     @Override
     public IInventoryAccess getInventory(Level level, BlockPos pos, @Nullable Direction direction) {
 
-        final BlockEntity be = level.getBlockEntity(pos);
+        final IItemHandler inventory = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, direction);
 
-        if (be != null) {
+        if (inventory != null) {
 
-            final Optional<IItemHandler> inventory = be.getCapability(Capabilities.ITEM_HANDLER, direction).resolve();
-
-            if (inventory.isPresent()) {
-
-                return new ItemHandlerInventoryAccess(inventory.get());
-            }
+            return new ItemHandlerInventoryAccess(inventory);
         }
 
         return IInventoryHelper.super.getInventory(level, pos, direction);

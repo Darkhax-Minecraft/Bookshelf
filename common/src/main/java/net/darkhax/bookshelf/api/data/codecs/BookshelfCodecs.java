@@ -22,6 +22,7 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -57,7 +58,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.crafting.CraftingRecipeCodecs;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -201,7 +201,7 @@ public class BookshelfCodecs {
     // ENUMS
     public static final CodecHelper<Rarity> ITEM_RARITY = new CodecHelper<>(enumerable(Rarity.class));
     public static final CodecHelper<Enchantment.Rarity> ENCHANTMENT_RARITY = new CodecHelper<>(enumerable(Enchantment.Rarity.class));
-    public static final CodecHelper<AttributeModifier.Operation> ATTRIBUTE_OPERATION = new CodecHelper<>(enumerable(AttributeModifier.Operation.class));
+    public static final CodecHelper<AttributeModifier.Operation> ATTRIBUTE_OPERATION = new CodecHelper<>(AttributeModifier.Operation.CODEC);
     public static final CodecHelper<Direction> DIRECTION = new CodecHelper<>(enumerable(Direction.class));
     public static final CodecHelper<Direction.Axis> AXIS = new CodecHelper<>(enumerable(Direction.Axis.class));
     public static final CodecHelper<Direction.Plane> PLANE = new CodecHelper<>(enumerable(Direction.Plane.class));
@@ -218,31 +218,24 @@ public class BookshelfCodecs {
     // MINECRAFT TYPES
     public static final CodecHelper<ResourceLocation> RESOURCE_LOCATION = new CodecHelper<>(ResourceLocation.CODEC);
     public static final CodecHelper<CompoundTag> COMPOUND_TAG = new CodecHelper<>(CompoundTag.CODEC);
-    public static final CodecHelper<ItemStack> ITEM_STACK = new CodecHelper<>(ItemStack.CODEC);
-    public static final CodecHelper<ItemStack> ITEM_STACK_RECIPE = new CodecHelper<>(CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC);
-    public static final CodecHelper<ItemStack> ITEM_STACK_NBT = new CodecHelper<>(RecordCodecBuilder.create(instance -> instance.group(
+    public static final CodecHelper<ItemStack> ITEM_STACK = new CodecHelper<>(RecordCodecBuilder.create(instance -> instance.group(
             ITEM.get("item", ItemStack::getItem),
-            ExtraCodecs.strictOptionalField(ExtraCodecs.POSITIVE_INT, "count", 1).forGetter(ItemStack::getCount),
+            INT.get("count", ItemStack::getCount, 1),
             COMPOUND_TAG.getOptional("nbt", stack -> stack.hasTag() ? Optional.ofNullable(stack.getTag()) : Optional.empty())
     ).apply(instance, (item, count, nbt) -> {
         final ItemStack stack = new ItemStack(item, count);
         nbt.ifPresent(stack::setTag);
         return stack;
     })));
-    public static final CodecHelper<ItemStack> ITEM_STACK_FLEXIBLE = new CodecHelper<>(alternatives(ITEM.get().xmap(Item::getDefaultInstance, ItemStack::getItem), ITEM_STACK_NBT.get(), stack -> (stack.hasTag() || stack.getCount() != 1) ? Either.right(stack) : Either.left(stack)));
+    public static final CodecHelper<ItemStack> ITEM_STACK_FLEXIBLE = new CodecHelper<>(alternatives(ITEM.get().xmap(Item::getDefaultInstance, ItemStack::getItem), ITEM_STACK.get(), stack -> (stack.hasTag() || stack.getCount() != 1) ? Either.right(stack) : Either.left(stack)));
 
-    public static final CodecHelper<Component> TEXT = new CodecHelper<>(ExtraCodecs.COMPONENT);
+    public static final CodecHelper<Component> TEXT = new CodecHelper<>(ComponentSerialization.CODEC);
     public static final CodecHelper<BlockPos> BLOCK_POS = new CodecHelper<>(BlockPos.CODEC);
     public static final CodecHelper<Ingredient> INGREDIENT = new CodecHelper<>(Ingredient.CODEC);
     public static final CodecHelper<Ingredient> INGREDIENT_NONEMPTY = new CodecHelper<>(Ingredient.CODEC_NONEMPTY);
     public static final MapCodec<BlockState> BLOCK_STATE_MAP_CODEC = Codec.mapPair(BLOCK.get().fieldOf("block"), Codec.unboundedMap(Codec.STRING, Codec.STRING).optionalFieldOf("properties")).flatXmap(BookshelfCodecs::decodeBlockState, BookshelfCodecs::encodeBlockState);
     public static final CodecHelper<BlockState> BLOCK_STATE = new CodecHelper<>(BLOCK_STATE_MAP_CODEC.codec());
-    public static final CodecHelper<AttributeModifier> ATTRIBUTE_MODIFIER = new CodecHelper<>(RecordCodecBuilder.create(instance -> instance.group(
-            UUID.get("uuid", AttributeModifier::getId),
-            STRING.get("name", AttributeModifier::getName),
-            DOUBLE.get("amount", AttributeModifier::getAmount),
-            ATTRIBUTE_OPERATION.get("operation", AttributeModifier::getOperation)
-    ).apply(instance, AttributeModifier::new)));
+    public static final CodecHelper<AttributeModifier> ATTRIBUTE_MODIFIER = new CodecHelper<>(AttributeModifier.CODEC);
     public static final CodecHelper<MobEffectInstance> EFFECT_INSTANCE = new CodecHelper<>(RecordCodecBuilder.create(instance -> instance.group(
             MOB_EFFECT.get("effect", MobEffectInstance::getEffect),
             INT.get("duration", MobEffectInstance::getDuration, 20),
