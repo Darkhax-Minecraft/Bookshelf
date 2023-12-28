@@ -7,10 +7,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
@@ -18,10 +18,10 @@ import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 @Mod(Constants.MOD_ID)
 public class BookshelfNeoForge {
 
-    public BookshelfNeoForge() {
+    public BookshelfNeoForge(IEventBus modBus) {
 
         new BookshelfCommon();
-        NeoForge.EVENT_BUS.addListener(this::attachBlockCapabilities);
+        modBus.addListener(this::attachBlockCapabilities);
     }
 
     private static final ResourceLocation WORLDLY_CONTAINER_WRAPPER = Constants.id("worldly_container_wrapper");
@@ -43,7 +43,7 @@ public class BookshelfNeoForge {
 
                             return side != null ? new SidedInvWrapper(worldly, side) : new InvWrapper(worldly);
                         }
-                        
+
                         return null;
                     });
                 }
