@@ -16,7 +16,6 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -53,7 +52,7 @@ public class InventoryHelperNeoForge implements IInventoryHelper {
     @Override
     public void openMenu(ServerPlayer player, MenuProvider provider, Consumer<FriendlyByteBuf> buf) {
 
-        NetworkHooks.openScreen(player, provider, buf);
+        player.openMenu(provider, buf);
     }
 
     @Override

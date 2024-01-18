@@ -1,5 +1,5 @@
 plugins {
-    id 'net.neoforged.gradle.userdev' version '7.0.58'
+    id 'net.neoforged.gradle.userdev' version '7.0.84'
     id 'net.darkhax.curseforgegradle'
     id 'com.modrinth.minotaur'
 }
