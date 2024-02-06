@@ -14,17 +14,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinLootItemKilledByPlayerCondition {
 
     /**
-     * If the loot context contains a damage source in the bookshelf:cause_player_only_drops tag player kill loot will
-     * be allowed to generate when it otherwise wouldn't.
+     * This patch allows mobs that were killed with Bookshelfs fake player damage to satisfy the
+     * minecraft:killed_by_player loot condition.
      */
     @Inject(method = "test(Lnet/minecraft/world/level/storage/loot/LootContext;)Z", at = @At("HEAD"), cancellable = true)
     public void test(LootContext context, CallbackInfoReturnable<Boolean> callback) {
-
         if (context != null && context.hasParam(LootContextParams.DAMAGE_SOURCE)) {
-
             final DamageSource source = context.getParam(LootContextParams.DAMAGE_SOURCE);
-
-            if (source != null && source.is(BookshelfTags.DamageTypes.CAUSE_PLAYER_ONLY_DROPS)) {
+            if (source != null && source.is(BookshelfTags.DamageTypes.FAKE_PLAYER)) {
                 callback.setReturnValue(true);
             }
         }

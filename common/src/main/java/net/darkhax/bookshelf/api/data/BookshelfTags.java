@@ -9,7 +9,6 @@ public class BookshelfTags {
 
     public static class DamageTypes {
 
-        public static TagKey<DamageType> CAUSE_PLAYER_ONLY_DROPS = TagKey.create(Registries.DAMAGE_TYPE,Constants.id("cause_player_only_drops"));
-        public static TagKey<DamageType> CAUSE_EXP_DROPS = TagKey.create(Registries.DAMAGE_TYPE, Constants.id("cause_exp_drops"));
+        public static TagKey<DamageType> FAKE_PLAYER = TagKey.create(Registries.DAMAGE_TYPE, Constants.id("fake_player"));
     }
 }

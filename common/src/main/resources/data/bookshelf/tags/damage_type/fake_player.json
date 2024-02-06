@@ -1,10 +1,9 @@
 {
   "comments": [
-    "Damage types in this tag will be included in bookshelf:cause_exp_drops and",
-    "bookshelf:cause_player_only_drops by default. This creates an effect that ",
-    "is similar to the modded concept of fake player damage. This means mobs   ",
-    "killed by this type of damage will still drop EXP and player only loot    ",
-    "even if they were not killed by a player.                                 "
+    "Damage types in this tag are considered fake player damage. Fake player  ",
+    "damage acts like regular player damage but does not require an associated",
+    "player entity. This allows something like a block or mob to deal damage  ",
+    "that causes mobs to drop exp and player only loot when killed.           "
   ],
   "values": [
     "bookshelf:fake_player"
