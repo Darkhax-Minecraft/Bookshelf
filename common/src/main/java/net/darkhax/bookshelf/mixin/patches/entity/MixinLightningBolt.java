@@ -19,8 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class MixinLightningBolt {
 
     /**
-     * Patches lightning to allow blocks to react to being struck by lightning. Also introduces a system for blocks
-     * redirecting lightning to adjacent blocks similar to the vanilla lightning rod block.
+     * This patch allows blocks to respond to being struck by lightning. This also introduces a system for redirecting
+     * lightning to adjacent blocks similarly to the vanilla lighting rod block.
      */
     @Inject(method = "powerLightningRod()V", at = @At("RETURN"), locals = LocalCapture.CAPTURE_FAILHARD)
     private void onStrikeBlock(CallbackInfo callback, BlockPos strikePos, BlockState strikeState) {

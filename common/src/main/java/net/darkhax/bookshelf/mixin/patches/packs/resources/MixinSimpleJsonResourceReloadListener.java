@@ -18,8 +18,8 @@ import java.util.Map;
 public class MixinSimpleJsonResourceReloadListener {
 
     /**
-     * Introduces load conditions for all JSON based resources. This uses the bookshelf:load_conditions tag in the JSON
-     * object.
+     * This patch introduces load conditions for all JSON based resource loaders. These conditions are independent of
+     * the loader platform allowing them to be used in loader agnostic sourcesets.
      */
     @Inject(method = "prepare(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)Ljava/util/Map;", at = @At("RETURN"))
     private void prepare(ResourceManager manager, ProfilerFiller profiler, CallbackInfoReturnable<Map<ResourceLocation, JsonElement>> cbi) {
