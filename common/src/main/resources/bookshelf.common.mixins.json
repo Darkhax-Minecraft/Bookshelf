@@ -22,7 +22,8 @@
     "patches.entity.MixinLightningBolt",
     "patches.entity.MixinLivingEntity",
     "patches.loot.MixinLootItemKilledByPlayerCondition",
-    "patches.packs.resources.MixinSimpleJsonResourceReloadListener"
+    "patches.packs.resources.MixinSimpleJsonResourceReloadListener",
+    "patches.world.level.pathfinder.MixinWalkNodeEvaluator"
   ],
   "client": [
     "accessors.client.AccessorFontManager",
