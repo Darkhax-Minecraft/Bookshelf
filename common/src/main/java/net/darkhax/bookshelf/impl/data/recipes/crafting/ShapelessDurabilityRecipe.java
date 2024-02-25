@@ -64,7 +64,7 @@ public class ShapelessDurabilityRecipe extends ShapelessRecipe {
                     }
                     return nonEmptyIngredients.length > 9 ? DataResult.error(() -> "Too many ingredients for shapeless recipe") : DataResult.success(NonNullList.of(Ingredient.EMPTY, nonEmptyIngredients));
                 }, DataResult::success).forGetter(ShapelessDurabilityRecipe::getIngredients),
-                BookshelfCodecs.INT.get("damageAmount", ShapelessDurabilityRecipe::getDamageAmount)
+                BookshelfCodecs.INT.get("damageAmount", ShapelessDurabilityRecipe::getDamageAmount, 1)
         ).apply(instance, ShapelessDurabilityRecipe::new));
 
         @Override

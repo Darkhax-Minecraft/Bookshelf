@@ -62,7 +62,7 @@ public final class ShapedDurabilityRecipe extends ShapedRecipe {
                 ShapedRecipePattern.MAP_CODEC.forGetter(ShapedDurabilityRecipe::getPattern),
                 ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter(ShapedDurabilityRecipe::getRecipeOutput),
                 ExtraCodecs.strictOptionalField(Codec.BOOL, "show_notification", true).forGetter(ShapedRecipe::showNotification),
-                BookshelfCodecs.INT.get("damageAmount", ShapedDurabilityRecipe::getDamageAmount)
+                BookshelfCodecs.INT.get("damageAmount", ShapedDurabilityRecipe::getDamageAmount, 1)
         ).apply(instance, ShapedDurabilityRecipe::new));
 
         @Override
