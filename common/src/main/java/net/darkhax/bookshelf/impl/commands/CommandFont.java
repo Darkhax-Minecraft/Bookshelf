@@ -128,8 +128,8 @@ public class CommandFont {
 
                     for (int pageNum = 0; pageNum < pageData.size(); pageNum++) {
 
-                        final Component pageText = Component.Serializer.fromJsonLenient(pageData.getString(pageNum));
-                        TextHelper.applyFont(pageText.copy(), fontId);
+                        Component pageText = Component.Serializer.fromJsonLenient(pageData.getString(pageNum));
+                        pageText = TextHelper.applyFont(pageText.copy(), fontId);
                         pageData.set(pageNum, StringTag.valueOf(Component.Serializer.toJson(pageText)));
                     }
 
