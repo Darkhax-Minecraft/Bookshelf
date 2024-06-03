@@ -10,6 +10,7 @@ import net.darkhax.bookshelf.mixin.accessors.inventory.AccessorTransientCrafting
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -119,6 +120,11 @@ public interface IInventoryHelper {
         return stack;
     }
 
+    default boolean isUnbreakableItem(ItemStack stack) {
+        final CompoundTag tag = stack.getTag();
+        return tag != null && (tag.getBoolean("Unbreaking") || tag.getBoolean("Unbreakable"));
+    }
+
     default NonNullList<ItemStack> keepDamageableItems(CraftingContainer inv, NonNullList<ItemStack> keptItems, int damageAmount) {
 
         @Nullable
@@ -128,7 +134,7 @@ public interface IInventoryHelper {
 
             final ItemStack input = inv.getItem(i).copy();
 
-            if (input.getItem().canBeDepleted() || (input.hasTag() && input.getTag().getBoolean("Unbreaking"))) {
+            if (input.getItem().canBeDepleted() || isUnbreakableItem(input)) {
 
                 final ItemStack stack = this.damageStack(input, damageAmount, player, null);
 
