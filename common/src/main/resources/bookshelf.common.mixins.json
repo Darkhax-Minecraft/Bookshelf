@@ -26,7 +26,8 @@
   ],
   "client": [
     "accessors.client.AccessorFontManager",
-    "accessors.client.AccessorMinecraft"
+    "accessors.client.AccessorMinecraft",
+    "patches.locale.MixinClientLanguage"
   ],
   "injectors": {
     "defaultRequire": 1
