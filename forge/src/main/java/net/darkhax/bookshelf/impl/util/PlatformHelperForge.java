@@ -10,6 +10,8 @@ import net.minecraftforge.gametest.ForgeGameTestHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PlatformHelperForge implements IPlatformHelper {
 
@@ -29,6 +31,13 @@ public class PlatformHelperForge implements IPlatformHelper {
     public Path getModsPath() {
 
         return FMLPaths.MODSDIR.get();
+    }
+
+    @Override
+    public Set<String> getLoadedMods() {
+        final Set<String> loadedMods = new HashSet<>();
+        ModList.get().getMods().forEach(mod -> loadedMods.add(mod.getModId()));
+        return loadedMods;
     }
 
     @Override
@@ -54,6 +63,13 @@ public class PlatformHelperForge implements IPlatformHelper {
     public String getModName(String modId) {
 
         return ModList.get().getModContainerById(modId).map(mod -> mod.getModInfo().getDisplayName()).orElse(modId);
+    }
+
+    @Nullable
+    @Override
+    public String getModVersion(String modId) {
+
+        return ModList.get().getModContainerById(modId).map(mod -> mod.getModInfo().getVersion().toString()).orElse(null);
     }
 
     @Override

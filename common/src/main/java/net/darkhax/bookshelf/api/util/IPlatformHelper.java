@@ -7,6 +7,7 @@ import net.minecraft.network.chat.MutableComponent;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Set;
 
 /**
  * The PlatformHelper provides useful context and information about the platform the game is running on.
@@ -65,6 +66,13 @@ public interface IPlatformHelper {
     }
 
     /**
+     * Gets a set of loaded mod IDs.
+     *
+     * @return A set of loaded mod IDs.
+     */
+    Set<String> getLoadedMods();
+
+    /**
      * Checks if a given mod is loaded.
      *
      * @param modId The mod id to search for.
@@ -106,6 +114,9 @@ public interface IPlatformHelper {
      */
     @Nullable
     String getModName(String modId);
+
+    @Nullable
+    String getModVersion(String modId);
 
     /**
      * Attempts to resolve the name of a mod using the associated mod ID. If no mod is not available the provided ID

@@ -8,6 +8,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PlatformHelperFabric implements IPlatformHelper {
 
@@ -27,6 +29,13 @@ public class PlatformHelperFabric implements IPlatformHelper {
     public Path getModsPath() {
 
         return this.getGamePath().resolve("mods");
+    }
+
+    @Override
+    public Set<String> getLoadedMods() {
+        final Set<String> loadedMods = new HashSet<>();
+        FabricLoader.getInstance().getAllMods().forEach(mod -> loadedMods.add(mod.getMetadata().getId()));
+        return loadedMods;
     }
 
     @Override
@@ -52,6 +61,12 @@ public class PlatformHelperFabric implements IPlatformHelper {
     public String getModName(String modId) {
 
         return FabricLoader.getInstance().getModContainer(modId).map(mod -> mod.getMetadata().getName()).orElse(modId);
+    }
+
+    @Nullable
+    @Override
+    public String getModVersion(String modId) {
+        return FabricLoader.getInstance().getModContainer(modId).map(mod -> mod.getMetadata().getVersion().getFriendlyString()).orElse(null);
     }
 
     @Override
