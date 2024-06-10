@@ -127,8 +127,7 @@ public interface IInventoryHelper {
 
     default NonNullList<ItemStack> keepDamageableItems(CraftingContainer inv, NonNullList<ItemStack> keptItems, int damageAmount) {
 
-        @Nullable
-        final Player player = this.getCraftingPlayer(inv);
+        @Nullable final Player player = this.getCraftingPlayer(inv);
 
         for (int i = 0; i < keptItems.size(); i++) {
 
@@ -265,7 +264,8 @@ public interface IInventoryHelper {
 
     default void openMenu(ServerPlayer player, MenuProvider provider) {
 
-        this.openMenu(player, provider, buf -> {});
+        this.openMenu(player, provider, buf -> {
+        });
     }
 
     default void openMenu(ServerPlayer player, MenuProvider provider, Consumer<FriendlyByteBuf> buf) {

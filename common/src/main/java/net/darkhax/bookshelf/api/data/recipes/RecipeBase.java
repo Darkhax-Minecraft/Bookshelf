@@ -7,8 +7,8 @@ import net.minecraft.world.item.crafting.Recipe;
 /**
  * A partial implementation of {@link Recipe} that provides the necessary ID handling and error detection.
  * <p>
- * Having a null {@link #getSerializer()} or {@link #getType()} is considered invalid and will raise a {@link
- * IllegalStateException} if either are detected as null.
+ * Having a null {@link #getSerializer()} or {@link #getType()} is considered invalid and will raise a
+ * {@link IllegalStateException} if either are detected as null.
  *
  * @param <C> The type of inventory used to craft this recipe.
  */

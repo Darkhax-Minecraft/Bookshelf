@@ -23,7 +23,7 @@ public abstract class InventoryBlock extends BaseEntityBlock {
         // BaseEntityBlock uses INVISIBLE by default however I have personally found that model is a more convenient default for my block entities.
         return RenderShape.MODEL;
     }
-    
+
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 

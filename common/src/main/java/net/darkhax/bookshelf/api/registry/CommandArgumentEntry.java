@@ -5,7 +5,7 @@ import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 
 import java.util.function.Supplier;
 
-public class CommandArgumentEntry <A extends ArgumentType<?>, T extends ArgumentTypeInfo.Template<A>, I extends ArgumentTypeInfo<A, T>> {
+public class CommandArgumentEntry<A extends ArgumentType<?>, T extends ArgumentTypeInfo.Template<A>, I extends ArgumentTypeInfo<A, T>> {
 
     private final Supplier<I> serializer;
     private final Class<A> argClass;

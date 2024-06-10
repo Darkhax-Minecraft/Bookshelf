@@ -52,8 +52,9 @@ public interface ILightningConductive {
     }
 
     /**
-     * Checks if the block should trigger {@link ILightningConductive#onIndirectLightingStrike(Level, BlockPos,
-     * BlockState, BlockPos, BlockState, LightningBolt)} of adjacent blocks when directly struck by lightning.
+     * Checks if the block should trigger
+     * {@link ILightningConductive#onIndirectLightingStrike(Level, BlockPos, BlockState, BlockPos, BlockState,
+     * LightningBolt)} of adjacent blocks when directly struck by lightning.
      *
      * @param world       The world the block is in.
      * @param strikePos   The position the lightning bolt struck.
@@ -66,9 +67,10 @@ public interface ILightningConductive {
     }
 
     /**
-     * Gets an array of block faces that should conduct lightning when struck. If {@link #canRedirectLightning(Level,
-     * BlockPos, BlockState)} is true, {@link #onIndirectLightingStrike(Level, BlockPos, BlockState, BlockPos,
-     * BlockState, LightningBolt)} will be invoked on blocks adjacent to the faces returned by this method.
+     * Gets an array of block faces that should conduct lightning when struck. If
+     * {@link #canRedirectLightning(Level, BlockPos, BlockState)} is true,
+     * {@link #onIndirectLightingStrike(Level, BlockPos, BlockState, BlockPos, BlockState, LightningBolt)} will be
+     * invoked on blocks adjacent to the faces returned by this method.
      *
      * @param world       The world the block is in.
      * @param strikePos   The position the lightning bolt struck.

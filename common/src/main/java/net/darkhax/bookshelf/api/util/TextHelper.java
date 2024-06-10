@@ -177,17 +177,17 @@ public final class TextHelper {
         return Component.literal(text).withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text)));
     }
 
-    public static MutableComponent join (Component separator, Component... toJoin) {
+    public static MutableComponent join(Component separator, Component... toJoin) {
 
         return join(separator, Arrays.stream(toJoin).iterator());
     }
 
-    public static MutableComponent join (Component separator, Collection<Component> toJoin) {
+    public static MutableComponent join(Component separator, Collection<Component> toJoin) {
 
         return join(separator, toJoin.iterator());
     }
 
-    public static MutableComponent join (Component separator, Iterator<Component> toJoin) {
+    public static MutableComponent join(Component separator, Iterator<Component> toJoin) {
 
         final MutableComponent joined = Component.literal("");
 

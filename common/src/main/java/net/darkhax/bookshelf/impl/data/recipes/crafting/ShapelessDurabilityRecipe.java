@@ -91,7 +91,7 @@ public class ShapelessDurabilityRecipe extends ShapelessRecipe {
             final ItemStack output = buffer.readItem();
             final int damageAmount = buffer.readVarInt();
 
-            return new ShapelessDurabilityRecipe(recipeId, group, category,output, inputs, damageAmount);
+            return new ShapelessDurabilityRecipe(recipeId, group, category, output, inputs, damageAmount);
         }
 
         @Override
@@ -111,7 +111,7 @@ public class ShapelessDurabilityRecipe extends ShapelessRecipe {
             buffer.writeVarInt(toWrite.damageAmount);
         }
 
-        private static NonNullList<Ingredient> readIngredients (JsonArray json) {
+        private static NonNullList<Ingredient> readIngredients(JsonArray json) {
 
             final NonNullList<Ingredient> ingredients = NonNullList.create();
 

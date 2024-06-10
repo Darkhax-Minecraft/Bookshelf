@@ -43,7 +43,7 @@ public final class SingletonArgumentInfo<T extends ArgumentType<?>> implements A
     public void serializeToJson(Template<T> tTemplate, JsonObject jsonObject) {
 
     }
-    
+
     @Override
     public Template<T> unpack(T template) {
 
@@ -60,13 +60,13 @@ public final class SingletonArgumentInfo<T extends ArgumentType<?>> implements A
             this.singletonSupplier = supplier;
             this.info = info;
         }
-        
+
         @Override
         public T instantiate(CommandBuildContext ctx) {
 
             return this.singletonSupplier.get();
         }
-        
+
         @Override
         public ArgumentTypeInfo<T, ?> type() {
 

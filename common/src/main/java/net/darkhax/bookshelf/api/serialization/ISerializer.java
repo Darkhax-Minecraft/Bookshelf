@@ -726,7 +726,7 @@ public interface ISerializer<T> {
 
         if (value != null) {
 
-            this.toByteBuf(buffer,value);
+            this.toByteBuf(buffer, value);
         }
     }
 }

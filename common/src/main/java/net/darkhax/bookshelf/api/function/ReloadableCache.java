@@ -153,7 +153,7 @@ public class ReloadableCache<T> implements Function<Level, T> {
      * @return A cache of a registry value that will be reaquired when the game reloads.
      */
     public static <T> ReloadableCache<T> of(RecipeType<? extends Recipe<?>> type, ResourceLocation id) {
-        
+
         return ReloadableCache.of(level -> {
 
             if (level.getRecipeManager() instanceof AccessorRecipeManager accessor) {

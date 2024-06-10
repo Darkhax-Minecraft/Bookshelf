@@ -160,7 +160,7 @@ public class ContainerInventoryAccess<T extends Container> implements IInventory
 
             final ItemStack extracted = existingStack.copy();
 
-            if (amount < extracted.getCount())  {
+            if (amount < extracted.getCount()) {
 
                 extracted.setCount(amount);
             }

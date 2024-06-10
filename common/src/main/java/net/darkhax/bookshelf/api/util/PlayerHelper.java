@@ -39,7 +39,7 @@ public class PlayerHelper {
 
             if (!progress.isDone()) {
 
-                for(String remainingCriteria : progress.getRemainingCriteria()) {
+                for (String remainingCriteria : progress.getRemainingCriteria()) {
 
                     player.getAdvancements().award(toGrant, remainingCriteria);
                 }

@@ -20,7 +20,7 @@ public class WorldlyContainerInventoryAccess<T extends WorldlyContainer> extends
     @Override
     public ItemStack insert(int slot, ItemStack insertStack, Direction side, boolean modify) {
 
-        final ItemStack existingStack  = this.getStackInSlot(slot);
+        final ItemStack existingStack = this.getStackInSlot(slot);
 
         if (!this.internal.canPlaceItemThroughFace(slot, existingStack, side)) {
 
@@ -33,7 +33,7 @@ public class WorldlyContainerInventoryAccess<T extends WorldlyContainer> extends
     @Override
     public ItemStack extract(int slot, int amount, Direction side, boolean modify) {
 
-        final ItemStack existingStack  = this.getStackInSlot(slot);
+        final ItemStack existingStack = this.getStackInSlot(slot);
 
         if (!this.internal.canTakeItemThroughFace(slot, existingStack, side)) {
 

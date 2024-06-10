@@ -60,7 +60,7 @@ public interface IInventoryAccess {
      * @param side  The side of the inventory the item is being inserted through.
      * @return Whether the item can be inserted or not.
      */
-    default boolean canInsert(int slot, ItemStack stack, @Nullable  Direction side) {
+    default boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
 
         final ItemStack remaining = this.insert(slot, stack, side, false);
         return remaining.getCount() < stack.getCount();

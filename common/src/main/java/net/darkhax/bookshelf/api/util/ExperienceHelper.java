@@ -37,8 +37,9 @@ public final class ExperienceHelper {
     }
 
     /**
-     * Calculates the amount of experience points the player currently has. This should be used in favour of {@link
-     * Player#totalExperience} which deceptively does not track the amount of experience the player currently has.
+     * Calculates the amount of experience points the player currently has. This should be used in favour of
+     * {@link Player#totalExperience} which deceptively does not track the amount of experience the player currently
+     * has.
      * <p>
      * Contrary to popular belief the {@link Player#totalExperience} value actually loosely represents how much
      * experience points the player has earned during their current life. This value is akin to the old player score
