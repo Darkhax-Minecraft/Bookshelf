@@ -56,7 +56,7 @@ public interface RenderHelper {
      * @param light   Packed light coordinates.
      * @param overlay Overlay data.
      * @param x1      The starting render position on the X axis.
-     * @param x2      The ending render postion on the X axis.
+     * @param x2      The ending render position on the X axis.
      * @param y1      The starting render position on the Y axis.
      * @param y2      The ending render position on the Y axis.
      * @param z1      The starting render position on the Z axis.
@@ -77,7 +77,7 @@ public interface RenderHelper {
      * @param light   Packed light coordinates.
      * @param overlay Overlay data.
      * @param x1      The starting render position on the X axis.
-     * @param x2      The ending render postion on the X axis.
+     * @param x2      The ending render position on the X axis.
      * @param y1      The starting render position on the Y axis.
      * @param y2      The ending render position on the Y axis.
      * @param z1      The starting render position on the Z axis.
@@ -113,71 +113,63 @@ public interface RenderHelper {
      */
     default void renderFace(VertexConsumer builder, Matrix4f pos, TextureAtlasSprite sprite, Direction side, int light, int overlay, float x1, float x2, float y1, float y2, float z1, float z2, int[] color) {
 
-        // Convert block size to pixel size
-        final float px1 = x1 * 16;
-        final float px2 = x2 * 16;
-        final float py1 = y1 * 16;
-        final float py2 = y2 * 16;
-        final float pz1 = z1 * 16;
-        final float pz2 = z2 * 16;
-
         switch (side) {
 
             case DOWN -> {
-                final float u1 = sprite.getU(px1);
-                final float u2 = sprite.getU(px2);
-                final float v1 = sprite.getV(pz1);
-                final float v2 = sprite.getV(pz2);
+                final float u1 = sprite.getU(x1);
+                final float u2 = sprite.getU(x2);
+                final float v1 = sprite.getV(z1);
+                final float v2 = sprite.getV(z2);
                 builder.vertex(pos, x1, y1, z2).color(color[1], color[2], color[3], color[0]).uv(u1, v2).overlayCoords(overlay).uv2(light).normal(0f, -1f, 0f).endVertex();
                 builder.vertex(pos, x1, y1, z1).color(color[1], color[2], color[3], color[0]).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(0f, -1f, 0f).endVertex();
                 builder.vertex(pos, x2, y1, z1).color(color[1], color[2], color[3], color[0]).uv(u2, v1).overlayCoords(overlay).uv2(light).normal(0f, -1f, 0f).endVertex();
                 builder.vertex(pos, x2, y1, z2).color(color[1], color[2], color[3], color[0]).uv(u2, v2).overlayCoords(overlay).uv2(light).normal(0f, -1f, 0f).endVertex();
             }
             case UP -> {
-                final float u1 = sprite.getU(px1);
-                final float u2 = sprite.getU(px2);
-                final float v1 = sprite.getV(pz1);
-                final float v2 = sprite.getV(pz2);
+                final float u1 = sprite.getU(x1);
+                final float u2 = sprite.getU(x2);
+                final float v1 = sprite.getV(z1);
+                final float v2 = sprite.getV(z2);
                 builder.vertex(pos, x1, y2, z2).color(color[1], color[2], color[3], color[0]).uv(u1, v2).overlayCoords(overlay).uv2(light).normal(0f, 1f, 0f).endVertex();
                 builder.vertex(pos, x2, y2, z2).color(color[1], color[2], color[3], color[0]).uv(u2, v2).overlayCoords(overlay).uv2(light).normal(0f, 1f, 0f).endVertex();
                 builder.vertex(pos, x2, y2, z1).color(color[1], color[2], color[3], color[0]).uv(u2, v1).overlayCoords(overlay).uv2(light).normal(0f, 1f, 0f).endVertex();
                 builder.vertex(pos, x1, y2, z1).color(color[1], color[2], color[3], color[0]).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(0f, 1f, 0f).endVertex();
             }
             case NORTH -> {
-                final float u1 = sprite.getU(px1);
-                final float u2 = sprite.getU(px2);
-                final float v1 = sprite.getV(py1);
-                final float v2 = sprite.getV(py2);
+                final float u1 = sprite.getU(x1);
+                final float u2 = sprite.getU(x2);
+                final float v1 = sprite.getV(y1);
+                final float v2 = sprite.getV(y2);
                 builder.vertex(pos, x1, y1, z1).color(color[1], color[2], color[3], color[0]).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(0f, 0f, -1f).endVertex();
                 builder.vertex(pos, x1, y2, z1).color(color[1], color[2], color[3], color[0]).uv(u1, v2).overlayCoords(overlay).uv2(light).normal(0f, 0f, -1f).endVertex();
                 builder.vertex(pos, x2, y2, z1).color(color[1], color[2], color[3], color[0]).uv(u2, v2).overlayCoords(overlay).uv2(light).normal(0f, 0f, -1f).endVertex();
                 builder.vertex(pos, x2, y1, z1).color(color[1], color[2], color[3], color[0]).uv(u2, v1).overlayCoords(overlay).uv2(light).normal(0f, 0f, -1f).endVertex();
             }
             case SOUTH -> {
-                final float u1 = sprite.getU(px1);
-                final float u2 = sprite.getU(px2);
-                final float v1 = sprite.getV(py1);
-                final float v2 = sprite.getV(py2);
+                final float u1 = sprite.getU(x1);
+                final float u2 = sprite.getU(x2);
+                final float v1 = sprite.getV(y1);
+                final float v2 = sprite.getV(y2);
                 builder.vertex(pos, x2, y1, z2).color(color[1], color[2], color[3], color[0]).uv(u2, v1).overlayCoords(overlay).uv2(light).normal(0f, 0f, 1f).endVertex();
                 builder.vertex(pos, x2, y2, z2).color(color[1], color[2], color[3], color[0]).uv(u2, v2).overlayCoords(overlay).uv2(light).normal(0f, 0f, 1f).endVertex();
                 builder.vertex(pos, x1, y2, z2).color(color[1], color[2], color[3], color[0]).uv(u1, v2).overlayCoords(overlay).uv2(light).normal(0f, 0f, 1f).endVertex();
                 builder.vertex(pos, x1, y1, z2).color(color[1], color[2], color[3], color[0]).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(0f, 0f, 1f).endVertex();
             }
             case WEST -> {
-                final float u1 = sprite.getU(py1);
-                final float u2 = sprite.getU(py2);
-                final float v1 = sprite.getV(pz1);
-                final float v2 = sprite.getV(pz2);
+                final float u1 = sprite.getU(y1);
+                final float u2 = sprite.getU(y2);
+                final float v1 = sprite.getV(z1);
+                final float v2 = sprite.getV(z2);
                 builder.vertex(pos, x1, y1, z2).color(color[1], color[2], color[3], color[0]).uv(u1, v2).overlayCoords(overlay).uv2(light).normal(-1f, 0f, 0f).endVertex();
                 builder.vertex(pos, x1, y2, z2).color(color[1], color[2], color[3], color[0]).uv(u2, v2).overlayCoords(overlay).uv2(light).normal(-1f, 0f, 0f).endVertex();
                 builder.vertex(pos, x1, y2, z1).color(color[1], color[2], color[3], color[0]).uv(u2, v1).overlayCoords(overlay).uv2(light).normal(-1f, 0f, 0f).endVertex();
                 builder.vertex(pos, x1, y1, z1).color(color[1], color[2], color[3], color[0]).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(-1f, 0f, 0f).endVertex();
             }
             case EAST -> {
-                final float u1 = sprite.getU(py1);
-                final float u2 = sprite.getU(py2);
-                final float v1 = sprite.getV(pz1);
-                final float v2 = sprite.getV(pz2);
+                final float u1 = sprite.getU(y1);
+                final float u2 = sprite.getU(y2);
+                final float v1 = sprite.getV(z1);
+                final float v2 = sprite.getV(z2);
                 builder.vertex(pos, x2, y1, z1).color(color[1], color[2], color[3], color[0]).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(1f, 0f, 0f).endVertex();
                 builder.vertex(pos, x2, y2, z1).color(color[1], color[2], color[3], color[0]).uv(u2, v1).overlayCoords(overlay).uv2(light).normal(1f, 0f, 0f).endVertex();
                 builder.vertex(pos, x2, y2, z2).color(color[1], color[2], color[3], color[0]).uv(u2, v2).overlayCoords(overlay).uv2(light).normal(1f, 0f, 0f).endVertex();
