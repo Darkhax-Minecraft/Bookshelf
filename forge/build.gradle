@@ -1,0 +1,118 @@
+plugins {
+    id 'multiloader-loader'
+    id 'idea'
+    id 'eclipse'
+    id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
+    id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
+    id 'net.darkhax.curseforgegradle'
+    id 'com.modrinth.minotaur'
+}
+base {
+    archivesName = "${mod_name}-forge-${minecraft_version}"
+}
+mixin {
+    config("${mod_id}.mixins.json")
+    config("${mod_id}.forge.mixins.json")
+}
+
+minecraft {
+    mappings channel: 'official', version: minecraft_version
+    copyIdeResources = true
+    reobf = false
+
+    runs {
+        client {
+            workingDirectory file('runs/client')
+            ideaModule "${rootProject.name}.${project.name}.main"
+            taskName 'Client'
+            mods {
+                modClientRun {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory file('runs/server')
+            ideaModule "${rootProject.name}.${project.name}.main"
+            taskName 'Server'
+            mods {
+                modServerRun {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
+    implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.0"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.4.0")) {
+        jarJar.ranged(it, "[0.4.0,)")
+    }
+    if (project.hasProperty('jei_version')) {
+        compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+        compileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+        runtimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            fg.component(it)
+        }
+    }
+}
+
+sourceSets.each {
+    def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+    it.output.resourcesDir = dir
+    it.java.destinationDirectory = dir
+}
+
+// CurseForge
+task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+
+    apiToken = rootProject.findProperty('curse_auth')
+
+    var mainFile = upload(curse_project, jar)
+    mainFile.changelogType = 'markdown'
+    mainFile.changelog = rootProject.findProperty('mod_changelog')
+    mainFile.addJavaVersion('Java 21')
+    mainFile.releaseType = 'release'
+
+    if (rootProject.hasProperty('mod_client_only') && rootProject.findProperty('mod_client_only') == 'true') {
+        mainFile.addGameVersion('Client')
+    }
+    else {
+        mainFile.addGameVersion('Server', 'Client')
+    }
+
+    // Append Patreon Supporters
+    var patreonInfo = rootProject.findProperty('patreon')
+    if (patreonInfo) {
+        mainFile.changelog += "\n\nThis project is made possible by [Patreon](${patreonInfo.campaignUrl}?${mod_id}) support from players like you. Thank you!\n\n${patreonInfo.pledgeLog}"
+    }
+}
+
+// Modrinth
+modrinth {
+
+    var patreonInfo = rootProject.findProperty('patreon')
+    var changelogText = rootProject.findProperty('mod_changelog')
+
+    if (patreonInfo) {
+        changelogText += "\n\nThis project is made possible by [Patreon](${patreonInfo.campaignUrl}?${mod_id}) support from players like you. Thank you!\n\n${patreonInfo.pledgeLog}"
+    }
+
+    token.set(rootProject.findProperty('modrinth_auth'))
+    projectId.set(modrinth_project)
+    changelog = changelogText
+    versionName.set("${mod_name}-forge-${minecraft_version}-${version}")
+    versionType.set('release')
+    uploadFile.set(tasks.jar)
+}

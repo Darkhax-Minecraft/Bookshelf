@@ -1,0 +1,112 @@
+plugins {
+    id 'multiloader-loader'
+    id 'fabric-loom'
+    id 'net.darkhax.curseforgegradle'
+    id 'com.modrinth.minotaur'
+}
+
+if (project.hasProperty('modmenu_version')) {
+    repositories { RepositoryHandler handler -> {
+        limitedMaven(handler, 'https://maven.terraformersmc.com/', 'com.terraformersmc')
+    }}
+
+    dependencies {
+        modRuntimeOnly("com.terraformersmc:modmenu:${project.findProperty('modmenu_version')}")
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${parchment_minecraft}:${parchment_version}@zip")
+    }
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    if (project.hasProperty('jei_version')) {
+        modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+        modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
+        modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+    }
+}
+
+loom {
+    mixin {
+        defaultRefmapName.set("${mod_id}.refmap.json")
+    }
+    runs {
+        client {
+            client()
+            setConfigName('Fabric Client')
+            ideConfigGenerated(true)
+            runDir('runs/client')
+        }
+        server {
+            server()
+            setConfigName('Fabric Server')
+            ideConfigGenerated(true)
+            runDir('runs/server')
+        }
+    }
+}
+
+// CurseForge
+task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+
+    apiToken = rootProject.findProperty('curse_auth')
+
+    var mainFile = upload(curse_project, tasks.remapJar)
+    mainFile.changelogType = 'markdown'
+    mainFile.changelog = rootProject.findProperty('mod_changelog')
+    mainFile.addJavaVersion('Java 21')
+    mainFile.addModLoader('Fabric')
+    mainFile.addModLoader('Quilt')
+    mainFile.releaseType = 'release'
+
+    if (rootProject.hasProperty('mod_client_only') && rootProject.findProperty('mod_client_only') == 'true') {
+        mainFile.addGameVersion('Client')
+    }
+    else {
+        mainFile.addGameVersion('Server', 'Client')
+    }
+
+    // Append Patreon Supporters
+    var patreonInfo = rootProject.findProperty('patreon')
+    if (patreonInfo) {
+        mainFile.changelog += "\n\nThis project is made possible by [Patreon](${patreonInfo.campaignUrl}?${mod_id}) support from players like you. Thank you!\n\n${patreonInfo.pledgeLog}"
+    }
+}
+
+// Modrinth
+modrinth {
+
+    var patreonInfo = rootProject.findProperty('patreon')
+    var changelogText = rootProject.findProperty('mod_changelog')
+
+    if (patreonInfo) {
+        changelogText += "\n\nThis project is made possible by [Patreon](${patreonInfo.campaignUrl}?${mod_id}) support from players like you. Thank you!\n\n${patreonInfo.pledgeLog}"
+    }
+
+    token.set(rootProject.findProperty('modrinth_auth'))
+    projectId.set(modrinth_project)
+    changelog = changelogText
+    versionName.set("${mod_name}-fabric-${minecraft_version}-$version")
+    versionType.set("release")
+    uploadFile.set(tasks.remapJar)
+    dependencies {
+        required.project("fabric-api")
+    }
+}
+
+void limitedMaven(RepositoryHandler handler, String url, String... groups) {
+    handler.exclusiveContent {
+        it.forRepositories(handler.maven {
+            setUrl(url)
+        })
+        it.filter { f ->
+            for (def group : groups) {
+                f.includeGroup(group)
+            }
+        }
+    }
+}

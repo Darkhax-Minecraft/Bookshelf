@@ -1,0 +1,84 @@
+task updateReadme {
+    var readme = rootProject.file('README.md')
+    if (!readme.exists()) {
+        throw new GradleException('The README.md file is missing!')
+    }
+    doLast {
+        rootProject.logger.lifecycle('Updating the README.md file...')
+        var text = readme.text
+        text = updateSection(text, 'name', buildName(rootProject))
+        text = updateSection(text, 'description', buildIntro(rootProject))
+        text = updateSection(text, 'maven', buildMavenInfo(rootProject))
+        text = updateSection(text, 'sponsor', buildSponsors(rootProject))
+        readme.text = text
+    }
+}
+
+static String buildName(Project project) {
+    var encodedPath = project.group.replaceAll('\\.', '%2F')
+    var projectPath = project.group.replaceAll('\\.', '/')
+    var modId = project.property('mod_id')
+    var mcVersion = project.property('minecraft_version')
+
+    var curseBadge = "[![CurseForge Project](https://img.shields.io/curseforge/dt/${project.property('curse_project')}?logo=curseforge&label=CurseForge&style=flat-square&labelColor=2D2D2D&color=555555)](${project.property('curse_page')})"
+    var modrinthBadge = "[![Modrinth Project](https://img.shields.io/modrinth/dt/${project.property('modrinth_project')}?logo=modrinth&label=Modrinth&style=flat-square&labelColor=2D2D2D&color=555555)](${project.property('modrinth_page')})"
+    var versionBadge = "[![Maven Project](https://img.shields.io/maven-metadata/v?style=flat-square&logoColor=D31A38&labelColor=2D2D2D&color=555555&label=Latest&logo=gradle&metadataUrl=https%3A%2F%2Fmaven.blamejared.com%2F${encodedPath}%2F${modId}-common-${mcVersion}%2Fmaven-metadata.xml)](https://maven.blamejared.com/${projectPath})"
+    return "# ${project.property('mod_name')} ${curseBadge} ${modrinthBadge} ${versionBadge}"
+}
+
+static String buildIntro(Project project) {
+    return "${project.property('mod_description')} The documentation for this mod can be found [here](${project.property('mod_docs')})."
+}
+
+static String buildMavenInfo(Project project) {
+    var group = project.property('group')
+    var modId = project.property('mod_id')
+    var mcVersion = project.property('minecraft_version')
+    var projectVersion = project.version
+
+    return """|## Maven Dependency
+    |
+    |If you are using [Gradle](https://gradle.org) to manage your dependencies, add the following into your `build.gradle` file. Make sure to replace the version with the correct one. All versions can be viewed [here](https://maven.blamejared.com/${group.replaceAll('\\.', '/')}).
+    |
+    |```gradle
+    |repositories {
+    |    maven { 
+    |        url 'https://maven.blamejared.com'
+    |    }
+    |}
+    |
+    |dependencies {
+    |    // NeoForge
+    |    implementation group: '${group}' name: '${modId}-neoforge-${mcVersion}' version: '${projectVersion}'
+    |
+    |    // Forge
+    |    implementation group: '${group}' name: '${modId}-forge-${mcVersion}' version: '${projectVersion}'
+    |
+    |    // Fabric & Quilt
+    |    modImplementation group: '${group}' name: '${modId}-fabric-${mcVersion}' version: '${projectVersion}'
+    |
+    |    // Common / MultiLoader / Vanilla
+    |    compileOnly group: '${group}' name: '${modId}-common-${mcVersion}' version: '${projectVersion}'
+    |}
+    |```""".stripMargin()
+}
+
+static String buildSponsors(Project project) {
+    var modName = project.property('mod_name')
+    return """|## Sponsors
+              |
+              |[![](https://assets.blamejared.com/nodecraft/darkhax.jpg)](https://nodecraft.com/r/darkhax)    
+              |${modName} is sponsored by Nodecraft. Use code **[DARKHAX](https://nodecraft.com/r/darkhax)** for 30% of your first month of service!""".stripMargin()
+}
+
+static String updateSection(String inputText, String region, String text) {
+    var startComment = commentOf("${region}-start")
+    var startPos = inputText.indexOf(startComment) + startComment.length()
+    var endComment = commentOf("${region}-end")
+    var endPos = inputText.indexOf(endComment)
+    return inputText.substring(0, startPos) + System.lineSeparator() + text + System.lineSeparator() + inputText.substring(endPos)
+}
+
+static String commentOf(String commentText) {
+    return "<!-- ${commentText} -->"
+}

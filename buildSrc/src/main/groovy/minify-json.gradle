@@ -1,0 +1,41 @@
+// This script will minify JSON files as the project is built. This is
+// done by removing unused whitespace and newlines from the file. The
+// original source file is not modified.
+//
+// Minifying JSON files will produce a smaller JAR file. This will make
+// upload/download times faster, reduce bandwidth usage, and reduce the
+// amount of storage space required to use or host the project.
+//
+// Minified JSON files are also faster to read and parse. The reduced file
+// size makes them faster to stream from disk, and the JSON tokenizer does
+// not need to waste cycles handling unnecessary data.
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
+processResources {
+
+    doLast {
+
+        def jsonMinifyStart = System.currentTimeMillis()
+        def jsonMinified = 0
+        def jsonBytesSaved = 0
+
+        fileTree(dir: outputs.files.asPath, include: ['**/*.json', '**/*.mcmeta']).each {
+
+            try {
+                def oldLength = it.length()
+                it.text = JsonOutput.toJson(new JsonSlurper().parse(it))
+                jsonBytesSaved += oldLength - it.length()
+                jsonMinified++
+            }
+
+            catch (Exception e) {
+
+                project.logger.error("Failed to minify file '${it.path}'.")
+                throw e
+            }
+        }
+
+        project.logger.lifecycle("Minified ${jsonMinified} files. Saved ${jsonBytesSaved} bytes before compression. Took ${System.currentTimeMillis() - jsonMinifyStart}ms.")
+    }
+}

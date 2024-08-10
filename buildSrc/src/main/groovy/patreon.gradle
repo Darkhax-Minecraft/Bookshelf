@@ -1,0 +1,120 @@
+import groovy.json.JsonSlurper
+
+project.ext.patreon = [
+        pledgeNames       : '',
+        campaignUrl       : ''
+]
+
+project.ext.mod_supporters = 'No supporters loaded.'
+
+if (project.hasProperty('patreon_campaign_id') && project.hasProperty('patreon_auth_token')) {
+
+    project.ext.patreon.campaign = project.findProperty('patreon_campaign_id')
+    def authToken = project.findProperty('patreon_auth_token')
+    getPledges(project.ext.patreon.campaign, authToken)
+    if (project.hasProperty('patreon_campaign_url')) {
+        project.ext.patreon.campaignUrl = project.getProperty('patreon_campaign_url')
+    }
+    project.logger.lifecycle("Loading pledge data for default campaign ${project.ext.patreon.campaign}.")
+} else {
+    project.logger.warn("Patreon data can not be loaded! has_id:${project.hasProperty('patreon_campaign_id')} has_campaign:${project.hasProperty('patreon_auth_token')}")
+}
+
+/*
+ Gets a list of pledges for a specified campaign using a specified auth token.
+*/
+
+def getPledges(campaignId, authToken) {
+
+    // Connect to the Patreon API using the provided auth info.
+    def connection = new URL('https://www.patreon.com/api/oauth2/api/campaigns/' + campaignId + '/pledges').openConnection() as HttpURLConnection
+    connection.setRequestProperty('User-Agent', 'Patreon-Groovy, platform ' + System.properties['os.name'] + ' ' + System.properties['os.version'])
+    connection.setRequestProperty('Authorization', 'Bearer ' + authToken)
+    connection.setRequestProperty('Accept', 'application/json')
+
+    // Check if connection was valid.
+    if (connection.responseCode == 200) {
+
+        // Map holding pledge data. The key is a string representation of the
+        // users ID and the value is an object holding information about the
+        // pledge.
+        Map<String, Pledge> pledges = new HashMap<String, Pledge>()
+
+        // Parse the response into an ambiguous json object.
+        def json = connection.inputStream.withCloseable { inStream -> new JsonSlurper().parse(inStream as InputStream) }
+
+        // Iterate all the pledge entries
+        for (pledgeInfo in json.data) {
+
+            // Create new pledge entry, and set pledge specific info.
+            def pledge = new Pledge()
+            pledge.id = pledgeInfo.relationships.patron.data.id
+            pledge.amountInCents = pledgeInfo.attributes.amount_cents
+            pledge.declined = pledgeInfo.attributes.declined_since
+
+            if (pledge.isValid()) {
+                pledges.put(pledge.id, pledge)
+            }
+        }
+
+        // Parse out the pledges display info from the JSON.
+        for (pledgeInfo in json.included) {
+
+            // Get pledge by user ID
+            def pledge = pledges.get(pledgeInfo.id)
+
+            // If the pledge exists, set the user data.
+            if (pledge != null) {
+                def info = pledgeInfo.attributes
+                pledge.name = info.full_name
+                pledge.vanityName = info.vanity
+            }
+        }
+
+        def pledgeNames = new ArrayList<>()
+        def pledgeLog = ''
+        List<Pledge> validPledges = new ArrayList<>()
+        for (entry in pledges) {
+            def currentPledge = entry.value
+            validPledges.add(currentPledge)
+            pledgeLog += "- ${currentPledge.getDisplayName()}\n"
+            pledgeNames.add(currentPledge.getDisplayName())
+        }
+
+        project.ext.patreon.pledges = validPledges
+        project.ext.patreon.pledgeNames = pledgeNames.join(', ')
+        project.ext.patreon.pledgeLog = pledgeLog
+    }
+}
+
+class Pledge {
+
+    // The ID for this user in the Patreon system.
+    def id
+
+    // The amount this user is currently paying in USD cents.
+    def amountInCents
+
+    // The date they declined. This will be null if they haven't declined.
+    def declined
+
+    // The full name of the user.
+    def name
+
+    // The vanity name of the user, like a display name.
+    def vanityName
+
+    /*
+     Checks if the user is valid, and is paying.
+    */
+    def isValid() {
+        return declined == null && amountInCents > 0
+    }
+
+    /*
+     Gets the display name for the user. Defaults to full name if no vanity name is specified by the user.
+    */
+    def getDisplayName() {
+        return vanityName != null ? vanityName : name
+    }
+}

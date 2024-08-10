@@ -1,0 +1,38 @@
+import com.diluv.schoomp.Webhook
+import com.diluv.schoomp.message.Message
+import com.diluv.schoomp.message.embed.Embed
+
+task postDiscord() {
+    doLast {
+        try {
+            // Create a new webhook instance for Discord
+            var webhook = new Webhook(findProperty('discord_webhook'), "${mod_name} CI Upload")
+
+            // Craft a message to send to Discord using the webhook.
+            var message = new Message()
+            message.setUsername("Mod Update: ${project.ext.mod_name}")
+            var curse_url = "${curse_page}/files/all?version=${minecraft_version}"
+            var modrinth_url = "${modrinth_page}/versions?g=${minecraft_version}"
+            //message.setContent("${project.ext.mod_name} ${project.version} for Minecraft ${project.ext.minecraft_version} has been updated! These files will be available on [CurseForge](${curse_url}) and [Modrinth](${modrinth_url}) after a short review process.")
+
+            var embed = new Embed();
+            embed.setTitle("${project.ext.mod_name} ${project.version} for Minecraft ${project.ext.minecraft_version} has been updated!")
+            embed.setDescription("These files will be available on [CurseForge](${curse_url}) and [Modrinth](${modrinth_url}) after a short review.")
+            embed.setColor(0x078777)
+            message.addEmbed(embed)
+
+            if (rootProject.hasProperty('mod_changelog') && !rootProject.findProperty('mod_changelog').isEmpty()) {
+                embed.addField('Changelog', rootProject.mod_changelog, false)
+            }
+            else {
+                embed.addField('Changelog', 'No changelog was provided. Please refer to the project page for more information.', false)
+            }
+            webhook.sendMessage(message)
+        }
+        catch (IOException e) {
+            project.logger.error('Failed to push Discord webhook.')
+            project.logger.error(e.message)
+            throw e
+        }
+    }
+}

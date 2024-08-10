@@ -1,0 +1,46 @@
+{
+    "schemaVersion": 1,
+    "id": "${mod_id}",
+    "version": "${version}",
+    "name": "${mod_name}",
+    "description": "${mod_description}",
+    "authors": [
+        "${mod_author}"
+    ],
+    "contributors": [
+        "This project is made possible with Patreon support from players like you. Thank you!",
+        "${patreon_pledges}"
+    ],
+    "contact": {
+        "sources": "${mod_repo}",
+        "issues": "${mod_repo}/issues",
+        "homepage": "${curse_page}"
+    },
+    "license": "${mod_license}",
+    "icon": "logo_${mod_id}.png",
+    "environment": "${mod_target_environment}",
+    "entrypoints": {
+        "main": [
+          "net.darkhax.bookshelf.fabric.impl.FabricMod"
+        ]
+    },
+    "mixins": [
+        "${mod_id}.mixins.json",
+        "${mod_id}.fabric.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=${fabric_loader_version}",
+        "fabric-api": "*",
+        "minecraft": "${minecraft_version}",
+        "java": ">=${java_version}"
+    },
+    "custom": {
+        "modmenu": {
+            "links": {
+                "modmenu.curseforge": "${curse_page}",
+                "modmenu.modrinth": "${modrinth_page}",
+                "modmenu.patreon": "${patreon_url}?${mod_id}"
+            }
+        }
+    }
+}

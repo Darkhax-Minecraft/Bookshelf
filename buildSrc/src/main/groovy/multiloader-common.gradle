@@ -1,0 +1,154 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'minify-json'
+}
+
+base {
+    archivesName = "${mod_id}-${project.name}-${minecraft_version}"
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(java_version)
+    withSourcesJar()
+    withJavadocJar()
+}
+
+repositories {
+    mavenCentral()
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Sponge'
+                url = 'https://repo.spongepowered.org/repository/maven-public'
+            }
+        }
+        filter {
+            includeGroupAndSubgroups('org.spongepowered')
+        }
+    }
+    exclusiveContent {
+        forRepositories(
+                maven {
+                    name = 'ParchmentMC'
+                    url = 'https://maven.parchmentmc.org/'
+                },
+                maven {
+                    name = "NeoForge"
+                    url = 'https://maven.neoforged.net/releases'
+                }
+        )
+        filter {
+            includeGroup('org.parchmentmc.data')
+        }
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                url "https://cursemaven.com"
+            }
+        }
+        filter {
+            includeGroup "curse.maven"
+        }
+    }
+    maven {
+        name = 'BlameJared'
+        url = 'https://maven.blamejared.com'
+    }
+}
+
+['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
+    configurations."$variant".outgoing {
+        capability("$group:${base.archivesName.get()}:$version")
+        capability("$group:$mod_id-${project.name}-${minecraft_version}:$version")
+        capability("$group:$mod_id:$version")
+    }
+    publishing.publications.configureEach {
+        suppressPomMetadataWarningsFor(variant)
+    }
+}
+
+sourcesJar {
+    from(rootProject.file('LICENSE')) {
+        rename { "license_${mod_id}.txt" }
+    }
+}
+
+jar {
+    from(rootProject.file('LICENSE')) {
+        rename { "license_${mod_id}.txt" }
+    }
+
+    manifest {
+        attributes([
+                'Specification-Title'   : mod_name,
+                'Specification-Vendor'  : mod_author,
+                'Specification-Version' : project.jar.archiveVersion,
+                'Implementation-Title'  : project.name,
+                'Implementation-Version': project.jar.archiveVersion,
+                'Implementation-Vendor' : mod_author,
+                'Built-On-Minecraft'    : minecraft_version,
+                'CurseForge'            : curse_page,
+                'Modrinth'              : modrinth_page
+        ])
+    }
+}
+
+processResources {
+    var expandProps = [
+            'version'                      : project.version,
+            'group'                        : project.group,
+            'platform'                     : project.name,
+            'minecraft_version'            : minecraft_version,
+            'minecraft_version_range'      : minecraft_version_range,
+            'mod_name'                     : mod_name,
+            'mod_author'                   : mod_author,
+            'mod_id'                       : mod_id,
+            'mod_repo'                     : mod_repo,
+            'mod_license'                  : mod_license,
+            'mod_description'              : mod_description,
+            'mod_item_icon'                : mod_item_icon,
+            'neoforge_version'             : neoforge_version,
+            'neoforge_loader_version_range': neoforge_loader_version_range,
+            'fabric_version'               : fabric_version,
+            'fabric_loader_version'        : fabric_loader_version,
+            'forge_version'                : forge_version,
+            'forge_loader_version_range'   : forge_loader_version_range,
+            'forge_version_range'          : forge_version_range,
+            'java_version'                 : java_version,
+            'curse_project'                : curse_project,
+            'curse_page'                   : curse_page,
+            'modrinth_project'             : modrinth_project,
+            'modrinth_page'                : modrinth_page,
+            'mod_client_only'              : mod_client_only,
+            'patreon_pledges'              : rootProject.ext.patreon.pledgeNames,
+            'patreon_url'                  : rootProject.ext.patreon.campaignUrl
+    ]
+
+    boolean clientOnly = project.hasProperty('mod_client_only') && project.findProperty('mod_client_only') == 'true'
+
+    if ('fabric' == project.name) {
+        expandProps.put('mod_target_environment', clientOnly ? 'client' : '*')
+        expandProps.put('mod_target_environment', clientOnly ? 'client' : '*')
+    }
+
+    filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/mods.toml', 'META-INF/neoforge.mods.toml', '*.mixins.json']) {
+        expand expandProps
+    }
+    inputs.properties(expandProps)
+}
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            artifactId base.archivesName.get()
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url System.getenv('local_maven_url')
+        }
+    }
+}

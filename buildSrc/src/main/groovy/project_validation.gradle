@@ -1,0 +1,30 @@
+import javax.imageio.ImageIO
+import java.awt.image.BufferedImage
+
+gradle.taskGraph.whenReady { graph ->
+
+    // Validate the logo file for the project.
+    // - logo.png must exist in the root project folder.
+    // - logo.png must be a 1:1 aspect ratio.
+    final File logoFile = project('common').file("src/main/resources/logo_${mod_id}.png")
+    if (!logoFile.exists()) {
+        throw new GradleException('A logo.png file is required to build this mod.')
+    }
+    else {
+        try {
+            final BufferedImage logoImage = ImageIO.read(logoFile)
+            if (logoImage.getWidth() != logoImage.getHeight()) {
+                throw new GradleException('The logo image must be a 1:1 aspect ratio.')
+            }
+        }
+        catch (IOException e) {
+            throw new GradleException('Unable to process logo file.', e)
+        }
+    }
+
+    // Validate the license file for the project.
+    // - A file named LICENSE must exist in the root project folder.
+    if (!rootProject.file('LICENSE').exists()) {
+        throw new GradleException('LICENSE file does not exist.')
+    }
+}

@@ -1,0 +1,7 @@
+// This script attempts to append the build number to the project version.
+// The build number is read from an environment variable that is set by
+// a CI like Jenkins. If the build number is missing it will default to 0.
+var buildNumber = System.getenv('BUILD_NUMBER') ? System.getenv('BUILD_NUMBER') : 0
+project.version = "${project.version}.${buildNumber}".toString()
+project.getSubprojects().each { proj -> proj.version = project.version }
+project.logger.lifecycle("Appending build number to version. Build #${buildNumber} Version is now ${project.version}")

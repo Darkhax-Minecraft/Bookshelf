@@ -1,0 +1,45 @@
+// This plugin adds a task that can update the latest version on Jared's
+// update checker API. This is a private service that requires an API key
+// to use. For more information contact Jared https://x.com/jaredlll08
+import groovy.json.JsonOutput
+
+task updateVersionTracker {
+
+    if (!rootProject.hasProperty('versionTrackerAPI') || !rootProject.hasProperty('versionTrackerUsername')) {
+
+        rootProject.logger.warn('Skipping Version Checker update. Authentication is required!')
+    }
+
+    onlyIf {
+
+        rootProject.hasProperty('versionTrackerAPI') && rootProject.hasProperty('versionTrackerUsername')
+    }
+
+    doLast {
+
+        def username = rootProject.findProperty('versionTrackerUsername')
+        def apiKey = rootProject.findProperty('versionTrackerKey')
+
+        // Creates a Map that acts as the Json body of the API request.
+        def body = [
+                'author'        : username,
+                'projectName'   : project.ext.mod_id,
+                'gameVersion'   : project.ext.minecraft_version,
+                'projectVersion': project.version,
+                'homepage'      : project.ext.curse_page,
+                'uid'           : apiKey
+        ]
+
+        // Opens a connection to the version tracker API and writes the payload JSON.
+        def req = new URL(rootPRoject.findProperty('versionTrackerAPI')).openConnection()
+        req.setRequestMethod('POST')
+        req.setRequestProperty('Content-Type', 'application/json; charset=UTF-8')
+        req.setRequestProperty('User-Agent', "${project.ext.mod_name} Tracker Gradle")
+        req.setDoOutput(true)
+        req.getOutputStream().write(JsonOutput.toJson(body).getBytes("UTF-8"))
+
+        // For the request to be sent we need to read data from the stream.
+        project.logger.lifecycle("Version Check: Status ${req.getResponseCode()}")
+        project.logger.lifecycle("Version Check: Response ${req.getInputStream().getText()}")
+    }
+}
