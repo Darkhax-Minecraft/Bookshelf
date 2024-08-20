@@ -1,0 +1,44 @@
+{
+    "_comment": "File Lingua Italiana",
+
+    "_comment": "Fasi Lunari",
+    "moon.phase.full": "Luna Piena",
+    "moon.phase.waxing.gibbous": "Gibbosa Crescente",
+    "moon.phase.first.quarter": "Primo Quarto",
+    "moon.phase.waxing.crescent": "Crescente",
+    "moon.phase.new": "Luna Nuova",
+    "moon.phase.waning.crescent": "Crescente Calante",
+    "moon.phase.last.quarter": "Ultimo Quarto",
+    "moon.phase.waning.gibbous": "Gibbosa Calante",
+
+    "_comment": "Mesi",
+    "time.bookshelf.month.january": "Gennaio",
+    "time.bookshelf.month.february": "Febbraio",
+    "time.bookshelf.month.march": "Marzo",
+    "time.bookshelf.month.april": "Aprile",
+    "time.bookshelf.month.may": "Maggio",
+    "time.bookshelf.month.june": "Giugno",
+    "time.bookshelf.month.july": "Luglio",
+    "time.bookshelf.month.august": "Agosto",
+    "time.bookshelf.month.september": "Settembre",
+    "time.bookshelf.month.october": "Ottobre",
+    "time.bookshelf.month.november": "Novembre",
+    "time.bookshelf.month.december": "Dicembre",
+
+    "_comment": "Giorni",
+    "time.bookshelf.day.sunday": "Domenica",
+    "time.bookshelf.day.monday": "Lunedì",
+    "time.bookshelf.day.tuesday": "Martedì",
+    "time.bookshelf.day.wednesday": "Mercoledì",
+    "time.bookshelf.day.thursday": "Giovedì",
+    "time.bookshelf.day.friday": "Venerdì",
+    "time.bookshelf.day.saturday": "Sabato",
+
+    "_comment": "Comandi",
+    "commands.bookshelf.loot_tables": "Trovati %d tavoli di bottino mancanti per %s.",
+    "commands.bookshelf.loot_tables.wildcard": "Trovati %d tavoli di bottino mancanti per tutte le mod.",
+    "argument.bookshelf.unknown_value": "Il valore '%s' è sconosciuto.",
+
+    "_comment": "Varie",
+    "text.bookshelf.ticks": "Tick: %s"
+}
