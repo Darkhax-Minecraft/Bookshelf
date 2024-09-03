@@ -32,5 +32,13 @@
     "time.bookshelf.day.wednesday": "星期三",
     "time.bookshelf.day.thursday": "星期四",
     "time.bookshelf.day.friday": "星期五",
-    "time.bookshelf.day.saturday": "星期六"
+    "time.bookshelf.day.saturday": "星期六",
+
+    "_comment": "Commands",
+    "commands.bookshelf.loot_tables": "发现 %d 个 %s 的战利品表丢失",
+    "commands.bookshelf.loot_tables.wildcard": "所有模组中发现 %d 个战利品表丢失",
+    "argument.bookshelf.unknown_value": "未知值: %s",
+
+    "_comment": "Misc",
+    "text.bookshelf.ticks": "游戏刻: %s"
 }
