@@ -92,6 +92,8 @@ modrinth {
     changelog = changelogText
     versionName.set("${mod_name}-fabric-${minecraft_version}-$version")
     versionType.set("release")
+    loaders = ["fabric", "quilt"]
+    gameVersions = ["${minecraft_version}"]
     uploadFile.set(tasks.remapJar)
     dependencies {
         required.project("fabric-api")

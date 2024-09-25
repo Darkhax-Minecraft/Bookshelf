@@ -1,3 +1,5 @@
+project.ext.mod_changelog = 'No changelog was provided. Please refer to the project page for more information.'
+
 try {
     project.mod_changelog = 'No changelog was provided. Please refer to the project page for more information.'
     def gitCommit = System.getenv('GIT_COMMIT') ?: getExecOutput(['git', 'log', '-n', '1', '--pretty=tformat:%h'])

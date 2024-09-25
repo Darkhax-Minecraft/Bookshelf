@@ -19,7 +19,6 @@ public class BookshelfMod {
     }
 
     private void runStartupChecks() {
-
         if (Services.PLATFORM == null) {
             throw new IllegalStateException("Bookshelf services are not available.");
         }

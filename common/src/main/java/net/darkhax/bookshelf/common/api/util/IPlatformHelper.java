@@ -1,12 +1,14 @@
 package net.darkhax.bookshelf.common.api.util;
 
-import net.darkhax.bookshelf.common.api.lib.PhysicalSide;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import org.jetbrains.annotations.Nullable;
+import net.darkhax.bookshelf.common.api.ModEntry;
+import net.darkhax.bookshelf.common.api.PhysicalSide;
+import net.darkhax.bookshelf.common.api.registry.register.MenuRegister;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Set;
 
 /**
  * The PlatformHelper provides useful context and information about the platform the game is running on.
@@ -93,29 +95,10 @@ public interface IPlatformHelper {
     }
 
     /**
-     * Attempts to resolve the name of a mod using the associated mod ID. If no mod is not available the provided ID
-     * will be treated as the name.
-     *
-     * @param modId The ID of the mod to lookup.
-     * @return The name of the mod associated with the given mod ID. If no mod is not available the provided ID will be
-     * treated as the name.
+     * Gets a set of every loaded modId.
+     * @return
      */
-    @Nullable
-    String getModName(String modId);
-
-    /**
-     * Attempts to resolve the name of a mod using the associated mod ID. If no mod is not available the provided ID
-     * will be treated as the name.
-     *
-     * @param modId The ID of the mod to lookup.
-     * @return The name of the mod associated with the given mod ID. If no mod is not available the provided ID will be
-     * treated as the name.
-     */
-    @Nullable
-    default MutableComponent getModNameComponent(String modId) {
-        final String modName = getModName(modId);
-        return modName != null ? Component.literal(modName) : null;
-    }
+    Set<ModEntry> getLoadedMods();
 
     /**
      * Checks if the mod is currently running in an environment with game tests enabled.
@@ -130,4 +113,7 @@ public interface IPlatformHelper {
      * @return The name of the platform.
      */
     String getName();
+
+    @Deprecated
+    <T extends AbstractContainerMenu> void unsafeRegisterMenu(ResourceLocation id, MenuRegister.ClientMenuFactory<T> clientFactory);
 }

@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.common.api.lib;
+package net.darkhax.bookshelf.common.api;
 
 /**
  * Represents a physical location in the client/server network diagram.

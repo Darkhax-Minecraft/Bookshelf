@@ -31,7 +31,7 @@ task updateVersionTracker {
         ]
 
         // Opens a connection to the version tracker API and writes the payload JSON.
-        def req = new URL(rootPRoject.findProperty('versionTrackerAPI')).openConnection()
+        def req = new URL(rootProject.findProperty('versionTrackerAPI')).openConnection()
         req.setRequestMethod('POST')
         req.setRequestProperty('Content-Type', 'application/json; charset=UTF-8')
         req.setRequestProperty('User-Agent', "${project.ext.mod_name} Tracker Gradle")

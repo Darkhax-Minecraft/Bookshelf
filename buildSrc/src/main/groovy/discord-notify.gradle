@@ -6,7 +6,7 @@ task postDiscord() {
     doLast {
         try {
             // Create a new webhook instance for Discord
-            var webhook = new Webhook(findProperty('discord_webhook'), "${mod_name} CI Upload")
+            var webhook = new Webhook(findProperty('curse_discord_webhook'), "${mod_name} CI Upload")
 
             // Craft a message to send to Discord using the webhook.
             var message = new Message()

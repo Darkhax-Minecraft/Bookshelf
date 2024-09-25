@@ -114,5 +114,7 @@ modrinth {
     changelog = changelogText
     versionName.set("${mod_name}-forge-${minecraft_version}-${version}")
     versionType.set('release')
+    loaders = ["forge"]
+    gameVersions = ["${minecraft_version}"]
     uploadFile.set(tasks.jar)
 }

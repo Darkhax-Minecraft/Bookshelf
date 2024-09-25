@@ -4,8 +4,25 @@
   "package": "net.darkhax.bookshelf.common.mixin",
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_18",
-  "mixins": [],
-  "client": [],
+  "mixins": [
+    "access.block.AccessorBannerBlockEntity",
+    "access.block.AccessorBaseContainerBlockEntity",
+    "access.client.AccessorFontManager",
+    "access.client.AccessorMinecraft",
+    "access.commands.AccessorCommandContext",
+    "access.entity.AccessorEntity",
+    "access.level.AccessorRecipeManager",
+    "patch.block.MixinDecoratedPotPatterns",
+    "patch.commands.MixinArgumentTypeInfos",
+    "patch.commands.MixinCommands",
+    "patch.component.MixinDataComponents",
+    "patch.level.MixinWalkNodeEvaluator",
+    "patch.packs.MixinSimpleJsonResourceReloadListener",
+    "patch.registries.MixinBuiltInRegistries"
+  ],
+  "client": [
+    "patch.locale.MixinClientLanguage"
+  ],
   "server": [],
   "injectors": {
     "defaultRequire": 1
