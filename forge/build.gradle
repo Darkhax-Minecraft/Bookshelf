@@ -60,6 +60,12 @@ dependencies {
     }
 }
 
+jar {
+    manifest {
+        attributes(['MixinConfigs' : "${project.mod_id}.mixins.json,${project.mod_id}.forge.mixins.json"])
+    }
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
