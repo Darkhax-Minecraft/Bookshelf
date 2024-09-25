@@ -49,6 +49,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.changelog = rootProject.findProperty('mod_changelog')
     mainFile.addJavaVersion('Java 21')
     mainFile.releaseType = 'release'
+    mainFile.addModLoader('NeoForge')
 
     if (rootProject.hasProperty('mod_client_only') && rootProject.findProperty('mod_client_only') == 'true') {
         mainFile.addGameVersion('Client')
