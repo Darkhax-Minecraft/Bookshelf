@@ -7,8 +7,6 @@
   "mixins": [
     "access.block.AccessorBannerBlockEntity",
     "access.block.AccessorBaseContainerBlockEntity",
-    "access.client.AccessorFontManager",
-    "access.client.AccessorMinecraft",
     "access.commands.AccessorCommandContext",
     "access.entity.AccessorEntity",
     "access.level.AccessorRecipeManager",
@@ -21,6 +19,8 @@
     "patch.registries.MixinBuiltInRegistries"
   ],
   "client": [
+    "access.client.AccessorFontManager",
+    "access.client.AccessorMinecraft",
     "patch.locale.MixinClientLanguage"
   ],
   "server": [],
