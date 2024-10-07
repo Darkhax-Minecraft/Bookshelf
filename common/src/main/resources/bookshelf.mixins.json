@@ -14,6 +14,7 @@
     "patch.commands.MixinArgumentTypeInfos",
     "patch.commands.MixinCommands",
     "patch.component.MixinDataComponents",
+    "patch.item.MixinCreativeModeTab",
     "patch.level.MixinWalkNodeEvaluator",
     "patch.packs.MixinSimpleJsonResourceReloadListener",
     "patch.registries.MixinBuiltInRegistries"

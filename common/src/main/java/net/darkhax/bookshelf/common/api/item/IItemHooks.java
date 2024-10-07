@@ -1,12 +1,13 @@
 package net.darkhax.bookshelf.common.api.item;
 
-import net.minecraft.resources.ResourceKey;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.function.Consumer;
 
 public interface IItemHooks {
 
-    @Nullable
-    default ResourceKey<String> getSherdPattern() {
-        return null;
+    default void addCreativeTabForms(CreativeModeTab tab, Consumer<ItemStack> displayItems) {
+        // NO-OP
     }
 }
