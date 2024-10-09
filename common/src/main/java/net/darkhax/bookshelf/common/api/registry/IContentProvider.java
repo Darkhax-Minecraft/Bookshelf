@@ -10,12 +10,14 @@ import net.darkhax.bookshelf.common.api.registry.register.Register;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterPacket;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterPotPatterns;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterRecipeType;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterVillagerTrades;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
@@ -76,5 +78,8 @@ public interface IContentProvider {
     }
 
     default void registerPackets(RegisterPacket registry) {
+    }
+
+    default void registerTrades(RegisterVillagerTrades registry) {
     }
 }
