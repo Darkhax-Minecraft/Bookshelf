@@ -14,6 +14,11 @@ import java.util.function.Supplier;
  * @param offers An equally weighted array of offers.
  */
 public record VillagerOffers(Supplier<MerchantOffer>... offers) implements VillagerTrades.ItemListing {
+
+    @SafeVarargs
+    public VillagerOffers {
+    }
+
     @Override
     public MerchantOffer getOffer(@NotNull Entity entity, @NotNull RandomSource randomSource) {
         return offers[randomSource.nextInt(offers.length)].get();
