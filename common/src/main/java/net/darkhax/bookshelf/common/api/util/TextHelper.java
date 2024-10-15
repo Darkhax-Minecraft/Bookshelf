@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -427,5 +428,29 @@ public class TextHelper {
             return Collections.emptySet();
         }
         return ((AccessorFontManager) (((AccessorMinecraft) Minecraft.getInstance()).bookshelf$getFontManager())).bookshelf$getFonts().keySet();
+    }
+
+    /**
+     * Creates a translation key that should map to a display name for the tag.
+     * <p>
+     * Tags for vanilla registries use the format tag.reg_path.namespace.path and tags for modded registries use the
+     * format tag.reg_namespace.reg_path.namespace.path.
+     * <p>
+     * This is a new standard being pushed by the Fabric API and recipe viewers. While it has not been universally
+     * adopted yet, it should be considered best practice to do so moving forward.
+     *
+     * @param tag The tag to provide a name key for.
+     * @return A translation key that should map to a display name.
+     */
+    public static String getTagName(TagKey<?> tag) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("tag.");
+        final ResourceLocation regId = tag.registry().location();
+        final ResourceLocation tagId = tag.location();
+        if (!regId.getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)) {
+            builder.append(regId.getNamespace()).append(".");
+        }
+        builder.append(regId.getPath().replace("/", ".")).append(".").append(tagId.getNamespace()).append(".").append(tagId.getPath().replace("/", ".").replace(":", "."));
+        return builder.toString();
     }
 }
