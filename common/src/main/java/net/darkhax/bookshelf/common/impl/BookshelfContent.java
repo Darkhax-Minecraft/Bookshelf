@@ -8,6 +8,8 @@ import net.darkhax.bookshelf.common.api.data.conditions.ILoadCondition;
 import net.darkhax.bookshelf.common.api.registry.IContentProvider;
 import net.darkhax.bookshelf.common.api.registry.register.ArgumentRegister;
 import net.darkhax.bookshelf.common.api.registry.register.Register;
+import net.darkhax.bookshelf.common.api.service.Services;
+import net.darkhax.bookshelf.common.impl.command.DebugCommands;
 import net.darkhax.bookshelf.common.impl.command.EnchantCommand;
 import net.darkhax.bookshelf.common.impl.command.FontCommand;
 import net.darkhax.bookshelf.common.impl.command.HandCommand;
@@ -39,6 +41,9 @@ public class BookshelfContent implements IContentProvider {
         root.then(RenameCommand.build(context));
         root.then(EnchantCommand.build(context));
         root.then(TranslateCommand.build(context));
+        if (Services.PLATFORM.isDevelopmentEnvironment() && Services.PLATFORM.isPhysicalClient() && selection == Commands.CommandSelection.INTEGRATED) {
+            root.then(DebugCommands.build(context));
+        }
         dispatcher.register(root);
     }
 

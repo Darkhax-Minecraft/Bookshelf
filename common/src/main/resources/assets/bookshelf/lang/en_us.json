@@ -11,6 +11,8 @@
   "commands.bookshelf.hand.error.not_air": "Item must not be empty or air!",
   "commands.bookshelf.font.unsupported_block": "Could not apply font to '%s'. This type of block is not supported.",
   "commands.bookshelf.font.bad_sender": "The font rename command",
+  "commands.bookshelf.debug.no_info": "No debug information available for this command.",
+  "commands.bookshelf.debug.yes_info": "Debug information has been logged to your game log. Click to copy output.",
 
   "__time_units": "Entries for various time units that may be displayed in game.",
   "units.bookshelf.tick": "Tick",
@@ -89,5 +91,18 @@
   "font.minecraft.illageralt.preview": "Grumpy wizards make a toxic brew for the jovial queen.",
   "font.minecraft.uniform": "Uniform",
   "font.minecraft.uniform.desc": "A plain font that is not stylized.",
-  "font.minecraft.uniform.preview": "The quick brown fox jumps over the lazy dog."
+  "font.minecraft.uniform.preview": "The quick brown fox jumps over the lazy dog.",
+
+  "__Tags": "Tag Names for Recipe Viewers",
+  "tag.item.bookshelf.creative_tab.minecraft.colored_blocks": "Colored Blocks Tab",
+  "tag.item.bookshelf.creative_tab.minecraft.food_and_drinks": "Food and Drinks Tab",
+  "tag.item.bookshelf.creative_tab.minecraft.spawn_eggs": "Spawn Eggs Tab",
+  "tag.item.bookshelf.creative_tab.minecraft.redstone_blocks": "Redstone Tab",
+  "tag.item.bookshelf.creative_tab.minecraft.op_blocks": "OP/Admin Tab",
+  "tag.item.bookshelf.creative_tab.minecraft.combat": "Combat Tab",
+  "tag.item.bookshelf.creative_tab.minecraft.building_blocks": "Building Blocks Tab",
+  "tag.item.bookshelf.creative_tab.minecraft.tools_and_utilities": "Tools & Utilities Tab",
+  "tag.item.bookshelf.creative_tab.minecraft.natural_blocks": "Natural Blocks Tab",
+  "tag.item.bookshelf.creative_tab.minecraft.functional_blocks": "Functional Blocks Tab",
+  "tag.item.bookshelf.creative_tab.minecraft.ingredients": "Ingredients Tab"
 }
