@@ -2,12 +2,16 @@ package net.darkhax.bookshelf.common.api.registry;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.serialization.MapCodec;
+import net.darkhax.bookshelf.common.api.PhysicalSide;
+import net.darkhax.bookshelf.common.api.annotation.OnlyFor;
 import net.darkhax.bookshelf.common.api.data.conditions.ILoadCondition;
 import net.darkhax.bookshelf.common.api.registry.register.ArgumentRegister;
 import net.darkhax.bookshelf.common.api.registry.register.ItemComponentRegister;
 import net.darkhax.bookshelf.common.api.registry.register.MenuRegister;
 import net.darkhax.bookshelf.common.api.registry.register.Register;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterPacket;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterParticleProviders;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterParticleTypes;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterPotPatterns;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterRecipeType;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterVillagerTrades;
@@ -80,5 +84,12 @@ public interface IContentProvider {
     }
 
     default void registerTrades(RegisterVillagerTrades registry) {
+    }
+
+    default void registerParticleTypes(RegisterParticleTypes registry) {
+    }
+
+    @OnlyFor(PhysicalSide.CLIENT)
+    default void registerParticleFactories(RegisterParticleProviders registry) {
     }
 }

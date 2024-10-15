@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.forge;
+package net.darkhax.bookshelf.forge.impl;
 
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -12,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +21,13 @@ import java.util.Map;
 @Mod(Constants.MOD_ID)
 public class ForgeMod {
 
-    public ForgeMod() {
+    public ForgeMod(FMLJavaModLoadingContext loadingContext) {
         BookshelfMod.getInstance().init();
         MinecraftForge.EVENT_BUS.addListener(this::registerVillagerTrades);
         MinecraftForge.EVENT_BUS.addListener(this::registerWandererTrades);
+        if (Services.PLATFORM.isPhysicalClient()) {
+            new ForgeModClient(loadingContext);
+        }
     }
 
     private final CachedSupplier<RegisterVillagerTrades> villagerTrades = CachedSupplier.cache(() -> {

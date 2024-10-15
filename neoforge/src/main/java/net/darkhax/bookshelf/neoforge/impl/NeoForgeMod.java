@@ -29,6 +29,9 @@ public class NeoForgeMod {
         if (Services.NETWORK instanceof NeoForgeNetworkHandler handler) {
             eventBus.addListener(handler::registerPayloadHandlers);
         }
+        if (Services.PLATFORM.isPhysicalClient()) {
+            new NeoForgeModClient(eventBus);
+        }
     }
 
     private final CachedSupplier<RegisterVillagerTrades> villagerTrades = CachedSupplier.cache(() -> {
