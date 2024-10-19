@@ -10,6 +10,7 @@ displayName = "${mod_name}"
 updateJSONURL = "https://updates.blamejared.com/get?n=${mod_id}&gv=${minecraft_version}&ml=${platform}"
 displayURL = "${curse_page}"
 logoFile="logo_${mod_id}.png"
+logoBlur = false
 credits = "This project is made possible with Patreon support from players like you. Thank you! ${patreon_pledges}"
 authors = "${mod_author}"
 description = "${mod_description}"
