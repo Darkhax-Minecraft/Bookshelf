@@ -49,16 +49,16 @@ static String buildMavenInfo(Project project) {
     |
     |dependencies {
     |    // NeoForge
-    |    implementation group: '${group}' name: '${modId}-neoforge-${mcVersion}' version: '${projectVersion}'
+    |    implementation group: '${group}', name: '${modId}-neoforge-${mcVersion}', version: '${projectVersion}'
     |
     |    // Forge
-    |    implementation group: '${group}' name: '${modId}-forge-${mcVersion}' version: '${projectVersion}'
+    |    implementation group: '${group}', name: '${modId}-forge-${mcVersion}', version: '${projectVersion}'
     |
     |    // Fabric & Quilt
-    |    modImplementation group: '${group}' name: '${modId}-fabric-${mcVersion}' version: '${projectVersion}'
+    |    modImplementation group: '${group}', name: '${modId}-fabric-${mcVersion}', version: '${projectVersion}'
     |
     |    // Common / MultiLoader / Vanilla
-    |    compileOnly group: '${group}' name: '${modId}-common-${mcVersion}' version: '${projectVersion}'
+    |    compileOnly group: '${group}', name: '${modId}-common-${mcVersion}', version: '${projectVersion}'
     |}
     |```""".stripMargin()
 }

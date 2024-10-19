@@ -34,16 +34,16 @@ repositories {
 
 dependencies {
     // NeoForge
-    implementation group: 'net.darkhax.bookshelf' name: 'bookshelf-neoforge-1.21.1' version: '21.1.0'
+    implementation group: 'net.darkhax.bookshelf', name: 'bookshelf-neoforge-1.21.1', version: '21.1.0'
 
     // Forge
-    implementation group: 'net.darkhax.bookshelf' name: 'bookshelf-forge-1.21.1' version: '21.1.0'
+    implementation group: 'net.darkhax.bookshelf', name: 'bookshelf-forge-1.21.1', version: '21.1.0'
 
     // Fabric & Quilt
-    modImplementation group: 'net.darkhax.bookshelf' name: 'bookshelf-fabric-1.21.1' version: '21.1.0'
+    modImplementation group: 'net.darkhax.bookshelf', name: 'bookshelf-fabric-1.21.1', version: '21.1.0'
 
     // Common / MultiLoader / Vanilla
-    compileOnly group: 'net.darkhax.bookshelf' name: 'bookshelf-common-1.21.1' version: '21.1.0'
+    compileOnly group: 'net.darkhax.bookshelf', name: 'bookshelf-common-1.21.1', version: '21.1.0'
 }
 ```
 <!-- maven-end -->
