@@ -8,7 +8,7 @@ gradle.taskGraph.whenReady { graph ->
     // - logo.png must be a 1:1 aspect ratio.
     final File logoFile = project('common').file("src/main/resources/logo_${mod_id}.png")
     if (!logoFile.exists()) {
-        throw new GradleException('A logo.png file is required to build this mod.')
+        throw new GradleException("A logo_${mod_id}.png file is required to build this mod.")
     }
     else {
         try {
