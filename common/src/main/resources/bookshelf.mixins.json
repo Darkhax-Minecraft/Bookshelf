@@ -11,6 +11,7 @@
     "access.entity.AccessorEntity",
     "access.level.AccessorRecipeManager",
     "access.particles.AccessSimpleParticleType",
+    "patch.advancement.MixinItemSubPredicates",
     "patch.block.MixinDecoratedPotPatterns",
     "patch.commands.MixinArgumentTypeInfos",
     "patch.commands.MixinCommands",
