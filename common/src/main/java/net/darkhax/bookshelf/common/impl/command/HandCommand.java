@@ -15,6 +15,7 @@ import net.darkhax.bookshelf.common.impl.Constants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerLevel;
@@ -23,10 +24,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.function.BiFunction;
 
 public enum HandCommand implements IEnumCommand {
 
+    ID((stack, level) -> TextHelper.copyText(Objects.requireNonNull(level.registryAccess().registryOrThrow(Registries.ITEM).getKey(stack.getItem())).toString())),
     STRING((stack, level) -> TextHelper.copyText(stack.toString())),
     INGREDIENT(fromCodec(MapCodecs.INGREDIENT.get(), (stack, level) -> Ingredient.of(stack))),
     STACK_JSON(fromCodec(MapCodecs.ITEM_STACK.get(), (stack, level) -> stack));
