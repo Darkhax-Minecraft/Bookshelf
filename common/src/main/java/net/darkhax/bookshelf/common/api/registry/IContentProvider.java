@@ -15,6 +15,7 @@ import net.darkhax.bookshelf.common.api.registry.register.RegisterParticleTypes;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterPotPatterns;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterRecipeType;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterVillagerTrades;
+import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.critereon.ItemSubPredicate;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -58,6 +59,9 @@ public interface IContentProvider {
     }
 
     default void registerItemSubPredicates(Register<ItemSubPredicate.Type<?>> registry) {
+    }
+
+    default void registerCriteriaTriggers(Register<CriterionTrigger<?>> registry) {
     }
 
     default void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, Commands.CommandSelection selection) {
