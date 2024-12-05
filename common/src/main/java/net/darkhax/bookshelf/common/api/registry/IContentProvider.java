@@ -27,6 +27,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
@@ -74,6 +75,9 @@ public interface IContentProvider {
     }
 
     default void registerLoadConditions(Register<MapCodec<? extends ILoadCondition>> registry) {
+    }
+
+    default void registerLootEntryType(Register<MapCodec<? extends LootPoolEntryContainer>> register) {
     }
 
     default void registerPotPatterns(RegisterPotPatterns registry) {
