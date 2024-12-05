@@ -27,11 +27,18 @@ import java.util.Map;
 @Mixin(RecipeManager.class)
 public class MixinRecipeManager {
 
-    @Shadow private boolean hasErrors;
-    @Shadow @Final private HolderLookup.Provider registries;
-    @Shadow @Final private static Logger LOGGER;
-    @Shadow private Multimap<RecipeType<?>, RecipeHolder<?>> byType;
-    @Shadow private Map<ResourceLocation, RecipeHolder<?>> byName;
+    @Shadow
+    private boolean hasErrors;
+    @Shadow
+    @Final
+    private HolderLookup.Provider registries;
+    @Shadow
+    @Final
+    private static Logger LOGGER;
+    @Shadow
+    private Multimap<RecipeType<?>, RecipeHolder<?>> byType;
+    @Shadow
+    private Map<ResourceLocation, RecipeHolder<?>> byName;
 
     @Overwrite
     protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {

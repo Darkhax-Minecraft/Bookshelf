@@ -87,7 +87,8 @@ public class FontCommand {
                 }
                 case BannerBlockEntity banner when banner.hasCustomName() && banner instanceof AccessorBannerBlockEntity accessor ->
                         accessor.setName(TextHelper.applyFont(banner.getCustomName(), fontId));
-                default -> context.getSource().sendFailure(Component.translatable("commands.bookshelf.font.unsupported_block", tile.getBlockState().getBlock().getName()));
+                default ->
+                        context.getSource().sendFailure(Component.translatable("commands.bookshelf.font.unsupported_block", tile.getBlockState().getBlock().getName()));
             }
         }
         return 1;

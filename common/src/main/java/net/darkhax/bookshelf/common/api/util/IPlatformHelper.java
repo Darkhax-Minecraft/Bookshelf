@@ -96,6 +96,7 @@ public interface IPlatformHelper {
 
     /**
      * Gets a set of every loaded modId.
+     *
      * @return
      */
     Set<ModEntry> getLoadedMods();

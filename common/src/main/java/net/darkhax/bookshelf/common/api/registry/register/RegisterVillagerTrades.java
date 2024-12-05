@@ -77,7 +77,7 @@ public class RegisterVillagerTrades {
     public List<VillagerTrades.ItemListing> getRareWanderingTrades() {
         return Collections.unmodifiableList(this.rareTrades);
     }
-    
+
     public List<VillagerTrades.ItemListing> getCommonWanderingTrades() {
         return Collections.unmodifiableList(this.commonTrades);
     }

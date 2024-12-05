@@ -32,7 +32,7 @@ public enum BuiltinFonts implements IFontEntry {
     UNIFORM("uniform");
 
     public static final Set<ResourceLocation> FONT_IDS = Set.of(DEFAULT.fontId, ALT.fontId, ILLAGER.fontId, UNIFORM.fontId);
-    
+
     private final ResourceLocation fontId;
 
     BuiltinFonts(String path) {
