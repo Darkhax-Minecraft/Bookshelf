@@ -39,7 +39,6 @@ public class LootItemStack extends LootPoolSingletonContainer {
 
     @Override
     protected void createItemStack(Consumer<ItemStack> consumer, @NotNull LootContext context) {
-        LootPoolEntryType
         consumer.accept(this.baseStack.copy());
     }
 
