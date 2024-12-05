@@ -22,12 +22,13 @@ import net.darkhax.bookshelf.common.impl.data.conditions.OnPlatform;
 import net.darkhax.bookshelf.common.impl.data.conditions.Or;
 import net.darkhax.bookshelf.common.impl.data.conditions.RegistryContains;
 import net.darkhax.bookshelf.common.impl.data.criterion.item.NamespaceItemPredicate;
+import net.darkhax.bookshelf.common.impl.data.criterion.trigger.AdvancementTrigger;
+import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.critereon.ItemSubPredicate;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.item.Item;
 
 public class BookshelfContent implements IContentProvider {
 
@@ -74,7 +75,7 @@ public class BookshelfContent implements IContentProvider {
     }
 
     @Override
-    public void registerItems(Register<Item> registry) {
-        registry.add("test", new Item(new Item.Properties()));
+    public void registerCriteriaTriggers(Register<CriterionTrigger<?>> registry) {
+        registry.add("earn_advancement", AdvancementTrigger.TRIGGER);
     }
 }
