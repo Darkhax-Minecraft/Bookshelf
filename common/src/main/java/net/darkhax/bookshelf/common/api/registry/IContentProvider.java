@@ -9,6 +9,7 @@ import net.darkhax.bookshelf.common.api.registry.register.ArgumentRegister;
 import net.darkhax.bookshelf.common.api.registry.register.ItemComponentRegister;
 import net.darkhax.bookshelf.common.api.registry.register.MenuRegister;
 import net.darkhax.bookshelf.common.api.registry.register.Register;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterLootPoolAdditions;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterPacket;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterParticleProviders;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterParticleTypes;
@@ -99,6 +100,9 @@ public interface IContentProvider {
     }
 
     default void registerParticleTypes(RegisterParticleTypes registry) {
+    }
+
+    default void registerLootPoolAdditions(RegisterLootPoolAdditions registry) {
     }
 
     @OnlyFor(PhysicalSide.CLIENT)

@@ -8,6 +8,8 @@ import net.darkhax.bookshelf.common.api.commands.PermissionLevel;
 import net.darkhax.bookshelf.common.api.util.CommandHelper;
 import net.darkhax.bookshelf.common.api.util.TextHelper;
 import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.common.impl.data.loot.modifiers.ILootPoolHooks;
+import net.darkhax.bookshelf.common.mixin.access.loot.AccessorLootTable;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -16,20 +18,25 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootTable;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public enum DebugCommands implements IEnumCommand {
 
     MISSING_TAG_NAMES(DebugCommands::findMissingTagNames),
-    MISSING_BLOCK_DROPS(DebugCommands::findMissingBlockDrops);
+    MISSING_BLOCK_DROPS(DebugCommands::findMissingBlockDrops),
+    LOOT_POOL_HASH(DebugCommands::findLootTableHashes);
 
     private static void findMissingTagNames(MinecraftServer server, StringJoiner out) {
         server.registryAccess().registries().forEach(entry -> {
@@ -60,6 +67,24 @@ public enum DebugCommands implements IEnumCommand {
         }
     }
 
+    private static void findLootTableHashes(MinecraftServer server, StringJoiner out) {
+        final HolderGetter<LootTable> lootTables = server.reloadableRegistries().lookup().lookup(Registries.LOOT_TABLE).orElseThrow();
+        for (ResourceLocation table : server.reloadableRegistries().getKeys(Registries.LOOT_TABLE)) {
+            if (table.getPath().startsWith("chests") || table.getPath().startsWith("dispensers") || table.getPath().startsWith("gameplay") || table.getPath().startsWith("pots") || table.getPath().startsWith("spawners")) {
+                out.add("## " + table.toString());
+                lootTables.get(ResourceKey.create(Registries.LOOT_TABLE, table)).ifPresent(val -> {
+                    if (val.value() instanceof AccessorLootTable accessor) {
+                        for (int index = 0; index < accessor.bookshelf$pools().size(); index++) {
+                            if (accessor.bookshelf$pools().get(index) instanceof ILootPoolHooks fingerprintable) {
+                                out.add("- " + index + " | " + fingerprintable.bookshelf$getHash());
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    }
+
     public static LiteralArgumentBuilder<CommandSourceStack> build(CommandBuildContext context) {
         return CommandHelper.buildFromEnum("debug", DebugCommands.class);
     }
@@ -80,13 +105,17 @@ public enum DebugCommands implements IEnumCommand {
         final StringJoiner joiner = new StringJoiner(System.lineSeparator());
         this.debugTask.getDebugOutput(context.getSource().getServer(), joiner);
         Constants.LOG.warn(joiner.toString());
-
-        if (joiner.toString().isBlank()) {
+        final String debugInfo = joiner.toString();
+        if (debugInfo.isBlank()) {
             context.getSource().sendFailure(Component.translatable("commands.bookshelf.debug.no_info"));
             return 0;
         }
+        else if (debugInfo.length() > 10000) {
+            context.getSource().sendFailure(Component.translatable("commands.bookshelf.debug.too_long"));
+            return 0;
+        }
         else {
-            context.getSource().sendSuccess(() -> TextHelper.setCopyText(Component.translatable("commands.bookshelf.debug.yes_info"), joiner.toString()), false);
+            context.getSource().sendSuccess(() -> TextHelper.setCopyText(Component.translatable("commands.bookshelf.debug.yes_info"), debugInfo), false);
             return 1;
         }
     }

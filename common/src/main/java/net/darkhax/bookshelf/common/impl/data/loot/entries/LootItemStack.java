@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+/**
+ * A LootPool entry type that produces copies of predefined ItemStack.
+ */
 public class LootItemStack extends LootPoolSingletonContainer {
 
     private static final Supplier<LootPoolEntryType> TYPE = CachedSupplier.of(BuiltInRegistries.LOOT_POOL_ENTRY_TYPE, Constants.id("item_stack"));
@@ -42,8 +45,17 @@ public class LootItemStack extends LootPoolSingletonContainer {
         consumer.accept(this.baseStack.copy());
     }
 
+    @NotNull
     @Override
     public LootPoolEntryType getType() {
         return TYPE.get();
+    }
+
+    public static LootItemStack of(ItemStack baseStack, int weight) {
+        return new LootItemStack(baseStack, weight, 0, List.of(), List.of());
+    }
+
+    public static LootItemStack of(ItemStack baseStack, int weight, int quality, List<LootItemCondition> conditions, List<LootItemFunction> functions) {
+        return new LootItemStack(baseStack, weight, quality, conditions, functions);
     }
 }

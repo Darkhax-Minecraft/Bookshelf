@@ -13,6 +13,7 @@
   "commands.bookshelf.font.bad_sender": "The font rename command",
   "commands.bookshelf.debug.no_info": "No debug information available for this command.",
   "commands.bookshelf.debug.yes_info": "Debug information has been logged to your game log. Click to copy output.",
+  "commands.bookshelf.debug.too_long": "Debug output is too big for chat. Please check your game log instead.",
 
   "__time_units": "Entries for various time units that may be displayed in game.",
   "units.bookshelf.tick": "Tick",

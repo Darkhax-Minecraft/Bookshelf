@@ -11,6 +11,8 @@
     "access.entity.AccessorEntity",
     "access.level.AccessorRecipeManager",
     "access.loot.AccessorLootItem",
+    "access.loot.AccessorLootPool",
+    "access.loot.AccessorLootTable",
     "access.particles.AccessSimpleParticleType",
     "patch.advancement.MixinCriteriaTriggers",
     "patch.advancement.MixinItemSubPredicates",
@@ -21,6 +23,8 @@
     "patch.component.MixinDataComponents",
     "patch.item.MixinCreativeModeTab",
     "patch.level.MixinWalkNodeEvaluator",
+    "patch.loot.MixinLootDataType",
+    "patch.loot.MixinLootPool",
     "patch.loot.MixinLootPoolEntries",
     "patch.packs.MixinSimpleJsonResourceReloadListener",
     "patch.registries.MixinBuiltInRegistries"
