@@ -14,6 +14,7 @@
     "access.loot.AccessorLootPool",
     "access.loot.AccessorLootTable",
     "access.particles.AccessSimpleParticleType",
+    "patch.MixinCatVariant",
     "patch.advancement.MixinCriteriaTriggers",
     "patch.advancement.MixinItemSubPredicates",
     "patch.advancement.MixinPlayerAdvancements",
