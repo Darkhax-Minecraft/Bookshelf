@@ -14,7 +14,7 @@ import java.util.List;
 public interface AccessorLootItem {
 
     @Invoker("<init>")
-    static LootItem create(Holder<Item> item, int weight, int quality, List<LootItemCondition> conditions, List<LootItemFunction> functions) {
+    static LootItem bookshelf$create(Holder<Item> item, int weight, int quality, List<LootItemCondition> conditions, List<LootItemFunction> functions) {
         return null;
     }
 }

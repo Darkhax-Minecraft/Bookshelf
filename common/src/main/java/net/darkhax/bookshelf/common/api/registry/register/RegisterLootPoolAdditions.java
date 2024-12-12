@@ -42,7 +42,7 @@ public record RegisterLootPoolAdditions(String owner, RegisterFunc registerFunc)
     }
 
     public void add(String id, ResourceLocation tableId, int poolIndex, int poolHash, Item item, int weight) {
-        add(id, tableId, poolIndex, poolHash, AccessorLootItem.create(item.builtInRegistryHolder(), weight, 0, List.of(), List.of()));
+        add(id, tableId, poolIndex, poolHash, AccessorLootItem.bookshelf$create(item.builtInRegistryHolder(), weight, 0, List.of(), List.of()));
     }
 
     public void add(String id, PoolTarget pool, LootPoolEntryContainer addition) {
