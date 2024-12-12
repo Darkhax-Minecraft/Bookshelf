@@ -24,11 +24,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootTable;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
