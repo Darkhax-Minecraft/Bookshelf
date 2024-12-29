@@ -144,11 +144,31 @@ public class ReloadableCache<T> implements Function<Level, T> {
      * @param <T>  The type of the recipe.
      * @return A map of recipes for the recipe type.
      */
+    @SuppressWarnings("unchecked")
     public static <T extends Recipe<?>> ReloadableCache<Map<ResourceLocation, RecipeHolder<T>>> of(RecipeType<T> type) {
         return ReloadableCache.of(level -> {
             final Map<ResourceLocation, RecipeHolder<T>> byId = new HashMap<>();
             if (level.getRecipeManager() instanceof AccessorRecipeManager accessor) {
                 final Collection<RecipeHolder<?>> recipes = accessor.bookshelf$byTypeMap().get(type);
+                recipes.forEach(entry -> byId.put(entry.id(), (RecipeHolder<T>) entry));
+            }
+            return byId;
+        });
+    }
+
+    /**
+     * Creates a cache of recipe entries for a recipe type.
+     *
+     * @param type The type of recipe.
+     * @param <T>  The type of the recipe.
+     * @return A map of recipes for the recipe type.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends Recipe<?>> ReloadableCache<Map<ResourceLocation, RecipeHolder<T>>> recipes(Supplier<RecipeType<T>> type) {
+        return ReloadableCache.of(level -> {
+            final Map<ResourceLocation, RecipeHolder<T>> byId = new HashMap<>();
+            if (level.getRecipeManager() instanceof AccessorRecipeManager accessor) {
+                final Collection<RecipeHolder<?>> recipes = accessor.bookshelf$byTypeMap().get(type.get());
                 recipes.forEach(entry -> byId.put(entry.id(), (RecipeHolder<T>) entry));
             }
             return byId;
