@@ -94,13 +94,41 @@ public class ReloadableCache<T> implements Function<Level, T> {
 
     /**
      * Invokes the consumer with the cached value. This will cause a value to be cached if one has not been cached
-     * alread.
+     * already.
      *
      * @param level    The current game level. This is used to provide context about the current state of the game.
      * @param consumer The consumer to invoke.
      */
     public void apply(Level level, Consumer<T> consumer) {
         consumer.accept(this.apply(level));
+    }
+
+    /**
+     * Applies a function to the cached value if the value is not null.
+     *
+     * @param level    The current game level. This is used to provide context about the current state of the game.
+     * @param consumer The consumer to invoke.
+     */
+    public void ifPresent(Level level, Consumer<T> consumer) {
+        final T value = this.apply(level);
+        if (value != null) {
+            consumer.accept(value);
+        }
+    }
+
+    /**
+     * Maps non null cache values to a new value.
+     *
+     * @param level  The current game level. This is used to provide context about the current state of the game.
+     * @param mapper A mapper function to map the cached value to something new. This is only used if the value is not
+     *               null.
+     * @param <R>    The return type.
+     * @return The mapped value or null.
+     */
+    @Nullable
+    public <R> R map(Level level, Function<T, R> mapper) {
+        final T value = this.apply(level);
+        return value != null ? mapper.apply(value) : null;
     }
 
     /**
