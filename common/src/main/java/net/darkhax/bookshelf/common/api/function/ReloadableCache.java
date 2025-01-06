@@ -2,8 +2,13 @@ package net.darkhax.bookshelf.common.api.function;
 
 import net.darkhax.bookshelf.common.mixin.access.level.AccessorRecipeManager;
 import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -25,6 +30,12 @@ import java.util.function.Supplier;
  * @param <T> The type of the cached value.
  */
 public class ReloadableCache<T> implements Function<Level, T> {
+
+    /**
+     * A reloadable cache that will always return null. Not all empty instances will match this instance.
+     */
+    @SuppressWarnings("rawtypes")
+    public static final ReloadableCache EMPTY = ReloadableCache.of(level -> null);
 
     /**
      * An internal function that is responsible for producing the value to cache.
@@ -200,6 +211,42 @@ public class ReloadableCache<T> implements Function<Level, T> {
                 recipes.forEach(entry -> byId.put(entry.id(), (RecipeHolder<T>) entry));
             }
             return byId;
+        });
+    }
+
+    /**
+     * Creates a cache of an entity instance.
+     *
+     * @param entityData The data used to create the entity.
+     * @return A reloadable entity instance.
+     */
+    public static ReloadableCache<Entity> entity(CompoundTag entityData) {
+        if (entityData == null || !entityData.contains("id", Tag.TAG_STRING)) {
+            throw new IllegalStateException("The provided entity data does not contain an entity ID! data=" + entityData);
+        }
+        return ReloadableCache.of(level -> {
+            try {
+                return EntityType.loadEntityRecursive(entityData, level, Function.identity());
+            }
+            catch (Exception e) {
+                throw new IllegalStateException("Encountered an error while constructing the target entity.", e);
+            }
+        });
+    }
+
+    /**
+     * Creates a cache of a living entity instance.
+     *
+     * @param entityData The data used to create the entity.
+     * @return A reloadable living entity instance.
+     */
+    public static ReloadableCache<LivingEntity> living(CompoundTag entityData) {
+        final ReloadableCache<Entity> entityCache = entity(entityData);
+        return ReloadableCache.of(level -> {
+            if (entityCache.apply(level) instanceof LivingEntity living) {
+                return living;
+            }
+            throw new IllegalStateException("Constructed entity was not a LivingEntity type. data=" + entityData);
         });
     }
 }
