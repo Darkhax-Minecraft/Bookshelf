@@ -9,6 +9,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.function.BiFunction;
 
 public class FabricGameplayHelper implements IGameplayHelper {
 
@@ -35,5 +41,11 @@ public class FabricGameplayHelper implements IGameplayHelper {
             }
         }
         return stack;
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityType.Builder<T> builder(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks) {
+        BlockEntityType.BlockEntitySupplier<T> supplier = factory::apply;
+        return BlockEntityType.Builder.of(supplier, validBlocks);
     }
 }

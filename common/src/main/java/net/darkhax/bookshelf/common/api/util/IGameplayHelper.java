@@ -2,16 +2,21 @@ package net.darkhax.bookshelf.common.api.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainerHolder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.BiFunction;
 
 public interface IGameplayHelper {
 
@@ -47,4 +52,26 @@ public interface IGameplayHelper {
         }
         return null;
     }
+
+    default ItemStack addItem(ItemStack stack, NonNullList<ItemStack> inventory, int[] slots) {
+        for (int slot : slots) {
+            if (stack.isEmpty()) {
+                return stack;
+            }
+            final ItemStack existing = inventory.get(slot);
+            if (existing.isEmpty()) {
+                inventory.set(slot, stack);
+                return ItemStack.EMPTY;
+            }
+            else if (existing.getCount() < existing.getMaxStackSize() && ItemStack.isSameItemSameComponents(existing, stack)) {
+                final int availableSpace = existing.getMaxStackSize() - existing.getCount();
+                final int movedAmount = Math.min(stack.getCount(), availableSpace);
+                stack.shrink(movedAmount);
+                existing.grow(movedAmount);
+            }
+        }
+        return stack;
+    }
+
+    <T extends BlockEntity> BlockEntityType.Builder<T> builder(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks);
 }

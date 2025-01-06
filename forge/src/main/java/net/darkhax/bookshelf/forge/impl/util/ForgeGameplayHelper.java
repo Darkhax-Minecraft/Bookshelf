@@ -6,10 +6,15 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+
+import java.util.function.BiFunction;
 
 public class ForgeGameplayHelper implements IGameplayHelper {
 
@@ -29,5 +34,11 @@ public class ForgeGameplayHelper implements IGameplayHelper {
             }
         }
         return IGameplayHelper.super.inventoryInsert(level, pos, side, stack);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityType.Builder<T> builder(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks) {
+        BlockEntityType.BlockEntitySupplier<T> supplier = factory::apply;
+        return BlockEntityType.Builder.of(supplier, validBlocks);
     }
 }
