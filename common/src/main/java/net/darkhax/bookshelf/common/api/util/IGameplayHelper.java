@@ -73,5 +73,5 @@ public interface IGameplayHelper {
         return stack;
     }
 
-    <T extends BlockEntity> BlockEntityType.Builder<T> builder(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks);
+    <T extends BlockEntity> BlockEntityType.Builder<T> blockEntityBuilder(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks);
 }

@@ -37,7 +37,7 @@ public class ForgeGameplayHelper implements IGameplayHelper {
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityType.Builder<T> builder(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks) {
+    public <T extends BlockEntity> BlockEntityType.Builder<T> blockEntityBuilder(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks) {
         BlockEntityType.BlockEntitySupplier<T> supplier = factory::apply;
         return BlockEntityType.Builder.of(supplier, validBlocks);
     }
