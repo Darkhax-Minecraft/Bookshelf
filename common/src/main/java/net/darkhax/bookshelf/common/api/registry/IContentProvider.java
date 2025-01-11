@@ -11,6 +11,7 @@ import net.darkhax.bookshelf.common.api.registry.register.MenuRegister;
 import net.darkhax.bookshelf.common.api.registry.register.Register;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterCatVariant;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterLootPoolAdditions;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterMenuScreen;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterPacket;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterParticleProviders;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterParticleTypes;
@@ -107,6 +108,10 @@ public interface IContentProvider {
     }
 
     default void registerCatVariants(RegisterCatVariant registry) {
+    }
+
+    @OnlyFor(PhysicalSide.CLIENT)
+    default void registerMenuScreens(RegisterMenuScreen registry) {
     }
 
     @OnlyFor(PhysicalSide.CLIENT)

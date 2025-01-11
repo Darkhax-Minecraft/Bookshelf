@@ -33,6 +33,7 @@
   "client": [
     "access.client.AccessorFontManager",
     "access.client.AccessorMinecraft",
+    "patch.gui.screens.MixinMenuScreens",
     "patch.locale.MixinClientLanguage"
   ],
   "server": [],

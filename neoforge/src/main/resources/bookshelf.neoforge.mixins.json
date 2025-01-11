@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
   ],
-  "client": [],
+  "client": [
+    "access.gui.screen.AccessorMenuScreens"
+  ],
   "server": [],
   "injectors": {
     "defaultRequire": 1
