@@ -30,7 +30,7 @@ import java.util.function.Supplier;
  *
  * @param <T> The type of the cached value.
  */
-public class ReloadableCache<T> implements Function<Level, T> {
+public class ReloadableCache<T> implements Function<Level, T>, IReloadTracking {
 
     /**
      * A reloadable cache that will always return null. Not all empty instances will match this instance.
@@ -54,6 +54,8 @@ public class ReloadableCache<T> implements Function<Level, T> {
      */
     private boolean cached = false;
 
+    private int revision = 0;
+
     /**
      * The value that is currently cached.
      */
@@ -70,6 +72,9 @@ public class ReloadableCache<T> implements Function<Level, T> {
         if (!this.isCached() || hasGameReloaded(level)) {
             this.recipeManager = new WeakReference<>(level.getRecipeManager());
             this.cachedValue = this.delegate.apply(level);
+            if (level.getRecipeManager() instanceof IReloadTracking reload) {
+                this.bookshelf$setRevision(reload.bookshelf$getRevision());
+            }
             this.cached = true;
         }
         return this.cachedValue;
@@ -101,7 +106,7 @@ public class ReloadableCache<T> implements Function<Level, T> {
      * @return If the game has reloaded since the last time the cache was updated.
      */
     public boolean hasGameReloaded(Level level) {
-        return this.recipeManager.get() != level.getRecipeManager() || !IReloadTracking.areSameRevision(this.recipeManager.get(), level.getRecipeManager());
+        return this.recipeManager.get() != level.getRecipeManager() || !IReloadTracking.areSameRevision(this, level.getRecipeManager());
     }
 
     /**
@@ -249,5 +254,15 @@ public class ReloadableCache<T> implements Function<Level, T> {
             }
             throw new IllegalStateException("Constructed entity was not a LivingEntity type. data=" + entityData);
         });
+    }
+
+    @Override
+    public int bookshelf$getRevision() {
+        return this.revision;
+    }
+
+    @Override
+    public void bookshelf$setRevision(int revision) {
+        this.revision = revision;
     }
 }

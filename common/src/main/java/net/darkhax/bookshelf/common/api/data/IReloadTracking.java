@@ -1,7 +1,5 @@
 package net.darkhax.bookshelf.common.api.data;
 
-import net.minecraft.world.item.crafting.RecipeManager;
-
 public interface IReloadTracking {
 
     int bookshelf$getRevision();
@@ -12,7 +10,7 @@ public interface IReloadTracking {
         this.bookshelf$setRevision(this.bookshelf$getRevision() + 1);
     }
 
-    static boolean areSameRevision(RecipeManager a, RecipeManager b) {
+    static boolean areSameRevision(Object a, Object b) {
         return a instanceof IReloadTracking aTrack && b instanceof IReloadTracking bTrack && aTrack.bookshelf$getRevision() == bTrack.bookshelf$getRevision();
     }
 }
