@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.common.api.function;
 
+import net.darkhax.bookshelf.common.api.data.IReloadTracking;
 import net.darkhax.bookshelf.common.mixin.access.level.AccessorRecipeManager;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -100,7 +101,7 @@ public class ReloadableCache<T> implements Function<Level, T> {
      * @return If the game has reloaded since the last time the cache was updated.
      */
     public boolean hasGameReloaded(Level level) {
-        return this.recipeManager.get() != level.getRecipeManager();
+        return this.recipeManager.get() != level.getRecipeManager() || IReloadTracking.areSameRevision(this.recipeManager.get(), level.getRecipeManager());
     }
 
     /**

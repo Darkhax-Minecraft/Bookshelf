@@ -23,6 +23,7 @@
     "patch.commands.MixinCommands",
     "patch.component.MixinDataComponents",
     "patch.item.MixinCreativeModeTab",
+    "patch.level.MixinRecipeManager",
     "patch.level.MixinWalkNodeEvaluator",
     "patch.loot.MixinLootDataType",
     "patch.loot.MixinLootPool",
