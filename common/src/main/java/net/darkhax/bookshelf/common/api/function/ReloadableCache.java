@@ -101,7 +101,7 @@ public class ReloadableCache<T> implements Function<Level, T> {
      * @return If the game has reloaded since the last time the cache was updated.
      */
     public boolean hasGameReloaded(Level level) {
-        return this.recipeManager.get() != level.getRecipeManager() || IReloadTracking.areSameRevision(this.recipeManager.get(), level.getRecipeManager());
+        return this.recipeManager.get() != level.getRecipeManager() || !IReloadTracking.areSameRevision(this.recipeManager.get(), level.getRecipeManager());
     }
 
     /**
