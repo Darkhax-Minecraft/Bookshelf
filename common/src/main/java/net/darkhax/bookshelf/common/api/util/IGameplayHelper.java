@@ -12,6 +12,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainerHolder;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -153,4 +154,6 @@ public interface IGameplayHelper {
             }
         }
     }
+
+    CreativeModeTab.Builder tabBuilder();
 }

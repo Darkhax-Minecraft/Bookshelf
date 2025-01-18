@@ -4,7 +4,9 @@
   "package": "net.darkhax.bookshelf.fabric.mixin",
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "patch.MixinCreativeModeTabs"
+  ],
   "client": [
     "patch.MixinBuiltInRegistries"
   ],

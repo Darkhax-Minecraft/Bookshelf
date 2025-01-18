@@ -3,21 +3,27 @@ package net.darkhax.bookshelf.neoforge.impl;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterItemTab;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterVillagerTrades;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.darkhax.bookshelf.common.impl.Constants;
 import net.darkhax.bookshelf.neoforge.impl.network.NeoForgeNetworkHandler;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.neoforged.neoforge.event.village.WandererTradesEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 @Mod(Constants.MOD_ID)
 public class NeoForgeMod {
@@ -26,11 +32,21 @@ public class NeoForgeMod {
         BookshelfMod.getInstance().init();
         NeoForge.EVENT_BUS.addListener(this::registerVillagerTrades);
         NeoForge.EVENT_BUS.addListener(this::registerWandererTrades);
+        eventBus.addListener(this::onRegister);
         if (Services.NETWORK instanceof NeoForgeNetworkHandler handler) {
             eventBus.addListener(handler::registerPayloadHandlers);
         }
         if (Services.PLATFORM.isPhysicalClient()) {
             new NeoForgeModClient(eventBus);
+        }
+    }
+
+    private void onRegister(RegisterEvent event) {
+        if (event.getRegistryKey() == Registries.CREATIVE_MODE_TAB) {
+            event.register(Registries.CREATIVE_MODE_TAB, registerFunc -> {
+                final BiConsumer<ResourceLocation, CreativeModeTab> func = registerFunc::register;
+                Services.CONTENT_PROVIDERS.get().forEach(provider -> provider.registerItemTabs(new RegisterItemTab(provider.contentNamespace(), func)));
+            });
         }
     }
 

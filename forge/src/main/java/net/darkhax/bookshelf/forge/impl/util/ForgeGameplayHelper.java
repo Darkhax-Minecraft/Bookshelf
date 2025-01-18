@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -52,5 +53,10 @@ public class ForgeGameplayHelper implements IGameplayHelper {
     public <M extends AbstractContainerMenu, U extends Screen & MenuAccess<M>> void bindMenu(MenuType<? extends M> type, RegisterMenuScreen.ScreenFactory<M, U> factory) {
         final MenuScreens.ScreenConstructor<M, U> screenFactory = factory::create;
         MenuScreens.register(type, screenFactory);
+    }
+
+    @Override
+    public CreativeModeTab.Builder tabBuilder() {
+        return CreativeModeTab.builder();
     }
 }

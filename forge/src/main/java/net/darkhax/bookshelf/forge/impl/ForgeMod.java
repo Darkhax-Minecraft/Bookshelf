@@ -3,30 +3,47 @@ package net.darkhax.bookshelf.forge.impl;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterItemTab;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterVillagerTrades;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.darkhax.bookshelf.common.impl.Constants;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.RegisterEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 @Mod(Constants.MOD_ID)
 public class ForgeMod {
 
     public ForgeMod(FMLJavaModLoadingContext loadingContext) {
         BookshelfMod.getInstance().init();
+        loadingContext.getModEventBus().addListener(this::onRegister);
         MinecraftForge.EVENT_BUS.addListener(this::registerVillagerTrades);
         MinecraftForge.EVENT_BUS.addListener(this::registerWandererTrades);
         if (Services.PLATFORM.isPhysicalClient()) {
             new ForgeModClient(loadingContext);
+        }
+    }
+
+    private void onRegister(RegisterEvent event) {
+        if (event.getRegistryKey() == Registries.CREATIVE_MODE_TAB && event.getVanillaRegistry() != null) {
+            final BiConsumer<ResourceLocation, CreativeModeTab> registerFunc = (rl, tab) -> Registry.register(event.getVanillaRegistry(), rl, tab);
+            Services.CONTENT_PROVIDERS.get().forEach(provider -> {
+                provider.registerItemTabs(new RegisterItemTab(provider.contentNamespace(), registerFunc));
+            });
         }
     }
 
