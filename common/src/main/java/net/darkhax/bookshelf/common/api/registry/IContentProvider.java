@@ -22,6 +22,7 @@ import net.darkhax.bookshelf.common.api.registry.register.RegisterRecipeType;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterVillagerTrades;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.critereon.ItemSubPredicate;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -35,6 +36,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+
+import java.util.function.BiConsumer;
 
 public interface IContentProvider {
 
@@ -128,5 +131,9 @@ public interface IContentProvider {
 
     @OnlyFor(PhysicalSide.CLIENT)
     default void registerParticleFactories(RegisterParticleProviders registry) {
+    }
+
+    @OnlyFor(PhysicalSide.CLIENT)
+    default void bindRenderLayers(BiConsumer<Block, RenderType> registry) {
     }
 }

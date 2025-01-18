@@ -35,6 +35,7 @@
   "client": [
     "access.client.AccessorFontManager",
     "access.client.AccessorMinecraft",
+    "patch.block.MixinItemBlockRenderTypes",
     "patch.gui.screens.MixinMenuScreens",
     "patch.locale.MixinClientLanguage"
   ],
