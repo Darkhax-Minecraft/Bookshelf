@@ -3,6 +3,7 @@ package net.darkhax.bookshelf.common.mixin.patch.registries;
 import net.darkhax.bookshelf.common.api.data.conditions.LoadConditions;
 import net.darkhax.bookshelf.common.api.registry.register.MenuRegister;
 import net.darkhax.bookshelf.common.api.registry.register.Register;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterItem;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterPacket;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterParticleTypes;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterRecipeType;
@@ -33,6 +34,7 @@ public class MixinBuiltInRegistries {
             provider.registerBlocks(new Register<>(owner, (id, block) -> Blocks.register(ResourceKey.create(BuiltInRegistries.BLOCK.key(), id), block)));
             provider.registerEntities(new Register<>(owner, (id, builder) -> Registry.register(BuiltInRegistries.ENTITY_TYPE, id, builder.build(id.toString()))));
             provider.registerItems(new Register<>(owner, Items::registerItem));
+            provider.registerItems(new RegisterItem(owner, Items::registerItem));
             provider.registerBlockEntities(new Register<>(owner, (id, builder) -> Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, builder.build(null))));
             provider.registerMenus(new MenuRegister(owner));
             provider.registerRecipeTypes(new RegisterRecipeType(owner, id -> Registry.register(BuiltInRegistries.RECIPE_TYPE, id, new RecipeTypeImpl<>(id))));

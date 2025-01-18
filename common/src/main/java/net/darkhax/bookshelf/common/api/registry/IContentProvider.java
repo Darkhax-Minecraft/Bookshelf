@@ -10,6 +10,7 @@ import net.darkhax.bookshelf.common.api.registry.register.ItemComponentRegister;
 import net.darkhax.bookshelf.common.api.registry.register.MenuRegister;
 import net.darkhax.bookshelf.common.api.registry.register.Register;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterCatVariant;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterItem;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterLootPoolAdditions;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterMenuScreen;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterPacket;
@@ -47,7 +48,14 @@ public interface IContentProvider {
     default void registerEntities(Register<EntityType.Builder<?>> registry) {
     }
 
+    /**
+     * @deprecated Please use {@link #registerItems(RegisterItem)}
+     */
+    @Deprecated
     default void registerItems(Register<Item> registry) {
+    }
+
+    default void registerItems(RegisterItem registry) {
     }
 
     default void registerBlockEntities(Register<BlockEntityType.Builder<?>> registry) {
