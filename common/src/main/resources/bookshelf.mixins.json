@@ -7,6 +7,7 @@
   "mixins": [
     "access.block.AccessorBannerBlockEntity",
     "access.block.AccessorBaseContainerBlockEntity",
+    "access.block.AccessorCropBlock",
     "access.commands.AccessorCommandContext",
     "access.entity.AccessorEntity",
     "access.level.AccessorRecipeManager",
