@@ -14,6 +14,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -136,4 +137,20 @@ public interface IGameplayHelper {
      * @param <U>     The type of the screen.
      */
     <M extends AbstractContainerMenu, U extends Screen & MenuAccess<M>> void bindMenu(MenuType<? extends M> type, RegisterMenuScreen.ScreenFactory<M, U> factory);
+
+    /**
+     * Drops the crafting remainder of an item into the world if the item has one.
+     *
+     * @param level The world to drop the item within.
+     * @param pos   The position to spawn the items at.
+     * @param old   The base item to spawn a remainder from.
+     */
+    default void dropRemainders(Level level, BlockPos pos, ItemStack old) {
+        if (!level.isClientSide && !old.isEmpty()) {
+            final ItemStack remainder = this.getCraftingRemainder(old);
+            if (!remainder.isEmpty()) {
+                Block.popResource(level, pos, remainder.copy());
+            }
+        }
+    }
 }
