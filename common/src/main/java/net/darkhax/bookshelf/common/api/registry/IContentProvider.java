@@ -9,6 +9,7 @@ import net.darkhax.bookshelf.common.api.registry.register.ArgumentRegister;
 import net.darkhax.bookshelf.common.api.registry.register.ItemComponentRegister;
 import net.darkhax.bookshelf.common.api.registry.register.MenuRegister;
 import net.darkhax.bookshelf.common.api.registry.register.Register;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterBlockEntityRenderer;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterCatVariant;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterItem;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterItemTab;
@@ -135,5 +136,9 @@ public interface IContentProvider {
 
     @OnlyFor(PhysicalSide.CLIENT)
     default void bindRenderLayers(BiConsumer<Block, RenderType> registry) {
+    }
+
+    @OnlyFor(PhysicalSide.CLIENT)
+    default void bindBlockEntityRenderer(RegisterBlockEntityRenderer registry) {
     }
 }
