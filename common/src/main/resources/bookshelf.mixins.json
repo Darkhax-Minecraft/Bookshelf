@@ -30,13 +30,15 @@
     "patch.loot.MixinLootPool",
     "patch.loot.MixinLootPoolEntries",
     "patch.packs.MixinSimpleJsonResourceReloadListener",
-    "patch.registries.MixinBuiltInRegistries"
+    "patch.registries.MixinBuiltInRegistries",
+    "patch.server.MixinReloadableServerResources"
   ],
   "client": [
     "access.client.AccessorFontManager",
     "access.client.AccessorMinecraft",
     "patch.block.MixinBlockEntityRenderers",
     "patch.block.MixinItemBlockRenderTypes",
+    "patch.client.MixinClientPacketListener",
     "patch.gui.screens.MixinMenuScreens",
     "patch.locale.MixinClientLanguage"
   ],

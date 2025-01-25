@@ -43,10 +43,6 @@ public class SidedReloadableCache<T> implements Function<Level, T> {
         return getCache(level).isCached();
     }
 
-    public boolean hasGameReloaded(Level level) {
-        return getCache(level).hasGameReloaded(level);
-    }
-
     public void apply(Level level, Consumer<T> consumer) {
         getCache(level).apply(level, consumer);
     }

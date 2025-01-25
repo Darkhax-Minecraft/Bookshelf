@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf.common.api.function;
 
-import net.darkhax.bookshelf.common.api.data.IReloadTracking;
+import net.darkhax.bookshelf.common.impl.Constants;
 import net.darkhax.bookshelf.common.mixin.access.level.AccessorRecipeManager;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -30,7 +30,7 @@ import java.util.function.Supplier;
  *
  * @param <T> The type of the cached value.
  */
-public class ReloadableCache<T> implements Function<Level, T>, IReloadTracking {
+public class ReloadableCache<T> implements Function<Level, T> {
 
     /**
      * A reloadable cache that will always return null. Not all empty instances will match this instance.
@@ -42,12 +42,6 @@ public class ReloadableCache<T> implements Function<Level, T>, IReloadTracking {
      * An internal function that is responsible for producing the value to cache.
      */
     private final Function<Level, T> delegate;
-
-    /**
-     * A weak reference to the recipe manager that was active when the value was last cached. This is an internal
-     * implementation detail that is used to detect when the game has been reloaded.
-     */
-    private WeakReference<RecipeManager> recipeManager = new WeakReference<>(null);
 
     /**
      * A flag that tracks if a value has been cached.
@@ -69,12 +63,9 @@ public class ReloadableCache<T> implements Function<Level, T>, IReloadTracking {
     @Nullable
     @Override
     public T apply(Level level) {
-        if (!this.isCached() || hasGameReloaded(level)) {
-            this.recipeManager = new WeakReference<>(level.getRecipeManager());
+        if (!this.isCached() || this.revision != (level.isClientSide ? Constants.CLIENT_REVISION : Constants.SERVER_REVISION)) {
             this.cachedValue = this.delegate.apply(level);
-            if (level.getRecipeManager() instanceof IReloadTracking reload) {
-                this.bookshelf$setRevision(reload.bookshelf$getRevision());
-            }
+            this.revision = (level.isClientSide) ? Constants.CLIENT_REVISION : Constants.SERVER_REVISION;
             this.cached = true;
         }
         return this.cachedValue;
@@ -87,7 +78,7 @@ public class ReloadableCache<T> implements Function<Level, T>, IReloadTracking {
     public void invalidate() {
         this.cached = false;
         this.cachedValue = null;
-        this.recipeManager = new WeakReference<>(null);
+        this.revision = -1;
     }
 
     /**
@@ -97,16 +88,6 @@ public class ReloadableCache<T> implements Function<Level, T>, IReloadTracking {
      */
     public boolean isCached() {
         return this.cached;
-    }
-
-    /**
-     * Checks if the game has reloaded since the last time the cache was updated.
-     *
-     * @param level The current game level. This is used to provide context about the current state of the game.
-     * @return If the game has reloaded since the last time the cache was updated.
-     */
-    public boolean hasGameReloaded(Level level) {
-        return this.recipeManager.get() != level.getRecipeManager() || !IReloadTracking.areSameRevision(this, level.getRecipeManager());
     }
 
     /**
@@ -254,15 +235,5 @@ public class ReloadableCache<T> implements Function<Level, T>, IReloadTracking {
             }
             throw new IllegalStateException("Constructed entity was not a LivingEntity type. data=" + entityData);
         });
-    }
-
-    @Override
-    public int bookshelf$getRevision() {
-        return this.revision;
-    }
-
-    @Override
-    public void bookshelf$setRevision(int revision) {
-        this.revision = revision;
     }
 }
