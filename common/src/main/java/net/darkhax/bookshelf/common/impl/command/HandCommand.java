@@ -1,11 +1,11 @@
 package net.darkhax.bookshelf.common.impl.command;
 
-import com.google.gson.JsonElement;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
 import net.darkhax.bookshelf.common.api.commands.IEnumCommand;
 import net.darkhax.bookshelf.common.api.data.codecs.map.MapCodecs;
@@ -16,6 +16,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerLevel;
@@ -23,16 +25,32 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public enum HandCommand implements IEnumCommand {
 
     ID((stack, level) -> TextHelper.copyText(Objects.requireNonNull(level.registryAccess().registryOrThrow(Registries.ITEM).getKey(stack.getItem())).toString())),
     STRING((stack, level) -> TextHelper.copyText(stack.toString())),
-    INGREDIENT(fromCodec(MapCodecs.INGREDIENT.get(), (stack, level) -> Ingredient.of(stack))),
-    STACK_JSON(fromCodec(MapCodecs.ITEM_STACK.get(), (stack, level) -> stack));
+    INGREDIENT(json(MapCodecs.INGREDIENT.get(), (stack, level) -> Ingredient.of(stack))),
+    STACK_JSON(json(MapCodecs.ITEM_STACK.get(), (stack, level) -> stack)),
+    STACK_NBT(nbt(MapCodecs.ITEM_STACK.get(), (stack, level) -> stack)),
+    COMPONENTS((stack, level) -> {
+        final StringJoiner joiner = new StringJoiner("\n");
+        stack.getComponents().stream().sorted(Comparator.comparing(r -> r.type().toString())).forEach(component -> {
+            joiner.add(component.type() + " = " + unsafeEncode(Objects.requireNonNull(component.type().codec()), NbtOps.INSTANCE, component.value()));
+        });
+        return TextHelper.copyText(joiner.toString());
+    }),
+    TAGS(((stack, level) -> {
+        final StringJoiner joiner = new StringJoiner("\n");
+        stack.getTags().map(key -> key.location().toString()).sorted().forEach(joiner::add);
+        return TextHelper.copyText(joiner.toString());
+    }));
 
     private final ItemFormat format;
 
@@ -49,15 +67,28 @@ public enum HandCommand implements IEnumCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static <T> ItemFormat fromCodec(Codec<T> codec, BiFunction<ItemStack, ServerLevel, T> mapper) {
+    private static <T> ItemFormat json(Codec<T> codec, BiFunction<ItemStack, ServerLevel, T> mapper) {
+        return fromCodec(JsonOps.INSTANCE, Constants.GSON_PRETTY::toJson, codec, mapper);
+    }
+
+    private static <T> ItemFormat nbt(Codec<T> codec, BiFunction<ItemStack, ServerLevel, T> mapper) {
+        return fromCodec(NbtOps.INSTANCE, Tag::toString, codec, mapper);
+    }
+
+    private static <T, D> ItemFormat fromCodec(DynamicOps<D> ops, Function<D, String> dataFormatter, Codec<T> codec, BiFunction<ItemStack, ServerLevel, T> mapper) {
         return (stack, level) -> {
             if (stack.isEmpty()) {
                 return Component.translatable("commands.bookshelf.hand.error.not_air").withStyle(ChatFormatting.RED);
             }
             final T value = mapper.apply(stack, level);
-            final JsonElement json = codec.encodeStart(RegistryOps.create(JsonOps.INSTANCE, level.registryAccess()), value).getOrThrow();
-            return TextHelper.copyText(Constants.GSON_PRETTY.toJson(json));
+            final D data = codec.encodeStart(RegistryOps.create(ops, level.registryAccess()), value).getOrThrow();
+            return TextHelper.copyText(dataFormatter.apply(data));
         };
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private static <T> T unsafeEncode(Codec codec, DynamicOps<T> ops, Object input) {
+        return (T) codec.encodeStart(ops, input).getOrThrow();
     }
 
     @Override
