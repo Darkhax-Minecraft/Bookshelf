@@ -9,11 +9,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
-@Mixin(value = ItemBlockRenderTypes.class, priority = 900)
+@Mixin(value = ItemBlockRenderTypes.class)
 public class MixinItemBlockRenderTypes {
 
     @Shadow
@@ -22,8 +20,6 @@ public class MixinItemBlockRenderTypes {
     private static Map<Block, RenderType> TYPE_BY_BLOCK;
 
     static {
-        TYPE_BY_BLOCK = new HashMap<>(TYPE_BY_BLOCK);
         Services.CONTENT_PROVIDERS.get().forEach(provider -> provider.bindRenderLayers(TYPE_BY_BLOCK::put));
-        TYPE_BY_BLOCK = Collections.unmodifiableMap(TYPE_BY_BLOCK);
     }
 }
