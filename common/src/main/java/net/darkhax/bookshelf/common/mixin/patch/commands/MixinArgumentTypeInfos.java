@@ -24,7 +24,7 @@ public class MixinArgumentTypeInfos {
             // type parameters.
             final ArgumentRegister argRegister = new ArgumentRegister() {
                 @Override
-                public <A extends ArgumentType<?>, T extends ArgumentTypeInfo.Template<A>> void accept(String id, Class<? extends A> argumentClass, ArgumentTypeInfo<A, T> info) {
+                public <A extends ArgumentType<?>, T extends ArgumentTypeInfo.Template<A>> void accept(String id, Class argumentClass, ArgumentTypeInfo<A, T> info) {
                     register(registry, provider.contentNamespace() + ":" + id, argumentClass, info);
                 }
             };
