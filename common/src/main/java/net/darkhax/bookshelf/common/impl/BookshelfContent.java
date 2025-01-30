@@ -4,11 +4,13 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.serialization.MapCodec;
 import net.darkhax.bookshelf.common.api.commands.args.FontArgument;
+import net.darkhax.bookshelf.common.api.commands.args.TagArgument;
 import net.darkhax.bookshelf.common.api.data.conditions.ILoadCondition;
 import net.darkhax.bookshelf.common.api.registry.IContentProvider;
 import net.darkhax.bookshelf.common.api.registry.register.ArgumentRegister;
 import net.darkhax.bookshelf.common.api.registry.register.Register;
 import net.darkhax.bookshelf.common.api.service.Services;
+import net.darkhax.bookshelf.common.impl.command.BlockTagToItemTagCommand;
 import net.darkhax.bookshelf.common.impl.command.DebugCommands;
 import net.darkhax.bookshelf.common.impl.command.EnchantCommand;
 import net.darkhax.bookshelf.common.impl.command.FontCommand;
@@ -47,6 +49,7 @@ public class BookshelfContent implements IContentProvider {
         root.then(RenameCommand.build(context));
         root.then(EnchantCommand.build(context));
         root.then(TranslateCommand.build(context));
+        root.then(BlockTagToItemTagCommand.build(context));
         if (Services.PLATFORM.isDevelopmentEnvironment() && Services.PLATFORM.isPhysicalClient() && selection == Commands.CommandSelection.INTEGRATED) {
             root.then(DebugCommands.build(context));
         }
@@ -56,6 +59,7 @@ public class BookshelfContent implements IContentProvider {
     @Override
     public void registerCommandArguments(ArgumentRegister register) {
         register.accept("font", FontArgument.class, FontArgument.SERIALIZER);
+        register.accept("tag", TagArgument.class, TagArgument.SERIALIZER);
     }
 
     @Override
