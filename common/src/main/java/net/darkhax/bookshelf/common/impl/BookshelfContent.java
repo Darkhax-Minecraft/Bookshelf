@@ -9,6 +9,7 @@ import net.darkhax.bookshelf.common.api.data.conditions.ILoadCondition;
 import net.darkhax.bookshelf.common.api.registry.IContentProvider;
 import net.darkhax.bookshelf.common.api.registry.register.ArgumentRegister;
 import net.darkhax.bookshelf.common.api.registry.register.Register;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterIngredient;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.command.BlockTagToItemTagCommand;
 import net.darkhax.bookshelf.common.impl.command.DebugCommands;
@@ -25,6 +26,10 @@ import net.darkhax.bookshelf.common.impl.data.conditions.Or;
 import net.darkhax.bookshelf.common.impl.data.conditions.RegistryContains;
 import net.darkhax.bookshelf.common.impl.data.criterion.item.NamespaceItemPredicate;
 import net.darkhax.bookshelf.common.impl.data.criterion.trigger.AdvancementTrigger;
+import net.darkhax.bookshelf.common.impl.data.ingredient.AllOfIngredient;
+import net.darkhax.bookshelf.common.impl.data.ingredient.BlockTagIngredient;
+import net.darkhax.bookshelf.common.impl.data.ingredient.EitherIngredient;
+import net.darkhax.bookshelf.common.impl.data.ingredient.ModIdIngredient;
 import net.darkhax.bookshelf.common.impl.data.loot.entries.LootItemStack;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.critereon.ItemSubPredicate;
@@ -60,6 +65,14 @@ public class BookshelfContent implements IContentProvider {
     public void registerCommandArguments(ArgumentRegister register) {
         register.accept("font", FontArgument.class, FontArgument.SERIALIZER);
         register.accept("tag", TagArgument.class, TagArgument.SERIALIZER);
+    }
+
+    @Override
+    public void registerIngredientTypes(RegisterIngredient registry) {
+        registry.add("all", AllOfIngredient.CODEC, AllOfIngredient.STREAM);
+        registry.add("either", EitherIngredient.CODEC, EitherIngredient.STREAM);
+        registry.add("mod_id", ModIdIngredient.CODEC, ModIdIngredient.STREAM);
+        registry.add("block_tag", BlockTagIngredient.CODEC, BlockTagIngredient.STREAM);
     }
 
     @Override
