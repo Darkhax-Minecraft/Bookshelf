@@ -3,11 +3,13 @@ package net.darkhax.bookshelf.neoforge.impl;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterIngredient;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterItemTab;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterVillagerTrades;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.neoforge.impl.data.NeoForgeIngredient;
 import net.darkhax.bookshelf.neoforge.impl.network.NeoForgeNetworkHandler;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +20,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.neoforged.neoforge.event.village.WandererTradesEvent;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 import java.util.ArrayList;
@@ -47,6 +50,12 @@ public class NeoForgeMod {
                 final BiConsumer<ResourceLocation, CreativeModeTab> func = registerFunc::register;
                 Services.CONTENT_PROVIDERS.get().forEach(provider -> provider.registerItemTabs(new RegisterItemTab(provider.contentNamespace(), func)));
             });
+        }
+        else if (event.getRegistryKey() == NeoForgeRegistries.Keys.INGREDIENT_TYPES) {
+            event.register(NeoForgeRegistries.Keys.INGREDIENT_TYPES, registerFunc -> Services.CONTENT_PROVIDERS.get().forEach(provider -> {
+                final RegisterIngredient registry = new RegisterIngredient(provider.contentNamespace(), (id, codec, stream) -> registerFunc.register(id, NeoForgeIngredient.makeIngredientType(id, codec, stream)));
+                provider.registerIngredientTypes(registry);
+            }));
         }
     }
 

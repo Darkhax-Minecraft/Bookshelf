@@ -3,11 +3,13 @@ package net.darkhax.bookshelf.forge.impl;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterIngredient;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterItemTab;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterVillagerTrades;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.forge.impl.data.ForgeIngredient;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +20,7 @@ import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 
 import java.util.ArrayList;
@@ -44,6 +47,12 @@ public class ForgeMod {
             Services.CONTENT_PROVIDERS.get().forEach(provider -> {
                 provider.registerItemTabs(new RegisterItemTab(provider.contentNamespace(), registerFunc));
             });
+        }
+        else if (event.getRegistryKey() == ForgeRegistries.Keys.INGREDIENT_SERIALIZERS) {
+            event.register(ForgeRegistries.Keys.INGREDIENT_SERIALIZERS, registerFunc -> Services.CONTENT_PROVIDERS.get().forEach(provider -> {
+                final RegisterIngredient registry = new RegisterIngredient(provider.contentNamespace(), (id, codec, stream) -> registerFunc.register(id, ForgeIngredient.makeIngredientType(id, codec, stream)));
+                provider.registerIngredientTypes(registry);
+            }));
         }
     }
 

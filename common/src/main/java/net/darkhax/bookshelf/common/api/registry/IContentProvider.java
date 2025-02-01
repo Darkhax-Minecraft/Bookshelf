@@ -11,6 +11,7 @@ import net.darkhax.bookshelf.common.api.registry.register.MenuRegister;
 import net.darkhax.bookshelf.common.api.registry.register.Register;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterBlockEntityRenderer;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterCatVariant;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterIngredient;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterItem;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterItemTab;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterLootPoolAdditions;
@@ -124,6 +125,9 @@ public interface IContentProvider {
     }
 
     default void registerItemTabs(RegisterItemTab registry) {
+    }
+
+    default void registerIngredientTypes(RegisterIngredient registry) {
     }
 
     @OnlyFor(PhysicalSide.CLIENT)

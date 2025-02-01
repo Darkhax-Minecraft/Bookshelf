@@ -3,11 +3,14 @@ package net.darkhax.bookshelf.fabric.impl;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterIngredient;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterVillagerTrades;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.fabric.impl.data.FabricIngredient;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
 import net.minecraft.DetectedVersion;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -25,7 +28,15 @@ public class FabricMod implements ModInitializer {
     public void onInitialize() {
         BookshelfMod.getInstance().init();
         this.registerVillagerTrades();
+        this.registerIngredientTypes();
         checkForUpdates();
+    }
+
+    private void registerIngredientTypes() {
+        Services.CONTENT_PROVIDERS.get().forEach(provider -> {
+            final RegisterIngredient registry = new RegisterIngredient(provider.contentNamespace(), (id, codec, stream) -> CustomIngredientSerializer.register(FabricIngredient.make(id, codec, stream)));
+            provider.registerIngredientTypes(registry);
+        });
     }
 
     private void registerVillagerTrades() {
