@@ -30,6 +30,8 @@
     "patch.loot.MixinLootPool",
     "patch.loot.MixinLootPoolEntries",
     "patch.packs.MixinSimpleJsonResourceReloadListener",
+    "patch.potions.MixinPotionBrewing",
+    "patch.potions.MixinPotions",
     "patch.registries.MixinBuiltInRegistries",
     "patch.server.MixinReloadableServerResources"
   ],

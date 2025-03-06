@@ -32,6 +32,8 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -128,6 +130,12 @@ public interface IContentProvider {
     }
 
     default void registerIngredientTypes(RegisterIngredient registry) {
+    }
+
+    default void registerPotions(Register<Potion> registry) {
+    }
+
+    default void registerBrewing(PotionBrewing.Builder registry) {
     }
 
     @OnlyFor(PhysicalSide.CLIENT)
