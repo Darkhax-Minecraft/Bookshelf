@@ -29,4 +29,16 @@ public record RegisterItem(String owner, BiConsumer<ResourceLocation, Item> regi
     public void add(String path, Item item) {
         this.registerFunc.accept(ResourceLocation.fromNamespaceAndPath(this.owner, path), item);
     }
+
+    public void add(ResourceLocation id) {
+        this.add(id, new Item.Properties());
+    }
+
+    public void add(ResourceLocation id, Item.Properties properties) {
+        this.add(id, new Item(properties));
+    }
+
+    public void add(ResourceLocation id, Item item) {
+        this.registerFunc.accept(id, item);
+    }
 }
