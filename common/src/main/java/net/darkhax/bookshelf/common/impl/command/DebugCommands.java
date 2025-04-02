@@ -9,6 +9,7 @@ import net.darkhax.bookshelf.common.api.util.CommandHelper;
 import net.darkhax.bookshelf.common.api.util.TextHelper;
 import net.darkhax.bookshelf.common.impl.Constants;
 import net.darkhax.bookshelf.common.impl.data.loot.modifiers.ILootPoolHooks;
+import net.darkhax.bookshelf.common.api.loot.LootPoolEntryDescriptions;
 import net.darkhax.bookshelf.common.mixin.access.loot.AccessorLootTable;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.commands.CommandBuildContext;
@@ -24,6 +25,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootTable;
 
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.StringJoiner;
@@ -33,7 +35,16 @@ public enum DebugCommands implements IEnumCommand {
 
     MISSING_TAG_NAMES(DebugCommands::findMissingTagNames),
     MISSING_BLOCK_DROPS(DebugCommands::findMissingBlockDrops),
-    LOOT_POOL_HASH(DebugCommands::findLootTableHashes);
+    LOOT_POOL_HASH(DebugCommands::findLootTableHashes),
+    SIMPLE_TABLES(DebugCommands::printTables);
+
+    private static void printTables(MinecraftServer server, StringJoiner out) {
+        final Collection<ResourceLocation> tableKeys = server.reloadableRegistries().getKeys(Registries.LOOT_TABLE);
+        for (ResourceLocation tableKey : tableKeys) {
+            final LootTable table = server.reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, tableKey));
+            out.add(tableKey + " = " + LootPoolEntryDescriptions.getPotentialItems(server, table));
+        }
+    }
 
     private static void findMissingTagNames(MinecraftServer server, StringJoiner out) {
         server.registryAccess().registries().forEach(entry -> {

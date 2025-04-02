@@ -14,6 +14,7 @@ import net.darkhax.bookshelf.common.api.registry.register.RegisterCatVariant;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterIngredient;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterItem;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterItemTab;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterLootDescription;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterLootPoolAdditions;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterMenuScreen;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterPacket;
@@ -136,6 +137,9 @@ public interface IContentProvider {
     }
 
     default void registerBrewing(PotionBrewing.Builder registry) {
+    }
+
+    default void registerLootDescriptions(RegisterLootDescription registry) {
     }
 
     @OnlyFor(PhysicalSide.CLIENT)

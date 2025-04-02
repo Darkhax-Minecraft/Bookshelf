@@ -6,6 +6,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 import java.util.List;
@@ -17,4 +18,7 @@ public interface AccessorLootItem {
     static LootItem bookshelf$create(Holder<Item> item, int weight, int quality, List<LootItemCondition> conditions, List<LootItemFunction> functions) {
         return null;
     }
+
+    @Accessor("item")
+    Holder<Item> bookshelf$item();
 }

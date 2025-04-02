@@ -10,6 +10,7 @@ import net.darkhax.bookshelf.common.api.registry.IContentProvider;
 import net.darkhax.bookshelf.common.api.registry.register.ArgumentRegister;
 import net.darkhax.bookshelf.common.api.registry.register.Register;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterIngredient;
+import net.darkhax.bookshelf.common.api.registry.register.RegisterLootDescription;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.command.BlockTagToItemTagCommand;
 import net.darkhax.bookshelf.common.impl.command.DebugCommands;
@@ -31,12 +32,14 @@ import net.darkhax.bookshelf.common.impl.data.ingredient.BlockTagIngredient;
 import net.darkhax.bookshelf.common.impl.data.ingredient.EitherIngredient;
 import net.darkhax.bookshelf.common.impl.data.ingredient.ModIdIngredient;
 import net.darkhax.bookshelf.common.impl.data.loot.entries.LootItemStack;
+import net.darkhax.bookshelf.common.api.loot.LootPoolEntryDescriptions;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.critereon.ItemSubPredicate;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntries;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 
 public class BookshelfContent implements IContentProvider {
@@ -101,5 +104,18 @@ public class BookshelfContent implements IContentProvider {
     @Override
     public void registerLootEntryType(Register<MapCodec<? extends LootPoolEntryContainer>> register) {
         register.add("item_stack", LootItemStack.CODEC);
+    }
+
+    @Override
+    public void registerLootDescriptions(RegisterLootDescription registry) {
+        registry.registryFunc().accept(LootPoolEntries.EMPTY, LootPoolEntryDescriptions.EMPTY);
+        registry.registryFunc().accept(LootPoolEntries.ITEM, LootPoolEntryDescriptions.ITEM);
+        registry.registryFunc().accept(LootPoolEntries.LOOT_TABLE, LootPoolEntryDescriptions.LOOT_TABLE);
+        registry.registryFunc().accept(LootPoolEntries.DYNAMIC, LootPoolEntryDescriptions.DYNAMIC);
+        registry.registryFunc().accept(LootPoolEntries.TAG, LootPoolEntryDescriptions.TAG);
+        registry.registryFunc().accept(LootPoolEntries.ALTERNATIVES, LootPoolEntryDescriptions.COMPOSITE);
+        registry.registryFunc().accept(LootPoolEntries.SEQUENCE, LootPoolEntryDescriptions.COMPOSITE);
+        registry.registryFunc().accept(LootPoolEntries.GROUP, LootPoolEntryDescriptions.COMPOSITE);
+        registry.registryFunc().accept(BuiltInRegistries.LOOT_POOL_ENTRY_TYPE.get(Constants.id("item_stack")), LootPoolEntryDescriptions.ITEM_STACK);
     }
 }
