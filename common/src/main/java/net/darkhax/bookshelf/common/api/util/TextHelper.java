@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -323,6 +324,39 @@ public class TextHelper {
      */
     public static MutableComponent join(Component separator, Collection<Component> toJoin) {
         return join(separator, toJoin.iterator());
+    }
+
+    /**
+     * Joins several components together using a separator. Duplicate entries will be ignored and only the first
+     * occurrence will be joint.
+     *
+     * @param separator The separator to insert between other components.
+     * @param toJoin    The components to join together.
+     * @return A component containing the joint components.
+     */
+    public static MutableComponent joinUnique(Component separator, Collection<Component> toJoin) {
+        final Set<Component> entries = new HashSet<>();
+        for (Component toAdd : toJoin) {
+            addUnique(entries, toAdd);
+        }
+        return join(separator, entries);
+    }
+
+    /**
+     * Adds a component to a list, only if the list does not already contain that component.
+     *
+     * @param components The list to add to.
+     * @param toAdd      The component to add.
+     * @return If the component was added or not.
+     */
+    public static boolean addUnique(Collection<Component> components, Component toAdd) {
+        for (Component existing : components) {
+            if (Objects.equals(existing, toAdd) || existing.getContents().equals(toAdd.getContents())) {
+                return false;
+            }
+        }
+        components.add(toAdd);
+        return true;
     }
 
     /**
