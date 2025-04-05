@@ -42,7 +42,7 @@ public enum DebugCommands implements IEnumCommand {
         final Collection<ResourceLocation> tableKeys = server.reloadableRegistries().getKeys(Registries.LOOT_TABLE);
         for (ResourceLocation tableKey : tableKeys) {
             final LootTable table = server.reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, tableKey));
-            out.add(tableKey + " = " + LootPoolEntryDescriptions.getPotentialItems(server, table));
+            out.add(tableKey + " = " + LootPoolEntryDescriptions.getPotentialItems(server.reloadableRegistries().get(), table));
         }
     }
 

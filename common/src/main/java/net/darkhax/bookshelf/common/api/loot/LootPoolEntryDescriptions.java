@@ -14,11 +14,12 @@ import net.darkhax.bookshelf.common.mixin.access.loot.AccessorTagEntry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -30,6 +31,7 @@ import net.minecraft.world.level.storage.loot.entries.DynamicLoot;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,28 +89,28 @@ public class LootPoolEntryDescriptions {
     /**
      * Gets a list of items that can be produced by a loot table.
      *
-     * @param server The current Minecraft server instance.
-     * @param table  The loot table to analyze.
+     * @param registries The current reloadable game registries.
+     * @param table      The loot table to analyze.
      * @return A list of items that can be produced by the entry.
      */
-    public static List<ItemStack> getPotentialItems(MinecraftServer server, Either<ResourceKey<LootTable>, LootTable> table) {
-        final LootTable resolved = table.map(key -> server.reloadableRegistries().getLootTable(key), Function.identity());
-        return resolved == null ? List.of() : getPotentialItems(server, resolved);
+    public static List<ItemStack> getPotentialItems(@NotNull RegistryAccess registries, Either<ResourceKey<LootTable>, LootTable> table) {
+        final LootTable resolved = table.map(rl -> registries.registryOrThrow(Registries.LOOT_TABLE).get(rl), Function.identity());
+        return resolved == null ? List.of() : getPotentialItems(registries, resolved);
     }
 
     /**
      * Gets a list of items that can be produced by a loot table.
      *
-     * @param server The current Minecraft server instance.
-     * @param table  The loot table to analyze.
+     * @param registries The current reloadable game registries.
+     * @param table      The loot table to analyze.
      * @return A list of items that can be produced by the entry.
      */
-    public static List<ItemStack> getPotentialItems(MinecraftServer server, LootTable table) {
+    public static List<ItemStack> getPotentialItems(@NotNull RegistryAccess registries, LootTable table) {
         final List<ItemStack> items = NonNullList.create();
         if (table instanceof AccessorLootTable tableAccess) {
             for (LootPool pool : tableAccess.bookshelf$pools()) {
                 if (pool instanceof AccessorLootPool poolAccess) {
-                    getPotentialItems(server, poolAccess.bookshelf$entries()).forEach(stack -> addStacking(items, stack));
+                    getPotentialItems(registries, poolAccess.bookshelf$entries()).forEach(stack -> addStacking(items, stack));
                 }
             }
         }
@@ -118,14 +120,14 @@ public class LootPoolEntryDescriptions {
     /**
      * Gets a list of items that can be produced by a list of loot pool entries.
      *
-     * @param server  The current Minecraft server instance.
-     * @param entries A list of loot pool entries to analyze.
+     * @param registries The current reloadable game registries.
+     * @param entries    A list of loot pool entries to analyze.
      * @return A list of items that can be produced by the entry.
      */
-    public static List<ItemStack> getPotentialItems(MinecraftServer server, List<LootPoolEntryContainer> entries) {
+    public static List<ItemStack> getPotentialItems(@NotNull RegistryAccess registries, List<LootPoolEntryContainer> entries) {
         final List<ItemStack> items = NonNullList.create();
         for (LootPoolEntryContainer entry : entries) {
-            items.addAll(getPotentialItems(server, entry));
+            items.addAll(getPotentialItems(registries, entry));
         }
         return items;
     }
@@ -133,14 +135,14 @@ public class LootPoolEntryDescriptions {
     /**
      * Gets a list of items that can be produced by a loot pool entry.
      *
-     * @param server The current Minecraft server instance.
-     * @param entry  The loot pool entry to analyze.
+     * @param registries The current reloadable game registries.
+     * @param entry      The loot pool entry to analyze.
      * @return A list of items that can be produced by the entry.
      */
-    public static List<ItemStack> getPotentialItems(MinecraftServer server, LootPoolEntryContainer entry) {
+    public static List<ItemStack> getPotentialItems(@NotNull RegistryAccess registries, LootPoolEntryContainer entry) {
         bootstrap();
         final LootPoolEntryDescriber describer = DESCRIBERS.get(entry.getType());
-        return describer != null ? describer.getPotentialDrops(server, entry).orElse(UNKNOWN_ITEM_DISPLAY.get()) : UNKNOWN_ITEM_DISPLAY.get();
+        return describer != null ? describer.getPotentialDrops(registries, entry).orElse(UNKNOWN_ITEM_DISPLAY.get()) : UNKNOWN_ITEM_DISPLAY.get();
     }
 
     /**

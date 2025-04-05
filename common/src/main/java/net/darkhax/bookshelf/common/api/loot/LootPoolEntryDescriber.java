@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf.common.api.loot;
 
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import org.jetbrains.annotations.NotNull;
@@ -17,10 +17,10 @@ public interface LootPoolEntryDescriber {
     /**
      * Generates a list of potential items that can be produced by the loot pool entry.
      *
-     * @param server The current Minecraft server.
-     * @param entry  The loot pool entry to be analyzed.
+     * @param registries The current reloadable game registries.
+     * @param entry      The loot pool entry to be analyzed.
      * @return An optional list of items that can be produced by the entry. If the describer can not handle the provided
      * entry type it will be empty.
      */
-    Optional<List<ItemStack>> getPotentialDrops(@NotNull MinecraftServer server, @NotNull LootPoolEntryContainer entry);
+    Optional<List<ItemStack>> getPotentialDrops(@NotNull RegistryAccess registries, @NotNull LootPoolEntryContainer entry);
 }
