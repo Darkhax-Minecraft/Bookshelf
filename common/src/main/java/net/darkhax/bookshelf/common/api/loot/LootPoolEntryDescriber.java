@@ -5,8 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Describes the potential items that a loot pool entry can generate. See {@link LootPoolEntryDescriptions} for usage.
@@ -15,12 +14,11 @@ import java.util.Optional;
 public interface LootPoolEntryDescriber {
 
     /**
-     * Generates a list of potential items that can be produced by the loot pool entry.
+     * Describes items that may potentially be dropped by a loot pool entry.
      *
-     * @param registries The current reloadable game registries.
-     * @param entry      The loot pool entry to be analyzed.
-     * @return An optional list of items that can be produced by the entry. If the describer can not handle the provided
-     * entry type it will be empty.
+     * @param registries Access to the current game registries.
+     * @param entry      The loot pool entry to be processed.
+     * @param collector  Collects entries from the entry into the desired format.
      */
-    Optional<List<ItemStack>> getPotentialDrops(@NotNull RegistryAccess registries, @NotNull LootPoolEntryContainer entry);
+    void getPotentialDrops(@NotNull RegistryAccess registries, @NotNull LootPoolEntryContainer entry, Consumer<ItemStack> collector);
 }

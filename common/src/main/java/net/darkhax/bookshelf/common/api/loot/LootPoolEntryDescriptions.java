@@ -13,7 +13,6 @@ import net.darkhax.bookshelf.common.mixin.access.loot.AccessorNestedLootTable;
 import net.darkhax.bookshelf.common.mixin.access.loot.AccessorTagEntry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -38,7 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -46,37 +45,67 @@ import java.util.function.Function;
  */
 public class LootPoolEntryDescriptions {
 
-    private static final CachedSupplier<List<ItemStack>> UNKNOWN_ITEM_DISPLAY = CachedSupplier.cache(() -> {
+    private static final CachedSupplier<ItemStack> UNKNOWN_ITEM_DISPLAY = CachedSupplier.cache(() -> {
         final ItemStack stack = new ItemStack(Items.STRUCTURE_VOID);
         stack.set(DataComponents.ITEM_NAME, Component.translatable("tooltips.bookshelf.loot.unknown"));
         stack.set(DataComponents.LORE, new ItemLore(List.of(), List.of(Component.translatable("tooltips.bookshelf.loot.unknown.desc").withStyle(ChatFormatting.GRAY))));
-        return List.of(stack);
+        return stack;
     });
 
-    private static final CachedSupplier<List<ItemStack>> EMPTY_ITEM_DISPLAY = CachedSupplier.cache(() -> {
+    private static final CachedSupplier<ItemStack> EMPTY_ITEM_DISPLAY = CachedSupplier.cache(() -> {
         final ItemStack stack = new ItemStack(Items.BARRIER);
         stack.set(DataComponents.ITEM_NAME, Component.translatable("tooltips.bookshelf.loot.empty"));
         stack.set(DataComponents.LORE, new ItemLore(List.of(), List.of(Component.translatable("tooltips.bookshelf.loot.empty.desc").withStyle(ChatFormatting.GRAY))));
-        return List.of(stack);
+        return stack;
     });
 
-    private static final CachedSupplier<List<ItemStack>> DYNAMIC_DISPLAY = CachedSupplier.cache(() -> {
+    private static final CachedSupplier<ItemStack> DYNAMIC_DISPLAY = CachedSupplier.cache(() -> {
         final ItemStack stack = new ItemStack(Items.JIGSAW);
         stack.set(DataComponents.ITEM_NAME, Component.translatable("tooltips.bookshelf.loot.dynamic"));
         stack.set(DataComponents.LORE, new ItemLore(List.of(), List.of(Component.translatable("tooltips.bookshelf.loot.dynamic.desc").withStyle(ChatFormatting.GRAY))));
-        return List.of(stack);
+        return stack;
     });
 
     private static final Map<LootPoolEntryType, LootPoolEntryDescriber> DESCRIBERS = new HashMap<>();
     private static boolean hasInitialized = false;
 
-    public static final LootPoolEntryDescriber EMPTY = (server, entry) -> Optional.ofNullable(entry instanceof EmptyLootItem ? EMPTY_ITEM_DISPLAY.get() : null);
-    public static final LootPoolEntryDescriber ITEM = (server, entry) -> Optional.ofNullable(entry instanceof AccessorLootItem accessor ? List.of(new ItemStack(accessor.bookshelf$item())) : null);
-    public static final LootPoolEntryDescriber LOOT_TABLE = (server, entry) -> Optional.ofNullable(entry instanceof AccessorNestedLootTable accessor ? getPotentialItems(server, accessor.bookshelf$contents()) : null);
-    public static final LootPoolEntryDescriber DYNAMIC = (server, entry) -> Optional.ofNullable(entry instanceof DynamicLoot ? DYNAMIC_DISPLAY.get() : null);
-    public static final LootPoolEntryDescriber TAG = (server, entry) -> Optional.ofNullable(entry instanceof AccessorTagEntry tagEntry ? getTagItems(tagEntry.bookshelf$tag()) : null);
-    public static final LootPoolEntryDescriber COMPOSITE = (server, entry) -> Optional.ofNullable(entry instanceof AccessorCompositeEntryBase access ? getPotentialItems(server, access.bookshelf$children()) : null);
-    public static final LootPoolEntryDescriber ITEM_STACK = (server, entry) -> Optional.ofNullable(entry instanceof LootItemStack loot ? List.of(loot.getBaseStack()) : null);
+    public static final LootPoolEntryDescriber EMPTY = (server, entry, collector) -> {
+        if (entry instanceof EmptyLootItem) {
+            collector.accept(EMPTY_ITEM_DISPLAY.get());
+        }
+    };
+
+    public static final LootPoolEntryDescriber ITEM = (server, entry, collector) -> {
+        if (entry instanceof AccessorLootItem accessor) {
+            collector.accept(new ItemStack(accessor.bookshelf$item()));
+        }
+    };
+
+    public static final LootPoolEntryDescriber LOOT_TABLE = (server, entry, collector) -> {
+        if (entry instanceof AccessorNestedLootTable accessor) {
+            getPotentialItems(server, accessor.bookshelf$contents(), collector);
+        }
+    };
+    public static final LootPoolEntryDescriber DYNAMIC = (server, entry, collector) -> {
+        if (entry instanceof DynamicLoot) {
+            collector.accept(DYNAMIC_DISPLAY.get());
+        }
+    };
+    public static final LootPoolEntryDescriber TAG = (server, entry, collector) -> {
+        if (entry instanceof AccessorTagEntry tagEntry) {
+            getTagItems(tagEntry.bookshelf$tag(), collector);
+        }
+    };
+    public static final LootPoolEntryDescriber COMPOSITE = (server, entry, collector) -> {
+        if (entry instanceof AccessorCompositeEntryBase accessor) {
+            getPotentialItems(server, accessor.bookshelf$children(), collector);
+        }
+    };
+    public static final LootPoolEntryDescriber ITEM_STACK = (server, entry, collector) -> {
+        if (entry instanceof LootItemStack loot) {
+            collector.accept(loot.getBaseStack());
+        }
+    };
 
     private static void bootstrap() {
         if (!hasInitialized) {
@@ -87,62 +116,78 @@ public class LootPoolEntryDescriptions {
     }
 
     /**
-     * Gets a list of items that can be produced by a loot table.
+     * Generates a list of unique items that can generate from a loot table.
      *
-     * @param registries The current reloadable game registries.
-     * @param table      The loot table to analyze.
-     * @return A list of items that can be produced by the entry.
+     * @param registries The current registries.
+     * @param table      The loot table to examine.
+     * @return A list containing the entries.
      */
-    public static List<ItemStack> getPotentialItems(@NotNull RegistryAccess registries, Either<ResourceKey<LootTable>, LootTable> table) {
-        final LootTable resolved = table.map(rl -> registries.registryOrThrow(Registries.LOOT_TABLE).get(rl), Function.identity());
-        return resolved == null ? List.of() : getPotentialItems(registries, resolved);
+    public static List<ItemStack> getUniqueItems(@NotNull RegistryAccess registries, LootTable table) {
+        final List<ItemStack> items = new ArrayList<>();
+        getPotentialItems(registries, table, stack -> addStacking(items, stack));
+        return items;
     }
 
     /**
-     * Gets a list of items that can be produced by a loot table.
+     * Gets potential drops for a loot table.
      *
-     * @param registries The current reloadable game registries.
-     * @param table      The loot table to analyze.
-     * @return A list of items that can be produced by the entry.
+     * @param registries The current registries.
+     * @param table      The loot table to examine.
+     * @param consumer   Collects entries in your desired format.
      */
-    public static List<ItemStack> getPotentialItems(@NotNull RegistryAccess registries, LootTable table) {
-        final List<ItemStack> items = NonNullList.create();
+    public static void getPotentialItems(@NotNull RegistryAccess registries, Either<ResourceKey<LootTable>, LootTable> table, Consumer<ItemStack> consumer) {
+        final LootTable resolved = table.map(rl -> registries.registryOrThrow(Registries.LOOT_TABLE).get(rl), Function.identity());
+        if (resolved != null) {
+            getPotentialItems(registries, resolved, consumer);
+        }
+    }
+
+    /**
+     * Gets potential drops for a loot table.
+     *
+     * @param registries The current registries.
+     * @param table      The loot table to examine.
+     * @param consumer   Collects entries in your desired format.
+     */
+    public static void getPotentialItems(@NotNull RegistryAccess registries, LootTable table, Consumer<ItemStack> consumer) {
         if (table instanceof AccessorLootTable tableAccess) {
             for (LootPool pool : tableAccess.bookshelf$pools()) {
                 if (pool instanceof AccessorLootPool poolAccess) {
-                    getPotentialItems(registries, poolAccess.bookshelf$entries()).forEach(stack -> addStacking(items, stack));
+                    getPotentialItems(registries, poolAccess.bookshelf$entries(), consumer);
                 }
             }
         }
-        return items;
     }
 
     /**
-     * Gets a list of items that can be produced by a list of loot pool entries.
+     * Gets potential drops for a list of loot pool entries.
      *
-     * @param registries The current reloadable game registries.
-     * @param entries    A list of loot pool entries to analyze.
-     * @return A list of items that can be produced by the entry.
+     * @param registries The current registries.
+     * @param entries    A list of entries to examine.
+     * @param collector  Collects entries in your desired format.
      */
-    public static List<ItemStack> getPotentialItems(@NotNull RegistryAccess registries, List<LootPoolEntryContainer> entries) {
-        final List<ItemStack> items = NonNullList.create();
+    public static void getPotentialItems(@NotNull RegistryAccess registries, List<LootPoolEntryContainer> entries, Consumer<ItemStack> collector) {
         for (LootPoolEntryContainer entry : entries) {
-            items.addAll(getPotentialItems(registries, entry));
+            getPotentialItems(registries, entry, collector);
         }
-        return items;
     }
 
     /**
-     * Gets a list of items that can be produced by a loot pool entry.
+     * Gets potential drops from a loot pool entry.
      *
-     * @param registries The current reloadable game registries.
-     * @param entry      The loot pool entry to analyze.
-     * @return A list of items that can be produced by the entry.
+     * @param registries The current registries.
+     * @param entry      The pool entry to examine.
+     * @param collector  Collects entries in your desired format.
      */
-    public static List<ItemStack> getPotentialItems(@NotNull RegistryAccess registries, LootPoolEntryContainer entry) {
+    public static void getPotentialItems(@NotNull RegistryAccess registries, LootPoolEntryContainer entry, Consumer<ItemStack> collector) {
         bootstrap();
         final LootPoolEntryDescriber describer = DESCRIBERS.get(entry.getType());
-        return describer != null ? describer.getPotentialDrops(registries, entry).orElse(UNKNOWN_ITEM_DISPLAY.get()) : UNKNOWN_ITEM_DISPLAY.get();
+        if (describer != null) {
+            describer.getPotentialDrops(registries, entry, collector);
+        }
+        else {
+            collector.accept(UNKNOWN_ITEM_DISPLAY.get());
+        }
     }
 
     /**
@@ -160,11 +205,9 @@ public class LootPoolEntryDescriptions {
         items.add(toAdd);
     }
 
-    private static List<ItemStack> getTagItems(TagKey<Item> tag) {
-        final List<ItemStack> items = new ArrayList<>();
+    private static void getTagItems(TagKey<Item> tag, Consumer<ItemStack> collector) {
         for (Holder<Item> item : BuiltInRegistries.ITEM.getTagOrEmpty(tag)) {
-            items.add(new ItemStack(item));
+            collector.accept(new ItemStack(item));
         }
-        return items;
     }
 }

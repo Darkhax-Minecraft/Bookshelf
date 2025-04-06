@@ -16,6 +16,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -40,9 +41,10 @@ public enum DebugCommands implements IEnumCommand {
 
     private static void printTables(MinecraftServer server, StringJoiner out) {
         final Collection<ResourceLocation> tableKeys = server.reloadableRegistries().getKeys(Registries.LOOT_TABLE);
+        final RegistryAccess registries = server.reloadableRegistries().get();
         for (ResourceLocation tableKey : tableKeys) {
             final LootTable table = server.reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, tableKey));
-            out.add(tableKey + " = " + LootPoolEntryDescriptions.getPotentialItems(server.reloadableRegistries().get(), table));
+            out.add(tableKey + " = " + LootPoolEntryDescriptions.getUniqueItems(registries, table));
         }
     }
 
