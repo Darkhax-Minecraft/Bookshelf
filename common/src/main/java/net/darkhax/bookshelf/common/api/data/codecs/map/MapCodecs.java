@@ -109,7 +109,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.level.storage.loot.providers.nbt.LootNbtProviderType;
 import net.minecraft.world.level.storage.loot.providers.number.LootNumberProviderType;
 import net.minecraft.world.level.storage.loot.providers.score.LootScoreProviderType;
-import org.apache.commons.lang3.EnumUtils;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -357,6 +356,21 @@ public class MapCodecs {
         });
     }
 
+    private static <T extends Enum<T>> Map<String, T> getEnumsByName(Class<T> enumClass) {
+        if (!enumClass.isEnum()) {
+            throw new IllegalStateException("Class " + enumClass.getCanonicalName() + " is not an enum!");
+        }
+        final Map<String, T> valueMap = new HashMap<>();
+        for (T value : enumClass.getEnumConstants()) {
+            final String name = value.name();
+            if (valueMap.containsKey(name)) {
+                Constants.LOG.error("Duplicate name '{}' found in enum '{}'. Another mod is doing something very wrong. old='{}' new='{}'", name, enumClass.getName(), valueMap.get(name), value);
+            }
+            valueMap.put(name, value);
+        }
+        return valueMap;
+    }
+
     /**
      * Creates a Codec that handles enum values by using their enum constant names.
      * <br>
@@ -372,37 +386,24 @@ public class MapCodecs {
      * @return A codec that can read and write enum values using their enum constant name.
      */
     public static <T extends Enum<T>> Codec<T> enumerable(Class<T> enumClass) {
-
-        final Map<String, T> enumValues = EnumUtils.getEnumMap(enumClass);
-
+        final Map<String, T> enumValues = getEnumsByName(enumClass);
         final Function<String, T> fromString = name -> {
-
             T value = enumValues.get(name);
-
             if (value == null) {
-
                 value = enumValues.get(name.toUpperCase(Locale.ROOT));
             }
-
             return value;
         };
-
         final UnaryOperator<String> errorMessage = name -> {
-
             final StringJoiner message = new StringJoiner(" ");
             message.add("Unable to find " + enumClass.getSimpleName() + " entry \"" + name + "\".");
-
             final Set<String> similarMatches = TextHelper.getPossibleMatches(name, enumValues.keySet(), 2);
-
             if (!similarMatches.isEmpty()) {
                 message.add("Did you mean \"" + similarMatches.stream().findFirst().get() + "\"?");
             }
-
             message.add("Available Options are " + TextHelper.formatCollection(enumValues.keySet()));
-
             return message.toString();
         };
-
         return Codec.STRING.flatXmap(string -> Optionull.mapOrElse(fromString.apply(string), DataResult::success, () -> DataResult.error(() -> errorMessage.apply(string))), object -> DataResult.success(object.name()));
     }
 
