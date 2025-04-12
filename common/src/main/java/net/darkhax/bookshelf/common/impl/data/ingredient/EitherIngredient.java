@@ -14,7 +14,7 @@ import java.util.List;
 public class EitherIngredient implements IngredientLogic<EitherIngredient> {
 
     public static final MapCodec<EitherIngredient> CODEC = MapCodecs.flexibleList(Ingredient.CODEC).xmap(EitherIngredient::new, i -> i.ingredients).fieldOf("ingredients");
-    public static final StreamCodec<RegistryFriendlyByteBuf, EitherIngredient> STREAM = StreamCodecs.list(Ingredient.CONTENTS_STREAM_CODEC).map(EitherIngredient::new, v -> v.ingredients);
+    public static final StreamCodec<RegistryFriendlyByteBuf, EitherIngredient> STREAM = StreamCodecs.list(StreamCodecs.INGREDIENT_NON_EMPTY).map(EitherIngredient::new, v -> v.ingredients);
 
     private final List<Ingredient> ingredients;
 
