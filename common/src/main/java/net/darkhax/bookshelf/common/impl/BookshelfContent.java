@@ -31,6 +31,7 @@ import net.darkhax.bookshelf.common.impl.data.criterion.trigger.AdvancementTrigg
 import net.darkhax.bookshelf.common.impl.data.ingredient.AllOfIngredient;
 import net.darkhax.bookshelf.common.impl.data.ingredient.BlockTagIngredient;
 import net.darkhax.bookshelf.common.impl.data.ingredient.EitherIngredient;
+import net.darkhax.bookshelf.common.impl.data.ingredient.FalseIngredient;
 import net.darkhax.bookshelf.common.impl.data.ingredient.ModIdIngredient;
 import net.darkhax.bookshelf.common.impl.data.loot.entries.LootItemStack;
 import net.minecraft.advancements.CriterionTrigger;
@@ -72,6 +73,7 @@ public class BookshelfContent implements IContentProvider {
 
     @Override
     public void registerIngredientTypes(RegisterIngredient registry) {
+        registry.add("false", FalseIngredient.CODEC, FalseIngredient.STREAM);
         registry.add("all", AllOfIngredient.CODEC, AllOfIngredient.STREAM);
         registry.add("either", EitherIngredient.CODEC, EitherIngredient.STREAM);
         registry.add("mod_id", ModIdIngredient.CODEC, ModIdIngredient.STREAM);
