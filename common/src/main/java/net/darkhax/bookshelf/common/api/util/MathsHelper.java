@@ -20,7 +20,7 @@ import java.util.Random;
 public class MathsHelper {
 
     /**
-     * A RNG source that can be used in contexts where a more suitable RNG source is not available.
+     * An RNG source that can be used in contexts where a more suitable RNG source is not available.
      */
     public static final Random RANDOM = new SecureRandom();
 
@@ -194,8 +194,7 @@ public class MathsHelper {
             default -> throw new IllegalArgumentException("Can not rotate face in direction " + facing.name());
         };
     }
-
-
+    
     /**
      * Offsets a position horizontally by a random amount.
      *
@@ -229,4 +228,52 @@ public class MathsHelper {
         return startPos.offset(offsetX, offsetY, offsetZ);
     }
 
+    /**
+     * Encodes an array of bytes into an array of integers.
+     *
+     * @param bytes The bytes to encode.
+     * @return An array of integers that contain the byte data.
+     */
+    public static int[] encodeBytesToInt(byte[] bytes) {
+        final int byteCount = bytes.length;
+        final int msgSize = (byteCount + 3) / 4;
+        final int encodedLength = 1 + msgSize;
+        final int[] result = new int[encodedLength];
+        result[0] = byteCount; // Store the length in the first int
+        for (int i = 0; i < msgSize; i++) {
+            int value = 0;
+            for (int j = 0; j < 4; j++) {
+                final int byteIndex = i * 4 + j;
+                if (byteIndex < byteCount) {
+                    value |= (bytes[byteIndex] & 0xFF) << (24 - j * 8);
+                }
+            }
+            result[i + 1] = value; // Offset by 1 due to length header
+        }
+        return result;
+    }
+
+    /**
+     * Decodes an array of bytes from an array of integers.
+     *
+     * @param data The data to decode.
+     * @return The decoded bytes.
+     */
+    public static byte[] decodeBytesFromInt(int[] data) {
+        if (data.length == 0) {
+            return new byte[0];
+        }
+        final int byteCount = data[0];
+        final byte[] result = new byte[byteCount];
+        for (int i = 0; i < (data.length - 1); i++) {
+            final int value = data[i + 1];
+            for (int j = 0; j < 4; j++) {
+                final int byteIndex = i * 4 + j;
+                if (byteIndex < byteCount) {
+                    result[byteIndex] = (byte) ((value >> (24 - j * 8)) & 0xFF);
+                }
+            }
+        }
+        return result;
+    }
 }
