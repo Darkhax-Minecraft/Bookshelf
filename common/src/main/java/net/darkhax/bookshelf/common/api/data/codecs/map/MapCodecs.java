@@ -7,6 +7,7 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import net.darkhax.bookshelf.common.api.data.conditions.ILoadCondition;
 import net.darkhax.bookshelf.common.api.data.conditions.LoadConditions;
+import net.darkhax.bookshelf.common.api.util.FunctionHelper;
 import net.darkhax.bookshelf.common.api.util.TextHelper;
 import net.darkhax.bookshelf.common.impl.Constants;
 import net.minecraft.Optionull;
@@ -468,5 +469,18 @@ public class MapCodecs {
         }
 
         return DataResult.success(new Pair<>(state.getBlock().builtInRegistryHolder(), Optional.ofNullable(propertyMap.isEmpty() ? null : propertyMap)));
+    }
+
+    /**
+     * Creates a codec that will try two different codecs, using the first valid codec. Encoding will always use the
+     * first codec.
+     *
+     * @param first  The first codec to try when decoding. This will be the only codec used in encoding.
+     * @param second The second codec to try when decoding.
+     * @param <T>    The type of codec to create.
+     * @return A codec that will try two different codecs.
+     */
+    public static <T> Codec<T> xor(Codec<T> first, Codec<T> second) {
+        return Codec.xor(first, second).xmap(FunctionHelper::unpack, Either::left);
     }
 }
