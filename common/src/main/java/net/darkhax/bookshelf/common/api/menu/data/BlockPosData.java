@@ -1,4 +1,4 @@
-package net.darkhax.bookshelf.common.api.data.container;
+package net.darkhax.bookshelf.common.api.menu.data;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.ContainerData;
