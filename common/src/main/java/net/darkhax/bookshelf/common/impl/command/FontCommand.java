@@ -56,7 +56,7 @@ public class FontCommand {
     private static int renameItemWithFont(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
 
         final ResourceLocation fontId = FontArgument.get(context);
-        final Entity target = CommandHelper.hasArgument("target", context) ? EntityArgument.getEntity(context, "target") : context.getSource().getEntity();
+        final Entity target = CommandHelper.getEntityOrSender("target", context);
 
         if (target instanceof LivingEntity living) {
             final ItemStack stack = living.getMainHandItem();

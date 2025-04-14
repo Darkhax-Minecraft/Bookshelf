@@ -29,7 +29,7 @@ public class EnchantCommand {
     }
 
     private static int enchantItem(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
-        final Entity target = CommandHelper.hasArgument("target", ctx) ? EntityArgument.getEntity(ctx, "target") : ctx.getSource().getEntity();
+        final Entity target = CommandHelper.getEntityOrSender("target", ctx);
         final Holder.Reference<Enchantment> enchantment = ResourceArgument.getEnchantment(ctx, "enchantment");
         final int level = IntegerArgumentType.getInteger(ctx, "level");
         if (target instanceof LivingEntity livingTarget) {

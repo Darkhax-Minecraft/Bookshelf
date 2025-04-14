@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.Map;
 
+@Deprecated
 @Mixin(CommandContext.class)
 public interface AccessorCommandContext {
 
