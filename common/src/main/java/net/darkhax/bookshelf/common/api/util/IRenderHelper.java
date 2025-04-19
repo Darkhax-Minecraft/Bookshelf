@@ -24,7 +24,7 @@ public interface IRenderHelper {
     void renderFluidBox(PoseStack pose, FluidState fluidState, Level level, BlockPos pos, MultiBufferSource bufferSource, int light, int overlay);
 
     default int[] unpackARGB(int color) {
-        return new int[]{color >> 24 & 0xff, color >> 24 & 0xff, color >> 8 & 0xff, color & 0xff};
+        return new int[]{color >> 24 & 0xff, color >> 16 & 0xff, color >> 8 & 0xff, color & 0xff};
     }
 
     default void renderBox(VertexConsumer builder, PoseStack stack, TextureAtlasSprite sprite, int light, int overlay, int[] color) {
