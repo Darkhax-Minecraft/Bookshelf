@@ -8,7 +8,6 @@
     "access.block.AccessorBannerBlockEntity",
     "access.block.AccessorBaseContainerBlockEntity",
     "access.block.AccessorCropBlock",
-    "access.commands.AccessorCommandContext",
     "access.entity.AccessorEntity",
     "access.level.AccessorRecipeManager",
     "access.loot.AccessorCompositeEntryBase",
@@ -41,10 +40,10 @@
     "patch.server.MixinReloadableServerResources"
   ],
   "client": [
+    "access.block.AccessorBlockEntityRenderers",
     "access.client.AccessorFontManager",
     "access.client.AccessorMinecraft",
     "access.client.gui.AccessorAbstractWidget",
-    "patch.block.MixinBlockEntityRenderers",
     "patch.block.MixinItemBlockRenderTypes",
     "patch.client.MixinClientPacketListener",
     "patch.gui.screens.MixinMenuScreens",

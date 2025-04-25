@@ -1,8 +1,10 @@
 package net.darkhax.bookshelf.forge.impl;
 
+import net.darkhax.bookshelf.common.api.registry.register.RegisterBlockEntityRenderer;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterParticleProviders;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -12,10 +14,15 @@ public class ForgeModClient {
 
     public ForgeModClient(FMLJavaModLoadingContext loadingContext) {
         loadingContext.getModEventBus().addListener(this::registerParticles);
+        loadingContext.getModEventBus().addListener(this::registerEntityRenderers);
     }
 
     private void registerParticles(RegisterParticleProvidersEvent event) {
         final BiConsumer<SimpleParticleType, RegisterParticleProviders.SimpleParticleProviderBuilder> registerSimple = (type, builder) -> event.registerSpriteSet(type, builder::build);
         Services.CONTENT_PROVIDERS.get().forEach(provider -> provider.registerParticleFactories(new RegisterParticleProviders(provider.contentNamespace(), registerSimple)));
+    }
+
+    private void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        RegisterBlockEntityRenderer.bindBlockEntityRenderers();
     }
 }

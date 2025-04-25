@@ -22,6 +22,9 @@
     "entrypoints": {
         "main": [
           "net.darkhax.bookshelf.fabric.impl.FabricMod"
+        ],
+        "client": [
+            "net.darkhax.bookshelf.fabric.impl.FabricModClient"
         ]
     },
     "mixins": [
