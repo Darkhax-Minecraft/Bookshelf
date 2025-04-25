@@ -7,7 +7,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.darkhax.bookshelf.common.api.commands.IEnumCommand;
 import net.darkhax.bookshelf.common.api.commands.PermissionLevel;
-import net.darkhax.bookshelf.common.mixin.access.commands.AccessorCommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.selector.EntitySelector;
@@ -75,7 +74,7 @@ public class CommandHelper {
      */
     @Deprecated
     public static <T> boolean hasArgument(String argument, CommandContext<T> context) {
-        return context instanceof AccessorCommandContext access && access.bookshelf$getArguments().containsKey(argument);
+        return hasArgument(argument, context, Object.class);
     }
 
     public static <T, C> boolean hasArgument(String argument, CommandContext<C> context, Class<T> argType) {
