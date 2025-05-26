@@ -19,7 +19,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -42,7 +41,7 @@ public enum HandCommand implements IEnumCommand {
     COMPONENTS((stack, level) -> {
         final StringJoiner joiner = new StringJoiner("\n");
         stack.getComponents().stream().sorted(Comparator.comparing(r -> r.type().toString())).forEach(component -> {
-            joiner.add(component.type() + " = " + unsafeEncode(Objects.requireNonNull(component.type().codec()), NbtOps.INSTANCE, component.value()));
+            joiner.add(component.type() + " = " + unsafeEncode(Objects.requireNonNull(component.type().codec()), NbtOps.INSTANCE, component.value(), level));
         });
         return TextHelper.copyText(joiner.toString());
     }),
@@ -91,14 +90,14 @@ public enum HandCommand implements IEnumCommand {
     private static <T, D> ItemFormat fromCodec(DynamicOps<D> ops, Function<D, String> dataFormatter, Codec<T> codec, BiFunction<ItemStack, ServerLevel, T> mapper) {
         return (stack, level) -> {
             final T value = mapper.apply(stack, level);
-            final D data = codec.encodeStart(RegistryOps.create(ops, level.registryAccess()), value).getOrThrow();
+            final D data = codec.encodeStart(level.registryAccess().createSerializationContext(ops), value).getOrThrow();
             return TextHelper.copyText(dataFormatter.apply(data));
         };
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private static <T> T unsafeEncode(Codec codec, DynamicOps<T> ops, Object input) {
-        return (T) codec.encodeStart(ops, input).getOrThrow();
+    private static <T> T unsafeEncode(Codec codec, DynamicOps<T> ops, Object input, ServerLevel level) {
+        return (T) codec.encodeStart(level.registryAccess().createSerializationContext(ops), input).getOrThrow();
     }
 
     @Override
