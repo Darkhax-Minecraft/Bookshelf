@@ -62,9 +62,22 @@ public enum HandCommand implements IEnumCommand {
     public int run(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         final CommandSourceStack source = context.getSource();
         if (source.getEntity() instanceof LivingEntity living) {
-            context.getSource().sendSuccess(() -> this.format.formatItem(living.getMainHandItem(), source.getLevel()), false);
+            context.getSource().sendSuccess(() -> getFormattedResults(context.getSource().getLevel(), living.getMainHandItem()), false);
         }
         return Command.SINGLE_SUCCESS;
+    }
+
+    private Component getFormattedResults(ServerLevel level, ItemStack stack) {
+        if (stack.isEmpty()) {
+            return Component.translatable("commands.bookshelf.hand.error.not_air").withStyle(ChatFormatting.RED);
+        }
+        try {
+            return this.format.formatItem(stack, level);
+        }
+        catch (Throwable e) {
+            Constants.LOG.error("Encountered an error when formatting item as {}.", this.name(), e);
+        }
+        return Component.translatable("commands.bookshelf.hand.error.internal").withStyle(ChatFormatting.RED);
     }
 
     private static <T> ItemFormat json(Codec<T> codec, BiFunction<ItemStack, ServerLevel, T> mapper) {
@@ -77,9 +90,6 @@ public enum HandCommand implements IEnumCommand {
 
     private static <T, D> ItemFormat fromCodec(DynamicOps<D> ops, Function<D, String> dataFormatter, Codec<T> codec, BiFunction<ItemStack, ServerLevel, T> mapper) {
         return (stack, level) -> {
-            if (stack.isEmpty()) {
-                return Component.translatable("commands.bookshelf.hand.error.not_air").withStyle(ChatFormatting.RED);
-            }
             final T value = mapper.apply(stack, level);
             final D data = codec.encodeStart(RegistryOps.create(ops, level.registryAccess()), value).getOrThrow();
             return TextHelper.copyText(dataFormatter.apply(data));

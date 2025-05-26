@@ -9,6 +9,7 @@
 
   "__commands": "Command Text",
   "commands.bookshelf.hand.error.not_air": "Item must not be empty or air!",
+  "commands.bookshelf.hand.error.internal": "Error encountered while formatting text. Check logs for more info.",
   "commands.bookshelf.font.unsupported_block": "Could not apply font to '%s'. This type of block is not supported.",
   "commands.bookshelf.font.bad_sender": "The font rename command",
   "commands.bookshelf.debug.no_info": "No debug information available for this command.",
