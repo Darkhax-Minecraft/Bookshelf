@@ -3,6 +3,7 @@ package net.darkhax.bookshelf.common.impl;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.serialization.MapCodec;
+import net.darkhax.bookshelf.common.api.commands.PermissionLevel;
 import net.darkhax.bookshelf.common.api.commands.args.FontArgument;
 import net.darkhax.bookshelf.common.api.commands.args.TagArgument;
 import net.darkhax.bookshelf.common.api.data.conditions.ILoadCondition;
@@ -52,7 +53,7 @@ public class BookshelfContent implements IContentProvider {
 
     @Override
     public void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, Commands.CommandSelection selection) {
-        final LiteralArgumentBuilder<CommandSourceStack> root = LiteralArgumentBuilder.literal(Constants.MOD_ID);
+        final LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal(Constants.MOD_ID).requires(PermissionLevel.MODERATOR);
         root.then(HandCommand.build(context));
         root.then(FontCommand.build());
         root.then(RenameCommand.build(context));
