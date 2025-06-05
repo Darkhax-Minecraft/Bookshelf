@@ -20,6 +20,7 @@ import net.darkhax.bookshelf.common.impl.command.EnchantCommand;
 import net.darkhax.bookshelf.common.impl.command.FontCommand;
 import net.darkhax.bookshelf.common.impl.command.HandCommand;
 import net.darkhax.bookshelf.common.impl.command.RenameCommand;
+import net.darkhax.bookshelf.common.impl.command.StructureCommand;
 import net.darkhax.bookshelf.common.impl.command.TranslateCommand;
 import net.darkhax.bookshelf.common.impl.data.conditions.And;
 import net.darkhax.bookshelf.common.impl.data.conditions.ModLoaded;
@@ -60,6 +61,7 @@ public class BookshelfContent implements IContentProvider {
         root.then(EnchantCommand.build(context));
         root.then(TranslateCommand.build(context));
         root.then(BlockTagToItemTagCommand.build(context));
+        root.then(StructureCommand.build());
         if (Services.PLATFORM.isDevelopmentEnvironment() && Services.PLATFORM.isPhysicalClient() && selection == Commands.CommandSelection.INTEGRATED) {
             root.then(DebugCommands.build(context));
         }
