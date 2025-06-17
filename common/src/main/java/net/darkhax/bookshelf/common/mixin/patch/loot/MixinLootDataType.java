@@ -7,7 +7,9 @@ import net.darkhax.bookshelf.common.impl.data.loot.modifiers.LootModificationHan
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootDataType;
 import net.minecraft.world.level.storage.loot.LootTable;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -23,9 +25,29 @@ public class MixinLootDataType {
         // These conditions have been split up because IDEA thinks it will always be false.
         // This is not the case, and is related to mixin shenanigans.
         if ((Object) this == LootDataType.TABLE) {
-            if (value instanceof JsonObject && result.error().isEmpty() && result.result().orElse(null) instanceof LootTable table) {
-                LootModificationHandler.HANDLER.get().processLootTable(id, table);
+            if (value instanceof JsonObject && result.error().isEmpty()) {
+                final Object rst = result.result().orElse(null);
+                LootTable table = bookshelf$getLootTable(rst);
+                if (table != null) {
+                    LootModificationHandler.HANDLER.get().processLootTable(id, table);
+                }
             }
         }
+    }
+
+    @Nullable
+    @Unique
+    private static LootTable bookshelf$getLootTable(Object rst) {
+        // Under normal circumstances rst is always a LootTable but NeoForge has
+        // patched the code to use Optional<LootTable> instead so we need to
+        // check and resolve those as well.
+        LootTable table = null;
+        if (rst instanceof LootTable lt) {
+            table = lt;
+        }
+        else if (rst instanceof Optional<?> optionalObj && optionalObj.orElse(null) instanceof LootTable lt) {
+            table = lt;
+        }
+        return table;
     }
 }
