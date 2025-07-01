@@ -13,14 +13,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ClientPacketListener.class)
+@Mixin(value = ClientPacketListener.class, priority = 1005)
 public class MixinClientPacketListener {
 
     @Shadow
     @Final
     private RecipeManager recipeManager;
 
-    @Inject(method = "<init>", at = @At("RETURN"))
+    @Inject(method = "<init>", at = @At("TAIL"))
     public void onInit(Minecraft mc, Connection connection, CommonListenerCookie cookie, CallbackInfo ci) {
         if (this.recipeManager instanceof ISidedRecipeManager sided) {
             sided.bookshelf$setLogicalClient();
