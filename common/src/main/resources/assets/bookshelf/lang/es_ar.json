@@ -15,6 +15,8 @@
   "commands.bookshelf.debug.no_info": "No hay información de depuración disponible para este comando.",
   "commands.bookshelf.debug.yes_info": "La información de depuración se registró en tu archivo de juego. Hacé clic para copiar la salida.",
   "commands.bookshelf.debug.too_long": "La salida de depuración es demasiado grande para el chat. Por favor, revisá tu archivo de juego en su lugar.",
+  "commands.bookshelf.structure.error.no_structures": "No se encontraron estructuras.",
+  "commands.bookshelf.structure.found": "¡Se encontraron %s estructura(s)!",
 
   "__time_units": "Entradas para varias unidades de tiempo que pueden mostrarse en el juego.",
   "units.bookshelf.tick": "Tick",
