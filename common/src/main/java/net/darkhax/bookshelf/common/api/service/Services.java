@@ -3,6 +3,7 @@ package net.darkhax.bookshelf.common.api.service;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
 import net.darkhax.bookshelf.common.api.network.INetworkHandler;
 import net.darkhax.bookshelf.common.api.registry.IContentProvider;
+import net.darkhax.bookshelf.common.api.registry2.ContentProvider;
 import net.darkhax.bookshelf.common.api.util.IGameplayHelper;
 import net.darkhax.bookshelf.common.api.util.IPlatformHelper;
 import net.darkhax.bookshelf.common.impl.Constants;
@@ -14,7 +15,9 @@ import java.util.stream.Collectors;
 public class Services {
 
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
+    @Deprecated
     public static final CachedSupplier<List<IContentProvider>> CONTENT_PROVIDERS = CachedSupplier.cache(() -> loadMany(IContentProvider.class));
+    public static final CachedSupplier<List<ContentProvider>> CONTENT = CachedSupplier.cache(() -> loadMany(ContentProvider.class));
     public static final IGameplayHelper GAMEPLAY = load(IGameplayHelper.class);
     public static final INetworkHandler NETWORK = load(INetworkHandler.class);
 

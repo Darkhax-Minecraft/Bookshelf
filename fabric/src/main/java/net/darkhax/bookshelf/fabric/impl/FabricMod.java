@@ -9,6 +9,7 @@ import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.darkhax.bookshelf.common.impl.Constants;
 import net.darkhax.bookshelf.fabric.impl.data.FabricIngredient;
+import net.darkhax.bookshelf.fabric.impl.util.FabricRegistryHelper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
 import net.minecraft.DetectedVersion;
@@ -27,6 +28,7 @@ public class FabricMod implements ModInitializer {
     @Override
     public void onInitialize() {
         BookshelfMod.getInstance().init();
+        Services.CONTENT.get().forEach(FabricRegistryHelper::new);
         this.registerVillagerTrades();
         this.registerIngredientTypes();
         checkForUpdates();

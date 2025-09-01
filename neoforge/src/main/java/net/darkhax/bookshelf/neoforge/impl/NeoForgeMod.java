@@ -35,6 +35,7 @@ public class NeoForgeMod {
 
     public NeoForgeMod(IEventBus eventBus) {
         BookshelfMod.getInstance().init();
+        Services.CONTENT.get().forEach(NeoForgeRegistryHelper::new);
         NeoForge.EVENT_BUS.addListener(this::registerVillagerTrades);
         NeoForge.EVENT_BUS.addListener(this::registerWandererTrades);
         eventBus.addListener(this::onRegister);
@@ -44,8 +45,6 @@ public class NeoForgeMod {
         if (Services.PLATFORM.isPhysicalClient()) {
             new NeoForgeModClient(eventBus);
         }
-
-        new NeoForgeRegistryHelper(new DebugContentProvider());
     }
 
     private void onRegister(RegisterEvent event) {
