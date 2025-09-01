@@ -3,6 +3,7 @@ package net.darkhax.bookshelf.neoforge.impl;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
+import net.darkhax.bookshelf.common.impl.DebugContentProvider;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterIngredient;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterItemTab;
 import net.darkhax.bookshelf.common.api.registry.register.RegisterVillagerTrades;
@@ -11,6 +12,7 @@ import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.darkhax.bookshelf.common.impl.Constants;
 import net.darkhax.bookshelf.neoforge.impl.data.NeoForgeIngredient;
 import net.darkhax.bookshelf.neoforge.impl.network.NeoForgeNetworkHandler;
+import net.darkhax.bookshelf.neoforge.impl.util.NeoForgeRegistryHelper;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -42,6 +44,8 @@ public class NeoForgeMod {
         if (Services.PLATFORM.isPhysicalClient()) {
             new NeoForgeModClient(eventBus);
         }
+
+        new NeoForgeRegistryHelper(new DebugContentProvider());
     }
 
     private void onRegister(RegisterEvent event) {

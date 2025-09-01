@@ -8,6 +8,7 @@ import net.darkhax.bookshelf.common.api.commands.args.FontArgument;
 import net.darkhax.bookshelf.common.api.commands.args.TagArgument;
 import net.darkhax.bookshelf.common.api.data.conditions.ILoadCondition;
 import net.darkhax.bookshelf.common.api.loot.LootPoolEntryDescriptions;
+import net.darkhax.bookshelf.common.api.registry2.ContentProvider;
 import net.darkhax.bookshelf.common.api.registry.IContentProvider;
 import net.darkhax.bookshelf.common.api.registry.register.ArgumentRegister;
 import net.darkhax.bookshelf.common.api.registry.register.Register;
@@ -45,7 +46,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntries;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 
-public class BookshelfContent implements IContentProvider {
+public class BookshelfContent implements IContentProvider, ContentProvider {
 
     @Override
     public String contentNamespace() {
@@ -122,5 +123,10 @@ public class BookshelfContent implements IContentProvider {
         registry.registryFunc().accept(LootPoolEntries.SEQUENCE, LootPoolEntryDescriptions.COMPOSITE);
         registry.registryFunc().accept(LootPoolEntries.GROUP, LootPoolEntryDescriptions.COMPOSITE);
         registry.registryFunc().accept(BuiltInRegistries.LOOT_POOL_ENTRY_TYPE.get(Constants.id("item_stack")), LootPoolEntryDescriptions.ITEM_STACK);
+    }
+
+    @Override
+    public String namespace() {
+        return this.contentNamespace();
     }
 }

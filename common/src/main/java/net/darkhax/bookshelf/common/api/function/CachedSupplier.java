@@ -1,6 +1,9 @@
 package net.darkhax.bookshelf.common.api.function;
 
+import net.darkhax.bookshelf.common.impl.Constants;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
@@ -124,6 +127,18 @@ public class CachedSupplier<T> implements Supplier<T> {
         return new CachedSupplier<>(delegate);
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> CachedSupplier<T> of(ResourceKey<T> key) {
+        return CachedSupplier.cache(() -> {
+            final Registry<?> registry = BuiltInRegistries.REGISTRY.get(key.registry());
+            if (registry == null) {
+                Constants.LOG.error("Registry {} could not be found!", key.registry());
+                throw new IllegalStateException("Registry with name " + key.registry() + " was not found!");
+            }
+            return ((Registry<T>) registry).getOrThrow(key);
+        });
+    }
+    
     public static <T> CachedSupplier<T> of(Registry<T> registry, String namespace, String path) {
         return of(registry, ResourceLocation.fromNamespaceAndPath(namespace, path));
     }
