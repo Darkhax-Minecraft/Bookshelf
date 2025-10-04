@@ -2,9 +2,6 @@ package net.darkhax.bookshelf.common.api.util;
 
 import net.darkhax.bookshelf.common.api.ModEntry;
 import net.darkhax.bookshelf.common.api.PhysicalSide;
-import net.darkhax.bookshelf.common.api.registry.register.MenuRegister;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -114,7 +111,4 @@ public interface IPlatformHelper {
      * @return The name of the platform.
      */
     String getName();
-
-    @Deprecated
-    <T extends AbstractContainerMenu> void unsafeRegisterMenu(ResourceLocation id, MenuRegister.ClientMenuFactory<T> clientFactory);
 }

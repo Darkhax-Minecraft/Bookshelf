@@ -1,8 +1,5 @@
 package net.darkhax.bookshelf.common.api.util;
 
-import net.darkhax.bookshelf.common.api.registry.register.RegisterMenuScreen;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -10,8 +7,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainerHolder;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -126,18 +121,6 @@ public interface IGameplayHelper {
      * @return A new builder for your block entity type.
      */
     <T extends BlockEntity> BlockEntityType.Builder<T> blockEntityBuilder(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks);
-
-
-    /**
-     * Binds a screen to a menu using platform specific code. This is required because the underlying screen factory is
-     * not accessible.
-     *
-     * @param type    The menu type to bind the screen to.
-     * @param factory A factory that constructs the screen instance.
-     * @param <M>     The type of the menu.
-     * @param <U>     The type of the screen.
-     */
-    <M extends AbstractContainerMenu, U extends Screen & MenuAccess<M>> void bindMenu(MenuType<? extends M> type, RegisterMenuScreen.ScreenFactory<M, U> factory);
 
     /**
      * Drops the crafting remainder of an item into the world if the item has one.

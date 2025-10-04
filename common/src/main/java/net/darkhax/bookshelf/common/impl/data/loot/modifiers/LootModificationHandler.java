@@ -2,7 +2,7 @@ package net.darkhax.bookshelf.common.impl.data.loot.modifiers;
 
 import net.darkhax.bookshelf.common.api.data.loot.modifiers.LootPoolAddition;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
-import net.darkhax.bookshelf.common.api.registry.register.RegisterLootPoolAdditions;
+import net.darkhax.bookshelf.common.impl.registry.adapter.LootPoolAdditionAdapter;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.Constants;
 import net.darkhax.bookshelf.common.mixin.access.loot.AccessorLootPool;
@@ -30,10 +30,7 @@ public class LootModificationHandler {
 
     public static final Supplier<LootModificationHandler> HANDLER = CachedSupplier.cache(() -> {
         final LootModificationHandler handler = new LootModificationHandler();
-        Services.CONTENT_PROVIDERS.get().forEach(provider -> {
-            final String owner = provider.contentNamespace();
-            provider.registerLootPoolAdditions(new RegisterLootPoolAdditions(owner, handler::addPoolEntry));
-        });
+        Services.CONTENT.get().forEach(provider -> provider.defineLootPoolAdditions(new LootPoolAdditionAdapter(provider.namespace(), handler::addPoolEntry)));
         return handler;
     });
 

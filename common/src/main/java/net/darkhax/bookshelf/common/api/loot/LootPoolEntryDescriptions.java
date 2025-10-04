@@ -2,7 +2,7 @@ package net.darkhax.bookshelf.common.api.loot;
 
 import com.mojang.datafixers.util.Either;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
-import net.darkhax.bookshelf.common.api.registry.register.RegisterLootDescription;
+import net.darkhax.bookshelf.common.impl.registry.adapter.LootDescriptionAdapter;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.data.loot.entries.LootItemStack;
 import net.darkhax.bookshelf.common.mixin.access.loot.AccessorCompositeEntryBase;
@@ -109,8 +109,8 @@ public class LootPoolEntryDescriptions {
 
     private static void bootstrap() {
         if (!hasInitialized) {
-            final RegisterLootDescription register = new RegisterLootDescription(DESCRIBERS::put);
-            Services.CONTENT_PROVIDERS.get().forEach(provider -> provider.registerLootDescriptions(register));
+            final LootDescriptionAdapter register = new LootDescriptionAdapter(DESCRIBERS::put);
+            Services.CONTENT.get().forEach(provider -> provider.defineLootDescriptions(register));
             hasInitialized = true;
         }
     }

@@ -8,12 +8,13 @@ import net.darkhax.bookshelf.common.api.commands.args.FontArgument;
 import net.darkhax.bookshelf.common.api.commands.args.TagArgument;
 import net.darkhax.bookshelf.common.api.data.conditions.ILoadCondition;
 import net.darkhax.bookshelf.common.api.loot.LootPoolEntryDescriptions;
-import net.darkhax.bookshelf.common.api.registry2.ContentProvider;
-import net.darkhax.bookshelf.common.api.registry.IContentProvider;
-import net.darkhax.bookshelf.common.api.registry.register.ArgumentRegister;
-import net.darkhax.bookshelf.common.api.registry.register.Register;
-import net.darkhax.bookshelf.common.api.registry.register.RegisterIngredient;
-import net.darkhax.bookshelf.common.api.registry.register.RegisterLootDescription;
+import net.darkhax.bookshelf.common.api.registry.ContentProvider;
+import net.darkhax.bookshelf.common.impl.registry.adapter.CommandArgumentAdapter;
+import net.darkhax.bookshelf.common.api.registry.adapters.GameRegistryAdapter;
+import net.darkhax.bookshelf.common.api.registry.adapters.GenericRegistryAdapter;
+import net.darkhax.bookshelf.common.impl.registry.adapter.IngredientTypeAdapter;
+import net.darkhax.bookshelf.common.impl.registry.adapter.LootDescriptionAdapter;
+import net.darkhax.bookshelf.common.impl.registry.adapter.LootEntryTypeAdapter;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.command.BlockTagToItemTagCommand;
 import net.darkhax.bookshelf.common.impl.command.DebugCommands;
@@ -44,17 +45,20 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntries;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 
-public class BookshelfContent implements IContentProvider, ContentProvider {
+public class BookshelfContent implements ContentProvider {
 
     @Override
-    public String contentNamespace() {
-        return Constants.MOD_ID;
+    public void defineIngredientTypes(IngredientTypeAdapter registry) {
+        registry.add("false", FalseIngredient.CODEC, FalseIngredient.STREAM);
+        registry.add("all", AllOfIngredient.CODEC, AllOfIngredient.STREAM);
+        registry.add("either", EitherIngredient.CODEC, EitherIngredient.STREAM);
+        registry.add("mod_id", ModIdIngredient.CODEC, ModIdIngredient.STREAM);
+        registry.add("block_tag", BlockTagIngredient.CODEC, BlockTagIngredient.STREAM);
     }
 
     @Override
-    public void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, Commands.CommandSelection selection) {
+    public void defineCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, Commands.CommandSelection selection) {
         final LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal(Constants.MOD_ID).requires(PermissionLevel.MODERATOR);
         root.then(HandCommand.build(context));
         root.then(FontCommand.build());
@@ -70,22 +74,13 @@ public class BookshelfContent implements IContentProvider, ContentProvider {
     }
 
     @Override
-    public void registerCommandArguments(ArgumentRegister register) {
-        register.accept("font", FontArgument.class, FontArgument.SERIALIZER);
-        register.accept("tag", TagArgument.class, TagArgument.SERIALIZER);
+    public void defineCommandArguments(CommandArgumentAdapter registry) {
+        registry.add("font", FontArgument.class, FontArgument.SERIALIZER);
+        registry.add("tag", TagArgument.class, TagArgument.SERIALIZER);
     }
 
     @Override
-    public void registerIngredientTypes(RegisterIngredient registry) {
-        registry.add("false", FalseIngredient.CODEC, FalseIngredient.STREAM);
-        registry.add("all", AllOfIngredient.CODEC, AllOfIngredient.STREAM);
-        registry.add("either", EitherIngredient.CODEC, EitherIngredient.STREAM);
-        registry.add("mod_id", ModIdIngredient.CODEC, ModIdIngredient.STREAM);
-        registry.add("block_tag", BlockTagIngredient.CODEC, BlockTagIngredient.STREAM);
-    }
-
-    @Override
-    public void registerLoadConditions(Register<MapCodec<? extends ILoadCondition>> registry) {
+    public void defineLoadConditions(GenericRegistryAdapter<MapCodec<? extends ILoadCondition>> registry) {
         registry.add(And.TYPE_ID, And.CODEC);
         registry.add(Not.TYPE_ID, Not.CODEC);
         registry.add(Or.TYPE_ID, Or.CODEC);
@@ -98,22 +93,22 @@ public class BookshelfContent implements IContentProvider, ContentProvider {
     }
 
     @Override
-    public void registerItemSubPredicates(Register<ItemSubPredicate.Type<?>> registry) {
+    public void defineItemSubPredicates(GameRegistryAdapter<ItemSubPredicate.Type<?>> registry) {
         registry.add("namespace", new ItemSubPredicate.Type<>(NamespaceItemPredicate.CODEC));
     }
 
     @Override
-    public void registerCriteriaTriggers(Register<CriterionTrigger<?>> registry) {
+    public void defineCriteriaTriggers(GameRegistryAdapter<CriterionTrigger<?>> registry) {
         registry.add("earn_advancement", AdvancementTrigger.TRIGGER);
     }
 
     @Override
-    public void registerLootEntryType(Register<MapCodec<? extends LootPoolEntryContainer>> register) {
-        register.add("item_stack", LootItemStack.CODEC);
+    public void defineLootEntryTypes(LootEntryTypeAdapter registry) {
+        registry.add("item_stack", LootItemStack.CODEC);
     }
 
     @Override
-    public void registerLootDescriptions(RegisterLootDescription registry) {
+    public void defineLootDescriptions(LootDescriptionAdapter registry) {
         registry.registryFunc().accept(LootPoolEntries.EMPTY, LootPoolEntryDescriptions.EMPTY);
         registry.registryFunc().accept(LootPoolEntries.ITEM, LootPoolEntryDescriptions.ITEM);
         registry.registryFunc().accept(LootPoolEntries.LOOT_TABLE, LootPoolEntryDescriptions.LOOT_TABLE);
@@ -127,6 +122,6 @@ public class BookshelfContent implements IContentProvider, ContentProvider {
 
     @Override
     public String namespace() {
-        return this.contentNamespace();
+        return Constants.MOD_ID;
     }
 }

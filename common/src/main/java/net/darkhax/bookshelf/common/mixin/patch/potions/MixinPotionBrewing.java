@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.common.mixin.patch.potions;
 
 import net.darkhax.bookshelf.common.api.service.Services;
+import net.darkhax.bookshelf.common.impl.Constants;
 import net.minecraft.world.item.alchemy.PotionBrewing;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,6 +13,7 @@ public class MixinPotionBrewing {
 
     @Inject(method = "addVanillaMixes", at = @At("RETURN"))
     private static void onBootstrap(PotionBrewing.Builder builder, CallbackInfo ci) {
-        Services.CONTENT_PROVIDERS.get().forEach(provider -> provider.registerBrewing(builder));
+        Services.CONTENT.get().forEach(provider -> provider.defineBrews(builder));
+        System.out.println("build potions");
     }
 }

@@ -1,16 +1,9 @@
 package net.darkhax.bookshelf.neoforge.impl.util;
 
-import net.darkhax.bookshelf.common.api.registry.register.RegisterMenuScreen;
 import net.darkhax.bookshelf.common.api.util.IGameplayHelper;
-import net.darkhax.bookshelf.neoforge.mixin.access.gui.screen.AccessorMenuScreens;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -42,12 +35,6 @@ public class NeoForgeGameplayHelper implements IGameplayHelper {
     public <T extends BlockEntity> BlockEntityType.Builder<T> blockEntityBuilder(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks) {
         BlockEntityType.BlockEntitySupplier<T> supplier = factory::apply;
         return BlockEntityType.Builder.of(supplier, validBlocks);
-    }
-
-    @Override
-    public <M extends AbstractContainerMenu, U extends Screen & MenuAccess<M>> void bindMenu(MenuType<? extends M> type, RegisterMenuScreen.ScreenFactory<M, U> factory) {
-        final MenuScreens.ScreenConstructor<M, U> screenFactory = factory::create;
-        AccessorMenuScreens.register(type, screenFactory);
     }
 
     @Override
