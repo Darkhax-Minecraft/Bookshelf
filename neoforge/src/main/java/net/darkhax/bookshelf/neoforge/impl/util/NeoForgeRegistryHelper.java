@@ -97,7 +97,7 @@ public final class NeoForgeRegistryHelper {
             this.content.defineItems(new GameRegistryAdapter<>(this.context, Registries.ITEM, adapt(helper)));
         });
         this.adaptRegistry(event, Registries.CREATIVE_MODE_TAB, this.content::defineCreativeTabs, CreativeModeTabAdapter::new);
-        event.register(NeoForgeRegistries.Keys.INGREDIENT_TYPES, helper -> this.content.defineIngredientTypes(new IngredientTypeAdapter(this.context, (id, value) -> helper.register(id, adaptType(value.get())))));
+        event.register(NeoForgeRegistries.Keys.INGREDIENT_TYPES, helper -> this.content.defineIngredientTypes(new IngredientTypeAdapter(this.context, (id, value) -> helper.register(id, adaptType(id, value.get())))));
         this.adaptRegistry(event, Registries.RECIPE_TYPE, this.content::defineRecipeTypes, RecipeTypeAdapter::new);
         this.adaptRegistry(event, Registries.ATTRIBUTE, this.content::defineAttributes);
         this.adaptRegistry(event, Registries.MOB_EFFECT, this.content::defineMobEffects);
