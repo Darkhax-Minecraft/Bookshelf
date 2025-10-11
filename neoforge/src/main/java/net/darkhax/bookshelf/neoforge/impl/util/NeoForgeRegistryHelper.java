@@ -145,7 +145,7 @@ public final class NeoForgeRegistryHelper {
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void bindMenuScreens(RegisterMenuScreensEvent event) {
         final MenuScreenAdapter adapter = new MenuScreenAdapter((type, factory) -> event.register(type, (MenuScreens.ScreenConstructor) factory::create));
-        Services.CONTENT.get().forEach(provider -> provider.defineMenuScreens(adapter));
+        this.content.defineMenuScreens(adapter);
     }
 
     private void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
