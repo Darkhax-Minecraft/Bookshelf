@@ -24,6 +24,7 @@ import net.darkhax.bookshelf.common.impl.registry.adapter.VillagerTradeAdapter;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.Constants;
 import net.darkhax.bookshelf.common.mixin.access.client.AccessorItemBlockRenderTypes;
+import net.darkhax.bookshelf.neoforge.impl.data.NeoForgeIngredient;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
@@ -169,8 +170,8 @@ public final class NeoForgeRegistryHelper {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private static IngredientType adaptType(IngredientTypeAdapter.IngredientType type) {
-        return new IngredientType(type.codec(), type.stream());
+    private static IngredientType adaptType(ResourceLocation id, IngredientTypeAdapter.IngredientType type) {
+        return NeoForgeIngredient.makeIngredientType(id, type.codec(), type.stream());
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
