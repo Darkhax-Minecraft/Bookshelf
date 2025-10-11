@@ -91,7 +91,6 @@ public final class NeoForgeRegistryHelper {
                 this.content.defineBlockRenderTypes(new BlockRenderTypeAdapter(blockRenderTypes::put));
             }
         });
-        this.adaptRegistry(event, Registries.BLOCK, this.content::defineBlocks, BlockRegistryAdapter::new);
         event.register(Registries.ITEM, helper -> {
             this.context.getPlaceableBlocks().forEach((blockRef, builder) -> helper.register(blockRef.key().location(), builder.apply(blockRef.value().get())));
             this.content.defineItems(new GameRegistryAdapter<>(this.context, Registries.ITEM, adapt(helper)));
