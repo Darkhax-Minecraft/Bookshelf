@@ -1,6 +1,11 @@
 package net.darkhax.bookshelf.common.impl;
 
+import com.mojang.datafixers.kinds.Const;
 import net.darkhax.bookshelf.common.api.service.Services;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BookshelfMod {
 
@@ -8,7 +13,6 @@ public class BookshelfMod {
     private boolean hasInitialized = false;
 
     public void init() {
-
         if (hasInitialized) {
             throw new IllegalStateException("The " + Constants.MOD_NAME + " has already been initialized.");
         }
@@ -21,6 +25,25 @@ public class BookshelfMod {
     private void runStartupChecks() {
         if (Services.PLATFORM == null) {
             throw new IllegalStateException("Bookshelf services are not available.");
+        }
+        this.detectInvalidContentProviders();
+    }
+
+    @Deprecated
+    private void detectInvalidContentProviders() {
+        try {
+            final List<String> oldProviders = Services.findServices("net.darkhax.bookshelf.common.api.registry.IContentProvider");
+            if (!oldProviders.isEmpty()) {
+                final String errorMsg = "An outdated implementation of IContentProvider has been found. The game is being stopped for your protection. Please check if an update is available! More information at https://gist.github.com/Darkhax/63356eed0a27848efe8574ce4c677bae";
+                Constants.LOG.error(errorMsg);
+                for (String provider : oldProviders) {
+                    Constants.LOG.error("- {}", provider);
+                }
+                throw new IllegalStateException(errorMsg + " " + String.join(", ", oldProviders));
+            }
+        }
+        catch (IOException e) {
+            Constants.LOG.error("Failed to read services.", e);
         }
     }
 
