@@ -14,6 +14,5 @@ public class MixinPotionBrewing {
     @Inject(method = "addVanillaMixes", at = @At("RETURN"))
     private static void onBootstrap(PotionBrewing.Builder builder, CallbackInfo ci) {
         Services.CONTENT.get().forEach(provider -> provider.defineBrews(builder));
-        System.out.println("build potions");
     }
 }
