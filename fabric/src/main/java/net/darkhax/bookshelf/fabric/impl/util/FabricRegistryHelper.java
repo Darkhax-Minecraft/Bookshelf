@@ -6,13 +6,15 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.darkhax.bookshelf.common.api.data.conditions.LoadConditions;
 import net.darkhax.bookshelf.common.api.registry.ContentProvider;
 import net.darkhax.bookshelf.common.api.registry.RegistrationContext;
+import net.darkhax.bookshelf.common.api.registry.adapters.GameRegistryAdapter;
+import net.darkhax.bookshelf.common.api.registry.adapters.GenericRegistryAdapter;
+import net.darkhax.bookshelf.common.api.service.Services;
+import net.darkhax.bookshelf.common.impl.Constants;
 import net.darkhax.bookshelf.common.impl.registry.adapter.BlockEntityRendererAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.BlockRegistryAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.BlockRenderTypeAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.CommandArgumentAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.CreativeModeTabAdapter;
-import net.darkhax.bookshelf.common.api.registry.adapters.GameRegistryAdapter;
-import net.darkhax.bookshelf.common.api.registry.adapters.GenericRegistryAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.IngredientTypeAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.LootEntryTypeAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.MenuScreenAdapter;
@@ -20,9 +22,8 @@ import net.darkhax.bookshelf.common.impl.registry.adapter.MenuTypeAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.PacketAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.PotPatternAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.RecipeTypeAdapter;
+import net.darkhax.bookshelf.common.impl.registry.adapter.SoundEventAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.VillagerTradeAdapter;
-import net.darkhax.bookshelf.common.api.service.Services;
-import net.darkhax.bookshelf.common.impl.Constants;
 import net.darkhax.bookshelf.common.mixin.access.client.AccessorItemBlockRenderTypes;
 import net.darkhax.bookshelf.fabric.impl.data.FabricIngredient;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
@@ -95,6 +96,7 @@ public final class FabricRegistryHelper {
         this.content.defineLootEntryTypes(new LootEntryTypeAdapter(this.context, Registries.LOOT_POOL_ENTRY_TYPE, adapt(BuiltInRegistries.LOOT_POOL_ENTRY_TYPE)));
         this.content.defineMenuType(new MenuTypeAdapter(this.context, (key, factory) -> Registry.register(BuiltInRegistries.MENU, key, new MenuType<>(factory.get()::create, FeatureFlags.VANILLA_SET))));
         this.content.definePackets(new PacketAdapter(this.context, Services.NETWORK::register));
+        this.content.defineSounds(new SoundEventAdapter(this.context, Registries.SOUND_EVENT, adapt(BuiltInRegistries.SOUND_EVENT)));
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

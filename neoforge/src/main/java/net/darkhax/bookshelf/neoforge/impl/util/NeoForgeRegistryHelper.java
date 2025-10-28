@@ -6,13 +6,15 @@ import net.darkhax.bookshelf.common.api.data.conditions.LoadConditions;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
 import net.darkhax.bookshelf.common.api.registry.ContentProvider;
 import net.darkhax.bookshelf.common.api.registry.RegistrationContext;
+import net.darkhax.bookshelf.common.api.registry.adapters.GameRegistryAdapter;
+import net.darkhax.bookshelf.common.api.registry.adapters.GenericRegistryAdapter;
+import net.darkhax.bookshelf.common.api.service.Services;
+import net.darkhax.bookshelf.common.impl.Constants;
 import net.darkhax.bookshelf.common.impl.registry.adapter.BlockEntityRendererAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.BlockRegistryAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.BlockRenderTypeAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.CommandArgumentAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.CreativeModeTabAdapter;
-import net.darkhax.bookshelf.common.api.registry.adapters.GameRegistryAdapter;
-import net.darkhax.bookshelf.common.api.registry.adapters.GenericRegistryAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.IngredientTypeAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.LootEntryTypeAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.MenuScreenAdapter;
@@ -20,9 +22,8 @@ import net.darkhax.bookshelf.common.impl.registry.adapter.MenuTypeAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.PacketAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.PotPatternAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.RecipeTypeAdapter;
+import net.darkhax.bookshelf.common.impl.registry.adapter.SoundEventAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.VillagerTradeAdapter;
-import net.darkhax.bookshelf.common.api.service.Services;
-import net.darkhax.bookshelf.common.impl.Constants;
 import net.darkhax.bookshelf.common.mixin.access.client.AccessorItemBlockRenderTypes;
 import net.darkhax.bookshelf.neoforge.impl.data.NeoForgeIngredient;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -116,6 +117,7 @@ public final class NeoForgeRegistryHelper {
         this.adaptRegistry(event, Registries.RECIPE_SERIALIZER, this.content::defineRecipeSerializers);
         this.adaptRegistry(event, Registries.LOOT_POOL_ENTRY_TYPE, this.content::defineLootEntryTypes, LootEntryTypeAdapter::new);
         event.register(Registries.MENU, helper -> this.content.defineMenuType(new MenuTypeAdapter(this.context, (key, factory) -> helper.register(key, new MenuType<>(factory.get()::create, FeatureFlags.VANILLA_SET)))));
+        this.adaptRegistry(event, Registries.SOUND_EVENT, this.content::defineSounds, SoundEventAdapter::new);
     }
 
     private void setupCommandRegistration() {

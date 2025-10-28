@@ -21,6 +21,7 @@ import net.darkhax.bookshelf.common.impl.registry.adapter.MenuTypeAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.PacketAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.PotPatternAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.RecipeTypeAdapter;
+import net.darkhax.bookshelf.common.impl.registry.adapter.SoundEventAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.VillagerTradeAdapter;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.critereon.ItemSubPredicate;
@@ -286,6 +287,15 @@ public interface ContentProvider {
      * @param registry Adapts registry requests to the current mod loader.
      */
     default void definePackets(PacketAdapter registry) {
+    }
+
+    /**
+     * Registers new sound events with the game.
+     *
+     * @param registry Adapts registry requests to the current mod loader.
+     */
+    default void defineSounds(SoundEventAdapter registry) {
+
     }
 
     /**
