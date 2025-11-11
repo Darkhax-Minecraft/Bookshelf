@@ -8,7 +8,6 @@ plugins {
     id 'build-number'
     id 'git-changelog'
     id 'patreon'
-    id 'discord-notify'
     id 'version-checker'
     id 'readme-update'
 }

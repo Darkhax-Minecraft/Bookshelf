@@ -20,7 +20,7 @@ public class ModLoaded implements ILoadCondition {
 
     public static final ResourceLocation TYPE_ID = Constants.id("mod_loaded");
     public static final CachedSupplier<ConditionType> TYPE = CachedSupplier.cache(() -> LoadConditions.getType(TYPE_ID));
-    public static MapCodec<ModLoaded> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(MapCodecs.STRING.getSet("values", ModLoaded::getRequiredMods)).apply(instance, ModLoaded::new));
+    public static final MapCodec<ModLoaded> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(MapCodecs.STRING.getSet("values", ModLoaded::getRequiredMods)).apply(instance, ModLoaded::new));
 
     private final Set<String> requiredMods;
 

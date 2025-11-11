@@ -81,9 +81,11 @@ public class FontCommand {
                 case BaseContainerBlockEntity container when tile instanceof AccessorBaseContainerBlockEntity accessor ->
                         accessor.bookshelf$name(TextHelper.applyFont(container.getName().copy(), fontId));
                 case SignBlockEntity sign -> {
-                    sign.updateText(applySignFont(fontId), true);
-                    sign.updateText(applySignFont(fontId), false);
-                    sign.getLevel().sendBlockUpdated(sign.getBlockPos(), sign.getBlockState(), sign.getBlockState(), 3);
+                    if (sign.getLevel() != null) {
+                        sign.updateText(applySignFont(fontId), true);
+                        sign.updateText(applySignFont(fontId), false);
+                        sign.getLevel().sendBlockUpdated(sign.getBlockPos(), sign.getBlockState(), sign.getBlockState(), 3);
+                    }
                 }
                 case BannerBlockEntity banner when banner.hasCustomName() && banner instanceof AccessorBannerBlockEntity accessor ->
                         accessor.setName(TextHelper.applyFont(banner.getCustomName(), fontId));

@@ -9,10 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 public enum PropertyFormat implements IPropertyFormat {
 
     /**
-     * The separator is aligned to the right. Example: "property: value".
-     */
-
-    /**
      * Formats a property with the separator aligned to the right. Example: "property: value".
      */
     RIGHT("right"),

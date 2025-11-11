@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 public class ExtendedText {
 
-    public static Supplier<ExtendedText> INSTANCE = CachedSupplier.cache(ExtendedText::new);
+    public static final Supplier<ExtendedText> INSTANCE = CachedSupplier.cache(ExtendedText::new);
     private final Map<String, Supplier<String>> extendedEntries = new LinkedHashMap<>();
 
     private ExtendedText() {

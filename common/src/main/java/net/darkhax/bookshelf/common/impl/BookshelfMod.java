@@ -1,11 +1,9 @@
 package net.darkhax.bookshelf.common.impl;
 
-import com.mojang.datafixers.kinds.Const;
 import net.darkhax.bookshelf.common.api.service.Services;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BookshelfMod {
 

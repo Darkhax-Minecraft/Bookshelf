@@ -25,13 +25,6 @@ public enum Destination {
     BIDIRECTIONAL;
 
     /**
-     * Checks if the packet can be
-     *
-     * @return
-     */
-
-
-    /**
      * Checks if the payload can be handled on a server.
      *
      * @return If the payload can be handled by a server.

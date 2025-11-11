@@ -2,9 +2,9 @@ package net.darkhax.bookshelf.common.impl.data.loot.modifiers;
 
 import net.darkhax.bookshelf.common.api.data.loot.modifiers.LootPoolAddition;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
-import net.darkhax.bookshelf.common.impl.registry.adapter.LootPoolAdditionAdapter;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.common.impl.registry.adapter.LootPoolAdditionAdapter;
 import net.darkhax.bookshelf.common.mixin.access.loot.AccessorLootPool;
 import net.darkhax.bookshelf.common.mixin.access.loot.AccessorLootTable;
 import net.minecraft.resources.ResourceLocation;

@@ -2,9 +2,9 @@ package net.darkhax.bookshelf.common.api.loot;
 
 import com.mojang.datafixers.util.Either;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
-import net.darkhax.bookshelf.common.impl.registry.adapter.LootDescriptionAdapter;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.data.loot.entries.LootItemStack;
+import net.darkhax.bookshelf.common.impl.registry.adapter.LootDescriptionAdapter;
 import net.darkhax.bookshelf.common.mixin.access.loot.AccessorCompositeEntryBase;
 import net.darkhax.bookshelf.common.mixin.access.loot.AccessorLootItem;
 import net.darkhax.bookshelf.common.mixin.access.loot.AccessorLootPool;

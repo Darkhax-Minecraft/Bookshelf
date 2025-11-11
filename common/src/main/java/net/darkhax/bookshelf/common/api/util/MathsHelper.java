@@ -176,7 +176,7 @@ public class MathsHelper {
      * Creates a VoxelShape that has been rotated to face a given direction. The input sizes are considered to be
      * rotated north already. The up/down rotations are not supported yet.
      *
-     * @param facing
+     * @param facing The direction to rotate the shape.
      * @param x1     The min x coordinate.
      * @param y1     The min y coordinate.
      * @param z1     The min z coordinate.

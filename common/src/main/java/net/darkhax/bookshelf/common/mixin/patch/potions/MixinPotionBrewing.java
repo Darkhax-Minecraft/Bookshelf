@@ -1,7 +1,6 @@
 package net.darkhax.bookshelf.common.mixin.patch.potions;
 
 import net.darkhax.bookshelf.common.api.service.Services;
-import net.darkhax.bookshelf.common.impl.Constants;
 import net.minecraft.world.item.alchemy.PotionBrewing;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

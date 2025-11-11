@@ -3,7 +3,6 @@ package net.darkhax.bookshelf.common.impl.command;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
@@ -58,7 +57,7 @@ public enum HandCommand implements IEnumCommand {
     }
 
     @Override
-    public int run(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    public int run(CommandContext<CommandSourceStack> context) {
         final CommandSourceStack source = context.getSource();
         if (source.getEntity() instanceof LivingEntity living) {
             context.getSource().sendSuccess(() -> getFormattedResults(context.getSource().getLevel(), living.getMainHandItem()), false);

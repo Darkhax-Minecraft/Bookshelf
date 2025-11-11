@@ -2,7 +2,6 @@ package net.darkhax.bookshelf.common.impl.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.darkhax.bookshelf.common.api.commands.IEnumCommand;
 import net.darkhax.bookshelf.common.api.commands.PermissionLevel;
 import net.darkhax.bookshelf.common.api.loot.LootPoolEntryDescriptions;
@@ -81,7 +80,7 @@ public enum DebugCommands implements IEnumCommand {
         final HolderGetter<LootTable> lootTables = server.reloadableRegistries().lookup().lookup(Registries.LOOT_TABLE).orElseThrow();
         for (ResourceLocation table : server.reloadableRegistries().getKeys(Registries.LOOT_TABLE)) {
             if (table.getPath().startsWith("chests") || table.getPath().startsWith("dispensers") || table.getPath().startsWith("gameplay") || table.getPath().startsWith("pots") || table.getPath().startsWith("spawners")) {
-                out.add("## " + table.toString());
+                out.add("## " + table);
                 lootTables.get(ResourceKey.create(Registries.LOOT_TABLE, table)).ifPresent(val -> {
                     if (val.value() instanceof AccessorLootTable accessor) {
                         for (int index = 0; index < accessor.bookshelf$pools().size(); index++) {
@@ -111,7 +110,7 @@ public enum DebugCommands implements IEnumCommand {
     }
 
     @Override
-    public int run(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    public int run(CommandContext<CommandSourceStack> context) {
         final StringJoiner joiner = new StringJoiner(System.lineSeparator());
         this.debugTask.getDebugOutput(context.getSource().getServer(), joiner);
         Constants.LOG.warn(joiner.toString());

@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Defines a custom payload packet. These packets must be registered using an
- * {@link net.darkhax.bookshelf.common.api.registry.IContentProvider}.
+ * {@link net.darkhax.bookshelf.common.api.registry.ContentProvider}.
  *
  * @param <T> The type of the payload.
  */
