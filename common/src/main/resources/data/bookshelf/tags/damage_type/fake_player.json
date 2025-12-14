@@ -1,0 +1,11 @@
+{
+  "comments": [
+    "Damage types in this tag are considered fake player damage. Fake player  ",
+    "damage acts like regular player damage but does not require an associated",
+    "player entity. This allows something like a block or mob to deal damage  ",
+    "that causes mobs to drop exp and player only loot when killed.           "
+  ],
+  "values": [
+    "bookshelf:fake_player"
+  ]
+}
