@@ -21,6 +21,7 @@
     "access.particles.AccessSimpleParticleType",
     "patch.advancement.MixinPlayerAdvancements",
     "patch.block.MixinDecoratedPotPatterns",
+    "patch.entity.MixinLightningBolt",
     "patch.entity.MixinLivingEntity",
     "patch.item.MixinCreativeModeTab",
     "patch.level.MixinRecipeManager",
