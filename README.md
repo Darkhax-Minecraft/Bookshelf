@@ -37,8 +37,8 @@ repositories {
 dependencies {
 
     // Forge devs
-    // EXAMPLE: compile "net.darkhax.bookshelf:Bookshelf-Forge-1.19.2:16.1.11"
-    // compile "net.darkhax.bookshelf:Bookshelf-Forge-MCVERSION:BOOKSHELF_VERSION"
+    // EXAMPLE: implementation fg.deobf("net.darkhax.bookshelf:Bookshelf-Forge-1.19.2:16.1.11")
+    // implementation fg.deobf("net.darkhax.bookshelf:Bookshelf-Forge-MCVERSION:BOOKSHELF_VERSION")
 
     // Fabric / Quilt devs
     // EXAMPLE: modImplementation "net.darkhax.bookshelf:Bookshelf-Fabric-1.19.2:16.1.11"
