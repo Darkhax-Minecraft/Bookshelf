@@ -9,6 +9,7 @@ import net.minecraft.DetectedVersion;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.CompletableFuture;
 
 public class FabricMod implements ModInitializer {
 
@@ -16,7 +17,7 @@ public class FabricMod implements ModInitializer {
     public void onInitialize() {
         BookshelfMod.getInstance().init();
         Services.CONTENT.get().forEach(FabricRegistryHelper::new);
-        checkForUpdates();
+        CompletableFuture.runAsync(FabricMod::checkForUpdates);
     }
 
     private static void checkForUpdates() {
