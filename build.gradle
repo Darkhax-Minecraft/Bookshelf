@@ -1,19 +1,5 @@
-// TODO remove buildscript block
-buildscript {
-
-    repositories {
-
-        mavenCentral()
-    }
-
-    dependencies {
-
-        classpath group: 'com.diluv.schoomp', name: 'Schoomp', version: '1.2.6'
-    }
-}
-
 plugins {
-    id 'fabric-loom' version '1.2-SNAPSHOT' apply(false)
+    id 'fabric-loom' version '1.6-SNAPSHOT' apply(false)
     id 'net.minecraftforge.gradle' version '[6.0,6.2)' apply(false)
     id 'org.spongepowered.gradle.vanilla' version '0.2.1-SNAPSHOT' apply(false)
     id 'org.spongepowered.mixin' version '0.7-SNAPSHOT' apply(false)
@@ -52,64 +38,6 @@ subprojects {
         maven {
             name = 'Sponge / Mixin'
             url = 'https://repo.spongepowered.org/repository/maven-public/'
-        }
-    }
-}
-
-
-import com.diluv.schoomp.Webhook
-import com.diluv.schoomp.message.Message
-import com.diluv.schoomp.message.embed.Embed
-
-task postDiscord() {
-
-    doLast {
-        try {
-
-            // Create a new webhook instance for Discord
-            def webhook = new Webhook(findProperty('curse_discord_webhook'), "${project.ext.mod_name} CurseForge Gradle Upload")
-
-            // Craft a message to send to Discord using the webhook.
-            def message = new Message()
-            message.setUsername("Mod Update: ${project.ext.mod_name}")
-            message.setContent("${project.ext.mod_name} ${project.version} for Minecraft ${project.ext.minecraft_version} has been published!")
-
-            def embed = new Embed();
-            def downloadSources = new StringJoiner('\n')
-
-            if (project(':forge').hasProperty('curse_file_url')) {
-
-                downloadSources.add("<:forge:916233930091401266> [Forge](${project(':forge').findProperty('curse_file_url')})")
-            }
-
-            if (project(':fabric').hasProperty('curse_file_url')) {
-
-                downloadSources.add("<:fabric:916233929722314763> [Fabric](${project(':fabric').findProperty('curse_file_url')})")
-            }
-
-            // Add Curseforge DL link if available.
-            def downloadString = downloadSources.toString()
-
-            if (downloadString && !downloadString.isEmpty()) {
-
-                embed.addField('Download', downloadString, false)
-            }
-
-            // Add a changelog field if a changelog exists.
-            if (project.ext.mod_changelog && !project.ext.mod_changelog.isEmpty()) {
-
-                embed.addField('Changelog', getChangelog(1500), false)
-            }
-
-            embed.setColor(0xFF8000)
-            message.addEmbed(embed)
-
-            webhook.sendMessage(message)
-        }
-
-        catch (IOException e) {
-
-            project.logger.error('Failed to push CF Discord webhook.')
         }
     }
 }
