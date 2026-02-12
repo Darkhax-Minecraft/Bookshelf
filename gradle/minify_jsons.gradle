@@ -16,33 +16,27 @@
  {"key":"value"}
 */
 
-import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
+import groovy.json.*
 
 processResources {
-
     doLast {
-
         def jsonMinifyStart = System.currentTimeMillis()
         def jsonMinified = 0
         def jsonBytesSaved = 0
-
+        def generator = new JsonGenerator.Options().disableUnicodeEscaping().build()
+        
         fileTree(dir: outputs.files.asPath, include: ['**/*.json', '**/*.mcmeta']).each {
-
             try {
                 def oldLength = it.length()
-                it.text = JsonOutput.toJson(new JsonSlurper().parse(it))
+                it.text = generator.toJson(new JsonSlurper().parse(it))
                 jsonBytesSaved += oldLength - it.length()
                 jsonMinified++
             }
-
             catch (Exception e) {
-
                 project.logger.error("Failed to minify file '${it.path}'.")
                 throw e
             }
         }
-
         project.logger.lifecycle("Minified ${jsonMinified} files. Saved ${jsonBytesSaved} bytes before compression. Took ${System.currentTimeMillis() - jsonMinifyStart}ms.")
     }
 }
