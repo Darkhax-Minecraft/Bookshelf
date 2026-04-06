@@ -7,31 +7,31 @@ import net.darkhax.bookshelf.common.api.data.conditions.ConditionType;
 import net.darkhax.bookshelf.common.api.data.conditions.ILoadCondition;
 import net.darkhax.bookshelf.common.api.data.conditions.LoadConditions;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
-import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Set;
 
 public class RegistryContains<T> implements ILoadCondition {
 
-    public static final ResourceLocation BLOCK = Constants.id("block_exists");
-    public static final ResourceLocation ITEM = Constants.id("item_exists");
-    public static final ResourceLocation ENTITY = Constants.id("entity_exists");
-    public static final ResourceLocation BLOCK_ENTITY = Constants.id("block_entity_exists");
+    public static final Identifier BLOCK = BookshelfMod.id("block_exists");
+    public static final Identifier ITEM = BookshelfMod.id("item_exists");
+    public static final Identifier ENTITY = BookshelfMod.id("entity_exists");
+    public static final Identifier BLOCK_ENTITY = BookshelfMod.id("block_entity_exists");
 
     private final Registry<T> registry;
-    private final Set<ResourceLocation> requiredIds;
+    private final Set<Identifier> requiredIds;
     private final CachedSupplier<ConditionType> type;
 
 
-    public static <RT> MapCodec<RegistryContains<RT>> of(ResourceLocation typeId, Registry<RT> registry) {
+    public static <RT> MapCodec<RegistryContains<RT>> of(Identifier typeId, Registry<RT> registry) {
         return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                MapCodecs.RESOURCE_LOCATION.getSet("values", RegistryContains::getRequiredEntries)
+                MapCodecs.RESOURCE_LOCATION.setCodec("values", RegistryContains::getRequiredEntries)
         ).apply(instance, requiredEntries -> new RegistryContains<>(typeId, registry, requiredEntries)));
     }
 
-    private RegistryContains(ResourceLocation typeId, Registry<T> registry, Set<ResourceLocation> requiredIds) {
+    private RegistryContains(Identifier typeId, Registry<T> registry, Set<Identifier> requiredIds) {
         this.registry = registry;
         this.requiredIds = requiredIds;
         this.type = CachedSupplier.cache(() -> LoadConditions.getType(typeId));
@@ -39,7 +39,7 @@ public class RegistryContains<T> implements ILoadCondition {
 
     @Override
     public boolean allowLoading() {
-        for (ResourceLocation id : this.requiredIds) {
+        for (Identifier id : this.requiredIds) {
             if (!this.registry.containsKey(id)) {
                 return false;
             }
@@ -47,7 +47,7 @@ public class RegistryContains<T> implements ILoadCondition {
         return true;
     }
 
-    public Set<ResourceLocation> getRequiredEntries() {
+    public Set<Identifier> getRequiredEntries() {
         return this.requiredIds;
     }
 

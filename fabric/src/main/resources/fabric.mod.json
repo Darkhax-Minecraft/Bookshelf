@@ -1,49 +1,48 @@
 {
-    "schemaVersion": 1,
-    "id": "${mod_id}",
-    "version": "${version}",
-    "name": "${mod_name}",
-    "description": "${mod_description}",
-    "authors": [
-        "${mod_author}"
+  "schemaVersion": 1,
+  "id": "bookshelf",
+  "version": "26.1.1.0",
+  "name": "Bookshelf",
+  "description": "Bookshelf is a library mod that provides code, frameworks, and utilities for other mods. Many mods make use of Bookshelf and are powered by its code.",
+  "authors": [
+    "Darkhax"
+  ],
+  "contributors": [
+    "This project is made possible with Patreon support from players like you. Thank you!",
+    "lothrazar, techsquirrel, Keyana , Darkosto, Tobias Ward, noobanidus"
+  ],
+  "contact": {
+    "sources": "https://github.com/Darkhax-Minecraft/Bookshelf",
+    "issues": "https://github.com/Darkhax-Minecraft/Bookshelf/issues",
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/bookshelf"
+  },
+  "license": "LGPL 2.1",
+  "icon": "logo_bookshelf.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.darkhax.bookshelf.fabric.BookshelfFabric"
     ],
-    "contributors": [
-        "This project is made possible with Patreon support from players like you. Thank you!",
-        "${patreon_pledges}"
-    ],
-    "contact": {
-        "sources": "${mod_repo}",
-        "issues": "${mod_repo}/issues",
-        "homepage": "${curse_page}"
-    },
-    "license": "${mod_license}",
-    "icon": "logo_${mod_id}.png",
-    "environment": "${mod_target_environment}",
-    "entrypoints": {
-        "main": [
-          "net.darkhax.bookshelf.fabric.impl.FabricMod"
-        ],
-        "client": [
-            "net.darkhax.bookshelf.fabric.impl.FabricModClient"
-        ]
-    },
-    "mixins": [
-        "${mod_id}.mixins.json",
-        "${mod_id}.fabric.mixins.json"
-    ],
-    "depends": {
-        "fabricloader": ">=${fabric_loader_version}",
-        "fabric-api": "*",
-        "minecraft": "${minecraft_version}",
-        "java": ">=${java_version}"
-    },
-    "custom": {
-        "modmenu": {
-            "links": {
-                "modmenu.curseforge": "${curse_page}",
-                "modmenu.modrinth": "${modrinth_page}",
-                "modmenu.patreon": "${patreon_url}?${mod_id}"
-            }
-        }
+    "client": [
+      "net.darkhax.bookshelf.fabric.BookshelfFabricClient"
+    ]
+  },
+  "mixins": [
+    "bookshelf.common.mixins.json",
+    "bookshelf.fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.6",
+    "fabric-api": "*",
+    "minecraft": ">=26.1.1",
+    "java": ">=25"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/bookshelf",
+        "modmenu.modrinth": "https://modrinth.com/mod/bookshelf-lib"
+      }
     }
+  }
 }

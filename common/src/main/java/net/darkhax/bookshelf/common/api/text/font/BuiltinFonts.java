@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf.common.api.text.font;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Set;
 
@@ -31,20 +31,20 @@ public enum BuiltinFonts implements IFontEntry {
      */
     UNIFORM("uniform");
 
-    public static final Set<ResourceLocation> FONT_IDS = Set.of(DEFAULT.fontId, ALT.fontId, ILLAGER.fontId, UNIFORM.fontId);
+    public static final Set<Identifier> FONT_IDS = Set.of(DEFAULT.fontId, ALT.fontId, ILLAGER.fontId, UNIFORM.fontId);
 
-    private final ResourceLocation fontId;
+    private final Identifier fontId;
 
     BuiltinFonts(String path) {
-        this(ResourceLocation.tryBuild("minecraft", path));
+        this(Identifier.tryBuild("minecraft", path));
     }
 
-    BuiltinFonts(ResourceLocation fontID) {
+    BuiltinFonts(Identifier fontID) {
         this.fontId = fontID;
     }
 
     @Override
-    public ResourceLocation identifier() {
+    public Identifier identifier() {
         return this.fontId;
     }
 }

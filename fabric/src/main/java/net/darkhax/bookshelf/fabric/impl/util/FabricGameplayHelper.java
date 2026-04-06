@@ -1,7 +1,7 @@
 package net.darkhax.bookshelf.fabric.impl.util;
 
 import net.darkhax.bookshelf.common.api.util.IGameplayHelper;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
@@ -11,12 +11,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.function.BiFunction;
 
 public class FabricGameplayHelper implements IGameplayHelper {
 
@@ -46,13 +40,7 @@ public class FabricGameplayHelper implements IGameplayHelper {
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityType.Builder<T> blockEntityBuilder(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks) {
-        BlockEntityType.BlockEntitySupplier<T> supplier = factory::apply;
-        return BlockEntityType.Builder.of(supplier, validBlocks);
-    }
-
-    @Override
     public CreativeModeTab.Builder tabBuilder() {
-        return FabricItemGroup.builder();
+        return FabricCreativeModeTab.builder();
     }
 }

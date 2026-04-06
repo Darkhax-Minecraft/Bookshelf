@@ -12,39 +12,20 @@ import net.darkhax.bookshelf.common.api.registry.ContentProvider;
 import net.darkhax.bookshelf.common.api.registry.adapters.GameRegistryAdapter;
 import net.darkhax.bookshelf.common.api.registry.adapters.GenericRegistryAdapter;
 import net.darkhax.bookshelf.common.api.service.Services;
-import net.darkhax.bookshelf.common.impl.command.BlockTagToItemTagCommand;
-import net.darkhax.bookshelf.common.impl.command.DebugCommands;
-import net.darkhax.bookshelf.common.impl.command.EnchantCommand;
-import net.darkhax.bookshelf.common.impl.command.FontCommand;
-import net.darkhax.bookshelf.common.impl.command.HandCommand;
-import net.darkhax.bookshelf.common.impl.command.RenameCommand;
-import net.darkhax.bookshelf.common.impl.command.StructureCommand;
-import net.darkhax.bookshelf.common.impl.command.TranslateCommand;
-import net.darkhax.bookshelf.common.impl.data.conditions.And;
-import net.darkhax.bookshelf.common.impl.data.conditions.ModLoaded;
-import net.darkhax.bookshelf.common.impl.data.conditions.Not;
-import net.darkhax.bookshelf.common.impl.data.conditions.OnPlatform;
-import net.darkhax.bookshelf.common.impl.data.conditions.Or;
-import net.darkhax.bookshelf.common.impl.data.conditions.RegistryContains;
-import net.darkhax.bookshelf.common.impl.data.criterion.item.NamespaceItemPredicate;
+import net.darkhax.bookshelf.common.impl.command.*;
+import net.darkhax.bookshelf.common.impl.data.conditions.*;
 import net.darkhax.bookshelf.common.impl.data.criterion.trigger.AdvancementTrigger;
-import net.darkhax.bookshelf.common.impl.data.ingredient.AllOfIngredient;
-import net.darkhax.bookshelf.common.impl.data.ingredient.BlockTagIngredient;
-import net.darkhax.bookshelf.common.impl.data.ingredient.EitherIngredient;
-import net.darkhax.bookshelf.common.impl.data.ingredient.FalseIngredient;
-import net.darkhax.bookshelf.common.impl.data.ingredient.ModIdIngredient;
+import net.darkhax.bookshelf.common.impl.data.ingredient.*;
 import net.darkhax.bookshelf.common.impl.data.loot.entries.LootItemStack;
 import net.darkhax.bookshelf.common.impl.registry.adapter.CommandArgumentAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.IngredientTypeAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.LootDescriptionAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.LootEntryTypeAdapter;
 import net.minecraft.advancements.CriterionTrigger;
-import net.minecraft.advancements.critereon.ItemSubPredicate;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntries;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 
 public class BookshelfContent implements ContentProvider {
 
@@ -59,13 +40,12 @@ public class BookshelfContent implements ContentProvider {
 
     @Override
     public void defineCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, Commands.CommandSelection selection) {
-        final LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal(Constants.MOD_ID).requires(PermissionLevel.MODERATOR);
+        final LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal(BookshelfMod.MOD_ID).requires(PermissionLevel.MODERATOR);
         root.then(HandCommand.build(context));
         root.then(FontCommand.build());
         root.then(RenameCommand.build(context));
         root.then(EnchantCommand.build(context));
         root.then(TranslateCommand.build(context));
-        root.then(BlockTagToItemTagCommand.build(context));
         root.then(StructureCommand.build());
         if (Services.PLATFORM.isDevelopmentEnvironment() && Services.PLATFORM.isPhysicalClient() && selection == Commands.CommandSelection.INTEGRATED) {
             root.then(DebugCommands.build(context));
@@ -93,35 +73,30 @@ public class BookshelfContent implements ContentProvider {
     }
 
     @Override
-    public void defineItemSubPredicates(GameRegistryAdapter<ItemSubPredicate.Type<?>> registry) {
-        registry.add("namespace", new ItemSubPredicate.Type<>(NamespaceItemPredicate.CODEC));
-    }
-
-    @Override
     public void defineCriteriaTriggers(GameRegistryAdapter<CriterionTrigger<?>> registry) {
         registry.add("earn_advancement", AdvancementTrigger.TRIGGER);
     }
 
     @Override
-    public void defineLootEntryTypes(LootEntryTypeAdapter registry) {
-        registry.add("item_stack", LootItemStack.CODEC);
+    public void defineLootEntryTypes(GameRegistryAdapter<MapCodec<? extends LootPoolEntryContainer>> registry) {
+        registry.add("item_stack", LootItemStack.MAP_CODEC);
     }
 
     @Override
     public void defineLootDescriptions(LootDescriptionAdapter registry) {
-        registry.registryFunc().accept(LootPoolEntries.EMPTY, LootPoolEntryDescriptions.EMPTY);
-        registry.registryFunc().accept(LootPoolEntries.ITEM, LootPoolEntryDescriptions.ITEM);
-        registry.registryFunc().accept(LootPoolEntries.LOOT_TABLE, LootPoolEntryDescriptions.LOOT_TABLE);
-        registry.registryFunc().accept(LootPoolEntries.DYNAMIC, LootPoolEntryDescriptions.DYNAMIC);
-        registry.registryFunc().accept(LootPoolEntries.TAG, LootPoolEntryDescriptions.TAG);
-        registry.registryFunc().accept(LootPoolEntries.ALTERNATIVES, LootPoolEntryDescriptions.COMPOSITE);
-        registry.registryFunc().accept(LootPoolEntries.SEQUENCE, LootPoolEntryDescriptions.COMPOSITE);
-        registry.registryFunc().accept(LootPoolEntries.GROUP, LootPoolEntryDescriptions.COMPOSITE);
-        registry.registryFunc().accept(BuiltInRegistries.LOOT_POOL_ENTRY_TYPE.get(Constants.id("item_stack")), LootPoolEntryDescriptions.ITEM_STACK);
+        registry.add("empty", LootPoolEntryDescriptions.EMPTY);
+        registry.add("item", LootPoolEntryDescriptions.ITEM);
+        registry.add("loot_table", LootPoolEntryDescriptions.LOOT_TABLE);
+        registry.add("dynamic", LootPoolEntryDescriptions.DYNAMIC);
+        registry.add("tag", LootPoolEntryDescriptions.TAG);
+        registry.add("alternatives", LootPoolEntryDescriptions.COMPOSITE);
+        registry.add("sequence", LootPoolEntryDescriptions.COMPOSITE);
+        registry.add("group", LootPoolEntryDescriptions.COMPOSITE);
+        registry.add(BookshelfMod.id("item_stack"), LootPoolEntryDescriptions.ITEM_STACK);
     }
 
     @Override
     public String namespace() {
-        return Constants.MOD_ID;
+        return BookshelfMod.MOD_ID;
     }
 }

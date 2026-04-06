@@ -3,7 +3,7 @@ package net.darkhax.bookshelf.common.api.text.format;
 import net.darkhax.bookshelf.common.api.util.TextHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public interface IPropertyFormat {
 
@@ -12,7 +12,7 @@ public interface IPropertyFormat {
      *
      * @return The namespace ID for the format.
      */
-    ResourceLocation formatKey();
+    Identifier formatKey();
 
     /**
      * Formats a property and value using the alignment.
@@ -22,6 +22,6 @@ public interface IPropertyFormat {
      * @return A component that represents an aligned property and value.
      */
     default MutableComponent format(Component property, Component value) {
-        return TextHelper.fromResourceLocation("format", null, this.formatKey(), property, value);
+        return TextHelper.fromIdentifier("format", null, this.formatKey(), property, value);
     }
 }

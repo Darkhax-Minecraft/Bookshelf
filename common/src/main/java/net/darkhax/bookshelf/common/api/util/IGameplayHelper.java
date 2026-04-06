@@ -8,17 +8,14 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainerHolder;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.BiFunction;
 
 public interface IGameplayHelper {
 
@@ -32,13 +29,8 @@ public interface IGameplayHelper {
      * @return The crafting remainder, or empty if none.
      */
     default ItemStack getCraftingRemainder(ItemStack input) {
-        if (input.getItem().hasCraftingRemainingItem()) {
-            final Item remainder = input.getItem().getCraftingRemainingItem();
-            if (remainder != null) {
-                return remainder.getDefaultInstance();
-            }
-        }
-        return ItemStack.EMPTY;
+        final ItemStackTemplate remainder = input.getItem().getCraftingRemainder();
+        return remainder != null ? remainder.create() : ItemStack.EMPTY;
     }
 
     /**
@@ -112,17 +104,6 @@ public interface IGameplayHelper {
     }
 
     /**
-     * Creates a new block entity builder using platform specific code. This is required because the underlying block
-     * entity factory is not accessible.
-     *
-     * @param factory     A factory that creates a new block entity instance.
-     * @param validBlocks The array of valid blocks for the block entity.
-     * @param <T>         The type of the block entity.
-     * @return A new builder for your block entity type.
-     */
-    <T extends BlockEntity> BlockEntityType.Builder<T> blockEntityBuilder(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks);
-
-    /**
      * Drops the crafting remainder of an item into the world if the item has one.
      *
      * @param level The world to drop the item within.
@@ -130,7 +111,7 @@ public interface IGameplayHelper {
      * @param old   The base item to spawn a remainder from.
      */
     default void dropRemainders(Level level, BlockPos pos, ItemStack old) {
-        if (!level.isClientSide && !old.isEmpty()) {
+        if (!level.isClientSide() && !old.isEmpty()) {
             final ItemStack remainder = this.getCraftingRemainder(old);
             if (!remainder.isEmpty()) {
                 Block.popResource(level, pos, remainder.copy());

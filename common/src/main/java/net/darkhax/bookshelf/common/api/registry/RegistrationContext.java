@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf.common.api.registry;
 
-import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
@@ -64,7 +64,7 @@ public final class RegistrationContext {
      */
     public void addPotPatternItem(Item item, ResourceKey<DecoratedPotPattern> pattern) {
         if (INTERNAL_POT_PATTERN_ITEMS.containsKey(item)) {
-            Constants.LOG.warn("Mod {} has changed the pot pattern of {} to {} from {}.", this.namespace(), BuiltInRegistries.ITEM.getKey(item), pattern.location(), INTERNAL_POT_PATTERN_ITEMS.get(item).location());
+            BookshelfMod.LOG.warn("Mod {} has changed the pot pattern of {} to {} from {}.", this.namespace(), BuiltInRegistries.ITEM.getKey(item), pattern.identifier(), INTERNAL_POT_PATTERN_ITEMS.get(item).identifier());
         }
         INTERNAL_POT_PATTERN_ITEMS.put(item, pattern);
     }

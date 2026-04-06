@@ -5,8 +5,8 @@ import net.darkhax.bookshelf.common.api.registry.RegistryReference;
 import net.darkhax.bookshelf.common.api.registry.adapters.GameRegistryAdapter;
 import net.darkhax.bookshelf.common.impl.recipe.RecipeTypeImpl;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeType;
 
 import java.util.function.BiConsumer;
@@ -19,6 +19,6 @@ public class RecipeTypeAdapter extends GameRegistryAdapter<RecipeType<?>> {
     }
 
     public RegistryReference<ResourceKey<RecipeType<?>>, RecipeType<?>> add(String key) {
-        return this.add(key, () -> new RecipeTypeImpl<>(ResourceLocation.fromNamespaceAndPath(context.namespace(), key)));
+        return this.add(key, () -> new RecipeTypeImpl<>(Identifier.fromNamespaceAndPath(context.namespace(), key)));
     }
 }

@@ -7,7 +7,7 @@ import net.darkhax.bookshelf.common.api.registry.RegistryReference;
 import net.darkhax.bookshelf.common.api.registry.adapters.GenericRegistryAdapter;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 @SuppressWarnings("rawtypes")
 public class IngredientTypeAdapter extends GenericRegistryAdapter<IngredientTypeAdapter.IngredientType> {
 
-    public IngredientTypeAdapter(RegistrationContext context, BiConsumer<ResourceLocation, Supplier<IngredientType>> registryFunc) {
+    public IngredientTypeAdapter(RegistrationContext context, BiConsumer<Identifier, Supplier<IngredientType>> registryFunc) {
         super(context, registryFunc);
     }
 
@@ -31,7 +31,7 @@ public class IngredientTypeAdapter extends GenericRegistryAdapter<IngredientType
      * @param <T>    The type of the ingredient logic.
      * @return A reference to the registry entry.
      */
-    public <T extends IngredientLogic<T>> RegistryReference<ResourceLocation, IngredientType> add(String key, MapCodec<T> codec, StreamCodec<RegistryFriendlyByteBuf, T> stream) {
+    public <T extends IngredientLogic<T>> RegistryReference<Identifier, IngredientType> add(String key, MapCodec<T> codec, StreamCodec<RegistryFriendlyByteBuf, T> stream) {
         return this.add(key, new IngredientType<>(codec, stream));
     }
 
@@ -42,6 +42,7 @@ public class IngredientTypeAdapter extends GenericRegistryAdapter<IngredientType
      * @param stream A ByteBuf codec that reads the ingredient from network data.
      * @param <T>    The type of the custom ingredient logic.
      */
-    public record IngredientType<T extends IngredientLogic<T>>(MapCodec<T> codec, StreamCodec<RegistryFriendlyByteBuf, T> stream) {
+    public record IngredientType<T extends IngredientLogic<T>>(MapCodec<T> codec,
+                                                               StreamCodec<RegistryFriendlyByteBuf, T> stream) {
     }
 }

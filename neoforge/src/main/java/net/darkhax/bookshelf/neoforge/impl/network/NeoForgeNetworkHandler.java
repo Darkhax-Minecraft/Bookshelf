@@ -4,11 +4,11 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.darkhax.bookshelf.common.api.network.INetworkHandler;
 import net.darkhax.bookshelf.common.api.network.IPacket;
-import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -21,7 +21,7 @@ import java.util.Objects;
 
 public class NeoForgeNetworkHandler implements INetworkHandler {
 
-    private static final Map<ResourceLocation, IPacket<?>> PACKETS = new HashMap<>();
+    private static final Map<Identifier, IPacket<?>> PACKETS = new HashMap<>();
     private static final Multimap<String, IPacket<?>> PACKETS_BY_NAMESPACE = HashMultimap.create();
 
     @Override
@@ -34,7 +34,7 @@ public class NeoForgeNetworkHandler implements INetworkHandler {
         for (String namespace : PACKETS_BY_NAMESPACE.keySet()) {
             final PayloadRegistrar registrar = event.registrar(namespace).optional();
             for (IPacket packet : PACKETS_BY_NAMESPACE.get(namespace)) {
-                final IPayloadHandler handler = (payload, ctx) -> packet.handle(ctx.player() instanceof ServerPlayer serverPlayer ? serverPlayer : null, !ctx.player().level().isClientSide, payload);
+                final IPayloadHandler handler = (payload, ctx) -> packet.handle(ctx.player() instanceof ServerPlayer serverPlayer ? serverPlayer : null, !ctx.player().level().isClientSide(), payload);
                 switch (packet.destination()) {
                     case SERVER_TO_CLIENT ->
                             registrar.optional().commonToClient(packet.type(), packet.streamCodec(), handler);
@@ -49,13 +49,13 @@ public class NeoForgeNetworkHandler implements INetworkHandler {
 
     @Override
     public <T extends CustomPacketPayload> void sendToServer(T payload) {
-        final ResourceLocation id = payload.type().id();
+        final Identifier id = payload.type().id();
         if (!PACKETS.containsKey(id)) {
-            Constants.LOG.error("Attempted to send unregistered packet {} to the server.", id);
+            BookshelfMod.LOG.error("Attempted to send unregistered packet {} to the server.", id);
             throw new IllegalStateException("Attempted to send unregistered packet " + id + " to the server.");
         }
         if (Minecraft.getInstance().player == null) {
-            Constants.LOG.error("Attempted to send packet {} to the server before a player instance is available.", id);
+            BookshelfMod.LOG.error("Attempted to send packet {} to the server before a player instance is available.", id);
             throw new IllegalStateException("Attempted to send packet " + id + " to the server before a player instance is available.");
         }
         Objects.requireNonNull(Minecraft.getInstance().getConnection()).getConnection().send(new ServerboundCustomPayloadPacket(payload));
@@ -63,16 +63,16 @@ public class NeoForgeNetworkHandler implements INetworkHandler {
 
     @Override
     public <T extends CustomPacketPayload> void sendToPlayer(ServerPlayer recipient, T payload) {
-        final ResourceLocation id = payload.type().id();
+        final Identifier id = payload.type().id();
         if (!PACKETS.containsKey(id)) {
-            Constants.LOG.error("Attempted to send unregistered packet {} to player {}.", id, recipient);
+            BookshelfMod.LOG.error("Attempted to send unregistered packet {} to player {}.", id, recipient);
             throw new IllegalStateException("Attempted to send unregistered packet " + id + " to player " + recipient);
         }
         PacketDistributor.sendToPlayer(recipient, payload);
     }
 
     @Override
-    public boolean canSendPacket(ServerPlayer recipient, ResourceLocation payloadId) {
+    public boolean canSendPacket(ServerPlayer recipient, Identifier payloadId) {
         return recipient.connection.hasChannel(payloadId);
     }
 }

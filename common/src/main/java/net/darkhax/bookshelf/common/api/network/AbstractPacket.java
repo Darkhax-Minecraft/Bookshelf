@@ -3,7 +3,7 @@ package net.darkhax.bookshelf.common.api.network;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * A basic packet implementation.
@@ -33,7 +33,7 @@ public abstract class AbstractPacket<T extends CustomPacketPayload> implements I
      * @param id    The packet ID.
      * @param codec The payload codec.
      */
-    public AbstractPacket(ResourceLocation id, StreamCodec<RegistryFriendlyByteBuf, T> codec) {
+    public AbstractPacket(Identifier id, StreamCodec<RegistryFriendlyByteBuf, T> codec) {
         this(id, codec, Destination.SERVER_TO_CLIENT);
     }
 
@@ -44,7 +44,7 @@ public abstract class AbstractPacket<T extends CustomPacketPayload> implements I
      * @param codec     The payload codec.
      * @param direction The intended destination of the packet.
      */
-    public AbstractPacket(ResourceLocation id, StreamCodec<RegistryFriendlyByteBuf, T> codec, Destination direction) {
+    public AbstractPacket(Identifier id, StreamCodec<RegistryFriendlyByteBuf, T> codec, Destination direction) {
         this.type = new CustomPacketPayload.Type<>(id);
         this.codec = codec;
         this.direction = direction;

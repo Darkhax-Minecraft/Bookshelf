@@ -10,11 +10,11 @@ import net.darkhax.bookshelf.common.api.commands.IEnumCommand;
 import net.darkhax.bookshelf.common.api.data.codecs.map.MapCodecs;
 import net.darkhax.bookshelf.common.api.util.CommandHelper;
 import net.darkhax.bookshelf.common.api.util.TextHelper;
-import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -32,9 +32,9 @@ import java.util.function.Function;
 
 public enum HandCommand implements IEnumCommand {
 
-    ID((stack, level) -> TextHelper.copyText(Objects.requireNonNull(level.registryAccess().registryOrThrow(Registries.ITEM).getKey(stack.getItem())).toString())),
+    ID((stack, level) -> TextHelper.copyText(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(stack.getItem())).toString())),
     STRING((stack, level) -> TextHelper.copyText(stack.toString())),
-    INGREDIENT(json(MapCodecs.INGREDIENT.get(), (stack, level) -> Ingredient.of(stack))),
+    INGREDIENT(json(MapCodecs.INGREDIENT.get(), (stack, level) -> Ingredient.of(stack.getItem()))),
     STACK_JSON(json(MapCodecs.ITEM_STACK.get(), (stack, level) -> stack)),
     STACK_NBT(nbt(MapCodecs.ITEM_STACK.get(), (stack, level) -> stack)),
     COMPONENTS((stack, level) -> {
@@ -46,7 +46,7 @@ public enum HandCommand implements IEnumCommand {
     }),
     TAGS(((stack, level) -> {
         final StringJoiner joiner = new StringJoiner("\n");
-        stack.getTags().map(key -> key.location().toString()).sorted().forEach(joiner::add);
+        stack.tags().map(key -> key.location().toString()).sorted().forEach(joiner::add);
         return TextHelper.copyText(joiner.toString());
     }));
 
@@ -73,13 +73,13 @@ public enum HandCommand implements IEnumCommand {
             return this.format.formatItem(stack, level);
         }
         catch (Throwable e) {
-            Constants.LOG.error("Encountered an error when formatting item as {}.", this.name(), e);
+            BookshelfMod.LOG.error("Encountered an error when formatting item as {}.", this.name(), e);
         }
         return Component.translatable("commands.bookshelf.hand.error.internal").withStyle(ChatFormatting.RED);
     }
 
     private static <T> ItemFormat json(Codec<T> codec, BiFunction<ItemStack, ServerLevel, T> mapper) {
-        return fromCodec(JsonOps.INSTANCE, Constants.GSON_PRETTY::toJson, codec, mapper);
+        return fromCodec(JsonOps.INSTANCE, BookshelfMod.GSON_PRETTY::toJson, codec, mapper);
     }
 
     private static <T> ItemFormat nbt(Codec<T> codec, BiFunction<ItemStack, ServerLevel, T> mapper) {

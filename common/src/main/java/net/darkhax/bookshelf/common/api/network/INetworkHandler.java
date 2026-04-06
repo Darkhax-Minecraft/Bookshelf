@@ -1,7 +1,7 @@
 package net.darkhax.bookshelf.common.api.network;
 
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 
 /**
@@ -64,5 +64,5 @@ public interface INetworkHandler {
      * @param payloadId The payload type ID.
      * @return If the payload can be sent to the recipient player.
      */
-    boolean canSendPacket(ServerPlayer recipient, ResourceLocation payloadId);
+    boolean canSendPacket(ServerPlayer recipient, Identifier payloadId);
 }

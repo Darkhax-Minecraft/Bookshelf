@@ -6,7 +6,6 @@
   "format.bookshelf.spaced": "%s %s",
   "format.bookshelf.none": "%s%s",
   "format.bookshelf.unit_rate": "%s／%s",
-
   "__commands": "Command Text",
   "commands.bookshelf.hand.error.not_air": "アイテムは空または空気であってはいけません",
   "commands.bookshelf.hand.error.internal": "テキストの書式設定中にエラーが発生しました。詳細はログを確認してください",
@@ -17,7 +16,6 @@
   "commands.bookshelf.debug.too_long": "デバッグ出力が長すぎるためチャットに表示できません。ゲームのログを確認してください",
   "commands.bookshelf.structure.error.no_structures": "構造物が見つかりませんでした",
   "commands.bookshelf.structure.found": "%s個の構造物を発見しました！",
-  
   "__time_units": "Entries for various time units that may be displayed in game.",
   "units.bookshelf.tick": "ティック",
   "units.bookshelf.tick.plural": "ティック",
@@ -49,7 +47,6 @@
   "units.bookshelf.year": "年",
   "units.bookshelf.year.plural": "年",
   "units.bookshelf.year.abbreviated": "yr",
-
   "__months": "Names of the months",
   "month.bookshelf.january": "1月",
   "month.bookshelf.february": "2月",
@@ -63,7 +60,6 @@
   "month.bookshelf.october": "10月",
   "month.bookshelf.november": "11月",
   "month.bookshelf.december": "12月",
-
   "__days": "Names of the days",
   "day.bookshelf.sunday": "日曜日",
   "day.bookshelf.monday": "月曜日",
@@ -72,7 +68,6 @@
   "day.bookshelf.thursday": "木曜日",
   "day.bookshelf.friday": "金曜日",
   "day.bookshelf.saturday": "土曜日",
-
   "__moon_phases": "The names of different moon phases that appear in game.",
   "moon.phase.full": "満月",
   "moon.phase.waxing.gibbous": "十三夜",
@@ -82,7 +77,6 @@
   "moon.phase.waning.crescent": "二十五夜",
   "moon.phase.last.quarter": "下弦",
   "moon.phase.waning.gibbous": "十八夜",
-
   "__fonts": "Unofficial language entries for the vanilla text fonts.",
   "font.minecraft.default": "デフォルト",
   "font.minecraft.default.desc": "Minecraftの標準フォント",
@@ -96,7 +90,6 @@
   "font.minecraft.uniform": "Uniform",
   "font.minecraft.uniform.desc": "様式化されていないプレーンなフォント",
   "font.minecraft.uniform.preview": "The quick brown fox jumps over the lazy dog.",
-
   "__Tags": "Tag Names for Recipe Viewers",
   "tag.item.bookshelf.creative_tab.minecraft.colored_blocks": "色付きブロックタブ",
   "tag.item.bookshelf.creative_tab.minecraft.food_and_drinks": "食べ物と飲み物タブ",
@@ -109,16 +102,13 @@
   "tag.item.bookshelf.creative_tab.minecraft.natural_blocks": "天然ブロックタブ",
   "tag.item.bookshelf.creative_tab.minecraft.functional_blocks": "機能的ブロックタブ",
   "tag.item.bookshelf.creative_tab.minecraft.ingredients": "材料タブ",
-
   "tooltips.bookshelf.loot.unknown": "不明なドロップ",
   "tooltips.bookshelf.loot.unknown.desc": "現在、一部のドロップアイテムを表示できません",
   "tooltips.bookshelf.loot.empty": "空のドロップ",
   "tooltips.bookshelf.loot.empty.desc": "何もドロップしない可能性があります！",
   "tooltips.bookshelf.loot.dynamic": "動的ドロップ",
   "tooltips.bookshelf.loot.dynamic.desc": "特定の条件に依存したドロップアイテムがあります",
-
   "gui.jei.category.loot.name": "ルートテーブル",
-
   "table.minecraft.archaeology.desert_pyramid.name": "砂漠の寺院",
   "table.minecraft.archaeology.desert_well.name": "砂漠の井戸",
   "table.minecraft.archaeology.ocean_ruin_cold.name": "海底遺跡 - 冷たい海域",

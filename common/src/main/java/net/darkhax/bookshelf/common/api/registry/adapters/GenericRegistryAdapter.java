@@ -3,7 +3,7 @@ package net.darkhax.bookshelf.common.api.registry.adapters;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
 import net.darkhax.bookshelf.common.api.registry.RegistrationContext;
 import net.darkhax.bookshelf.common.api.registry.RegistryReference;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  *
  * @param <V> The type of value held by the registry.
  */
-public class GenericRegistryAdapter<V> implements RegistryAdapter<ResourceLocation, V> {
+public class GenericRegistryAdapter<V> implements RegistryAdapter<Identifier, V> {
 
     /**
      * Context that is shared by all registry adapters owned by the same namespace.
@@ -23,9 +23,9 @@ public class GenericRegistryAdapter<V> implements RegistryAdapter<ResourceLocati
     /**
      * A function that accepts and registers a key and value supplier.
      */
-    protected final BiConsumer<ResourceLocation, Supplier<V>> registryFunc;
+    protected final BiConsumer<Identifier, Supplier<V>> registryFunc;
 
-    public GenericRegistryAdapter(RegistrationContext context, BiConsumer<ResourceLocation, Supplier<V>> registryFunc) {
+    public GenericRegistryAdapter(RegistrationContext context, BiConsumer<Identifier, Supplier<V>> registryFunc) {
         this.context = context;
         this.registryFunc = registryFunc;
     }
@@ -37,7 +37,7 @@ public class GenericRegistryAdapter<V> implements RegistryAdapter<ResourceLocati
      * @param value A supplier that produces the value to register.
      * @return A reference to the registry entry.
      */
-    public RegistryReference<ResourceLocation, V> add(ResourceLocation id, Supplier<V> value) {
+    public RegistryReference<Identifier, V> add(Identifier id, Supplier<V> value) {
         final CachedSupplier<V> cache = CachedSupplier.cache(value);
         this.registryFunc.accept(id, cache);
         return RegistryReference.location(id, cache);
@@ -50,12 +50,12 @@ public class GenericRegistryAdapter<V> implements RegistryAdapter<ResourceLocati
      * @param value The value to register.
      * @return A reference to the registry entry.
      */
-    public RegistryReference<ResourceLocation, V> add(ResourceLocation id, V value) {
+    public RegistryReference<Identifier, V> add(Identifier id, V value) {
         return this.add(id, () -> value);
     }
 
     @Override
-    public RegistryReference<ResourceLocation, V> add(String key, Supplier<V> value) {
-        return this.add(ResourceLocation.fromNamespaceAndPath(this.context.namespace(), key), value);
+    public RegistryReference<Identifier, V> add(String key, Supplier<V> value) {
+        return this.add(Identifier.fromNamespaceAndPath(this.context.namespace(), key), value);
     }
 }

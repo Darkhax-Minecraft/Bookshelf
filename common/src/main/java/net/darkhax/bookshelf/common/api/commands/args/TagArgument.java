@@ -15,8 +15,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 
 import java.util.Arrays;
@@ -26,11 +26,11 @@ import java.util.concurrent.CompletableFuture;
 public class TagArgument<T> implements ArgumentType<TagKey<T>> {
 
     private static final MapCodec<ResourceKey<? extends Registry<?>>> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ResourceLocation.CODEC.fieldOf("registry_name").forGetter(ResourceKey::location)
+            Identifier.CODEC.fieldOf("registry_name").forGetter(ResourceKey::identifier)
     ).apply(instance, ResourceKey::createRegistryKey));
     private static final StreamCodec<FriendlyByteBuf, ResourceKey<? extends Registry<?>>> STREAM = StreamCodec.of(
-            (buf, key) -> buf.writeResourceLocation(key.location()),
-            buf -> ResourceKey.createRegistryKey(buf.readResourceLocation())
+            (buf, key) -> buf.writeIdentifier(key.identifier()),
+            buf -> ResourceKey.createRegistryKey(buf.readIdentifier())
     );
     public static final ArgumentSerializer<TagArgument<?>, ResourceKey<? extends Registry<?>>> SERIALIZER = new ArgumentSerializer<>(CODEC, STREAM, TagArgument::makeRaw, t -> t.registryKey);
     private static final Collection<String> EXAMPLES = Arrays.asList("minecraft:dirt", "minecraft:axolotl_food", "minecraft:enchantable/bow");
@@ -50,7 +50,7 @@ public class TagArgument<T> implements ArgumentType<TagKey<T>> {
 
     @Override
     public TagKey<T> parse(StringReader reader) throws CommandSyntaxException {
-        final ResourceLocation tagId = ResourceLocation.read(reader);
+        final Identifier tagId = Identifier.read(reader);
         return TagKey.create(this.registryKey, tagId);
     }
 

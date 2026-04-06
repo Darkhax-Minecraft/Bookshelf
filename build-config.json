@@ -1,0 +1,23 @@
+{
+  "mod": {
+    "name": "Bookshelf",
+    "group": "net.darkhax.bookshelf",
+    "authors": [
+      "Darkhax"
+    ],
+    "id": "bookshelf",
+    "license": "LGPL 2.1",
+    "description": "Bookshelf is a library mod that provides code, frameworks, and utilities for other mods. Many mods make use of Bookshelf and are powered by its code.",
+    "repo": "https://github.com/Darkhax-Minecraft/Bookshelf",
+    "client": false
+  },
+  "dependencies": [],
+  "curseforge": {
+    "slug": "bookshelf",
+    "id": "228525"
+  },
+  "modrinth": {
+    "slug": "bookshelf-lib",
+    "id": "uy4Cnpcm"
+  }
+}

@@ -1,8 +1,8 @@
-package net.darkhax.bookshelf.fabric.impl;
+package net.darkhax.bookshelf.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
 
-public class FabricModClient implements ClientModInitializer {
+public class BookshelfFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
     }

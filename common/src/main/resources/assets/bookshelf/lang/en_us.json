@@ -6,7 +6,6 @@
   "format.bookshelf.spaced": "%s %s",
   "format.bookshelf.none": "%s%s",
   "format.bookshelf.unit_rate": "%s/%s",
-
   "__commands": "Command Text",
   "commands.bookshelf.hand.error.not_air": "Item must not be empty or air!",
   "commands.bookshelf.hand.error.internal": "Error encountered while formatting text. Check logs for more info.",
@@ -17,7 +16,6 @@
   "commands.bookshelf.debug.too_long": "Debug output is too big for chat. Please check your game log instead.",
   "commands.bookshelf.structure.error.no_structures": "No structures could be found.",
   "commands.bookshelf.structure.found": "Found %s structure(s)!",
-
   "__time_units": "Entries for various time units that may be displayed in game.",
   "units.bookshelf.tick": "Tick",
   "units.bookshelf.tick.plural": "Ticks",
@@ -49,7 +47,6 @@
   "units.bookshelf.year": "Year",
   "units.bookshelf.year.plural": "Years",
   "units.bookshelf.year.abbreviated": "yr",
-
   "__months": "Names of the months",
   "month.bookshelf.january": "January",
   "month.bookshelf.february": "February",
@@ -63,7 +60,6 @@
   "month.bookshelf.october": "October",
   "month.bookshelf.november": "November",
   "month.bookshelf.december": "December",
-
   "__days": "Names of the days",
   "day.bookshelf.sunday": "Sunday",
   "day.bookshelf.monday": "Monday",
@@ -72,7 +68,6 @@
   "day.bookshelf.thursday": "Thursday",
   "day.bookshelf.friday": "Friday",
   "day.bookshelf.saturday": "Saturday",
-
   "__moon_phases": "The names of different moon phases that appear in game.",
   "moon.phase.full": "Full Moon",
   "moon.phase.waxing.gibbous": "Waxing Gibbous",
@@ -82,7 +77,6 @@
   "moon.phase.waning.crescent": "Waning Crescent",
   "moon.phase.last.quarter": "Last Quarter",
   "moon.phase.waning.gibbous": "Waning Gibbous",
-
   "__fonts": "Unofficial language entries for the vanilla text fonts.",
   "font.minecraft.default": "Default",
   "font.minecraft.default.desc": "The standard font in Minecraft.",
@@ -96,7 +90,6 @@
   "font.minecraft.uniform": "Uniform",
   "font.minecraft.uniform.desc": "A plain font that is not stylized.",
   "font.minecraft.uniform.preview": "The quick brown fox jumps over the lazy dog.",
-
   "__Tags": "Tag Names for Recipe Viewers",
   "tag.item.bookshelf.creative_tab.minecraft.colored_blocks": "Colored Blocks Tab",
   "tag.item.bookshelf.creative_tab.minecraft.food_and_drinks": "Food and Drinks Tab",
@@ -109,16 +102,13 @@
   "tag.item.bookshelf.creative_tab.minecraft.natural_blocks": "Natural Blocks Tab",
   "tag.item.bookshelf.creative_tab.minecraft.functional_blocks": "Functional Blocks Tab",
   "tag.item.bookshelf.creative_tab.minecraft.ingredients": "Ingredients Tab",
-
   "tooltips.bookshelf.loot.unknown": "Unknown Drop",
   "tooltips.bookshelf.loot.unknown.desc": "Some drops can not be displayed right now.",
   "tooltips.bookshelf.loot.empty": "Empty Drop",
   "tooltips.bookshelf.loot.empty.desc": "It's possible for nothing to drop!",
   "tooltips.bookshelf.loot.dynamic": "Dynamic Drop",
   "tooltips.bookshelf.loot.dynamic.desc": "Some drops depend on the context.",
-
   "gui.jei.category.loot.name": "Loot Table",
-
   "table.minecraft.archaeology.desert_pyramid.name": "Desert Pyramid",
   "table.minecraft.archaeology.desert_well.name": "Desert Well",
   "table.minecraft.archaeology.ocean_ruin_cold.name": "Ocean Ruin - Cold",

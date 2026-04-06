@@ -15,7 +15,7 @@ public class RenameCommand {
 
     public static LiteralArgumentBuilder<CommandSourceStack> build(CommandBuildContext context) {
         return Commands.literal("rename").requires(PermissionLevel.GAMEMASTER).then(Commands.argument("new_name", ComponentArgument.textComponent(context)).executes(ctx -> {
-            final Component newName = ComponentArgument.getComponent(ctx, "new_name");
+            final Component newName = ComponentArgument.getRawComponent(ctx, "new_name");
             if (ctx.getSource().getEntity() instanceof LivingEntity living && !living.getMainHandItem().isEmpty()) {
                 living.getMainHandItem().set(DataComponents.CUSTOM_NAME, newName);
             }

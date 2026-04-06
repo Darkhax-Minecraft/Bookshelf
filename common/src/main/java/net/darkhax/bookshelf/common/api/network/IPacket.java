@@ -3,7 +3,7 @@ package net.darkhax.bookshelf.common.api.network;
 import net.darkhax.bookshelf.common.api.PhysicalSide;
 import net.darkhax.bookshelf.common.api.annotation.OnlyFor;
 import net.darkhax.bookshelf.common.api.service.Services;
-import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -61,7 +61,7 @@ public interface IPacket<T extends CustomPacketPayload> {
      */
     default void toPlayer(ServerPlayer recipient, T payload) {
         if (!this.destination().handledByClient()) {
-            Constants.LOG.error("Attempted to send invalid packet {} to client! Class: {} Destination: {} Payload: {}", this.type().id(), this.getClass(), this.destination(), payload.toString());
+            BookshelfMod.LOG.error("Attempted to send invalid packet {} to client! Class: {} Destination: {} Payload: {}", this.type().id(), this.getClass(), this.destination(), payload.toString());
             throw new IllegalStateException("Attempted to send invalid packet " + this.type().id() + " to client!");
         }
         Services.NETWORK.sendToPlayer(recipient, payload);
@@ -107,11 +107,11 @@ public interface IPacket<T extends CustomPacketPayload> {
     @OnlyFor(PhysicalSide.CLIENT)
     default void toServer(T payload) {
         if (!this.destination().handledByServer()) {
-            Constants.LOG.error("Attempted to send invalid packet {} to server! Class: {} Destination: {} Payload: {}", this.type().id(), this.getClass(), this.destination(), payload.toString());
+            BookshelfMod.LOG.error("Attempted to send invalid packet {} to server! Class: {} Destination: {} Payload: {}", this.type().id(), this.getClass(), this.destination(), payload.toString());
             throw new IllegalStateException("Attempted to send invalid packet " + this.type().id() + " to server!");
         }
         if (Minecraft.getInstance().getConnection() == null) {
-            Constants.LOG.error("Attempted to send packet {} before a connection to a server has been established!", this.type().id());
+            BookshelfMod.LOG.error("Attempted to send packet {} before a connection to a server has been established!", this.type().id());
             throw new IllegalStateException("Attempted to send packet " + this.type().id() + " before being connected to a server!");
         }
         Services.NETWORK.sendToServer(payload);

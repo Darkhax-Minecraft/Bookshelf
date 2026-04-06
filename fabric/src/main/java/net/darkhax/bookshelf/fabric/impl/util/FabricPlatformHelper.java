@@ -5,7 +5,7 @@ import net.darkhax.bookshelf.common.api.PhysicalSide;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
 import net.darkhax.bookshelf.common.api.util.IPlatformHelper;
 import net.fabricmc.api.EnvType;
-import net.fabricmc.fabric.impl.gametest.FabricGameTestHelper;
+import net.fabricmc.fabric.impl.gametest.FabricGameTestRunner;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 
@@ -58,7 +58,7 @@ public class FabricPlatformHelper implements IPlatformHelper {
 
     @Override
     public boolean isTestingEnvironment() {
-        return FabricGameTestHelper.ENABLED;
+        return FabricGameTestRunner.ENABLED;
     }
 
     @Override

@@ -194,7 +194,7 @@ public class MathsHelper {
             default -> throw new IllegalArgumentException("Can not rotate face in direction " + facing.name());
         };
     }
-    
+
     /**
      * Offsets a position horizontally by a random amount.
      *

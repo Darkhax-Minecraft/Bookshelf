@@ -2,7 +2,7 @@ package net.darkhax.bookshelf.common.api.text.font;
 
 import net.darkhax.bookshelf.common.api.util.TextHelper;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public interface IFontEntry {
 
@@ -11,7 +11,7 @@ public interface IFontEntry {
      *
      * @return The font ID.
      */
-    ResourceLocation identifier();
+    Identifier identifier();
 
     /**
      * Gets the localized name of the font.
@@ -19,7 +19,7 @@ public interface IFontEntry {
      * @return The localized name of the font.
      */
     default MutableComponent displayName() {
-        return TextHelper.fromResourceLocation("font", null, this.identifier());
+        return TextHelper.fromIdentifier("font", null, this.identifier());
     }
 
     /**
@@ -28,7 +28,7 @@ public interface IFontEntry {
      * @return A description of the font.
      */
     default MutableComponent description() {
-        return TextHelper.fromResourceLocation("font", "desc", this.identifier());
+        return TextHelper.fromIdentifier("font", "desc", this.identifier());
     }
 
     /**
@@ -37,6 +37,6 @@ public interface IFontEntry {
      * @return The preview text for the font.
      */
     default MutableComponent preview() {
-        return TextHelper.fromResourceLocation("font", "preview", this.identifier());
+        return TextHelper.fromIdentifier("font", "preview", this.identifier());
     }
 }

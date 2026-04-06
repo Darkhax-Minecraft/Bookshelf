@@ -3,7 +3,7 @@ package net.darkhax.bookshelf.common.impl.resources;
 import net.darkhax.bookshelf.common.api.ModEntry;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
 import net.darkhax.bookshelf.common.api.service.Services;
-import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.minecraft.DetectedVersion;
 import net.minecraft.client.Minecraft;
 
@@ -19,7 +19,7 @@ public class ExtendedText {
     private ExtendedText() {
 
         this.register("java.version", () -> getProperty("java.version"));
-        this.register("minecraft.version", DetectedVersion.BUILT_IN::getName);
+        this.register("minecraft.version", () -> DetectedVersion.tryDetectVersion().name());
         this.register("loader.name", Services.PLATFORM::getName);
         this.register("player.name", () -> Minecraft.getInstance().getUser().getName());
 
@@ -48,7 +48,7 @@ public class ExtendedText {
             return System.getProperty(propertyName);
         }
         catch (Exception e) {
-            Constants.LOG.debug("Unable to read property {}", propertyName, e);
+            BookshelfMod.LOG.debug("Unable to read property {}", propertyName, e);
             return "unknown";
         }
     }

@@ -1,7 +1,7 @@
 package net.darkhax.bookshelf.common.api.data.loot;
 
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootTable;
 
@@ -15,7 +15,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
  * @param hash  A hash of the pools JSON data. This can be obtained using the bookshelf debug command in a development
  *              environment.
  */
-public record PoolTarget(ResourceLocation table, int index, int hash) {
+public record PoolTarget(Identifier table, int index, int hash) {
 
     public static final PoolTarget MINESHAFT_RARE = of(BuiltInLootTables.ABANDONED_MINESHAFT, 0, 1537257923);
     public static final PoolTarget MINESHAFT_UNCOMMON = of(BuiltInLootTables.ABANDONED_MINESHAFT, 1, -444048389);
@@ -44,6 +44,6 @@ public record PoolTarget(ResourceLocation table, int index, int hash) {
     public static final PoolTarget ARCHAEOLOGY_TRAIL_RUINS_RARE = of(BuiltInLootTables.TRAIL_RUINS_ARCHAEOLOGY_RARE, 0, 1848809003);
 
     public static PoolTarget of(ResourceKey<LootTable> table, int index, int hash) {
-        return new PoolTarget(table.location(), index, hash);
+        return new PoolTarget(table.identifier(), index, hash);
     }
 }

@@ -1,36 +1,36 @@
 modLoader = "javafml"
-loaderVersion = "${neoforge_loader_version_range}"
-license = "${mod_license}"
-issueTrackerURL="${mod_repo}/issues"
+license = "LGPL 2.1"
+issueTrackerURL = "https://github.com/Darkhax-Minecraft/Bookshelf/issues"
 
 [[mods]]
-modId = "${mod_id}"
-version = "${version}"
-displayName = "${mod_name}"
-updateJSONURL = "https://updates.blamejared.com/get?n=${mod_id}&gv=${minecraft_version}&ml=${platform}"
-displayURL = "${curse_page}"
-logoFile="logo_${mod_id}.png"
+modId = "bookshelf"
+version = "26.1.1.0"
+displayName = "Bookshelf"
+updateJSONURL = "https://updates.blamejared.com/get?n=bookshelf&gv=26.1.1&ml=neoforge"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/bookshelf"
+logoFile = "logo_bookshelf.png"
 logoBlur = false
-credits = "This project is made possible with Patreon support from players like you. Thank you! ${patreon_pledges}"
-authors = "${mod_author}"
-description = "${mod_description}"
+credits = "This project is made possible with Patreon support from players like you. Thank you! lothrazar, techsquirrel, Keyana , Darkosto, Tobias Ward, noobanidus"
+authors = "Darkhax"
+description = "Bookshelf is a library mod that provides code, frameworks, and utilities for other mods. Many mods make use of Bookshelf and are powered by its code."
 
 [[mixins]]
-config = "${mod_id}.mixins.json"
+config = "bookshelf.common.mixins.json"
 
 [[mixins]]
-config = "${mod_id}.neoforge.mixins.json"
+config = "bookshelf.neoforge.mixins.json"
 
-[[dependencies.${mod_id}]]
-modId = "neoforge"
-type = "required"
-versionRange = "[${neoforge_version},)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.${mod_id}]]
+[[dependencies.bookshelf]]
 modId = "minecraft"
 type = "required"
-versionRange = "${minecraft_version_range}"
+versionRange = "26.1.1"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.bookshelf]]
+modId = "neoforge"
+type = "required"
+versionRange = "[26.1.1.1-beta,)"
+ordering = "NONE"
+side = "BOTH"
+

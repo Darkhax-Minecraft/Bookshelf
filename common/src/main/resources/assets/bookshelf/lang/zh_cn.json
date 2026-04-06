@@ -6,12 +6,10 @@
   "format.bookshelf.spaced": "%s %s",
   "format.bookshelf.none": "%s%s",
   "format.bookshelf.unit_rate": "%s/%s",
-
   "__commands": "命令文本",
   "commands.bookshelf.hand.error.not_air": "物品不能为空或空气！",
   "commands.bookshelf.font.unsupported_block": "无法将字体应用到 '%s'。不支持这种方块",
   "commands.bookshelf.font.bad_sender": "字体重命名命令",
-
   "__time_units": "游戏中可能显示的各种时间单位的条目",
   "units.bookshelf.tick": "刻",
   "units.bookshelf.tick.plural": "刻",
@@ -43,7 +41,6 @@
   "units.bookshelf.year": "年",
   "units.bookshelf.year.plural": "年",
   "units.bookshelf.year.abbreviated": "yr",
-
   "__months": "月份名称",
   "month.bookshelf.january": "一月",
   "month.bookshelf.february": "二月",
@@ -57,7 +54,6 @@
   "month.bookshelf.october": "十月",
   "month.bookshelf.november": "十一月",
   "month.bookshelf.december": "十二月",
-
   "__days": "日期名称",
   "day.bookshelf.sunday": "星期日",
   "day.bookshelf.monday": "星期一",
@@ -66,7 +62,6 @@
   "day.bookshelf.thursday": "星期四",
   "day.bookshelf.friday": "星期五",
   "day.bookshelf.saturday": "星期六",
-
   "__moon_phases": "游戏中出现的不同月相的名称",
   "moon.phase.full": "满月",
   "moon.phase.waxing.gibbous": "盈凸月",
@@ -76,7 +71,6 @@
   "moon.phase.waning.crescent": "残月",
   "moon.phase.last.quarter": "下弦月",
   "moon.phase.waning.gibbous": "亏凸月",
-
   "__fonts": "原版字体的非官方语言条目",
   "font.minecraft.default": "默认",
   "font.minecraft.default.desc": "Minecraft 中的标准字体",

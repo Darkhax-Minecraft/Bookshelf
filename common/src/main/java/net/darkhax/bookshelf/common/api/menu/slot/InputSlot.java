@@ -1,13 +1,11 @@
 package net.darkhax.bookshelf.common.api.menu.slot;
 
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.Predicate;
 
@@ -16,14 +14,14 @@ import java.util.function.Predicate;
  */
 public class InputSlot extends Slot {
 
-    private final ResourceLocation emptyTexture;
+    private final Identifier emptyTexture;
     private final Predicate<ItemStack> canPlace;
-    
-    public InputSlot(Container container, int slot, int x, int y, ResourceLocation emptyTexture) {
+
+    public InputSlot(Container container, int slot, int x, int y, Identifier emptyTexture) {
         this(container, slot, x, y, emptyTexture, stack -> true);
     }
 
-    public InputSlot(Container container, int slot, int x, int y, ResourceLocation emptyTexture, Predicate<ItemStack> canPlace) {
+    public InputSlot(Container container, int slot, int x, int y, Identifier emptyTexture, Predicate<ItemStack> canPlace) {
         super(container, slot, x, y);
         this.emptyTexture = emptyTexture;
         this.canPlace = canPlace;
@@ -36,8 +34,8 @@ public class InputSlot extends Slot {
 
     @Nullable
     @Override
-    public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-        return Pair.of(InventoryMenu.BLOCK_ATLAS, this.emptyTexture);
+    public Identifier getNoItemIcon() {
+        return this.emptyTexture;
     }
 
     @Override

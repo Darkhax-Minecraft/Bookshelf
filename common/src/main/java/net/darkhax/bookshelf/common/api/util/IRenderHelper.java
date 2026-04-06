@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.data.AtlasIds;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import org.joml.Matrix4f;
@@ -17,8 +17,9 @@ import org.joml.Matrix4f;
 public interface IRenderHelper {
 
     IRenderHelper GET = Services.load(IRenderHelper.class);
-    default TextureAtlasSprite blockSprite(ResourceLocation texturePath) {
-        return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(texturePath);
+
+    default TextureAtlasSprite blockSprite(Identifier texturePath) {
+        return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(texturePath);
     }
 
     void renderFluidBox(PoseStack pose, FluidState fluidState, Level level, BlockPos pos, MultiBufferSource bufferSource, int light, int overlay);

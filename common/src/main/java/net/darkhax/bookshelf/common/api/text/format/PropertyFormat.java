@@ -1,7 +1,7 @@
 package net.darkhax.bookshelf.common.api.text.format;
 
-import net.darkhax.bookshelf.common.impl.Constants;
-import net.minecraft.resources.ResourceLocation;
+import net.darkhax.bookshelf.common.impl.BookshelfMod;
+import net.minecraft.resources.Identifier;
 
 /**
  * Formats a property string using various separator patterns.
@@ -33,14 +33,14 @@ public enum PropertyFormat implements IPropertyFormat {
      */
     NONE("none");
 
-    private final ResourceLocation formatKey;
+    private final Identifier formatKey;
 
     PropertyFormat(String key) {
-        this.formatKey = Constants.id(key);
+        this.formatKey = BookshelfMod.id(key);
     }
 
     @Override
-    public ResourceLocation formatKey() {
+    public Identifier formatKey() {
         return this.formatKey;
     }
 }

@@ -5,7 +5,7 @@ import net.darkhax.bookshelf.common.api.network.INetworkHandler;
 import net.darkhax.bookshelf.common.api.registry.ContentProvider;
 import net.darkhax.bookshelf.common.api.util.IGameplayHelper;
 import net.darkhax.bookshelf.common.api.util.IPlatformHelper;
-import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.common.impl.BookshelfMod;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,13 +28,13 @@ public class Services {
 
     public static <T> T load(Class<T> clazz) {
         final T loadedService = ServiceLoader.load(clazz).findFirst().orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
-        Constants.LOG.debug("Loaded {} for service {}.", loadedService, clazz);
+        BookshelfMod.LOG.debug("Loaded {} for service {}.", loadedService, clazz);
         return loadedService;
     }
 
     public static <T> List<T> loadMany(Class<T> clazz) {
         final List<T> entries = ServiceLoader.load(clazz).stream().map(ServiceLoader.Provider::get).toList();
-        Constants.LOG.debug("Loaded {} entries for {}. {}", entries.size(), clazz, entries.stream().map(entry -> entry.getClass().getCanonicalName()).collect(Collectors.joining()));
+        BookshelfMod.LOG.debug("Loaded {} entries for {}. {}", entries.size(), clazz, entries.stream().map(entry -> entry.getClass().getCanonicalName()).collect(Collectors.joining()));
         return entries;
     }
 

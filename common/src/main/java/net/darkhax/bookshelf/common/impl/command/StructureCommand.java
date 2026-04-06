@@ -11,7 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -30,19 +30,19 @@ public class StructureCommand {
         return root;
     }
 
-    private static Set<ResourceLocation> getUniqueStructuresAt(CommandContext<CommandSourceStack> context, BlockPos pos) {
+    private static Set<Identifier> getUniqueStructuresAt(CommandContext<CommandSourceStack> context, BlockPos pos) {
         final ServerLevel level = context.getSource().getLevel();
-        final Registry<Structure> registry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
-        return level.structureManager().startsForStructure(new ChunkPos(pos), s -> true).stream().filter(s -> s.getBoundingBox().isInside(pos)).map(s -> registry.getKey(s.getStructure())).collect(Collectors.toSet());
+        final Registry<Structure> registry = level.registryAccess().lookupOrThrow(Registries.STRUCTURE);
+        return level.structureManager().startsForStructure(ChunkPos.containing(pos), s -> true).stream().filter(s -> s.getBoundingBox().isInside(pos)).map(s -> registry.getKey(s.getStructure())).collect(Collectors.toSet());
     }
 
     private static int structureAt(CommandContext<CommandSourceStack> context, BlockPos pos) {
-        final Set<ResourceLocation> structures = getUniqueStructuresAt(context, pos);
+        final Set<Identifier> structures = getUniqueStructuresAt(context, pos);
         if (structures.isEmpty()) {
             context.getSource().sendFailure(Component.translatable("commands.bookshelf.structure.error.no_structures"));
         }
         else {
-            context.getSource().sendSuccess(() -> Component.translatable("commands.bookshelf.structure.found", structures.size()).append(Component.literal("\n  " + structures.stream().map(ResourceLocation::toString).collect(Collectors.joining("\n  ")))), false);
+            context.getSource().sendSuccess(() -> Component.translatable("commands.bookshelf.structure.found", structures.size()).append(Component.literal("\n  " + structures.stream().map(Identifier::toString).collect(Collectors.joining("\n  ")))), false);
         }
         return structures.size();
     }

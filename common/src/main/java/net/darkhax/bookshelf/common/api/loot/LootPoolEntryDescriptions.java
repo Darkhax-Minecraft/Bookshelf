@@ -5,20 +5,15 @@ import net.darkhax.bookshelf.common.api.function.CachedSupplier;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.data.loot.entries.LootItemStack;
 import net.darkhax.bookshelf.common.impl.registry.adapter.LootDescriptionAdapter;
-import net.darkhax.bookshelf.common.mixin.access.loot.AccessorCompositeEntryBase;
-import net.darkhax.bookshelf.common.mixin.access.loot.AccessorLootItem;
-import net.darkhax.bookshelf.common.mixin.access.loot.AccessorLootPool;
-import net.darkhax.bookshelf.common.mixin.access.loot.AccessorLootTable;
-import net.darkhax.bookshelf.common.mixin.access.loot.AccessorNestedLootTable;
-import net.darkhax.bookshelf.common.mixin.access.loot.AccessorTagEntry;
+import net.darkhax.bookshelf.common.mixin.access.loot.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -29,14 +24,9 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.DynamicLoot;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -66,7 +56,7 @@ public class LootPoolEntryDescriptions {
         return stack;
     });
 
-    private static final Map<LootPoolEntryType, LootPoolEntryDescriber> DESCRIBERS = new HashMap<>();
+    private static final Map<Identifier, LootPoolEntryDescriber> DESCRIBERS = new HashMap<>();
     private static boolean hasInitialized = false;
 
     public static final LootPoolEntryDescriber EMPTY = (server, entry, collector) -> {
@@ -103,7 +93,7 @@ public class LootPoolEntryDescriptions {
     };
     public static final LootPoolEntryDescriber ITEM_STACK = (server, entry, collector) -> {
         if (entry instanceof LootItemStack loot) {
-            collector.accept(loot.getBaseStack());
+            collector.accept(loot.getTemplate().create());
         }
     };
 
@@ -118,42 +108,42 @@ public class LootPoolEntryDescriptions {
     /**
      * Generates a list of unique items that can generate from a loot table.
      *
-     * @param registries The current registries.
-     * @param table      The loot table to examine.
+     * @param server The server instance.
+     * @param table  The loot table to examine.
      * @return A list containing the entries.
      */
-    public static List<ItemStack> getUniqueItems(@NotNull RegistryAccess registries, LootTable table) {
+    public static List<ItemStack> getUniqueItems(@NotNull MinecraftServer server, LootTable table) {
         final List<ItemStack> items = new ArrayList<>();
-        getPotentialItems(registries, table, stack -> addStacking(items, stack));
+        getPotentialItems(server, table, stack -> addStacking(items, stack));
         return items;
     }
 
     /**
      * Gets potential drops for a loot table.
      *
-     * @param registries The current registries.
-     * @param table      The loot table to examine.
-     * @param consumer   Collects entries in your desired format.
+     * @param server   The server instance.
+     * @param table    The loot table to examine.
+     * @param consumer Collects entries in your desired format.
      */
-    public static void getPotentialItems(@NotNull RegistryAccess registries, Either<ResourceKey<LootTable>, LootTable> table, Consumer<ItemStack> consumer) {
-        final LootTable resolved = table.map(rl -> registries.registryOrThrow(Registries.LOOT_TABLE).get(rl), Function.identity());
+    public static void getPotentialItems(@NotNull MinecraftServer server, Either<ResourceKey<LootTable>, LootTable> table, Consumer<ItemStack> consumer) {
+        final LootTable resolved = table.map(rl -> server.reloadableRegistries().getLootTable(rl), Function.identity());
         if (resolved != null) {
-            getPotentialItems(registries, resolved, consumer);
+            getPotentialItems(server, resolved, consumer);
         }
     }
 
     /**
      * Gets potential drops for a loot table.
      *
-     * @param registries The current registries.
-     * @param table      The loot table to examine.
-     * @param consumer   Collects entries in your desired format.
+     * @param server   The server instance.
+     * @param table    The loot table to examine.
+     * @param consumer Collects entries in your desired format.
      */
-    public static void getPotentialItems(@NotNull RegistryAccess registries, LootTable table, Consumer<ItemStack> consumer) {
+    public static void getPotentialItems(@NotNull MinecraftServer server, LootTable table, Consumer<ItemStack> consumer) {
         if (table instanceof AccessorLootTable tableAccess) {
             for (LootPool pool : tableAccess.bookshelf$pools()) {
                 if (pool instanceof AccessorLootPool poolAccess) {
-                    getPotentialItems(registries, poolAccess.bookshelf$entries(), consumer);
+                    getPotentialItems(server, poolAccess.bookshelf$entries(), consumer);
                 }
             }
         }
@@ -162,28 +152,28 @@ public class LootPoolEntryDescriptions {
     /**
      * Gets potential drops for a list of loot pool entries.
      *
-     * @param registries The current registries.
-     * @param entries    A list of entries to examine.
-     * @param collector  Collects entries in your desired format.
+     * @param server    The server instance.
+     * @param entries   A list of entries to examine.
+     * @param collector Collects entries in your desired format.
      */
-    public static void getPotentialItems(@NotNull RegistryAccess registries, List<LootPoolEntryContainer> entries, Consumer<ItemStack> collector) {
+    public static void getPotentialItems(@NotNull MinecraftServer server, List<LootPoolEntryContainer> entries, Consumer<ItemStack> collector) {
         for (LootPoolEntryContainer entry : entries) {
-            getPotentialItems(registries, entry, collector);
+            getPotentialItems(server, entry, collector);
         }
     }
 
     /**
      * Gets potential drops from a loot pool entry.
      *
-     * @param registries The current registries.
-     * @param entry      The pool entry to examine.
-     * @param collector  Collects entries in your desired format.
+     * @param server    The server instance.
+     * @param entry     The pool entry to examine.
+     * @param collector Collects entries in your desired format.
      */
-    public static void getPotentialItems(@NotNull RegistryAccess registries, LootPoolEntryContainer entry, Consumer<ItemStack> collector) {
+    public static void getPotentialItems(@NotNull MinecraftServer server, LootPoolEntryContainer entry, Consumer<ItemStack> collector) {
         bootstrap();
-        final LootPoolEntryDescriber describer = DESCRIBERS.get(entry.getType());
+        final LootPoolEntryDescriber describer = DESCRIBERS.get(BuiltInRegistries.LOOT_POOL_ENTRY_TYPE.getKey(entry.codec()));
         if (describer != null) {
-            describer.getPotentialDrops(registries, entry, collector);
+            describer.getPotentialDrops(server, entry, collector);
         }
         else {
             collector.accept(UNKNOWN_ITEM_DISPLAY.get());

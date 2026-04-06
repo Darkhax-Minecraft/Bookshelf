@@ -7,8 +7,8 @@ import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import net.darkhax.bookshelf.common.api.data.codecs.map.MapCodecHelper;
 import net.darkhax.bookshelf.common.api.data.codecs.map.MapCodecs;
-import net.darkhax.bookshelf.common.impl.Constants;
-import net.minecraft.resources.ResourceLocation;
+import net.darkhax.bookshelf.common.impl.BookshelfMod;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -16,20 +16,20 @@ import java.util.Map;
 
 public class LoadConditions {
 
-    private static final Map<ResourceLocation, ConditionType> CONDITION_TYPES = new HashMap<>();
-    private static final Codec<ConditionType> CONDITION_TYPE_CODEC = ResourceLocation.CODEC.xmap(CONDITION_TYPES::get, ConditionType::id);
-    public static final String LOAD_CONDITION_TAG = Constants.id("load_conditions").toString();
+    private static final Map<Identifier, ConditionType> CONDITION_TYPES = new HashMap<>();
+    private static final Codec<ConditionType> CONDITION_TYPE_CODEC = Identifier.CODEC.xmap(CONDITION_TYPES::get, ConditionType::id);
+    public static final String LOAD_CONDITION_TAG = BookshelfMod.id("load_conditions").toString();
     public static final Codec<ILoadCondition> CONDITION_CODEC = CONDITION_TYPE_CODEC.dispatch(ILoadCondition::getType, ConditionType::codec);
     public static final MapCodecHelper<ILoadCondition> CODEC_HELPER = new MapCodecHelper<>(CONDITION_CODEC);
 
     @Nullable
-    public static ConditionType getType(ResourceLocation id) {
+    public static ConditionType getType(Identifier id) {
         return CONDITION_TYPES.get(id);
     }
 
-    public static <T extends ILoadCondition> ConditionType register(ResourceLocation id, MapCodec<T> codec) {
+    public static <T extends ILoadCondition> ConditionType register(Identifier id, MapCodec<T> codec) {
         if (CONDITION_TYPES.containsKey(id)) {
-            Constants.LOG.warn("JSON Load Serializer ID {} has already been assigned to {}. Replacing with {}.", id, CONDITION_TYPES.get(id).codec(), codec);
+            BookshelfMod.LOG.warn("JSON Load Serializer ID {} has already been assigned to {}. Replacing with {}.", id, CONDITION_TYPES.get(id).codec(), codec);
         }
         final ConditionType type = new ConditionType(id, codec);
         CONDITION_TYPES.put(id, type);
@@ -43,7 +43,7 @@ public class LoadConditions {
      * @return An array of load conditions read from the data.
      */
     public static ILoadCondition[] getConditions(JsonElement conditionData) {
-        return MapCodecs.LOAD_CONDITION.getArray().decode(JsonOps.INSTANCE, conditionData).getOrThrow().getFirst();
+        return MapCodecs.LOAD_CONDITION.arrayCodec().decode(JsonOps.INSTANCE, conditionData).getOrThrow().getFirst();
     }
 
     /**

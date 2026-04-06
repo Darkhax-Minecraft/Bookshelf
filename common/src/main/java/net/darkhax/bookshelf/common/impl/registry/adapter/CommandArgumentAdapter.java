@@ -4,14 +4,14 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import net.darkhax.bookshelf.common.api.registry.RegistrationContext;
 import net.darkhax.bookshelf.common.api.registry.adapters.GenericRegistryAdapter;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public class CommandArgumentAdapter extends GenericRegistryAdapter<CommandArgumentAdapter.TypeInfo<?>> {
 
-    public CommandArgumentAdapter(RegistrationContext context, BiConsumer<ResourceLocation, Supplier<TypeInfo<?>>> registryFunc) {
+    public CommandArgumentAdapter(RegistrationContext context, BiConsumer<Identifier, Supplier<TypeInfo<?>>> registryFunc) {
         super(context, registryFunc);
     }
 
@@ -20,6 +20,7 @@ public class CommandArgumentAdapter extends GenericRegistryAdapter<CommandArgume
         this.add(id, new TypeInfo<>(argumentClass, info));
     }
 
-    public record TypeInfo<A extends ArgumentType<?>>(Class<? extends ArgumentType<?>> argType, ArgumentTypeInfo<A, ?> typeIfo) {
+    public record TypeInfo<A extends ArgumentType<?>>(Class<? extends ArgumentType<?>> argType,
+                                                      ArgumentTypeInfo<A, ?> typeIfo) {
     }
 }

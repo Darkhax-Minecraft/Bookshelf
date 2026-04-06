@@ -7,24 +7,8 @@ import net.darkhax.bookshelf.common.api.annotation.OnlyFor;
 import net.darkhax.bookshelf.common.api.data.conditions.ILoadCondition;
 import net.darkhax.bookshelf.common.api.registry.adapters.GameRegistryAdapter;
 import net.darkhax.bookshelf.common.api.registry.adapters.GenericRegistryAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.BlockEntityRendererAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.BlockRegistryAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.BlockRenderTypeAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.CommandArgumentAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.CreativeModeTabAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.IngredientTypeAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.LootDescriptionAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.LootEntryTypeAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.LootPoolAdditionAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.MenuScreenAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.MenuTypeAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.PacketAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.PotPatternAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.RecipeTypeAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.SoundEventAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.VillagerTradeAdapter;
+import net.darkhax.bookshelf.common.impl.registry.adapter.*;
 import net.minecraft.advancements.CriterionTrigger;
-import net.minecraft.advancements.critereon.ItemSubPredicate;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -32,14 +16,12 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.animal.CatVariant;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 
 /**
  * An interface for adding custom game content such as blocks and items during the appropriate stages of the game's
@@ -129,14 +111,6 @@ public interface ContentProvider {
     }
 
     /**
-     * Adds new trades to the villager trade pools.
-     *
-     * @param registry Adapts registry requests to the current mod loader.
-     */
-    default void defineTrades(VillagerTradeAdapter registry) {
-    }
-
-    /**
      * Registers new mob effects with the game.
      *
      * @param registry Adapts registry requests to the current mod loader.
@@ -153,27 +127,11 @@ public interface ContentProvider {
     }
 
     /**
-     * Registers an item predicate type with the game.
-     *
-     * @param registry Adapts registry requests to the current mod loader.
-     */
-    default void defineItemSubPredicates(GameRegistryAdapter<ItemSubPredicate.Type<?>> registry) {
-    }
-
-    /**
      * Registers entity types with the game.
      *
      * @param registry Adapts registry requests to the current mod loader.
      */
     default void defineEntities(GameRegistryAdapter<EntityType<?>> registry) {
-    }
-
-    /**
-     * Registers cat variants with the game.
-     *
-     * @param registry Adapts registry requests to the current mod loader.
-     */
-    default void defineCatVariants(GameRegistryAdapter<CatVariant> registry) {
     }
 
     /**
@@ -217,22 +175,6 @@ public interface ContentProvider {
     }
 
     /**
-     * Registers new loot conditions with the game.
-     *
-     * @param registry Adapts registry requests to the current mod loader.
-     */
-    default void defineLootConditions(GameRegistryAdapter<LootItemConditionType> registry) {
-    }
-
-    /**
-     * Registers new loot functions with the game.
-     *
-     * @param registry Adapts registry requests to the current mod loader.
-     */
-    default void defineLootFunctions(GameRegistryAdapter<LootItemFunctionType<?>> registry) {
-    }
-
-    /**
      * Registers new recipe serializers with the game.
      *
      * @param registry Adapts registry requests to the current mod loader.
@@ -245,7 +187,7 @@ public interface ContentProvider {
      *
      * @param registry Adapts registry requests to the current mod loader.
      */
-    default void defineLootEntryTypes(LootEntryTypeAdapter registry) {
+    default void defineLootEntryTypes(GameRegistryAdapter<MapCodec<? extends LootPoolEntryContainer>> registry) {
     }
 
     /**
@@ -305,15 +247,6 @@ public interface ContentProvider {
      */
     @OnlyFor(PhysicalSide.CLIENT)
     default void defineMenuScreens(MenuScreenAdapter registry) {
-    }
-
-    /**
-     * Associates blocks with a render type. For now, NeoForge also requires this to be defined in the model file.
-     *
-     * @param registry Adapts registry requests to the current mod loader.
-     */
-    @OnlyFor(PhysicalSide.CLIENT)
-    default void defineBlockRenderTypes(BlockRenderTypeAdapter registry) {
     }
 
     /**

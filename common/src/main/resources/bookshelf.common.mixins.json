@@ -10,6 +10,7 @@
     "access.block.AccessorCropBlock",
     "access.entity.AccessorEntity",
     "access.level.AccessorRecipeManager",
+    "access.level.AccessorRecipeMap",
     "access.loot.AccessorCompositeEntryBase",
     "access.loot.AccessorDynamicLoot",
     "access.loot.AccessorLootItem",
@@ -24,22 +25,17 @@
     "patch.entity.MixinLightningBolt",
     "patch.entity.MixinLivingEntity",
     "patch.item.MixinCreativeModeTab",
-    "patch.level.MixinRecipeManager",
     "patch.level.MixinWalkNodeEvaluator",
     "patch.loot.MixinLootDataType",
     "patch.loot.MixinLootItemKilledByPlayerCondition",
     "patch.loot.MixinLootPool",
     "patch.packs.MixinSimpleJsonResourceReloadListener",
-    "patch.potions.MixinPotionBrewing",
-    "patch.server.MixinReloadableServerResources"
+    "patch.potions.MixinPotionBrewing"
   ],
   "client": [
     "access.block.AccessorBlockEntityRenderers",
     "access.client.AccessorFontManager",
-    "access.client.AccessorItemBlockRenderTypes",
     "access.client.AccessorMinecraft",
-    "access.client.gui.AccessorAbstractWidget",
-    "patch.client.MixinClientPacketListener",
     "patch.locale.MixinClientLanguage"
   ],
   "server": [],

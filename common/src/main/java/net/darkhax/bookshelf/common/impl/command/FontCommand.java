@@ -17,16 +17,12 @@ import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BannerBlockEntity;
-import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.SignBlockEntity;
-import net.minecraft.world.level.block.entity.SignText;
+import net.minecraft.world.level.block.entity.*;
 
 import java.util.function.UnaryOperator;
 
@@ -46,7 +42,7 @@ public class FontCommand {
     }
 
     private static int speakWithFont(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        final ResourceLocation fontId = FontArgument.get(context);
+        final Identifier fontId = FontArgument.get(context);
         final Component inputMessage = TextHelper.applyFont(MessageArgument.getMessage(context, "message"), fontId);
         final Component txtMessage = Component.translatable("chat.type.announcement", context.getSource().getDisplayName(), inputMessage);
         context.getSource().getServer().getPlayerList().broadcastSystemMessage(txtMessage, false);
@@ -55,7 +51,7 @@ public class FontCommand {
 
     private static int renameItemWithFont(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
 
-        final ResourceLocation fontId = FontArgument.get(context);
+        final Identifier fontId = FontArgument.get(context);
         final Entity target = CommandHelper.getEntityOrSender("target", context);
 
         if (target instanceof LivingEntity living) {
@@ -73,7 +69,7 @@ public class FontCommand {
 
     private static int renameBlockWithFont(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         final ServerLevel world = context.getSource().getLevel();
-        final ResourceLocation fontId = FontArgument.get(context);
+        final Identifier fontId = FontArgument.get(context);
         final BlockPos pos = BlockPosArgument.getLoadedBlockPos(context, "pos");
         final BlockEntity tile = world.getBlockEntity(pos);
         if (tile != null && tile.hasLevel()) {
@@ -96,7 +92,7 @@ public class FontCommand {
         return 1;
     }
 
-    private static UnaryOperator<SignText> applySignFont(ResourceLocation fontId) {
+    private static UnaryOperator<SignText> applySignFont(Identifier fontId) {
         return text -> {
             SignText newText = text;
             for (int i = 0; i < 4; i++) {

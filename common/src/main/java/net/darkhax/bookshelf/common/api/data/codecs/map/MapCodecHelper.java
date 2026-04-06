@@ -3,8 +3,6 @@ package net.darkhax.bookshelf.common.api.data.codecs.map;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.random.SimpleWeightedRandomList;
-import net.minecraft.util.random.WeightedEntry;
 
 import java.lang.reflect.Array;
 import java.util.List;
@@ -34,11 +32,9 @@ public class MapCodecHelper<T> {
 
     @SafeVarargs
     public MapCodecHelper(Codec<T> elementCodec, T... vargs) {
-
         if (vargs.length > 0) {
             throw new IllegalArgumentException("The arrayBuilder must be empty!");
         }
-
         this.elementCodec = elementCodec;
         this.arrayBuilder = size -> (T[]) Array.newInstance(vargs.getClass().getComponentType(), size);
     }
@@ -49,7 +45,6 @@ public class MapCodecHelper<T> {
      * @return A Codec that can read and write single instances of the element.
      */
     public Codec<T> get() {
-
         return this.elementCodec;
     }
 
@@ -62,7 +57,6 @@ public class MapCodecHelper<T> {
      * @return A RecordCodecBuilder that represents a field.
      */
     public <O> RecordCodecBuilder<O, T> get(String fieldName, Function<O, T> getter) {
-
         return this.get().fieldOf(fieldName).forGetter(getter);
     }
 
@@ -77,7 +71,6 @@ public class MapCodecHelper<T> {
      * @return A RecordCodecBuilder that represents a field of the helpers type with a fallback value.
      */
     public <O> RecordCodecBuilder<O, T> get(String fieldName, Function<O, T> getter, T fallback) {
-
         return this.get().optionalFieldOf(fieldName, fallback).forGetter(getter);
     }
 
@@ -87,8 +80,7 @@ public class MapCodecHelper<T> {
      *
      * @return A Codec that can read and write an array.
      */
-    public Codec<T[]> getArray() {
-
+    public Codec<T[]> arrayCodec() {
         return MapCodecs.flexibleArray(this.get(), this.arrayBuilder);
     }
 
@@ -101,9 +93,8 @@ public class MapCodecHelper<T> {
      * @param <O>       The type of the RecordCodedBuilder.
      * @return A RecordCodecBuilder that represents a field for an array.
      */
-    public <O> RecordCodecBuilder<O, T[]> getArray(String fieldName, Function<O, T[]> getter) {
-
-        return this.getArray().fieldOf(fieldName).forGetter(getter);
+    public <O> RecordCodecBuilder<O, T[]> arrayCodec(String fieldName, Function<O, T[]> getter) {
+        return this.arrayCodec().fieldOf(fieldName).forGetter(getter);
     }
 
     /**
@@ -116,9 +107,8 @@ public class MapCodecHelper<T> {
      * @param <O>       The type of the RecordCodedBuilder.
      * @return A RecordCodecBuilder that represents a field for an array.
      */
-    public <O> RecordCodecBuilder<O, T[]> getArray(String fieldName, Function<O, T[]> getter, T... fallback) {
-
-        return this.getArray().optionalFieldOf(fieldName, fallback).forGetter(getter);
+    public <O> RecordCodecBuilder<O, T[]> arrayCodec(String fieldName, Function<O, T[]> getter, T... fallback) {
+        return this.arrayCodec().optionalFieldOf(fieldName, fallback).forGetter(getter);
     }
 
     /**
@@ -127,8 +117,7 @@ public class MapCodecHelper<T> {
      *
      * @return A Codec that can read and write a list.
      */
-    public Codec<List<T>> getList() {
-
+    public Codec<List<T>> listCodec() {
         return MapCodecs.flexibleList(this.get());
     }
 
@@ -141,9 +130,8 @@ public class MapCodecHelper<T> {
      * @param <O>       The type of the RecordCodedBuilder.
      * @return A RecordCodecBuilder that represents a field for a list.
      */
-    public <O> RecordCodecBuilder<O, List<T>> getList(String fieldName, Function<O, List<T>> getter) {
-
-        return this.getList().fieldOf(fieldName).forGetter(getter);
+    public <O> RecordCodecBuilder<O, List<T>> listCodec(String fieldName, Function<O, List<T>> getter) {
+        return this.listCodec().fieldOf(fieldName).forGetter(getter);
     }
 
     /**
@@ -156,9 +144,8 @@ public class MapCodecHelper<T> {
      * @param <O>       The type of the RecordCodedBuilder.
      * @return A RecordCodecBuilder that represents a field for a list.
      */
-    public <O> RecordCodecBuilder<O, List<T>> getList(String fieldName, Function<O, List<T>> getter, List<T> fallback) {
-
-        return this.getList().optionalFieldOf(fieldName, fallback).forGetter(getter);
+    public <O> RecordCodecBuilder<O, List<T>> listCodec(String fieldName, Function<O, List<T>> getter, List<T> fallback) {
+        return this.listCodec().optionalFieldOf(fieldName, fallback).forGetter(getter);
     }
 
     /**
@@ -171,9 +158,8 @@ public class MapCodecHelper<T> {
      * @param <O>       The type of the RecordCodedBuilder.
      * @return A RecordCodecBuilder that represents a field for a list.
      */
-    public <O> RecordCodecBuilder<O, List<T>> getList(String fieldName, Function<O, List<T>> getter, T... fallback) {
-
-        return this.getList().optionalFieldOf(fieldName, List.of(fallback)).forGetter(getter);
+    public <O> RecordCodecBuilder<O, List<T>> listCodec(String fieldName, Function<O, List<T>> getter, T... fallback) {
+        return this.listCodec().optionalFieldOf(fieldName, List.of(fallback)).forGetter(getter);
     }
 
     /**
@@ -182,8 +168,7 @@ public class MapCodecHelper<T> {
      *
      * @return A Codec that can read and write a set.
      */
-    public Codec<Set<T>> getSet() {
-
+    public Codec<Set<T>> setCodec() {
         return MapCodecs.flexibleSet(this.get());
     }
 
@@ -196,9 +181,8 @@ public class MapCodecHelper<T> {
      * @param <O>       The type of the RecordCodedBuilder.
      * @return A RecordCodecBuilder that represents a field for a set.
      */
-    public <O> RecordCodecBuilder<O, Set<T>> getSet(String fieldName, Function<O, Set<T>> getter) {
-
-        return this.getSet().fieldOf(fieldName).forGetter(getter);
+    public <O> RecordCodecBuilder<O, Set<T>> setCodec(String fieldName, Function<O, Set<T>> getter) {
+        return this.setCodec().fieldOf(fieldName).forGetter(getter);
     }
 
     /**
@@ -211,9 +195,8 @@ public class MapCodecHelper<T> {
      * @param <O>       The type of the RecordCodedBuilder.
      * @return A RecordCodecBuilder that represents a field for a set.
      */
-    public <O> RecordCodecBuilder<O, Set<T>> getSet(String fieldName, Function<O, Set<T>> getter, Set<T> fallback) {
-
-        return this.getSet().optionalFieldOf(fieldName, fallback).forGetter(getter);
+    public <O> RecordCodecBuilder<O, Set<T>> setCodec(String fieldName, Function<O, Set<T>> getter, Set<T> fallback) {
+        return this.setCodec().optionalFieldOf(fieldName, fallback).forGetter(getter);
     }
 
     /**
@@ -226,9 +209,8 @@ public class MapCodecHelper<T> {
      * @param <O>       The type of the RecordCodedBuilder.
      * @return A RecordCodecBuilder that represents a field for a set.
      */
-    public <O> RecordCodecBuilder<O, Set<T>> getSet(String fieldName, Function<O, Set<T>> getter, T... fallback) {
-
-        return this.getSet().optionalFieldOf(fieldName, Set.of(fallback)).forGetter(getter);
+    public <O> RecordCodecBuilder<O, Set<T>> setCodec(String fieldName, Function<O, Set<T>> getter, T... fallback) {
+        return this.setCodec().optionalFieldOf(fieldName, Set.of(fallback)).forGetter(getter);
     }
 
     /**
@@ -237,8 +219,7 @@ public class MapCodecHelper<T> {
      * @param fieldName The name of the field to read the value from.
      * @return A Codec that can read and write an optional value.
      */
-    public MapCodec<Optional<T>> getOptional(String fieldName) {
-
+    public MapCodec<Optional<T>> optionalCodec(String fieldName) {
         return this.get().optionalFieldOf(fieldName);
     }
 
@@ -250,8 +231,7 @@ public class MapCodecHelper<T> {
      * @param <O>       The type of the RecordCodedBuilder.
      * @return A RecordCodecBuilder that represents a field for an optional value.
      */
-    public <O> RecordCodecBuilder<O, Optional<T>> getOptional(String fieldName, Function<O, Optional<T>> getter) {
-
+    public <O> RecordCodecBuilder<O, Optional<T>> optionalCodec(String fieldName, Function<O, Optional<T>> getter) {
         return this.get().optionalFieldOf(fieldName).forGetter(getter);
     }
 
@@ -265,8 +245,7 @@ public class MapCodecHelper<T> {
      * @param <O>       The type of the RecordCodedBuilder.
      * @return A RecordCodecBuilder that represents a field for an optional value.
      */
-    public <O> RecordCodecBuilder<O, Optional<T>> getOptional(String fieldName, Function<O, Optional<T>> getter, Optional<T> fallback) {
-
+    public <O> RecordCodecBuilder<O, Optional<T>> optionalCodec(String fieldName, Function<O, Optional<T>> getter, Optional<T> fallback) {
         return MapCodecs.optional(this.get(), fieldName, fallback, true).forGetter(getter);
     }
 
@@ -276,8 +255,7 @@ public class MapCodecHelper<T> {
      * @param fieldName The name of the field to read the value from.
      * @return A Codec that can read and write nullable values.
      */
-    public MapCodec<T> getNullable(String fieldName) {
-
+    public MapCodec<T> nullableCodec(String fieldName) {
         return MapCodecs.nullable(this.get(), fieldName);
     }
 
@@ -289,54 +267,7 @@ public class MapCodecHelper<T> {
      * @param <O>       The type of the RecordCodedBuilder.
      * @return A RecordCodecBuilder that represents a field for a nullable value.
      */
-    public <O> RecordCodecBuilder<O, T> getNullable(String fieldName, Function<O, T> getter) {
-
-        return this.getNullable(fieldName).forGetter(getter);
-    }
-
-    /**
-     * Gets a codec that can read and write a weighted entry.
-     *
-     * @return A Codec that can read and write a weighted entry.
-     */
-    public Codec<WeightedEntry.Wrapper<T>> getWeighted() {
-
-        return WeightedEntry.Wrapper.codec(this.get());
-    }
-
-    /**
-     * A helper for defining a field for a weighted entry of this type in a RecordCodecBuilder.
-     *
-     * @param fieldName The name of the field to read the value from.
-     * @param getter    A getter that will read the value from an object of the RecordCodecBuilders type.
-     * @param <O>       The type of the RecordCodecBuilder.
-     * @return A RecordCodecBuilder that represents a field for a weighted entry.
-     */
-    public <O> RecordCodecBuilder<O, WeightedEntry.Wrapper<T>> getWeighted(String fieldName, Function<O, WeightedEntry.Wrapper<T>> getter) {
-
-        return WeightedEntry.Wrapper.codec(this.get()).fieldOf(fieldName).forGetter(getter);
-    }
-
-    /**
-     * Gets a codec that can read and write a weighted list.
-     *
-     * @return A Codec that can read and write a weighted list.
-     */
-    public Codec<SimpleWeightedRandomList<T>> getWeightedList() {
-
-        return SimpleWeightedRandomList.wrappedCodec(this.get());
-    }
-
-    /**
-     * A helper for defining a field for a weighted list of this type in a RecordCodecBuilder.
-     *
-     * @param fieldName The name of the field to read the value from.
-     * @param getter    A getter that will read the value from an object of the RecordCodecBuilders type.
-     * @param <O>       The type of the RecordCodecBuilder.
-     * @return A RecordCodecBuilder that represents a field for a weighted list.
-     */
-    public <O> RecordCodecBuilder<O, SimpleWeightedRandomList<T>> getWeightedList(String fieldName, Function<O, SimpleWeightedRandomList<T>> getter) {
-
-        return this.getWeightedList().fieldOf(fieldName).forGetter(getter);
+    public <O> RecordCodecBuilder<O, T> nullableCodec(String fieldName, Function<O, T> getter) {
+        return this.nullableCodec(fieldName).forGetter(getter);
     }
 }

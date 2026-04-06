@@ -9,27 +9,17 @@ import net.darkhax.bookshelf.common.mixin.access.client.AccessorMinecraft;
 import net.darkhax.bookshelf.common.mixin.access.entity.AccessorEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.HoverEvent;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.*;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -45,7 +35,7 @@ public class TextHelper {
      * @param args     An optional array of arguments to format into the translated text.
      * @return A translated component based on the resource location.
      */
-    public static MutableComponent fromResourceLocation(@Nullable String prefix, @Nullable String suffix, ResourceLocation location, Object... args) {
+    public static MutableComponent fromIdentifier(@Nullable String prefix, @Nullable String suffix, Identifier location, Object... args) {
         final StringBuilder builder = new StringBuilder();
         if (prefix != null) {
             builder.append(prefix).append(".");
@@ -118,7 +108,7 @@ public class TextHelper {
      * @return A component instance with the hover event applied.
      */
     public static MutableComponent withHover(Component base, Component hover) {
-        return withHover(base, new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover));
+        return withHover(base, new HoverEvent.ShowText(hover));
     }
 
     /**
@@ -139,8 +129,8 @@ public class TextHelper {
      * @param hover The ItemStack to display in the hover text.
      * @return A component instance with the hover event applied.
      */
-    public static MutableComponent withHover(Component base, ItemStack hover) {
-        return withHover(base, new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemStackInfo(hover)));
+    public static MutableComponent withHover(Component base, ItemStackTemplate hover) {
+        return withHover(base, new HoverEvent.ShowItem(hover));
     }
 
     /**
@@ -165,7 +155,7 @@ public class TextHelper {
         if (entity instanceof AccessorEntity access) {
             return access.bookshelf$createHoverEvent();
         }
-        return new HoverEvent(HoverEvent.Action.SHOW_ENTITY, new HoverEvent.EntityTooltipInfo(entity.getType(), entity.getUUID(), entity.getName()));
+        return new HoverEvent.ShowEntity(new HoverEvent.EntityTooltipInfo(entity.getType(), entity.getUUID(), entity.getName()));
     }
 
     /**
@@ -186,12 +176,12 @@ public class TextHelper {
      * @param font The ID of the font to apply.
      * @return The input text with the font applied to its style and the style of its subcomponents.
      */
-    public static Component applyFont(Component text, ResourceLocation font) {
+    public static Component applyFont(Component text, Identifier font) {
         if (text == CommonComponents.EMPTY) {
             return text;
         }
         final MutableComponent modified = mutable(text);
-        modified.withStyle(style -> style.withFont(font));
+        modified.withStyle(style -> style.withFont(new FontDescription.Resource(font)));
         modified.getSiblings().forEach(sib -> applyFont(sib, font));
         return modified;
     }
@@ -208,7 +198,7 @@ public class TextHelper {
      */
     @Nullable
     @OnlyFor(PhysicalSide.CLIENT)
-    public static MutableComponent lookupTranslationWithAlias(ResourceLocation id, String... keys) {
+    public static MutableComponent lookupTranslationWithAlias(Identifier id, String... keys) {
         for (String key : keys) {
             final MutableComponent lookupResult = lookupTranslation(key.formatted(id.getNamespace(), id.getPath()));
             if (lookupResult != null) {
@@ -301,7 +291,7 @@ public class TextHelper {
      * @return A text component that will copy the text when the player clicks on it.
      */
     public static MutableComponent setCopyText(MutableComponent component, String copy) {
-        return component.withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, copy)));
+        return component.withStyle(style -> style.withClickEvent(new ClickEvent.CopyToClipboard(copy)));
     }
 
     /**
@@ -457,7 +447,7 @@ public class TextHelper {
     }
 
     @OnlyFor(PhysicalSide.CLIENT)
-    public static Set<ResourceLocation> getRegisteredFonts() {
+    public static Set<Identifier> getRegisteredFonts() {
         if (!Services.PLATFORM.isPhysicalClient()) {
             return Collections.emptySet();
         }
@@ -479,9 +469,9 @@ public class TextHelper {
     public static String getTagName(TagKey<?> tag) {
         final StringBuilder builder = new StringBuilder();
         builder.append("tag.");
-        final ResourceLocation regId = tag.registry().location();
-        final ResourceLocation tagId = tag.location();
-        if (!regId.getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)) {
+        final Identifier regId = tag.registry().identifier();
+        final Identifier tagId = tag.location();
+        if (!regId.getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
             builder.append(regId.getNamespace()).append(".");
         }
         builder.append(regId.getPath().replace("/", ".")).append(".").append(tagId.getNamespace()).append(".").append(tagId.getPath().replace("/", ".").replace(":", "."));

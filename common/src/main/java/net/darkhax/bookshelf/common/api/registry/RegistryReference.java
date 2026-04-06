@@ -2,8 +2,8 @@ package net.darkhax.bookshelf.common.api.registry;
 
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 
 /**
  * Represents an entry in a game registry.
@@ -16,14 +16,14 @@ import net.minecraft.resources.ResourceLocation;
 public record RegistryReference<K, V>(K key, CachedSupplier<V> value) {
 
     /**
-     * A helper method that produces a reference for a registry that uses ResourceLocation based keys.
+     * A helper method that produces a reference for a registry that uses Identifier based keys.
      *
      * @param key   The key the value was registered with.
      * @param value A supplier that produces the registered value.
      * @param <V>   The type of the registered value.
      * @return A reference to the registry entry.
      */
-    public static <V> RegistryReference<ResourceLocation, V> location(ResourceLocation key, CachedSupplier<V> value) {
+    public static <V> RegistryReference<Identifier, V> location(Identifier key, CachedSupplier<V> value) {
         return new RegistryReference<>(key, value);
     }
 
@@ -47,7 +47,7 @@ public record RegistryReference<K, V>(K key, CachedSupplier<V> value) {
      * @param <V>         The type of the registered value.
      * @return A reference to the registry entry.
      */
-    public static <V> RegistryReference<ResourceKey<V>, V> resource(ResourceKey<? extends Registry<V>> registryKey, ResourceLocation key, CachedSupplier<V> value) {
+    public static <V> RegistryReference<ResourceKey<V>, V> resource(ResourceKey<? extends Registry<V>> registryKey, Identifier key, CachedSupplier<V> value) {
         return new RegistryReference<>(ResourceKey.create(registryKey, key), value);
     }
 
@@ -60,7 +60,7 @@ public record RegistryReference<K, V>(K key, CachedSupplier<V> value) {
      * @param <V>      The type of the registered value.
      * @return A reference to the registry entry.
      */
-    public static <V> RegistryReference<ResourceKey<V>, V> resource(Registry<V> registry, ResourceLocation key, CachedSupplier<V> value) {
+    public static <V> RegistryReference<ResourceKey<V>, V> resource(Registry<V> registry, Identifier key, CachedSupplier<V> value) {
         return resource(registry.key(), key, value);
     }
 }

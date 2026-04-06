@@ -2,11 +2,11 @@ package net.darkhax.bookshelf.common.mixin.patch.item;
 
 import net.darkhax.bookshelf.common.api.item.IItemHooks;
 import net.darkhax.bookshelf.common.api.util.DataHelper;
-import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -33,17 +33,17 @@ public class MixinCreativeModeTab {
     private Set<ItemStack> displayItemsSearchTab;
 
     @Unique
-    private static final Map<ResourceLocation, TagKey<Item>> TAG_CACHE = new HashMap<>();
+    private static final Map<Identifier, TagKey<Item>> TAG_CACHE = new HashMap<>();
 
     @Unique
-    private static final ResourceLocation OP_ITEMS_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "op_blocks");
+    private static final Identifier OP_ITEMS_ID = Identifier.fromNamespaceAndPath("minecraft", "op_blocks");
 
     @Inject(method = "buildContents(Lnet/minecraft/world/item/CreativeModeTab$ItemDisplayParameters;)V", at = @At("TAIL"))
     private void buildContents(CreativeModeTab.ItemDisplayParameters parameters, CallbackInfo cbi) {
         final CreativeModeTab self = (CreativeModeTab) (Object) this;
-        final ResourceLocation id = BuiltInRegistries.CREATIVE_MODE_TAB.getKey(self);
+        final Identifier id = BuiltInRegistries.CREATIVE_MODE_TAB.getKey(self);
         if (id != null && (!self.isAlignedRight() || id.equals(OP_ITEMS_ID)) && (!id.equals(OP_ITEMS_ID) || parameters.hasPermissions())) {
-            final TagKey<Item> tabTag = TAG_CACHE.computeIfAbsent(id, key -> TagKey.create(Registries.ITEM, Constants.id("creative_tab/" + key.getNamespace() + "/" + key.getPath())));
+            final TagKey<Item> tabTag = TAG_CACHE.computeIfAbsent(id, key -> TagKey.create(Registries.ITEM, BookshelfMod.id("creative_tab/" + key.getNamespace() + "/" + key.getPath())));
             for (Holder<Item> tagEntry : DataHelper.getTagOrEmpty(parameters.holders(), Registries.ITEM, tabTag)) {
                 try {
                     final Item item = tagEntry.value();
@@ -60,7 +60,7 @@ public class MixinCreativeModeTab {
                     }
                 }
                 catch (Exception e) {
-                    Constants.LOG.error("Unable to add tag entries to creative tab!", e);
+                    BookshelfMod.LOG.error("Unable to add tag entries to creative tab!", e);
                 }
             }
         }

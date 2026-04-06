@@ -28,7 +28,7 @@ public class TickAccumulator {
      * @param level The current game level.
      */
     public void tickUp(Level level) {
-        this.tick(level.isClientSide ? level.tickRateManager().tickrate() / 20f : 1f);
+        this.tick(level.isClientSide() ? level.tickRateManager().tickrate() / 20f : 1f);
     }
 
     /**
@@ -37,7 +37,7 @@ public class TickAccumulator {
      * @param level The current game level.
      */
     public void tickDown(Level level) {
-        this.tick(-(level.isClientSide ? level.tickRateManager().tickrate() / 20f : 1f));
+        this.tick(-(level.isClientSide() ? level.tickRateManager().tickrate() / 20f : 1f));
     }
 
     /**

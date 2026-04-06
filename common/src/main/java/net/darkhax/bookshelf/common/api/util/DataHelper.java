@@ -14,7 +14,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -68,7 +67,7 @@ public class DataHelper {
         }
         final ListTag subList = new ListTag();
         for (Tag tag : list) {
-            if (tag instanceof CompoundTag entry && entry.contains("Slot", Tag.TAG_BYTE) && slots.test(entry.getInt("Slot"))) {
+            if (tag instanceof CompoundTag entry && entry.contains("Slot") && slots.test(entry.getInt("Slot").get())) {
                 subList.add(tag);
             }
         }
@@ -106,19 +105,8 @@ public class DataHelper {
      * @param <T>    The type of the recipe.
      * @return A recipe serializer object.
      */
+    @Deprecated
     public static <T extends Recipe<?>> RecipeSerializer<T> recipeSerializer(MapCodec<T> codec, StreamCodec<RegistryFriendlyByteBuf, T> stream) {
-        return new RecipeSerializer<>() {
-            @NotNull
-            @Override
-            public MapCodec<T> codec() {
-                return codec;
-            }
-
-            @NotNull
-            @Override
-            public StreamCodec<RegistryFriendlyByteBuf, T> streamCodec() {
-                return stream;
-            }
-        };
+        return new RecipeSerializer<>(codec, stream);
     }
 }

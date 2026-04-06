@@ -3,7 +3,7 @@ package net.darkhax.bookshelf.common.mixin.patch.packs;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.darkhax.bookshelf.common.api.data.conditions.LoadConditions;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -22,7 +22,7 @@ public class MixinSimpleJsonResourceReloadListener {
      * the loader platform allowing them to be used in loader agnostic sourcesets.
      */
     @Inject(method = "prepare(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)Ljava/util/Map;", at = @At("RETURN"))
-    private void prepare(ResourceManager manager, ProfilerFiller profiler, CallbackInfoReturnable<Map<ResourceLocation, JsonElement>> cbi) {
+    private void prepare(ResourceManager manager, ProfilerFiller profiler, CallbackInfoReturnable<Map<Identifier, JsonElement>> cbi) {
         cbi.getReturnValue().entrySet().removeIf(entry -> entry.getValue() instanceof JsonObject obj && !LoadConditions.canLoad(obj));
     }
 }

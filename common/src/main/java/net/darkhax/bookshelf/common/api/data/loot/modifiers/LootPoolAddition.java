@@ -1,6 +1,6 @@
 package net.darkhax.bookshelf.common.api.data.loot.modifiers;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 
 /**
@@ -10,6 +10,6 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
  *              and debug entry additions.
  * @param entry The entry to add to the pool.
  */
-public record LootPoolAddition(ResourceLocation id, LootPoolEntryContainer entry) {
+public record LootPoolAddition(Identifier id, LootPoolEntryContainer entry) {
 
 }

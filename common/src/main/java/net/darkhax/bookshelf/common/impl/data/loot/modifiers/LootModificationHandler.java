@@ -3,23 +3,17 @@ package net.darkhax.bookshelf.common.impl.data.loot.modifiers;
 import net.darkhax.bookshelf.common.api.data.loot.modifiers.LootPoolAddition;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
 import net.darkhax.bookshelf.common.api.service.Services;
-import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.darkhax.bookshelf.common.impl.registry.adapter.LootPoolAdditionAdapter;
 import net.darkhax.bookshelf.common.mixin.access.loot.AccessorLootPool;
 import net.darkhax.bookshelf.common.mixin.access.loot.AccessorLootTable;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -34,9 +28,9 @@ public class LootModificationHandler {
         return handler;
     });
 
-    private final Map<ResourceLocation, Map<Integer, Map<Integer, List<LootPoolAddition>>>> newPoolEntries = new HashMap<>();
+    private final Map<Identifier, Map<Integer, Map<Integer, List<LootPoolAddition>>>> newPoolEntries = new HashMap<>();
 
-    private void addPoolEntry(ResourceLocation tableId, int poolIndex, int poolHash, LootPoolAddition entry) {
+    private void addPoolEntry(Identifier tableId, int poolIndex, int poolHash, LootPoolAddition entry) {
         // We consolidate entries together here to avoid additional iterations later on.
         // This also helps us avoid making the list mutable and immutable many times.
         final Map<Integer, Map<Integer, List<LootPoolAddition>>> tableEntries = newPoolEntries.computeIfAbsent(tableId, k -> new LinkedHashMap<>());
@@ -45,20 +39,20 @@ public class LootModificationHandler {
         hashEntries.add(entry);
     }
 
-    public void processLootTable(ResourceLocation tableId, LootTable table) {
+    public void processLootTable(Identifier tableId, LootTable table) {
         if (newPoolEntries.containsKey(tableId) && table instanceof AccessorLootTable accessor) {
             final List<LootPool> pools = accessor.bookshelf$pools();
             for (Map.Entry<Integer, Map<Integer, List<LootPoolAddition>>> indexEntry : newPoolEntries.get(tableId).entrySet()) {
                 for (Map.Entry<Integer, List<LootPoolAddition>> hashEntry : indexEntry.getValue().entrySet()) {
                     final LootPool targetPool = findPool(indexEntry.getKey(), hashEntry.getKey(), pools);
                     if (targetPool == null) {
-                        Constants.LOG.warn("Could not locate pool {} in table '{}'. The following loot additions will not be applied. {}", hashEntry.getKey(), tableId, hashEntry.getValue().stream().map(a -> a.id().toString()).collect(Collectors.joining(", ")));
+                        BookshelfMod.LOG.warn("Could not locate pool {} in table '{}'. The following loot additions will not be applied. {}", hashEntry.getKey(), tableId, hashEntry.getValue().stream().map(a -> a.id().toString()).collect(Collectors.joining(", ")));
                     }
                     else if (targetPool instanceof AccessorLootPool pool) {
                         final List<LootPoolEntryContainer> entries = new LinkedList<>(pool.bookshelf$entries());
                         for (LootPoolAddition addition : hashEntry.getValue()) {
                             entries.add(addition.entry());
-                            Constants.LOG.debug("Added entry `{}` to pool `{}` in table `{}`.", addition.id(), indexEntry.getKey(), tableId);
+                            BookshelfMod.LOG.debug("Added entry `{}` to pool `{}` in table `{}`.", addition.id(), indexEntry.getKey(), tableId);
                         }
                         pool.bookshelf$setEntries(Collections.unmodifiableList(entries));
                     }

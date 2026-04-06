@@ -5,40 +5,53 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
-
-import java.util.function.BiFunction;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class NeoForgeGameplayHelper implements IGameplayHelper {
 
     @Override
     public ItemStack getCraftingRemainder(ItemStack input) {
-        final Item item = input.getItem();
-        return item.hasCraftingRemainingItem(input) ? item.getCraftingRemainingItem(input) : ItemStack.EMPTY;
+        final ItemStackTemplate remainder = input.getItem().getCraftingRemainder(input);
+        return remainder != null ? remainder.create() : ItemStack.EMPTY;
     }
 
     @Override
     public ItemStack inventoryInsert(ServerLevel level, BlockPos pos, Direction side, ItemStack stack) {
-        final IItemHandler inventory = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, side);
-        return inventory != null ? ItemHandlerHelper.insertItemStacked(inventory, stack, false) : IGameplayHelper.super.inventoryInsert(level, pos, side, stack);
-    }
-
-    @Override
-    public <T extends BlockEntity> BlockEntityType.Builder<T> blockEntityBuilder(BiFunction<BlockPos, BlockState, T> factory, Block... validBlocks) {
-        BlockEntityType.BlockEntitySupplier<T> supplier = factory::apply;
-        return BlockEntityType.Builder.of(supplier, validBlocks);
+        final ResourceHandler<ItemResource> inventory = level.getCapability(Capabilities.Item.BLOCK, pos, side);
+        return inventory != null ? insertItemStacked(inventory, stack, false) : IGameplayHelper.super.inventoryInsert(level, pos, side, stack);
     }
 
     @Override
     public CreativeModeTab.Builder tabBuilder() {
         return CreativeModeTab.builder();
+    }
+
+    /**
+     * Attempts to insert an item into an inventory, stacking it with other stackable entries before occupying new
+     * slots. This logic is similar to when a player picks up an item from the ground.
+     *
+     * @param inventory The inventory to insert the item into.
+     * @param stack     The item to be inserted.
+     * @param simulate  If the transaction is simulated and should not be committed.
+     * @return The remaining ItemStack that was not inserted.
+     */
+    public static ItemStack insertItemStacked(ResourceHandler<ItemResource> inventory, ItemStack stack, boolean simulate) {
+        final int amount = stack.count();
+        try (Transaction transaction = Transaction.openRoot()) {
+            final int amountInserted = ResourceHandlerUtil.insertStacking(inventory, ItemResource.of(stack), amount, transaction);
+            if (amountInserted > 0) {
+                if (!simulate) {
+                    transaction.commit();
+                }
+                return amountInserted >= amount ? ItemStack.EMPTY : stack.copyWithCount(amount - amountInserted);
+            }
+            return stack;
+        }
     }
 }

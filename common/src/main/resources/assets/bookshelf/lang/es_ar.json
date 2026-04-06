@@ -6,7 +6,6 @@
   "format.bookshelf.spaced": "%s %s",
   "format.bookshelf.none": "%s%s",
   "format.bookshelf.unit_rate": "%s/%s",
-
   "__commands": "Texto de Comandos",
   "commands.bookshelf.hand.error.not_air": "¡El ítem no debe estar vacío o ser aire!",
   "commands.bookshelf.hand.error.internal": "Error encontrado al formatear el texto. Revisá los registros para más información.",
@@ -17,7 +16,6 @@
   "commands.bookshelf.debug.too_long": "La salida de depuración es demasiado grande para el chat. Por favor, revisá tu archivo de juego en su lugar.",
   "commands.bookshelf.structure.error.no_structures": "No se encontraron estructuras.",
   "commands.bookshelf.structure.found": "¡Se encontraron %s estructura(s)!",
-
   "__time_units": "Entradas para varias unidades de tiempo que pueden mostrarse en el juego.",
   "units.bookshelf.tick": "Tick",
   "units.bookshelf.tick.plural": "Ticks",
@@ -49,7 +47,6 @@
   "units.bookshelf.year": "Año",
   "units.bookshelf.year.plural": "Años",
   "units.bookshelf.year.abbreviated": "año",
-
   "__months": "Nombres de los meses",
   "month.bookshelf.january": "Enero",
   "month.bookshelf.february": "Febrero",
@@ -63,7 +60,6 @@
   "month.bookshelf.october": "Octubre",
   "month.bookshelf.november": "Noviembre",
   "month.bookshelf.december": "Diciembre",
-
   "__days": "Nombres de los días",
   "day.bookshelf.sunday": "Domingo",
   "day.bookshelf.monday": "Lunes",
@@ -72,7 +68,6 @@
   "day.bookshelf.thursday": "Jueves",
   "day.bookshelf.friday": "Viernes",
   "day.bookshelf.saturday": "Sábado",
-
   "__moon_phases": "Los nombres de las diferentes fases lunares que aparecen en el juego.",
   "moon.phase.full": "Luna Llena",
   "moon.phase.waxing.gibbous": "Gibosa Creciente",
@@ -82,7 +77,6 @@
   "moon.phase.waning.crescent": "Luna Menguante",
   "moon.phase.last.quarter": "Cuarto Menguante",
   "moon.phase.waning.gibbous": "Gibosa Menguante",
-
   "__fonts": "Entradas de idioma no oficiales para las fuentes de texto vanilla.",
   "font.minecraft.default": "Predeterminada",
   "font.minecraft.default.desc": "La fuente estándar en Minecraft.",
@@ -96,7 +90,6 @@
   "font.minecraft.uniform": "Uniforme",
   "font.minecraft.uniform.desc": "Una fuente simple sin estilo.",
   "font.minecraft.uniform.preview": "El rápido zorro marrón salta sobre el perro perezoso.",
-
   "__Tags": "Nombres de Etiquetas para Visores de Recetas",
   "tag.item.bookshelf.creative_tab.minecraft.colored_blocks": "Pestaña Bloques de Colores",
   "tag.item.bookshelf.creative_tab.minecraft.food_and_drinks": "Pestaña Comida y Bebidas",
@@ -109,16 +102,13 @@
   "tag.item.bookshelf.creative_tab.minecraft.natural_blocks": "Pestaña Bloques Naturales",
   "tag.item.bookshelf.creative_tab.minecraft.functional_blocks": "Pestaña Bloques Funcionales",
   "tag.item.bookshelf.creative_tab.minecraft.ingredients": "Pestaña Ingredientes",
-
   "tooltips.bookshelf.loot.unknown": "Botín Desconocido",
   "tooltips.bookshelf.loot.unknown.desc": "Algunos botines no se pueden mostrar en este momento.",
   "tooltips.bookshelf.loot.empty": "Botín Vacío",
   "tooltips.bookshelf.loot.empty.desc": "¡Es posible que no caiga nada!",
   "tooltips.bookshelf.loot.dynamic": "Botín Dinámico",
   "tooltips.bookshelf.loot.dynamic.desc": "Algunos botines dependen del contexto.",
-
   "gui.jei.category.loot.name": "Tabla de Botín",
-
   "table.minecraft.archaeology.desert_pyramid.name": "Pirámide del Desierto",
   "table.minecraft.archaeology.desert_well.name": "Pozo del Desierto",
   "table.minecraft.archaeology.ocean_ruin_cold.name": "Ruina Oceánica - Fría",

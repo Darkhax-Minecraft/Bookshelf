@@ -3,7 +3,7 @@ package net.darkhax.bookshelf.common.api.text.unit;
 import net.darkhax.bookshelf.common.api.text.format.PropertyFormat;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public interface IUnit {
 
@@ -12,7 +12,7 @@ public interface IUnit {
      *
      * @return The namespace ID for the unit.
      */
-    ResourceLocation unitKey();
+    Identifier unitKey();
 
     /**
      * Gets the name of the unit.

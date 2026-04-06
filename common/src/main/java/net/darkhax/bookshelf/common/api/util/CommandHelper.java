@@ -60,13 +60,13 @@ public class CommandHelper {
         if (!enumClass.isEnum()) {
             throw new IllegalStateException("Class '" + enumClass.getCanonicalName() + "' is not an enum!");
         }
-        PermissionLevel level = PermissionLevel.OWNER;
+        PermissionLevel lowest = PermissionLevel.OWNER;
         for (T enumEntry : enumClass.getEnumConstants()) {
-            if (enumEntry.requiredPermissionLevel().get() < level.get()) {
-                level = enumEntry.requiredPermissionLevel();
+            if (enumEntry.requiredPermissionLevel().level() < lowest.level()) {
+                lowest = enumEntry.requiredPermissionLevel();
             }
         }
-        return level;
+        return lowest;
     }
 
     /**

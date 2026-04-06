@@ -3,8 +3,8 @@ package net.darkhax.bookshelf.common.api.registry.adapters;
 import net.darkhax.bookshelf.common.api.registry.RegistrationContext;
 import net.darkhax.bookshelf.common.api.registry.RegistryReference;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -39,18 +39,18 @@ public class GameRegistryAdapter<V> implements RegistryAdapter<ResourceKey<V>, V
 
     @Override
     public RegistryReference<ResourceKey<V>, V> add(String key, Supplier<V> value) {
-        final ResourceKey<V> resourceKey = ResourceKey.create(registryKey, ResourceLocation.fromNamespaceAndPath(this.context.namespace(), key));
+        final ResourceKey<V> resourceKey = ResourceKey.create(registryKey, Identifier.fromNamespaceAndPath(this.context.namespace(), key));
         this.registryFunc.accept(resourceKey, value);
         return RegistryReference.resource(resourceKey);
     }
 
     /**
-     * Creates a new ResourceLocation using the current namespace.
+     * Creates a new Identifier using the current namespace.
      *
-     * @param key The path of the ResourceLocation.
-     * @return A new ResourceLocation with the current namespace.
+     * @param key The path of the Identifier.
+     * @return A new Identifier with the current namespace.
      */
-    public final ResourceLocation id(String key) {
-        return ResourceLocation.fromNamespaceAndPath(this.context.namespace(), key);
+    public final Identifier id(String key) {
+        return Identifier.fromNamespaceAndPath(this.context.namespace(), key);
     }
 }

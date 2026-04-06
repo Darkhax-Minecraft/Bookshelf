@@ -21,6 +21,6 @@ public interface IEnumCommand extends Command<CommandSourceStack> {
      * @return The required permission level.
      */
     default PermissionLevel requiredPermissionLevel() {
-        return PermissionLevel.PLAYER;
+        return PermissionLevel.ADMIN;
     }
 }

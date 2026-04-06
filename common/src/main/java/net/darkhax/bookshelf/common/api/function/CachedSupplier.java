@@ -1,10 +1,10 @@
 package net.darkhax.bookshelf.common.api.function;
 
-import net.darkhax.bookshelf.common.impl.Constants;
+import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -130,20 +130,20 @@ public class CachedSupplier<T> implements Supplier<T> {
     @SuppressWarnings("unchecked")
     public static <T> CachedSupplier<T> of(ResourceKey<T> key) {
         return CachedSupplier.cache(() -> {
-            final Registry<?> registry = BuiltInRegistries.REGISTRY.get(key.registry());
+            final Registry<?> registry = BuiltInRegistries.REGISTRY.getValue(key.registry());
             if (registry == null) {
-                Constants.LOG.error("Registry {} could not be found!", key.registry());
+                BookshelfMod.LOG.error("Registry {} could not be found!", key.registry());
                 throw new IllegalStateException("Registry with name " + key.registry() + " was not found!");
             }
-            return ((Registry<T>) registry).getOrThrow(key);
+            return ((Registry<T>) registry).getValueOrThrow(key);
         });
     }
-    
+
     public static <T> CachedSupplier<T> of(Registry<T> registry, String namespace, String path) {
-        return of(registry, ResourceLocation.fromNamespaceAndPath(namespace, path));
+        return of(registry, Identifier.fromNamespaceAndPath(namespace, path));
     }
 
-    public static <T> CachedSupplier<T> of(Registry<T> registry, ResourceLocation id) {
-        return CachedSupplier.cache(() -> registry.get(id));
+    public static <T> CachedSupplier<T> of(Registry<T> registry, Identifier id) {
+        return CachedSupplier.cache(() -> registry.getValue(id));
     }
 }

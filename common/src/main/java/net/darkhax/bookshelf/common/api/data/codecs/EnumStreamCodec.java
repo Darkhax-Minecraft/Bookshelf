@@ -6,20 +6,20 @@ import org.jetbrains.annotations.NotNull;
 
 public class EnumStreamCodec<T extends Enum<T>> implements StreamCodec<FriendlyByteBuf, T> {
 
-	private final Class<T> enumClass;
+    private final Class<T> enumClass;
 
-	public EnumStreamCodec(Class<T> clazz) {
-		this.enumClass = clazz;
-	}
+    public EnumStreamCodec(Class<T> clazz) {
+        this.enumClass = clazz;
+    }
 
-	@NotNull
-	@Override
-	public T decode(FriendlyByteBuf buf) {
-		return buf.readEnum(enumClass);
-	}
+    @NotNull
+    @Override
+    public T decode(FriendlyByteBuf buf) {
+        return buf.readEnum(enumClass);
+    }
 
-	@Override
-	public void encode(FriendlyByteBuf buf, @NotNull T toWrite) {
-		buf.writeEnum(toWrite);
-	}
+    @Override
+    public void encode(FriendlyByteBuf buf, @NotNull T toWrite) {
+        buf.writeEnum(toWrite);
+    }
 }

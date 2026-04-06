@@ -6,7 +6,6 @@
   "format.bookshelf.spaced": "%s %s",
   "format.bookshelf.none": "%s%s",
   "format.bookshelf.unit_rate": "%s/%s",
-
   "__commands": "Command Text",
   "commands.bookshelf.hand.error.not_air": "O item não deve estar vazio ou ser ar!",
   "commands.bookshelf.hand.error.internal": "Erro encontrado ao formatar o texto. Verifique os logs para mais informações.",
@@ -17,7 +16,6 @@
   "commands.bookshelf.debug.too_long": "A saída de depuração é muito grande para o chat. Por favor, verifique o seu log do jogo.",
   "commands.bookshelf.structure.error.no_structures": "Nenhuma estrutura pôde ser encontrada.",
   "commands.bookshelf.structure.found": "Encontrada(s) %s estrutura(s)!",
-
   "__time_units": "Entries for various time units that may be displayed in game.",
   "units.bookshelf.tick": "Tick",
   "units.bookshelf.tick.plural": "Ticks",
@@ -49,7 +47,6 @@
   "units.bookshelf.year": "Ano",
   "units.bookshelf.year.plural": "Anos",
   "units.bookshelf.year.abbreviated": "a",
-
   "__months": "Names of the months",
   "month.bookshelf.january": "Janeiro",
   "month.bookshelf.february": "Fevereiro",
@@ -63,7 +60,6 @@
   "month.bookshelf.october": "Outubro",
   "month.bookshelf.november": "Novembro",
   "month.bookshelf.december": "Dezembro",
-
   "__days": "Names of the days",
   "day.bookshelf.sunday": "Domingo",
   "day.bookshelf.monday": "Segunda-feira",
@@ -72,7 +68,6 @@
   "day.bookshelf.thursday": "Quinta-feira",
   "day.bookshelf.friday": "Sexta-feira",
   "day.bookshelf.saturday": "Sábado",
-
   "__moon_phases": "The names of different moon phases that appear in game.",
   "moon.phase.full": "Lua Cheia",
   "moon.phase.waxing.gibbous": "Gibosa Crescente",
@@ -82,7 +77,6 @@
   "moon.phase.waning.crescent": "Lua Minguante",
   "moon.phase.last.quarter": "Quarto Minguante",
   "moon.phase.waning.gibbous": "Gibosa Minguante",
-
   "__fonts": "Unofficial language entries for the vanilla text fonts.",
   "font.minecraft.default": "Padrão",
   "font.minecraft.default.desc": "A fonte padrão do Minecraft.",
@@ -96,7 +90,6 @@
   "font.minecraft.uniform": "Uniforme",
   "font.minecraft.uniform.desc": "Uma fonte simples que não é estilizada.",
   "font.minecraft.uniform.preview": "A rápida raposa marrom salta sobre o cão preguiçoso.",
-
   "__Tags": "Tag Names for Recipe Viewers",
   "tag.item.bookshelf.creative_tab.minecraft.colored_blocks": "Aba de Blocos Coloridos",
   "tag.item.bookshelf.creative_tab.minecraft.food_and_drinks": "Aba de Comidas e Bebidas",
@@ -109,16 +102,13 @@
   "tag.item.bookshelf.creative_tab.minecraft.natural_blocks": "Aba de Blocos Naturais",
   "tag.item.bookshelf.creative_tab.minecraft.functional_blocks": "Aba de Blocos Funcionais",
   "tag.item.bookshelf.creative_tab.minecraft.ingredients": "Aba de Ingredientes",
-
   "tooltips.bookshelf.loot.unknown": "Drop Desconhecido",
   "tooltips.bookshelf.loot.unknown.desc": "Alguns drops não podem ser exibidos no momento.",
   "tooltips.bookshelf.loot.empty": "Drop Vazio",
   "tooltips.bookshelf.loot.empty.desc": "É possível que nada seja dropado!",
   "tooltips.bookshelf.loot.dynamic": "Drop Dinâmico",
   "tooltips.bookshelf.loot.dynamic.desc": "Alguns drops dependem do contexto.",
-
   "gui.jei.category.loot.name": "Tabela de Loot",
-
   "table.minecraft.archaeology.desert_pyramid.name": "Pirâmide do Deserto",
   "table.minecraft.archaeology.desert_well.name": "Poço do Deserto",
   "table.minecraft.archaeology.ocean_ruin_cold.name": "Ruína do Oceano - Fria",

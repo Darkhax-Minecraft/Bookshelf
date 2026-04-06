@@ -6,7 +6,6 @@ import net.darkhax.bookshelf.common.api.function.CachedSupplier;
 import net.darkhax.bookshelf.common.api.util.IPlatformHelper;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.gametest.GameTestHooks;
 
@@ -41,12 +40,12 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public boolean isDevelopmentEnvironment() {
-        return !FMLLoader.isProduction();
+        return !FMLEnvironment.isProduction();
     }
 
     @Override
     public PhysicalSide getPhysicalSide() {
-        return FMLEnvironment.dist.isClient() ? PhysicalSide.CLIENT : PhysicalSide.SERVER;
+        return FMLEnvironment.getDist().isClient() ? PhysicalSide.CLIENT : PhysicalSide.SERVER;
     }
 
     @Override

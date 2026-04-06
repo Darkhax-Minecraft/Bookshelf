@@ -8,8 +8,8 @@ import net.darkhax.bookshelf.common.api.data.conditions.ILoadCondition;
 import net.darkhax.bookshelf.common.api.data.conditions.LoadConditions;
 import net.darkhax.bookshelf.common.api.function.CachedSupplier;
 import net.darkhax.bookshelf.common.api.service.Services;
-import net.darkhax.bookshelf.common.impl.Constants;
-import net.minecraft.resources.ResourceLocation;
+import net.darkhax.bookshelf.common.impl.BookshelfMod;
+import net.minecraft.resources.Identifier;
 
 import java.util.Set;
 
@@ -18,9 +18,9 @@ import java.util.Set;
  */
 public class ModLoaded implements ILoadCondition {
 
-    public static final ResourceLocation TYPE_ID = Constants.id("mod_loaded");
+    public static final Identifier TYPE_ID = BookshelfMod.id("mod_loaded");
     public static final CachedSupplier<ConditionType> TYPE = CachedSupplier.cache(() -> LoadConditions.getType(TYPE_ID));
-    public static final MapCodec<ModLoaded> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(MapCodecs.STRING.getSet("values", ModLoaded::getRequiredMods)).apply(instance, ModLoaded::new));
+    public static final MapCodec<ModLoaded> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(MapCodecs.STRING.setCodec("values", ModLoaded::getRequiredMods)).apply(instance, ModLoaded::new));
 
     private final Set<String> requiredMods;
 
