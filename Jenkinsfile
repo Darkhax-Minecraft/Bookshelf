@@ -5,6 +5,13 @@ pipeline {
         jdk "jdk-25"
     }
     stages {
+        stage('Setup') {
+            steps {
+                echo 'Setup Project'
+                sh 'chmod +x gradlew'
+                sh './gradlew clean'
+            }
+        }
         stage('Build') {
             steps {
                 withCredentials([
