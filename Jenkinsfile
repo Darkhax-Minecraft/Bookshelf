@@ -5,13 +5,6 @@ pipeline {
         jdk "jdk-25"
     }
     stages {
-        stage('Setup') {
-            steps {
-                echo 'Setup Project'
-                sh 'chmod +x gradlew'
-                sh './gradlew clean'
-            }
-        }
         stage('Build') {
             steps {
                 withCredentials([
@@ -20,7 +13,7 @@ pipeline {
                     file(credentialsId: 'gpg_key', variable: 'ORG_GRADLE_PROJECT_pgpKeyRing')
                 ]) {
                     echo 'Building project.'
-                    sh './gradlew build publish publishCurseForge modrinth updateVersionTracker --stacktrace --warn'
+                    sh './gradlew build publish publishCurseForge modrinth updateVersionTracker --stacktrace'
                 }
             }
         }
