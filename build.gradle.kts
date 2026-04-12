@@ -1,3 +1,3 @@
 plugins {
-    id("net.darkhax.mmc") version "26.1.1.8"
+    id("net.darkhax.mmc") version "26.1.1.12"
 }
