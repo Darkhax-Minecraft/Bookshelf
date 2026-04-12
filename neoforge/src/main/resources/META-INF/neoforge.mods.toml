@@ -23,14 +23,14 @@ config = "bookshelf.neoforge.mixins.json"
 [[dependencies.bookshelf]]
 modId = "minecraft"
 type = "required"
-versionRange = "26.1.1"
+versionRange = "26.1"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.bookshelf]]
 modId = "neoforge"
 type = "required"
-versionRange = "[26.1.1.1-beta,)"
+versionRange = "[26.1.0.1-beta,)"
 ordering = "NONE"
 side = "BOTH"
 
