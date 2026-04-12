@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "bookshelf",
-  "version": "26.1.1.0",
+  "version": "26.1.2.0",
   "name": "Bookshelf",
   "description": "Bookshelf is a library mod that provides code, frameworks, and utilities for other mods. Many mods make use of Bookshelf and are powered by its code.",
   "authors": [

@@ -1,5 +1,5 @@
 <!-- name-start -->
-# Bookshelf [![CurseForge Project](https://img.shields.io/curseforge/dt/228525?logo=curseforge&label=CurseForge&style=flat-square&labelColor=2D2D2D&color=555555)](https://www.curseforge.com/minecraft/mc-mods/bookshelf) [![Modrinth Project](https://img.shields.io/modrinth/dt/uy4Cnpcm?logo=modrinth&label=Modrinth&style=flat-square&labelColor=2D2D2D&color=555555)](https://modrinth.com/mod/bookshelf-lib) [![Maven Project](https://img.shields.io/maven-metadata/v?style=flat-square&logoColor=D31A38&labelColor=2D2D2D&color=555555&label=Latest&logo=gradle&metadataUrl=https%3A%2F%2Fmaven.blamejared.com%2Fnet%2Fdarkhax%2Fbookshelf%2Fbookshelf-common-26.1.1%2Fmaven-metadata.xml)](https://maven.blamejared.com/net/darkhax/bookshelf)
+# Bookshelf [![CurseForge Project](https://img.shields.io/curseforge/dt/228525?logo=curseforge&label=CurseForge&style=flat-square&labelColor=2D2D2D&color=555555)](https://www.curseforge.com/minecraft/mc-mods/bookshelf) [![Modrinth Project](https://img.shields.io/modrinth/dt/uy4Cnpcm?logo=modrinth&label=Modrinth&style=flat-square&labelColor=2D2D2D&color=555555)](https://modrinth.com/mod/bookshelf-lib) [![Maven Project](https://img.shields.io/maven-metadata/v?style=flat-square&logoColor=D31A38&labelColor=2D2D2D&color=555555&label=Latest&logo=gradle&metadataUrl=https%3A%2F%2Fmaven.blamejared.com%2Fnet%2Fdarkhax%2Fbookshelf%2Fbookshelf-common-26.1.2%2Fmaven-metadata.xml)](https://maven.blamejared.com/net/darkhax/bookshelf)
 <!-- name-end -->
 
 <!-- description-start -->
@@ -22,11 +22,11 @@ repositories {
 
 dependencies {
      // NeoForge
-     implementation group: 'net.darkhax.bookshelf', name: 'bookshelf-neoforge-26.1.1', version: '26.1.1.0'
+     implementation group: 'net.darkhax.bookshelf', name: 'bookshelf-neoforge-26.1.2', version: '26.1.2.0'
      // Fabric
-     implementation group: 'net.darkhax.bookshelf', name: 'bookshelf-fabric-26.1.1', version: '26.1.1.0'
+     implementation group: 'net.darkhax.bookshelf', name: 'bookshelf-fabric-26.1.2', version: '26.1.2.0'
      // Common / MultiLoader / Vanilla / No Loader
-     implementation group: 'net.darkhax.bookshelf', name: 'bookshelf-common-26.1.1', version: '26.1.1.0'
+     implementation group: 'net.darkhax.bookshelf', name: 'bookshelf-common-26.1.2', version: '26.1.2.0'
 }
 ```
 

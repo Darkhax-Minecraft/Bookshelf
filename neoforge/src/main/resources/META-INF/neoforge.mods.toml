@@ -4,9 +4,9 @@ issueTrackerURL = "https://github.com/Darkhax-Minecraft/Bookshelf/issues"
 
 [[mods]]
 modId = "bookshelf"
-version = "26.1.1.0"
+version = "26.1.2.0"
 displayName = "Bookshelf"
-updateJSONURL = "https://updates.blamejared.com/get?n=bookshelf&gv=26.1.1&ml=neoforge"
+updateJSONURL = "https://updates.blamejared.com/get?n=bookshelf&gv=26.1.2&ml=neoforge"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/bookshelf"
 logoFile = "logo_bookshelf.png"
 logoBlur = false
