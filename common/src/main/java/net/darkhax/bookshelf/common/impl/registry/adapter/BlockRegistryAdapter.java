@@ -4,6 +4,7 @@ import net.darkhax.bookshelf.common.api.registry.RegistrationContext;
 import net.darkhax.bookshelf.common.api.registry.RegistryReference;
 import net.darkhax.bookshelf.common.api.registry.adapters.GameRegistryAdapter;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -31,7 +32,7 @@ public class BlockRegistryAdapter extends GameRegistryAdapter<Block> {
      * @return A reference to the registry entry.
      */
     public RegistryReference<ResourceKey<Block>, Block> addPlaceable(String key, Supplier<Block> value) {
-        return this.addPlaceable(key, value, block -> new BlockItem(block, new Item.Properties()));
+        return this.addPlaceable(key, value, block -> new BlockItem(block, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, this.id(key)))));
     }
 
     /**
