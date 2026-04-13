@@ -19,7 +19,7 @@ public class ItemRegistryAdapter extends GameRegistryAdapter<Item> {
         super(context, Registries.ITEM, registryFunc);
     }
 
-    public RegistryReference<ResourceKey<Item>, Item> add(String key, UnaryOperator<Item.Properties> propertiesFunc) {
+    public RegistryReference<ResourceKey<Item>, Item> addSimple(String key, UnaryOperator<Item.Properties> propertiesFunc) {
         return this.add(key, Item::new, propertiesFunc);
     }
 
