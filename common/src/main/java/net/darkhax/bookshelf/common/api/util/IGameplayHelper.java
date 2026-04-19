@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.common.api.util;
 
+import net.darkhax.bookshelf.common.impl.registry.adapter.CreativeModeTabAdapter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -120,4 +121,6 @@ public interface IGameplayHelper {
     }
 
     CreativeModeTab.Builder tabBuilder();
+
+    void setTabOutputs(CreativeModeTab.Builder tab, CreativeModeTabAdapter.OutputBuilder output);
 }

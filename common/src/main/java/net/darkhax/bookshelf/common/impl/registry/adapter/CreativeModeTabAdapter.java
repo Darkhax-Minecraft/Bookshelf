@@ -8,7 +8,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 
+import java.util.Collection;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -26,11 +28,11 @@ public class CreativeModeTabAdapter extends GameRegistryAdapter<CreativeModeTab>
      * @param icon    An item to display as the icon for the tab.
      * @param display Generates the items to display in the tab.
      */
-    public void add(String key, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator display) {
+    public void add(String key, Supplier<ItemStack> icon, OutputBuilder display) {
         this.add(key, builder -> {
             builder.title(Component.translatable("itemGroup." + this.context.namespace() + "." + key));
             builder.icon(icon);
-            builder.displayItems(display);
+            Services.GAMEPLAY.setTabOutputs(builder, display);
         });
     }
 
@@ -44,5 +46,22 @@ public class CreativeModeTabAdapter extends GameRegistryAdapter<CreativeModeTab>
         final CreativeModeTab.Builder builder = Services.GAMEPLAY.tabBuilder();
         builderFunc.accept(builder);
         this.add(key, builder.build());
+    }
+
+    @FunctionalInterface
+    public interface OutputBuilder {
+        void build(CreativeModeTab.ItemDisplayParameters params, OutputWrapper output);
+    }
+
+    /**
+     * Wraps an Output instances from a loader specific context.
+     */
+    public interface OutputWrapper {
+
+        void accept(ItemStack stack);
+
+        void accept(ItemLike item);
+
+        void acceptAll(Collection<ItemStack> stacks);
     }
 }

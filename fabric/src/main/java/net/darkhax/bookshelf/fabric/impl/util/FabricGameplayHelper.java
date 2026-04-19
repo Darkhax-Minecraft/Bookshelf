@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.fabric.impl.util;
 
 import net.darkhax.bookshelf.common.api.util.IGameplayHelper;
+import net.darkhax.bookshelf.common.impl.registry.adapter.CreativeModeTabAdapter;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -11,6 +12,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
+
+import java.util.Collection;
 
 public class FabricGameplayHelper implements IGameplayHelper {
 
@@ -42,5 +46,27 @@ public class FabricGameplayHelper implements IGameplayHelper {
     @Override
     public CreativeModeTab.Builder tabBuilder() {
         return FabricCreativeModeTab.builder();
+    }
+
+    @Override
+    public void setTabOutputs(CreativeModeTab.Builder tab, CreativeModeTabAdapter.OutputBuilder output) {
+        tab.displayItems((p, o) -> {
+            output.build(p, new CreativeModeTabAdapter.OutputWrapper() {
+                @Override
+                public void accept(ItemStack stack) {
+                    o.accept(stack);
+                }
+
+                @Override
+                public void accept(ItemLike item) {
+                    o.accept(item);
+                }
+
+                @Override
+                public void acceptAll(Collection<ItemStack> stacks) {
+                    o.acceptAll(stacks);
+                }
+            });
+        });
     }
 }
