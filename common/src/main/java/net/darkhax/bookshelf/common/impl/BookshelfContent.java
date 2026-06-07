@@ -31,6 +31,7 @@ public class BookshelfContent implements ContentProvider {
 
     @Override
     public void defineIngredientTypes(IngredientTypeAdapter registry) {
+        registry.add("any", AnyIngredient.CODEC, AnyIngredient.STREAM);
         registry.add("false", FalseIngredient.CODEC, FalseIngredient.STREAM);
         registry.add("all", AllOfIngredient.CODEC, AllOfIngredient.STREAM);
         registry.add("either", EitherIngredient.CODEC, EitherIngredient.STREAM);
