@@ -12,6 +12,8 @@ import net.darkhax.bookshelf.fabric.impl.data.FabricIngredient;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
+import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
+import net.fabricmc.fabric.api.recipe.v1.sync.SynchronizedRecipes;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.Registry;
@@ -21,6 +23,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -62,7 +65,11 @@ public final class FabricRegistryHelper {
         this.content.defineItemComponents(new GameRegistryAdapter<>(this.context, Registries.DATA_COMPONENT_TYPE, adapt(BuiltInRegistries.DATA_COMPONENT_TYPE)));
         this.content.defineEnchantmentComponents(new GameRegistryAdapter<>(this.context, Registries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, adapt(BuiltInRegistries.ENCHANTMENT_EFFECT_COMPONENT_TYPE)));
         this.content.defineBlockEntities(new GameRegistryAdapter<>(this.context, Registries.BLOCK_ENTITY_TYPE, adapt(BuiltInRegistries.BLOCK_ENTITY_TYPE)));
-        this.content.defineRecipeSerializers(new GameRegistryAdapter<>(this.context, Registries.RECIPE_SERIALIZER, adapt(BuiltInRegistries.RECIPE_SERIALIZER)));
+        this.content.defineRecipeSerializers(new GameRegistryAdapter<>(this.context, Registries.RECIPE_SERIALIZER, (k, v) -> {
+            final RecipeSerializer<?> serializer = v.get();
+            Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, k, serializer);
+            RecipeSynchronization.synchronizeRecipeSerializer(serializer);
+        }));
         this.content.defineLootEntryTypes(new GameRegistryAdapter<>(this.context, Registries.LOOT_POOL_ENTRY_TYPE, adapt(BuiltInRegistries.LOOT_POOL_ENTRY_TYPE)));
         this.content.defineMenuType(new MenuTypeAdapter(this.context, (key, factory) -> Registry.register(BuiltInRegistries.MENU, key, new MenuType<>(factory.get()::create, FeatureFlags.VANILLA_SET))));
         this.content.definePackets(new PacketAdapter(this.context, Services.NETWORK::register));
