@@ -13,6 +13,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -21,6 +22,9 @@ import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+
+import java.util.function.BiConsumer;
+import java.util.function.BooleanSupplier;
 
 /**
  * An interface for adding custom game content such as blocks and items during the appropriate stages of the game's
@@ -236,6 +240,15 @@ public interface ContentProvider {
      * @param registry Adapts registry requests to the current mod loader.
      */
     default void defineSounds(SoundEventAdapter registry) {
+
+    }
+
+    /**
+     * Define properties for the Bookshelf property load condition.
+     *
+     * @param registry Register new properties.
+     */
+    default void defineLoadProperties(BiConsumer<Identifier, BooleanSupplier> registry) {
 
     }
 

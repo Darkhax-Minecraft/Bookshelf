@@ -74,6 +74,7 @@ public class BookshelfContent implements ContentProvider {
         registry.add(RegistryContains.ENTITY, RegistryContains.of(RegistryContains.ENTITY, BuiltInRegistries.ENTITY_TYPE));
         registry.add(RegistryContains.BLOCK_ENTITY, RegistryContains.of(RegistryContains.BLOCK_ENTITY, BuiltInRegistries.BLOCK_ENTITY_TYPE));
         registry.add(Property.TYPE_ID, Property.CODEC);
+        Services.CONTENT.get().forEach(provider -> provider.defineLoadProperties(Property::define));
     }
 
     @Override
