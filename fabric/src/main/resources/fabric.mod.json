@@ -25,6 +25,9 @@
     ],
     "client": [
       "net.darkhax.bookshelf.fabric.BookshelfFabricClient"
+    ],
+    "jei_mod_plugin": [
+      "net.darkhax.bookshelf.common.impl.addons.jei.BookshelfJeiPlugin"
     ]
   },
   "mixins": [
