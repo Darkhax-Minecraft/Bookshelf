@@ -34,7 +34,7 @@ dependencies {
 
 <!-- sponsor-start -->
 ## Sponsors
-[![](https://assets.blamejared.com/nodecraft/darkhax.jpg)](https://nodecraft.com/r/darkhax)
+[![](https://assets.blamejared.com/nodecraft/darkhax.jpg)](https://nodecraft.com/r/darkhax)    
 Bookshelf is proudly sponsored by Nodecraft! Play your favorite games with your friends using their high
 performance game servers! Use code **[DARKHAX](https://nodecraft.com/r/darkhax)** for 30% off your first
 month of service!

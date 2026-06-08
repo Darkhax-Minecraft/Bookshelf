@@ -11,7 +11,17 @@
     "repo": "https://github.com/Darkhax-Minecraft/Bookshelf",
     "client": false
   },
-  "dependencies": [],
+  "dependencies": [
+    {
+      "name": "JEI",
+      "type": "misc",
+      "maven": {
+        "common": "mezz.jei:jei-26.1.2-fabric:29.6.2.31",
+        "neoforge": "mezz.jei:jei-26.1.2-neoforge:29.6.2.31",
+        "fabric": "mezz.jei:jei-26.1.2-fabric:29.6.2.31"
+      }
+    }
+  ],
   "curseforge": {
     "slug": "bookshelf",
     "id": "228525"
