@@ -21,14 +21,12 @@ import net.darkhax.bookshelf.common.impl.recipe.smithing.ComponentSmithingRecipe
 import net.darkhax.bookshelf.common.impl.registry.adapter.CommandArgumentAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.IngredientTypeAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.LootDescriptionAdapter;
-import net.darkhax.bookshelf.common.impl.registry.adapter.RecipeTypeAdapter;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SmithingRecipe;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 
 public class BookshelfContent implements ContentProvider {
@@ -75,6 +73,7 @@ public class BookshelfContent implements ContentProvider {
         registry.add(RegistryContains.ITEM, RegistryContains.of(RegistryContains.ITEM, BuiltInRegistries.ITEM));
         registry.add(RegistryContains.ENTITY, RegistryContains.of(RegistryContains.ENTITY, BuiltInRegistries.ENTITY_TYPE));
         registry.add(RegistryContains.BLOCK_ENTITY, RegistryContains.of(RegistryContains.BLOCK_ENTITY, BuiltInRegistries.BLOCK_ENTITY_TYPE));
+        registry.add(Property.TYPE_ID, Property.CODEC);
     }
 
     @Override
