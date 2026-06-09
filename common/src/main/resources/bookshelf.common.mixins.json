@@ -28,7 +28,6 @@
     "patch.loot.MixinLootDataType",
     "patch.loot.MixinLootItemKilledByPlayerCondition",
     "patch.loot.MixinLootPool",
-    "patch.packs.MixinSimpleJsonResourceReloadListener",
     "patch.potions.MixinPotionBrewing"
   ],
   "client": [

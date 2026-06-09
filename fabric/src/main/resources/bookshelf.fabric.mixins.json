@@ -3,7 +3,9 @@
   "minVersion": "0.8",
   "package": "net.darkhax.bookshelf.fabric.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "patch.fabric.resources.MixinResourceConditionsImpl"
+  ],
   "client": [],
   "server": [],
   "injectors": {

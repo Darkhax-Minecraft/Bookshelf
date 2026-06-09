@@ -4,6 +4,7 @@
   "package": "net.darkhax.bookshelf.neoforge.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "patch.neoforge.conditions.MixinConditionalDecoder"
   ],
   "client": [
     "access.gui.screen.AccessorMenuScreens"
