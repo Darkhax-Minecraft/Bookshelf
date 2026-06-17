@@ -20,7 +20,7 @@
     "access.loot.AccessorTagEntry",
     "access.particles.AccessSimpleParticleType",
     "patch.advancement.MixinPlayerAdvancements",
-    "patch.block.MixinDecoratedPotPatterns",
+    "patch.block.MixinDecoratedPotRenderer",
     "patch.entity.MixinLightningBolt",
     "patch.entity.MixinLivingEntity",
     "patch.item.MixinCreativeModeTab",

@@ -4,9 +4,9 @@ issueTrackerURL = "https://github.com/Darkhax-Minecraft/Bookshelf/issues"
 
 [[mods]]
 modId = "bookshelf"
-version = "26.1.2.0"
+version = "26.2.0.0"
 displayName = "Bookshelf"
-updateJSONURL = "https://updates.blamejared.com/get?n=bookshelf&gv=26.1.2&ml=neoforge"
+updateJSONURL = "https://updates.blamejared.com/get?n=bookshelf&gv=26.2&ml=neoforge"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/bookshelf"
 logoFile = "logo_bookshelf.png"
 logoBlur = false
@@ -23,14 +23,14 @@ config = "bookshelf.neoforge.mixins.json"
 [[dependencies.bookshelf]]
 modId = "minecraft"
 type = "required"
-versionRange = "26.1"
+versionRange = "26.2"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.bookshelf]]
 modId = "neoforge"
 type = "required"
-versionRange = "[26.1.0.1-beta,)"
+versionRange = "[26.2.0.1-beta,)"
 ordering = "NONE"
 side = "BOTH"
 

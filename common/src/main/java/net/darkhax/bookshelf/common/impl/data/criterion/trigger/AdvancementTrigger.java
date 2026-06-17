@@ -4,9 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.darkhax.bookshelf.common.api.data.codecs.map.MapCodecs;
 import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.advancements.criterion.ContextAwarePredicate;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.SimpleCriterionTrigger;
+import net.minecraft.advancements.predicates.ContextAwarePredicate;
+import net.minecraft.advancements.predicates.entity.EntityPredicate;
+import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -32,8 +32,7 @@ public class AdvancementTrigger extends SimpleCriterionTrigger<AdvancementTrigge
         this.trigger(player, instance -> instance.advancementIds().contains(advancement.id()));
     }
 
-    public record Instance(Optional<ContextAwarePredicate> player,
-                           Set<Identifier> advancementIds) implements SimpleCriterionTrigger.SimpleInstance {
+    public record Instance(Optional<ContextAwarePredicate> player, Set<Identifier> advancementIds) implements SimpleCriterionTrigger.SimpleInstance {
 
         @Override
         @NotNull

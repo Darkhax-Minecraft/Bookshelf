@@ -9,6 +9,7 @@ import net.darkhax.bookshelf.common.mixin.access.client.AccessorMinecraft;
 import net.darkhax.bookshelf.common.mixin.access.entity.AccessorEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.*;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
@@ -270,7 +271,7 @@ public class TextHelper {
         if (!Services.PLATFORM.isPhysicalClient()) {
             throw new IllegalStateException("Text can not be translated on the server.");
         }
-        return I18n.exists(key) ? Component.translatable(key, args) : fallback != null ? fallback.apply(key, args) : null;
+        return Language.getInstance().has(key) ? Component.translatable(key, args) : fallback != null ? fallback.apply(key, args) : null;
     }
 
     /**

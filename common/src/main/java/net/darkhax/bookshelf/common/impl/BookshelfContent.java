@@ -21,13 +21,13 @@ import net.darkhax.bookshelf.common.impl.recipe.smithing.ComponentSmithingRecipe
 import net.darkhax.bookshelf.common.impl.registry.adapter.CommandArgumentAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.IngredientTypeAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.LootDescriptionAdapter;
-import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.advancements.triggers.CriterionTrigger;
 
 public class BookshelfContent implements ContentProvider {
 

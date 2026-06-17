@@ -19,19 +19,16 @@ public abstract class MixinLivingEntity {
     @Shadow
     private int lastHurtByMobTimestamp;
 
-    @Shadow
-    public abstract boolean isInvulnerableTo(ServerLevel level, DamageSource source);
-
     /**
      * This patch allows mobs killed by Bookshelf's fake player damage to drop EXP and player specific loot. Bookshelf's
      * fake player damage is not connected to a specific entity instance so the timers responsible for these checks are
      * not updated otherwise.
      */
-    @Inject(method = "hurtServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;resolvePlayerResponsibleForDamage(Lnet/minecraft/world/damagesource/DamageSource;)Lnet/minecraft/world/entity/player/Player;", shift = At.Shift.AFTER))
+    @Inject(method = "hurtServer", at = @At(value = "RETURN"))
     private void updateFakePlayerDamageTimes(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Boolean> cir) {
-        if (!this.isInvulnerableTo(level, source) && source.is(BookshelfTags.FAKE_PLAYER_DAMAGE)) {
-            this.lastHurtByPlayerMemoryTime = 100;
-            this.lastHurtByMobTimestamp = 100;
+        if (cir.getReturnValue() && damage > 0f && source.is(BookshelfTags.FAKE_PLAYER_DAMAGE)) {
+            this.lastHurtByPlayerMemoryTime = Math.max(this.lastHurtByPlayerMemoryTime, 100);
+            this.lastHurtByMobTimestamp = Math.max(this.lastHurtByMobTimestamp, 100);
         }
     }
 }

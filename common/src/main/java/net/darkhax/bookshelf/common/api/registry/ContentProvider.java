@@ -8,7 +8,7 @@ import net.darkhax.bookshelf.common.api.data.conditions.ILoadCondition;
 import net.darkhax.bookshelf.common.api.registry.adapters.GameRegistryAdapter;
 import net.darkhax.bookshelf.common.api.registry.adapters.GenericRegistryAdapter;
 import net.darkhax.bookshelf.common.impl.registry.adapter.*;
-import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.advancements.triggers.CriterionTrigger;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

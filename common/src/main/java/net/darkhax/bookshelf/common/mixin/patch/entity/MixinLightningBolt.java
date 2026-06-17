@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.darkhax.bookshelf.common.api.block.IBlockHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -20,7 +21,7 @@ public class MixinLightningBolt {
     private void onLightningStrike(CallbackInfo ci, @Local BlockPos strikePos, @Local BlockState strikeState) {
         final LightningBolt self = (LightningBolt) (Object) this;
         final Block strikeBlock = strikeState.getBlock();
-        Direction[] redirections = strikeBlock == Blocks.LIGHTNING_ROD ? IBlockHooks.LIGHTNING_REDIRECTION_FACES : IBlockHooks.NO_LIGHTNING_REDIRECTION_FACES;
+        Direction[] redirections = strikeState.is(BlockTags.LIGHTNING_RODS) ? IBlockHooks.LIGHTNING_REDIRECTION_FACES : IBlockHooks.NO_LIGHTNING_REDIRECTION_FACES;
         if (strikeBlock instanceof IBlockHooks extended) {
             extended.onLightningStrike(strikeState, self.level(), strikePos, self);
             redirections = extended.redirectLightningStrike(strikeState, self.level(), strikePos);

@@ -15,6 +15,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -45,7 +46,7 @@ public enum DebugCommands implements IEnumCommand {
             AtomicBoolean hasLogged = new AtomicBoolean(false);
             entry.value().getTags().forEach(tag -> {
                 final Identifier tagId = tag.key().location();
-                if (!tagId.getNamespace().equals(Identifier.DEFAULT_NAMESPACE) && !I18n.exists(TextHelper.getTagName(tag.key()))) {
+                if (!tagId.getNamespace().equals(Identifier.DEFAULT_NAMESPACE) && !Language.getInstance().has(TextHelper.getTagName(tag.key()))) {
                     if (!hasLogged.get()) {
                         hasLogged.set(true);
                         out.add("## " + tagId);

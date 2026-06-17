@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.darkhax.bookshelf.common.api.service.Services;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,7 +21,7 @@ public interface IRenderHelper {
         return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(texturePath);
     }
 
-    void renderFluidBox(PoseStack pose, FluidState fluidState, Level level, BlockPos pos, MultiBufferSource bufferSource, int light, int overlay);
+    void renderFluidBox(PoseStack pose, FluidState fluidState, Level level, BlockPos pos, int light, int overlay);
 
     default int[] unpackARGB(int color) {
         return new int[]{color >> 24 & 0xff, color >> 16 & 0xff, color >> 8 & 0xff, color & 0xff};

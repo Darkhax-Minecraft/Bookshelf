@@ -3,6 +3,7 @@ package net.darkhax.bookshelf.common.impl.registry.adapter;
 import net.darkhax.bookshelf.common.api.registry.RegistrationContext;
 import net.darkhax.bookshelf.common.api.registry.RegistryReference;
 import net.darkhax.bookshelf.common.api.registry.adapters.GameRegistryAdapter;
+import net.darkhax.bookshelf.common.api.service.Services;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
@@ -39,7 +40,9 @@ public final class PotPatternAdapter extends GameRegistryAdapter<DecoratedPotPat
      */
     public RegistryReference<ResourceKey<DecoratedPotPattern>, DecoratedPotPattern> addWithItem(String key, Item item) {
         final RegistryReference<ResourceKey<DecoratedPotPattern>, DecoratedPotPattern> pattern = this.add(key);
-        this.context.addPotPatternItem(item, pattern.key());
+        if (Services.PLATFORM.isPhysicalClient()) {
+            this.context.addPotPatternItem(item, pattern.key());
+        }
         return pattern;
     }
 

@@ -1,6 +1,8 @@
 package net.darkhax.bookshelf.common.api.registry;
 
 import net.darkhax.bookshelf.common.impl.BookshelfMod;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
@@ -20,8 +22,8 @@ public final class RegistrationContext {
     private final String namespace;
     private final Map<RegistryReference<ResourceKey<Block>, Block>, Function<Block, Item>> placeableBlocks = new HashMap<>();
 
-    private static final Map<Item, ResourceKey<DecoratedPotPattern>> INTERNAL_POT_PATTERN_ITEMS = new HashMap<>();
-    public static final Map<Item, ResourceKey<DecoratedPotPattern>> POT_PATTERN_ITEMS = Collections.unmodifiableMap(INTERNAL_POT_PATTERN_ITEMS);
+    private static final Map<Item, SpriteId> INTERNAL_POT_SPRITES = new HashMap<>();
+    public static final Map<Item, SpriteId> POT_SPRITES = Collections.unmodifiableMap(INTERNAL_POT_SPRITES);
 
     public RegistrationContext(String namespace) {
         this.namespace = namespace;
@@ -63,9 +65,9 @@ public final class RegistrationContext {
      * @param pattern The pattern displayed by the item.
      */
     public void addPotPatternItem(Item item, ResourceKey<DecoratedPotPattern> pattern) {
-        if (INTERNAL_POT_PATTERN_ITEMS.containsKey(item)) {
-            BookshelfMod.LOG.warn("Mod {} has changed the pot pattern of {} to {} from {}.", this.namespace(), BuiltInRegistries.ITEM.getKey(item), pattern.identifier(), INTERNAL_POT_PATTERN_ITEMS.get(item).identifier());
+        if (INTERNAL_POT_SPRITES.containsKey(item)) {
+            BookshelfMod.LOG.warn("Mod {} has changed the pot pattern of {} to {} from {}.", this.namespace(), BuiltInRegistries.ITEM.getKey(item), pattern.identifier(), INTERNAL_POT_SPRITES.get(item).texture());
         }
-        INTERNAL_POT_PATTERN_ITEMS.put(item, pattern);
+        INTERNAL_POT_SPRITES.put(item, Sheets.DECORATED_POT_MAPPER.apply(pattern.identifier()));
     }
 }

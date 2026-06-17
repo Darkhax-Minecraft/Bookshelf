@@ -11,7 +11,7 @@ import net.darkhax.bookshelf.common.api.util.FunctionHelper;
 import net.darkhax.bookshelf.common.api.util.TextHelper;
 import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.minecraft.Optionull;
-import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.advancements.triggers.CriterionTrigger;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -85,6 +85,7 @@ import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementTy
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasBinding;
 import net.minecraft.world.level.levelgen.structure.templatesystem.PosRuleTestType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTestType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.rule.blockentity.RuleBlockEntityModifierType;
 import net.minecraft.world.level.material.Fluid;
@@ -158,7 +159,7 @@ public class MapCodecs {
     public static final MapCodecHelper<Holder<MapCodec<? extends SurfaceRules.RuleSource>>> MATERIAL_RULE = RegistryMapCodecHelper.create(BuiltInRegistries.MATERIAL_RULE);
     public static final MapCodecHelper<Holder<MapCodec<? extends DensityFunction>>> DENSITY_FUNCTION_TYPE = RegistryMapCodecHelper.create(BuiltInRegistries.DENSITY_FUNCTION_TYPE);
     public static final MapCodecHelper<Holder<MapCodec<? extends Block>>> BLOCK_TYPE = RegistryMapCodecHelper.create(BuiltInRegistries.BLOCK_TYPE);
-    public static final MapCodecHelper<Holder<StructureProcessorType<?>>> STRUCTURE_PROCESSOR = RegistryMapCodecHelper.create(BuiltInRegistries.STRUCTURE_PROCESSOR);
+    public static final MapCodecHelper<Holder<MapCodec<? extends StructureProcessor>>> STRUCTURE_PROCESSOR = RegistryMapCodecHelper.create(BuiltInRegistries.STRUCTURE_PROCESSOR);
     public static final MapCodecHelper<Holder<StructurePoolElementType<?>>> STRUCTURE_POOL_ELEMENT = RegistryMapCodecHelper.create(BuiltInRegistries.STRUCTURE_POOL_ELEMENT);
     public static final MapCodecHelper<Holder<MapCodec<? extends PoolAliasBinding>>> POOL_ALIAS_BINDING_TYPE = RegistryMapCodecHelper.create(BuiltInRegistries.POOL_ALIAS_BINDING_TYPE);
     public static final MapCodecHelper<Holder<DecoratedPotPattern>> DECORATED_POT_PATTERN = RegistryMapCodecHelper.create(BuiltInRegistries.DECORATED_POT_PATTERN);
