@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.common.api.registry;
 
 import net.darkhax.bookshelf.common.impl.BookshelfMod;
+import net.darkhax.bookshelf.common.impl.registry.adapter.ItemRegistryAdapter;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
@@ -10,7 +11,6 @@ import net.minecraft.world.level.block.entity.DecoratedPotPattern;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * Holds context that is shared between different registry adapters.
@@ -18,7 +18,7 @@ import java.util.function.Function;
 public final class RegistrationContext {
 
     private final String namespace;
-    private final Map<RegistryReference<ResourceKey<Block>, Block>, Function<Block, Item>> placeableBlocks = new HashMap<>();
+    private final Map<RegistryReference<ResourceKey<Block>, Block>, BlockItemGenerator> placeableBlocks = new HashMap<>();
 
     private static final Map<Item, ResourceKey<DecoratedPotPattern>> INTERNAL_POT_PATTERN_ITEMS = new HashMap<>();
     public static final Map<Item, ResourceKey<DecoratedPotPattern>> POT_PATTERN_ITEMS = Collections.unmodifiableMap(INTERNAL_POT_PATTERN_ITEMS);
@@ -43,17 +43,14 @@ public final class RegistrationContext {
      * @param block     The block to associate the item with.
      * @param itemBlock A factory that creates the placer item.
      */
-    public void addPlaceableBlock(RegistryReference<ResourceKey<Block>, Block> block, Function<Block, Item> itemBlock) {
+    public void addPlaceableBlock(RegistryReference<ResourceKey<Block>, Block> block, BlockItemGenerator itemBlock) {
         this.placeableBlocks.put(block, itemBlock);
     }
 
-    /**
-     * Provides an unmodifiable view of placeable blocks and their associated item factories.
-     *
-     * @return An unmodifiable map of placeable blocks to their placer item factories.
-     */
-    public Map<RegistryReference<ResourceKey<Block>, Block>, Function<Block, Item>> getPlaceableBlocks() {
-        return Collections.unmodifiableMap(this.placeableBlocks);
+    public void registerPlacableBlocks(ItemRegistryAdapter itemRegistry) {
+        for (Map.Entry<RegistryReference<ResourceKey<Block>, Block>, BlockItemGenerator> placable : placeableBlocks.entrySet()) {
+            placable.getValue().generateAndRegister(itemRegistry, placable.getKey().key(), placable.getKey().value().get());
+        }
     }
 
     /**
@@ -67,5 +64,9 @@ public final class RegistrationContext {
             BookshelfMod.LOG.warn("Mod {} has changed the pot pattern of {} to {} from {}.", this.namespace(), BuiltInRegistries.ITEM.getKey(item), pattern.identifier(), INTERNAL_POT_PATTERN_ITEMS.get(item).identifier());
         }
         INTERNAL_POT_PATTERN_ITEMS.put(item, pattern);
+    }
+
+    public interface BlockItemGenerator {
+        void generateAndRegister(ItemRegistryAdapter registry, ResourceKey<Block> blockId, Block block);
     }
 }
