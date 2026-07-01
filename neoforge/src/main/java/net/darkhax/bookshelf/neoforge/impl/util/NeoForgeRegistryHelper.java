@@ -27,6 +27,7 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
@@ -49,6 +50,7 @@ public final class NeoForgeRegistryHelper {
             this.modBus.addListener(this::registerContent);
             this.setupCommandRegistration();
             this.content.definePackets(new PacketAdapter(this.context, Services.NETWORK::register));
+            this.modBus.addListener(this::registerDataRegistries);
             if (Services.PLATFORM.isPhysicalClient()) {
                 this.modBus.addListener(this::bindMenuScreens);
                 this.modBus.addListener(this::registerRenderers);
@@ -83,6 +85,13 @@ public final class NeoForgeRegistryHelper {
         this.adaptRegistry(event, Registries.LOOT_POOL_ENTRY_TYPE, this.content::defineLootEntryTypes);
         event.register(Registries.MENU, helper -> this.content.defineMenuType(new MenuTypeAdapter(this.context, (key, factory) -> helper.register(key, new MenuType<>(factory.get()::create, FeatureFlags.VANILLA_SET)))));
         this.adaptRegistry(event, Registries.SOUND_EVENT, this.content::defineSounds, SoundEventAdapter::new);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private void registerDataRegistries(DataPackRegistryEvent.NewRegistry event) {
+        this.content.defineDataRegistries(new DataRegistryAdapter(this.context, (key, data, network) -> {
+            event.dataPackRegistry((ResourceKey) key, data, network);
+        }));
     }
 
     private void setupCommandRegistration() {

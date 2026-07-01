@@ -253,6 +253,14 @@ public interface ContentProvider {
     }
 
     /**
+     * Defines new types of data driven registries, like the vanilla biome or enchantment registry.
+     *
+     * @param registry Registers new data registries.
+     */
+    default void defineDataRegistries(DataRegistryAdapter registry) {
+    }
+
+    /**
      * Associates menu types with screens.
      *
      * @param registry Adapts registry requests to the current mod loader.
