@@ -52,6 +52,7 @@ public final class FabricRegistryHelper {
     }
 
     private void registerContent() {
+        this.content.defineDataRegistries(new DataRegistryAdapter(this.context, FabricRegistryHelper::registerDataRegistry));
         this.content.defineLoadConditions(new GenericRegistryAdapter<>(this.context, (id, val) -> LoadConditions.register(id, val.get())));
         this.content.defineBlocks(new BlockRegistryAdapter(this.context, Registries.BLOCK, adapt(BuiltInRegistries.BLOCK)));
         final ItemRegistryAdapter itemRegistry = new ItemRegistryAdapter(this.context, adapt(BuiltInRegistries.ITEM));
@@ -78,7 +79,6 @@ public final class FabricRegistryHelper {
         this.content.defineMenuType(new MenuTypeAdapter(this.context, (key, factory) -> Registry.register(BuiltInRegistries.MENU, key, new MenuType<>(factory.get()::create, FeatureFlags.VANILLA_SET))));
         this.content.definePackets(new PacketAdapter(this.context, Services.NETWORK::register));
         this.content.defineSounds(new SoundEventAdapter(this.context, Registries.SOUND_EVENT, adapt(BuiltInRegistries.SOUND_EVENT)));
-        this.content.defineDataRegistries(new DataRegistryAdapter(this.context, FabricRegistryHelper::registerDataRegistry));
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

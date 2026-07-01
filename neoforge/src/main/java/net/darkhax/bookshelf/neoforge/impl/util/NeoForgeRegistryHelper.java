@@ -46,11 +46,11 @@ public final class NeoForgeRegistryHelper {
         this.context = new RegistrationContext(content.namespace());
         this.modBus = getModBus(content.namespace());
         if (this.content.canLoad()) {
+            this.modBus.addListener(this::registerDataRegistries);
             this.content.defineLoadConditions(new GenericRegistryAdapter<>(this.context, (id, val) -> LoadConditions.register(id, val.get())));
             this.modBus.addListener(this::registerContent);
             this.setupCommandRegistration();
             this.content.definePackets(new PacketAdapter(this.context, Services.NETWORK::register));
-            this.modBus.addListener(this::registerDataRegistries);
             if (Services.PLATFORM.isPhysicalClient()) {
                 this.modBus.addListener(this::bindMenuScreens);
                 this.modBus.addListener(this::registerRenderers);
