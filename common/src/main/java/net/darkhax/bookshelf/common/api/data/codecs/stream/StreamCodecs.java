@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 public class StreamCodecs {
@@ -22,6 +23,14 @@ public class StreamCodecs {
                 return ingredient.isEmpty() ? FalseIngredient.INSTANCE.get() : ingredient;
             }
     );
+
+    public static <T extends Enum<T>> StreamCodec<RegistryFriendlyByteBuf, T> enumerable(Class<T> enumClass) {
+        return StreamCodec.of(FriendlyByteBuf::writeEnum, buf -> buf.readEnum(enumClass));
+    }
+
+    public static <T extends Enum<T>> StreamCodec<RegistryFriendlyByteBuf, EnumSet<T>> enumSet(Class<T> enumClass) {
+        return StreamCodec.of((b, v) -> b.writeEnumSet(v, enumClass), buf -> buf.readEnumSet(enumClass));
+    }
 
     public static <B extends ByteBuf, V> StreamCodec<B, List<V>> list(StreamCodec<B, V> baseCodec) {
         return StreamCodec.of(
