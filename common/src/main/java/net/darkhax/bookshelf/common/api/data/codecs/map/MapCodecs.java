@@ -408,11 +408,21 @@ public class MapCodecs {
         return DataResult.success(state);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     private static DataResult<Pair<Holder<Block>, Optional<Map<String, String>>>> encodeBlockState(BlockState state) {
         final Map<String, String> propertyMap = new HashMap<>();
         state.getValues().forEach(entry -> propertyMap.put(entry.property().getName(), entry.valueName()));
         return DataResult.success(new Pair<>(state.getBlock().builtInRegistryHolder(), Optional.ofNullable(propertyMap.isEmpty() ? null : propertyMap)));
+    }
+
+    /**
+     * Creates a codec that will produce a set of enum values from an array of String values.
+     *
+     * @param enumClass The type of enum to create a codec for.
+     * @param <T>       The type of the enum.
+     * @return The EnumSet codec.
+     */
+    public static <T extends Enum<T>> Codec<EnumSet<T>> enumSet(Class<T> enumClass) {
+        return enumerable(enumClass).listOf().xmap(EnumSet::copyOf, ArrayList::new);
     }
 
     /**
