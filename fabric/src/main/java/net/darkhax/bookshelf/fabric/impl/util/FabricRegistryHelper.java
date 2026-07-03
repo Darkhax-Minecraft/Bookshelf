@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.fabric.impl.util;
 
+import com.mojang.serialization.Codec;
 import net.darkhax.bookshelf.common.api.data.conditions.LoadConditions;
 import net.darkhax.bookshelf.common.api.registry.ContentProvider;
 import net.darkhax.bookshelf.common.api.registry.RegistrationContext;
@@ -11,6 +12,7 @@ import net.darkhax.bookshelf.common.impl.registry.adapter.*;
 import net.darkhax.bookshelf.fabric.impl.data.FabricIngredient;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
 import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
 import net.fabricmc.fabric.api.recipe.v1.sync.SynchronizedRecipes;
@@ -24,6 +26,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -49,6 +52,7 @@ public final class FabricRegistryHelper {
     }
 
     private void registerContent() {
+        this.content.defineDataRegistries(new DataRegistryAdapter(this.context, FabricRegistryHelper::registerDataRegistry));
         this.content.defineLoadConditions(new GenericRegistryAdapter<>(this.context, (id, val) -> LoadConditions.register(id, val.get())));
         this.content.defineBlocks(new BlockRegistryAdapter(this.context, Registries.BLOCK, adapt(BuiltInRegistries.BLOCK)));
         this.context.getPlaceableBlocks().forEach((ref, factory) -> Registry.register(BuiltInRegistries.ITEM, ref.key().identifier(), factory.apply(ref.value().get())));
@@ -85,6 +89,17 @@ public final class FabricRegistryHelper {
     private void registerCommands() {
         CommandRegistrationCallback.EVENT.register(this.content::defineCommands);
         this.content.defineCommandArguments(new CommandArgumentAdapter(this.context, (rl, info) -> registerCommandArgument(rl, info.get())));
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private static void registerDataRegistry(ResourceKey<? extends Registry> key, Codec dataCodec, @Nullable Codec networkCodec) {
+        var forcedKey = (ResourceKey) key;
+        if (networkCodec != null) {
+            DynamicRegistries.registerSynced(forcedKey, dataCodec, networkCodec);
+        }
+        else {
+            DynamicRegistries.register(forcedKey, dataCodec);
+        }
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

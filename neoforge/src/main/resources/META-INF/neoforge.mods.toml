@@ -10,7 +10,7 @@ updateJSONURL = "https://updates.blamejared.com/get?n=bookshelf&gv=26.2&ml=neofo
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/bookshelf"
 logoFile = "logo_bookshelf.png"
 logoBlur = false
-credits = "This project is made possible with Patreon support from players like you. Thank you! lothrazar, techsquirrel, Keyana , Darkosto, Tobias Ward, noobanidus"
+credits = "This project is made possible with Patreon support from players like you. Thank you! lothrazar, techsquirrel, Keyana , Tobias Ward, noobanidus"
 authors = "Darkhax"
 description = "Bookshelf is a library mod that provides code, frameworks, and utilities for other mods. Many mods make use of Bookshelf and are powered by its code."
 

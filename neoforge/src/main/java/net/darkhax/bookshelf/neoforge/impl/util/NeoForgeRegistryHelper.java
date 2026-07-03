@@ -27,6 +27,7 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
@@ -45,6 +46,7 @@ public final class NeoForgeRegistryHelper {
         this.context = new RegistrationContext(content.namespace());
         this.modBus = getModBus(content.namespace());
         if (this.content.canLoad()) {
+            this.modBus.addListener(this::registerDataRegistries);
             this.content.defineLoadConditions(new GenericRegistryAdapter<>(this.context, (id, val) -> LoadConditions.register(id, val.get())));
             this.modBus.addListener(this::registerContent);
             this.setupCommandRegistration();
@@ -86,6 +88,13 @@ public final class NeoForgeRegistryHelper {
 
     private void setupCommandRegistration() {
         NeoForge.EVENT_BUS.addListener(RegisterCommandsEvent.class, event -> this.content.defineCommands(event.getDispatcher(), event.getBuildContext(), event.getCommandSelection()));
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private void registerDataRegistries(DataPackRegistryEvent.NewRegistry event) {
+        this.content.defineDataRegistries(new DataRegistryAdapter(this.context, (key, data, network) -> {
+            event.dataPackRegistry((ResourceKey) key, data, network);
+        }));
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
