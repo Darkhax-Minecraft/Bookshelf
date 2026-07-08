@@ -55,8 +55,9 @@ public final class FabricRegistryHelper {
         this.content.defineDataRegistries(new DataRegistryAdapter(this.context, FabricRegistryHelper::registerDataRegistry));
         this.content.defineLoadConditions(new GenericRegistryAdapter<>(this.context, (id, val) -> LoadConditions.register(id, val.get())));
         this.content.defineBlocks(new BlockRegistryAdapter(this.context, Registries.BLOCK, adapt(BuiltInRegistries.BLOCK)));
-        this.context.getPlaceableBlocks().forEach((ref, factory) -> Registry.register(BuiltInRegistries.ITEM, ref.key().identifier(), factory.apply(ref.value().get())));
-        this.content.defineItems(new ItemRegistryAdapter(this.context, adapt(BuiltInRegistries.ITEM)));
+        final ItemRegistryAdapter itemRegistry = new ItemRegistryAdapter(this.context, adapt(BuiltInRegistries.ITEM));
+        this.context.registerPlacableBlocks(itemRegistry);
+        this.content.defineItems(itemRegistry);
         this.content.defineCreativeTabs(new CreativeModeTabAdapter(this.context, Registries.CREATIVE_MODE_TAB, adapt(BuiltInRegistries.CREATIVE_MODE_TAB)));
         this.content.defineIngredientTypes(new IngredientTypeAdapter(this.context, (id, value) -> CustomIngredientSerializer.register(adaptType(id, value.get()))));
         this.content.defineRecipeTypes(new RecipeTypeAdapter(this.context, Registries.RECIPE_TYPE, adapt(BuiltInRegistries.RECIPE_TYPE)));

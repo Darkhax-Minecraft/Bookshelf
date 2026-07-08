@@ -64,8 +64,9 @@ public final class NeoForgeRegistryHelper {
     private void registerContent(RegisterEvent event) {
         event.register(Registries.BLOCK, helper -> this.content.defineBlocks(new BlockRegistryAdapter(this.context, Registries.BLOCK, adapt(helper))));
         event.register(Registries.ITEM, helper -> {
-            this.context.getPlaceableBlocks().forEach((blockRef, builder) -> helper.register(blockRef.key().identifier(), builder.apply(blockRef.value().get())));
-            this.content.defineItems(new ItemRegistryAdapter(this.context, adapt(helper)));
+            final ItemRegistryAdapter itemRegistry = new ItemRegistryAdapter(this.context, adapt(helper));
+            this.context.registerPlacableBlocks(itemRegistry);
+            this.content.defineItems(itemRegistry);
         });
         this.adaptRegistry(event, Registries.CREATIVE_MODE_TAB, this.content::defineCreativeTabs, CreativeModeTabAdapter::new);
         event.register(NeoForgeRegistries.Keys.INGREDIENT_TYPES, helper -> this.content.defineIngredientTypes(new IngredientTypeAdapter(this.context, (id, value) -> helper.register(id, adaptType(id, value.get())))));

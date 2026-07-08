@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.common.api.registry;
 
 import net.darkhax.bookshelf.common.impl.BookshelfMod;
+import net.darkhax.bookshelf.common.impl.registry.adapter.ItemRegistryAdapter;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -20,7 +21,7 @@ import java.util.function.Function;
 public final class RegistrationContext {
 
     private final String namespace;
-    private final Map<RegistryReference<ResourceKey<Block>, Block>, Function<Block, Item>> placeableBlocks = new HashMap<>();
+    private final Map<RegistryReference<ResourceKey<Block>, Block>, BlockItemGenerator> placeableBlocks = new HashMap<>();
 
     private static final Map<Item, SpriteId> INTERNAL_POT_SPRITES = new HashMap<>();
     public static final Map<Item, SpriteId> POT_SPRITES = Collections.unmodifiableMap(INTERNAL_POT_SPRITES);
@@ -45,17 +46,14 @@ public final class RegistrationContext {
      * @param block     The block to associate the item with.
      * @param itemBlock A factory that creates the placer item.
      */
-    public void addPlaceableBlock(RegistryReference<ResourceKey<Block>, Block> block, Function<Block, Item> itemBlock) {
+    public void addPlaceableBlock(RegistryReference<ResourceKey<Block>, Block> block, BlockItemGenerator itemBlock) {
         this.placeableBlocks.put(block, itemBlock);
     }
 
-    /**
-     * Provides an unmodifiable view of placeable blocks and their associated item factories.
-     *
-     * @return An unmodifiable map of placeable blocks to their placer item factories.
-     */
-    public Map<RegistryReference<ResourceKey<Block>, Block>, Function<Block, Item>> getPlaceableBlocks() {
-        return Collections.unmodifiableMap(this.placeableBlocks);
+    public void registerPlacableBlocks(ItemRegistryAdapter itemRegistry) {
+        for (Map.Entry<RegistryReference<ResourceKey<Block>, Block>, BlockItemGenerator> placable : placeableBlocks.entrySet()) {
+            placable.getValue().generateAndRegister(itemRegistry, placable.getKey().key(), placable.getKey().value().get());
+        }
     }
 
     /**
@@ -69,5 +67,9 @@ public final class RegistrationContext {
             BookshelfMod.LOG.warn("Mod {} has changed the pot pattern of {} to {} from {}.", this.namespace(), BuiltInRegistries.ITEM.getKey(item), pattern.identifier(), INTERNAL_POT_SPRITES.get(item).texture());
         }
         INTERNAL_POT_SPRITES.put(item, Sheets.DECORATED_POT_MAPPER.apply(pattern.identifier()));
+    }
+
+    public interface BlockItemGenerator {
+        void generateAndRegister(ItemRegistryAdapter registry, ResourceKey<Block> blockId, Block block);
     }
 }
