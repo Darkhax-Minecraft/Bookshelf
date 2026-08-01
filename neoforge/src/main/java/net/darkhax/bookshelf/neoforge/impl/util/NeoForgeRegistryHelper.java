@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.neoforge.impl.util;
 
+import net.darkhax.bookshelf.common.api.block.ITintedBlock;
 import net.darkhax.bookshelf.common.api.data.conditions.LoadConditions;
 import net.darkhax.bookshelf.common.api.registry.ContentProvider;
 import net.darkhax.bookshelf.common.api.registry.RegistrationContext;
@@ -9,6 +10,7 @@ import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.darkhax.bookshelf.common.impl.registry.adapter.*;
 import net.darkhax.bookshelf.neoforge.impl.data.NeoForgeIngredient;
+import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
@@ -18,11 +20,13 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.javafmlmod.FMLModContainer;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.crafting.IngredientType;
@@ -31,6 +35,8 @@ import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -54,6 +60,7 @@ public final class NeoForgeRegistryHelper {
             if (Services.PLATFORM.isPhysicalClient()) {
                 this.modBus.addListener(this::bindMenuScreens);
                 this.modBus.addListener(this::registerRenderers);
+                this.modBus.addListener(this::registerBlockColors);
             }
         }
         else {
@@ -62,7 +69,13 @@ public final class NeoForgeRegistryHelper {
     }
 
     private void registerContent(RegisterEvent event) {
-        event.register(Registries.BLOCK, helper -> this.content.defineBlocks(new BlockRegistryAdapter(this.context, Registries.BLOCK, adapt(helper))));
+        event.register(Registries.BLOCK, helper -> this.content.defineBlocks(new BlockRegistryAdapter(this.context, Registries.BLOCK, (key, obj) -> {
+            final Block block = obj.get();
+            helper.register(key, block);
+            if (block instanceof ITintedBlock tintedBlock) {
+                this.context.TINTED_BLOCK_LIST.add(tintedBlock);
+            }
+        })));
         event.register(Registries.ITEM, helper -> {
             final ItemRegistryAdapter itemRegistry = new ItemRegistryAdapter(this.context, adapt(helper));
             this.context.registerPlacableBlocks(itemRegistry);
@@ -85,6 +98,16 @@ public final class NeoForgeRegistryHelper {
         this.adaptRegistry(event, Registries.LOOT_POOL_ENTRY_TYPE, this.content::defineLootEntryTypes);
         event.register(Registries.MENU, helper -> this.content.defineMenuType(new MenuTypeAdapter(this.context, (key, factory) -> helper.register(key, new MenuType<>(factory.get()::create, FeatureFlags.VANILLA_SET)))));
         this.adaptRegistry(event, Registries.SOUND_EVENT, this.content::defineSounds, SoundEventAdapter::new);
+    }
+
+    private void registerBlockColors(RegisterColorHandlersEvent.BlockTintSources event) {
+        for (ITintedBlock tintedBlock : this.context.TINTED_BLOCK_LIST) {
+            if (tintedBlock instanceof Block block) {
+                final List<BlockTintSource> sources = new ArrayList<>();
+                tintedBlock.getBlockTint(sources::add);
+                event.register(sources, block);
+            }
+        }
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

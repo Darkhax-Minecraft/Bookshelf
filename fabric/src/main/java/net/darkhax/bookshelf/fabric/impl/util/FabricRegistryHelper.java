@@ -1,6 +1,7 @@
 package net.darkhax.bookshelf.fabric.impl.util;
 
 import com.mojang.serialization.Codec;
+import net.darkhax.bookshelf.common.api.block.ITintedBlock;
 import net.darkhax.bookshelf.common.api.data.conditions.LoadConditions;
 import net.darkhax.bookshelf.common.api.registry.ContentProvider;
 import net.darkhax.bookshelf.common.api.registry.RegistrationContext;
@@ -10,12 +11,13 @@ import net.darkhax.bookshelf.common.api.service.Services;
 import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.darkhax.bookshelf.common.impl.registry.adapter.*;
 import net.darkhax.bookshelf.fabric.impl.data.FabricIngredient;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
 import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
-import net.fabricmc.fabric.api.recipe.v1.sync.SynchronizedRecipes;
+import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.Registry;
@@ -26,8 +28,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.block.Block;
 import org.jspecify.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -54,7 +59,13 @@ public final class FabricRegistryHelper {
     private void registerContent() {
         this.content.defineDataRegistries(new DataRegistryAdapter(this.context, FabricRegistryHelper::registerDataRegistry));
         this.content.defineLoadConditions(new GenericRegistryAdapter<>(this.context, (id, val) -> LoadConditions.register(id, val.get())));
-        this.content.defineBlocks(new BlockRegistryAdapter(this.context, Registries.BLOCK, adapt(BuiltInRegistries.BLOCK)));
+        this.content.defineBlocks(new BlockRegistryAdapter(this.context, Registries.BLOCK, (key, obj) -> {
+            final Block block = obj.get();
+            Registry.register(BuiltInRegistries.BLOCK, key, block);
+            if (block instanceof ITintedBlock tinted) {
+                this.context.TINTED_BLOCK_LIST.add(tinted);
+            }
+        }));
         final ItemRegistryAdapter itemRegistry = new ItemRegistryAdapter(this.context, adapt(BuiltInRegistries.ITEM));
         this.context.registerPlacableBlocks(itemRegistry);
         this.content.defineItems(itemRegistry);
@@ -96,6 +107,13 @@ public final class FabricRegistryHelper {
     private void registerClient() {
         this.content.defineMenuScreens(new MenuScreenAdapter((id, factory) -> MenuScreens.register(id, (MenuScreens.ScreenConstructor) factory::create)));
         this.content.defineBlockRenderers(new BlockEntityRendererAdapter(BlockEntityRenderers::register));
+        for (ITintedBlock tinted : this.context.TINTED_BLOCK_LIST) {
+            if (tinted instanceof Block block) {
+                final List<BlockTintSource> sources = new ArrayList<>();
+                tinted.getBlockTint(sources::add);
+                BlockColorRegistry.register(sources, block);
+            }
+        }
     }
 
     private void registerCommands() {

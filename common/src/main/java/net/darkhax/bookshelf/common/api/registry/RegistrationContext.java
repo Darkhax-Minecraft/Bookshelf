@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.common.api.registry;
 
+import net.darkhax.bookshelf.common.api.block.ITintedBlock;
 import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.darkhax.bookshelf.common.impl.registry.adapter.ItemRegistryAdapter;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -8,9 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.DecoratedPotPattern;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Holds context that is shared between different registry adapters.
@@ -19,6 +18,7 @@ public final class RegistrationContext {
 
     private final String namespace;
     private final Map<RegistryReference<ResourceKey<Block>, Block>, BlockItemGenerator> placeableBlocks = new HashMap<>();
+    public final List<ITintedBlock> TINTED_BLOCK_LIST = new ArrayList<>();
 
     private static final Map<Item, ResourceKey<DecoratedPotPattern>> INTERNAL_POT_PATTERN_ITEMS = new HashMap<>();
     public static final Map<Item, ResourceKey<DecoratedPotPattern>> POT_PATTERN_ITEMS = Collections.unmodifiableMap(INTERNAL_POT_PATTERN_ITEMS);
