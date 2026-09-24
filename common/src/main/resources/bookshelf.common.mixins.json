@@ -27,8 +27,7 @@
     "patch.level.MixinWalkNodeEvaluator",
     "patch.loot.MixinLootDataType",
     "patch.loot.MixinLootItemKilledByPlayerCondition",
-    "patch.loot.MixinLootPool",
-    "patch.potions.MixinPotionBrewing"
+    "patch.loot.MixinLootPool"
   ],
   "client": [
     "access.block.AccessorBlockEntityRenderers",

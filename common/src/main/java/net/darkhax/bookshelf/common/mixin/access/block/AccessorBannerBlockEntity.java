@@ -9,5 +9,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface AccessorBannerBlockEntity {
 
     @Accessor("name")
-    void setName(Component name);
+    void bookshelf$setName(Component name);
 }

@@ -12,6 +12,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Registers new LootPoolAddition from various mods to be applied by Bookshelf.
@@ -42,7 +43,7 @@ public record LootPoolAdditionAdapter(String owner, RegisterFunc registerFunc) {
     }
 
     public void add(String id, Identifier tableId, int poolIndex, int poolHash, Item item, int weight) {
-        add(id, tableId, poolIndex, poolHash, AccessorLootItem.bookshelf$create(item.builtInRegistryHolder(), weight, 0, List.of(), List.of()));
+        add(id, tableId, poolIndex, poolHash, AccessorLootItem.bookshelf$create(item.builtInRegistryHolder(), weight, 0, Optional.empty(), Optional.empty()));
     }
 
     public void add(String id, PoolTarget pool, LootPoolEntryContainer addition) {

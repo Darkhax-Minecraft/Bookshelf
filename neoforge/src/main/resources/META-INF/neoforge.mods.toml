@@ -4,12 +4,11 @@ issueTrackerURL = "https://github.com/Darkhax-Minecraft/Bookshelf/issues"
 
 [[mods]]
 modId = "bookshelf"
-version = "26.2.0.0"
+version = "26.3.0.0"
 displayName = "Bookshelf"
-updateJSONURL = "https://updates.blamejared.com/get?n=bookshelf&gv=26.2&ml=neoforge"
+updateJSONURL = "https://updates.blamejared.com/get?n=bookshelf&gv=26.3&ml=neoforge"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/bookshelf"
-logoFile = "logo_bookshelf.png"
-logoBlur = false
+iconFile = "logo_bookshelf.png"
 credits = "This project is made possible with Patreon support from players like you. Thank you! lothrazar, techsquirrel, Tobias Ward, noobanidus"
 authors = "Darkhax"
 description = "Bookshelf is a library mod that provides code, frameworks, and utilities for other mods. Many mods make use of Bookshelf and are powered by its code."
@@ -23,14 +22,14 @@ config = "bookshelf.neoforge.mixins.json"
 [[dependencies.bookshelf]]
 modId = "minecraft"
 type = "required"
-versionRange = "26.2"
+versionRange = "26.3"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.bookshelf]]
 modId = "neoforge"
 type = "required"
-versionRange = "[26.2.0.1-beta,)"
+versionRange = "[26.3.0.16-beta,)"
 ordering = "NONE"
 side = "BOTH"
 

@@ -8,6 +8,7 @@ import net.darkhax.bookshelf.common.impl.registry.adapter.LootDescriptionAdapter
 import net.darkhax.bookshelf.common.mixin.access.loot.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -73,7 +74,7 @@ public class LootPoolEntryDescriptions {
 
     public static final LootPoolEntryDescriber LOOT_TABLE = (server, entry, collector) -> {
         if (entry instanceof AccessorNestedLootTable accessor) {
-            getPotentialItems(server, accessor.bookshelf$contents(), collector);
+            getPotentialItems(server, accessor.bookshelf$value(), collector);
         }
     };
     public static final LootPoolEntryDescriber DYNAMIC = (server, entry, collector) -> {
@@ -83,7 +84,7 @@ public class LootPoolEntryDescriptions {
     };
     public static final LootPoolEntryDescriber TAG = (server, entry, collector) -> {
         if (entry instanceof AccessorTagEntry tagEntry) {
-            getTagItems(tagEntry.bookshelf$tag(), collector);
+            getTagHolder(tagEntry.bookshelf$tag(), collector);
         }
     };
     public static final LootPoolEntryDescriber COMPOSITE = (server, entry, collector) -> {
@@ -122,13 +123,12 @@ public class LootPoolEntryDescriptions {
      * Gets potential drops for a loot table.
      *
      * @param server   The server instance.
-     * @param table    The loot table to examine.
+     * @param tables    The loot table to examine.
      * @param consumer Collects entries in your desired format.
      */
-    public static void getPotentialItems(@NotNull MinecraftServer server, Either<ResourceKey<LootTable>, LootTable> table, Consumer<ItemStack> consumer) {
-        final LootTable resolved = table.map(rl -> server.reloadableRegistries().getLootTable(rl), Function.identity());
-        if (resolved != null) {
-            getPotentialItems(server, resolved, consumer);
+    public static void getPotentialItems(@NotNull MinecraftServer server, HolderSet<LootTable> tables, Consumer<ItemStack> consumer) {
+        for (Holder<LootTable> tableEntry : tables) {
+            getPotentialItems(server, tableEntry.value(), consumer);
         }
     }
 
@@ -198,6 +198,12 @@ public class LootPoolEntryDescriptions {
     private static void getTagItems(TagKey<Item> tag, Consumer<ItemStack> collector) {
         for (Holder<Item> item : BuiltInRegistries.ITEM.getTagOrEmpty(tag)) {
             collector.accept(new ItemStack(item));
+        }
+    }
+
+    private static void getTagHolder(HolderSet<Item> tag, Consumer<ItemStack> collector) {
+        for (Holder<Item> item : tag) {
+            collector.accept(item.value().getDefaultInstance());
         }
     }
 }

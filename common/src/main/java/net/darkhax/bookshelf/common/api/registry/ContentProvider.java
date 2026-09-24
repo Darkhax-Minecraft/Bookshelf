@@ -18,7 +18,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
@@ -143,14 +142,6 @@ public interface ContentProvider {
      * @param registry Adapts registry requests to the current mod loader.
      */
     default void definePotions(GameRegistryAdapter<Potion> registry) {
-    }
-
-    /**
-     * Registers new potion brewing recipes with the game.
-     *
-     * @param registry Adapts registry requests to the current mod loader.
-     */
-    default void defineBrews(PotionBrewing.Builder registry) {
     }
 
     /**

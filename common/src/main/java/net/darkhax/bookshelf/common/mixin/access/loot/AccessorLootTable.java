@@ -1,5 +1,6 @@
 package net.darkhax.bookshelf.common.mixin.access.loot;
 
+import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -19,6 +20,6 @@ public interface AccessorLootTable {
     @Accessor("pools")
     List<LootPool> bookshelf$pools();
 
-    @Accessor("functions")
-    List<LootItemFunction> bookshelf$functions();
+    @Accessor("modifier")
+    Optional<Holder<LootItemFunction>> bookshelf$modifier();
 }

@@ -9,6 +9,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -33,7 +34,9 @@ public class StructureCommand {
     private static Set<Identifier> getUniqueStructuresAt(CommandContext<CommandSourceStack> context, BlockPos pos) {
         final ServerLevel level = context.getSource().getLevel();
         final Registry<Structure> registry = level.registryAccess().lookupOrThrow(Registries.STRUCTURE);
-        return level.structureManager().startsForStructure(ChunkPos.containing(pos), s -> true).stream().filter(s -> s.getBoundingBox().isInside(pos)).map(s -> registry.getKey(s.getStructure())).collect(Collectors.toSet());
+        final int sectionX = SectionPos.blockToSectionCoord(pos.getX());
+        final int sectionZ = SectionPos.blockToSectionCoord(pos.getZ());
+        return level.structureManager().startsForStructure(sectionX, sectionZ, _ -> true).stream().filter(s -> s.getBoundingBox().isInside(pos)).map(s -> registry.getKey(s.getStructure())).collect(Collectors.toSet());
     }
 
     private static int structureAt(CommandContext<CommandSourceStack> context, BlockPos pos) {

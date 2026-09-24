@@ -66,7 +66,6 @@ public final class FabricRegistryHelper {
         this.content.defineCriteriaTriggers(new GameRegistryAdapter<>(this.context, Registries.TRIGGER_TYPE, adapt(BuiltInRegistries.TRIGGER_TYPES)));
         this.content.defineEntities(new GameRegistryAdapter<>(this.context, Registries.ENTITY_TYPE, adapt(BuiltInRegistries.ENTITY_TYPE)));
         this.content.definePotions(new GameRegistryAdapter<>(this.context, Registries.POTION, adapt(BuiltInRegistries.POTION)));
-        this.content.definePotPatterns(new PotPatternAdapter(this.context, Registries.DECORATED_POT_PATTERN, adapt(BuiltInRegistries.DECORATED_POT_PATTERN)));
         this.content.defineItemComponents(new GameRegistryAdapter<>(this.context, Registries.DATA_COMPONENT_TYPE, adapt(BuiltInRegistries.DATA_COMPONENT_TYPE)));
         this.content.defineEnchantmentComponents(new GameRegistryAdapter<>(this.context, Registries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, adapt(BuiltInRegistries.ENCHANTMENT_EFFECT_COMPONENT_TYPE)));
         this.content.defineBlockEntities(new GameRegistryAdapter<>(this.context, Registries.BLOCK_ENTITY_TYPE, adapt(BuiltInRegistries.BLOCK_ENTITY_TYPE)));

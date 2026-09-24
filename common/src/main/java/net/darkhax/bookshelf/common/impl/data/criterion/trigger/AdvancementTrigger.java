@@ -4,11 +4,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.darkhax.bookshelf.common.api.data.codecs.map.MapCodecs;
 import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -18,7 +18,7 @@ public class AdvancementTrigger extends SimpleCriterionTrigger<AdvancementTrigge
 
     public static final AdvancementTrigger TRIGGER = new AdvancementTrigger();
     private static final Codec<AdvancementTrigger.Instance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(Instance::player),
+            LootItemCondition.CODEC.optionalFieldOf("player").forGetter(Instance::player),
             MapCodecs.RESOURCE_LOCATION.setCodec("advancements", Instance::advancementIds)
     ).apply(instance, Instance::new));
 
@@ -32,11 +32,11 @@ public class AdvancementTrigger extends SimpleCriterionTrigger<AdvancementTrigge
         this.trigger(player, instance -> instance.advancementIds().contains(advancement.id()));
     }
 
-    public record Instance(Optional<ContextAwarePredicate> player, Set<Identifier> advancementIds) implements SimpleCriterionTrigger.SimpleInstance {
+    public record Instance(Optional<Holder<LootItemCondition>> player, Set<Identifier> advancementIds) implements SimpleCriterionTrigger.SimpleInstance {
 
         @Override
         @NotNull
-        public Optional<ContextAwarePredicate> player() {
+        public Optional<Holder<LootItemCondition>> player() {
             return this.player;
         }
     }

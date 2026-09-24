@@ -78,13 +78,14 @@ public class FontCommand {
                         accessor.bookshelf$name(TextHelper.applyFont(container.getName().copy(), fontId));
                 case SignBlockEntity sign -> {
                     if (sign.getLevel() != null) {
-                        sign.updateText(applySignFont(fontId), true);
-                        sign.updateText(applySignFont(fontId), false);
+                        final UnaryOperator<SignText> signFunc = applySignFont(fontId);
+                        sign.updateText(signFunc, SignTextSlot.FRONT);
+                        sign.updateText(signFunc, SignTextSlot.BACK);
                         sign.getLevel().sendBlockUpdated(sign.getBlockPos(), sign.getBlockState(), sign.getBlockState(), 3);
                     }
                 }
                 case BannerBlockEntity banner when banner.hasCustomName() && banner instanceof AccessorBannerBlockEntity accessor ->
-                        accessor.setName(TextHelper.applyFont(banner.getCustomName(), fontId));
+                        accessor.bookshelf$setName(TextHelper.applyFont(banner.getCustomName(), fontId));
                 default ->
                         context.getSource().sendFailure(Component.translatable("commands.bookshelf.font.unsupported_block", tile.getBlockState().getBlock().getName()));
             }
@@ -94,11 +95,9 @@ public class FontCommand {
 
     private static UnaryOperator<SignText> applySignFont(Identifier fontId) {
         return text -> {
-            SignText newText = text;
-            for (int i = 0; i < 4; i++) {
-                newText = newText.setMessage(i, TextHelper.applyFont(text.getMessage(i, false).copy(), fontId));
-            }
-            return newText;
+            final SignText.Mutable signText = text.asMutable();
+            signText.modifyLines(msg -> TextHelper.applyFont(msg, fontId));
+            return signText.asImmutable();
         };
     }
 }

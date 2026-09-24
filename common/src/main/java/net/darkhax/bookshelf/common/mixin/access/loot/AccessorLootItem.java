@@ -10,12 +10,13 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mixin(LootItem.class)
 public interface AccessorLootItem {
 
     @Invoker("<init>")
-    static LootItem bookshelf$create(Holder<Item> item, int weight, int quality, List<LootItemCondition> conditions, List<LootItemFunction> functions) {
+    static LootItem bookshelf$create(Holder<Item> item, int weight, int quality, Optional<Holder<LootItemCondition>> condition, Optional<Holder<LootItemFunction>> modifier) {
         return null;
     }
 

@@ -19,10 +19,20 @@ public class BlockTagIngredient implements IngredientLogic<BlockTagIngredient> {
 
     public static final MapCodec<BlockTagIngredient> CODEC = MapCodecs.flexibleList(TagKey.codec(Registries.BLOCK)).xmap(BlockTagIngredient::new, l -> l.blockTags).fieldOf("tag");
     public static final StreamCodec<RegistryFriendlyByteBuf, BlockTagIngredient> STREAM = StreamCodec.of(
-            (buf, val) -> buf.writeCollection(val.blockTags, (b1, tag) -> {
-                b1.writeIdentifier(tag.location());
-            }),
-            buf -> new BlockTagIngredient(buf.readCollection(ArrayList::new, b1 -> TagKey.create(Registries.BLOCK, b1.readIdentifier())))
+            (buf, val) -> {
+                buf.writeVarInt(val.blockTags.size());
+                for (TagKey<Block> block : val.blockTags) {
+                    buf.writeIdentifier(block.location());
+                }
+            },
+            buf -> {
+                final int size = buf.readVarInt();
+                final List<TagKey<Block>> tags = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    tags.add(TagKey.create(Registries.BLOCK, buf.readIdentifier()));
+                }
+                return new BlockTagIngredient(tags);
+            }
     );
 
     private final List<TagKey<Block>> blockTags;

@@ -20,8 +20,8 @@ public class MixinLootItemKilledByPlayerCondition {
     @Inject(method = "test(Lnet/minecraft/world/level/storage/loot/LootContext;)Z", at = @At("HEAD"), cancellable = true)
     public void test(LootContext context, CallbackInfoReturnable<Boolean> callback) {
         if (context != null && context.hasParameter(LootContextParams.DAMAGE_SOURCE)) {
-            final DamageSource source = context.getParameter(LootContextParams.DAMAGE_SOURCE);
-            if (source.is(BookshelfTags.FAKE_PLAYER_DAMAGE)) {
+            final DamageSource source = context.getOptional(LootContextParams.DAMAGE_SOURCE);
+            if (source != null && source.is(BookshelfTags.FAKE_PLAYER_DAMAGE)) {
                 callback.setReturnValue(true);
             }
         }
