@@ -76,7 +76,6 @@ public final class NeoForgeRegistryHelper {
         this.adaptRegistry(event, Registries.TRIGGER_TYPE, this.content::defineCriteriaTriggers);
         this.adaptRegistry(event, Registries.ENTITY_TYPE, this.content::defineEntities);
         this.adaptRegistry(event, Registries.POTION, this.content::definePotions);
-        this.adaptRegistry(event, Registries.DECORATED_POT_PATTERN, this.content::definePotPatterns, PotPatternAdapter::new);
         this.adaptRegistry(event, Registries.DATA_COMPONENT_TYPE, this.content::defineItemComponents);
         this.adaptRegistry(event, Registries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, this.content::defineEnchantmentComponents);
         this.adaptRegistry(event, Registries.BLOCK_ENTITY_TYPE, this.content::defineBlockEntities);

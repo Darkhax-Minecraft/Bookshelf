@@ -145,14 +145,6 @@ public interface ContentProvider {
     }
 
     /**
-     * Registers new decorated pot patterns with the game, and create associations between items and patterns.
-     *
-     * @param registry Adapts registry requests to the current mod loader.
-     */
-    default void definePotPatterns(PotPatternAdapter registry) {
-    }
-
-    /**
      * Registers new item components with the game.
      *
      * @param registry Adapts registry requests to the current mod loader.
