@@ -1,19 +1,11 @@
 package net.darkhax.bookshelf.common.api.registry;
 
-import net.darkhax.bookshelf.common.impl.BookshelfMod;
 import net.darkhax.bookshelf.common.impl.registry.adapter.ItemRegistryAdapter;
-import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.resources.model.sprite.SpriteId;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.DecoratedPotPattern;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * Holds context that is shared between different registry adapters.
@@ -22,9 +14,6 @@ public final class RegistrationContext {
 
     private final String namespace;
     private final Map<RegistryReference<ResourceKey<Block>, Block>, BlockItemGenerator> placeableBlocks = new HashMap<>();
-
-    private static final Map<Item, SpriteId> INTERNAL_POT_SPRITES = new HashMap<>();
-    public static final Map<Item, SpriteId> POT_SPRITES = Collections.unmodifiableMap(INTERNAL_POT_SPRITES);
 
     public RegistrationContext(String namespace) {
         this.namespace = namespace;
@@ -54,19 +43,6 @@ public final class RegistrationContext {
         for (Map.Entry<RegistryReference<ResourceKey<Block>, Block>, BlockItemGenerator> placable : placeableBlocks.entrySet()) {
             placable.getValue().generateAndRegister(itemRegistry, placable.getKey().key(), placable.getKey().value().get());
         }
-    }
-
-    /**
-     * Associates an item with a decorated pot pattern. Replacing existing associations is not a supported use case.
-     *
-     * @param item    The item to associate with the pattern.
-     * @param pattern The pattern displayed by the item.
-     */
-    public void addPotPatternItem(Item item, ResourceKey<DecoratedPotPattern> pattern) {
-        if (INTERNAL_POT_SPRITES.containsKey(item)) {
-            BookshelfMod.LOG.warn("Mod {} has changed the pot pattern of {} to {} from {}.", this.namespace(), BuiltInRegistries.ITEM.getKey(item), pattern.identifier(), INTERNAL_POT_SPRITES.get(item).texture());
-        }
-        INTERNAL_POT_SPRITES.put(item, Sheets.DECORATED_POT_MAPPER.apply(pattern.identifier()));
     }
 
     public interface BlockItemGenerator {

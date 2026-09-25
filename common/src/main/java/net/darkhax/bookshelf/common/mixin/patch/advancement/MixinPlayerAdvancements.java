@@ -21,9 +21,9 @@ public abstract class MixinPlayerAdvancements {
     public abstract AdvancementProgress getOrStartProgress(AdvancementHolder advHolder);
 
     @Inject(method = "award(Lnet/minecraft/advancements/AdvancementHolder;Ljava/lang/String;)Z", at = @At("RETURN"))
-    private void onAward(AdvancementHolder advancement, String criterion, CallbackInfoReturnable<Boolean> cir) {
-        if (this.getOrStartProgress(advancement).isDone()) {
-            AdvancementTrigger.TRIGGER.trigger(this.player, advancement);
+    private void onAward(AdvancementHolder holder, String criterion, CallbackInfoReturnable<Boolean> cir) {
+        if (this.getOrStartProgress(holder).isDone()) {
+            AdvancementTrigger.TRIGGER.trigger(this.player, holder);
         }
     }
 }
