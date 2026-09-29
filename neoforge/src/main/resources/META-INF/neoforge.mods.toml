@@ -29,7 +29,7 @@ side = "BOTH"
 [[dependencies.bookshelf]]
 modId = "neoforge"
 type = "required"
-versionRange = "[26.3.0.16-beta,)"
+versionRange = "[26.3.0.34-beta,)"
 ordering = "NONE"
 side = "BOTH"
 

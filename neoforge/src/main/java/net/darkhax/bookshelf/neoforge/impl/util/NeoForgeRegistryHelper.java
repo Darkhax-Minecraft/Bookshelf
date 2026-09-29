@@ -27,8 +27,8 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.registries.NewDatapackRegistryEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 import java.util.function.BiConsumer;
@@ -91,10 +91,8 @@ public final class NeoForgeRegistryHelper {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private void registerDataRegistries(DataPackRegistryEvent.NewRegistry event) {
-        this.content.defineDataRegistries(new DataRegistryAdapter(this.context, (key, data, network) -> {
-            event.dataPackRegistry((ResourceKey) key, data, network);
-        }));
+    private void registerDataRegistries(NewDatapackRegistryEvent event) {
+        this.content.defineDataRegistries(new DataRegistryAdapter(this.context, event::worldRegistry));
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
